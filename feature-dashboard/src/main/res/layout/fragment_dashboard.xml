@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/account_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Launch Account List"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toTopOf="@+id/category_list"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Button
+            android:id="@+id/category_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Launch Category List"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toTopOf="@+id/transaction_list"
+            app:layout_constraintTop_toBottomOf="@+id/account_list" />
+
+        <Button
+            android:id="@+id/transaction_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Launch Transaction List"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toTopOf="@+id/graph_tabs"
+            app:layout_constraintTop_toBottomOf="@+id/category_list" />
+
+        <Button
+            android:id="@+id/graph_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Launch Graph Tabs Page"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toTopOf="@+id/history"
+            app:layout_constraintTop_toBottomOf="@+id/transaction_list" />
+
+        <Button
+            android:id="@+id/history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Launch History Page"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toTopOf="@+id/settings"
+            app:layout_constraintTop_toBottomOf="@+id/graph_tabs" />
+
+        <Button
+            android:id="@+id/settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Launch Settings Page"
+            android:textColor="?attr/colorOnSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/history" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

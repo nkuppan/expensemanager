@@ -1,2 +1,4 @@
-# expensemanager
-Enable users to store their expense &amp; incomes and keep track of their finances.
+![Expense Manager Android](docs/images/splash.jpg)
+
+Expense Manager Android App [Work in progress 🚧]
+==================

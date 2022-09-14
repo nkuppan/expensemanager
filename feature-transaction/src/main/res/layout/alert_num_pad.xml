@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/input_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/amount"
+                android:padding="@dimen/margin_16dp"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toStartOf="@id/action_delete"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/action_delete"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/margin_16dp"
+                android:background="?attr/listChoiceBackgroundIndicator"
+                android:contentDescription="@string/delete"
+                android:padding="@dimen/margin_12dp"
+                app:layout_constraintBottom_toBottomOf="@id/input_number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/input_number"
+                app:srcCompat="@drawable/ic_backspace" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/number_pad_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_8dp"
+                android:layout_marginBottom="@dimen/margin_8dp"
+                app:cardElevation="@dimen/card_elevation"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/input_number">
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:columnCount="4"
+                    android:rowCount="4">
+
+                    <TextView
+                        android:id="@+id/number_one"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_1"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_two"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_2"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_three"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_3"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/divide"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/divide"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_four"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_4"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_five"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_5"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_six"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_6"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/multiply"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/multiply"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_seven"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_7"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_eight"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_8"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_nine"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/_9"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/minus"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/minus"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/dot"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/dot"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/number_zero"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/zero"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/equals"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/listChoiceBackgroundIndicator"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/equals"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/plus"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_rowWeight="1"
+                        android:layout_columnWeight="1"
+                        android:background="?attr/colorSecondary"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_8dp"
+                        android:text="@string/plus"
+                        android:textColor="?attr/colorOnSecondary"
+                        android:textSize="24sp" />
+
+                </GridLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/ok_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_16dp"
+                android:text="@string/ok"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/number_pad_container" />
+
+
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_16dp"
+                android:text="@string/cancel"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ok_button"
+                app:layout_constraintTop_toBottomOf="@id/number_pad_container" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</layout>

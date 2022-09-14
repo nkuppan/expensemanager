@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name">Expense Manager</string>
+    <string name="title_category">Category</string>
+    <string name="title_graph">Graph</string>
+    <string name="title_history">History</string>
+
+    <string name="no_data_available">No data available</string>
+
+    <string name="_0_00">0.00</string>
+    <string name="currency_type_string">$</string>
+    <string name="today">Today</string>
+    <string name="amount">Amount</string>
+    <string name="hint_name">Hint name</string>
+    <string name="note">Note</string>
+    <string name="color">Color</string>
+
+    <string name="favorite">Favorite</string>
+    <string name="favorite_category">Favorite category</string>
+
+    <string name="default_currency_type">$</string>
+    <string name="available_balance">Available balance</string>
+
+    <string name="shopping">Shopping</string>
+    <string name="filter">Filter</string>
+    <string name="search">Search</string>
+    <string name="enter_amount_value">Enter amount value</string>
+    <string name="general_settings">General settings</string>
+    <string name="btn_custom">Custom</string>
+    <string name="_22_04_2019">22–04–2019</string>
+    <string name="app_share_content">Superb expense manager application to use !!</string>
+
+
+    <!-- Failure message strings -->
+    <string name="internet_failure_message">Please make sure your internet connection</string>
+    <string name="service_failure_message">Sorry for the inconvenience some error occurred</string>
+    <string name="no_response_available">No data available</string>
+    <string name="retry">RETRY</string>
+
+
+
+    <string name="open">Open</string>
+
+    <string name="delete_item_message">Do you really want to delete this item?</string>
+    <string name="amount_error_message">Please enter a valid amount</string>
+    <string name="search_by_name">Search by name</string>
+    <string name="wallets">Wallets</string>
+    <string name="dummy_amount">$500.00</string>
+
+    <string name="account_type">Account Type</string>
+    <string name="account_create_error">Please enter valid values</string>
+    <string name="card">Card</string>
+    <string name="cash">Cash</string>
+
+    <string name="choose_an_item">Choose an item</string>
+    <string name="all">All</string>
+    <string name="choose_an_account">Choose an account</string>
+    <string name="choose_a_date_filter">Choose a date filter</string>
+
+    <string name="add">Add</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="reports">Reports</string>
+    <string name="total_income">Total Income</string>
+    <string name="total_expense">Total Expense</string>
+    <string name="save">save</string>
+    <string name="please_enter_values">Please enter values</string>
+    <string name="title_accounts">Accounts</string>
+    <string name="save_account">Save account</string>
+    <string name="select">Select</string>
+    <string name="title_color_picker">ColorPicker Dialog</string>
+</resources>

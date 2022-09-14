@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="color">Color</string>
+    <string name="title_color_picker">ColorPicker Dialog</string>
+    <string name="account_delete_error_message">Unable to delete this account</string>
+    <string name="account_name">Account Name</string>
+    <string name="today">Today</string>
+    <string name="account_type">Account Type</string>
+    <string name="card">Card</string>
+    <string name="wallet">Wallet</string>
+    <string name="upi">UPI</string>
+    <string name="cheque">Cheque</string>
+    <string name="internet_banking">Internet banking</string>
+    <string name="bank_account">Bank account</string>
+    <string name="save_account">Save Account</string>
+    <string name="no_account_available">No account available</string>
+    <string name="account_action_text">Tap + button to add a new account.</string>
+    <string name="add_new_account">Add New Account</string>
+    <string name="wallets_amp_accounts">Wallets &amp; accounts</string>
+    <string name="wallets_amp_accounts_summary">manage accounts and wallets details</string>
+    <string name="delete">Delete</string>
+    <string name="delete_item_message">Do you want to delete this item?</string>
+    <string name="account_create_failed">Unable to create account</string>
+</resources>

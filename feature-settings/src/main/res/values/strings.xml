@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="theme">Theme</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="backup_file_message">Backup file completed</string>
+    <string name="spreadsheet_export_message">Your expense details will be exported into a spreadsheet file format.</string>
+
+    <string name="export">Export</string>
+    <string name="export_message">Tacking backup for your database</string>
+    <string name="import_title">Import</string>
+    <string name="import_description">Importing backup file will retain the last data.</string>
+
+    <string name="successfully_exported">Successfully exported</string>
+    <string name="failed_to_export">Failed to export</string>
+
+    <string name="successfully_imported">Successfully Imported</string>
+    <string name="failed_to_import">Failed to import</string>
+
+    <string name="add_transaction">Add transaction</string>
+    <string name="notification_title">Don\'t forget to record your expenses</string>
+
+    <string name="general_settings">General</string>
+    <string name="wallets_amp_accounts">Wallets &amp; accounts</string>
+    <string name="wallets_amp_accounts_summary">manage accounts and wallets details</string>
+    <string name="current_theme">Currently selected theme</string>
+    <string name="currency">Currency</string>
+    <string name="current_currency">Currently selected currency symbol</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="reminder">Reminder</string>
+    <string name="daily_reminder_time">Daily Reminder Time</string>
+    <string name="selected_daily_reminder_time">Currently selected daily reminder time</string>
+    <string name="spreadsheet_export">Spreadsheet Export</string>
+    <string name="manage_settings">Manage</string>
+    <string name="export_title">Export</string>
+    <string name="about">About</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="feedback">Feedback</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+    <string name="developed_by">Developed by Naveen Kumar Kuppan</string>
+    <string name="twitter">twitter</string>
+    <string name="mail">Mail</string>
+    <string name="github">Github</string>
+    <string name="choose_theme">Choose Theme</string>
+    <string name="choose_currency">Choose Currency</string>
+
+    <string name="choose_email_app">Choose email app</string>
+    <string name="app_feedback">App feedback</string>
+    <string name="choose_web_browser">Choose web browser</string>
+</resources>

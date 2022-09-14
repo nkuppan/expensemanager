@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dollar_type">$</string>
+    <string name="dollar_name">Dollar</string>
+
+    <string name="pound_type">£</string>
+    <string name="pound_name">Pound</string>
+
+    <string name="euro_type">€</string>
+    <string name="euro_name">Euro</string>
+
+    <string name="yen_type">¥</string>
+    <string name="yen_name">Yen</string>
+
+    <string name="swiss_franc_type">Fr</string>
+    <string name="swiss_franc_name">Swiss Franc</string>
+
+    <string name="swedish_krona_type">¥</string>
+    <string name="swedish_krona_name">Swedish krona</string>
+
+    <string name="won_type">₩</string>
+    <string name="won_name">Won</string>
+
+    <string name="rupee_type">₹</string>
+    <string name="rupee_name">Rupee</string>
+
+    <string name="default_currency_type">@string/dollar_type</string>
+    <string name="default_currency_name">@string/dollar_name</string>
+
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="set_by_battery_saver">Set by battery saver</string>
+    <string name="system_default">System default</string>
+</resources>
