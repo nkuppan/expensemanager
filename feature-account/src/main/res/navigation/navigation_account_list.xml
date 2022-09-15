@@ -9,7 +9,7 @@
         android:id="@+id/accountListFragment"
         android:name="com.nkuppan.expensemanager.feature.account.list.AccountListFragment"
         android:label="Accounts"
-        tools:layout="@layout/fragment_account_list">
+        tools:layout="@layout/fragment_list">
 
         <action
             android:id="@+id/action_accountListFragment_to_navigation_account_create"

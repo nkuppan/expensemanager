@@ -11,7 +11,7 @@
         android:id="@+id/transactionListFragment"
         android:name="com.nkuppan.expensemanager.feature.transaction.list.TransactionListFragment"
         android:label="TransactionListFragment"
-        tools:layout="@layout/fragment_transaction_list">
+        tools:layout="@layout/fragment_list">
 
         <argument
             android:name="category_id"

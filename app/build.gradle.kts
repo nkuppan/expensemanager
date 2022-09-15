@@ -35,7 +35,7 @@ android {
         debug {
             isMinifyEnabled = false
         }
-        create("benchmark") {
+        create("macrobenchmark") {
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
             isDebuggable = false
@@ -88,6 +88,8 @@ dependencies {
     implementation(platform(Libs.Firebase.bom))
     implementation(Libs.Firebase.crashlytics)
     implementation(Libs.Firebase.analytics)
+
+    implementation(Libs.AndroidX.BaselineProfile.profileInstaller)
 
     //Android Testing Related Library
     kaptAndroidTest(Libs.Google.Hilt.hiltCompiler)

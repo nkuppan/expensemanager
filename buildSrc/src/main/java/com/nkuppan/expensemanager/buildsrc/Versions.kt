@@ -9,7 +9,7 @@ object Versions {
     const val versionCode = 1
     const val versionName = "1.0.0"
 
-    const val androidGradlePlugin = "7.2.2"
+    const val androidGradlePlugin = "7.3.0-beta01"
     const val ktlint = "0.42.1"
     const val glide = "4.12.0"
     const val playCoreUpdate = "2.0.0"
@@ -54,6 +54,11 @@ object Versions {
 
         object Benchmark {
             const val macro = "1.2.0-alpha01"
+            const val micro = "1.1.0"
+        }
+
+        object BaselineProfile {
+            const val profileInstaller = "1.2.0"
         }
     }
 

@@ -123,7 +123,17 @@ object Libs {
         }
 
         object Benchmark {
-            const val macroBenchmark = "androidx.benchmark:benchmark-macro-junit4:${Versions.AndroidX.Benchmark.macro}"
+            const val macroBenchmark =
+                "androidx.benchmark:benchmark-macro-junit4:${Versions.AndroidX.Benchmark.macro}"
+            const val microBenchmark =
+                "androidx.benchmark:benchmark-junit4:${Versions.AndroidX.Benchmark.macro}"
+            const val benchmarkGradlePlugin =
+                "androidx.benchmark:benchmark-gradle-plugin:${Versions.AndroidX.Benchmark.micro}"
+        }
+
+        object BaselineProfile {
+            const val profileInstaller =
+                "androidx.profileinstaller:profileinstaller:${Versions.AndroidX.BaselineProfile.profileInstaller}"
         }
 
         object Compose {

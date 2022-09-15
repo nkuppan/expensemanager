@@ -1,3 +1,5 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+
 buildscript {
     repositories {
         gradlePluginPortal()
@@ -12,6 +14,7 @@ buildscript {
         classpath(com.nkuppan.expensemanager.buildsrc.Libs.Google.Hilt.androidGradlePlugin)
         classpath(com.nkuppan.expensemanager.buildsrc.Libs.Google.OssLicenses.gradlePlugin)
         classpath(com.nkuppan.expensemanager.buildsrc.Libs.Jacoco.gradle)
+        classpath(com.nkuppan.expensemanager.buildsrc.Libs.AndroidX.Benchmark.benchmarkGradlePlugin)
     }
 }
 
@@ -29,7 +32,7 @@ plugins {
     id("com.github.ben-manes.versions").version("0.42.0")
 }
 
-tasks.named<com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask>("dependencyUpdates").configure {
+tasks.named<DependencyUpdatesTask>("dependencyUpdates").configure {
 
     // optional parameters
     checkForGradleUpdate = true

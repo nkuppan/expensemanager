@@ -9,7 +9,7 @@
         android:id="@+id/categoryListFragment"
         android:name="com.nkuppan.expensemanager.feature.category.list.CategoryListFragment"
         android:label="CategoryListFragment"
-        tools:layout="@layout/fragment_category_list">
+        tools:layout="@layout/fragment_list">
 
         <action
             android:id="@+id/action_categoryListFragment_to_category_create_navigation"
