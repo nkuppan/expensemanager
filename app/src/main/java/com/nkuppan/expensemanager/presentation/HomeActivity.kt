@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.presentation
 
-import android.app.ActivityManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -11,11 +10,6 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.nkuppan.expensemanager.R
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {

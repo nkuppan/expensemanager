@@ -66,17 +66,6 @@ class ExpenseGraphFragment : BaseBindingFragment<FragmentExpenseGraphListBinding
                 }
             }
         }
-
-        findNavController().currentBackStackEntry?.savedStateHandle?.let { savedStateHandle ->
-            savedStateHandle.getLiveData<Boolean>("modified_status")
-                .observe(viewLifecycleOwner) {
-                    if (it) {
-                        viewModel.loadExpenseData()
-                    }
-                }
-        }
-
-        viewModel.loadExpenseData()
     }
 
     override fun inflateLayout(

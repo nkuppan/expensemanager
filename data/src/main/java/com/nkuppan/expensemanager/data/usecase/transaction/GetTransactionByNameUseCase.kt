@@ -1,39 +1,35 @@
 package com.nkuppan.expensemanager.data.usecase.transaction
 
-import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
 import com.nkuppan.expensemanager.data.repository.TransactionRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class GetTransactionByNameUseCase(private val repository: TransactionRepository) {
-    suspend fun invoke(searchText: String?): Resource<List<Transaction>> {
-        return when (val response = repository.getAllTransaction()) {
-            is Resource.Error -> response
-            is Resource.Success -> {
+    fun invoke(searchText: String?): Flow<List<Transaction>> {
+        return repository.getAllTransaction().map { values ->
+            val filteredList = mutableListOf<Transaction>()
 
-                val values = response.data
+            if (searchText?.isNotBlank() == true && values?.isNotEmpty() == true) {
 
-                val filteredList = mutableListOf<Transaction>()
+                filteredList.addAll(values.filter {
 
-                if (searchText?.isNotBlank() == true && values.isNotEmpty()) {
-                    filteredList.addAll(values.filter {
+                    val noteContainSearchText = it.notes.contains(
+                        searchText,
+                        ignoreCase = true
+                    )
 
-                        val noteContainSearchText = it.notes.contains(
-                            searchText,
-                            ignoreCase = true
-                        )
+                    val categoryNameContainSearchText = it.category.name.contains(
+                        searchText, ignoreCase = true
+                    )
 
-                        val categoryNameContainSearchText = it.category.name.contains(
-                            searchText, ignoreCase = true
-                        )
-
-                        noteContainSearchText || categoryNameContainSearchText
-                    })
-                } else {
-                    filteredList.addAll(values)
-                }
-
-                Resource.Success(filteredList)
+                    noteContainSearchText || categoryNameContainSearchText
+                })
+            } else {
+                filteredList.addAll(values?.toList() ?: emptyList())
             }
+
+            filteredList
         }
     }
 }

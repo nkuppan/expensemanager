@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.data.repository
 
+import android.util.Log
 import com.nkuppan.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
@@ -9,6 +10,8 @@ import com.nkuppan.expensemanager.data.mappers.AccountEntityDomainMapper
 import com.nkuppan.expensemanager.data.mappers.CategoryEntityDomainMapper
 import com.nkuppan.expensemanager.data.mappers.TransactionDomainEntityMapper
 import com.nkuppan.expensemanager.data.mappers.TransactionEntityDomainMapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class TransactionRepositoryImpl(
@@ -20,14 +23,9 @@ class TransactionRepositoryImpl(
     private val dispatchers: AppCoroutineDispatchers
 ) : TransactionRepository {
 
-    override suspend fun getAllTransaction(): Resource<List<Transaction>> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val transactionWithCategory = transactionDao.getAllTransaction()
-                Resource.Success(convertTransactionAndCategory(transactionWithCategory))
-            } catch (e: Exception) {
-                Resource.Error(e)
-            }
+    override fun getAllTransaction(): Flow<List<Transaction>?> =
+        transactionDao.getAllTransaction().map {
+            convertTransactionAndCategory(it)
         }
 
     override suspend fun findTransactionById(transactionId: String): Resource<Transaction> =
@@ -68,51 +66,28 @@ class TransactionRepositoryImpl(
         }
 
 
-    override suspend fun getTransactionsByAccountId(accountId: String): Resource<List<Transaction>> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val transaction = transactionDao.getTransactionsByAccountId(accountId)
-
-                if (transaction != null) {
-                    Resource.Success(transaction.map { transactionEntityDomainMapper.convert(it) })
-                } else {
-                    Resource.Error(KotlinNullPointerException())
-                }
-            } catch (e: Exception) {
-                Resource.Error(e)
-            }
+    override fun getTransactionsByAccountId(accountId: String): Flow<List<Transaction>?> =
+        transactionDao.getTransactionsByAccountId(accountId).map { transaction ->
+            transaction?.map { transactionEntityDomainMapper.convert(it) }
         }
 
-    override suspend fun getTransactionByAccountIdAndDateFilter(
+    override fun getTransactionByAccountIdAndDateFilter(
         accountId: String,
         startDate: Long,
         endDate: Long
-    ): Resource<List<Transaction>> = withContext(dispatchers.io) {
-        return@withContext try {
-            val transactionWithCategory = transactionDao.getTransactionsByAccountIdAndDateFilter(
-                accountId,
-                startDate,
-                endDate
-            )
-            Resource.Success(convertTransactionAndCategory(transactionWithCategory))
-        } catch (e: Exception) {
-            Resource.Error(e)
+    ): Flow<List<Transaction>> =
+        transactionDao.getTransactionsByAccountIdAndDateFilter(accountId, startDate, endDate).map {
+            Log.i("TAG", "getTransactionByAccountIdAndDateFilter: ${it?.size}")
+            convertTransactionAndCategory(it)
         }
-    }
 
-    override suspend fun getTransactionByDateFilter(
+    override fun getTransactionByDateFilter(
         startDate: Long,
         endDate: Long
-    ): Resource<List<Transaction>> = withContext(dispatchers.io) {
-        return@withContext try {
-            val transactionWithCategory = transactionDao.getTransactionsByDateFilter(
-                startDate, endDate
-            )
-            Resource.Success(convertTransactionAndCategory(transactionWithCategory))
-        } catch (e: Exception) {
-            Resource.Error(e)
+    ): Flow<List<Transaction>> =
+        transactionDao.getTransactionsByDateFilter(startDate, endDate).map {
+            convertTransactionAndCategory(it)
         }
-    }
 
     private fun convertTransactionAndCategory(
         transactionWithCategory: List<TransactionRelation>?
@@ -130,5 +105,16 @@ class TransactionRepositoryImpl(
             }
         }
         return outputTransactions
+    }
+
+    override fun getTransactionAmount(
+        accountId: String,
+        categoryType: Int,
+        startDate: Long,
+        endDate: Long
+    ): Flow<Double?> {
+        return transactionDao.getTransactionTotalAmount(
+            accountId, categoryType, startDate, endDate
+        )
     }
 }

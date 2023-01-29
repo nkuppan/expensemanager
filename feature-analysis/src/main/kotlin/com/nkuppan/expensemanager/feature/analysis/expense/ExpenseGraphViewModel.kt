@@ -10,17 +10,14 @@ import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionGroupBy
 import com.nkuppan.expensemanager.feature.analysis.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ExpenseGraphViewModel @Inject constructor(
-    private val getCurrencyUseCase: GetCurrencyUseCase,
-    private val getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase
+    getCurrencyUseCase: GetCurrencyUseCase,
+    getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase
 ) : ViewModel() {
 
     private val _errorMessage = Channel<UiText>()
@@ -33,27 +30,16 @@ class ExpenseGraphViewModel @Inject constructor(
         com.nkuppan.expensemanager.feature.transaction.R.string.default_currency_type
 
     init {
-        viewModelScope.launch {
-            getCurrencyUseCase.invoke().collectLatest {
-                currencySymbol = it.type
-            }
-        }
-    }
+        getCurrencyUseCase.invoke().onEach {
+            currencySymbol = it.type
+        }.launchIn(viewModelScope)
 
-    fun loadExpenseData() {
-        viewModelScope.launch {
-            when (val response = getTransactionGroupByCategoryUseCase.invoke()) {
-                is Resource.Error -> {
-                    _errorMessage.send(UiText.StringResource(R.string.unable_to_load_graph_items))
-                }
-                is Resource.Success -> {
-                    _graphItems.value = constructGraphItems(
-                        response.data,
-                        CategoryType.EXPENSE,
-                        currencySymbol
-                    )
-                }
-            }
-        }
+        getTransactionGroupByCategoryUseCase.invoke().onEach { response ->
+            _graphItems.value = constructGraphItems(
+                response,
+                CategoryType.EXPENSE,
+                currencySymbol
+            )
+        }.launchIn(viewModelScope)
     }
 }

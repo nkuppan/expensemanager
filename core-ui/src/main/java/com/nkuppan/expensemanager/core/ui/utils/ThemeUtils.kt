@@ -7,8 +7,6 @@ import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 
 
-
-
 @ColorInt
 fun getColorValue(colorValue: String?): Int {
     return Color.parseColor(if (colorValue?.isNotEmpty() == true) colorValue else "#000000")

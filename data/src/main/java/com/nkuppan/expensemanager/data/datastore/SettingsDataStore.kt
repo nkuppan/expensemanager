@@ -15,7 +15,7 @@ class SettingsDataStore(
     }
 
     fun getAccountId(): Flow<String> = dataStore.data.map { preferences ->
-        preferences[KEY_SELECTED_ACCOUNT_ID] ?: ""
+        preferences[KEY_SELECTED_ACCOUNT_ID] ?: "-1"
     }
 
     suspend fun setFilterType(filterType: FilterType) = dataStore.edit { preferences ->

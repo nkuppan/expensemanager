@@ -2,6 +2,7 @@ package com.nkuppan.expensemanager.data.repository
 
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
+import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
 
@@ -11,19 +12,25 @@ interface TransactionRepository {
 
     suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean>
 
+    fun getTransactionsByAccountId(accountId: String): Flow<List<Transaction>?>
 
-    suspend fun getTransactionsByAccountId(accountId: String): Resource<List<Transaction>>
+    fun getAllTransaction(): Flow<List<Transaction>?>
 
-    suspend fun getAllTransaction(): Resource<List<Transaction>>
-
-    suspend fun getTransactionByAccountIdAndDateFilter(
+    fun getTransactionByAccountIdAndDateFilter(
         accountId: String,
         startDate: Long,
         endDate: Long
-    ): Resource<List<Transaction>>
+    ): Flow<List<Transaction>>
 
-    suspend fun getTransactionByDateFilter(
+    fun getTransactionByDateFilter(
         startDate: Long,
         endDate: Long
-    ): Resource<List<Transaction>>
+    ): Flow<List<Transaction>>
+
+    fun getTransactionAmount(
+        accountId: String,
+        categoryType: Int,
+        startDate: Long,
+        endDate: Long
+    ): Flow<Double?>
 }

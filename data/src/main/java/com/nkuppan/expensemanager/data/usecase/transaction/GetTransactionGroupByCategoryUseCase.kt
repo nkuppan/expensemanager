@@ -1,28 +1,20 @@
 package com.nkuppan.expensemanager.data.usecase.transaction
 
 import com.nkuppan.expensemanager.core.model.Category
-import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class GetTransactionGroupByCategoryUseCase(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase
 ) {
-    suspend fun invoke(): Resource<Map<Category, List<Transaction>>> {
-        return when (val response = getTransactionWithFilterUseCase.invoke()) {
-            is Resource.Error -> {
-                Resource.Error(response.exception)
-            }
-            is Resource.Success -> {
-                val data = response.data
-
-                Resource.Success(
-                    if (data.isNotEmpty()) {
-                        data.groupBy { it.categoryId }
-                            .map { it.value[0].category to it.value }.toMap()
-                    } else {
-                        emptyMap()
-                    }
-                )
+    fun invoke(): Flow<Map<Category, List<Transaction>>> {
+        return getTransactionWithFilterUseCase.invoke().map { data ->
+            if (data?.isNotEmpty() == true) {
+                data.groupBy { it.categoryId }
+                    .map { it.value[0].category to it.value }.toMap()
+            } else {
+                emptyMap()
             }
         }
     }

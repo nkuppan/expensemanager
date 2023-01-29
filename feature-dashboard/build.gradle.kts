@@ -46,6 +46,8 @@ dependencies {
     implementation(project(":feature-transaction"))
     implementation(project(":feature-settings"))
 
+    implementation(Libs.ThirdParty.mpcharts)
+
     implementation(Libs.Google.Hilt.android)
     kapt(Libs.Google.Hilt.hiltCompiler)
 

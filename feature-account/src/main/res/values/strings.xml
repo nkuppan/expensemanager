@@ -21,4 +21,5 @@
     <string name="delete">Delete</string>
     <string name="delete_item_message">Do you want to delete this item?</string>
     <string name="account_create_failed">Unable to create account</string>
+    <string name="select_account">Select account</string>
 </resources>

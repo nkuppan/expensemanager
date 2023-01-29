@@ -7,18 +7,20 @@ import com.nkuppan.expensemanager.core.model.PaymentMode
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
 import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByIdUseCase
 import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByNameUseCase
 import com.nkuppan.expensemanager.feature.transaction.R
 import com.nkuppan.expensemanager.feature.transaction.history.TransactionUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class TransactionListViewModel @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
@@ -39,46 +41,39 @@ class TransactionListViewModel @Inject constructor(
 
     private var currencySymbol: Int = R.string.default_currency_type
 
+    private val searchText = MutableStateFlow<String?>("")
+
     init {
         viewModelScope.launch {
             getCurrencyUseCase.invoke().collectLatest {
                 currencySymbol = it.type
             }
         }
-    }
 
-    fun loadTransactions(searchText: String? = "") {
-
-        viewModelScope.launch {
-
+        searchText.flatMapLatest {
+            getTransactionByNameUseCase.invoke(it)
+        }.onEach { transactions ->
             _transactionList.send(
-                when (val response = getTransactionByNameUseCase.invoke(searchText)) {
-                    is Resource.Error -> {
-                        emptyList()
-                    }
-                    is Resource.Success -> {
-                        response.data.map {
-                            TransactionUIModel(
-                                it.id,
-                                UiText.StringResource(
-                                    R.string.amount_string,
-                                    it.amount,
-                                    UiText.StringResource(currencySymbol)
-                                ),
-                                if (it.notes.isBlank()) {
-                                    UiText.StringResource(R.string.not_assigned)
-                                } else {
-                                    UiText.DynamicString(it.notes)
-                                },
-                                it.category.name,
-                                it.category.backgroundColor,
-                                it.account.type.getPaymentModeIcon()
-                            )
-                        }
-                    }
+                transactions.map {
+                    TransactionUIModel(
+                        it.id,
+                        getCurrency(currencySymbol, it.amount),
+                        if (it.notes.isBlank()) {
+                            UiText.StringResource(R.string.not_assigned)
+                        } else {
+                            UiText.DynamicString(it.notes)
+                        },
+                        it.category.name,
+                        it.category.backgroundColor,
+                        it.account.type.getPaymentModeIcon()
+                    )
                 }
             )
-        }
+        }.launchIn(viewModelScope)
+    }
+
+    fun loadTransactions(searchText: String = "") {
+        this@TransactionListViewModel.searchText.value = searchText
     }
 
     fun openTransactionEdit(transactionId: String) {

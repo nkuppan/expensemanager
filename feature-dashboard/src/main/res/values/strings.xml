@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_home">Home</string>
+    <string name="this_month">This month</string>
+    <string name="view_all">View all</string>
+    <string name="last_seven_day">Last 7 Days Analysis</string>
+    <string name="last_transactions">Last Transactions</string>
+    <string name="filter">Filter</string>
+    <string name="account">Account</string>
+    <string name="summary">Summary</string>
+    <string name="my_balance">My balance</string>
 </resources>

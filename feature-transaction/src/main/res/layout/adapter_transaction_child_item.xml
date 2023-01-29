@@ -19,9 +19,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/listChoiceBackgroundIndicator"
+        android:layout_marginBottom="@dimen/margin_8dp"
+        android:background="@drawable/common_bg"
         android:orientation="vertical"
-        android:padding="@dimen/margin_16dp">
+        android:paddingStart="@dimen/margin_16dp"
+        android:paddingTop="@dimen/margin_8dp"
+        android:paddingEnd="@dimen/margin_16dp"
+        android:paddingBottom="@dimen/margin_8dp">
 
         <ImageView
             android:id="@+id/category_background_color"
@@ -70,16 +74,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/amount_text_size"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:setUiText="@{transaction.amount}" />
+            app:setUiText="@{transaction.amount}"
+            tools:text="@string/value" />
 
         <ImageView
             android:id="@+id/account_type_image"
             android:layout_width="@dimen/list_image_size"
             android:layout_height="@dimen/list_image_size"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/margin_8dp"
+            android:padding="@dimen/margin_4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/amount_value"

@@ -3,8 +3,12 @@ package com.nkuppan.expensemanager.data.di
 import com.nkuppan.expensemanager.data.repository.*
 import com.nkuppan.expensemanager.data.usecase.account.*
 import com.nkuppan.expensemanager.data.usecase.category.*
+import com.nkuppan.expensemanager.data.usecase.settings.GetFilterRange
+import com.nkuppan.expensemanager.data.usecase.settings.GetFilterType
 import com.nkuppan.expensemanager.data.usecase.settings.GetReminderStatusUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.UpdateReminderStatusUseCase
+import com.nkuppan.expensemanager.data.usecase.settings.account.GetSelectedAccountUseCase
+import com.nkuppan.expensemanager.data.usecase.settings.account.UpdateSelectedAccountUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetAllCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.currency.SaveCurrencyUseCase
@@ -211,5 +215,62 @@ object UseCaseModule {
         settingsRepository: SettingsRepository
     ): UpdateReminderStatusUseCase {
         return UpdateReminderStatusUseCase(settingsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetExpenseAmountUseCase(
+        getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase
+    ): GetExpenseAmountUseCase {
+        return GetExpenseAmountUseCase(getTransactionWithFilterUseCase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetIncomeAmountUseCase(
+        getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase
+    ): GetIncomeAmountUseCase {
+        return GetIncomeAmountUseCase(getTransactionWithFilterUseCase)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPreviousDaysTransactionWithFilterUseCase(
+        transactionRepository: TransactionRepository,
+        settingsRepository: SettingsRepository
+    ): GetPreviousDaysTransactionWithFilterUseCase {
+        return GetPreviousDaysTransactionWithFilterUseCase(
+            transactionRepository,
+            settingsRepository
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFilterRange(settingsRepository: SettingsRepository): GetFilterRange {
+        return GetFilterRange(settingsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFilterType(settingsRepository: SettingsRepository): GetFilterType {
+        return GetFilterType(settingsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetSelectedAccountUseCase(
+        settingsRepository: SettingsRepository,
+        accountRepository: AccountRepository
+    ): GetSelectedAccountUseCase {
+        return GetSelectedAccountUseCase(settingsRepository, accountRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUpdateSelectedAccountUseCase(
+        settingsRepository: SettingsRepository
+    ): UpdateSelectedAccountUseCase {
+        return UpdateSelectedAccountUseCase(settingsRepository)
     }
 }

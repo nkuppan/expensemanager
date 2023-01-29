@@ -9,6 +9,7 @@ import com.nkuppan.expensemanager.core.model.CategoryType
 import com.nkuppan.expensemanager.core.model.Transaction
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getColorValue
+import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.feature.transaction.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -86,11 +87,7 @@ suspend fun constructGraphItems(
             GraphData(
                 GraphItemType.GRAPH_ITEM,
                 amount,
-                UiText.StringResource(
-                    R.string.amount_string,
-                    amount,
-                    UiText.StringResource(currencySymbol)
-                ),
+                getCurrency(currencySymbol, amount),
                 emptyList(),
                 itemSortedByAmount.map { it.second }.constructGraphData(),
                 categoryType = categoryType
@@ -108,11 +105,7 @@ suspend fun constructGraphItems(
                 GraphData(
                     GraphItemType.GRAPH_CATEGORY_ITEM,
                     totalAmount,
-                    UiText.StringResource(
-                        R.string.amount_string,
-                        totalAmount,
-                        UiText.StringResource(currencySymbol)
-                    ),
+                    getCurrency(currencySymbol, totalAmount),
                     it.second,
                     null,
                     categoryType = categoryType
@@ -122,11 +115,7 @@ suspend fun constructGraphItems(
             val headerItem = GraphData(
                 GraphItemType.GRAPH_CATEGORY_TITLE,
                 categoryTotalAmount,
-                UiText.StringResource(
-                    R.string.amount_string,
-                    categoryTotalAmount,
-                    UiText.StringResource(currencySymbol)
-                ),
+                getCurrency(currencySymbol, categoryTotalAmount),
                 emptyList(),
                 null,
                 categoryType = categoryType

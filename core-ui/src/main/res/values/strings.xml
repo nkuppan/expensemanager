@@ -16,5 +16,6 @@
     <string name="expense">Expense</string>
     <string name="income">Income</string>
 
-    <string name="value">$45,587</string>
+    <string name="value">$ 45,587.30</string>
+    <string name="amount_string">%s %.2f</string>
 </resources>

@@ -1,14 +1,18 @@
 package com.nkuppan.expensemanager.data.repository
 
+import android.content.Context
 import com.nkuppan.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.core.model.FilterType
 import com.nkuppan.expensemanager.core.model.Resource
+import com.nkuppan.expensemanager.data.R
 import com.nkuppan.expensemanager.data.datastore.SettingsDataStore
+import com.nkuppan.expensemanager.data.utils.getDateTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.util.*
 
 class SettingsRepositoryImpl(
+    private val applicationContext: Context,
     private val dataStore: SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers
 ) : SettingsRepository {
@@ -17,14 +21,26 @@ class SettingsRepositoryImpl(
         return dataStore.getAccountId()
     }
 
-    override suspend fun setAccountId(accountId: String): Resource<Boolean> =
+    override suspend fun setAccountId(accountId: String?): Resource<Boolean> =
         withContext(dispatcher.io) {
-            dataStore.setAccountId(accountId)
+            dataStore.setAccountId(accountId ?: "-1")
             return@withContext Resource.Success(true)
         }
 
     override fun getFilterType(): Flow<FilterType> {
         return dataStore.getFilterType()
+    }
+
+    override suspend fun getFilterRangeValue(filterType: FilterType): String {
+        return when (filterType) {
+            FilterType.THIS_MONTH -> applicationContext.getString(R.string.this_month)
+            FilterType.LAST_MONTH -> applicationContext.getString(R.string.previous_month)
+            FilterType.LAST_THREE_MONTH -> applicationContext.getString(R.string.last_three_month)
+            FilterType.LAST_SIX_MONTH -> applicationContext.getString(R.string.last_six_month)
+            FilterType.LAST_YEAR -> applicationContext.getString(R.string.last_year)
+            FilterType.ALL -> applicationContext.getString(R.string.all)
+            FilterType.CUSTOM -> applicationContext.getString(R.string.custom)
+        }
     }
 
     override suspend fun getFilterRange(filterType: FilterType): List<Long> {
@@ -71,17 +87,6 @@ class SettingsRepositoryImpl(
         val toDate = startDate.timeInMillis
 
         return arrayListOf(fromDate, toDate)
-    }
-
-    private fun getDateTime(): Calendar {
-        // get today and clear time of day
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 0)
-        // ! clear would not reset the hour of day !
-        calendar.clear(Calendar.MINUTE)
-        calendar.clear(Calendar.SECOND)
-        calendar.clear(Calendar.MILLISECOND)
-        return calendar
     }
 
     private fun getPreviousMonthValues(): List<Long> {

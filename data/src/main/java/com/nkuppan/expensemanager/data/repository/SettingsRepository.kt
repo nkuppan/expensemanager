@@ -6,12 +6,13 @@ import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
 
-    fun getAccountId(): Flow<String>
+    fun getAccountId(): Flow<String?>
 
-    suspend fun setAccountId(accountId: String): Resource<Boolean>
-
+    suspend fun setAccountId(accountId: String?): Resource<Boolean>
 
     fun getFilterType(): Flow<FilterType>
+
+    suspend fun getFilterRangeValue(filterType: FilterType): String
 
     suspend fun getFilterRange(filterType: FilterType): List<Long>
 

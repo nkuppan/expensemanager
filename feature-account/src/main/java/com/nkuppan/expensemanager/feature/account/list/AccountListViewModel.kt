@@ -57,19 +57,6 @@ class AccountListViewModel @Inject constructor(
         }
     }
 
-    @DrawableRes
-    private fun getPaymentModeIcon(paymentMode: PaymentMode): Int {
-        return when (paymentMode) {
-            PaymentMode.CARD -> R.drawable.ic_card
-            PaymentMode.WALLET -> R.drawable.ic_wallet
-            PaymentMode.UPI -> R.drawable.ic_upi
-            PaymentMode.CHEQUE -> R.drawable.ic_cheque
-            PaymentMode.INTERNET_BANKING -> R.drawable.ic_netbanking
-            PaymentMode.BANK_ACCOUNT -> R.drawable.ic_bank
-            PaymentMode.NONE -> R.drawable.ic_wallet
-        }
-    }
-
     fun openAccountToEdit(accountId: String) {
         viewModelScope.launch {
             when (val response = getAccountByIdUseCase.invoke(accountId)) {
@@ -81,6 +68,20 @@ class AccountListViewModel @Inject constructor(
                 }
             }
         }
+    }
+}
+
+
+@DrawableRes
+fun getPaymentModeIcon(paymentMode: PaymentMode): Int {
+    return when (paymentMode) {
+        PaymentMode.CARD -> R.drawable.ic_card
+        PaymentMode.WALLET -> R.drawable.ic_wallet
+        PaymentMode.UPI -> R.drawable.ic_upi
+        PaymentMode.CHEQUE -> R.drawable.ic_cheque
+        PaymentMode.INTERNET_BANKING -> R.drawable.ic_netbanking
+        PaymentMode.BANK_ACCOUNT -> R.drawable.ic_bank
+        PaymentMode.NONE -> R.drawable.ic_wallet
     }
 }
 

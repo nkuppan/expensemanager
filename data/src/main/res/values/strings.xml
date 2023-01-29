@@ -31,4 +31,12 @@
     <string name="dark">Dark</string>
     <string name="set_by_battery_saver">Set by battery saver</string>
     <string name="system_default">System default</string>
+
+    <string name="this_month">This month</string>
+    <string name="previous_month">Previous Month</string>
+    <string name="last_three_month">Last Three Month</string>
+    <string name="last_six_month">Last Six Month</string>
+    <string name="last_year">Last Year</string>
+    <string name="all">All</string>
+    <string name="custom">Custom</string>
 </resources>

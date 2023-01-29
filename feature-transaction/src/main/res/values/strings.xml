@@ -39,7 +39,6 @@
     <string name="no_history_available">No history</string>
     <string name="transaction_action_text">Tap + button to add a new transaction,\nOr change time period.</string>
     <string name="search">Search</string>
-    <string name="amount_string">%.2f %s</string>
     <string name="not_assigned">Not assigned</string>
 
 </resources>
