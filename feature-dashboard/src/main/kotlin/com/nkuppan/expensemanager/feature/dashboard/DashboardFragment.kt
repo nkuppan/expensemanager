@@ -114,7 +114,7 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
 
         binding.dateContainer.setOnClickListener {
             findNavController().navigate(
-                R.id.action_dashboardFragment_to_navigation_account_selection
+                R.id.action_dashboardFragment_to_navigation_date_filter
             )
         }
 

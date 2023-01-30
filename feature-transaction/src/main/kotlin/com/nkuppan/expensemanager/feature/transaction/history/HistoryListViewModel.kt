@@ -10,6 +10,7 @@ import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByIdUseCase
 import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionGroupByMonthUseCase
+import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.feature.transaction.R
 import com.nkuppan.expensemanager.feature.transaction.list.getPaymentModeIcon
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class HistoryListViewModel @Inject constructor(
-    private val getCurrencyUseCase: GetCurrencyUseCase,
+    getCurrencyUseCase: GetCurrencyUseCase,
     private val getTransactionGroupByMonthUseCase: GetTransactionGroupByMonthUseCase,
     private val getTransactionByIdUseCase: GetTransactionByIdUseCase
 ) : ViewModel() {
@@ -83,7 +84,8 @@ class HistoryListViewModel @Inject constructor(
                             },
                             it.category.name,
                             it.category.backgroundColor,
-                            it.account.type.getPaymentModeIcon()
+                            it.account.type.getPaymentModeIcon(),
+                            it.updatedOn.toTransactionDate(),
                         )
                     },
                     expanded = false

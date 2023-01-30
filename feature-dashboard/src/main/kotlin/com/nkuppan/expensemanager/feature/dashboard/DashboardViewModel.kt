@@ -11,11 +11,12 @@ import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
-import com.nkuppan.expensemanager.data.usecase.settings.GetFilterRange
+import com.nkuppan.expensemanager.data.usecase.settings.filter.GetFilterTypeTextUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.transaction.*
 import com.nkuppan.expensemanager.data.utils.getPreviousDateTime
+import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.feature.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.feature.transaction.list.getPaymentModeIcon
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +34,7 @@ class DashboardViewModel @Inject constructor(
     private val getPreviousDaysTransactionWithFilterUseCase: GetPreviousDaysTransactionWithFilterUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
-    getFilterRange: GetFilterRange,
+    getFilterTypeTextUseCase: GetFilterTypeTextUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
     getExpenseAmountUseCase: GetExpenseAmountUseCase
@@ -77,7 +78,7 @@ class DashboardViewModel @Inject constructor(
             _accountValue.value = it?.name ?: "All"
         }.launchIn(viewModelScope)
 
-        getFilterRange.invoke().onEach {
+        getFilterTypeTextUseCase.invoke().onEach {
             _dateValue.value = it
         }.launchIn(viewModelScope)
 
@@ -110,7 +111,8 @@ class DashboardViewModel @Inject constructor(
                     },
                     it.category.name,
                     it.category.backgroundColor,
-                    it.account.type.getPaymentModeIcon()
+                    it.account.type.getPaymentModeIcon(),
+                    it.updatedOn.toTransactionDate(),
                 )
             } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
 

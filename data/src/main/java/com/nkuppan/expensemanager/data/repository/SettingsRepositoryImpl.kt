@@ -8,6 +8,7 @@ import com.nkuppan.expensemanager.data.R
 import com.nkuppan.expensemanager.data.datastore.SettingsDataStore
 import com.nkuppan.expensemanager.data.utils.getDateTime
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -53,6 +54,14 @@ class SettingsRepositoryImpl(
             return@withContext Resource.Success(true)
         }
 
+    override suspend fun setCustomFilterRange(customFilterRange: List<Date>): Resource<Boolean> =
+        withContext(dispatcher.io)
+        {
+            dataStore.setCustomFilterStartDate(customFilterRange[0].time)
+            dataStore.setCustomFilterEndDate(customFilterRange[1].time)
+            return@withContext Resource.Success(true)
+        }
+
     override fun isReminderOn(): Flow<Boolean> {
         return dataStore.isReminderOn()
     }
@@ -64,7 +73,7 @@ class SettingsRepositoryImpl(
         }
 
 
-    private fun getFilterValue(filterType: FilterType): List<Long> {
+    private suspend fun getFilterValue(filterType: FilterType): List<Long> {
         return when (filterType) {
             FilterType.THIS_MONTH -> getThisMonthValues()
             FilterType.LAST_MONTH -> getPreviousMonthValues()
@@ -72,8 +81,15 @@ class SettingsRepositoryImpl(
             FilterType.LAST_SIX_MONTH -> getLastSixMonthValues()
             FilterType.LAST_YEAR -> getLastYearValues()
             FilterType.ALL -> listOf(0, 0)
-            FilterType.CUSTOM -> getThisMonthValues()
+            FilterType.CUSTOM -> getCustomFilterRange()
         }
+    }
+
+    private suspend fun getCustomFilterRange(): List<Long> {
+        return listOf(
+            dataStore.getCustomFilterStartDate().first() ?: 0,
+            dataStore.getCustomFilterEndDate().first() ?: 0,
+        )
     }
 
     private fun getThisMonthValues(): List<Long> {
@@ -86,7 +102,7 @@ class SettingsRepositoryImpl(
         startDate.set(Calendar.HOUR_OF_DAY, 24)
         val toDate = startDate.timeInMillis
 
-        return arrayListOf(fromDate, toDate)
+        return listOf(fromDate, toDate)
     }
 
     private fun getPreviousMonthValues(): List<Long> {
@@ -100,7 +116,7 @@ class SettingsRepositoryImpl(
         startDate.set(Calendar.HOUR_OF_DAY, 24)
         val toDate = startDate.timeInMillis
 
-        return arrayListOf(fromDate, toDate)
+        return listOf(fromDate, toDate)
     }
 
     private fun getLastThreeMonthValues(): List<Long> {
@@ -118,7 +134,7 @@ class SettingsRepositoryImpl(
         )
         val toDate = previousMonthStartDate.timeInMillis
 
-        return arrayListOf(fromDate, toDate)
+        return listOf(fromDate, toDate)
     }
 
     private fun getLastSixMonthValues(): List<Long> {
@@ -136,7 +152,7 @@ class SettingsRepositoryImpl(
         )
         val toDate = previousMonthStartDate.timeInMillis
 
-        return arrayListOf(fromDate, toDate)
+        return listOf(fromDate, toDate)
     }
 
     private fun getLastYearValues(): List<Long> {
@@ -154,6 +170,6 @@ class SettingsRepositoryImpl(
         )
         val toDate = previousMonthStartDate.timeInMillis
 
-        return arrayListOf(fromDate, toDate)
+        return listOf(fromDate, toDate)
     }
 }

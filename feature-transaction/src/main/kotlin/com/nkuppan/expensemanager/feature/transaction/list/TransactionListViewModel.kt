@@ -11,6 +11,7 @@ import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByIdUseCase
 import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByNameUseCase
+import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.feature.transaction.R
 import com.nkuppan.expensemanager.feature.transaction.history.TransactionUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,7 +66,8 @@ class TransactionListViewModel @Inject constructor(
                         },
                         it.category.name,
                         it.category.backgroundColor,
-                        it.account.type.getPaymentModeIcon()
+                        it.account.type.getPaymentModeIcon(),
+                        it.updatedOn.toTransactionDate(),
                     )
                 }
             )

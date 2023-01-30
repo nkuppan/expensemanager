@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -260,7 +259,7 @@ class TransactionCreateFragment : BaseBindingFragment<FragmentTransactionCreateB
         )
     }
 
-    private fun showDatePickerDialog(aView: ImageView) {
+    private fun showDatePickerDialog(aView: View) {
 
         aView.hideKeyboard()
 

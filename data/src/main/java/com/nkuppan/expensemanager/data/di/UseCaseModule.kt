@@ -3,8 +3,6 @@ package com.nkuppan.expensemanager.data.di
 import com.nkuppan.expensemanager.data.repository.*
 import com.nkuppan.expensemanager.data.usecase.account.*
 import com.nkuppan.expensemanager.data.usecase.category.*
-import com.nkuppan.expensemanager.data.usecase.settings.GetFilterRange
-import com.nkuppan.expensemanager.data.usecase.settings.GetFilterType
 import com.nkuppan.expensemanager.data.usecase.settings.GetReminderStatusUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.UpdateReminderStatusUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.account.GetSelectedAccountUseCase
@@ -12,6 +10,7 @@ import com.nkuppan.expensemanager.data.usecase.settings.account.UpdateSelectedAc
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetAllCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.currency.SaveCurrencyUseCase
+import com.nkuppan.expensemanager.data.usecase.settings.filter.*
 import com.nkuppan.expensemanager.data.usecase.settings.theme.ApplyThemeUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.theme.GetThemeUseCase
 import com.nkuppan.expensemanager.data.usecase.settings.theme.SaveThemeUseCase
@@ -47,8 +46,7 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideAddAccountUseCase(
-        repository: AccountRepository,
-        checkAccountValidationUseCase: CheckAccountValidationUseCase
+        repository: AccountRepository, checkAccountValidationUseCase: CheckAccountValidationUseCase
     ): AddAccountUseCase {
         return AddAccountUseCase(repository, checkAccountValidationUseCase)
     }
@@ -56,8 +54,7 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideUpdateAccountUseCase(
-        repository: AccountRepository,
-        checkAccountValidationUseCase: CheckAccountValidationUseCase
+        repository: AccountRepository, checkAccountValidationUseCase: CheckAccountValidationUseCase
     ): UpdateAccountUseCase {
         return UpdateAccountUseCase(repository, checkAccountValidationUseCase)
     }
@@ -65,8 +62,7 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideDeleteAccountUseCase(
-        repository: AccountRepository,
-        checkAccountValidationUseCase: CheckAccountValidationUseCase
+        repository: AccountRepository, checkAccountValidationUseCase: CheckAccountValidationUseCase
     ): DeleteAccountUseCase {
         return DeleteAccountUseCase(repository, checkAccountValidationUseCase)
     }
@@ -135,8 +131,7 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideGetTransactionWithFilterUseCase(
-        settingsRepository: SettingsRepository,
-        transactionRepository: TransactionRepository
+        settingsRepository: SettingsRepository, transactionRepository: TransactionRepository
     ): GetTransactionWithFilterUseCase {
         return GetTransactionWithFilterUseCase(settingsRepository, transactionRepository)
     }
@@ -236,32 +231,47 @@ object UseCaseModule {
     @Provides
     @Singleton
     fun provideGetPreviousDaysTransactionWithFilterUseCase(
-        transactionRepository: TransactionRepository,
-        settingsRepository: SettingsRepository
+        transactionRepository: TransactionRepository, settingsRepository: SettingsRepository
     ): GetPreviousDaysTransactionWithFilterUseCase {
         return GetPreviousDaysTransactionWithFilterUseCase(
-            transactionRepository,
-            settingsRepository
+            transactionRepository, settingsRepository
         )
     }
 
     @Provides
     @Singleton
-    fun provideGetFilterRange(settingsRepository: SettingsRepository): GetFilterRange {
-        return GetFilterRange(settingsRepository)
+    fun provideGetFilterRange(settingsRepository: SettingsRepository): GetFilterTypeTextUseCase {
+        return GetFilterTypeTextUseCase(settingsRepository)
     }
 
     @Provides
     @Singleton
-    fun provideGetFilterType(settingsRepository: SettingsRepository): GetFilterType {
-        return GetFilterType(settingsRepository)
+    fun provideGetFilterType(settingsRepository: SettingsRepository): GetFilterTypeUseCase {
+        return GetFilterTypeUseCase(settingsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSaveFilterTypeUseCase(settingsRepository: SettingsRepository): SaveFilterTypeUseCase {
+        return SaveFilterTypeUseCase(settingsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetFilterValueUseCase(settingsRepository: SettingsRepository): GetFilterRangeUseCase {
+        return GetFilterRangeUseCase(settingsRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetCustomFilterRangeUseCase(settingsRepository: SettingsRepository): SetCustomFilterRangeUseCase {
+        return SetCustomFilterRangeUseCase(settingsRepository)
     }
 
     @Provides
     @Singleton
     fun provideGetSelectedAccountUseCase(
-        settingsRepository: SettingsRepository,
-        accountRepository: AccountRepository
+        settingsRepository: SettingsRepository, accountRepository: AccountRepository
     ): GetSelectedAccountUseCase {
         return GetSelectedAccountUseCase(settingsRepository, accountRepository)
     }

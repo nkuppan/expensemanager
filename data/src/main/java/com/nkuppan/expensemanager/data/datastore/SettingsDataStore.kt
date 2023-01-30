@@ -26,6 +26,22 @@ class SettingsDataStore(
         FilterType.values()[preferences[KEY_FILTER_TYPE] ?: FilterType.THIS_MONTH.ordinal]
     }
 
+    suspend fun setCustomFilterStartDate(startDate: Long) = dataStore.edit { preferences ->
+        preferences[KEY_CUSTOM_FILTER_START_DATE_TYPE] = startDate
+    }
+
+    fun getCustomFilterStartDate(): Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[KEY_CUSTOM_FILTER_START_DATE_TYPE]
+    }
+
+    suspend fun setCustomFilterEndDate(startDate: Long) = dataStore.edit { preferences ->
+        preferences[KEY_CUSTOM_FILTER_END_DATE_TYPE] = startDate
+    }
+
+    fun getCustomFilterEndDate(): Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[KEY_CUSTOM_FILTER_END_DATE_TYPE]
+    }
+
     suspend fun setReminder(reminder: Boolean) = dataStore.edit { preferences ->
         preferences[KEY_REMINDER] = reminder
     }
@@ -35,6 +51,10 @@ class SettingsDataStore(
     }
 
     companion object {
+        private val KEY_CUSTOM_FILTER_START_DATE_TYPE =
+            longPreferencesKey("custom_filter_start_date")
+        private val KEY_CUSTOM_FILTER_END_DATE_TYPE = longPreferencesKey("custom_filter_end_date")
+
         private val KEY_FILTER_TYPE = intPreferencesKey("filter_type")
         private val KEY_SELECTED_ACCOUNT_ID = stringPreferencesKey("selected_account_id")
         private val KEY_REMINDER = booleanPreferencesKey("reminder")

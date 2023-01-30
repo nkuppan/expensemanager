@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_navigation_account_selection"
             app:destination="@id/navigation_account_selection" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_navigation_date_filter"
+            app:destination="@id/navigation_date_filter" />
     </fragment>
 
     <include app:graph="@navigation/navigation_account_list" />
@@ -61,5 +64,7 @@
     <include app:graph="@navigation/navigation_settings" />
 
     <include app:graph="@navigation/navigation_account_selection" />
+
+    <include app:graph="@navigation/navigation_date_filter" />
 
 </navigation>

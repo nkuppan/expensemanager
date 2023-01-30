@@ -47,4 +47,11 @@
     <string name="choose_email_app">Choose email app</string>
     <string name="app_feedback">App feedback</string>
     <string name="choose_web_browser">Choose web browser</string>
+    <string name="this_month">This month</string>
+    <string name="last_month">Last month</string>
+    <string name="set_custom_period">Set custom period</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End date</string>
+    <string name="set">Set</string>
+    <string name="date_filter">Filter By Date</string>
 </resources>

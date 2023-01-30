@@ -8,7 +8,7 @@ class HistoryListItem(
     val totalAmount: UiText = UiText.DynamicString(""),
     var transaction: List<TransactionUIModel> = emptyList(),
     var expanded: Boolean = false,
-    var type: ItemType = ItemType.PARENT
+    var type: ItemType = ItemType.PARENT,
 )
 
 data class TransactionUIModel(
@@ -17,5 +17,6 @@ data class TransactionUIModel(
     val notes: UiText = UiText.DynamicString(""),
     val categoryName: String,
     val categoryBackgroundColor: String,
-    @DrawableRes val accountIcon: Int
+    @DrawableRes val accountIcon: Int,
+    val date: String,
 )

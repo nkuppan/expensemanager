@@ -3,6 +3,7 @@ package com.nkuppan.expensemanager.data.repository
 import com.nkuppan.expensemanager.core.model.FilterType
 import com.nkuppan.expensemanager.core.model.Resource
 import kotlinx.coroutines.flow.Flow
+import java.util.*
 
 interface SettingsRepository {
 
@@ -17,6 +18,8 @@ interface SettingsRepository {
     suspend fun getFilterRange(filterType: FilterType): List<Long>
 
     suspend fun setFilterType(filterType: FilterType): Resource<Boolean>
+
+    suspend fun setCustomFilterRange(customFilterRange: List<Date>): Resource<Boolean>
 
     fun isReminderOn(): Flow<Boolean>
 

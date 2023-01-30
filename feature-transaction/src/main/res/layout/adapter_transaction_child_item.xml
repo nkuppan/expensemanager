@@ -60,13 +60,13 @@
             android:layout_marginEnd="@dimen/margin_16dp"
             android:ellipsize="end"
             android:maxLines="1"
+            android:text="@{transaction.date}"
             android:textSize="@dimen/transaction_notes_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/account_type_image"
             app:layout_constraintStart_toEndOf="@+id/category_background_color"
             app:layout_constraintTop_toBottomOf="@+id/category_name"
             app:layout_constraintVertical_chainStyle="packed"
-            app:setUiText="@{transaction.notes}"
             tools:text="Bought it from nike showroom. This is going to be crazy while wearing this shoe." />
 
         <TextView
