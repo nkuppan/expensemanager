@@ -52,7 +52,7 @@ android {
     experimentalProperties["android.experimental.self-instrumenting"] = true
 
     defaultConfig {
-        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "LOW-BATTERY"
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "DEBUGGABLE"
     }
 }
 
@@ -65,7 +65,9 @@ dependencies {
 }
 
 androidComponents {
+/*
     beforeVariants {
         it.enable = it.buildType == "macrobenchmark"
     }
+*/
 }

@@ -9,7 +9,7 @@ object Versions {
     const val versionCode = 1
     const val versionName = "1.0.0"
 
-    const val androidGradlePlugin = "7.3.1"
+    const val androidGradlePlugin = "7.4.1"
     const val ktlint = "0.42.1"
     const val glide = "4.12.0"
     const val playCoreUpdate = "2.0.0"

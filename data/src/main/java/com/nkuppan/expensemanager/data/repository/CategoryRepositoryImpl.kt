@@ -4,23 +4,29 @@ import com.nkuppan.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.core.model.Category
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.data.db.dao.CategoryDao
-import com.nkuppan.expensemanager.data.mappers.CategoryDomainEntityMapper
-import com.nkuppan.expensemanager.data.mappers.CategoryEntityDomainMapper
+import com.nkuppan.expensemanager.data.mappers.toDomainModel
+import com.nkuppan.expensemanager.data.mappers.toEntityModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class CategoryRepositoryImpl(
     private val categoryDao: CategoryDao,
-    private val categoryDomainEntityMapper: CategoryDomainEntityMapper,
-    private val categoryEntityDomainMapper: CategoryEntityDomainMapper,
     private val dispatchers: AppCoroutineDispatchers
 ) : CategoryRepository {
+
+    override fun getCategories(): Flow<List<Category>> {
+        return categoryDao.getCategories().map { categories ->
+            return@map categories?.map { it.toDomainModel() } ?: emptyList()
+        }
+    }
 
     override suspend fun getAllCategory(): Resource<List<Category>> = withContext(dispatchers.io) {
         return@withContext try {
             val category = categoryDao.getAllValues()
 
             if (category != null) {
-                Resource.Success(category.map { categoryEntityDomainMapper.convert(it) })
+                Resource.Success(category.map { it.toDomainModel() })
             } else {
                 Resource.Error(KotlinNullPointerException())
             }
@@ -35,7 +41,7 @@ class CategoryRepositoryImpl(
                 val category = categoryDao.findById(categoryId)
 
                 if (category != null) {
-                    Resource.Success(categoryEntityDomainMapper.convert(category))
+                    Resource.Success(category.toDomainModel())
                 } else {
                     Resource.Error(KotlinNullPointerException())
                 }
@@ -47,17 +53,17 @@ class CategoryRepositoryImpl(
     override suspend fun addCategory(category: Category): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                val response = categoryDao.insert(categoryDomainEntityMapper.convert(category))
+                val response = categoryDao.insert(category.toEntityModel())
                 Resource.Success(response != -1L)
             } catch (exception: Exception) {
                 Resource.Error(exception)
             }
         }
 
-    override suspend fun updateCategory(category: Category): Resource<Boolean>  =
+    override suspend fun updateCategory(category: Category): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                categoryDao.update(categoryDomainEntityMapper.convert(category))
+                categoryDao.update(category.toEntityModel())
                 Resource.Success(true)
             } catch (exception: Exception) {
                 Resource.Error(exception)
@@ -67,7 +73,7 @@ class CategoryRepositoryImpl(
     override suspend fun deleteCategory(category: Category): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                val response = categoryDao.delete(categoryDomainEntityMapper.convert(category))
+                val response = categoryDao.delete(category.toEntityModel())
                 Resource.Success(response != -1)
             } catch (exception: Exception) {
                 Resource.Error(exception)

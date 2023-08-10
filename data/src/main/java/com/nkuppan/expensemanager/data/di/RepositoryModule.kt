@@ -33,8 +33,6 @@ object RepositoryModule {
     ): CategoryRepository {
         return CategoryRepositoryImpl(
             categoryDao,
-            CategoryDomainEntityMapper(),
-            CategoryEntityDomainMapper(),
             appCoroutineDispatchers
         )
     }
@@ -47,8 +45,6 @@ object RepositoryModule {
     ): AccountRepository {
         return AccountRepositoryImpl(
             accountDao,
-            AccountDomainEntityMapper(),
-            AccountEntityDomainMapper(),
             appCoroutineDispatchers
         )
     }
@@ -61,10 +57,6 @@ object RepositoryModule {
     ): TransactionRepository {
         return TransactionRepositoryImpl(
             transactionDao,
-            TransactionDomainEntityMapper(),
-            TransactionEntityDomainMapper(),
-            CategoryEntityDomainMapper(),
-            AccountEntityDomainMapper(),
             appCoroutineDispatchers
         )
     }

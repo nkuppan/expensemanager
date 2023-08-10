@@ -6,20 +6,14 @@ import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao
 import com.nkuppan.expensemanager.data.db.entity.TransactionRelation
-import com.nkuppan.expensemanager.data.mappers.AccountEntityDomainMapper
-import com.nkuppan.expensemanager.data.mappers.CategoryEntityDomainMapper
-import com.nkuppan.expensemanager.data.mappers.TransactionDomainEntityMapper
-import com.nkuppan.expensemanager.data.mappers.TransactionEntityDomainMapper
+import com.nkuppan.expensemanager.data.mappers.toDomainModel
+import com.nkuppan.expensemanager.data.mappers.toEntityModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class TransactionRepositoryImpl(
     private val transactionDao: TransactionDao,
-    private val transactionDomainEntityMapper: TransactionDomainEntityMapper,
-    private val transactionEntityDomainMapper: TransactionEntityDomainMapper,
-    private val categoryEntityDomainMapper: CategoryEntityDomainMapper,
-    private val accountEntityDomainMapper: AccountEntityDomainMapper,
     private val dispatchers: AppCoroutineDispatchers
 ) : TransactionRepository {
 
@@ -34,7 +28,7 @@ class TransactionRepositoryImpl(
                 val transaction = transactionDao.findById(transactionId)
 
                 if (transaction != null) {
-                    Resource.Success(transactionEntityDomainMapper.convert(transaction))
+                    Resource.Success(transaction.toDomainModel())
                 } else {
                     Resource.Error(KotlinNullPointerException())
                 }
@@ -47,7 +41,7 @@ class TransactionRepositoryImpl(
         withContext(dispatchers.io) {
             return@withContext try {
                 val response =
-                    transactionDao.insert(transactionDomainEntityMapper.convert(transaction))
+                    transactionDao.insert(transaction.toEntityModel())
                 Resource.Success(response != -1L)
             } catch (exception: Exception) {
                 Resource.Error(exception)
@@ -58,7 +52,7 @@ class TransactionRepositoryImpl(
         withContext(dispatchers.io) {
             return@withContext try {
                 val response =
-                    transactionDao.delete(transactionDomainEntityMapper.convert(transaction))
+                    transactionDao.delete(transaction.toEntityModel())
                 Resource.Success(response != -1)
             } catch (exception: Exception) {
                 Resource.Error(exception)
@@ -68,7 +62,7 @@ class TransactionRepositoryImpl(
 
     override fun getTransactionsByAccountId(accountId: String): Flow<List<Transaction>?> =
         transactionDao.getTransactionsByAccountId(accountId).map { transaction ->
-            transaction?.map { transactionEntityDomainMapper.convert(it) }
+            transaction?.map { it.toDomainModel() }
         }
 
     override fun getTransactionByAccountIdAndDateFilter(
@@ -98,9 +92,9 @@ class TransactionRepositoryImpl(
         if (transactionWithCategory?.isNotEmpty() == true) {
 
             transactionWithCategory.forEach {
-                val transaction = transactionEntityDomainMapper.convert(it.transactionEntity)
-                transaction.category = categoryEntityDomainMapper.convert(it.categoryEntity)
-                transaction.account = accountEntityDomainMapper.convert(it.accountEntity)
+                val transaction = it.transactionEntity.toDomainModel()
+                transaction.category = it.categoryEntity.toDomainModel()
+                transaction.account = it.accountEntity.toDomainModel()
                 outputTransactions.add(transaction)
             }
         }

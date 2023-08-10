@@ -3,10 +3,14 @@ package com.nkuppan.expensemanager.data.db.dao
 import androidx.room.Dao
 import androidx.room.Query
 import com.nkuppan.expensemanager.data.db.entity.CategoryEntity
+import kotlinx.coroutines.flow.Flow
 
 
 @Dao
 interface CategoryDao : BaseDao<CategoryEntity> {
+
+    @Query("SELECT * FROM category ORDER BY is_favorite DESC")
+    fun getCategories(): Flow<List<CategoryEntity>?>
 
     @Query("SELECT * FROM category ORDER BY is_favorite DESC")
     fun getAllValues(): List<CategoryEntity>?

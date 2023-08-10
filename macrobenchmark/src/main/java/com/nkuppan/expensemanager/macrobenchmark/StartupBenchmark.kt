@@ -26,7 +26,7 @@ class StartupBenchmark {
         packageName = TARGET_PACKAGE,
         metrics = listOf(StartupTimingMetric()),
         iterations = 5,
-        compilationMode = CompilationMode.Full(),
+        compilationMode = compilationMode,
         setupBlock = {
             // Press home button before each run to ensure the starting activity isn't visible.
             pressHome()

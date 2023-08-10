@@ -3,32 +3,28 @@ package com.nkuppan.expensemanager.data.mappers
 import com.nkuppan.expensemanager.core.model.Transaction
 import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
 
-class TransactionDomainEntityMapper : Mapper<Transaction, TransactionEntity> {
-    override fun convert(fromObject: Transaction): TransactionEntity {
-        return TransactionEntity(
-            id = fromObject.id,
-            notes = fromObject.notes,
-            categoryId = fromObject.categoryId,
-            accountId = fromObject.accountId,
-            amount = fromObject.amount,
-            imagePath = fromObject.imagePath,
-            createdOn = fromObject.createdOn,
-            updatedOn = fromObject.updatedOn,
-        )
-    }
+fun Transaction.toEntityModel(): TransactionEntity {
+    return TransactionEntity(
+        id = id,
+        notes = notes,
+        categoryId = categoryId,
+        accountId = accountId,
+        amount = amount,
+        imagePath = imagePath,
+        createdOn = createdOn,
+        updatedOn = updatedOn,
+    )
 }
 
-class TransactionEntityDomainMapper : Mapper<TransactionEntity, Transaction> {
-    override fun convert(fromObject: TransactionEntity): Transaction {
-        return Transaction(
-            id = fromObject.id,
-            notes = fromObject.notes,
-            categoryId = fromObject.categoryId,
-            accountId = fromObject.accountId,
-            amount = fromObject.amount,
-            imagePath = fromObject.imagePath,
-            createdOn = fromObject.createdOn,
-            updatedOn = fromObject.updatedOn
-        )
-    }
+fun TransactionEntity.toDomainModel(): Transaction {
+    return Transaction(
+        id = id,
+        notes = notes,
+        categoryId = categoryId,
+        accountId = accountId,
+        amount = amount,
+        imagePath = imagePath,
+        createdOn = createdOn,
+        updatedOn = updatedOn
+    )
 }

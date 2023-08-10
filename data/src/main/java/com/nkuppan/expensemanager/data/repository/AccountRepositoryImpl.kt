@@ -4,14 +4,12 @@ import com.nkuppan.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.core.model.Account
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.data.db.dao.AccountDao
-import com.nkuppan.expensemanager.data.mappers.AccountDomainEntityMapper
-import com.nkuppan.expensemanager.data.mappers.AccountEntityDomainMapper
+import com.nkuppan.expensemanager.data.mappers.toDomainModel
+import com.nkuppan.expensemanager.data.mappers.toEntityModel
 import kotlinx.coroutines.withContext
 
 class AccountRepositoryImpl(
     private val accountDao: AccountDao,
-    private val accountDomainEntityMapper: AccountDomainEntityMapper,
-    private val accountEntityDomainMapper: AccountEntityDomainMapper,
     private val dispatchers: AppCoroutineDispatchers
 ) : AccountRepository {
 
@@ -20,7 +18,7 @@ class AccountRepositoryImpl(
             val account = accountDao.getAllValues()
 
             if (account != null) {
-                Resource.Success(account.map { accountEntityDomainMapper.convert(it) })
+                Resource.Success(account.map { it.toDomainModel() })
             } else {
                 Resource.Error(KotlinNullPointerException())
             }
@@ -35,7 +33,7 @@ class AccountRepositoryImpl(
                 val account = accountDao.findById(accountId)
 
                 if (account != null) {
-                    Resource.Success(accountEntityDomainMapper.convert(account))
+                    Resource.Success(account.toDomainModel())
                 } else {
                     Resource.Error(KotlinNullPointerException())
                 }
@@ -47,7 +45,7 @@ class AccountRepositoryImpl(
     override suspend fun addAccount(account: Account): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                val response = accountDao.insert(accountDomainEntityMapper.convert(account))
+                val response = accountDao.insert(account.toEntityModel())
                 Resource.Success(response != -1L)
             } catch (exception: Exception) {
                 Resource.Error(exception)
@@ -57,7 +55,7 @@ class AccountRepositoryImpl(
     override suspend fun updateAccount(account: Account): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                accountDao.update(accountDomainEntityMapper.convert(account))
+                accountDao.update(account.toEntityModel())
                 Resource.Success(true)
             } catch (exception: Exception) {
                 Resource.Error(exception)
@@ -67,7 +65,7 @@ class AccountRepositoryImpl(
     override suspend fun deleteAccount(account: Account): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                val response = accountDao.delete(accountDomainEntityMapper.convert(account))
+                val response = accountDao.delete(account.toEntityModel())
                 Resource.Success(response != -1)
             } catch (exception: Exception) {
                 Resource.Error(exception)

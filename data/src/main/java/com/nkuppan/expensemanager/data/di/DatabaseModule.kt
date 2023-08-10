@@ -12,8 +12,7 @@ import com.nkuppan.expensemanager.data.db.ExpenseManagerDatabase
 import com.nkuppan.expensemanager.data.db.dao.AccountDao
 import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao
-import com.nkuppan.expensemanager.data.mappers.AccountDomainEntityMapper
-import com.nkuppan.expensemanager.data.mappers.CategoryDomainEntityMapper
+import com.nkuppan.expensemanager.data.mappers.toEntityModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,9 +37,8 @@ object DatabaseModule {
             val categoryCount = database.categoryDao().getCount()
 
             if (categoryCount == 0L) {
-                val mapper = CategoryDomainEntityMapper()
                 BASE_CATEGORY_LIST.forEach { value ->
-                    val categoryEntity = mapper.convert(value)
+                    val categoryEntity = value.toEntityModel()
                     database.categoryDao().insert(categoryEntity)
                 }
             }
@@ -48,9 +46,8 @@ object DatabaseModule {
             val accountCount = database.accountDao().getCount()
 
             if (accountCount == 0L) {
-                val mapper = AccountDomainEntityMapper()
                 BASE_ACCOUNT_LIST.forEach { value ->
-                    val accountEntity = mapper.convert(value)
+                    val accountEntity = value.toEntityModel()
                     database.accountDao().insert(accountEntity)
                 }
             }

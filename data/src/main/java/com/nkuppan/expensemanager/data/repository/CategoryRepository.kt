@@ -2,11 +2,14 @@ package com.nkuppan.expensemanager.data.repository
 
 import com.nkuppan.expensemanager.core.model.Category
 import com.nkuppan.expensemanager.core.model.Resource
+import kotlinx.coroutines.flow.Flow
 
 /**
  * Category related api for database operations
  */
 interface CategoryRepository {
+
+    fun getCategories(): Flow<List<Category>>
 
     suspend fun getAllCategory(): Resource<List<Category>>
 

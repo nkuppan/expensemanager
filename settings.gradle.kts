@@ -8,7 +8,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Expense Manager"
+rootProject.name = "expensemanager"
 
 include(":app")
 include(":data")
