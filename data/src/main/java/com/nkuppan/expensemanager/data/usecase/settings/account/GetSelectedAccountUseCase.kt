@@ -6,8 +6,9 @@ import com.nkuppan.expensemanager.data.repository.AccountRepository
 import com.nkuppan.expensemanager.data.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetSelectedAccountUseCase(
+class GetSelectedAccountUseCase @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val accountRepository: AccountRepository
 ) {

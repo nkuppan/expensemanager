@@ -3,8 +3,9 @@ package com.nkuppan.expensemanager.data.usecase.category
 import com.nkuppan.expensemanager.core.model.Category
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.data.repository.CategoryRepository
+import javax.inject.Inject
 
-class UpdateCategoryUseCase(
+class UpdateCategoryUseCase @Inject constructor(
     private val repository: CategoryRepository,
     private val checkCategoryValidationUseCase: CheckCategoryValidationUseCase
 ) {
@@ -14,6 +15,7 @@ class UpdateCategoryUseCase(
             is Resource.Error -> {
                 validationResult
             }
+
             is Resource.Success -> {
                 repository.updateCategory(category)
             }

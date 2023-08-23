@@ -9,8 +9,9 @@ import com.nkuppan.expensemanager.data.mappers.toEntityModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CategoryRepositoryImpl(
+class CategoryRepositoryImpl @Inject constructor(
     private val categoryDao: CategoryDao,
     private val dispatchers: AppCoroutineDispatchers
 ) : CategoryRepository {

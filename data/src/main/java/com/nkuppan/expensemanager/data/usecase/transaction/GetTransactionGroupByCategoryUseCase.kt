@@ -4,8 +4,9 @@ import com.nkuppan.expensemanager.core.model.Category
 import com.nkuppan.expensemanager.core.model.Transaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class GetTransactionGroupByCategoryUseCase(
+class GetTransactionGroupByCategoryUseCase @Inject constructor(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase
 ) {
     fun invoke(): Flow<Map<Category, List<Transaction>>> {

@@ -3,8 +3,11 @@ package com.nkuppan.expensemanager.data.usecase.transaction
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
 import com.nkuppan.expensemanager.data.repository.TransactionRepository
+import javax.inject.Inject
 
-class DeleteTransactionUseCase(private val repository: TransactionRepository) {
+class DeleteTransactionUseCase @Inject constructor(
+    private val repository: TransactionRepository
+) {
 
     suspend operator fun invoke(transaction: Transaction): Resource<Boolean> {
 

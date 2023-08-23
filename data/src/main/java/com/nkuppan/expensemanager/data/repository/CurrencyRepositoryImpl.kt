@@ -7,8 +7,9 @@ import com.nkuppan.expensemanager.data.datastore.CurrencyDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class CurrencyRepositoryImpl(
+class CurrencyRepositoryImpl @Inject constructor(
     private val dataStore: CurrencyDataStore,
     private val dispatchers: AppCoroutineDispatchers
 ) : CurrencyRepository {

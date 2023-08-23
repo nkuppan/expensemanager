@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class GetPreviousDaysTransactionWithFilterUseCase(
+class GetPreviousDaysTransactionWithFilterUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository,
     private val settingsRepository: SettingsRepository
 ) {

@@ -7,8 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.text.SimpleDateFormat
 import java.util.*
+import javax.inject.Inject
 
-class GetTransactionGroupByMonthUseCase(
+class GetTransactionGroupByMonthUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository
 ) {
     fun invoke(): Flow<List<TransactionHistory>> {

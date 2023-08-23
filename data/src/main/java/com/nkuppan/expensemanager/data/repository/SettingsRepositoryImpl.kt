@@ -7,13 +7,16 @@ import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.data.R
 import com.nkuppan.expensemanager.data.datastore.SettingsDataStore
 import com.nkuppan.expensemanager.data.utils.getDateTime
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import javax.inject.Inject
 
-class SettingsRepositoryImpl(
-    private val applicationContext: Context,
+class SettingsRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val dataStore: SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers
 ) : SettingsRepository {
@@ -34,13 +37,13 @@ class SettingsRepositoryImpl(
 
     override suspend fun getFilterRangeValue(filterType: FilterType): String {
         return when (filterType) {
-            FilterType.THIS_MONTH -> applicationContext.getString(R.string.this_month)
-            FilterType.LAST_MONTH -> applicationContext.getString(R.string.previous_month)
-            FilterType.LAST_THREE_MONTH -> applicationContext.getString(R.string.last_three_month)
-            FilterType.LAST_SIX_MONTH -> applicationContext.getString(R.string.last_six_month)
-            FilterType.LAST_YEAR -> applicationContext.getString(R.string.last_year)
-            FilterType.ALL -> applicationContext.getString(R.string.all)
-            FilterType.CUSTOM -> applicationContext.getString(R.string.custom)
+            FilterType.THIS_MONTH -> context.getString(R.string.this_month)
+            FilterType.LAST_MONTH -> context.getString(R.string.previous_month)
+            FilterType.LAST_THREE_MONTH -> context.getString(R.string.last_three_month)
+            FilterType.LAST_SIX_MONTH -> context.getString(R.string.last_six_month)
+            FilterType.LAST_YEAR -> context.getString(R.string.last_year)
+            FilterType.ALL -> context.getString(R.string.all)
+            FilterType.CUSTOM -> context.getString(R.string.custom)
         }
     }
 

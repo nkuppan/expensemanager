@@ -7,8 +7,9 @@ import com.nkuppan.expensemanager.data.db.dao.AccountDao
 import com.nkuppan.expensemanager.data.mappers.toDomainModel
 import com.nkuppan.expensemanager.data.mappers.toEntityModel
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class AccountRepositoryImpl(
+class AccountRepositoryImpl  @Inject constructor(
     private val accountDao: AccountDao,
     private val dispatchers: AppCoroutineDispatchers
 ) : AccountRepository {

@@ -1,8 +1,9 @@
 package com.nkuppan.expensemanager.data.usecase.settings
 
 import com.nkuppan.expensemanager.data.repository.SettingsRepository
+import javax.inject.Inject
 
-class UpdateReminderStatusUseCase(private val repository: SettingsRepository) {
+class UpdateReminderStatusUseCase @Inject constructor(private val repository: SettingsRepository) {
 
     suspend operator fun invoke(reminderStatus: Boolean) {
         repository.setReminderOn(reminderStatus)

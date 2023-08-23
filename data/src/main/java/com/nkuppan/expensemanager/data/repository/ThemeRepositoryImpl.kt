@@ -10,8 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class ThemeRepositoryImpl(
+class ThemeRepositoryImpl @Inject constructor(
     private val dataStore: ThemeDataStore,
     private val dispatchers: AppCoroutineDispatchers
 ) : ThemeRepository {

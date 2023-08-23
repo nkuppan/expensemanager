@@ -6,8 +6,9 @@ import com.nkuppan.expensemanager.data.repository.SettingsRepository
 import com.nkuppan.expensemanager.data.repository.TransactionRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class GetTransactionWithFilterUseCase(
+class GetTransactionWithFilterUseCase @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val transactionRepository: TransactionRepository
 ) {

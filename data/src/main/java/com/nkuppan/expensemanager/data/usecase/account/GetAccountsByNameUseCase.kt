@@ -3,8 +3,11 @@ package com.nkuppan.expensemanager.data.usecase.account
 import com.nkuppan.expensemanager.core.model.Account
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.data.repository.AccountRepository
+import javax.inject.Inject
 
-class GetAccountsByNameUseCase(private val repository: AccountRepository) {
+class GetAccountsByNameUseCase @Inject constructor(
+    private val repository: AccountRepository
+) {
 
     suspend operator fun invoke(accountName: String?): Resource<List<Account>> {
         return when (val response = repository.getAllAccount()) {

@@ -11,8 +11,9 @@ import com.nkuppan.expensemanager.data.mappers.toEntityModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class TransactionRepositoryImpl(
+class TransactionRepositoryImpl @Inject constructor(
     private val transactionDao: TransactionDao,
     private val dispatchers: AppCoroutineDispatchers
 ) : TransactionRepository {

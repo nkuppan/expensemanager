@@ -1,91 +1,47 @@
 package com.nkuppan.expensemanager.data.di
 
-import android.content.Context
-import com.nkuppan.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.nkuppan.expensemanager.data.datastore.CurrencyDataStore
-import com.nkuppan.expensemanager.data.datastore.SettingsDataStore
-import com.nkuppan.expensemanager.data.datastore.ThemeDataStore
-import com.nkuppan.expensemanager.data.db.dao.AccountDao
-import com.nkuppan.expensemanager.data.db.dao.CategoryDao
-import com.nkuppan.expensemanager.data.db.dao.TransactionDao
 import com.nkuppan.expensemanager.data.mappers.*
 import com.nkuppan.expensemanager.data.repository.*
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
 /**
  * Dependence injection repository module. This will create repository and use cases related object
  * and it's relations.
  */
-@InstallIn(SingletonComponent::class)
 @Module
-object RepositoryModule {
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModule {
 
-    @Provides
-    @Singleton
-    fun provideCategoryRepository(
-        categoryDao: CategoryDao,
-        appCoroutineDispatchers: AppCoroutineDispatchers
-    ): CategoryRepository {
-        return CategoryRepositoryImpl(
-            categoryDao,
-            appCoroutineDispatchers
-        )
-    }
+    @Binds
+    abstract fun provideCategoryRepository(
+        categoryRepositoryImpl: CategoryRepositoryImpl,
+    ): CategoryRepository
 
-    @Provides
-    @Singleton
-    fun provideAccountRepository(
-        accountDao: AccountDao,
-        appCoroutineDispatchers: AppCoroutineDispatchers
-    ): AccountRepository {
-        return AccountRepositoryImpl(
-            accountDao,
-            appCoroutineDispatchers
-        )
-    }
+    @Binds
+    abstract fun provideAccountRepository(
+        accountRepositoryImpl: AccountRepositoryImpl,
+    ): AccountRepository
 
-    @Provides
-    @Singleton
-    fun provideTransactionRepository(
-        transactionDao: TransactionDao,
-        appCoroutineDispatchers: AppCoroutineDispatchers
-    ): TransactionRepository {
-        return TransactionRepositoryImpl(
-            transactionDao,
-            appCoroutineDispatchers
-        )
-    }
+    @Binds
+    abstract fun provideTransactionRepository(
+        transactionRepositoryImpl: TransactionRepositoryImpl,
+    ): TransactionRepository
 
-    @Provides
-    @Singleton
-    fun provideThemeRepository(
-        dataStore: ThemeDataStore,
-        dispatchers: AppCoroutineDispatchers
-    ): ThemeRepository {
-        return ThemeRepositoryImpl(dataStore, dispatchers)
-    }
+    @Binds
+    abstract fun provideThemeRepository(
+        themeRepositoryImpl: ThemeRepositoryImpl,
+    ): ThemeRepository
 
-    @Provides
-    @Singleton
-    fun provideCurrencyRepository(
-        dataStore: CurrencyDataStore,
-        dispatchers: AppCoroutineDispatchers
-    ): CurrencyRepository {
-        return CurrencyRepositoryImpl(dataStore, dispatchers)
-    }
+    @Binds
+    abstract fun provideCurrencyRepository(
+        currencyRepositoryImpl: CurrencyRepositoryImpl,
+    ): CurrencyRepository
 
-    @Provides
-    @Singleton
-    fun provideSettingsRepository(
-        @ApplicationContext context: Context,
-        dataStore: SettingsDataStore,
-        dispatchers: AppCoroutineDispatchers
-    ): SettingsRepository {
-        return SettingsRepositoryImpl(context, dataStore, dispatchers)
-    }
+    @Binds
+    abstract fun provideSettingsRepository(
+        settingsRepositoryImpl: SettingsRepositoryImpl,
+    ): SettingsRepository
 }
