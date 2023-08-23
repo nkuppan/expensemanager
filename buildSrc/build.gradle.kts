@@ -22,13 +22,15 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("AndroidModuleJacocoConventionPlugin") {
-            id = "com.nkuppan.expensemanager.library.jacoco"
-            implementationClass = "com.nkuppan.expensemanager.buildsrc.plugins.AndroidModuleJacocoConventionPlugin"
+        create("KotlinBasicConfigPlugin") {
+            id = "nkuppan.plugin.kotlin.basic"
+            implementationClass =
+                "com.nkuppan.expensemanager.buildsrc.plugins.KotlinBasicConfigPlugin"
         }
-        create("AndroidAppJacocoConventionPlugin") {
-            id = "com.nkuppan.expensemanager.app.jacoco"
-            implementationClass = "com.nkuppan.expensemanager.buildsrc.plugins.AndroidAppJacocoConventionPlugin"
+        create("AndroidLibraryBasicConfigPlugin") {
+            id = "nkuppan.plugin.android.library"
+            implementationClass =
+                "com.nkuppan.expensemanager.buildsrc.plugins.AndroidLibraryBasicConfigPlugin"
         }
     }
 }

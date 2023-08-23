@@ -60,6 +60,7 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
                     )
                     false
                 }
+
                 R.id.action_transaction -> {
                     findNavController().navigate(
                         R.id.action_dashboardFragment_to_navigation_transaction_list,
@@ -70,12 +71,14 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
                     )
                     false
                 }
+
                 R.id.action_history -> {
                     findNavController().navigate(
                         R.id.action_dashboardFragment_to_navigation_transaction_history_list
                     )
                     false
                 }
+
                 else -> false
             }
         }
@@ -100,6 +103,7 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
                     findNavController().navigate(R.id.action_dashboardFragment_to_navigation_settings)
                     true
                 }
+
                 else -> {
                     false
                 }

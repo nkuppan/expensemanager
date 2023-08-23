@@ -20,6 +20,7 @@ class GetSelectedAccountUseCase @Inject constructor(
                     is Resource.Error -> {
                         null
                     }
+
                     is Resource.Success -> {
                         response.data
                     }

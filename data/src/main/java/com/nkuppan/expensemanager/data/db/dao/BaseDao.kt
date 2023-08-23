@@ -3,7 +3,6 @@ package com.nkuppan.expensemanager.data.db.dao
 import androidx.room.*
 
 
-
 @Dao
 interface BaseDao<T> {
 

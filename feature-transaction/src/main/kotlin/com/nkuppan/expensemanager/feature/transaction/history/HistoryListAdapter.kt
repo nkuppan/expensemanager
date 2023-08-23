@@ -26,6 +26,7 @@ class HistoryListAdapter(
 
                 return TransactionHeaderViewHolder(dataBinding)
             }
+
             ItemType.CHILD -> {
                 val dataBinding = AdapterTransactionChildItemBinding.inflate(
                     LayoutInflater.from(parent.context),
@@ -69,6 +70,7 @@ class HistoryListAdapter(
                     expandOrCollapseParentItem(item, position)
                 }
             }
+
             is TransactionChildViewHolder -> {
 
                 val transaction = item.transaction

@@ -3,12 +3,10 @@ import com.nkuppan.expensemanager.buildsrc.Versions
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    kotlin("kapt")
     id("androidx.navigation.safeargs")
     id("dagger.hilt.android.plugin")
-    id("com.nkuppan.expensemanager.app.jacoco")
     id("com.google.android.gms.oss-licenses-plugin")
+    id("nkuppan.plugin.kotlin.basic")
 }
 
 android {
@@ -54,9 +52,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         viewBinding = true

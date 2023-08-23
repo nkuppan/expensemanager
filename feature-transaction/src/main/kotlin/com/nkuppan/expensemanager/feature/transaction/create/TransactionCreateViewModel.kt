@@ -99,6 +99,7 @@ class TransactionCreateViewModel @Inject constructor(
                 is Resource.Error -> {
                     emptyList()
                 }
+
                 is Resource.Success -> {
                     response.data
                 }
@@ -131,6 +132,7 @@ class TransactionCreateViewModel @Inject constructor(
                 is Resource.Error -> {
                     emptyList()
                 }
+
                 is Resource.Success -> {
                     response.data
                 }
@@ -201,6 +203,7 @@ class TransactionCreateViewModel @Inject constructor(
                 is Resource.Error -> {
                     _snackbarMessage.send(UiText.StringResource(R.string.unable_to_add_transaction))
                 }
+
                 is Resource.Success -> {
                     _transactionCreated.send(Unit)
                 }

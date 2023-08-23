@@ -11,4 +11,4 @@ data class Category(
     val backgroundColor: String,
     val createdOn: Date,
     val updatedOn: Date
-): Serializable
+) : Serializable

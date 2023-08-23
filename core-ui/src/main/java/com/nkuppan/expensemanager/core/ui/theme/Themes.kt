@@ -78,9 +78,11 @@ fun ExpenseManagerTheme(
         dynamicColor && isDarkTheme -> {
             dynamicDarkColorScheme(LocalContext.current)
         }
+
         dynamicColor && !isDarkTheme -> {
             dynamicLightColorScheme(LocalContext.current)
         }
+
         isDarkTheme -> ExpenseManagerDarkColorScheme
         else -> ExpenseManagerLightColorScheme
     }

@@ -15,6 +15,7 @@ class AddCategoryUseCase @Inject constructor(
             is Resource.Error -> {
                 validationResult
             }
+
             is Resource.Success -> {
                 repository.addCategory(category)
             }

@@ -66,26 +66,32 @@ class DateSelectionFragment : BaseBottomSheetBindingFragment<FragmentDateFilterB
                         disableCustomFilterIfShown()
                         viewModel.saveFilterType(FilterType.THIS_MONTH)
                     }
+
                     R.id.last_month -> {
                         disableCustomFilterIfShown()
                         viewModel.saveFilterType(FilterType.LAST_MONTH)
                     }
+
                     R.id.last_three_month -> {
                         disableCustomFilterIfShown()
                         viewModel.saveFilterType(FilterType.LAST_THREE_MONTH)
                     }
+
                     R.id.last_six_month -> {
                         disableCustomFilterIfShown()
                         viewModel.saveFilterType(FilterType.LAST_SIX_MONTH)
                     }
+
                     R.id.last_year -> {
                         disableCustomFilterIfShown()
                         viewModel.saveFilterType(FilterType.LAST_YEAR)
                     }
+
                     R.id.all -> {
                         disableCustomFilterIfShown()
                         viewModel.saveFilterType(FilterType.ALL)
                     }
+
                     R.id.custom -> {
                         binding.customFilterContainer.isVisible = true
                     }
@@ -140,21 +146,27 @@ class DateSelectionFragment : BaseBottomSheetBindingFragment<FragmentDateFilterB
             FilterType.THIS_MONTH -> {
                 binding.thisMonth.isChecked = true
             }
+
             FilterType.LAST_MONTH -> {
                 binding.lastMonth.isChecked = true
             }
+
             FilterType.LAST_THREE_MONTH -> {
                 binding.lastThreeMonth.isChecked = true
             }
+
             FilterType.LAST_SIX_MONTH -> {
                 binding.lastSixMonth.isChecked = true
             }
+
             FilterType.LAST_YEAR -> {
                 binding.lastYear.isChecked = true
             }
+
             FilterType.ALL -> {
                 binding.all.isChecked = true
             }
+
             FilterType.CUSTOM -> {
                 binding.custom.isChecked = true
             }

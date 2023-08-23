@@ -2,27 +2,15 @@ import com.nkuppan.expensemanager.buildsrc.Libs
 import com.nkuppan.expensemanager.buildsrc.Versions
 
 plugins {
-    id("com.android.library")
+    id("nkuppan.plugin.android.library")
+    id("nkuppan.plugin.kotlin.basic")
     id("androidx.benchmark")
-    id("org.jetbrains.kotlin.android")
 }
 
 android {
-    compileSdk = Versions.compileSdk
 
     defaultConfig {
         minSdk = Versions.macroBenchmarkMinSdk
-        targetSdk = Versions.targetSdk
-        testInstrumentationRunner = "androidx.benchmark.junit4.AndroidBenchmarkRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     testBuildType = "release"
@@ -48,7 +36,7 @@ dependencies {
     androidTestImplementation(project(":data"))
     androidTestImplementation(project(":core-model"))
 
-    implementation("androidx.room:room-ktx:2.4.3")
+    implementation("androidx.room:room-ktx:2.5.2")
 
     androidTestImplementation(Libs.AndroidX.Test.JUnit.core)
     androidTestImplementation(Libs.AndroidX.Test.JUnit.ktx)

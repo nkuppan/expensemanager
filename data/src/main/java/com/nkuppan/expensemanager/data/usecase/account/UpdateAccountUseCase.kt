@@ -15,6 +15,7 @@ class UpdateAccountUseCase @Inject constructor(
             is Resource.Error -> {
                 validationResult
             }
+
             is Resource.Success -> {
                 repository.updateAccount(account)
             }

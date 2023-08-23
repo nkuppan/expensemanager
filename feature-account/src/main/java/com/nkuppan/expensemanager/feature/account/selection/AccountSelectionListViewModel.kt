@@ -44,6 +44,7 @@ class AccountSelectionListViewModel @Inject constructor(
                 is Resource.Error -> {
                     _accounts.value = (emptyList())
                 }
+
                 is Resource.Success -> {
                     val accounts = response.data.map {
                         AccountSelectionUIState(

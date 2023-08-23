@@ -12,7 +12,7 @@
         <!-- To tint the buttons -->
         <item name="colorAccent">?attr/colorSecondary</item>
     </style>
-    
+
     <style name="Theme.ExpenseManager" parent="Base.Theme.ExpenseManager" />
 
     <style name="Base.Theme.ExpenseManager" parent="Base.Theme.MaterialThemeBuilder">

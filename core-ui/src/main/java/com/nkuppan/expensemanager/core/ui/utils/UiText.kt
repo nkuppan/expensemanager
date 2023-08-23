@@ -30,7 +30,11 @@ sealed class UiText {
 
                 context.getString(resId, *newValues)
             }
+
             is DynamicString -> message
+            else -> {
+                ""
+            }
         }
     }
 }

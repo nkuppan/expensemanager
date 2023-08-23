@@ -41,6 +41,7 @@ class AccountListViewModel @Inject constructor(
                 is Resource.Error -> {
                     _accounts.send(emptyList())
                 }
+
                 is Resource.Success -> {
                     _accounts.send(
                         response.data.map {
@@ -63,6 +64,7 @@ class AccountListViewModel @Inject constructor(
                 is Resource.Error -> {
                     _errorMessage.send(UiText.StringResource(R.string.account_delete_error_message))
                 }
+
                 is Resource.Success -> {
                     _openAccount.send(response.data)
                 }

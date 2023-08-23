@@ -53,12 +53,14 @@ class CategoryTransactionListAdapter(private val callback: ((GraphData) -> Unit)
                 )
                 HeadingItemViewHolder(binding)
             }
+
             GraphItemType.GRAPH_CATEGORY_ITEM -> {
                 val binding = AdapterCategoryTransactionItemBinding.inflate(
                     LayoutInflater.from(viewGroup.context), viewGroup, false
                 )
                 TransactionViewHolder(binding)
             }
+
             GraphItemType.GRAPH_ITEM -> {
                 val binding = AdapterGraphItemBinding.inflate(
                     LayoutInflater.from(viewGroup.context), viewGroup, false
@@ -95,6 +97,7 @@ class CategoryTransactionListAdapter(private val callback: ((GraphData) -> Unit)
                     totalAmount.text = data.amountText.asString(totalAmount.context)
                 }
             }
+
             GraphItemType.GRAPH_CATEGORY_ITEM -> {
 
                 (holder as TransactionViewHolder).binding.apply {
@@ -129,6 +132,7 @@ class CategoryTransactionListAdapter(private val callback: ((GraphData) -> Unit)
                     }
                 }
             }
+
             GraphItemType.GRAPH_ITEM -> {
 
                 (holder as GraphItemViewHolder).binding.apply {

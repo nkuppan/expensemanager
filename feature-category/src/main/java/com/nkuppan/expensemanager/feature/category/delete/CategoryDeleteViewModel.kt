@@ -27,6 +27,7 @@ class CategoryDeleteViewModel @Inject constructor(
                 is Resource.Error -> {
                     _deleted.send(false)
                 }
+
                 is Resource.Success -> {
                     _deleted.send(result.data)
                 }

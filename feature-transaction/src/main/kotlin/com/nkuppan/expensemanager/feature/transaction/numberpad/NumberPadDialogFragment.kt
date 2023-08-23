@@ -29,33 +29,43 @@ class NumberPadDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.number_one -> {
                 addThisValue("1")
             }
+
             R.id.number_two -> {
                 addThisValue("2")
             }
+
             R.id.number_three -> {
                 addThisValue("3")
             }
+
             R.id.number_four -> {
                 addThisValue("4")
             }
+
             R.id.number_five -> {
                 addThisValue("5")
             }
+
             R.id.number_six -> {
                 addThisValue("6")
             }
+
             R.id.number_seven -> {
                 addThisValue("7")
             }
+
             R.id.number_eight -> {
                 addThisValue("8")
             }
+
             R.id.number_nine -> {
                 addThisValue("9")
             }
+
             R.id.number_zero -> {
                 addThisValue("0")
             }
+
             R.id.dot -> {
 
                 if (isContainDotAlready()) {
@@ -64,6 +74,7 @@ class NumberPadDialogFragment : DialogFragment(), View.OnClickListener {
 
                 addThisValue(".")
             }
+
             R.id.plus -> {
 
                 if (isLastItemIsActionCharacter()) {
@@ -72,6 +83,7 @@ class NumberPadDialogFragment : DialogFragment(), View.OnClickListener {
 
                 addThisValue("+")
             }
+
             R.id.minus -> {
 
                 if (isLastItemIsActionCharacter()) {
@@ -80,6 +92,7 @@ class NumberPadDialogFragment : DialogFragment(), View.OnClickListener {
 
                 addThisValue("-")
             }
+
             R.id.multiply -> {
 
                 if (isLastItemIsActionCharacter()) {
@@ -88,6 +101,7 @@ class NumberPadDialogFragment : DialogFragment(), View.OnClickListener {
 
                 addThisValue("*")
             }
+
             R.id.divide -> {
 
                 if (isLastItemIsActionCharacter()) {
@@ -96,12 +110,15 @@ class NumberPadDialogFragment : DialogFragment(), View.OnClickListener {
 
                 addThisValue("/")
             }
+
             R.id.equals -> {
                 submitValue()
             }
+
             R.id.action_delete -> {
                 backspace()
             }
+
             R.id.ok_button -> {
 
                 submitValue()
@@ -114,6 +131,7 @@ class NumberPadDialogFragment : DialogFragment(), View.OnClickListener {
                     it.popBackStack()
                 }
             }
+
             R.id.cancel_button -> {
                 findNavController().popBackStack()
             }

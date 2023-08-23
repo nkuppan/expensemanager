@@ -106,6 +106,7 @@ class HistoryListViewModel @Inject constructor(
                 is Resource.Error -> {
                     _errorMessage.send(UiText.StringResource(R.string.unable_to_find_transaction))
                 }
+
                 is Resource.Success -> {
                     _openTransaction.send(response.data)
                 }

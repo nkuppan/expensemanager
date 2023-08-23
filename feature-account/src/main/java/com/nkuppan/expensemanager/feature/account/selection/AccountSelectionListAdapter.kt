@@ -14,11 +14,17 @@ class AccountSelectionListAdapter(
 ) : ListAdapter<AccountSelectionUIState, AccountListViewHolder>(
     object : DiffUtil.ItemCallback<AccountSelectionUIState>() {
 
-        override fun areItemsTheSame(oldItem: AccountSelectionUIState, newItem: AccountSelectionUIState): Boolean {
+        override fun areItemsTheSame(
+            oldItem: AccountSelectionUIState,
+            newItem: AccountSelectionUIState
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: AccountSelectionUIState, newItem: AccountSelectionUIState): Boolean {
+        override fun areContentsTheSame(
+            oldItem: AccountSelectionUIState,
+            newItem: AccountSelectionUIState
+        ): Boolean {
             return oldItem.name == newItem.name &&
                     oldItem.backgroundColor == newItem.backgroundColor &&
                     oldItem.isSelected == newItem.isSelected &&
@@ -28,7 +34,11 @@ class AccountSelectionListAdapter(
 ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountListViewHolder {
         return AccountListViewHolder(
-            ListItemAccountSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ListItemAccountSelectionBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
     }
 

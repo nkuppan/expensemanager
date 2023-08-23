@@ -28,6 +28,7 @@ class CategoryListViewModel @Inject constructor(
                 is Resource.Error -> {
                     _categories.send(emptyList())
                 }
+
                 is Resource.Success -> {
                     _categories.send(result.data)
                 }

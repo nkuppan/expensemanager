@@ -101,6 +101,7 @@ class AccountCreateViewModel @Inject constructor(
                 is Resource.Error -> {
                     _errorMessage.send(UiText.StringResource(R.string.account_create_failed))
                 }
+
                 is Resource.Success -> {
                     _accountCreated.send(Unit)
                 }

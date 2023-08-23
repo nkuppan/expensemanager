@@ -87,6 +87,7 @@ class CategoryCreateViewModel @Inject constructor(
                     is Resource.Error -> {
                         _errorMessage.send(UiText.StringResource(R.string.category_delete_error_message))
                     }
+
                     is Resource.Success -> {
                         _categoryCreated.send(Unit)
                     }
@@ -133,6 +134,7 @@ class CategoryCreateViewModel @Inject constructor(
                 is Resource.Error -> {
                     _errorMessage.send(UiText.StringResource(R.string.category_create_error))
                 }
+
                 is Resource.Success -> {
                     _categoryCreated.send(Unit)
                 }
