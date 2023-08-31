@@ -55,7 +55,7 @@ class TransactionCreateViewModel @Inject constructor(
     private val _date: MutableStateFlow<String> = MutableStateFlow("")
     val date = _date.asStateFlow()
 
-    private val _currencyType = MutableStateFlow(R.string.default_currency_type)
+    private val _currencyType = MutableStateFlow(com.nkuppan.expensemanager.data.R.string.default_currency_type)
     val currencyType = _currencyType.asStateFlow()
 
     val notes: MutableStateFlow<String> = MutableStateFlow("")

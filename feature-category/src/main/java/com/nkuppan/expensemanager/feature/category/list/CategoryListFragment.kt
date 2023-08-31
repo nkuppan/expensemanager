@@ -38,7 +38,7 @@ class CategoryListFragment : BaseBindingListFragment() {
     }
 
     override fun onRefresh() {
-        viewModel.loadCategories()
+        //
     }
 
     override fun getActionText(): Int {
@@ -58,9 +58,9 @@ class CategoryListFragment : BaseBindingListFragment() {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.categories.collectLatest {
-                        val hasRecords = it.isNotEmpty()
+                        /*val hasRecords = it.isNotEmpty()
                         showDataContainer(hasRecords)
-                        categoryListAdapter.submitList(it)
+                        categoryListAdapter.submitList(it)*/
                     }
                 }
             }

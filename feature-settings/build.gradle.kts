@@ -1,18 +1,13 @@
-import com.nkuppan.expensemanager.buildsrc.Libs
-import com.nkuppan.expensemanager.buildsrc.Versions
-
 plugins {
     id("nkuppan.plugin.android.library")
     id("nkuppan.plugin.kotlin.basic")
+    id("nkuppan.plugin.compose")
     id("androidx.navigation.safeargs")
-    id("dagger.hilt.android.plugin")
+    id("nkuppan.plugin.hilt")
 }
 
 android {
-    buildFeatures {
-        viewBinding = true
-        dataBinding = true
-    }
+    namespace = "com.nkuppan.expensemanager.feature.settings"
 }
 
 dependencies {
@@ -23,18 +18,10 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core-model"))
 
-    implementation(Libs.Google.OssLicenses.ossLicenses)
+    implementation(libs.androidx.work.ktx)
+    implementation(libs.google.oss.licenses)
+    implementation(libs.google.android.play.review)
 
-    implementation(Libs.Google.Hilt.android)
-    kapt(Libs.Google.Hilt.hiltCompiler)
-
-    implementation(Libs.Google.Play.review)
-    implementation(Libs.AndroidX.preference)
-
-    implementation(Libs.AndroidX.WorkManager.runtimeKtx)
-
-    //Android Testing Related Library
-    kaptAndroidTest(Libs.Google.Hilt.hiltCompiler)
     androidTestImplementation(project(":core-testing"))
     testImplementation(project(":core-testing"))
 }

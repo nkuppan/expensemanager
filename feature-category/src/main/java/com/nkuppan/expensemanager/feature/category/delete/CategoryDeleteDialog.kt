@@ -26,14 +26,14 @@ class CategoryDeleteDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val alertDialog: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        alertDialog.setTitle(R.string.delete)
-        alertDialog.setMessage(R.string.delete_item_message)
+        alertDialog.setTitle(com.nkuppan.expensemanager.core.ui.R.string.delete)
+        alertDialog.setMessage(com.nkuppan.expensemanager.core.ui.R.string.delete_item_message)
 
-        alertDialog.setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
+        alertDialog.setPositiveButton(com.nkuppan.expensemanager.core.ui.R.string.ok) { _: DialogInterface, _: Int ->
             viewModel.deleteCategory(args.category)
         }
 
-        alertDialog.setNegativeButton(R.string.cancel) { aDialog: DialogInterface, _: Int ->
+        alertDialog.setNegativeButton(com.nkuppan.expensemanager.core.ui.R.string.cancel) { aDialog: DialogInterface, _: Int ->
             aDialog.dismiss()
         }
 

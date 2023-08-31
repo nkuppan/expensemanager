@@ -46,7 +46,7 @@ class DashboardViewModel @Inject constructor(
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
 
-    private var currencySymbol: Int = R.string.default_currency_type
+    private var currencySymbol: Int = com.nkuppan.expensemanager.data.R.string.default_currency_type
 
     private val _incomeAmount = MutableStateFlow(0.0)
     private val _expenseAmount = MutableStateFlow(0.0)
@@ -105,7 +105,7 @@ class DashboardViewModel @Inject constructor(
                     it.id,
                     getCurrency(currencySymbol, it.amount),
                     if (it.notes.isBlank()) {
-                        UiText.StringResource(R.string.not_assigned)
+                        UiText.StringResource(com.nkuppan.expensemanager.feature.transaction.R.string.not_assigned)
                     } else {
                         UiText.DynamicString(it.notes)
                     },
@@ -129,7 +129,7 @@ class DashboardViewModel @Inject constructor(
         viewModelScope.launch {
             when (val response = getTransactionByIdUseCase.invoke(transactionId)) {
                 is Resource.Error -> {
-                    _errorMessage.send(UiText.StringResource(R.string.unable_to_find_transaction))
+                    _errorMessage.send(UiText.StringResource(com.nkuppan.expensemanager.feature.transaction.R.string.unable_to_find_transaction))
                 }
 
                 is Resource.Success -> {

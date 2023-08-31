@@ -40,7 +40,7 @@ class TransactionListViewModel @Inject constructor(
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
 
-    private var currencySymbol: Int = R.string.default_currency_type
+    private var currencySymbol: Int = com.nkuppan.expensemanager.data.R.string.default_currency_type
 
     private val searchText = MutableStateFlow<String?>("")
 
@@ -96,12 +96,12 @@ class TransactionListViewModel @Inject constructor(
 @DrawableRes
 fun PaymentMode.getPaymentModeIcon(): Int {
     return when (this) {
-        PaymentMode.CARD -> R.drawable.ic_card
-        PaymentMode.WALLET -> R.drawable.ic_wallet
-        PaymentMode.UPI -> R.drawable.ic_upi
-        PaymentMode.CHEQUE -> R.drawable.ic_cheque
-        PaymentMode.INTERNET_BANKING -> R.drawable.ic_netbanking
-        PaymentMode.BANK_ACCOUNT -> R.drawable.ic_bank
-        PaymentMode.NONE -> R.drawable.ic_wallet
+        PaymentMode.CARD -> com.nkuppan.expensemanager.feature.account.R.drawable.ic_card
+        PaymentMode.WALLET -> com.nkuppan.expensemanager.feature.account.R.drawable.ic_wallet
+        PaymentMode.UPI -> com.nkuppan.expensemanager.feature.account.R.drawable.ic_upi
+        PaymentMode.CHEQUE -> com.nkuppan.expensemanager.feature.account.R.drawable.ic_cheque
+        PaymentMode.INTERNET_BANKING -> com.nkuppan.expensemanager.feature.account.R.drawable.ic_netbanking
+        PaymentMode.BANK_ACCOUNT -> com.nkuppan.expensemanager.feature.account.R.drawable.ic_bank
+        PaymentMode.NONE -> com.nkuppan.expensemanager.feature.account.R.drawable.ic_wallet
     }
 }

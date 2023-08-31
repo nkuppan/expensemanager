@@ -29,11 +29,11 @@ class AccountDeleteDialog : DialogFragment() {
         alertDialog.setTitle(R.string.delete)
         alertDialog.setMessage(R.string.delete_item_message)
 
-        alertDialog.setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
+        alertDialog.setPositiveButton(com.nkuppan.expensemanager.core.ui.R.string.ok) { _: DialogInterface, _: Int ->
             viewModel.deleteAccount(args.account)
         }
 
-        alertDialog.setNegativeButton(R.string.cancel) { aDialog: DialogInterface, _: Int ->
+        alertDialog.setNegativeButton(com.nkuppan.expensemanager.core.ui.R.string.cancel) { aDialog: DialogInterface, _: Int ->
             aDialog.dismiss()
         }
 

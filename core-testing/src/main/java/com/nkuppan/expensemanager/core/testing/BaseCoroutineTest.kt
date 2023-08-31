@@ -4,7 +4,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
-import org.mockito.MockitoAnnotations
 
 @ExperimentalCoroutinesApi
 open class BaseCoroutineTest {
@@ -16,7 +15,7 @@ open class BaseCoroutineTest {
 
     @Before
     open fun onCreate() {
-        autoCloseable = MockitoAnnotations.openMocks(this)
+
     }
 
     @After

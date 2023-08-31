@@ -56,7 +56,7 @@ class TransactionListFragment : BaseBindingListFragment() {
     }
 
     override fun getInfoImage(): Int {
-        return R.drawable.ic_transaction
+        return com.nkuppan.expensemanager.core.ui.R.drawable.ic_transaction
     }
 
     private fun initViews() {

@@ -1,6 +1,3 @@
-import com.nkuppan.expensemanager.buildsrc.Libs
-import com.nkuppan.expensemanager.buildsrc.Versions
-
 plugins {
     id("nkuppan.plugin.android.library")
     id("nkuppan.plugin.kotlin.basic")
@@ -10,11 +7,10 @@ plugins {
 android {
 
     defaultConfig {
-        minSdk = Versions.macroBenchmarkMinSdk
+        minSdk = 23
     }
 
     testBuildType = "release"
-
 
     buildTypes {
         debug {
@@ -35,11 +31,5 @@ android {
 dependencies {
     androidTestImplementation(project(":data"))
     androidTestImplementation(project(":core-model"))
-
-    implementation("androidx.room:room-ktx:2.5.2")
-
-    androidTestImplementation(Libs.AndroidX.Test.JUnit.core)
-    androidTestImplementation(Libs.AndroidX.Test.JUnit.ktx)
-    androidTestImplementation(Libs.AndroidX.Test.runner)
-    androidTestImplementation(Libs.AndroidX.Benchmark.microBenchmark)
+    implementation(libs.room.ktx)
 }

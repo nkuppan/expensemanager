@@ -8,7 +8,9 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
         android:name=".ExpenseManagerApplication"
@@ -35,6 +37,10 @@
 
         <activity
             android:name=".presentation.HomeActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".presentation.NewHomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -46,7 +52,8 @@
             <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
-        </activity> <!-- Register the Alarm Receiver -->
+        </activity>
+        <!-- Register the Alarm Receiver -->
         <provider
             android:name=".utils.GenericFileProvider"
             android:authorities="${applicationId}.fileprovider"

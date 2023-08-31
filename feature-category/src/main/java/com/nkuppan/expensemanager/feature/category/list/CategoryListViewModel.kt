@@ -4,35 +4,34 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.core.model.Category
 import com.nkuppan.expensemanager.core.model.Resource
-import com.nkuppan.expensemanager.data.usecase.category.GetCategoryByNameUseCase
+import com.nkuppan.expensemanager.core.model.UiState
+import com.nkuppan.expensemanager.data.usecase.category.GetAllCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoryListViewModel @Inject constructor(
-    private val getCategoryByNameUseCase: GetCategoryByNameUseCase
+    getAllCategoryUseCase: GetAllCategoryUseCase
 ) : ViewModel() {
 
-    private val _categories = Channel<List<Category>>()
-    val categories: Flow<List<Category>> = _categories.receiveAsFlow()
+    private val _categories = MutableStateFlow<UiState<List<Category>>>(UiState.Loading)
+    val categories = _categories.asStateFlow()
 
-    fun loadCategories(searchValue: String? = "") {
-
-        viewModelScope.launch {
-
-            when (val result = getCategoryByNameUseCase.invoke(searchValue)) {
-                is Resource.Error -> {
-                    _categories.send(emptyList())
-                }
-
-                is Resource.Success -> {
-                    _categories.send(result.data)
-                }
+    init {
+        getAllCategoryUseCase.invoke().map {
+            if (it.isEmpty()) {
+                _categories.value = UiState.Empty
+            } else {
+                _categories.value = UiState.Success(it)
             }
-        }
+        }.launchIn(viewModelScope)
     }
 }

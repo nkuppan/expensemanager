@@ -1,21 +1,16 @@
-import com.nkuppan.expensemanager.buildsrc.Libs
-import com.nkuppan.expensemanager.buildsrc.Versions
-
 plugins {
     id("nkuppan.plugin.android.library")
     id("nkuppan.plugin.kotlin.basic")
+    id("nkuppan.plugin.compose")
     id("androidx.navigation.safeargs")
-    id("dagger.hilt.android.plugin")
+    id("nkuppan.plugin.hilt")
 }
 
 android {
+    namespace = "com.nkuppan.expensemanager.feature.dashboard"
     buildFeatures {
-        viewBinding = true
         dataBinding = true
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.Compose.composeCompilerVersion
+        viewBinding = true
     }
 }
 
@@ -30,13 +25,8 @@ dependencies {
     implementation(project(":feature-transaction"))
     implementation(project(":feature-settings"))
 
-    implementation(Libs.ThirdParty.mpcharts)
+    implementation(libs.mpcharts)
 
-    implementation(Libs.Google.Hilt.android)
-    kapt(Libs.Google.Hilt.hiltCompiler)
-
-    //Android Testing Related Library
-    kaptAndroidTest(Libs.Google.Hilt.hiltCompiler)
     androidTestImplementation(project(":core-testing"))
     testImplementation(project(":core-testing"))
 }

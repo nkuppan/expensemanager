@@ -42,7 +42,7 @@ class HistoryListViewModel @Inject constructor(
     private val _transactionHistory = Channel<List<HistoryListItem>>()
     val transactionHistory = _transactionHistory.receiveAsFlow()
 
-    private var currencySymbol: Int = R.string.default_currency_type
+    private var currencySymbol: Int = com.nkuppan.expensemanager.data.R.string.default_currency_type
 
     init {
         getCurrencyUseCase.invoke().flatMapLatest {

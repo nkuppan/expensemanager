@@ -89,9 +89,9 @@ class CategoryTransactionListAdapter(private val callback: ((GraphData) -> Unit)
                 (holder as HeadingItemViewHolder).binding.apply {
                     title.setText(
                         if (data.categoryType == CategoryType.INCOME)
-                            R.string.income
+                            com.nkuppan.expensemanager.core.ui.R.string.income
                         else
-                            R.string.expense
+                            com.nkuppan.expensemanager.core.ui.R.string.expense
                     )
 
                     totalAmount.text = data.amountText.asString(totalAmount.context)

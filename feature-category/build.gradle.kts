@@ -1,36 +1,13 @@
-import com.nkuppan.expensemanager.buildsrc.Libs
-import com.nkuppan.expensemanager.buildsrc.Versions
-
 plugins {
     id("nkuppan.plugin.android.library")
     id("nkuppan.plugin.kotlin.basic")
+    id("nkuppan.plugin.compose")
     id("androidx.navigation.safeargs")
-    id("dagger.hilt.android.plugin")
+    id("nkuppan.plugin.hilt")
 }
 
 android {
-    buildFeatures {
-        viewBinding = true
-        dataBinding = true
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = Versions.AndroidX.Compose.composeCompilerVersion
-    }
-    kotlinOptions {
-
-        jvmTarget = JavaVersion.VERSION_11.toString()
-
-        freeCompilerArgs = freeCompilerArgs + listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            // Enable experimental coroutines APIs, including Flow
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlin.Experimental",
-            // Enable experimental kotlinx serialization APIs
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
-        )
-    }
+    namespace = "com.nkuppan.expensemanager.feature.category"
 }
 
 dependencies {
@@ -39,13 +16,6 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core-model"))
 
-    implementation(Libs.ThirdParty.colorpicker)
-
-    implementation(Libs.Google.Hilt.android)
-    kapt(Libs.Google.Hilt.hiltCompiler)
-
-    //Android Testing Related Library
-    kaptAndroidTest(Libs.Google.Hilt.hiltCompiler)
     androidTestImplementation(project(":core-testing"))
     testImplementation(project(":core-testing"))
 }

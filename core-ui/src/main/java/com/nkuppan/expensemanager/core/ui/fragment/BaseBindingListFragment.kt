@@ -30,17 +30,11 @@ abstract class BaseBindingListFragment : BaseBindingFragment<FragmentListBinding
         binding.infoActionText.setText(getActionText())
         binding.infoImage.setImageResource(getInfoImage())
 
-        binding.swipeRefreshContainer.setOnRefreshListener {
-            startRefreshContainer()
-        }
-
         binding.toolbar.setNavigationOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 findNavController().popBackStack()
             }
         }
-
-        binding.swipeRefreshContainer.isRefreshing = true
     }
 
     fun setToolbarTitle(@StringRes title: Int) {
@@ -54,11 +48,9 @@ abstract class BaseBindingListFragment : BaseBindingFragment<FragmentListBinding
     fun showDataContainer(hasRecords: Boolean) {
         binding.infoContainer.isVisible = !hasRecords
         binding.dataRecyclerView.isVisible = hasRecords
-        binding.swipeRefreshContainer.isRefreshing = false
     }
 
     private fun startRefreshContainer() {
-        binding.swipeRefreshContainer.isRefreshing = true
         onRefresh()
     }
 

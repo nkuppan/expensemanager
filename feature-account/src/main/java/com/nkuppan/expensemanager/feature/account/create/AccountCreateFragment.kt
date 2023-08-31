@@ -121,13 +121,13 @@ class AccountCreateFragment : BaseBindingFragment<FragmentAccountCreateBinding>(
         ColorPickerDialog.Builder(requireContext())
             .setTitle(getString(R.string.title_color_picker))
             .setPreferenceName("MyColorPickerDialog")
-            .setPositiveButton(getString(R.string.select),
+            .setPositiveButton(getString(com.nkuppan.expensemanager.core.ui.R.string.select),
                 ColorEnvelopeListener { envelope, _ ->
                     viewModel.setColorValue(envelope.color)
                 }
             )
             .setNegativeButton(
-                getString(R.string.cancel)
+                getString(com.nkuppan.expensemanager.core.ui.R.string.cancel)
             ) { dialogInterface, _ ->
                 dialogInterface.dismiss()
             }

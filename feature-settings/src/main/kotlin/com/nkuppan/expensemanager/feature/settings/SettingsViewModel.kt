@@ -32,15 +32,15 @@ class SettingsViewModel @Inject constructor(
     private val _theme: MutableStateFlow<Theme> = MutableStateFlow(
         Theme(
             AppCompatDelegate.MODE_NIGHT_NO,
-            R.string.light
+            com.nkuppan.expensemanager.data.R.string.light
         )
     )
     val theme = _theme.asStateFlow()
 
     private val _currency: MutableStateFlow<Currency> = MutableStateFlow(
         Currency(
-            R.string.default_currency_type,
-            R.string.default_currency_name,
+            com.nkuppan.expensemanager.data.R.string.default_currency_type,
+            com.nkuppan.expensemanager.data.R.string.default_currency_name,
         )
     )
     val currency = _currency.asStateFlow()

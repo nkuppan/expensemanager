@@ -27,7 +27,7 @@ class ExpenseGraphViewModel @Inject constructor(
     val graphItems = _graphItems.asStateFlow()
 
     private var currencySymbol: Int =
-        com.nkuppan.expensemanager.feature.transaction.R.string.default_currency_type
+        com.nkuppan.expensemanager.data.R.string.default_currency_type
 
     init {
         getCurrencyUseCase.invoke().onEach {

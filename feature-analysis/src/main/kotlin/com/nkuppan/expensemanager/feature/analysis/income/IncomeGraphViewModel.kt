@@ -29,7 +29,7 @@ class IncomeGraphViewModel @Inject constructor(
     private val _graphItems = MutableStateFlow<List<GraphData>>(emptyList())
     val graphItems = _graphItems.asStateFlow()
 
-    private var currencySymbol: Int = string.default_currency_type
+    private var currencySymbol: Int = com.nkuppan.expensemanager.data.R.string.default_currency_type
 
     init {
 

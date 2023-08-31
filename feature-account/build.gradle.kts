@@ -1,17 +1,13 @@
-import com.nkuppan.expensemanager.buildsrc.Libs
-
 plugins {
     id("nkuppan.plugin.android.library")
     id("nkuppan.plugin.kotlin.basic")
+    id("nkuppan.plugin.compose")
     id("androidx.navigation.safeargs")
-    id("dagger.hilt.android.plugin")
+    id("nkuppan.plugin.hilt")
 }
 
 android {
-    buildFeatures {
-        viewBinding = true
-        dataBinding = true
-    }
+    namespace = "com.nkuppan.expensemanager.feature.account"
 }
 
 dependencies {
@@ -20,13 +16,6 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core-model"))
 
-    implementation(Libs.ThirdParty.colorpicker)
-
-    implementation(Libs.Google.Hilt.android)
-    kapt(Libs.Google.Hilt.hiltCompiler)
-
-    //Android Testing Related Library
-    kaptAndroidTest(Libs.Google.Hilt.hiltCompiler)
     androidTestImplementation(project(":core-testing"))
     testImplementation(project(":core-testing"))
 }
