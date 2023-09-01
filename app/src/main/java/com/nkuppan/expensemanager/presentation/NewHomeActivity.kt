@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -34,6 +35,7 @@ import com.nkuppan.expensemanager.feature.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.feature.category.create.CategoryCreateViewModel
 import com.nkuppan.expensemanager.feature.category.list.CategoryListScreen
 import com.nkuppan.expensemanager.feature.category.list.CategoryListViewModel
+import com.nkuppan.expensemanager.feature.transaction.list.TransactionListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -65,58 +67,7 @@ fun MainPageView() {
             startDestination = "home"
         ) {
             composable("home") {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .align(Alignment.Center)
-                    ) {
-                        Button(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .align(Alignment.CenterHorizontally),
-                            onClick = {
-                                navController.navigate("category")
-                            }) {
-                            Text(text = "Navigate to Category")
-                        }
-                        Button(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .align(Alignment.CenterHorizontally), onClick = {
-                                navController.navigate("category/create")
-                            }) {
-                            Text(text = "Navigate to Category Create")
-                        }
-                        Button(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .align(Alignment.CenterHorizontally), onClick = {
-                                navController.navigate("transaction")
-                            }) {
-                            Text(text = "Navigate to Transaction")
-                        }
-                        Button(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .align(Alignment.CenterHorizontally), onClick = {
-                                navController.navigate("analysis")
-                            }) {
-                            Text(text = "Navigate to Analysis")
-                        }
-                        Button(
-                            modifier = Modifier
-                                .wrapContentSize()
-                                .align(Alignment.CenterHorizontally),
-                            onClick = {
-                                navController.navigate("settings")
-                            }) {
-                            Text(text = "Navigate to Settings")
-                        }
-                    }
-                }
+                HomePageScreen(navController)
             }
             composable("category") {
                 CategoryListScreen(navController)
@@ -125,6 +76,9 @@ fun MainPageView() {
                 CategoryCreateScreen(navController)
             }
             composable("transaction") {
+                TransactionListScreen(navController)
+            }
+            composable("transaction/create") {
 
             }
             composable("analysis") {
@@ -138,65 +92,58 @@ fun MainPageView() {
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun CategoryListScreen(
-    navController: NavController
-) {
-    val viewModel: CategoryListViewModel = hiltViewModel()
-    val categoryUiState by viewModel.categories.collectAsState()
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(R.string.category))
-                }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navController.navigate("category/create")
-            }) {
-                Image(
-                    painter = painterResource(id = com.nkuppan.expensemanager.core.ui.R.drawable.ic_add),
-                    contentDescription = ""
-                )
+private fun HomePageScreen(navController: NavHostController) {
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center)
+        ) {
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    navController.navigate("category")
+                }) {
+                Text(text = "Navigate to Category")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally), onClick = {
+                    navController.navigate("category/create")
+                }) {
+                Text(text = "Navigate to Category Create")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally), onClick = {
+                    navController.navigate("transaction")
+                }) {
+                Text(text = "Navigate to Transaction")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally), onClick = {
+                    navController.navigate("analysis")
+                }) {
+                Text(text = "Navigate to Analysis")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    navController.navigate("settings")
+                }) {
+                Text(text = "Navigate to Settings")
             }
         }
-    ) {
-        CategoryListScreen(
-            modifier = Modifier.padding(top = it.calculateTopPadding()),
-            categoryUiState = categoryUiState
-        )
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun CategoryCreateScreen(
-    navController: NavController
-) {
-    val viewModel: CategoryCreateViewModel = hiltViewModel()
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(R.string.category))
-                }
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {
-
-            }) {
-                Image(
-                    painter = painterResource(id = com.nkuppan.expensemanager.core.ui.R.drawable.ic_done),
-                    contentDescription = ""
-                )
-            }
-        }
-    ) {
-        CategoryCreateScreen(modifier = Modifier.padding(top = it.calculateTopPadding()))
     }
 }
 

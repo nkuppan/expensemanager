@@ -1,19 +1,57 @@
 package com.nkuppan.expensemanager.feature.category.create
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.nkuppan.expensemanager.feature.category.R
+
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun CategoryCreateScreen(
+    navController: NavController
+) {
+    val viewModel: CategoryCreateViewModel = hiltViewModel()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.category))
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+
+            }) {
+                Image(
+                    painter = painterResource(id = com.nkuppan.expensemanager.core.ui.R.drawable.ic_done),
+                    contentDescription = ""
+                )
+            }
+        }
+    ) {
+        CategoryCreateScreen(modifier = Modifier.padding(top = it.calculateTopPadding()))
+    }
+}
 
 @Composable
 fun CategoryCreateScreen(

@@ -13,4 +13,5 @@
     <string name="category_action_text">Tap + button to add a new category.</string>
     <string name="category_create_error">Unknown error occurred while inserting category</string>
     <string name="name">Name</string>
+    <string name="category">Category</string>
 </resources>

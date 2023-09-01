@@ -110,6 +110,7 @@ class DashboardViewModel @Inject constructor(
                         UiText.DynamicString(it.notes)
                     },
                     it.category.name,
+                    it.category.type,
                     it.category.backgroundColor,
                     it.account.type.getPaymentModeIcon(),
                     it.updatedOn.toTransactionDate(),

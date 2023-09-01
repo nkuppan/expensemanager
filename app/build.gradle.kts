@@ -46,5 +46,4 @@ dependencies {
     implementation(project(":feature-category"))
     implementation(project(":feature-transaction"))
     implementation(libs.app.update.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.core.model.PaymentMode
 import com.nkuppan.expensemanager.core.model.Resource
 import com.nkuppan.expensemanager.core.model.Transaction
+import com.nkuppan.expensemanager.core.model.UiState
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
@@ -31,8 +32,10 @@ class TransactionListViewModel @Inject constructor(
 
     var categoryId: Int = -1
 
-    private val _transactionList = Channel<List<TransactionUIModel>>()
-    val transactionList = _transactionList.receiveAsFlow()
+    private val _transactions = MutableStateFlow<UiState<List<TransactionUIModel>>>(
+        UiState.Loading
+    )
+    val transactions = _transactions.asStateFlow()
 
     private val _openTransaction = Channel<Transaction>()
     val openTransaction = _openTransaction.receiveAsFlow()
@@ -45,17 +48,15 @@ class TransactionListViewModel @Inject constructor(
     private val searchText = MutableStateFlow<String?>("")
 
     init {
-        viewModelScope.launch {
-            getCurrencyUseCase.invoke().collectLatest {
-                currencySymbol = it.type
-            }
-        }
+        getCurrencyUseCase.invoke().onEach {
+            currencySymbol = it.type
+        }.launchIn(viewModelScope)
 
         searchText.flatMapLatest {
             getTransactionByNameUseCase.invoke(it)
         }.onEach { transactions ->
-            _transactionList.send(
-                transactions.map {
+            _transactions.value =
+                UiState.Success(transactions.map {
                     TransactionUIModel(
                         it.id,
                         getCurrency(currencySymbol, it.amount),
@@ -65,16 +66,16 @@ class TransactionListViewModel @Inject constructor(
                             UiText.DynamicString(it.notes)
                         },
                         it.category.name,
+                        it.category.type,
                         it.category.backgroundColor,
                         it.account.type.getPaymentModeIcon(),
                         it.updatedOn.toTransactionDate(),
                     )
-                }
-            )
+                })
         }.launchIn(viewModelScope)
     }
 
-    fun loadTransactions(searchText: String = "") {
+    fun updateSearchText(searchText: String = "") {
         this@TransactionListViewModel.searchText.value = searchText
     }
 

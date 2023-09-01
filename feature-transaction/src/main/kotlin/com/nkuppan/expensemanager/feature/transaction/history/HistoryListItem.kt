@@ -1,6 +1,7 @@
 package com.nkuppan.expensemanager.feature.transaction.history
 
 import androidx.annotation.DrawableRes
+import com.nkuppan.expensemanager.core.model.CategoryType
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 
 class HistoryListItem(
@@ -16,6 +17,7 @@ data class TransactionUIModel(
     val amount: UiText = UiText.DynamicString(""),
     val notes: UiText = UiText.DynamicString(""),
     val categoryName: String,
+    val categoryType: CategoryType,
     val categoryBackgroundColor: String,
     @DrawableRes val accountIcon: Int,
     val date: String,

@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.nkuppan.expensemanager.core.model.UiState
 import com.nkuppan.expensemanager.core.ui.extensions.showSnackBarMessage
 import com.nkuppan.expensemanager.core.ui.fragment.BaseBindingListFragment
 import com.nkuppan.expensemanager.feature.transaction.R
@@ -44,7 +45,7 @@ class TransactionListFragment : BaseBindingListFragment() {
     }
 
     override fun onRefresh() {
-        viewModel.loadTransactions()
+        viewModel.updateSearchText()
     }
 
     override fun getActionText(): Int {
@@ -84,10 +85,17 @@ class TransactionListFragment : BaseBindingListFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.transactionList.collectLatest {
-                        val hasRecords = it.isNotEmpty()
-                        showDataContainer(hasRecords)
-                        transactionListAdapter.submitList(it)
+                    viewModel.transactions.collectLatest {
+                        when(it){
+                            UiState.Empty -> TODO()
+                            UiState.Loading -> TODO()
+                            is UiState.Success -> {
+                                val data = it.data
+                                val hasRecords = data.isNotEmpty()
+                                showDataContainer(hasRecords)
+                                transactionListAdapter.submitList(data)
+                            }
+                        }
                     }
                 }
 

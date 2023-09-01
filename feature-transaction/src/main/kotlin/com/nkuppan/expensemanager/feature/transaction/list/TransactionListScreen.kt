@@ -1,4 +1,4 @@
-package com.nkuppan.expensemanager.feature.category.list
+package com.nkuppan.expensemanager.feature.transaction.list
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -34,31 +34,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.nkuppan.expensemanager.core.model.Category
 import com.nkuppan.expensemanager.core.model.CategoryType
 import com.nkuppan.expensemanager.core.model.UiState
-import com.nkuppan.expensemanager.feature.category.R
+import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.feature.transaction.R
+import com.nkuppan.expensemanager.feature.transaction.history.TransactionUIModel
 import java.util.Date
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CategoryListScreen(
+fun TransactionListScreen(
     navController: NavController
 ) {
-    val viewModel: CategoryListViewModel = hiltViewModel()
-    val categoryUiState by viewModel.categories.collectAsState()
+    val viewModel: TransactionListViewModel = hiltViewModel()
+    val transactionUiState by viewModel.transactions.collectAsState()
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(R.string.category))
+                    Text(text = stringResource(R.string.transaction))
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("category/create")
+                navController.navigate("transaction/create")
             }) {
                 Image(
                     painter = painterResource(id = com.nkuppan.expensemanager.core.ui.R.drawable.ic_add),
@@ -67,16 +68,16 @@ fun CategoryListScreen(
             }
         }
     ) {
-        CategoryListScreen(
+        TransactionListScreen(
             modifier = Modifier.padding(top = it.calculateTopPadding()),
-            categoryUiState = categoryUiState
+            transactionUiState = transactionUiState
         )
     }
 }
 
 @Composable
-fun CategoryListScreen(
-    categoryUiState: UiState<List<Category>>,
+private fun TransactionListScreen(
+    transactionUiState: UiState<List<TransactionUIModel>>,
     modifier: Modifier = Modifier
 ) {
 
@@ -84,13 +85,13 @@ fun CategoryListScreen(
 
     Box(modifier = modifier) {
 
-        when (categoryUiState) {
+        when (transactionUiState) {
             UiState.Empty -> {
                 Text(
                     modifier = Modifier
                         .wrapContentSize()
                         .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_category_available),
+                    text = stringResource(id = R.string.no_transactions_available),
                     textAlign = TextAlign.Center
                 )
             }
@@ -104,17 +105,16 @@ fun CategoryListScreen(
             }
 
             is UiState.Success -> {
-
                 LazyColumn(state = scrollState) {
-                    items(categoryUiState.data) {
-                        CategoryItem(
+                    items(transactionUiState.data) {
+                        TransactionItem(
+                            name = it.categoryName,
+                            transactionColor = it.categoryBackgroundColor,
+                            categoryType = it.categoryType,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.White)
-                                .padding(16.dp),
-                            name = it.name,
-                            isFavorite = it.isFavorite,
-                            categoryColor = it.backgroundColor
+                                .padding(16.dp)
                         )
                     }
                 }
@@ -124,11 +124,11 @@ fun CategoryListScreen(
 }
 
 @Composable
-fun CategoryItem(
+fun TransactionItem(
     name: String,
-    isFavorite: Boolean,
-    categoryColor: String,
-    modifier: Modifier = Modifier
+    transactionColor: String,
+    modifier: Modifier = Modifier,
+    categoryType: CategoryType = CategoryType.EXPENSE
 ) {
     Row(modifier = modifier) {
         Box(
@@ -142,7 +142,7 @@ fun CategoryItem(
                     .fillMaxSize()
                     .align(Alignment.Center),
                 onDraw = {
-                    drawCircle(color = Color(android.graphics.Color.parseColor(categoryColor)))
+                    drawCircle(color = Color(android.graphics.Color.parseColor(transactionColor)))
                 }
             )
             Image(
@@ -150,14 +150,14 @@ fun CategoryItem(
                     .size(18.dp)
                     .align(Alignment.Center),
                 painter = painterResource(
-                    id = if (isFavorite) {
-                        R.drawable.ic_favorite
-                    } else {
-                        R.drawable.ic_favorite_border
-                    }
+                    id =
+                    if (categoryType == CategoryType.EXPENSE)
+                        R.drawable.ic_arrow_upward
+                    else
+                        R.drawable.ic_arrow_downward
                 ),
-                colorFilter = ColorFilter.tint(color = Color.White),
-                contentDescription = name
+                contentDescription = "",
+                colorFilter = ColorFilter.tint(color = Color.White)
             )
         }
         Text(
@@ -166,45 +166,30 @@ fun CategoryItem(
                 .align(Alignment.CenterVertically),
             text = name
         )
-        Image(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .size(24.dp)
-                .align(Alignment.CenterVertically),
-            painter = painterResource(
-                id = if (isFavorite) {
-                    R.drawable.ic_favorite
-                } else {
-                    R.drawable.ic_favorite_border
-                }
-            ),
-            contentDescription = name
-        )
     }
 }
 
 @Preview
 @Composable
-fun CategoryItemPreview() {
+fun TransactionItemPreview() {
     MaterialTheme {
-        CategoryItem(
+        TransactionItem(
+            name = "Utilities",
+            transactionColor = "#FFFFFF",
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
-                .padding(16.dp),
-            name = "Utilities",
-            isFavorite = false,
-            categoryColor = "#FFFFFF"
+                .padding(16.dp)
         )
     }
 }
 
 @Preview
 @Composable
-fun CategoryListItemLoadingStatePreview() {
+fun TransactionListItemLoadingStatePreview() {
     MaterialTheme {
-        CategoryListScreen(
-            categoryUiState = UiState.Loading,
+        TransactionListScreen(
+            transactionUiState = UiState.Loading,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -212,42 +197,44 @@ fun CategoryListItemLoadingStatePreview() {
 
 @Preview
 @Composable
-fun CategoryListItemEmptyStatePreview() {
+fun TransactionListItemEmptyStatePreview() {
     MaterialTheme {
-        CategoryListScreen(
-            categoryUiState = UiState.Empty,
+        TransactionListScreen(
+            transactionUiState = UiState.Empty,
             modifier = Modifier.fillMaxSize()
         )
     }
 }
 
 val DUMMY_DATA = listOf(
-    Category(
+    TransactionUIModel(
         id = "1",
-        name = "Category One",
-        type = CategoryType.EXPENSE,
-        isFavorite = false,
-        backgroundColor = "#000000",
-        createdOn = Date(),
-        updatedOn = Date()
+        notes = UiText.DynamicString("Transaction One"),
+        amount = UiText.DynamicString("Transaction One"),
+        categoryName = "Clothing",
+        categoryType = CategoryType.EXPENSE,
+        categoryBackgroundColor = "#000000",
+        accountIcon = com.nkuppan.expensemanager.core.ui.R.drawable.ic_add,
+        date = Date().toString()
     ),
-    Category(
-        id = "2",
-        name = "Category Two",
-        type = CategoryType.EXPENSE,
-        isFavorite = false,
-        backgroundColor = "#FFFFFF",
-        createdOn = Date(),
-        updatedOn = Date()
+    TransactionUIModel(
+        id = "1",
+        notes = UiText.DynamicString("Transaction One"),
+        amount = UiText.DynamicString("Transaction One"),
+        categoryName = "Clothing",
+        categoryType = CategoryType.INCOME,
+        categoryBackgroundColor = "#000000",
+        accountIcon = com.nkuppan.expensemanager.core.ui.R.drawable.ic_add,
+        date = Date().toString()
     ),
 )
 
 @Preview
 @Composable
-fun CategoryListItemSuccessStatePreview() {
+fun TransactionListItemSuccessStatePreview() {
     MaterialTheme {
-        CategoryListScreen(
-            categoryUiState = UiState.Success(
+        TransactionListScreen(
+            transactionUiState = UiState.Success(
                 DUMMY_DATA
             ),
             modifier = Modifier.fillMaxSize()

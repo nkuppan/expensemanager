@@ -40,5 +40,6 @@
     <string name="transaction_action_text">Tap + button to add a new transaction,\nOr change time period.</string>
     <string name="search">Search</string>
     <string name="not_assigned">Not assigned</string>
+    <string name="transaction">Transaction</string>
 
 </resources>
