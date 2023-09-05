@@ -1,5 +1,7 @@
 package com.nkuppan.expensemanager.presentation
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -93,6 +96,9 @@ fun MainPageView() {
 
 @Composable
 private fun HomePageScreen(navController: NavHostController) {
+
+    val activity = LocalContext.current as Activity
+
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -142,6 +148,16 @@ private fun HomePageScreen(navController: NavHostController) {
                     navController.navigate("settings")
                 }) {
                 Text(text = "Navigate to Settings")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    activity.startActivity(Intent(activity, HomeActivity::class.java))
+                    activity.finish()
+                }) {
+                Text(text = "Navigate to Old App")
             }
         }
     }

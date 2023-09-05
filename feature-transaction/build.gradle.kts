@@ -8,6 +8,10 @@ plugins {
 
 android {
     namespace = "com.nkuppan.expensemanager.feature.transaction"
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {

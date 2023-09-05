@@ -19,6 +19,7 @@ data class TransactionUIModel(
     val categoryName: String,
     val categoryType: CategoryType,
     val categoryBackgroundColor: String,
+    val accountName: String,
     @DrawableRes val accountIcon: Int,
     val date: String,
 )

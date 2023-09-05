@@ -8,6 +8,10 @@ plugins {
 
 android {
     namespace = "com.nkuppan.expensemanager.feature.analysis"
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {

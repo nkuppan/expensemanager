@@ -15,6 +15,7 @@ import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByNameU
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.feature.transaction.R
 import com.nkuppan.expensemanager.feature.transaction.history.TransactionUIModel
+import com.nkuppan.expensemanager.feature.transaction.history.toTransactionUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
@@ -57,20 +58,7 @@ class TransactionListViewModel @Inject constructor(
         }.onEach { transactions ->
             _transactions.value =
                 UiState.Success(transactions.map {
-                    TransactionUIModel(
-                        it.id,
-                        getCurrency(currencySymbol, it.amount),
-                        if (it.notes.isBlank()) {
-                            UiText.StringResource(R.string.not_assigned)
-                        } else {
-                            UiText.DynamicString(it.notes)
-                        },
-                        it.category.name,
-                        it.category.type,
-                        it.category.backgroundColor,
-                        it.account.type.getPaymentModeIcon(),
-                        it.updatedOn.toTransactionDate(),
-                    )
+                    it.toTransactionUIModel(currencySymbol)
                 })
         }.launchIn(viewModelScope)
     }

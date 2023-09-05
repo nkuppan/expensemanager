@@ -1,9 +1,11 @@
 package com.nkuppan.expensemanager.feature.transaction.list
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,11 +29,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.core.model.CategoryType
@@ -81,6 +87,8 @@ private fun TransactionListScreen(
     modifier: Modifier = Modifier
 ) {
 
+    val context = LocalContext.current
+
     val scrollState = rememberLazyListState()
 
     Box(modifier = modifier) {
@@ -108,7 +116,12 @@ private fun TransactionListScreen(
                 LazyColumn(state = scrollState) {
                     items(transactionUiState.data) {
                         TransactionItem(
-                            name = it.categoryName,
+                            categoryName = it.categoryName,
+                            accountName = it.accountName,
+                            accountIcon = it.accountIcon,
+                            notes = it.notes.asString(context),
+                            amount = it.amount.asString(context),
+                            date = it.date,
                             transactionColor = it.categoryBackgroundColor,
                             categoryType = it.categoryType,
                             modifier = Modifier
@@ -125,9 +138,14 @@ private fun TransactionListScreen(
 
 @Composable
 fun TransactionItem(
-    name: String,
-    transactionColor: String,
+    categoryName: String,
+    accountName: String,
+    @DrawableRes accountIcon: Int,
+    notes: String?,
+    amount: String,
+    date: String,
     modifier: Modifier = Modifier,
+    transactionColor: String = "#000000",
     categoryType: CategoryType = CategoryType.EXPENSE
 ) {
     Row(modifier = modifier) {
@@ -160,12 +178,67 @@ fun TransactionItem(
                 colorFilter = ColorFilter.tint(color = Color.White)
             )
         }
-        Text(
+        Column(
             modifier = Modifier
                 .weight(1f)
-                .align(Alignment.CenterVertically),
-            text = name
-        )
+                .align(Alignment.CenterVertically)
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = categoryName
+            )
+            Row(
+                modifier = Modifier.padding(top = 4.dp),
+            ) {
+                Image(
+                    modifier = Modifier
+                        .size(12.dp)
+                        .align(Alignment.CenterVertically),
+                    painter = painterResource(id = accountIcon),
+                    contentDescription = ""
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .fillMaxWidth(),
+                    fontSize = 12.sp,
+                    text = accountName
+                )
+            }
+            /*if (notes?.isNotBlank() == true) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = notes,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }*/
+        }
+        Column(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(start = 16.dp)
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.End),
+                text = amount,
+                fontStyle = FontStyle.Normal,
+                fontWeight = FontWeight.Medium,
+                color = if (categoryType == CategoryType.EXPENSE)
+                    Color.Red
+                else
+                    Color.Green
+            )
+            Text(
+                modifier = Modifier.align(Alignment.End),
+                text = date,
+                fontSize = 12.sp,
+                fontStyle = FontStyle.Normal,
+            )
+        }
     }
 }
 
@@ -174,8 +247,13 @@ fun TransactionItem(
 fun TransactionItemPreview() {
     MaterialTheme {
         TransactionItem(
-            name = "Utilities",
+            categoryName = "Utilities",
+            notes = "Something people want to describe about the spendings",
             transactionColor = "#FFFFFF",
+            amount = "300 ₹",
+            date = "15/11/2019",
+            accountName = "",
+            accountIcon = com.nkuppan.expensemanager.feature.account.R.drawable.ic_card,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
@@ -214,6 +292,7 @@ val DUMMY_DATA = listOf(
         categoryName = "Clothing",
         categoryType = CategoryType.EXPENSE,
         categoryBackgroundColor = "#000000",
+        accountName = "",
         accountIcon = com.nkuppan.expensemanager.core.ui.R.drawable.ic_add,
         date = Date().toString()
     ),
@@ -224,6 +303,7 @@ val DUMMY_DATA = listOf(
         categoryName = "Clothing",
         categoryType = CategoryType.INCOME,
         categoryBackgroundColor = "#000000",
+        accountName = "",
         accountIcon = com.nkuppan.expensemanager.core.ui.R.drawable.ic_add,
         date = Date().toString()
     ),

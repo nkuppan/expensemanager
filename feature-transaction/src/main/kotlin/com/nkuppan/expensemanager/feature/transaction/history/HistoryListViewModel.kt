@@ -74,20 +74,7 @@ class HistoryListViewModel @Inject constructor(
                     titleValue,
                     getCurrency(currencySymbol, totalAmount),
                     value.transaction.map {
-                        TransactionUIModel(
-                            it.id,
-                            getCurrency(currencySymbol, it.amount),
-                            if (it.notes.isBlank()) {
-                                UiText.StringResource(R.string.not_assigned)
-                            } else {
-                                UiText.DynamicString(it.notes)
-                            },
-                            it.category.name,
-                            it.category.type,
-                            it.category.backgroundColor,
-                            it.account.type.getPaymentModeIcon(),
-                            it.updatedOn.toTransactionDate(),
-                        )
+                        it.toTransactionUIModel(currencySymbol)
                     },
                     expanded = false
                 )
@@ -114,4 +101,23 @@ class HistoryListViewModel @Inject constructor(
             }
         }
     }
+}
+
+
+fun Transaction.toTransactionUIModel(currencySymbol: Int): TransactionUIModel {
+    return TransactionUIModel(
+        this.id,
+        getCurrency(currencySymbol, this.amount),
+        if (this.notes.isBlank()) {
+            UiText.StringResource(R.string.not_assigned)
+        } else {
+            UiText.DynamicString(this.notes)
+        },
+        this.category.name,
+        this.category.type,
+        this.category.backgroundColor,
+        accountName = this.account.name,
+        this.account.type.getPaymentModeIcon(),
+        this.updatedOn.toTransactionDate(),
+    )
 }

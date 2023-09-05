@@ -18,6 +18,7 @@ import com.nkuppan.expensemanager.data.usecase.transaction.*
 import com.nkuppan.expensemanager.data.utils.getPreviousDateTime
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.feature.transaction.history.TransactionUIModel
+import com.nkuppan.expensemanager.feature.transaction.history.toTransactionUIModel
 import com.nkuppan.expensemanager.feature.transaction.list.getPaymentModeIcon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -101,20 +102,7 @@ class DashboardViewModel @Inject constructor(
             constructPreviousDaysAnalysisGraphData()
 
             _transactions.value = ((response?.map {
-                TransactionUIModel(
-                    it.id,
-                    getCurrency(currencySymbol, it.amount),
-                    if (it.notes.isBlank()) {
-                        UiText.StringResource(com.nkuppan.expensemanager.feature.transaction.R.string.not_assigned)
-                    } else {
-                        UiText.DynamicString(it.notes)
-                    },
-                    it.category.name,
-                    it.category.type,
-                    it.category.backgroundColor,
-                    it.account.type.getPaymentModeIcon(),
-                    it.updatedOn.toTransactionDate(),
-                )
+                it.toTransactionUIModel(currencySymbol)
             } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
 
         }.launchIn(viewModelScope)
