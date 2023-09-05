@@ -170,9 +170,9 @@ fun TransactionItem(
                 painter = painterResource(
                     id =
                     if (categoryType == CategoryType.EXPENSE)
-                        R.drawable.ic_arrow_upward
+                        com.nkuppan.expensemanager.core.ui.R.drawable.ic_arrow_upward
                     else
-                        R.drawable.ic_arrow_downward
+                        com.nkuppan.expensemanager.core.ui.R.drawable.ic_arrow_downward
                 ),
                 contentDescription = "",
                 colorFilter = ColorFilter.tint(color = Color.White)
