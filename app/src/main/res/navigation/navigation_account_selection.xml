@@ -6,6 +6,6 @@
 
     <dialog
         android:id="@+id/accountSelectionFragment"
-        android:name="com.nkuppan.expensemanager.feature.account.selection.AccountSelectionFragment"
+        android:name="com.nkuppan.expensemanager.presentation.account.selection.AccountSelectionFragment"
         android:label="AccountSelectionFragment" />
 </navigation>
