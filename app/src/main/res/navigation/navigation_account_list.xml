@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_account_list"
+    app:startDestination="@id/accountListFragment">
+
+    <fragment
+        android:id="@+id/accountListFragment"
+        android:name="com.nkuppan.expensemanager.presentation.account.list.AccountListFragment"
+        android:label="Accounts"
+        tools:layout="@layout/fragment_list">
+
+        <action
+            android:id="@+id/action_accountListFragment_to_navigation_account_create"
+            app:destination="@id/navigation_account_create" />
+    </fragment>
+
+    <include app:graph="@navigation/navigation_account_create" />
+
+</navigation>

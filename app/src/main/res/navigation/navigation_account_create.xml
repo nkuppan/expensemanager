@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_account_create"
+    app:startDestination="@id/accountCreateFragment">
+
+    <fragment
+        android:id="@+id/accountCreateFragment"
+        android:name="com.nkuppan.expensemanager.presentation.account.create.AccountCreateFragment"
+        android:label="Account Create"
+        tools:layout="@layout/fragment_account_create">
+        <argument
+            android:name="account"
+            app:argType="com.nkuppan.expensemanager.domain.model.Account"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_accountCreateFragment_to_accountDeleteDialog"
+            app:destination="@id/accountDeleteDialog" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/accountDeleteDialog"
+        android:name="com.nkuppan.expensemanager.presentation.account.delete.AccountDeleteDialog"
+        android:label="Account Delete">
+
+        <argument
+            android:name="account"
+            app:argType="com.nkuppan.expensemanager.domain.model.Account"
+            app:nullable="false" />
+    </dialog>
+
+</navigation>

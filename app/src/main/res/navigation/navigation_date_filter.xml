@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation_date_filter"
+    app:startDestination="@id/dateSelectionFragment">
+
+    <dialog
+        android:id="@+id/dateSelectionFragment"
+        android:name="com.nkuppan.expensemanager.presentation.settings.date.DateSelectionFragment"
+        android:label="DateSelectionFragment" />
+</navigation>

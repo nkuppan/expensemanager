@@ -11,8 +11,6 @@ open class BaseCoroutineTest {
     @get:Rule
     val testCoroutineDispatcher = TestDispatcherRule()
 
-    private lateinit var autoCloseable: AutoCloseable
-
     @Before
     open fun onCreate() {
 
@@ -20,6 +18,6 @@ open class BaseCoroutineTest {
 
     @After
     open fun onDestroy() {
-        autoCloseable.close()
+
     }
 }

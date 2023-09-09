@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_settings"
+    app:startDestination="@id/settingsFragment">
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.nkuppan.expensemanager.presentation.settings.SettingsFragment"
+        android:label="NewSettingsFragment"
+        tools:layout="@layout/fragment_settings">
+        <action
+            android:id="@+id/action_settingsFragment_to_themeDialogFragment"
+            app:destination="@id/themeDialogFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_currencyDialogFragment"
+            app:destination="@id/currencyDialogFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/themeDialogFragment"
+        android:name="com.nkuppan.expensemanager.presentation.settings.theme.ThemeDialogFragment"
+        android:label="ThemeDialogFragment">
+
+        <argument
+            android:name="theme"
+            app:argType="com.nkuppan.expensemanager.domain.model.Theme"
+            app:nullable="false" />
+    </dialog>
+
+    <dialog
+        android:id="@+id/currencyDialogFragment"
+        android:name="com.nkuppan.expensemanager.presentation.settings.currency.CurrencyDialogFragment"
+        android:label="Currency Selection Dialog">
+
+        <argument
+            android:name="currency"
+            app:argType="com.nkuppan.expensemanager.domain.model.Currency"
+            app:nullable="false" />
+    </dialog>
+</navigation>

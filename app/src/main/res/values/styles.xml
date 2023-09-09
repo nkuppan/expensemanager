@@ -37,4 +37,12 @@
     </style>
 
 
+    <style name="Theme.ExpenseManager.CardView">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="useCompatPadding">true</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="android:layout_margin">@dimen/margin_16dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

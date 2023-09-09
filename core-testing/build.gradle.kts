@@ -14,7 +14,10 @@ dependencies {
     api(libs.androidx.test.espresso.core)
     api(libs.androidx.test.uiautomator)
     api(libs.androidx.test.ext)
+    api(libs.androidx.test.core.arch)
     api(libs.androidx.test.core)
     api(libs.androidx.test.rules)
     api(libs.androidx.test.runner)
+    api(libs.mockito)
+    api(libs.truth)
 }

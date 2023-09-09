@@ -1,0 +1,14 @@
+package com.nkuppan.expensemanager.domain.model
+
+import java.io.Serializable
+import java.util.Date
+
+data class Category(
+    val id: String,
+    val name: String,
+    val type: CategoryType,
+    val isFavorite: Boolean,
+    val backgroundColor: String,
+    val createdOn: Date,
+    val updatedOn: Date
+) : Serializable

@@ -1,7 +1,14 @@
 <resources>
+
+    <string name="empty" />
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="value">$ 45,587.30</string>
+    <string name="amount_string">%s %.2f</string>
+
     <string name="app_name">Expense Manager</string>
     <string name="title_category">Category</string>
-    <string name="title_graph">Graph</string>
     <string name="title_history">History</string>
 
     <string name="no_data_available">No data available</string>
@@ -17,14 +24,12 @@
     <string name="favorite">Favorite</string>
     <string name="favorite_category">Favorite category</string>
 
-    <string name="default_currency_type">$</string>
     <string name="available_balance">Available balance</string>
 
     <string name="shopping">Shopping</string>
     <string name="filter">Filter</string>
     <string name="search">Search</string>
     <string name="enter_amount_value">Enter amount value</string>
-    <string name="general_settings">General settings</string>
     <string name="btn_custom">Custom</string>
     <string name="_22_04_2019">22–04–2019</string>
     <string name="app_share_content">Superb expense manager application to use !!</string>
@@ -51,7 +56,6 @@
     <string name="cash">Cash</string>
 
     <string name="choose_an_item">Choose an item</string>
-    <string name="all">All</string>
     <string name="choose_an_account">Choose an account</string>
     <string name="choose_a_date_filter">Choose a date filter</string>
 
@@ -65,6 +69,187 @@
     <string name="title_accounts">Accounts</string>
     <string name="save_account">Save account</string>
     <string name="select">Select</string>
-    <string name="title_color_picker">ColorPicker Dialog</string>
     <string name="category">Category</string>
+
+
+    <string name="title_home">Home</string>
+    <string name="this_month">This month</string>
+    <string name="view_all">View all</string>
+    <string name="last_seven_day">Last 7 Days Analysis</string>
+    <string name="last_transactions">Last Transactions</string>
+    <string name="account">Account</string>
+    <string name="summary">Summary</string>
+    <string name="my_balance">My balance</string>
+
+    <string name="no_category_available">No category available</string>
+    <string name="category_delete_error_message">Unable to delete this category</string>
+    <string name="title_color_picker">Color picker</string>
+    <string name="category_name">Category Name</string>
+    <string name="expense">Expense</string>
+    <string name="balance">Balance</string>
+    <string name="income">Income</string>
+    <string name="category_type">Category type</string>
+    <string name="category_action_text">Tap + button to add a new category.</string>
+    <string name="category_create_error">Unknown error occurred while inserting category</string>
+    <string name="name">Name</string>
+
+
+    <string name="transaction_action_text">Tap + button to add a new transaction,\nOr change time period.</string>
+    <string name="unable_to_load_graph_items">Unable to load graph</string>
+    <string name="title_graph">Graph</string>
+
+    <string name="no_expense_available">No expense</string>
+    <string name="no_income_available">No income</string>
+
+    <string-array name="graph_items">
+        <item>@string/expense</item>
+        <item>@string/income</item>
+    </string-array>
+
+
+    <string name="theme">Theme</string>
+    <string name="title_settings">Settings</string>
+
+    <string name="backup_file_message">Backup file completed</string>
+    <string name="spreadsheet_export_message">Your expense details will be exported into a spreadsheet file format.</string>
+
+    <string name="export">Export</string>
+    <string name="export_message">Tacking backup for your database</string>
+    <string name="import_title">Import</string>
+    <string name="import_description">Importing backup file will retain the last data.</string>
+
+    <string name="successfully_exported">Successfully exported</string>
+    <string name="failed_to_export">Failed to export</string>
+
+    <string name="successfully_imported">Successfully Imported</string>
+    <string name="failed_to_import">Failed to import</string>
+
+    <string name="add_transaction">Add transaction</string>
+    <string name="notification_title">Don\'t forget to record your expenses</string>
+
+    <string name="general_settings">General</string>
+    <string name="wallets_amp_accounts">Wallets &amp; accounts</string>
+    <string name="wallets_amp_accounts_summary">manage accounts and wallets details</string>
+    <string name="current_theme">Currently selected theme</string>
+    <string name="currency">Currency</string>
+    <string name="current_currency">Currently selected currency symbol</string>
+    <string name="daily_reminder">Daily Reminder</string>
+    <string name="reminder">Reminder</string>
+    <string name="daily_reminder_time">Daily Reminder Time</string>
+    <string name="selected_daily_reminder_time">Currently selected daily reminder time</string>
+    <string name="spreadsheet_export">Spreadsheet Export</string>
+    <string name="manage_settings">Manage</string>
+    <string name="export_title">Export</string>
+    <string name="about">About</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="feedback">Feedback</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+    <string name="developed_by">Developed by Naveen Kumar Kuppan</string>
+    <string name="twitter">twitter</string>
+    <string name="mail">Mail</string>
+    <string name="github">Github</string>
+    <string name="choose_theme">Choose Theme</string>
+    <string name="choose_currency">Choose Currency</string>
+
+    <string name="choose_email_app">Choose email app</string>
+    <string name="app_feedback">App feedback</string>
+    <string name="choose_web_browser">Choose web browser</string>
+    <string name="last_month">Last month</string>
+    <string name="set_custom_period">Set custom period</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End date</string>
+    <string name="set">Set</string>
+    <string name="date_filter">Filter By Date</string>
+
+
+    <string name="title_transaction">Transaction</string>
+    <string name="unable_to_add_transaction">Unable to add transaction</string>
+    <string name="unable_to_delete_transaction">Unable to delete transaction</string>
+    <string name="unable_to_find_transaction">Unable to find transaction</string>
+    <string name="transaction_delete_error_message">Unable to delete this transaction</string>
+    <string name="unable_to_load_transaction">Unable to load transaction</string>
+
+    <string name="no_transactions_available">No transactions available</string>
+    <string name="date">Date</string>
+    <string name="notes">Notes</string>
+    <string name="search_hint">Search</string>
+    <string name="clear_text">Clear search content</string>
+    <string name="voice_search">Voice search</string>
+    <string name="speech_prompt">Search your transaction</string>
+
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="divide">/</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="multiply">*</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="equals">=</string>
+    <string name="plus">+</string>
+
+    <string name="no_history_available">No history</string>
+    <string name="not_assigned">Not assigned</string>
+    <string name="transaction">Transaction</string>
+
+
+    <string name="account_delete_error_message">Unable to delete this account</string>
+    <string name="account_name">Account Name</string>
+    <string name="wallet">Wallet</string>
+    <string name="upi">UPI</string>
+    <string name="cheque">Cheque</string>
+    <string name="internet_banking">Internet banking</string>
+    <string name="bank_account">Bank account</string>
+    <string name="no_account_available">No account available</string>
+    <string name="account_action_text">Tap + button to add a new account.</string>
+    <string name="add_new_account">Add New Account</string>
+    <string name="delete">Delete</string>
+    <string name="account_create_failed">Unable to create account</string>
+    <string name="select_account">Select account</string>
+
+
+    <string name="dollar_type">$</string>
+    <string name="dollar_name">Dollar</string>
+
+    <string name="pound_type">£</string>
+    <string name="pound_name">Pound</string>
+
+    <string name="euro_type">€</string>
+    <string name="euro_name">Euro</string>
+
+    <string name="yen_type">¥</string>
+    <string name="yen_name">Yen</string>
+
+    <string name="swiss_franc_type">Fr</string>
+    <string name="swiss_franc_name">Swiss Franc</string>
+
+    <string name="swedish_krona_type">¥</string>
+    <string name="swedish_krona_name">Swedish krona</string>
+
+    <string name="won_type">₩</string>
+    <string name="won_name">Won</string>
+
+    <string name="rupee_type">₹</string>
+    <string name="rupee_name">Rupee</string>
+
+    <string name="default_currency_type">@string/dollar_type</string>
+    <string name="default_currency_name">@string/dollar_name</string>
+
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="set_by_battery_saver">Set by battery saver</string>
+    <string name="system_default">System default</string>
+
+    <string name="previous_month">Previous Month</string>
+    <string name="last_three_month">Last Three Month</string>
+    <string name="last_six_month">Last Six Month</string>
+    <string name="last_year">Last Year</string>
+    <string name="all">All</string>
+    <string name="custom">Custom</string>
 </resources>

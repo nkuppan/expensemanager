@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_analysis"
+    app:startDestination="@id/graphTabFragment">
+
+    <include app:graph="@navigation/navigation_transaction_create" />
+
+    <fragment
+        android:id="@+id/graphTabFragment"
+        android:name="com.nkuppan.expensemanager.presentation.analysis.tabs.GraphTabFragment"
+        android:label="GraphTabFragment"
+        tools:layout="@layout/fragment_graph_tabs">
+        <action
+            android:id="@+id/action_graphTabFragment_to_transaction_create_navigation"
+            app:destination="@id/navigation_transaction_create" />
+    </fragment>
+</navigation>

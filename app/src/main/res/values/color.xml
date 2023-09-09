@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="grey_light">#05000000</color>
+
+    <color name="white">@android:color/white</color>
+    <color name="red_500">#F44336</color>
+
+    <color name="ic_launcher_background">#FFFFFF</color>
+
+    <color name="green_500">#43A546</color>
+
+    <color name="blue_500">#166EF7</color>
+
+    <color name="black_800">#121212</color>
+    <color name="black_900">#000000</color>
+    <color name="black_200">#30000000</color>
+    <color name="black_50">#05000000</color>
+</resources>
