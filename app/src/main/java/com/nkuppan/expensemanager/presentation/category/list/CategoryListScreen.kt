@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -72,18 +73,21 @@ fun CategoryListScreen(
                 )
             }
         }
-    ) {
+    ) { it ->
         CategoryListScreen(
             modifier = Modifier.padding(top = it.calculateTopPadding()),
             categoryUiState = categoryUiState
-        )
+        ) { categoryId ->
+            navController.navigate("category/create?categoryId=${categoryId}")
+        }
     }
 }
 
 @Composable
 fun CategoryListScreen(
     categoryUiState: UiState<List<Category>>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: ((String) -> Unit)? = null
 ) {
 
     val scrollState = rememberLazyListState()
@@ -112,14 +116,17 @@ fun CategoryListScreen(
             is UiState.Success -> {
 
                 LazyColumn(state = scrollState) {
-                    items(categoryUiState.data) {
+                    items(categoryUiState.data) { category ->
                         CategoryItem(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
-                            name = it.name,
-                            iconName = it.iconName,
-                            categoryColor = it.backgroundColor
+                                .padding(16.dp)
+                                .clickable {
+                                    onItemClick?.invoke(category.id)
+                                },
+                            name = category.name,
+                            iconName = category.iconName,
+                            categoryColor = category.backgroundColor
                         )
                     }
                 }

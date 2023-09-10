@@ -21,9 +21,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
@@ -63,8 +65,19 @@ fun MainPageView() {
             composable("category") {
                 CategoryListScreen(navController)
             }
-            composable("category/create") {
-                CategoryCreateScreen(navController)
+            composable(
+                route = "category/create?categoryId={categoryId}",
+                arguments = listOf(
+                    navArgument("categoryId") {
+                        defaultValue = ""
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                CategoryCreateScreen(
+                    navController,
+                    backStackEntry.arguments?.getString("categoryId")
+                )
             }
             composable("transaction") {
                 TransactionListScreen(navController)

@@ -9,6 +9,7 @@ import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.usecase.category.AddCategoryUseCase
 import com.nkuppan.expensemanager.domain.usecase.category.DeleteCategoryUseCase
+import com.nkuppan.expensemanager.domain.usecase.category.FindCategoryByIdUseCase
 import com.nkuppan.expensemanager.domain.usecase.category.UpdateCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryCreateViewModel @Inject constructor(
+    private val findCategoryByIdUseCase: FindCategoryByIdUseCase,
     private val addCategoryUseCase: AddCategoryUseCase,
     private val updateCategoryUseCase: UpdateCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
@@ -46,8 +48,18 @@ class CategoryCreateViewModel @Inject constructor(
     val icon: MutableStateFlow<String> = MutableStateFlow("ic_calendar")
 
     private var categoryItem: Category? = null
-    private var currentType: CategoryType = CategoryType.EXPENSE
 
+    fun readCategoryInfo(categoryId: String?) {
+        categoryId ?: return
+        viewModelScope.launch {
+            when (val response = findCategoryByIdUseCase.invoke(categoryId)) {
+                is Resource.Error -> Unit
+                is Resource.Success -> {
+                    setCategoryValue(response.data)
+                }
+            }
+        }
+    }
 
     fun setCategoryValue(aCategory: Category?) {
 
@@ -58,14 +70,10 @@ class CategoryCreateViewModel @Inject constructor(
         }
 
         categoryItem?.let { categoryItem ->
-
             categoryName.value = categoryItem.name
-
             _categoryType.value = categoryItem.type
-
-            currentType = categoryItem.type
-
             colorValue.value = categoryItem.backgroundColor
+            icon.value = categoryItem.iconName
         }
     }
 
@@ -106,7 +114,7 @@ class CategoryCreateViewModel @Inject constructor(
         val category = Category(
             id = categoryItem?.id ?: UUID.randomUUID().toString(),
             name = name,
-            type = currentType,
+            type = categoryType.value,
             backgroundColor = color,
             iconName = icon.value,
             createdOn = Calendar.getInstance().time,

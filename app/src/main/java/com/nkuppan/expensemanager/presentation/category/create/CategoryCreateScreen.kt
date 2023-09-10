@@ -55,7 +55,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CategoryCreateScreen(navController: NavController) {
+fun CategoryCreateScreen(
+    navController: NavController,
+    categoryId: String?
+) {
 
     val context = LocalContext.current
 
@@ -69,6 +72,7 @@ fun CategoryCreateScreen(navController: NavController) {
     )
 
     val viewModel: CategoryCreateViewModel = hiltViewModel()
+    viewModel.readCategoryInfo(categoryId)
 
     val categoryCreated by viewModel.categoryCreated.collectAsState(false)
 
@@ -102,7 +106,22 @@ fun CategoryCreateScreen(navController: NavController) {
                     navigationIcon = R.drawable.ic_close
                 )
             }, title = {
-                Text(text = stringResource(R.string.category))
+                Row {
+                    Text(
+                        modifier = Modifier
+                            .weight(1f)
+                            .align(Alignment.CenterVertically),
+                        text = stringResource(R.string.category)
+                    )
+                    if (categoryId?.isNotBlank() == true) {
+                        IconButton(onClick = viewModel::delete) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_delete),
+                                contentDescription = ""
+                            )
+                        }
+                    }
+                }
             })
         }
     ) { innerPadding ->
