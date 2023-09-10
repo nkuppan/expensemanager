@@ -120,10 +120,10 @@ fun CategoryListScreen(
                         CategoryItem(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
                                 .clickable {
                                     onItemClick?.invoke(category.id)
-                                },
+                                }
+                                .padding(16.dp),
                             name = category.name,
                             iconName = category.iconName,
                             categoryColor = category.backgroundColor
