@@ -252,4 +252,6 @@
     <string name="last_year">Last Year</string>
     <string name="all">All</string>
     <string name="custom">Custom</string>
+    <string name="select_color">Select Color</string>
+    <string name="category_create_success">Category created/modified successfully</string>
 </resources>

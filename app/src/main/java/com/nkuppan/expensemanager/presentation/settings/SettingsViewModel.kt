@@ -6,12 +6,12 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.usecase.settings.GetReminderStatusUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.UpdateReminderStatusUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.theme.GetThemeUseCase
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Theme
+import com.nkuppan.expensemanager.domain.usecase.settings.GetReminderStatusUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.UpdateReminderStatusUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.theme.GetThemeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

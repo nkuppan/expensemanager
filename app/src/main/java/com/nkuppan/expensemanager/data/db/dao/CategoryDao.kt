@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CategoryDao : BaseDao<CategoryEntity> {
 
-    @Query("SELECT * FROM category ORDER BY is_favorite DESC")
+    @Query("SELECT * FROM category ORDER BY created_on DESC")
     fun getCategories(): Flow<List<CategoryEntity>?>
 
-    @Query("SELECT * FROM category ORDER BY is_favorite DESC")
+    @Query("SELECT * FROM category ORDER BY created_on DESC")
     fun getAllValues(): List<CategoryEntity>?
 
     @Query("SELECT * FROM category WHERE id = :aModelId")

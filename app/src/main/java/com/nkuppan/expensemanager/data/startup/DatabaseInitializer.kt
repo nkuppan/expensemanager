@@ -2,7 +2,7 @@ package com.nkuppan.expensemanager.data.startup
 
 import android.content.Context
 import androidx.startup.Initializer
-import com.nkuppan.expensemanager.data.usecase.account.GetAllAccountsUseCase
+import com.nkuppan.expensemanager.domain.usecase.account.GetAllAccountsUseCase
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

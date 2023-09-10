@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByIdUseCase
-import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionByNameUseCase
 import com.nkuppan.expensemanager.domain.model.PaymentMode
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionByIdUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionByNameUseCase
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -20,7 +20,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         """
         SELECT 
             `transaction`.*, 
-            `category`.name, `category`.background_color, `category`.is_favorite,`category`.type,
+            `category`.name, `category`.background_color, `category`.icon_name,`category`.type,
             `account`.name, `account`.background_color, `account`.type
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id
@@ -34,7 +34,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         """
         SELECT 
             `transaction`.*, 
-            `category`.name, `category`.background_color, `category`.is_favorite,`category`.type,
+            `category`.name, `category`.background_color, `category`.icon_name,`category`.type,
             `account`.name, `account`.background_color, `account`.type
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id   
@@ -52,7 +52,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         """
         SELECT 
             `transaction`.*, 
-            `category`.name, `category`.background_color, `category`.is_favorite,`category`.type,
+            `category`.name, `category`.background_color, `category`.icon_name,`category`.type,
             `account`.name, `account`.background_color, `account`.type
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id

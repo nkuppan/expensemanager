@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.data.usecase.account.AddAccountUseCase
-import com.nkuppan.expensemanager.data.usecase.account.DeleteAccountUseCase
-import com.nkuppan.expensemanager.data.usecase.account.UpdateAccountUseCase
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.PaymentMode
 import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.usecase.account.AddAccountUseCase
+import com.nkuppan.expensemanager.domain.usecase.account.DeleteAccountUseCase
+import com.nkuppan.expensemanager.domain.usecase.account.UpdateAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

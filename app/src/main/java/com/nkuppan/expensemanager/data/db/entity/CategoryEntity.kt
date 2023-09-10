@@ -17,8 +17,8 @@ data class CategoryEntity(
     val type: Int,
     @ColumnInfo(name = "background_color")
     val backgroundColor: String,
-    @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean,
+    @ColumnInfo(name = "icon_name")
+    val iconName: String,
     @ColumnInfo(name = "updated_on")
     val updatedOn: Date,
     @ColumnInfo(name = "created_on")

@@ -2,9 +2,9 @@ package com.nkuppan.expensemanager.presentation.category.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.data.usecase.category.GetAllCategoryUseCase
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.domain.usecase.category.GetAllCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

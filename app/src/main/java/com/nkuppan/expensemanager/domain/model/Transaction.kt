@@ -14,7 +14,7 @@ data class Transaction(
     val updatedOn: Date,
     var category: Category = Category(
         "", "", CategoryType.INCOME,
-        false, "",
+        "", "",
         Date(), Date()
     ),
     var account: Account = Account(

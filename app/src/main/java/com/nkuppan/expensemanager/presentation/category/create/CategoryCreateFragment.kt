@@ -91,7 +91,7 @@ class CategoryCreateFragment : BaseBindingFragment<FragmentCategoryCreateBinding
                 launch {
                     viewModel.colorPicker.collectLatest {
                         binding.root.hideKeyboard()
-                        viewModel.colorValue.value?.let { _ ->
+                        viewModel.colorValue.value.let { _ ->
                             openColorPicker()
                         }
                     }

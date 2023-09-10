@@ -1,8 +1,9 @@
 package com.nkuppan.expensemanager.presentation.category.list
 
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -38,6 +40,7 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.presentation.category.create.NavigationButton
 import java.util.Date
 
 
@@ -51,6 +54,9 @@ fun CategoryListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    NavigationButton(navController)
+                },
                 title = {
                     Text(text = stringResource(R.string.category))
                 }
@@ -110,10 +116,9 @@ fun CategoryListScreen(
                         CategoryItem(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color.White)
                                 .padding(16.dp),
                             name = it.name,
-                            isFavorite = it.isFavorite,
+                            iconName = it.iconName,
                             categoryColor = it.backgroundColor
                         )
                     }
@@ -123,13 +128,16 @@ fun CategoryListScreen(
     }
 }
 
+@SuppressLint("DiscouragedApi")
 @Composable
 fun CategoryItem(
     name: String,
-    isFavorite: Boolean,
+    iconName: String,
     categoryColor: String,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Row(modifier = modifier) {
         Box(
             modifier = Modifier
@@ -149,13 +157,7 @@ fun CategoryItem(
                 modifier = Modifier
                     .size(18.dp)
                     .align(Alignment.Center),
-                painter = painterResource(
-                    id = if (isFavorite) {
-                        R.drawable.ic_favorite
-                    } else {
-                        R.drawable.ic_favorite_border
-                    }
-                ),
+                painter = painterResource(id = context.getDrawable(iconName)),
                 colorFilter = ColorFilter.tint(color = Color.White),
                 contentDescription = name
             )
@@ -166,21 +168,18 @@ fun CategoryItem(
                 .align(Alignment.CenterVertically),
             text = name
         )
-        Image(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .size(24.dp)
-                .align(Alignment.CenterVertically),
-            painter = painterResource(
-                id = if (isFavorite) {
-                    R.drawable.ic_favorite
-                } else {
-                    R.drawable.ic_favorite_border
-                }
-            ),
-            contentDescription = name
-        )
     }
+}
+
+@SuppressLint("DiscouragedApi")
+fun Context.getDrawable(iconName: String): Int {
+    return runCatching {
+        val resources = this.resources.getIdentifier(
+            iconName, "drawable", this.packageName
+        )
+
+        if (resources > 0) resources else null
+    }.getOrNull() ?: R.drawable.ic_calendar
 }
 
 @Preview
@@ -190,11 +189,10 @@ fun CategoryItemPreview() {
         CategoryItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.White)
                 .padding(16.dp),
             name = "Utilities",
-            isFavorite = false,
-            categoryColor = "#FFFFFF"
+            iconName = "ic_calendar",
+            categoryColor = "#000000"
         )
     }
 }
@@ -226,7 +224,7 @@ val DUMMY_DATA = listOf(
         id = "1",
         name = "Category One",
         type = CategoryType.EXPENSE,
-        isFavorite = false,
+        iconName = "ic_calendar",
         backgroundColor = "#000000",
         createdOn = Date(),
         updatedOn = Date()
@@ -235,8 +233,8 @@ val DUMMY_DATA = listOf(
         id = "2",
         name = "Category Two",
         type = CategoryType.EXPENSE,
-        isFavorite = false,
-        backgroundColor = "#FFFFFF",
+        iconName = "ic_calendar",
+        backgroundColor = "#000000",
         createdOn = Date(),
         updatedOn = Date()
     ),

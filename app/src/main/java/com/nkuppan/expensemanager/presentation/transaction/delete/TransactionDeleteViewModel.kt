@@ -2,9 +2,9 @@ package com.nkuppan.expensemanager.presentation.transaction.delete
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.data.usecase.transaction.DeleteTransactionUseCase
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
+import com.nkuppan.expensemanager.domain.usecase.transaction.DeleteTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

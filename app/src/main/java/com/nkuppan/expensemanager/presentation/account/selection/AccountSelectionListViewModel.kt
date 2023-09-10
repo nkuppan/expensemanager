@@ -4,12 +4,12 @@ import androidx.annotation.DrawableRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
-import com.nkuppan.expensemanager.data.usecase.account.GetAllAccountsUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.account.GetSelectedAccountUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.account.UpdateSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.PaymentMode
 import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.usecase.account.GetAllAccountsUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.account.UpdateSelectedAccountUseCase
 import com.nkuppan.expensemanager.presentation.account.list.getPaymentModeIcon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

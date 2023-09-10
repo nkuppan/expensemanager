@@ -23,7 +23,7 @@ class CategoryListAdapter(
             return oldItem.name == newItem.name &&
                     oldItem.backgroundColor == newItem.backgroundColor &&
                     oldItem.type == newItem.type &&
-                    oldItem.isFavorite == newItem.isFavorite &&
+                    oldItem.iconName == newItem.iconName &&
                     oldItem.updatedOn == newItem.updatedOn
         }
     }

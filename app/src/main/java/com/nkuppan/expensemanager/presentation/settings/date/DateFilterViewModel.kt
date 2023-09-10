@@ -2,12 +2,12 @@ package com.nkuppan.expensemanager.presentation.settings.date
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.data.usecase.settings.filter.GetFilterRangeUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.filter.GetFilterTypeUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.filter.SaveFilterTypeUseCase
-import com.nkuppan.expensemanager.data.usecase.settings.filter.SetCustomFilterRangeUseCase
 import com.nkuppan.expensemanager.data.utils.getDateValue
 import com.nkuppan.expensemanager.domain.model.FilterType
+import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterRangeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.filter.SaveFilterTypeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.filter.SetCustomFilterRangeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow

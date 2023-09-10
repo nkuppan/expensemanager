@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.data.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.data.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.nkuppan.expensemanager.presentation.analysis.expense.GraphData
 import com.nkuppan.expensemanager.presentation.analysis.expense.constructGraphItems
 import dagger.hilt.android.lifecycle.HiltViewModel

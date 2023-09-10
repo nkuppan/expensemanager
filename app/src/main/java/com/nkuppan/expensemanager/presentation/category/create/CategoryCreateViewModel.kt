@@ -1,16 +1,15 @@
 package com.nkuppan.expensemanager.presentation.category.create
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.data.usecase.category.AddCategoryUseCase
-import com.nkuppan.expensemanager.data.usecase.category.DeleteCategoryUseCase
-import com.nkuppan.expensemanager.data.usecase.category.UpdateCategoryUseCase
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.usecase.category.AddCategoryUseCase
+import com.nkuppan.expensemanager.domain.usecase.category.DeleteCategoryUseCase
+import com.nkuppan.expensemanager.domain.usecase.category.UpdateCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +31,7 @@ class CategoryCreateViewModel @Inject constructor(
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
 
-    private val _categoryCreated = Channel<Unit>()
+    private val _categoryCreated = Channel<Boolean>()
     val categoryCreated = _categoryCreated.receiveAsFlow()
 
     private val _colorPicker = Channel<Unit>()
@@ -41,23 +40,14 @@ class CategoryCreateViewModel @Inject constructor(
     private val _categoryType = MutableStateFlow(CategoryType.EXPENSE)
     val categoryType = _categoryType.asStateFlow()
 
-    val categoryName: MutableLiveData<String> = MutableLiveData()
-
-    val categoryNameErrorText: MutableLiveData<String> = MutableLiveData()
-
-    val isFavorite: MutableLiveData<Boolean> = MutableLiveData()
-
-    val colorValue: MutableLiveData<String> = MutableLiveData()
+    val categoryName: MutableStateFlow<String> = MutableStateFlow("")
+    val categoryNameErrorText: MutableStateFlow<String> = MutableStateFlow("")
+    val colorValue: MutableStateFlow<String> = MutableStateFlow("#43A546")
+    val icon: MutableStateFlow<String> = MutableStateFlow("ic_calendar")
 
     private var categoryItem: Category? = null
-
     private var currentType: CategoryType = CategoryType.EXPENSE
 
-    init {
-        colorValue.value = "#43A546"
-
-        isFavorite.value = false
-    }
 
     fun setCategoryValue(aCategory: Category?) {
 
@@ -76,8 +66,6 @@ class CategoryCreateViewModel @Inject constructor(
             currentType = categoryItem.type
 
             colorValue.value = categoryItem.backgroundColor
-
-            isFavorite.value = categoryItem.isFavorite
         }
     }
 
@@ -90,7 +78,7 @@ class CategoryCreateViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        _categoryCreated.send(Unit)
+                        _categoryCreated.send(true)
                     }
                 }
             }
@@ -105,10 +93,10 @@ class CategoryCreateViewModel @Inject constructor(
 
     fun onSaveClick() {
 
-        val name: String? = categoryName.value
-        val color: String? = colorValue.value
+        val name: String = categoryName.value
+        val color: String = colorValue.value
 
-        if (name.isNullOrBlank() || color == null) {
+        if (name.isBlank()) {
             viewModelScope.launch {
                 _errorMessage.send(UiText.StringResource(R.string.category_create_error))
             }
@@ -120,7 +108,7 @@ class CategoryCreateViewModel @Inject constructor(
             name = name,
             type = currentType,
             backgroundColor = color,
-            isFavorite = isFavorite.value!!,
+            iconName = icon.value,
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time
         )
@@ -137,7 +125,7 @@ class CategoryCreateViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    _categoryCreated.send(Unit)
+                    _categoryCreated.send(true)
                 }
             }
         }
@@ -148,6 +136,10 @@ class CategoryCreateViewModel @Inject constructor(
     }
 
     fun setCategoryType(type: CategoryType) {
-        this.currentType = type
+        this._categoryType.value = type
+    }
+
+    fun setIcon(icon: String) {
+        this.icon.value = icon
     }
 }

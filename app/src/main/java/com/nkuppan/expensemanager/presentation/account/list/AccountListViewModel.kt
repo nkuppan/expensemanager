@@ -6,11 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
-import com.nkuppan.expensemanager.data.usecase.account.GetAccountByIdUseCase
-import com.nkuppan.expensemanager.data.usecase.account.GetAccountsByNameUseCase
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.PaymentMode
 import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.usecase.account.GetAccountByIdUseCase
+import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsByNameUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

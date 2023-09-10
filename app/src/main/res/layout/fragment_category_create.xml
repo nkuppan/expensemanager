@@ -131,17 +131,6 @@
 
             </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/favorite_option"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_16dp"
-                android:checked="@={viewModel.isFavorite}"
-                android:text="@string/favorite_category"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/category_type_container" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
