@@ -1,7 +1,6 @@
 package com.nkuppan.expensemanager.presentation.category.list
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -38,10 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
-import com.nkuppan.expensemanager.presentation.category.create.NavigationButton
 import java.util.Date
 
 
@@ -73,9 +73,9 @@ fun CategoryListScreen(
                 )
             }
         }
-    ) { it ->
+    ) { innerPadding ->
         CategoryListScreen(
-            modifier = Modifier.padding(top = it.calculateTopPadding()),
+            modifier = Modifier.padding(innerPadding),
             categoryUiState = categoryUiState
         ) { categoryId ->
             navController.navigate("category/create?categoryId=${categoryId}")
@@ -84,7 +84,7 @@ fun CategoryListScreen(
 }
 
 @Composable
-fun CategoryListScreen(
+private fun CategoryListScreen(
     categoryUiState: UiState<List<Category>>,
     modifier: Modifier = Modifier,
     onItemClick: ((String) -> Unit)? = null
@@ -137,7 +137,7 @@ fun CategoryListScreen(
 
 @SuppressLint("DiscouragedApi")
 @Composable
-fun CategoryItem(
+private fun CategoryItem(
     name: String,
     iconName: String,
     categoryColor: String,
@@ -178,54 +178,6 @@ fun CategoryItem(
     }
 }
 
-@SuppressLint("DiscouragedApi")
-fun Context.getDrawable(iconName: String): Int {
-    return runCatching {
-        val resources = this.resources.getIdentifier(
-            iconName, "drawable", this.packageName
-        )
-
-        if (resources > 0) resources else null
-    }.getOrNull() ?: R.drawable.ic_calendar
-}
-
-@Preview
-@Composable
-fun CategoryItemPreview() {
-    MaterialTheme {
-        CategoryItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            name = "Utilities",
-            iconName = "ic_calendar",
-            categoryColor = "#000000"
-        )
-    }
-}
-
-@Preview
-@Composable
-fun CategoryListItemLoadingStatePreview() {
-    MaterialTheme {
-        CategoryListScreen(
-            categoryUiState = UiState.Loading,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
-@Preview
-@Composable
-fun CategoryListItemEmptyStatePreview() {
-    MaterialTheme {
-        CategoryListScreen(
-            categoryUiState = UiState.Empty,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
 val DUMMY_DATA = listOf(
     Category(
         id = "1",
@@ -249,7 +201,44 @@ val DUMMY_DATA = listOf(
 
 @Preview
 @Composable
-fun CategoryListItemSuccessStatePreview() {
+private fun CategoryItemPreview() {
+    MaterialTheme {
+        CategoryItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            name = "Utilities",
+            iconName = "ic_calendar",
+            categoryColor = "#000000"
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CategoryListItemLoadingStatePreview() {
+    MaterialTheme {
+        CategoryListScreen(
+            categoryUiState = UiState.Loading,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CategoryListItemEmptyStatePreview() {
+    MaterialTheme {
+        CategoryListScreen(
+            categoryUiState = UiState.Empty,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun CategoryListItemSuccessStatePreview() {
     MaterialTheme {
         CategoryListScreen(
             categoryUiState = UiState.Success(

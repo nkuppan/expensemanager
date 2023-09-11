@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -46,8 +47,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.presentation.category.list.getDrawable
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import kotlinx.coroutines.launch
@@ -168,10 +170,14 @@ private fun IconSelectionBottomSheet(
     onIconPicked: ((Int) -> Unit)? = null
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 128.dp)
+        columns = GridCells.Adaptive(minSize = 96.dp)
     ) {
         items(ICONS) { icon ->
-            Box(modifier = Modifier.fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(96.dp)
+            ) {
                 IconButton(
                     modifier = Modifier.align(Alignment.Center),
                     onClick = {
@@ -185,20 +191,6 @@ private fun IconSelectionBottomSheet(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun NavigationButton(
-    navController: NavController,
-    navigationIcon: Int = R.drawable.ic_arrow_back
-) {
-    IconButton(onClick = {
-        navController.popBackStack()
-    }) {
-        Icon(
-            painter = painterResource(id = navigationIcon), contentDescription = ""
-        )
     }
 }
 
@@ -243,8 +235,8 @@ fun CategoryCreateScreen(
                 modifier = Modifier.wrapContentSize(), onClick = {
                     openColorPicker(context) {
                         onColorPicked?.invoke(it)
-                        focusManager.clearFocus(force = true)
                     }
+                    focusManager.clearFocus(force = true)
                 }, colors = ButtonDefaults.filledTonalButtonColors(
                     containerColor = Color(android.graphics.Color.parseColor(selectedColor)),
                     contentColor = colorResource(id = R.color.white)
@@ -344,7 +336,11 @@ private fun CategoryType.isExpense(): Boolean {
     return this == CategoryType.EXPENSE
 }
 
-fun openColorPicker(context: Context, callback: (Int) -> Unit) {
+fun openColorPicker(
+    context: Context,
+    selectedColor: String = "#000000",
+    callback: (Int) -> Unit
+) {
     ColorPickerDialog.Builder(context).setTitle(context.getString(R.string.title_color_picker))
         .setPreferenceName("MyColorPickerDialog")
         .setPositiveButton(context.getString(R.string.select),
@@ -369,12 +365,47 @@ fun CategoryCreateStatePreview() {
 }
 
 val ICONS = listOf(
-    R.drawable.ic_calendar,
-    R.drawable.ic_add,
-    R.drawable.ic_done,
-    R.drawable.ic_chart,
-    R.drawable.ic_home,
-    R.drawable.ic_history,
-    R.drawable.ic_filter,
-    R.drawable.ic_filter_list,
+    R.drawable.account_balance,
+    R.drawable.account_balance_wallet,
+    R.drawable.agriculture,
+    R.drawable.apartment,
+    R.drawable.car_rental,
+    R.drawable.car_repair,
+    R.drawable.credit_card,
+    R.drawable.devices,
+    R.drawable.dinner_dining,
+    R.drawable.directions_bike,
+    R.drawable.directions_boat,
+    R.drawable.directions_bus,
+    R.drawable.directions_car,
+    R.drawable.diversity,
+    R.drawable.electric_rickshaw,
+    R.drawable.electric_scooter,
+    R.drawable.emoji_food_beverage,
+    R.drawable.fitness_center,
+    R.drawable.flight,
+    R.drawable.fluid_med,
+    R.drawable.hiking,
+    R.drawable.home_health,
+    R.drawable.interactive_space,
+    R.drawable.kayaking,
+    R.drawable.laptop_chromebook,
+    R.drawable.liquor,
+    R.drawable.local_shipping,
+    R.drawable.lunch_dining,
+    R.drawable.medication,
+    R.drawable.medication_liquid,
+    R.drawable.payments,
+    R.drawable.pool,
+    R.drawable.qr_code,
+    R.drawable.redeem,
+    R.drawable.savings,
+    R.drawable.shopping_cart,
+    R.drawable.snowmobile,
+    R.drawable.sports_soccer,
+    R.drawable.sports_tennis,
+    R.drawable.store,
+    R.drawable.train,
+    R.drawable.travel,
+    R.drawable.wallet,
 )
