@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
@@ -58,6 +60,11 @@ fun TransactionListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    NavigationButton(
+                        navController = navController
+                    )
+                },
                 title = {
                     Text(text = stringResource(R.string.transaction))
                 }
@@ -119,15 +126,13 @@ private fun TransactionListScreen(
                             categoryName = it.categoryName,
                             accountName = it.accountName,
                             accountIcon = it.accountIcon,
-                            notes = it.notes.asString(context),
                             amount = it.amount.asString(context),
                             date = it.date,
-                            transactionColor = it.categoryBackgroundColor,
-                            categoryType = it.categoryType,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color.White)
-                                .padding(16.dp)
+                                .padding(16.dp),
+                            transactionColor = it.categoryBackgroundColor,
+                            categoryType = it.categoryType
                         )
                     }
                 }
@@ -141,7 +146,6 @@ fun TransactionItem(
     categoryName: String,
     accountName: String,
     @DrawableRes accountIcon: Int,
-    notes: String?,
     amount: String,
     date: String,
     modifier: Modifier = Modifier,
@@ -228,9 +232,9 @@ fun TransactionItem(
                 fontStyle = FontStyle.Normal,
                 fontWeight = FontWeight.Medium,
                 color = if (categoryType == CategoryType.EXPENSE)
-                    Color.Red
+                    colorResource(id = R.color.red_500)
                 else
-                    Color.Green
+                    colorResource(id = R.color.green_500)
             )
             Text(
                 modifier = Modifier.align(Alignment.End),
@@ -248,16 +252,15 @@ fun TransactionItemPreview() {
     MaterialTheme {
         TransactionItem(
             categoryName = "Utilities",
-            notes = "Something people want to describe about the spendings",
-            transactionColor = "#FFFFFF",
+            accountName = "",
+            accountIcon = R.drawable.ic_account,
             amount = "300 ₹",
             date = "15/11/2019",
-            accountName = "",
-            accountIcon = R.drawable.ic_card,
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
-                .padding(16.dp)
+                .padding(16.dp),
+            transactionColor = "#FFFFFF"
         )
     }
 }

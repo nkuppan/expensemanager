@@ -34,7 +34,7 @@ class CategoryCreateFragment : BaseBindingFragment<FragmentCategoryCreateBinding
         navArgs<CategoryCreateFragmentArgs>().value.category
     }
 
-    private val viewModel: CategoryCreateViewModel by viewModels()
+    private val viewModel: OldCategoryCreateViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 

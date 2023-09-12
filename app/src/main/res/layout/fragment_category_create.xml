@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.nkuppan.expensemanager.presentation.category.create.CategoryCreateViewModel" />
+            type="com.nkuppan.expensemanager.presentation.category.create.OldCategoryCreateViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.presentation.category.create
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
@@ -12,10 +13,9 @@ import com.nkuppan.expensemanager.domain.usecase.category.DeleteCategoryUseCase
 import com.nkuppan.expensemanager.domain.usecase.category.FindCategoryByIdUseCase
 import com.nkuppan.expensemanager.domain.usecase.category.UpdateCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
@@ -24,95 +24,94 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryCreateViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val findCategoryByIdUseCase: FindCategoryByIdUseCase,
     private val addCategoryUseCase: AddCategoryUseCase,
     private val updateCategoryUseCase: UpdateCategoryUseCase,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : ViewModel() {
 
-    private val _errorMessage = Channel<UiText>()
-    val errorMessage = _errorMessage.receiveAsFlow()
+    private val _errorMessage = MutableSharedFlow<UiText>()
+    val errorMessage = _errorMessage.asSharedFlow()
 
-    private val _categoryCreated = Channel<Boolean>()
-    val categoryCreated = _categoryCreated.receiveAsFlow()
+    private val _categoryUpdated = MutableSharedFlow<Boolean>()
+    val categoryUpdated = _categoryUpdated.asSharedFlow()
 
-    private val _colorPicker = Channel<Unit>()
-    val colorPicker = _colorPicker.receiveAsFlow()
+    var categoryType = MutableStateFlow(CategoryType.EXPENSE)
+        private set
 
-    private val _categoryType = MutableStateFlow(CategoryType.EXPENSE)
-    val categoryType = _categoryType.asStateFlow()
+    var name = MutableStateFlow("")
+        private set
 
-    val categoryName: MutableStateFlow<String> = MutableStateFlow("")
-    val categoryNameErrorText: MutableStateFlow<String> = MutableStateFlow("")
-    val colorValue: MutableStateFlow<String> = MutableStateFlow("#43A546")
-    val icon: MutableStateFlow<String> = MutableStateFlow("ic_calendar")
+    var nameErrorMessage = MutableStateFlow<UiText?>(null)
+        private set
 
-    private var categoryItem: Category? = null
+    var colorValue = MutableStateFlow(DEFAULT_COLOR)
+        private set
 
-    fun readCategoryInfo(categoryId: String?) {
-        categoryId ?: return
-        viewModelScope.launch {
-            when (val response = findCategoryByIdUseCase.invoke(categoryId)) {
-                is Resource.Error -> Unit
-                is Resource.Success -> {
-                    setCategoryValue(response.data)
-                }
-            }
-        }
+    var icon = MutableStateFlow(DEFAULT_ICON)
+        private set
+
+    private var category: Category? = null
+
+    init {
+        readCategoryInfo(savedStateHandle.get<String>(CATEGORY_ID))
     }
 
-    fun setCategoryValue(aCategory: Category?) {
+    private fun updateCategoryInfo(category: Category?) {
 
-        this.categoryItem = aCategory
+        this.category = category
 
-        if (categoryItem == null) {
-            return
-        }
-
-        categoryItem?.let { categoryItem ->
-            categoryName.value = categoryItem.name
-            _categoryType.value = categoryItem.type
+        this.category?.let { categoryItem ->
+            name.value = categoryItem.name
+            categoryType.value = categoryItem.type
             colorValue.value = categoryItem.backgroundColor
             icon.value = categoryItem.iconName
         }
     }
 
-    fun delete() {
+    private fun readCategoryInfo(categoryId: String?) {
+        categoryId ?: return
         viewModelScope.launch {
-            categoryItem?.let { category ->
+            when (val response = findCategoryByIdUseCase.invoke(categoryId)) {
+                is Resource.Error -> Unit
+                is Resource.Success -> {
+                    updateCategoryInfo(response.data)
+                }
+            }
+        }
+    }
+
+    fun deleteCategory() {
+        viewModelScope.launch {
+            category?.let { category ->
                 when (deleteCategoryUseCase.invoke(category)) {
                     is Resource.Error -> {
-                        _errorMessage.send(UiText.StringResource(R.string.category_delete_error_message))
+                        _errorMessage.emit(
+                            UiText.StringResource(R.string.category_delete_error_message)
+                        )
                     }
 
                     is Resource.Success -> {
-                        _categoryCreated.send(true)
+                        _categoryUpdated.emit(true)
                     }
                 }
             }
         }
     }
 
-    fun onColorContainerClick() {
-        viewModelScope.launch {
-            _colorPicker.send(Unit)
-        }
-    }
+    fun saveOrUpdateCategory() {
 
-    fun onSaveClick() {
-
-        val name: String = categoryName.value
+        val name: String = name.value
         val color: String = colorValue.value
 
         if (name.isBlank()) {
-            viewModelScope.launch {
-                _errorMessage.send(UiText.StringResource(R.string.category_create_error))
-            }
+            nameErrorMessage.value = UiText.StringResource(R.string.category_name_error)
             return
         }
 
         val category = Category(
-            id = categoryItem?.id ?: UUID.randomUUID().toString(),
+            id = category?.id ?: UUID.randomUUID().toString(),
             name = name,
             type = categoryType.value,
             backgroundColor = color,
@@ -122,32 +121,47 @@ class CategoryCreateViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            val response = if (categoryItem != null) {
+            val response = if (this@CategoryCreateViewModel.category != null) {
                 updateCategoryUseCase(category)
             } else {
                 addCategoryUseCase(category)
             }
             when (response) {
                 is Resource.Error -> {
-                    _errorMessage.send(UiText.StringResource(R.string.category_create_error))
+                    _errorMessage.emit(UiText.StringResource(R.string.category_create_error))
                 }
 
                 is Resource.Success -> {
-                    _categoryCreated.send(true)
+                    _categoryUpdated.emit(true)
                 }
             }
         }
     }
 
-    fun setColorValue(aColor: Int) {
-        colorValue.value = String.format("#%06X", 0xFFFFFF and aColor)
+    fun setColorValue(colorValue: Int) {
+        this.colorValue.value = String.format("#%06X", 0xFFFFFF and colorValue)
     }
 
-    fun setCategoryType(type: CategoryType) {
-        this._categoryType.value = type
+    fun setCategoryType(categoryType: CategoryType) {
+        this.categoryType.value = categoryType
     }
 
     fun setIcon(icon: String) {
         this.icon.value = icon
+    }
+
+    fun setNameChange(name: String) {
+        this.name.value = name
+        if (name.isBlank()) {
+            nameErrorMessage.value = UiText.StringResource(R.string.category_name_error)
+        } else {
+            nameErrorMessage.value = null
+        }
+    }
+
+    companion object {
+        private const val DEFAULT_COLOR = "#43A546"
+        private const val DEFAULT_ICON = "ic_calendar"
+        private const val CATEGORY_ID = "categoryId"
     }
 }

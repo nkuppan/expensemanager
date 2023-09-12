@@ -254,4 +254,7 @@
     <string name="custom">Custom</string>
     <string name="select_color">Select Color</string>
     <string name="category_create_success">Category created/modified successfully</string>
+    <string name="choose_color">Choose color</string>
+    <string name="choose_icon">Choose Icon</string>
+    <string name="category_name_error">Name shouldn\'t be null</string>
 </resources>

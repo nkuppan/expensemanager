@@ -1,24 +1,19 @@
 package com.nkuppan.expensemanager.presentation.category.create
 
-import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,7 +28,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,9 +47,11 @@ import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.skydoves.colorpickerview.ColorPickerDialog
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
+import com.nkuppan.expensemanager.presentation.selection.ColorSelectionScreen
+import com.nkuppan.expensemanager.presentation.selection.IconSelectionScreen
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -59,7 +59,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 fun CategoryCreateScreen(
     navController: NavController,
-    categoryId: String?
+    categoryId: String?,
 ) {
 
     val context = LocalContext.current
@@ -74,77 +74,81 @@ fun CategoryCreateScreen(
     )
 
     val viewModel: CategoryCreateViewModel = hiltViewModel()
-    viewModel.readCategoryInfo(categoryId)
 
-    val categoryCreated by viewModel.categoryCreated.collectAsState(false)
+    var sheetSelection by remember { mutableIntStateOf(1) }
 
-    val categoryName by viewModel.categoryName.collectAsState()
-    val colorValue by viewModel.colorValue.collectAsState()
-    val iconValue by viewModel.icon.collectAsState()
-    val selectedCategoryType by viewModel.categoryType.collectAsState()
-
+    val categoryCreated by viewModel.categoryUpdated.collectAsState(false)
     if (categoryCreated) {
         LaunchedEffect(key1 = "completed", block = {
+            navController.popBackStack()
             scaffoldState.snackbarHostState.showSnackbar(
                 message = context.getString(R.string.category_create_success)
             )
-            navController.popBackStack()
         })
     }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
+        sheetPeekHeight = 0.dp,
         sheetContent = {
-            IconSelectionBottomSheet {
-                scope.launch {
-                    viewModel.setIcon(context.resources.getResourceName(it))
-                    scaffoldState.bottomSheetState.hide()
-                }
-            }
+            CategoryCreateBottomSheetContent(
+                sheetSelection,
+                scope,
+                viewModel,
+                scaffoldState
+            )
         }, topBar = {
-            TopAppBar(navigationIcon = {
-                NavigationButton(
-                    navController,
-                    navigationIcon = R.drawable.ic_close
-                )
-            }, title = {
-                Row {
-                    Text(
-                        modifier = Modifier
-                            .weight(1f)
-                            .align(Alignment.CenterVertically),
-                        text = stringResource(R.string.category)
-                    )
-                    if (categoryId?.isNotBlank() == true) {
-                        IconButton(onClick = viewModel::delete) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_delete),
-                                contentDescription = ""
-                            )
-                        }
-                    }
-                }
-            })
+            CategoryCreateTopActionBar(
+                navController,
+                categoryId,
+                viewModel::deleteCategory
+            )
         }
     ) { innerPadding ->
+
+        val name by viewModel.name.collectAsState()
+        val nameErrorMessage by viewModel.nameErrorMessage.collectAsState()
+        val colorValue by viewModel.colorValue.collectAsState()
+        val iconValue by viewModel.icon.collectAsState()
+        val selectedCategoryType by viewModel.categoryType.collectAsState()
+
         Box(modifier = Modifier.fillMaxSize()) {
             CategoryCreateScreen(
                 modifier = Modifier.padding(innerPadding),
                 selectedColor = colorValue,
                 selectedIcon = iconValue,
-                categoryName = categoryName,
+                name = name,
+                nameErrorMessage = nameErrorMessage,
                 selectedCategoryType = selectedCategoryType,
-                onColorPicked = viewModel::setColorValue,
                 onCategoryTypeChange = viewModel::setCategoryType,
                 onNameChange = {
-                    viewModel.categoryName.value = it
+                    viewModel.setNameChange(it)
+                },
+                openColorPicker = {
+                    scope.launch {
+                        if (sheetSelection != 2) {
+                            sheetSelection = 2
+                            scaffoldState.bottomSheetState.expand()
+                        } else {
+                            if (scaffoldState.bottomSheetState.isVisible) {
+                                scaffoldState.bottomSheetState.hide()
+                            } else {
+                                scaffoldState.bottomSheetState.expand()
+                            }
+                        }
+                    }
                 },
                 openIconPicker = {
                     scope.launch {
-                        if (scaffoldState.bottomSheetState.isVisible) {
-                            scaffoldState.bottomSheetState.hide()
-                        } else {
+                        if (sheetSelection != 1) {
+                            sheetSelection = 1
                             scaffoldState.bottomSheetState.expand()
+                        } else {
+                            if (scaffoldState.bottomSheetState.isVisible) {
+                                scaffoldState.bottomSheetState.hide()
+                            } else {
+                                scaffoldState.bottomSheetState.expand()
+                            }
                         }
                     }
                 }
@@ -154,7 +158,7 @@ fun CategoryCreateScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
-                onClick = viewModel::onSaveClick
+                onClick = viewModel::saveOrUpdateCategory
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_done),
@@ -166,44 +170,76 @@ fun CategoryCreateScreen(
 }
 
 @Composable
-private fun IconSelectionBottomSheet(
-    onIconPicked: ((Int) -> Unit)? = null
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CategoryCreateTopActionBar(
+    navController: NavController,
+    categoryId: String?,
+    onClick: () -> Unit,
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 96.dp)
-    ) {
-        items(ICONS) { icon ->
-            Box(
+    TopAppBar(navigationIcon = {
+        NavigationButton(
+            navController,
+            navigationIcon = R.drawable.ic_close
+        )
+    }, title = {
+        Row {
+            Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(96.dp)
-            ) {
-                IconButton(
-                    modifier = Modifier.align(Alignment.Center),
-                    onClick = {
-                        onIconPicked?.invoke(icon)
-                    }
-                ) {
+                    .weight(1f)
+                    .align(Alignment.CenterVertically),
+                text = stringResource(R.string.category)
+            )
+            if (categoryId?.isNotBlank() == true) {
+                IconButton(onClick = onClick) {
                     Icon(
-                        painterResource(id = icon),
-                        contentDescription = null
+                        painter = painterResource(id = R.drawable.ic_delete),
+                        contentDescription = ""
                     )
                 }
+            }
+        }
+    })
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CategoryCreateBottomSheetContent(
+    sheetSelection: Int,
+    scope: CoroutineScope,
+    viewModel: CategoryCreateViewModel,
+    scaffoldState: BottomSheetScaffoldState
+) {
+    val context = LocalContext.current
+
+    if (sheetSelection == 1) {
+        IconSelectionScreen {
+            scope.launch {
+                viewModel.setIcon(context.resources.getResourceName(it))
+                scaffoldState.bottomSheetState.hide()
+            }
+        }
+    } else {
+        ColorSelectionScreen {
+            scope.launch {
+                viewModel.setColorValue(it)
+                scaffoldState.bottomSheetState.hide()
             }
         }
     }
 }
 
+
 @Composable
-fun CategoryCreateScreen(
+private fun CategoryCreateScreen(
+    onCategoryTypeChange: ((CategoryType) -> Unit),
     modifier: Modifier = Modifier,
     selectedCategoryType: CategoryType = CategoryType.EXPENSE,
-    categoryName: String = "",
+    name: String = "",
+    nameErrorMessage: UiText? = null,
     selectedColor: String = "#000000",
     selectedIcon: String = "ic_calendar",
     openIconPicker: (() -> Unit)? = null,
-    onColorPicked: ((Int) -> Unit)? = null,
-    onCategoryTypeChange: ((CategoryType) -> Unit)? = null,
+    openColorPicker: (() -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null
 ) {
 
@@ -213,29 +249,47 @@ fun CategoryCreateScreen(
 
     Column(modifier = modifier) {
 
-        CategoryTypeSelectionView(selectedCategoryType, onCategoryTypeChange)
+        CategoryTypeSelectionView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            selectedCategoryType = selectedCategoryType,
+            onCategoryTypeChange = onCategoryTypeChange
+        )
 
-        OutlinedTextField(modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-            .fillMaxWidth(),
-            value = categoryName,
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                .fillMaxWidth(),
+            value = name,
+            singleLine = true,
             label = {
                 Text(text = stringResource(id = R.string.category_name))
             },
             onValueChange = {
                 onNameChange?.invoke(it)
-            })
+            },
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus(force = true)
+                }
+            ),
+            isError = nameErrorMessage != null,
+            supportingText = if (nameErrorMessage != null) {
+                { Text(text = nameErrorMessage.asString(context)) }
+            } else {
+                null
+            }
+        )
 
         Row(
             modifier = Modifier
-                .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
         ) {
             FilledTonalButton(
                 modifier = Modifier.wrapContentSize(), onClick = {
-                    openColorPicker(context) {
-                        onColorPicked?.invoke(it)
-                    }
+                    openColorPicker?.invoke()
                     focusManager.clearFocus(force = true)
                 }, colors = ButtonDefaults.filledTonalButtonColors(
                     containerColor = Color(android.graphics.Color.parseColor(selectedColor)),
@@ -263,149 +317,14 @@ fun CategoryCreateScreen(
     }
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun CategoryTypeSelectionView(
-    categoryType: CategoryType,
-    onCategoryTypeChange: ((CategoryType) -> Unit)? = null
-) {
-
-    Row(
-        modifier = Modifier
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp)
-            .fillMaxWidth(),
-    ) {
-        FilterChip(
-            selected = categoryType.isIncome(),
-            modifier = Modifier.align(Alignment.CenterVertically),
-            onClick = {
-                onCategoryTypeChange?.invoke(CategoryType.INCOME)
-            },
-            label = {
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = stringResource(id = R.string.income)
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_downward),
-                    contentDescription = ""
-                )
-            },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedLabelColor = Color.White,
-                selectedContainerColor = colorResource(id = R.color.green_500),
-                selectedLeadingIconColor = Color.White
-            )
-        )
-        FilterChip(
-            selected = categoryType.isExpense(),
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .align(Alignment.CenterVertically),
-            onClick = {
-                onCategoryTypeChange?.invoke(CategoryType.EXPENSE)
-            },
-            label = {
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = stringResource(id = R.string.expense)
-                )
-            },
-            leadingIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_upward),
-                    contentDescription = ""
-                )
-            },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedLabelColor = Color.White,
-                selectedContainerColor = colorResource(id = R.color.red_500),
-                selectedLeadingIconColor = Color.White
-            )
-        )
-    }
-}
-
-private fun CategoryType.isIncome(): Boolean {
-    return this == CategoryType.INCOME
-}
-
-private fun CategoryType.isExpense(): Boolean {
-    return this == CategoryType.EXPENSE
-}
-
-fun openColorPicker(
-    context: Context,
-    selectedColor: String = "#000000",
-    callback: (Int) -> Unit
-) {
-    ColorPickerDialog.Builder(context).setTitle(context.getString(R.string.title_color_picker))
-        .setPreferenceName("MyColorPickerDialog")
-        .setPositiveButton(context.getString(R.string.select),
-            ColorEnvelopeListener { envelope, _ ->
-                callback.invoke(envelope.color)
-            }).setNegativeButton(context.getString(R.string.cancel)) { dialogInterface, _ ->
-            dialogInterface.dismiss()
-        }.attachAlphaSlideBar(true)
-        .attachBrightnessSlideBar(true)
-        .setBottomSpace(12)
-        .show()
-}
-
 @Preview
 @Composable
-fun CategoryCreateStatePreview() {
+private fun CategoryCreateStatePreview() {
     MaterialTheme {
         CategoryCreateScreen(
-            modifier = Modifier.fillMaxSize()
+            onCategoryTypeChange = {
+
+            }
         )
     }
 }
-
-val ICONS = listOf(
-    R.drawable.account_balance,
-    R.drawable.account_balance_wallet,
-    R.drawable.agriculture,
-    R.drawable.apartment,
-    R.drawable.car_rental,
-    R.drawable.car_repair,
-    R.drawable.credit_card,
-    R.drawable.devices,
-    R.drawable.dinner_dining,
-    R.drawable.directions_bike,
-    R.drawable.directions_boat,
-    R.drawable.directions_bus,
-    R.drawable.directions_car,
-    R.drawable.diversity,
-    R.drawable.electric_rickshaw,
-    R.drawable.electric_scooter,
-    R.drawable.emoji_food_beverage,
-    R.drawable.fitness_center,
-    R.drawable.flight,
-    R.drawable.fluid_med,
-    R.drawable.hiking,
-    R.drawable.home_health,
-    R.drawable.interactive_space,
-    R.drawable.kayaking,
-    R.drawable.laptop_chromebook,
-    R.drawable.liquor,
-    R.drawable.local_shipping,
-    R.drawable.lunch_dining,
-    R.drawable.medication,
-    R.drawable.medication_liquid,
-    R.drawable.payments,
-    R.drawable.pool,
-    R.drawable.qr_code,
-    R.drawable.redeem,
-    R.drawable.savings,
-    R.drawable.shopping_cart,
-    R.drawable.snowmobile,
-    R.drawable.sports_soccer,
-    R.drawable.sports_tennis,
-    R.drawable.store,
-    R.drawable.train,
-    R.drawable.travel,
-    R.drawable.wallet,
-)

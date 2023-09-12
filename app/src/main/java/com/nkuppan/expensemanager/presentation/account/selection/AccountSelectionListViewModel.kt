@@ -3,6 +3,7 @@ package com.nkuppan.expensemanager.presentation.account.selection
 import androidx.annotation.DrawableRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nkuppan.expensemanager.core.ui.utils.getPaymentModeIcon
 import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.PaymentMode
@@ -10,7 +11,6 @@ import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.usecase.account.GetAllAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.account.UpdateSelectedAccountUseCase
-import com.nkuppan.expensemanager.presentation.account.list.getPaymentModeIcon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -54,7 +54,7 @@ class AccountSelectionListViewModel @Inject constructor(
                             it.id,
                             it.name,
                             it.backgroundColor,
-                            getPaymentModeIcon(it.type),
+                            it.type.getPaymentModeIcon(),
                             account?.id == it.id
                         )
                     }.toMutableList()
@@ -65,7 +65,7 @@ class AccountSelectionListViewModel @Inject constructor(
                             "-1",
                             "All Accounts",
                             "#000000",
-                            getPaymentModeIcon(PaymentMode.NONE),
+                            PaymentMode.NONE.getPaymentModeIcon(),
                             account == null
                         )
                     )

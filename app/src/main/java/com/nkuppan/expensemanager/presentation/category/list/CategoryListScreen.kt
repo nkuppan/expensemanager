@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
@@ -52,6 +54,15 @@ fun CategoryListScreen(
 ) {
     val viewModel: CategoryListViewModel = hiltViewModel()
     val categoryUiState by viewModel.categories.collectAsState()
+    CategoryListScreenScaffoldView(navController, categoryUiState)
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CategoryListScreenScaffoldView(
+    navController: NavController,
+    categoryUiState: UiState<List<Category>>
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -74,8 +85,10 @@ fun CategoryListScreen(
             }
         }
     ) { innerPadding ->
-        CategoryListScreen(
-            modifier = Modifier.padding(innerPadding),
+        CategoryListScreenContent(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
             categoryUiState = categoryUiState
         ) { categoryId ->
             navController.navigate("category/create?categoryId=${categoryId}")
@@ -84,7 +97,7 @@ fun CategoryListScreen(
 }
 
 @Composable
-private fun CategoryListScreen(
+private fun CategoryListScreenContent(
     categoryUiState: UiState<List<Category>>,
     modifier: Modifier = Modifier,
     onItemClick: ((String) -> Unit)? = null
@@ -127,6 +140,13 @@ private fun CategoryListScreen(
                             name = category.name,
                             iconName = category.iconName,
                             categoryColor = category.backgroundColor
+                        )
+                    }
+                    item {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(36.dp)
                         )
                     }
                 }
@@ -218,9 +238,9 @@ private fun CategoryItemPreview() {
 @Composable
 private fun CategoryListItemLoadingStatePreview() {
     MaterialTheme {
-        CategoryListScreen(
+        CategoryListScreenScaffoldView(
+            rememberNavController(),
             categoryUiState = UiState.Loading,
-            modifier = Modifier.fillMaxSize()
         )
     }
 }
@@ -229,9 +249,9 @@ private fun CategoryListItemLoadingStatePreview() {
 @Composable
 private fun CategoryListItemEmptyStatePreview() {
     MaterialTheme {
-        CategoryListScreen(
+        CategoryListScreenScaffoldView(
+            rememberNavController(),
             categoryUiState = UiState.Empty,
-            modifier = Modifier.fillMaxSize()
         )
     }
 }
@@ -240,11 +260,11 @@ private fun CategoryListItemEmptyStatePreview() {
 @Composable
 private fun CategoryListItemSuccessStatePreview() {
     MaterialTheme {
-        CategoryListScreen(
+        CategoryListScreenScaffoldView(
+            rememberNavController(),
             categoryUiState = UiState.Success(
                 DUMMY_DATA
             ),
-            modifier = Modifier.fillMaxSize()
         )
     }
 }

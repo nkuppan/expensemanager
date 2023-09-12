@@ -1,11 +1,9 @@
 package com.nkuppan.expensemanager.presentation.transaction.list
 
-import androidx.annotation.DrawableRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.domain.model.PaymentMode
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.UiState
@@ -77,18 +75,5 @@ class TransactionListViewModel @Inject constructor(
                 }
             }
         }
-    }
-}
-
-@DrawableRes
-fun PaymentMode.getPaymentModeIcon(): Int {
-    return when (this) {
-        PaymentMode.CARD -> R.drawable.ic_card
-        PaymentMode.WALLET -> R.drawable.ic_wallet
-        PaymentMode.UPI -> R.drawable.ic_upi
-        PaymentMode.CHEQUE -> R.drawable.ic_cheque
-        PaymentMode.INTERNET_BANKING -> R.drawable.ic_netbanking
-        PaymentMode.BANK_ACCOUNT -> R.drawable.ic_bank
-        PaymentMode.NONE -> R.drawable.ic_wallet
     }
 }
