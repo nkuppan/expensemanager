@@ -11,12 +11,6 @@
         android:label="Dashboard Fragment"
         tools:layout="@layout/fragment_dashboard">
         <action
-            android:id="@+id/action_dashboardFragment_to_navigation_category_create"
-            app:destination="@id/navigation_category_create" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_navigation_category_list"
-            app:destination="@id/navigation_category_list" />
-        <action
             android:id="@+id/action_dashboardFragment_to_navigation_transaction_list"
             app:destination="@id/navigation_transaction_list" />
         <action
@@ -29,12 +23,6 @@
             android:id="@+id/action_dashboardFragment_to_navigation_analysis"
             app:destination="@id/navigation_analysis" />
         <action
-            android:id="@+id/action_dashboardFragment_to_navigation_account_list"
-            app:destination="@id/navigation_account_list" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_navigation_account_create"
-            app:destination="@id/navigation_account_create" />
-        <action
             android:id="@+id/action_dashboardFragment_to_navigation_settings"
             app:destination="@id/navigation_settings" />
         <action
@@ -44,14 +32,6 @@
             android:id="@+id/action_dashboardFragment_to_navigation_date_filter"
             app:destination="@id/navigation_date_filter" />
     </fragment>
-
-    <include app:graph="@navigation/navigation_account_list" />
-
-    <include app:graph="@navigation/navigation_account_create" />
-
-    <include app:graph="@navigation/navigation_category_list" />
-
-    <include app:graph="@navigation/navigation_category_create" />
 
     <include app:graph="@navigation/navigation_analysis" />
 

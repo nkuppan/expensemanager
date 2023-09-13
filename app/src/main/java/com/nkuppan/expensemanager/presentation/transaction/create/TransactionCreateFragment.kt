@@ -185,12 +185,12 @@ class TransactionCreateFragment : BaseBindingFragment<FragmentTransactionCreateB
                 }
                 launch {
                     viewModel.categoryClick.collectLatest {
-                        navigateCategoryAddPage()
+                        //navigateCategoryAddPage()
                     }
                 }
                 launch {
                     viewModel.accountClick.collectLatest {
-                        navigateAccountAddPage()
+                        //navigateAccountAddPage()
                     }
                 }
                 launch {
@@ -239,24 +239,6 @@ class TransactionCreateFragment : BaseBindingFragment<FragmentTransactionCreateB
         args.transaction?.let {
             viewModel.setTransaction(it)
         }
-    }
-
-    private fun navigateCategoryAddPage() {
-        findNavController().navigate(
-            R.id.action_transactionCreateFragment_to_navigation_category_create,
-            Bundle().apply {
-                putSerializable("category", null)
-            }
-        )
-    }
-
-    private fun navigateAccountAddPage() {
-        findNavController().navigate(
-            R.id.action_transactionCreateFragment_to_navigation_account_create,
-            Bundle().apply {
-                putSerializable("account", null)
-            }
-        )
     }
 
     private fun showDatePickerDialog(aView: View) {

@@ -5,10 +5,6 @@
     android:id="@+id/navigation_transaction_create"
     app:startDestination="@id/transactionCreateFragment">
 
-    <include app:graph="@navigation/navigation_account_create" />
-
-    <include app:graph="@navigation/navigation_category_create" />
-
     <fragment
         android:id="@+id/transactionCreateFragment"
         android:name="com.nkuppan.expensemanager.presentation.transaction.create.TransactionCreateFragment"
@@ -24,12 +20,6 @@
         <action
             android:id="@+id/action_transactionCreateFragment_to_numberPadDialogFragment"
             app:destination="@id/numberPadDialogFragment" />
-        <action
-            android:id="@+id/action_transactionCreateFragment_to_navigation_account_create"
-            app:destination="@id/navigation_account_create" />
-        <action
-            android:id="@+id/action_transactionCreateFragment_to_navigation_category_create"
-            app:destination="@id/navigation_category_create" />
     </fragment>
 
     <dialog

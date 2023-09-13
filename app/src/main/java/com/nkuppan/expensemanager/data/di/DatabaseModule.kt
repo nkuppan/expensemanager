@@ -10,9 +10,9 @@ import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao
 import com.nkuppan.expensemanager.data.mappers.toEntityModel
 import com.nkuppan.expensemanager.domain.model.Account
+import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.PaymentMode
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -213,17 +213,28 @@ val BASE_CATEGORY_LIST = listOf(
 val BASE_ACCOUNT_LIST = listOf(
     Account(
         "1",
-        "Wallet",
-        PaymentMode.WALLET,
+        "Cash",
+        AccountType.CASH,
         "#4CAF50",
+        "savings",
         Calendar.getInstance().time,
         Calendar.getInstance().time,
     ),
     Account(
         "2",
         "Card-xxx",
-        PaymentMode.CARD,
+        AccountType.CREDIT_CARD,
         "#4CAF50",
+        "credit_card",
+        Calendar.getInstance().time,
+        Calendar.getInstance().time,
+    ),
+    Account(
+        "3",
+        "Bank Account",
+        AccountType.BANK_ACCOUNT,
+        "#4CAF50",
+        "account_balance",
         Calendar.getInstance().time,
         Calendar.getInstance().time,
     )

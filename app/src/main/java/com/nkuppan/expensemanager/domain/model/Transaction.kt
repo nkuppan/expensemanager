@@ -18,7 +18,7 @@ data class Transaction(
         Date(), Date()
     ),
     var account: Account = Account(
-        "", "", PaymentMode.WALLET,
+        "", "", AccountType.CASH, "",
         "",
         Date(), Date()
     )

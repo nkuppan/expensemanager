@@ -22,7 +22,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class TransactionListViewModel @Inject constructor(
-    private val getCurrencyUseCase: GetCurrencyUseCase,
+    getCurrencyUseCase: GetCurrencyUseCase,
     private val getTransactionByIdUseCase: GetTransactionByIdUseCase,
     private val getTransactionByNameUseCase: GetTransactionByNameUseCase
 ) : ViewModel() {

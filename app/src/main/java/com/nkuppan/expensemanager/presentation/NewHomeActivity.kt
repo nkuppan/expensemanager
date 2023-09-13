@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -26,6 +25,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.nkuppan.expensemanager.presentation.account.create.AccountCreateScreen
+import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
@@ -45,7 +46,6 @@ class NewHomeActivity : ComponentActivity() {
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainPageView() {
 
@@ -84,6 +84,23 @@ fun MainPageView() {
             }
             composable("transaction/create") {
 
+            }
+            composable("account") {
+                AccountListScreen(navController)
+            }
+            composable(
+                route = "account/create?accountId={accountId}",
+                arguments = listOf(
+                    navArgument("accountId") {
+                        defaultValue = ""
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                AccountCreateScreen(
+                    navController,
+                    backStackEntry.arguments?.getString("accountId")
+                )
             }
             composable("analysis") {
 
@@ -140,6 +157,24 @@ private fun HomePageScreen(navController: NavHostController) {
                     navController.navigate("analysis")
                 }) {
                 Text(text = "Navigate to Analysis")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    navController.navigate("account")
+                }) {
+                Text(text = "Navigate to Account List Screen")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    navController.navigate("account/create")
+                }) {
+                Text(text = "Navigate to Account Create Screen")
             }
             Button(
                 modifier = Modifier

@@ -48,7 +48,6 @@ import java.util.Date
 
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun CategoryListScreen(
     navController: NavController
 ) {

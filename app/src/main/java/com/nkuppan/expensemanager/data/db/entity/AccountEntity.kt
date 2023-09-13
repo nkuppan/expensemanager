@@ -16,7 +16,11 @@ data class AccountEntity(
     @ColumnInfo(name = "type")
     val type: Int,
     @ColumnInfo(name = "background_color")
-    val backgroundColor: String,
+    val iconBackgroundColor: String,
+    @ColumnInfo(name = "icon")
+    val iconName: String,
+    @ColumnInfo(name = "amount")
+    val amount: Double,
     @ColumnInfo(name = "created_on")
     val createdOn: Date,
     @ColumnInfo(name = "updated_on")

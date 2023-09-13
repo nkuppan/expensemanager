@@ -1,7 +1,7 @@
 package com.nkuppan.expensemanager.domain.usecase.account
 
 import com.nkuppan.expensemanager.domain.model.Account
-import com.nkuppan.expensemanager.domain.model.PaymentMode
+import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.Resource
 import javax.inject.Inject
 
@@ -13,11 +13,11 @@ class CheckAccountValidationUseCase @Inject constructor() {
             return Resource.Error(Exception("ID shouldn't be blank"))
         }
 
-        if (account.backgroundColor.isBlank()) {
+        if (account.iconBackgroundColor.isBlank()) {
             return Resource.Error(Exception("Background color shouldn't be blank"))
         }
 
-        if (!account.backgroundColor.startsWith("#")) {
+        if (!account.iconBackgroundColor.startsWith("#")) {
             return Resource.Error(Exception("Background color is not valid"))
         }
 
@@ -25,7 +25,7 @@ class CheckAccountValidationUseCase @Inject constructor() {
             return Resource.Error(Exception("Account name shouldn't be blank"))
         }
 
-        if (account.type == PaymentMode.NONE) {
+        if (account.type == AccountType.CASH) {
             return Resource.Error(Exception("Account type shouldn't be none"))
         }
 

@@ -257,4 +257,9 @@
     <string name="choose_color">Choose color</string>
     <string name="choose_icon">Choose Icon</string>
     <string name="category_name_error">Name shouldn\'t be null</string>
+    <string name="credit">Credit</string>
+    <string name="account_name_error">Name shouldn\'t be null</string>
+    <string name="account_create_success">Account created/updated successfully</string>
+    <string name="current_balance">Current Balance</string>
+    <string name="current_balance_error">Current balance shouldn\'t be empty</string>
 </resources>

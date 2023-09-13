@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.core.ui.utils.getPaymentModeIcon
 import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.domain.model.Account
-import com.nkuppan.expensemanager.domain.model.PaymentMode
+import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.usecase.account.GetAllAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
@@ -53,7 +53,7 @@ class AccountSelectionListViewModel @Inject constructor(
                         AccountSelectionUIState(
                             it.id,
                             it.name,
-                            it.backgroundColor,
+                            it.iconBackgroundColor,
                             it.type.getPaymentModeIcon(),
                             account?.id == it.id
                         )
@@ -65,7 +65,7 @@ class AccountSelectionListViewModel @Inject constructor(
                             "-1",
                             "All Accounts",
                             "#000000",
-                            PaymentMode.NONE.getPaymentModeIcon(),
+                            AccountType.CASH.getPaymentModeIcon(),
                             account == null
                         )
                     )

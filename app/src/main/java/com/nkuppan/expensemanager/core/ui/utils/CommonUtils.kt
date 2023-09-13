@@ -2,7 +2,7 @@ package com.nkuppan.expensemanager.core.ui.utils
 
 import androidx.annotation.DrawableRes
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.domain.model.PaymentMode
+import com.nkuppan.expensemanager.domain.model.AccountType
 
 fun getCurrency(
     currencySymbol: Int,
@@ -15,14 +15,18 @@ fun getCurrency(
 
 
 @DrawableRes
-fun PaymentMode.getPaymentModeIcon(): Int {
+fun AccountType.getPaymentModeIcon(): Int {
     return when (this) {
-        PaymentMode.CARD -> R.drawable.credit_card
-        PaymentMode.WALLET -> R.drawable.wallet
-        PaymentMode.UPI -> R.drawable.qr_code
-        PaymentMode.CHEQUE -> R.drawable.payments
-        PaymentMode.INTERNET_BANKING -> R.drawable.netbanking
-        PaymentMode.BANK_ACCOUNT -> R.drawable.account_balance
-        PaymentMode.NONE -> R.drawable.wallet
+        AccountType.CREDIT_CARD -> R.drawable.savings
+        AccountType.BANK_ACCOUNT -> R.drawable.account_balance
+        AccountType.CASH -> R.drawable.credit_card
+    }
+}
+
+fun AccountType.getPaymentModeIconName(): String {
+    return when (this) {
+        AccountType.CREDIT_CARD -> "savings"
+        AccountType.BANK_ACCOUNT -> "account_balance"
+        AccountType.CASH -> "credit_card"
     }
 }
