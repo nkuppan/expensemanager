@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.presentation.transaction.list
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -42,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
@@ -124,6 +124,8 @@ private fun TransactionListScreen(
                     items(transactionUiState.data) {
                         TransactionItem(
                             categoryName = it.categoryName,
+                            categoryColor = it.categoryBackgroundColor,
+                            categoryIcon = it.categoryIcon,
                             accountName = it.accountName,
                             accountIcon = it.accountIcon,
                             amount = it.amount.asString(context),
@@ -131,7 +133,6 @@ private fun TransactionListScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
-                            transactionColor = it.categoryBackgroundColor,
                             categoryType = it.categoryType
                         )
                     }
@@ -145,13 +146,17 @@ private fun TransactionListScreen(
 fun TransactionItem(
     categoryName: String,
     accountName: String,
-    @DrawableRes accountIcon: Int,
+    accountIcon: String,
     amount: String,
     date: String,
     modifier: Modifier = Modifier,
-    transactionColor: String = "#000000",
+    categoryColor: String = "#000000",
+    categoryIcon: String = "ic_calendar",
     categoryType: CategoryType = CategoryType.EXPENSE
 ) {
+
+    val context = LocalContext.current
+
     Row(modifier = modifier) {
         Box(
             modifier = Modifier
@@ -164,22 +169,22 @@ fun TransactionItem(
                     .fillMaxSize()
                     .align(Alignment.Center),
                 onDraw = {
-                    drawCircle(color = Color(android.graphics.Color.parseColor(transactionColor)))
+                    drawCircle(
+                        color = Color(
+                            android.graphics.Color.parseColor(
+                                categoryColor
+                            )
+                        )
+                    )
                 }
             )
             Image(
                 modifier = Modifier
                     .size(18.dp)
                     .align(Alignment.Center),
-                painter = painterResource(
-                    id =
-                    if (categoryType == CategoryType.EXPENSE)
-                        R.drawable.ic_arrow_upward
-                    else
-                        R.drawable.ic_arrow_downward
-                ),
-                contentDescription = "",
-                colorFilter = ColorFilter.tint(color = Color.White)
+                painter = painterResource(id = context.getDrawable(categoryIcon)),
+                colorFilter = ColorFilter.tint(color = Color.White),
+                contentDescription = categoryName
             )
         }
         Column(
@@ -199,7 +204,7 @@ fun TransactionItem(
                     modifier = Modifier
                         .size(12.dp)
                         .align(Alignment.CenterVertically),
-                    painter = painterResource(id = accountIcon),
+                    painter = painterResource(id = context.getDrawable(accountIcon)),
                     contentDescription = ""
                 )
                 Text(
@@ -253,14 +258,14 @@ fun TransactionItemPreview() {
         TransactionItem(
             categoryName = "Utilities",
             accountName = "",
-            accountIcon = R.drawable.ic_account,
+            accountIcon = "ic_account",
             amount = "300 ₹",
             date = "15/11/2019",
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(16.dp),
-            transactionColor = "#FFFFFF"
+            categoryColor = "#FFFFFF"
         )
     }
 }
@@ -295,19 +300,21 @@ val DUMMY_DATA = listOf(
         categoryName = "Clothing",
         categoryType = CategoryType.EXPENSE,
         categoryBackgroundColor = "#000000",
-        accountName = "",
-        accountIcon = R.drawable.ic_add,
+        categoryIcon = "ic_add",
+        accountName = "DB Bank xxxx",
+        accountIcon = "ic_account",
         date = Date().toString()
     ),
     TransactionUIModel(
-        id = "1",
+        id = "2",
         notes = UiText.DynamicString("Transaction One"),
         amount = UiText.DynamicString("Transaction One"),
         categoryName = "Clothing",
         categoryType = CategoryType.INCOME,
         categoryBackgroundColor = "#000000",
-        accountName = "",
-        accountIcon = R.drawable.ic_add,
+        categoryIcon = "ic_add",
+        accountName = "DB Bank xxxx",
+        accountIcon = "ic_account",
         date = Date().toString()
     ),
 )

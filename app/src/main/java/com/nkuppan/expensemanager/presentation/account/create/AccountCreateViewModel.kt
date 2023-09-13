@@ -113,13 +113,19 @@ class AccountCreateViewModel @Inject constructor(
         val currentBalance: String = currentBalance.value
         val color: String = colorValue.value
 
+        var isError = false
+
         if (name.isBlank()) {
             nameErrorMessage.value = UiText.StringResource(R.string.account_name_error)
-            return
+            isError = true
         }
 
         if (currentBalance.isBlank()) {
             currentBalanceErrorMessage.value = UiText.StringResource(R.string.current_balance_error)
+            isError = true
+        }
+
+        if (isError) {
             return
         }
 

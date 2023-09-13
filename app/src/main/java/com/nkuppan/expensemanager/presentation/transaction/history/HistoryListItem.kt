@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.presentation.transaction.history
 
-import androidx.annotation.DrawableRes
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
 
@@ -19,7 +18,8 @@ data class TransactionUIModel(
     val categoryName: String,
     val categoryType: CategoryType,
     val categoryBackgroundColor: String,
+    val categoryIcon: String,
     val accountName: String,
-    @DrawableRes val accountIcon: Int,
+    val accountIcon: String,
     val date: String,
 )

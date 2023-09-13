@@ -23,8 +23,8 @@ fun visible(view: View, visible: Boolean) {
 }
 
 @BindingAdapter("setIcon")
-fun setIcon(view: ImageView, icon: Int) {
-    view.setImageResource(icon)
+fun setIcon(view: ImageView, icon: String) {
+    view.setImageResource(view.context.getDrawable(icon))
 }
 
 @BindingAdapter("checkErrorMessage")

@@ -20,11 +20,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,7 +49,9 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.UiState
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -63,7 +69,13 @@ private fun AccountListScreenScaffoldView(
     navController: NavController,
     accountUiState: UiState<List<AccountUiModel>>
 ) {
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             TopAppBar(
                 navigationIcon = {
@@ -85,22 +97,31 @@ private fun AccountListScreenScaffoldView(
             }
         }
     ) { innerPadding ->
+
+        val message = stringResource(id = R.string.cannot_edit_cash_account)
+
         AccountListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            AccountUiState = accountUiState
-        ) { accountId ->
-            navController.navigate("account/create?accountId=${accountId}")
+            accountUiState = accountUiState
+        ) { account ->
+            if (account.type != AccountType.CASH) {
+                navController.navigate("account/create?accountId=${account.id}")
+            } else {
+                scope.launch {
+                    snackbarHostState.showSnackbar(message)
+                }
+            }
         }
     }
 }
 
 @Composable
 private fun AccountListScreenContent(
-    AccountUiState: UiState<List<AccountUiModel>>,
+    accountUiState: UiState<List<AccountUiModel>>,
     modifier: Modifier = Modifier,
-    onItemClick: ((String) -> Unit)? = null
+    onItemClick: ((AccountUiModel) -> Unit)? = null
 ) {
 
     val scrollState = rememberLazyListState()
@@ -108,7 +129,7 @@ private fun AccountListScreenContent(
 
     Box(modifier = modifier) {
 
-        when (AccountUiState) {
+        when (accountUiState) {
             UiState.Empty -> {
                 Text(
                     modifier = Modifier
@@ -130,12 +151,12 @@ private fun AccountListScreenContent(
             is UiState.Success -> {
 
                 LazyColumn(state = scrollState) {
-                    items(AccountUiState.data) { account ->
+                    items(accountUiState.data) { account ->
                         AccountItem(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    onItemClick?.invoke(account.id)
+                                    onItemClick?.invoke(account)
                                 }
                                 .padding(16.dp),
                             name = account.name,

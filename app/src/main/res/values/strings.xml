@@ -262,4 +262,5 @@
     <string name="account_create_success">Account created/updated successfully</string>
     <string name="current_balance">Current Balance</string>
     <string name="current_balance_error">Current balance shouldn\'t be empty</string>
+    <string name="cannot_edit_cash_account">Can\'t edit the cash account</string>
 </resources>

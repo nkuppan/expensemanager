@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.model.Account
+import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -59,6 +60,7 @@ private fun Account.toAccountUiModel(currencySymbol: Int) = AccountUiModel(
     amount = getCurrency(
         currencySymbol, this.amount
     ),
+    type = this.type
 )
 
 
@@ -67,5 +69,6 @@ data class AccountUiModel(
     val name: String,
     val icon: String,
     val iconBackgroundColor: String,
-    val amount: UiText
+    val amount: UiText,
+    val type: AccountType = AccountType.BANK_ACCOUNT,
 )

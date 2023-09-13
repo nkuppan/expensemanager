@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
-import com.nkuppan.expensemanager.core.ui.utils.getPaymentModeIcon
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -116,8 +115,9 @@ fun Transaction.toTransactionUIModel(currencySymbol: Int): TransactionUIModel {
         this.category.name,
         this.category.type,
         this.category.backgroundColor,
+        this.category.iconName,
         accountName = this.account.name,
-        this.account.type.getPaymentModeIcon(),
+        this.account.iconName,
         this.updatedOn.toTransactionDate(),
     )
 }
