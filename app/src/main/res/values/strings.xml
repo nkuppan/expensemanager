@@ -226,14 +226,17 @@
     <string name="yen_type">¥</string>
     <string name="yen_name">Yen</string>
 
+    <string name="yuan_type">¥</string>
+    <string name="yuan_name">Yuan</string>
+
     <string name="swiss_franc_type">Fr</string>
     <string name="swiss_franc_name">Swiss Franc</string>
 
-    <string name="swedish_krona_type">¥</string>
-    <string name="swedish_krona_name">Swedish krona</string>
+    <string name="lira_type">₺</string>
+    <string name="lira_name">Lira</string>
 
-    <string name="won_type">₩</string>
-    <string name="won_name">Won</string>
+    <string name="ruble_type">₽</string>
+    <string name="ruble_name">Ruble</string>
 
     <string name="rupee_type">₹</string>
     <string name="rupee_name">Rupee</string>
@@ -263,4 +266,5 @@
     <string name="current_balance">Current Balance</string>
     <string name="current_balance_error">Current balance shouldn\'t be empty</string>
     <string name="cannot_edit_cash_account">Can\'t edit the cash account</string>
+    <string name="transaction_create_success">Transaction created/updated successfully</string>
 </resources>

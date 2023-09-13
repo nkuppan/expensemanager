@@ -8,14 +8,18 @@ import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.model.getCurrencyIcon
 import com.nkuppan.expensemanager.domain.usecase.account.AddAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.account.DeleteAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.account.FindAccountByIdUseCase
 import com.nkuppan.expensemanager.domain.usecase.account.UpdateAccountUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
@@ -26,6 +30,7 @@ import javax.inject.Inject
 class AccountCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val findAccountByIdUseCase: FindAccountByIdUseCase,
+    private val getCurrencyUseCase: GetCurrencyUseCase,
     private val addAccountUseCase: AddAccountUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase,
     private val deleteAccountUseCase: DeleteAccountUseCase
@@ -52,6 +57,9 @@ class AccountCreateViewModel @Inject constructor(
     var currentBalanceErrorMessage = MutableStateFlow<UiText?>(null)
         private set
 
+    var currencyIcon = MutableStateFlow<Int?>(null)
+        private set
+
     var colorValue = MutableStateFlow(DEFAULT_COLOR)
         private set
 
@@ -62,6 +70,10 @@ class AccountCreateViewModel @Inject constructor(
 
     init {
         readAccountInfo(savedStateHandle.get<String>(CATEGORY_ID))
+
+        getCurrencyUseCase.invoke().onEach {
+            currencyIcon.value = it.getCurrencyIcon()
+        }.launchIn(viewModelScope)
     }
 
     private fun updateAccountInfo(account: Account?) {

@@ -14,9 +14,7 @@ import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUs
 import com.nkuppan.expensemanager.domain.usecase.transaction.AddTransactionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -29,18 +27,18 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class TransactionCreateViewModel @Inject constructor(
+class OldTransactionCreateViewModel @Inject constructor(
     private val addTransactionUseCase: AddTransactionUseCase,
     private val getAccountsByNameUseCase: GetAccountsByNameUseCase,
     private val getCategoryByNameUseCase: GetCategoryByNameUseCase,
     private val getCurrentSymbolUseCase: GetCurrencyUseCase,
 ) : ViewModel() {
 
-    private val _message = MutableSharedFlow<UiText>()
-    val message = _message.asSharedFlow()
+    private val _snackbarMessage = Channel<UiText>()
+    val snackbarMessage = _snackbarMessage.receiveAsFlow()
 
-    private val _transactionCreated = MutableSharedFlow<Boolean>()
-    val transactionCreated = _transactionCreated.asSharedFlow()
+    private val _transactionCreated = Channel<Unit>()
+    val transactionCreated = _transactionCreated.receiveAsFlow()
 
     private val _amountClick = Channel<Unit>()
     val amountClick = _amountClick.receiveAsFlow()
@@ -206,11 +204,11 @@ class TransactionCreateViewModel @Inject constructor(
         viewModelScope.launch {
             when (addTransactionUseCase.invoke(transaction)) {
                 is Resource.Error -> {
-                    _message.emit(UiText.StringResource(R.string.unable_to_add_transaction))
+                    _snackbarMessage.send(UiText.StringResource(R.string.unable_to_add_transaction))
                 }
 
                 is Resource.Success -> {
-                    _transactionCreated.emit(true)
+                    _transactionCreated.send(Unit)
                 }
             }
         }

@@ -29,6 +29,7 @@ import com.nkuppan.expensemanager.presentation.account.create.AccountCreateScree
 import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
+import com.nkuppan.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -82,8 +83,19 @@ fun MainPageView() {
             composable("transaction") {
                 TransactionListScreen(navController)
             }
-            composable("transaction/create") {
-
+            composable(
+                route = "transaction/create?transactionId={transactionId}",
+                arguments = listOf(
+                    navArgument("transactionId") {
+                        defaultValue = ""
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                TransactionCreateScreen(
+                    navController,
+                    backStackEntry.arguments?.getString("transactionId")
+                )
             }
             composable("account") {
                 AccountListScreen(navController)
@@ -149,6 +161,14 @@ private fun HomePageScreen(navController: NavHostController) {
                     navController.navigate("transaction")
                 }) {
                 Text(text = "Navigate to Transaction")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally), onClick = {
+                    navController.navigate("transaction/create")
+                }) {
+                Text(text = "Navigate to Transaction Create")
             }
             Button(
                 modifier = Modifier

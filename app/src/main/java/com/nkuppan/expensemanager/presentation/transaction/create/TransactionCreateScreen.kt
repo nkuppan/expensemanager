@@ -1,4 +1,4 @@
-package com.nkuppan.expensemanager.presentation.account.create
+package com.nkuppan.expensemanager.presentation.transaction.create
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -6,10 +6,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -38,27 +40,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.utils.AppDatePickerDialog
 import com.nkuppan.expensemanager.core.ui.utils.AppDialog
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.presentation.selection.ColorSelectionScreen
 import com.nkuppan.expensemanager.presentation.selection.IconAndColorComponent
 import com.nkuppan.expensemanager.presentation.selection.IconSelectionScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.Date
 
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AccountCreateScreen(
+fun TransactionCreateScreen(
     navController: NavController,
-    accountId: String?,
+    transactionId: String?,
 ) {
 
     val context = LocalContext.current
@@ -72,7 +76,7 @@ fun AccountCreateScreen(
         )
     )
 
-    val viewModel: AccountCreateViewModel = hiltViewModel()
+    val viewModel: TransactionCreateViewModel = hiltViewModel()
 
     var sheetSelection by remember { mutableIntStateOf(1) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -83,7 +87,6 @@ fun AccountCreateScreen(
                 showDeleteDialog = false
             },
             onConfirmation = {
-                viewModel.deleteAccount()
                 showDeleteDialog = false
             },
             dialogTitle = stringResource(id = R.string.delete),
@@ -93,12 +96,12 @@ fun AccountCreateScreen(
         )
     }
 
-    val accountCreated by viewModel.accountUpdated.collectAsState(false)
-    if (accountCreated) {
+    val transactionCreated by viewModel.transactionCreated.collectAsState(false)
+    if (transactionCreated) {
         LaunchedEffect(key1 = "completed", block = {
             navController.popBackStack()
             scaffoldState.snackbarHostState.showSnackbar(
-                message = context.getString(R.string.account_create_success)
+                message = context.getString(R.string.transaction_create_success)
             )
         })
     }
@@ -107,84 +110,29 @@ fun AccountCreateScreen(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
         sheetContent = {
-            AccountCreateBottomSheetContent(
+            TransactionCreateBottomSheetContent(
                 sheetSelection,
                 scope,
                 viewModel,
                 scaffoldState
             )
         }, topBar = {
-            AccountCreateTopActionBar(
+            TransactionCreateTopActionBar(
                 navController,
-                accountId
+                transactionId
             ) {
                 showDeleteDialog = true
             }
         }
     ) { innerPadding ->
 
-        val name by viewModel.name.collectAsState()
-        val nameErrorMessage by viewModel.nameErrorMessage.collectAsState()
-        val currentBalance by viewModel.currentBalance.collectAsState()
-        val currentBalanceErrorMessage by viewModel.currentBalanceErrorMessage.collectAsState()
-        val currencyIcon by viewModel.currencyIcon.collectAsState()
-        val colorValue by viewModel.colorValue.collectAsState()
-        val iconValue by viewModel.icon.collectAsState()
-        val selectedAccountType by viewModel.accountType.collectAsState()
-
         Box(modifier = Modifier.fillMaxSize()) {
-            AccountCreateScreen(
-                modifier = Modifier.padding(innerPadding),
-                selectedColor = colorValue,
-                selectedIcon = iconValue,
-                name = name,
-                nameErrorMessage = nameErrorMessage,
-                currentBalance = currentBalance,
-                currentBalanceErrorMessage = currentBalanceErrorMessage,
-                selectedAccountType = selectedAccountType,
-                onAccountTypeChange = viewModel::setAccountType,
-                currency = currencyIcon,
-                onNameChange = {
-                    viewModel.setNameChange(it)
-                },
-                onCurrentBalanceChange = {
-                    viewModel.setCurrentBalanceChange(it)
-                },
-                openColorPicker = {
-                    scope.launch {
-                        if (sheetSelection != 2) {
-                            sheetSelection = 2
-                            scaffoldState.bottomSheetState.expand()
-                        } else {
-                            if (scaffoldState.bottomSheetState.isVisible) {
-                                scaffoldState.bottomSheetState.hide()
-                            } else {
-                                scaffoldState.bottomSheetState.expand()
-                            }
-                        }
-                    }
-                },
-                openIconPicker = {
-                    scope.launch {
-                        if (sheetSelection != 1) {
-                            sheetSelection = 1
-                            scaffoldState.bottomSheetState.expand()
-                        } else {
-                            if (scaffoldState.bottomSheetState.isVisible) {
-                                scaffoldState.bottomSheetState.hide()
-                            } else {
-                                scaffoldState.bottomSheetState.expand()
-                            }
-                        }
-                    }
-                }
-            )
-
+            TransactionCreateScreen()
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
-                onClick = viewModel::saveOrUpdateAccount
+                onClick = viewModel::onSaveClick
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_done),
@@ -197,9 +145,9 @@ fun AccountCreateScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun AccountCreateTopActionBar(
+private fun TransactionCreateTopActionBar(
     navController: NavController,
-    accountId: String?,
+    transactionId: String?,
     onClick: () -> Unit,
 ) {
     TopAppBar(navigationIcon = {
@@ -213,9 +161,9 @@ private fun AccountCreateTopActionBar(
                 modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterVertically),
-                text = stringResource(R.string.account)
+                text = stringResource(R.string.transaction)
             )
-            if (accountId?.isNotBlank() == true) {
+            if (transactionId?.isNotBlank() == true) {
                 IconButton(onClick = onClick) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_delete),
@@ -229,10 +177,10 @@ private fun AccountCreateTopActionBar(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun AccountCreateBottomSheetContent(
+private fun TransactionCreateBottomSheetContent(
     sheetSelection: Int,
     scope: CoroutineScope,
-    viewModel: AccountCreateViewModel,
+    viewModel: TransactionCreateViewModel,
     scaffoldState: BottomSheetScaffoldState
 ) {
     val context = LocalContext.current
@@ -240,14 +188,12 @@ private fun AccountCreateBottomSheetContent(
     if (sheetSelection == 1) {
         IconSelectionScreen {
             scope.launch {
-                viewModel.setIcon(context.resources.getResourceName(it))
                 scaffoldState.bottomSheetState.hide()
             }
         }
     } else {
         ColorSelectionScreen {
             scope.launch {
-                viewModel.setColorValue(it)
                 scaffoldState.bottomSheetState.hide()
             }
         }
@@ -256,10 +202,8 @@ private fun AccountCreateBottomSheetContent(
 
 
 @Composable
-private fun AccountCreateScreen(
-    onAccountTypeChange: ((AccountType) -> Unit),
+private fun TransactionCreateScreen(
     modifier: Modifier = Modifier,
-    selectedAccountType: AccountType = AccountType.BANK_ACCOUNT,
     name: String = "",
     nameErrorMessage: UiText? = null,
     currentBalance: String = "",
@@ -274,18 +218,37 @@ private fun AccountCreateScreen(
 ) {
 
     val context = LocalContext.current
-
     val focusManager = LocalFocusManager.current
+
+    var showDatePicker by remember {
+        mutableStateOf(false)
+    }
+
+    var selectedDate by remember {
+        mutableStateOf(Date().toString())
+    }
+
+    if (showDatePicker) {
+        AppDatePickerDialog(
+            modifier = Modifier.wrapContentSize(),
+            onDateSelected = {
+                selectedDate = it
+                showDatePicker = false
+            },
+            onDismiss = {
+                showDatePicker = false
+            },
+        )
+    }
 
     Column(modifier = modifier) {
 
-        AccountTypeSelectionView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            selectedAccountType = selectedAccountType,
-            onAccountTypeChange = onAccountTypeChange
-        )
+        Button(onClick = {
+            showDatePicker = true
+        }) {
+            Text(text = "Select Date")
+            Text(text = selectedDate)
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -294,7 +257,7 @@ private fun AccountCreateScreen(
             value = name,
             singleLine = true,
             label = {
-                Text(text = stringResource(id = R.string.account_name))
+                Text(text = stringResource(id = R.string.amount))
             },
             onValueChange = {
                 onNameChange?.invoke(it)
@@ -309,6 +272,7 @@ private fun AccountCreateScreen(
                 null
             }
         )
+        val textMeasurer = rememberTextMeasurer()
 
         OutlinedTextField(
             modifier = Modifier
@@ -356,12 +320,9 @@ private fun AccountCreateScreen(
 
 @Preview
 @Composable
-private fun AccountCreateStatePreview() {
+private fun TransactionCreateStatePreview() {
     MaterialTheme {
-        AccountCreateScreen(
-            onAccountTypeChange = {
-
-            },
+        TransactionCreateScreen(
             currency = R.drawable.currency_dollar
         )
     }

@@ -58,12 +58,16 @@ class CurrencyRepositoryImpl @Inject constructor(
                 R.string.swiss_franc_name
             ),
             Currency(
-                R.string.swedish_krona_type,
-                R.string.swedish_krona_name
+                R.string.lira_type,
+                R.string.lira_name
             ),
             Currency(
-                R.string.won_type,
-                R.string.won_name
+                R.string.ruble_type,
+                R.string.ruble_name
+            ),
+            Currency(
+                R.string.yuan_type,
+                R.string.yuan_name
             ),
             Currency(
                 R.string.rupee_type,

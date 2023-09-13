@@ -37,7 +37,7 @@ class TransactionCreateFragment : BaseBindingFragment<FragmentTransactionCreateB
         args.transaction
     }
 
-    private val viewModel: TransactionCreateViewModel by viewModels()
+    private val viewModel: OldTransactionCreateViewModel by viewModels()
 
     private lateinit var categoryAdapter: ArrayAdapter<String>
 
