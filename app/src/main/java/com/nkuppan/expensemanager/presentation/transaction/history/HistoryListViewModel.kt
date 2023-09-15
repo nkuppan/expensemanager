@@ -114,7 +114,7 @@ fun Transaction.toTransactionUIModel(currencySymbol: Int): TransactionUIModel {
         },
         this.category.name,
         this.category.type,
-        this.category.backgroundColor,
+        this.category.iconBackgroundColor,
         this.category.iconName,
         accountName = this.account.name,
         this.account.iconName,

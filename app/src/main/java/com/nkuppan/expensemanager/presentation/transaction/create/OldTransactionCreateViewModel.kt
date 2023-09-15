@@ -8,6 +8,7 @@ import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
+import com.nkuppan.expensemanager.domain.model.TransactionType
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsByNameUseCase
 import com.nkuppan.expensemanager.domain.usecase.category.GetCategoryByNameUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -147,7 +148,7 @@ class OldTransactionCreateViewModel @Inject constructor(
 
             val modified = accounts.mapIndexed { index, account ->
 
-                if (account.id == transaction?.accountId) {
+                if (account.id == transaction?.fromAccountId) {
                     selectedItemId = index
                 }
 
@@ -190,7 +191,9 @@ class OldTransactionCreateViewModel @Inject constructor(
             id = this.transaction?.id ?: UUID.randomUUID().toString(),
             notes = notes.value,
             categoryId = getCategoryId(),
-            accountId = getAccountId(),
+            fromAccountId = getAccountId(),
+            toAccountId = null,
+            type = TransactionType.EXPENSE,
             amount = amount.value.toDouble(),
             imagePath = "",
             createdOn = dateValue,

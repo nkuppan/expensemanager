@@ -147,12 +147,14 @@ fun TransactionCreateScreen(
         val notes by viewModel.notes.collectAsState()
 
         val category by viewModel.selectedCategory.collectAsState()
-        val account by viewModel.selectedAccount.collectAsState()
+        val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
+        val selectedToAccount by viewModel.selectedToAccount.collectAsState()
 
         Box(modifier = Modifier.fillMaxSize()) {
             TransactionCreateScreen(
                 selectedCategory = category,
-                selectedAccount = account,
+                selectedFromAccount = selectedFromAccount,
+                selectedToAccount = selectedToAccount,
                 currency = currency,
                 amount = amount,
                 amountErrorMessage = amountErrorMessage,
@@ -243,13 +245,18 @@ private fun TransactionCreateBottomSheetContent(
         }
     } else {
         val accounts by viewModel.accounts.collectAsState()
-        val selectedAccount by viewModel.selectedAccount.collectAsState()
+        val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
+        val selectedToAccount by viewModel.selectedToAccount.collectAsState()
         AccountSelectionScreen(
             accounts = accounts,
-            selectedAccount = selectedAccount,
+            selectedAccount = if (sheetSelection == 2) {
+                selectedFromAccount
+            } else {
+                selectedToAccount
+            },
         ) { account ->
             scope.launch {
-                viewModel.setAccountSelection(account)
+                viewModel.setAccountSelection(sheetSelection, account)
                 scaffoldState.bottomSheetState.hide()
             }
         }
@@ -269,7 +276,8 @@ private fun TransactionCreateScreen(
     selectedTransactionType: TransactionType = TransactionType.EXPENSE,
     onTransactionTypeChange: ((TransactionType) -> Unit)? = null,
     selectedCategory: Category,
-    selectedAccount: AccountUiModel,
+    selectedFromAccount: AccountUiModel,
+    selectedToAccount: AccountUiModel,
     notes: String? = null,
     onNotesChange: ((String) -> Unit)? = null,
     openSelection: ((Int) -> Unit)? = null,
@@ -300,7 +308,8 @@ private fun TransactionCreateScreen(
         TransactionTypeSelectionView(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                .align(Alignment.CenterHorizontally),
             selectedTransactionType = selectedTransactionType,
             onTransactionTypeChange = onTransactionTypeChange ?: {}
         )
@@ -351,53 +360,91 @@ private fun TransactionCreateScreen(
                 null
             }
         )
+        if (selectedTransactionType != TransactionType.TRANSFER) {
+            Text(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.select_category),
+                fontWeight = FontWeight.SemiBold,
+                fontStyle = FontStyle.Normal,
+                color = colorResource(id = R.color.blue_500)
+            )
+            CategoryItem(
+                name = selectedCategory.name,
+                iconName = selectedCategory.iconName,
+                categoryColor = selectedCategory.iconBackgroundColor,
+                endIcon = R.drawable.ic_arrow_right,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = colorResource(id = R.color.grey_light))
+                    .clickable {
+                        focusManager.clearFocus(force = true)
+                        openSelection?.invoke(1)
+                    }
+                    .padding(16.dp),
+            )
+        }
 
         Text(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
                 .fillMaxWidth(),
-            text = stringResource(id = R.string.select_category),
+            text = stringResource(
+                id = if (selectedTransactionType == TransactionType.TRANSFER) {
+                    R.string.from_account
+                } else {
+                    R.string.select_account
+                }
+            ),
             fontWeight = FontWeight.SemiBold,
             fontStyle = FontStyle.Normal,
             color = colorResource(id = R.color.blue_500)
-        )
-        CategoryItem(
-            name = selectedCategory.name,
-            iconName = selectedCategory.iconName,
-            categoryColor = selectedCategory.backgroundColor,
-            endIcon = R.drawable.ic_arrow_right,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = colorResource(id = R.color.grey_light))
-                .clickable {
-                    openSelection?.invoke(1)
-                }
-                .padding(16.dp),
         )
 
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            text = stringResource(id = R.string.select_account),
-            fontWeight = FontWeight.SemiBold,
-            fontStyle = FontStyle.Normal,
-            color = colorResource(id = R.color.blue_500)
-        )
         AccountItem(
-            name = selectedAccount.name,
-            icon = selectedAccount.icon,
-            iconBackgroundColor = selectedAccount.iconBackgroundColor,
+            name = selectedFromAccount.name,
+            icon = selectedFromAccount.icon,
+            iconBackgroundColor = selectedFromAccount.iconBackgroundColor,
             endIcon = R.drawable.ic_arrow_right,
-            amount = selectedAccount.amount.asString(context),
+            amount = selectedFromAccount.amount.asString(context),
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = colorResource(id = R.color.grey_light))
                 .clickable {
+                    focusManager.clearFocus(force = true)
                     openSelection?.invoke(2)
                 }
                 .padding(16.dp),
         )
+        if (selectedTransactionType == TransactionType.TRANSFER) {
+
+            Text(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.to_account),
+                fontWeight = FontWeight.SemiBold,
+                fontStyle = FontStyle.Normal,
+                color = colorResource(id = R.color.blue_500)
+            )
+
+            AccountItem(
+                name = selectedToAccount.name,
+                icon = selectedToAccount.icon,
+                iconBackgroundColor = selectedToAccount.iconBackgroundColor,
+                endIcon = R.drawable.ic_arrow_right,
+                amount = selectedToAccount.amount.asString(context),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = colorResource(id = R.color.grey_light))
+                    .clickable {
+                        focusManager.clearFocus(force = true)
+                        openSelection?.invoke(3)
+                    }
+                    .padding(16.dp),
+            )
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -446,11 +493,19 @@ private fun TransactionCreateStatePreview() {
                 name = "Shopping",
                 type = CategoryType.EXPENSE,
                 iconName = "ic_calendar",
-                backgroundColor = "#000000",
+                iconBackgroundColor = "#000000",
                 createdOn = Date(),
                 updatedOn = Date()
             ),
-            selectedAccount = AccountUiModel(
+            selectedFromAccount = AccountUiModel(
+                id = "1",
+                name = "Shopping",
+                type = AccountType.CASH,
+                icon = "ic_calendar",
+                iconBackgroundColor = "#000000",
+                amount = UiText.DynamicString("$ 0.00"),
+            ),
+            selectedToAccount = AccountUiModel(
                 id = "1",
                 name = "Shopping",
                 type = AccountType.CASH,

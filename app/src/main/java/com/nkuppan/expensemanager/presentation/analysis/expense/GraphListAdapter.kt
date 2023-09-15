@@ -110,7 +110,7 @@ class CategoryTransactionListAdapter(private val callback: ((GraphData) -> Unit)
                             data.amountText.asString(categoryName.context)
                         )
 
-                    val colorValue = getColorValue(category.backgroundColor)
+                    val colorValue = getColorValue(category.iconBackgroundColor)
 
                     val factor = amount.roundToInt()
 

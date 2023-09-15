@@ -3,6 +3,7 @@ package com.nkuppan.expensemanager.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import java.util.Date
 
 
@@ -14,9 +15,9 @@ data class CategoryEntity(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "type")
-    val type: Int,
-    @ColumnInfo(name = "background_color")
-    val backgroundColor: String,
+    val type: CategoryType,
+    @ColumnInfo(name = "icon_background_color")
+    val iconBackgroundColor: String,
     @ColumnInfo(name = "icon_name")
     val iconName: String,
     @ColumnInfo(name = "updated_on")

@@ -33,11 +33,15 @@ class TransactionListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         getTransactionByNameUseCase.invoke(null).onEach { transactions ->
-            _transactions.value = UiState.Success(
-                transactions.map {
-                    it.toTransactionUIModel(currencySymbol)
-                }
-            )
+            _transactions.value = if (transactions.isEmpty()) {
+                UiState.Empty
+            } else {
+                UiState.Success(
+                    transactions.map {
+                        it.toTransactionUIModel(currencySymbol)
+                    }
+                )
+            }
         }.launchIn(viewModelScope)
     }
 }

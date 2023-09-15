@@ -52,7 +52,7 @@ fun List<List<Transaction>>.constructGraphData(): PieData {
                 category.name
             )
         )
-        colors.add(getColorValue(category.backgroundColor))
+        colors.add(getColorValue(category.iconBackgroundColor))
     }
 
     val pieDataSet = PieDataSet(pieChartEntries, "")

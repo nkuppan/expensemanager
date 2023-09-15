@@ -136,7 +136,7 @@ private fun CategoryListScreenContent(
                         CategoryItem(
                             name = category.name,
                             iconName = category.iconName,
-                            categoryColor = category.backgroundColor,
+                            categoryColor = category.iconBackgroundColor,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
@@ -215,7 +215,7 @@ val DUMMY_DATA = listOf(
         name = "Category One",
         type = CategoryType.EXPENSE,
         iconName = "ic_calendar",
-        backgroundColor = "#000000",
+        iconBackgroundColor = "#000000",
         createdOn = Date(),
         updatedOn = Date()
     ),
@@ -224,7 +224,7 @@ val DUMMY_DATA = listOf(
         name = "Category Two",
         type = CategoryType.EXPENSE,
         iconName = "ic_calendar",
-        backgroundColor = "#000000",
+        iconBackgroundColor = "#000000",
         createdOn = Date(),
         updatedOn = Date()
     ),

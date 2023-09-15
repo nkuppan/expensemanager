@@ -96,7 +96,7 @@ class TransactionRepositoryImpl @Inject constructor(
             transactionWithCategory.forEach {
                 val transaction = it.transactionEntity.toDomainModel()
                 transaction.category = it.categoryEntity.toDomainModel()
-                transaction.account = it.accountEntity.toDomainModel()
+                transaction.account = it.fromAccountEntity.toDomainModel()
                 outputTransactions.add(transaction)
             }
         }

@@ -43,7 +43,7 @@ fun CategorySelectionScreen(
                         .padding(16.dp),
                     name = category.name,
                     iconName = category.iconName,
-                    categoryColor = category.backgroundColor,
+                    categoryColor = category.iconBackgroundColor,
                     endIcon = if (selectedCategory?.id == category.id) {
                         R.drawable.ic_done
                     } else {

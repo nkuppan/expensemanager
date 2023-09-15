@@ -65,7 +65,7 @@ class CategoryCreateViewModel @Inject constructor(
         this.category?.let { categoryItem ->
             name.value = categoryItem.name
             categoryType.value = categoryItem.type
-            colorValue.value = categoryItem.backgroundColor
+            colorValue.value = categoryItem.iconBackgroundColor
             icon.value = categoryItem.iconName
         }
     }
@@ -114,7 +114,7 @@ class CategoryCreateViewModel @Inject constructor(
             id = category?.id ?: UUID.randomUUID().toString(),
             name = name,
             type = categoryType.value,
-            backgroundColor = color,
+            iconBackgroundColor = color,
             iconName = icon.value,
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time

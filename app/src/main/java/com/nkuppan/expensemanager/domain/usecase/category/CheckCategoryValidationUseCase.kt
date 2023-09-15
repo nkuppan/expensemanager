@@ -12,11 +12,11 @@ class CheckCategoryValidationUseCase @Inject constructor() {
             return Resource.Error(Exception("Please specify the category id"))
         }
 
-        if (category.backgroundColor.isBlank()) {
+        if (category.iconBackgroundColor.isBlank()) {
             return Resource.Error(Exception("Background color is not available"))
         }
 
-        if (!category.backgroundColor.startsWith("#")) {
+        if (!category.iconBackgroundColor.startsWith("#")) {
             return Resource.Error(Exception("Background color is not valid"))
         }
 

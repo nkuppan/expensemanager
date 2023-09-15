@@ -83,7 +83,9 @@ fun TransactionListScreen(
         }
     ) {
         TransactionListScreen(
-            modifier = Modifier.padding(top = it.calculateTopPadding()),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = it.calculateTopPadding()),
             transactionUiState = transactionUiState,
             onItemClick = { transaction ->
                 navController.navigate("transaction/create?transactionId=${transaction.id}")

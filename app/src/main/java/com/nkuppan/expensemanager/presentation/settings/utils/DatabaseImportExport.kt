@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Environment
 import androidx.fragment.app.Fragment
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.db.utils.Constants
 import kotlinx.coroutines.delay
 import java.io.File
 import java.io.FileInputStream
@@ -21,6 +20,8 @@ import java.nio.channels.FileChannel
 const val REQUEST_CODE_IMPORT_EXPORT: Int = 1000
 
 object DatabaseImportExport {
+
+    private const val DATA_BASE_NAME = "expense_manager_database.db"
 
     private const val PACKAGE_NAME = "com.nkuppan.expensemanager"
 
@@ -85,7 +86,7 @@ object DatabaseImportExport {
 
                 try {
 
-                    aContext.deleteDatabase(Constants.EXPENSE_DATABASE_NAME)
+                    aContext.deleteDatabase(DATA_BASE_NAME)
 
                     delay(1000)
 
@@ -95,7 +96,7 @@ object DatabaseImportExport {
                         outputPath.mkdirs()
                     }
 
-                    val outFileName = File(outputPath, Constants.EXPENSE_DATABASE_NAME)
+                    val outFileName = File(outputPath, DATA_BASE_NAME)
 
                     if (!outFileName.exists()) {
                         outFileName.createNewFile()

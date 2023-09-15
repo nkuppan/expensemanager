@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.nkuppan.expensemanager.domain.model.TransactionType
 import java.util.Date
 
 
@@ -13,7 +14,14 @@ import java.util.Date
         ForeignKey(
             entity = AccountEntity::class,
             parentColumns = arrayOf("id"),
-            childColumns = arrayOf("account_id"),
+            childColumns = arrayOf("from_account_id"),
+            onUpdate = ForeignKey.NO_ACTION,
+            onDelete = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = AccountEntity::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("to_account_id"),
             onUpdate = ForeignKey.NO_ACTION,
             onDelete = ForeignKey.CASCADE
         ),
@@ -34,8 +42,12 @@ data class TransactionEntity(
     val notes: String,
     @ColumnInfo(name = "category_id")
     var categoryId: String,
-    @ColumnInfo(name = "account_id")
-    var accountId: String,
+    @ColumnInfo(name = "from_account_id")
+    var fromAccountId: String,
+    @ColumnInfo(name = "to_account_id")
+    var toAccountId: String?,
+    @ColumnInfo(name = "type")
+    var type: TransactionType,
     @ColumnInfo(name = "amount")
     var amount: Double,
     @ColumnInfo(name = "image_path")

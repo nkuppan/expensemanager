@@ -13,18 +13,18 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Query("SELECT * from `transaction` WHERE id=:id")
     fun findById(id: String): TransactionEntity?
 
-    @Query("SELECT * from `transaction` WHERE account_id=:accountId ORDER BY `transaction`.created_on DESC")
+    @Query("SELECT * from `transaction` WHERE from_account_id=:accountId ORDER BY `transaction`.created_on DESC")
     fun getTransactionsByAccountId(accountId: String): Flow<List<TransactionEntity>?>
 
     @Query(
         """
         SELECT 
             `transaction`.*, 
-            `category`.name, `category`.background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.background_color, `account`.type
+            `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
+            `account`.name, `account`.icon_background_color, `account`.type
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id
-        JOIN `account` ON account_id = `account`.id
+        JOIN `account` ON from_account_id = `account`.id
         ORDER BY `transaction`.created_on DESC
         """
     )
@@ -34,11 +34,11 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         """
         SELECT 
             `transaction`.*, 
-            `category`.name, `category`.background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.background_color, `account`.type
+            `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
+            `account`.name, `account`.icon_background_color, `account`.type
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id   
-        JOIN `account` ON account_id = `account`.id
+        JOIN `account` ON from_account_id = `account`.id
         WHERE `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC
         """
@@ -52,12 +52,12 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         """
         SELECT 
             `transaction`.*, 
-            `category`.name, `category`.background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.background_color, `account`.type
+            `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
+            `account`.name, `account`.icon_background_color, `account`.type
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id
-        JOIN `account` ON account_id = `account`.id
-        WHERE `transaction`.account_id=:accountId 
+        JOIN `account` ON from_account_id = `account`.id
+        WHERE `transaction`.from_account_id=:accountId 
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC
         """
@@ -74,8 +74,8 @@ interface TransactionDao : BaseDao<TransactionEntity> {
             SUM(`transaction`.amount)
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id
-        JOIN `account` ON account_id = `account`.id
-        WHERE `transaction`.account_id=:accountId
+        JOIN `account` ON from_account_id = `account`.id
+        WHERE `transaction`.from_account_id=:accountId
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate 
         AND `category`.type = :categoryType
         ORDER BY `transaction`.created_on DESC

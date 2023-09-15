@@ -77,8 +77,11 @@ class TransactionCreateViewModel @Inject constructor(
     private val _selectedCategory = MutableStateFlow(defaultCategory)
     var selectedCategory = _selectedCategory.asStateFlow()
 
-    private val _selectedAccount = MutableStateFlow(defaultAccount)
-    var selectedAccount = _selectedAccount.asStateFlow()
+    private val _selectedFromAccount = MutableStateFlow(defaultAccount)
+    var selectedFromAccount = _selectedFromAccount.asStateFlow()
+
+    private val _selectedToAccount = MutableStateFlow(defaultAccount)
+    var selectedToAccount = _selectedToAccount.asStateFlow()
 
     private val _selectedTransactionType = MutableStateFlow(TransactionType.EXPENSE)
     var selectedTransactionType = _selectedTransactionType.asStateFlow()
@@ -109,7 +112,8 @@ class TransactionCreateViewModel @Inject constructor(
                 }
             }
             _accounts.value = mappedAccounts
-            _selectedAccount.value = mappedAccounts.firstOrNull() ?: defaultAccount
+            _selectedFromAccount.value = mappedAccounts.firstOrNull() ?: defaultAccount
+            _selectedToAccount.value = mappedAccounts.firstOrNull() ?: defaultAccount
         }.launchIn(viewModelScope)
 
         selectedTransactionType.combine(getAllCategoryUseCase.invoke()) { transactionType, categories ->
@@ -164,11 +168,20 @@ class TransactionCreateViewModel @Inject constructor(
             return
         }
 
+        if (selectedTransactionType.value == TransactionType.TRANSFER &&
+            selectedFromAccount.value.id == selectedToAccount.value.id
+        ) {
+            _message.tryEmit(UiText.StringResource(R.string.select_different_account))
+            return
+        }
+
         val transaction = Transaction(
             id = this.transaction?.id ?: UUID.randomUUID().toString(),
             notes = notes.value,
             categoryId = selectedCategory.value.id,
-            accountId = selectedAccount.value.id,
+            fromAccountId = selectedFromAccount.value.id,
+            toAccountId = selectedToAccount.value.id,
+            type = selectedTransactionType.value,
             amount = amount.toDouble(),
             imagePath = "",
             createdOn = date.value,
@@ -204,8 +217,12 @@ class TransactionCreateViewModel @Inject constructor(
         _selectedTransactionType.value = transactionType
     }
 
-    fun setAccountSelection(account: AccountUiModel) {
-        this._selectedAccount.value = account
+    fun setAccountSelection(sheetSelection: Int, account: AccountUiModel) {
+        if (sheetSelection == 2) {
+            this._selectedFromAccount.value = account
+        } else {
+            this._selectedToAccount.value = account
+        }
     }
 
     fun setCategorySelection(category: Category) {
@@ -236,7 +253,7 @@ class TransactionCreateViewModel @Inject constructor(
             name = "Shopping",
             type = CategoryType.EXPENSE,
             iconName = "ic_calendar",
-            backgroundColor = "#000000",
+            iconBackgroundColor = "#000000",
             createdOn = Date(),
             updatedOn = Date()
         )

@@ -11,8 +11,13 @@ data class TransactionRelation(
     )
     val categoryEntity: CategoryEntity,
     @Relation(
-        parentColumn = "account_id",
+        parentColumn = "from_account_id",
         entityColumn = "id"
     )
-    val accountEntity: AccountEntity
+    val fromAccountEntity: AccountEntity,
+    @Relation(
+        parentColumn = "to_account_id",
+        entityColumn = "id"
+    )
+    val toAccountEntity: AccountEntity?
 )

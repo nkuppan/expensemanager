@@ -11,7 +11,7 @@ val FAKE_CATEGORY = Category(
     name = "Test",
     type = CategoryType.EXPENSE,
     iconName = "#FFFFFF",
-    backgroundColor = "#FFFFFF",
+    iconBackgroundColor = "#FFFFFF",
     createdOn = Date(),
     updatedOn = Date()
 )
@@ -21,7 +21,7 @@ val FAKE_FAVORITE_CATEGORY = Category(
     name = "Test",
     type = CategoryType.EXPENSE,
     iconName = "#FFFFFF",
-    backgroundColor = "#FFFFFF",
+    iconBackgroundColor = "#FFFFFF",
     createdOn = Date(),
     updatedOn = Date()
 )

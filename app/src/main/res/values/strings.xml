@@ -272,4 +272,7 @@
     <string name="transfer">Transfer</string>
     <string name="select_category">Select Category</string>
     <string name="optional_details">Optional details</string>
+    <string name="from_account">From Account</string>
+    <string name="to_account">To Account</string>
+    <string name="select_different_account">Select different account. From and To account shouldn\'t be the same.</string>
 </resources>
