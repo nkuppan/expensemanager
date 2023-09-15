@@ -11,7 +11,6 @@ import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.data.utils.getPreviousDateTime
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -19,7 +18,6 @@ import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeTe
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetPreviousDaysTransactionWithFilterUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionByIdUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
@@ -31,7 +29,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
@@ -39,7 +36,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val getTransactionByIdUseCase: GetTransactionByIdUseCase,
     private val getPreviousDaysTransactionWithFilterUseCase: GetPreviousDaysTransactionWithFilterUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
@@ -48,9 +44,6 @@ class DashboardViewModel @Inject constructor(
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
     getExpenseAmountUseCase: GetExpenseAmountUseCase
 ) : ViewModel() {
-
-    private val _openTransaction = Channel<Transaction>()
-    val openTransaction = _openTransaction.receiveAsFlow()
 
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
@@ -120,20 +113,6 @@ class DashboardViewModel @Inject constructor(
             _totalIncome.value = total
             _totalIncomeValue.value = getCurrency(currencySymbol, total)
         }.launchIn(viewModelScope)
-    }
-
-    fun openTransactionEdit(transactionId: String) {
-        viewModelScope.launch {
-            when (val response = getTransactionByIdUseCase.invoke(transactionId)) {
-                is Resource.Error -> {
-                    _errorMessage.send(UiText.StringResource(R.string.unable_to_find_transaction))
-                }
-
-                is Resource.Success -> {
-                    _openTransaction.send(response.data)
-                }
-            }
-        }
     }
 
     private fun constructPreviousDaysAnalysisGraphData(numberOfDays: Int = NUMBER_OF_DAYS) {

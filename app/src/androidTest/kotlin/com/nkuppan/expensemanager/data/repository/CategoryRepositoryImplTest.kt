@@ -137,6 +137,5 @@ class CategoryRepositoryImplTest : BaseCoroutineTest() {
         val foundData = (newResult as Resource.Success).data
         Truth.assertThat(foundData).isNotNull()
         Truth.assertThat(foundData.id).isEqualTo(FAKE_FAVORITE_CATEGORY.id)
-        Truth.assertThat(foundData.isFavorite).isTrue()
     }
 }

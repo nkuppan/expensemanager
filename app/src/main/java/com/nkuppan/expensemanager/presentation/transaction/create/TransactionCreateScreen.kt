@@ -1,8 +1,11 @@
 package com.nkuppan.expensemanager.presentation.transaction.create
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -36,23 +38,32 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.theme.ClickableTextField
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.AppDatePickerDialog
 import com.nkuppan.expensemanager.core.ui.utils.AppDialog
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.presentation.selection.ColorSelectionScreen
-import com.nkuppan.expensemanager.presentation.selection.IconAndColorComponent
-import com.nkuppan.expensemanager.presentation.selection.IconSelectionScreen
+import com.nkuppan.expensemanager.data.utils.toTransactionDate
+import com.nkuppan.expensemanager.domain.model.AccountType
+import com.nkuppan.expensemanager.domain.model.Category
+import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.TransactionType
+import com.nkuppan.expensemanager.presentation.account.list.AccountItem
+import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
+import com.nkuppan.expensemanager.presentation.account.selection.AccountSelectionScreen
+import com.nkuppan.expensemanager.presentation.category.list.CategoryItem
+import com.nkuppan.expensemanager.presentation.category.selection.CategorySelectionScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -88,6 +99,7 @@ fun TransactionCreateScreen(
             },
             onConfirmation = {
                 showDeleteDialog = false
+                viewModel.deleteTransaction()
             },
             dialogTitle = stringResource(id = R.string.delete),
             dialogText = stringResource(id = R.string.delete_item_message),
@@ -126,13 +138,47 @@ fun TransactionCreateScreen(
         }
     ) { innerPadding ->
 
+        val amount by viewModel.amount.collectAsState()
+        val amountErrorMessage by viewModel.amountErrorMessage.collectAsState()
+
+        val currency by viewModel.currencyType.collectAsState()
+        val selectedDate by viewModel.date.collectAsState()
+        val selectedTransactionType by viewModel.selectedTransactionType.collectAsState()
+        val notes by viewModel.notes.collectAsState()
+
+        val category by viewModel.selectedCategory.collectAsState()
+        val account by viewModel.selectedAccount.collectAsState()
+
         Box(modifier = Modifier.fillMaxSize()) {
-            TransactionCreateScreen()
+            TransactionCreateScreen(
+                selectedCategory = category,
+                selectedAccount = account,
+                currency = currency,
+                amount = amount,
+                amountErrorMessage = amountErrorMessage,
+                amountChange = viewModel::setAmount,
+                selectedDate = selectedDate,
+                onDateChange = viewModel::setDate,
+                selectedTransactionType = selectedTransactionType,
+                onTransactionTypeChange = viewModel::setTransactionType,
+                notes = notes,
+                onNotesChange = viewModel::setNotes,
+                openSelection = { type ->
+                    sheetSelection = type
+                    scope.launch {
+                        if (scaffoldState.bottomSheetState.isVisible) {
+                            scaffoldState.bottomSheetState.hide()
+                        } else {
+                            scaffoldState.bottomSheetState.expand()
+                        }
+                    }
+                }
+            )
             FloatingActionButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
-                onClick = viewModel::onSaveClick
+                onClick = viewModel::doSave
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_done),
@@ -183,17 +229,27 @@ private fun TransactionCreateBottomSheetContent(
     viewModel: TransactionCreateViewModel,
     scaffoldState: BottomSheetScaffoldState
 ) {
-    val context = LocalContext.current
-
     if (sheetSelection == 1) {
-        IconSelectionScreen {
+        val categories by viewModel.categories.collectAsState()
+        val selectedCategory by viewModel.selectedCategory.collectAsState()
+        CategorySelectionScreen(
+            categories = categories,
+            selectedCategory = selectedCategory,
+        ) { category ->
             scope.launch {
+                viewModel.setCategorySelection(category)
                 scaffoldState.bottomSheetState.hide()
             }
         }
     } else {
-        ColorSelectionScreen {
+        val accounts by viewModel.accounts.collectAsState()
+        val selectedAccount by viewModel.selectedAccount.collectAsState()
+        AccountSelectionScreen(
+            accounts = accounts,
+            selectedAccount = selectedAccount,
+        ) { account ->
             scope.launch {
+                viewModel.setAccountSelection(account)
                 scaffoldState.bottomSheetState.hide()
             }
         }
@@ -204,17 +260,19 @@ private fun TransactionCreateBottomSheetContent(
 @Composable
 private fun TransactionCreateScreen(
     modifier: Modifier = Modifier,
-    name: String = "",
-    nameErrorMessage: UiText? = null,
-    currentBalance: String = "",
-    currentBalanceErrorMessage: UiText? = null,
+    amount: String = "",
+    amountErrorMessage: UiText? = null,
+    amountChange: ((String) -> Unit)? = null,
     currency: Int? = null,
-    selectedColor: String = "#000000",
-    selectedIcon: String = "ic_calendar",
-    openIconPicker: (() -> Unit)? = null,
-    openColorPicker: (() -> Unit)? = null,
-    onNameChange: ((String) -> Unit)? = null,
-    onCurrentBalanceChange: ((String) -> Unit)? = null,
+    selectedDate: Date? = null,
+    onDateChange: ((Date) -> Unit)? = null,
+    selectedTransactionType: TransactionType = TransactionType.EXPENSE,
+    onTransactionTypeChange: ((TransactionType) -> Unit)? = null,
+    selectedCategory: Category,
+    selectedAccount: AccountUiModel,
+    notes: String? = null,
+    onNotesChange: ((String) -> Unit)? = null,
+    openSelection: ((Int) -> Unit)? = null,
 ) {
 
     val context = LocalContext.current
@@ -224,15 +282,12 @@ private fun TransactionCreateScreen(
         mutableStateOf(false)
     }
 
-    var selectedDate by remember {
-        mutableStateOf(Date().toString())
-    }
-
     if (showDatePicker) {
         AppDatePickerDialog(
             modifier = Modifier.wrapContentSize(),
+            selectedDate = selectedDate ?: Date(),
             onDateSelected = {
-                selectedDate = it
+                onDateChange?.invoke(it)
                 showDatePicker = false
             },
             onDismiss = {
@@ -242,43 +297,31 @@ private fun TransactionCreateScreen(
     }
 
     Column(modifier = modifier) {
-
-        Button(onClick = {
-            showDatePicker = true
-        }) {
-            Text(text = "Select Date")
-            Text(text = selectedDate)
-        }
-
-        OutlinedTextField(
+        TransactionTypeSelectionView(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                .wrapContentSize()
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            selectedTransactionType = selectedTransactionType,
+            onTransactionTypeChange = onTransactionTypeChange ?: {}
+        )
+        ClickableTextField(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
-            value = name,
-            singleLine = true,
-            label = {
-                Text(text = stringResource(id = R.string.amount))
-            },
-            onValueChange = {
-                onNameChange?.invoke(it)
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
-            ),
-            isError = nameErrorMessage != null,
-            supportingText = if (nameErrorMessage != null) {
-                { Text(text = nameErrorMessage.asString(context)) }
-            } else {
-                null
+            value = selectedDate?.toTransactionDate() ?: "",
+            label = R.string.select_date,
+            leadingIcon = R.drawable.ic_calendar,
+            onClick = {
+                focusManager.clearFocus(force = true)
+                showDatePicker = true
             }
         )
-        val textMeasurer = rememberTextMeasurer()
 
         OutlinedTextField(
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
-            value = currentBalance,
+            value = amount,
             singleLine = true,
             leadingIcon = if (currency != null) {
                 {
@@ -288,10 +331,10 @@ private fun TransactionCreateScreen(
                 null
             },
             label = {
-                Text(text = stringResource(id = R.string.current_balance))
+                Text(text = stringResource(id = R.string.amount))
             },
             onValueChange = {
-                onCurrentBalanceChange?.invoke(it)
+                amountChange?.invoke(it)
             },
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal
@@ -301,19 +344,93 @@ private fun TransactionCreateScreen(
                     focusManager.clearFocus(force = true)
                 }
             ),
-            isError = currentBalanceErrorMessage != null,
-            supportingText = if (currentBalanceErrorMessage != null) {
-                { Text(text = currentBalanceErrorMessage.asString(context)) }
+            isError = amountErrorMessage != null,
+            supportingText = if (amountErrorMessage != null) {
+                { Text(text = amountErrorMessage.asString(context)) }
             } else {
                 null
             }
         )
 
-        IconAndColorComponent(
-            selectedColor,
-            selectedIcon,
-            openColorPicker,
-            openIconPicker
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
+                .fillMaxWidth(),
+            text = stringResource(id = R.string.select_category),
+            fontWeight = FontWeight.SemiBold,
+            fontStyle = FontStyle.Normal,
+            color = colorResource(id = R.color.blue_500)
+        )
+        CategoryItem(
+            name = selectedCategory.name,
+            iconName = selectedCategory.iconName,
+            categoryColor = selectedCategory.backgroundColor,
+            endIcon = R.drawable.ic_arrow_right,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = colorResource(id = R.color.grey_light))
+                .clickable {
+                    openSelection?.invoke(1)
+                }
+                .padding(16.dp),
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                .fillMaxWidth(),
+            text = stringResource(id = R.string.select_account),
+            fontWeight = FontWeight.SemiBold,
+            fontStyle = FontStyle.Normal,
+            color = colorResource(id = R.color.blue_500)
+        )
+        AccountItem(
+            name = selectedAccount.name,
+            icon = selectedAccount.icon,
+            iconBackgroundColor = selectedAccount.iconBackgroundColor,
+            endIcon = R.drawable.ic_arrow_right,
+            amount = selectedAccount.amount.asString(context),
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = colorResource(id = R.color.grey_light))
+                .clickable {
+                    openSelection?.invoke(2)
+                }
+                .padding(16.dp),
+        )
+
+        OutlinedTextField(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 12.dp)
+                .fillMaxWidth(),
+            value = notes ?: "",
+            singleLine = true,
+            leadingIcon =
+            {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_notes),
+                    contentDescription = ""
+                )
+            },
+            label = {
+                Text(text = stringResource(id = R.string.notes))
+            },
+            onValueChange = {
+                onNotesChange?.invoke(it)
+            },
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    focusManager.clearFocus(force = true)
+                }
+            ),
+            supportingText = {
+                Text(text = stringResource(id = R.string.optional_details))
+            }
+        )
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(36.dp)
         )
     }
 }
@@ -323,7 +440,24 @@ private fun TransactionCreateScreen(
 private fun TransactionCreateStatePreview() {
     MaterialTheme {
         TransactionCreateScreen(
-            currency = R.drawable.currency_dollar
+            currency = R.drawable.currency_dollar,
+            selectedCategory = Category(
+                id = "1",
+                name = "Shopping",
+                type = CategoryType.EXPENSE,
+                iconName = "ic_calendar",
+                backgroundColor = "#000000",
+                createdOn = Date(),
+                updatedOn = Date()
+            ),
+            selectedAccount = AccountUiModel(
+                id = "1",
+                name = "Shopping",
+                type = AccountType.CASH,
+                icon = "ic_calendar",
+                iconBackgroundColor = "#000000",
+                amount = UiText.DynamicString("$ 0.00"),
+            )
         )
     }
 }

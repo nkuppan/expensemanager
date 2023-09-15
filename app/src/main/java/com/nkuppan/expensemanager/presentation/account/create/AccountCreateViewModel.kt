@@ -29,8 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    getCurrencyUseCase: GetCurrencyUseCase,
     private val findAccountByIdUseCase: FindAccountByIdUseCase,
-    private val getCurrencyUseCase: GetCurrencyUseCase,
     private val addAccountUseCase: AddAccountUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase,
     private val deleteAccountUseCase: DeleteAccountUseCase

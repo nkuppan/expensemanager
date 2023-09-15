@@ -10,7 +10,7 @@ import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionByIdUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroupByMonthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,7 +29,7 @@ import javax.inject.Inject
 class HistoryListViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     private val getTransactionGroupByMonthUseCase: GetTransactionGroupByMonthUseCase,
-    private val getTransactionByIdUseCase: GetTransactionByIdUseCase
+    private val findTransactionByIdUseCase: FindTransactionByIdUseCase
 ) : ViewModel() {
 
     private val _errorMessage = Channel<UiText>()
@@ -89,7 +89,7 @@ class HistoryListViewModel @Inject constructor(
 
     fun openTransactionEdit(transactionId: String) {
         viewModelScope.launch {
-            when (val response = getTransactionByIdUseCase.invoke(transactionId)) {
+            when (val response = findTransactionByIdUseCase.invoke(transactionId)) {
                 is Resource.Error -> {
                     _errorMessage.send(UiText.StringResource(R.string.unable_to_find_transaction))
                 }
@@ -118,6 +118,6 @@ fun Transaction.toTransactionUIModel(currencySymbol: Int): TransactionUIModel {
         this.category.iconName,
         accountName = this.account.name,
         this.account.iconName,
-        this.updatedOn.toTransactionDate(),
+        this.createdOn.toTransactionDate(),
     )
 }

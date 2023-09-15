@@ -1,8 +1,10 @@
 package com.nkuppan.expensemanager.presentation.category.list
 
 import android.annotation.SuppressLint
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,6 +20,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -130,15 +134,15 @@ private fun CategoryListScreenContent(
                 LazyColumn(state = scrollState) {
                     items(categoryUiState.data) { category ->
                         CategoryItem(
+                            name = category.name,
+                            iconName = category.iconName,
+                            categoryColor = category.backgroundColor,
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
                                     onItemClick?.invoke(category.id)
                                 }
                                 .padding(16.dp),
-                            name = category.name,
-                            iconName = category.iconName,
-                            categoryColor = category.backgroundColor
                         )
                     }
                     item {
@@ -156,11 +160,12 @@ private fun CategoryListScreenContent(
 
 @SuppressLint("DiscouragedApi")
 @Composable
-private fun CategoryItem(
+fun CategoryItem(
     name: String,
     iconName: String,
     categoryColor: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @DrawableRes endIcon: Int? = null
 ) {
     val context = LocalContext.current
 
@@ -194,6 +199,13 @@ private fun CategoryItem(
                 .align(Alignment.CenterVertically),
             text = name
         )
+        if (endIcon != null) {
+            Icon(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                painter = painterResource(id = endIcon),
+                contentDescription = null,
+            )
+        }
     }
 }
 
@@ -223,12 +235,14 @@ val DUMMY_DATA = listOf(
 private fun CategoryItemPreview() {
     MaterialTheme {
         CategoryItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
             name = "Utilities",
             iconName = "ic_calendar",
-            categoryColor = "#000000"
+            categoryColor = "#000000",
+            endIcon = R.drawable.ic_arrow_right,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(color = colorResource(id = R.color.grey_light))
+                .padding(16.dp),
         )
     }
 }

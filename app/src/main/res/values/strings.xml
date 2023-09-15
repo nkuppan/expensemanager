@@ -46,6 +46,7 @@
 
     <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="amount_error_message">Please enter a valid amount</string>
+    <string name="amount_should_greater_than_zero">Amount should be greater than zero</string>
     <string name="search_by_name">Search by name</string>
     <string name="wallets">Wallets</string>
     <string name="dummy_amount">$500.00</string>
@@ -211,7 +212,7 @@
     <string name="add_new_account">Add New Account</string>
     <string name="delete">Delete</string>
     <string name="account_create_failed">Unable to create account</string>
-    <string name="select_account">Select account</string>
+    <string name="select_account">Select Account</string>
 
 
     <string name="dollar_type">$</string>
@@ -267,4 +268,8 @@
     <string name="current_balance_error">Current balance shouldn\'t be empty</string>
     <string name="cannot_edit_cash_account">Can\'t edit the cash account</string>
     <string name="transaction_create_success">Transaction created/updated successfully</string>
+    <string name="select_date">Select Date</string>
+    <string name="transfer">Transfer</string>
+    <string name="select_category">Select Category</string>
+    <string name="optional_details">Optional details</string>
 </resources>

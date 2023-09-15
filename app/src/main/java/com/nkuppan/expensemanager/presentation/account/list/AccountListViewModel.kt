@@ -52,7 +52,7 @@ class AccountListViewModel @Inject constructor(
     }
 }
 
-private fun Account.toAccountUiModel(currencySymbol: Int) = AccountUiModel(
+fun Account.toAccountUiModel(currencySymbol: Int) = AccountUiModel(
     id = this.id,
     name = this.name,
     icon = this.iconName,

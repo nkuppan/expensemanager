@@ -5,7 +5,7 @@ import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.repository.TransactionRepository
 import javax.inject.Inject
 
-class GetTransactionByIdUseCase @Inject constructor(
+class FindTransactionByIdUseCase @Inject constructor(
     private val repository: TransactionRepository
 ) {
     suspend fun invoke(id: String?): Resource<Transaction> {

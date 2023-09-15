@@ -1,207 +1,179 @@
 package com.nkuppan.expensemanager.presentation.transaction.create
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.Category
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
-import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsByNameUseCase
-import com.nkuppan.expensemanager.domain.usecase.category.GetCategoryByNameUseCase
+import com.nkuppan.expensemanager.domain.model.TransactionType
+import com.nkuppan.expensemanager.domain.model.getCurrencyIcon
+import com.nkuppan.expensemanager.domain.model.isExpense
+import com.nkuppan.expensemanager.domain.model.isIncome
+import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
+import com.nkuppan.expensemanager.domain.usecase.category.GetAllCategoryUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.AddTransactionUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.DeleteTransactionUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.FindTransactionByIdUseCase
+import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
+import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class TransactionCreateViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
+    getCurrencyUseCase: GetCurrencyUseCase,
+    getAccountsUseCase: GetAccountsUseCase,
+    getAllCategoryUseCase: GetAllCategoryUseCase,
+    private val findTransactionByIdUseCase: FindTransactionByIdUseCase,
     private val addTransactionUseCase: AddTransactionUseCase,
-    private val getAccountsByNameUseCase: GetAccountsByNameUseCase,
-    private val getCategoryByNameUseCase: GetCategoryByNameUseCase,
-    private val getCurrentSymbolUseCase: GetCurrencyUseCase,
+    private val deleteTransactionUseCase: DeleteTransactionUseCase,
 ) : ViewModel() {
 
     private val _message = MutableSharedFlow<UiText>()
     val message = _message.asSharedFlow()
 
-    private val _transactionCreated = MutableSharedFlow<Boolean>()
-    val transactionCreated = _transactionCreated.asSharedFlow()
+    private val _transactionUpdated = MutableSharedFlow<Boolean>()
+    val transactionCreated = _transactionUpdated.asSharedFlow()
 
-    private val _amountClick = Channel<Unit>()
-    val amountClick = _amountClick.receiveAsFlow()
-
-    private val _dateClick = Channel<Unit>()
-    val dateClick = _dateClick.receiveAsFlow()
-
-    private val _categoryClick = Channel<Unit>()
-    val categoryClick = _categoryClick.receiveAsFlow()
-
-    private val _accountClick = Channel<Unit>()
-    val accountClick = _accountClick.receiveAsFlow()
-
-    private val _amount: MutableStateFlow<String> = MutableStateFlow("")
+    private val _amount: MutableStateFlow<String> = MutableStateFlow("0.0")
     val amount = _amount.asStateFlow()
 
-    private val _date: MutableStateFlow<String> = MutableStateFlow("")
+    private val _amountErrorMessage: MutableStateFlow<UiText?> = MutableStateFlow(null)
+    val amountErrorMessage = _amountErrorMessage.asStateFlow()
+
+    private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
-    private val _currencyType = MutableStateFlow(R.string.default_currency_type)
+    private val _currencyType = MutableStateFlow<Int?>(null)
     val currencyType = _currencyType.asStateFlow()
 
-    val notes: MutableStateFlow<String> = MutableStateFlow("")
-    val notesErrorText: MutableStateFlow<String> = MutableStateFlow("")
+    private val _notes = MutableStateFlow("")
+    val notes = _notes.asStateFlow()
 
-    private val _categories = Channel<List<String>>()
-    val categories = _categories.receiveAsFlow()
+    private val _categories = MutableStateFlow<List<Category>>(emptyList())
+    val categories = _categories.asStateFlow()
 
-    private var categoriesList = mutableListOf<Category>()
+    private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
+    val accounts = _accounts.asStateFlow()
 
-    var selectedCategoryId: Int = 0
+    private val _selectedCategory = MutableStateFlow(defaultCategory)
+    var selectedCategory = _selectedCategory.asStateFlow()
 
-    private val _accounts = Channel<List<String>>()
-    val accounts = _accounts.receiveAsFlow()
+    private val _selectedAccount = MutableStateFlow(defaultAccount)
+    var selectedAccount = _selectedAccount.asStateFlow()
 
-    private var accountsList = mutableListOf<Account>()
-
-    var selectedAccountId: Int = 0
+    private val _selectedTransactionType = MutableStateFlow(TransactionType.EXPENSE)
+    var selectedTransactionType = _selectedTransactionType.asStateFlow()
 
     private var transaction: Transaction? = null
 
-    private var dateValue: Date = Date()
-
-    private var amountValue: Double = 0.0
-
     init {
+
         setDate(Date())
-        setAmount(0.0)
 
-        viewModelScope.launch {
-            getCurrentSymbolUseCase.invoke().collectLatest { currencySymbol ->
-                _currencyType.value = currencySymbol.type
+        setAmount(0.0.toString())
+
+        getCurrencyUseCase.invoke().onEach {
+            _currencyType.value = it.getCurrencyIcon()
+        }.launchIn(viewModelScope)
+
+        getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
+            currency.type to accounts
+        }.map { currencyAndAccountPair ->
+
+            val (currencySymbol, accounts) = currencyAndAccountPair
+
+            val mappedAccounts = if (accounts.isEmpty()) {
+                emptyList()
+            } else {
+                accounts.map {
+                    it.toAccountUiModel(currencySymbol)
+                }
             }
-        }
+            _accounts.value = mappedAccounts
+            _selectedAccount.value = mappedAccounts.firstOrNull() ?: defaultAccount
+        }.launchIn(viewModelScope)
+
+        selectedTransactionType.combine(getAllCategoryUseCase.invoke()) { transactionType, categories ->
+            transactionType to categories
+        }.onEach {
+
+            val (transactionType, categories) = it
+
+            val filteredCategories = categories.filter {
+                if (transactionType == TransactionType.EXPENSE) {
+                    it.type.isExpense()
+                } else {
+                    it.type.isIncome()
+                }
+            }
+            _categories.value = filteredCategories
+            _selectedCategory.value = filteredCategories.firstOrNull() ?: defaultCategory
+
+        }.launchIn(viewModelScope)
+
+        readInfo(savedStateHandle.get<String>("transactionId"))
     }
 
-    fun loadCategories(searchValue: String? = "") {
-
+    private fun readInfo(transactionId: String?) {
+        transactionId ?: return
         viewModelScope.launch {
-            val categories = when (val response = getCategoryByNameUseCase.invoke(searchValue)) {
-                is Resource.Error -> {
-                    emptyList()
-                }
-
+            when (val response = findTransactionByIdUseCase.invoke(transactionId)) {
+                is Resource.Error -> Unit
                 is Resource.Success -> {
-                    response.data
+                    val transaction = response.data
+                    setAmount(transaction.amount.toString())
+                    setDate(transaction.createdOn)
+                    setNotes(transaction.notes)
+                    this@TransactionCreateViewModel.transaction = transaction
                 }
             }
-
-            var selectedItemId = 0
-
-            categoriesList = categories.toMutableList()
-
-            val modified = categories.mapIndexed { index, category ->
-
-                if (category.id == transaction?.categoryId) {
-                    selectedItemId = index
-                }
-
-                category.name
-            }
-
-            selectedCategoryId = selectedItemId
-
-            _categories.send(modified)
         }
     }
 
-    fun loadAccounts(searchValue: String? = "") {
+    fun doSave() {
 
-        viewModelScope.launch {
+        val amount = this.amount.value
 
-            val accounts = when (val response = getAccountsByNameUseCase.invoke(searchValue)) {
-                is Resource.Error -> {
-                    emptyList()
-                }
-
-                is Resource.Success -> {
-                    response.data
-                }
-            }
-
-            var selectedItemId = 0
-
-            accountsList = accounts.toMutableList()
-
-            val modified = accounts.mapIndexed { index, account ->
-
-                if (account.id == transaction?.accountId) {
-                    selectedItemId = index
-                }
-
-                account.name
-            }
-
-            selectedAccountId = selectedItemId
-
-            _accounts.send(modified)
+        if (amount.isBlank()) {
+            _amountErrorMessage.value = UiText.StringResource(R.string.amount_error_message)
+            return
         }
-    }
 
-    fun onDateClick() {
-        viewModelScope.launch {
-            _dateClick.send(Unit)
+        if (amount.toDouble() <= 0.0) {
+            _amountErrorMessage.value =
+                UiText.StringResource(R.string.amount_should_greater_than_zero)
+            return
         }
-    }
-
-    fun onAmountClick() {
-        viewModelScope.launch {
-            _amountClick.send(Unit)
-        }
-    }
-
-    fun onCategoryAddClick() {
-        viewModelScope.launch {
-            _categoryClick.send(Unit)
-        }
-    }
-
-    fun onAccountAddClick() {
-        viewModelScope.launch {
-            _accountClick.send(Unit)
-        }
-    }
-
-    fun onSaveClick() {
 
         val transaction = Transaction(
             id = this.transaction?.id ?: UUID.randomUUID().toString(),
             notes = notes.value,
-            categoryId = getCategoryId(),
-            accountId = getAccountId(),
-            amount = amount.value.toDouble(),
+            categoryId = selectedCategory.value.id,
+            accountId = selectedAccount.value.id,
+            amount = amount.toDouble(),
             imagePath = "",
-            createdOn = dateValue,
+            createdOn = date.value,
             updatedOn = Calendar.getInstance().time
-        ).apply {
-            getCategory()?.let {
-                category = it
-            }
-        }
+        )
 
         viewModelScope.launch {
             when (addTransactionUseCase.invoke(transaction)) {
@@ -210,60 +182,71 @@ class TransactionCreateViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    _transactionCreated.emit(true)
+                    _transactionUpdated.emit(true)
                 }
             }
         }
     }
 
-    fun setTransaction(transaction: Transaction? = null) {
-
-        transaction ?: return
-
-        this.transaction = transaction
-
-        notes.value = transaction.notes
-
-        setDate(transaction.createdOn)
-
-        setAmount(transaction.amount)
+    fun setAmount(amount: String) {
+        _amount.value = amount
     }
 
-    private fun getCategoryId(): String {
-        return if (categoriesList.isNotEmpty() && selectedCategoryId < categoriesList.size)
-            categoriesList[selectedCategoryId].id
-        else
-            ""
+    fun setDate(date: Date) {
+        _date.value = date
     }
 
-    private fun getCategory(): Category? {
-        return if (categoriesList.isNotEmpty() && selectedCategoryId < categoriesList.size)
-            categoriesList[selectedCategoryId]
-        else
-            null
+    fun setNotes(notes: String) {
+        _notes.value = notes
     }
 
-    private fun getAccountId(): String {
-        return if (accountsList.isNotEmpty() && selectedAccountId < accountsList.size)
-            accountsList[selectedAccountId].id
-        else
-            ""
+    fun setTransactionType(transactionType: TransactionType) {
+        _selectedTransactionType.value = transactionType
     }
 
-    fun getAmountValue(): Double {
-        return amountValue
+    fun setAccountSelection(account: AccountUiModel) {
+        this._selectedAccount.value = account
     }
 
-    fun setAmount(aAmount: Double) {
-        amountValue = aAmount
-        _amount.value = aAmount.toString()
+    fun setCategorySelection(category: Category) {
+        this._selectedCategory.value = category
     }
 
-    fun setDate(aNewDate: Date) {
+    fun deleteTransaction() {
+        viewModelScope.launch {
+            transaction?.let {
+                when (deleteTransactionUseCase.invoke(it)) {
+                    is Resource.Error -> {
+                        _message.emit(
+                            UiText.StringResource(R.string.transaction_delete_error_message)
+                        )
+                    }
 
-        _date.value = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            .format(aNewDate)
+                    is Resource.Success -> {
+                        _transactionUpdated.emit(true)
+                    }
+                }
+            }
+        }
+    }
 
-        dateValue = aNewDate
+    companion object {
+        private val defaultCategory = Category(
+            id = "1",
+            name = "Shopping",
+            type = CategoryType.EXPENSE,
+            iconName = "ic_calendar",
+            backgroundColor = "#000000",
+            createdOn = Date(),
+            updatedOn = Date()
+        )
+
+        private val defaultAccount = AccountUiModel(
+            id = "1",
+            name = "Shopping",
+            icon = "ic_calendar",
+            iconBackgroundColor = "#000000",
+            amount = UiText.DynamicString("$ 0.00")
+        )
     }
 }

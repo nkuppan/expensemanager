@@ -16,9 +16,7 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.showSnackBarMessage
 import com.nkuppan.expensemanager.core.ui.fragment.BaseBindingFragment
 import com.nkuppan.expensemanager.databinding.FragmentDashboardBinding
-import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
-import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,8 +25,6 @@ import kotlinx.coroutines.launch
 class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
 
     private val viewModel: DashboardViewModel by viewModels()
-
-    private lateinit var transactionListAdapter: TransactionListAdapter
 
     override fun inflateLayout(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -39,14 +35,10 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        transactionListAdapter = TransactionListAdapter(showColor = true) { value, _ ->
-            viewModel.openTransactionEdit(value.id)
-        }
 
         binding.transactionList.isHorizontalScrollBarEnabled = false
         binding.transactionList.setHasFixedSize(false)
         binding.transactionList.layoutManager = LinearLayoutManager(requireContext())
-        binding.transactionList.adapter = transactionListAdapter
 
         binding.lastSevenDayGraph.setDrawGridBackground(false)
         binding.lastSevenDayGraph.description = Description().apply {
@@ -63,13 +55,6 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
                 }
 
                 R.id.action_transaction -> {
-                    findNavController().navigate(
-                        R.id.action_dashboardFragment_to_navigation_transaction_list,
-                        Bundle().apply {
-                            putInt("category_id", -1)
-                            putBoolean("show_color", true)
-                        }
-                    )
                     false
                 }
 
@@ -85,17 +70,11 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
         }
 
         binding.addTransaction.setOnClickListener {
-            navigateTransaction(null)
+            navigateTransaction()
         }
 
         binding.viewAll.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_dashboardFragment_to_navigation_transaction_list,
-                Bundle().apply {
-                    putInt("category_id", -1)
-                    putBoolean("show_color", true)
-                }
-            )
+
         }
 
         binding.toolbar.setOnMenuItemClickListener {
@@ -168,13 +147,6 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
                         binding.transactionList.isVisible = hasRecords
                         binding.viewAll.isVisible = hasRecords
                         binding.emptyView.isVisible = !hasRecords
-
-                        transactionListAdapter.submitList(transactionUIModels)
-                    }
-                }
-                launch {
-                    viewModel.openTransaction.collectLatest {
-                        navigateTransaction(it)
                     }
                 }
                 launch {
@@ -186,11 +158,11 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
         }
     }
 
-    private fun navigateTransaction(transaction: Transaction?) {
+    private fun navigateTransaction() {
         findNavController().navigate(
             R.id.action_dashboardFragment_to_navigation_transaction_create,
             Bundle().apply {
-                putSerializable("transaction", transaction)
+                putSerializable("transaction", null)
             })
     }
 }

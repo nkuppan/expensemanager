@@ -11,9 +11,6 @@
         android:label="Dashboard Fragment"
         tools:layout="@layout/fragment_dashboard">
         <action
-            android:id="@+id/action_dashboardFragment_to_navigation_transaction_list"
-            app:destination="@id/navigation_transaction_list" />
-        <action
             android:id="@+id/action_dashboardFragment_to_navigation_transaction_history_list"
             app:destination="@id/navigation_transaction_history_list" />
         <action
@@ -36,8 +33,6 @@
     <include app:graph="@navigation/navigation_analysis" />
 
     <include app:graph="@navigation/navigation_transaction_create" />
-
-    <include app:graph="@navigation/navigation_transaction_list" />
 
     <include app:graph="@navigation/navigation_transaction_history_list" />
 

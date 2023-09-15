@@ -3,6 +3,7 @@ package com.nkuppan.expensemanager.presentation.transaction.list
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -83,7 +84,10 @@ fun TransactionListScreen(
     ) {
         TransactionListScreen(
             modifier = Modifier.padding(top = it.calculateTopPadding()),
-            transactionUiState = transactionUiState
+            transactionUiState = transactionUiState,
+            onItemClick = { transaction ->
+                navController.navigate("transaction/create?transactionId=${transaction.id}")
+            }
         )
     }
 }
@@ -91,7 +95,8 @@ fun TransactionListScreen(
 @Composable
 private fun TransactionListScreen(
     transactionUiState: UiState<List<TransactionUIModel>>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onItemClick: ((TransactionUIModel) -> Unit)? = null
 ) {
 
     val context = LocalContext.current
@@ -123,6 +128,12 @@ private fun TransactionListScreen(
                 LazyColumn(state = scrollState) {
                     items(transactionUiState.data) {
                         TransactionItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onItemClick?.invoke(it)
+                                }
+                                .padding(16.dp),
                             categoryName = it.categoryName,
                             categoryColor = it.categoryBackgroundColor,
                             categoryIcon = it.categoryIcon,
@@ -130,9 +141,6 @@ private fun TransactionListScreen(
                             accountIcon = it.accountIcon,
                             amount = it.amount.asString(context),
                             date = it.date,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
                             categoryType = it.categoryType
                         )
                     }

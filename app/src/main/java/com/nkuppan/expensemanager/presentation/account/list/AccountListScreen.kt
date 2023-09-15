@@ -1,6 +1,7 @@
 package com.nkuppan.expensemanager.presentation.account.list
 
 import android.annotation.SuppressLint
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -161,7 +163,7 @@ private fun AccountListScreenContent(
                                 .padding(16.dp),
                             name = account.name,
                             icon = account.icon,
-                            accountBackgroundColor = account.iconBackgroundColor,
+                            iconBackgroundColor = account.iconBackgroundColor,
                             amount = account.amount.asString(context)
                         )
                     }
@@ -180,12 +182,13 @@ private fun AccountListScreenContent(
 
 @SuppressLint("DiscouragedApi")
 @Composable
-private fun AccountItem(
+fun AccountItem(
     name: String,
     icon: String,
-    accountBackgroundColor: String,
-    amount: String,
-    modifier: Modifier = Modifier
+    iconBackgroundColor: String,
+    amount: String?,
+    modifier: Modifier = Modifier,
+    @DrawableRes endIcon: Int? = null
 ) {
     val context = LocalContext.current
 
@@ -204,7 +207,7 @@ private fun AccountItem(
                     drawCircle(
                         color = Color(
                             android.graphics.Color.parseColor(
-                                accountBackgroundColor
+                                iconBackgroundColor
                             )
                         )
                     )
@@ -225,13 +228,24 @@ private fun AccountItem(
                 .align(Alignment.CenterVertically),
             text = name
         )
-        Text(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            text = amount,
-            fontStyle = FontStyle.Normal,
-            fontWeight = FontWeight.Medium,
-            fontSize = 20.sp
-        )
+        if (amount != null) {
+            Text(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                text = amount,
+                fontStyle = FontStyle.Normal,
+                fontWeight = FontWeight.Medium,
+                fontSize = 20.sp
+            )
+        }
+        if (endIcon != null) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 8.dp),
+                painter = painterResource(id = endIcon),
+                contentDescription = null,
+            )
+        }
     }
 }
 
@@ -269,8 +283,9 @@ private fun AccountItemPreview() {
                 .padding(16.dp),
             name = "Utilities",
             icon = "ic_calendar",
-            accountBackgroundColor = "#000000",
-            amount = "$ 100.00"
+            iconBackgroundColor = "#000000",
+            amount = "$ 100.00",
+            endIcon = R.drawable.ic_arrow_right
         )
     }
 }

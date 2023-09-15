@@ -16,22 +16,24 @@ import java.util.Date
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDatePickerDialog(
-    onDateSelected: (String) -> Unit,
+    selectedDate: Date,
+    onDateSelected: (Date) -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val datePickerState = rememberDatePickerState()
-
-    val selectedDate = datePickerState.selectedDateMillis?.let {
-        Date(it).toString()
-    } ?: ""
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = selectedDate.time
+    )
 
     DatePickerDialog(
         modifier = modifier,
         onDismissRequest = { onDismiss() },
         confirmButton = {
             Button(onClick = {
-                onDateSelected(selectedDate)
+                val currentDate = datePickerState.selectedDateMillis?.let {
+                    Date(it)
+                } ?: selectedDate
+                onDateSelected(currentDate)
                 onDismiss()
             }
 
@@ -59,6 +61,7 @@ fun AppDatePickerDialog(
 fun AppDatePickerDialogPreview() {
     MaterialTheme {
         AppDatePickerDialog(
+            selectedDate = Date(),
             modifier = Modifier.wrapContentSize(),
             onDateSelected = {},
             onDismiss = {},
