@@ -66,6 +66,7 @@ import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.selection.AccountSelectionScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryItem
 import com.nkuppan.expensemanager.presentation.category.selection.CategorySelectionScreen
+import com.nkuppan.expensemanager.presentation.transaction.numberpad.NumberPadDialogView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -93,6 +94,7 @@ fun TransactionCreateScreen(
 
     var sheetSelection by remember { mutableIntStateOf(1) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showNumberPadDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
         AppDialog(
@@ -107,6 +109,19 @@ fun TransactionCreateScreen(
             dialogText = stringResource(id = R.string.delete_item_message),
             positiveButtonText = stringResource(id = R.string.delete),
             negativeButtonText = stringResource(id = R.string.cancel)
+        )
+    }
+
+    if (showNumberPadDialog) {
+        NumberPadDialogView(
+            onConfirm = { amount ->
+                showNumberPadDialog = false
+                amount ?: return@NumberPadDialogView
+                scope.launch {
+                    viewModel.setAmount(amount)
+                    scaffoldState.bottomSheetState.hide()
+                }
+            }
         )
     }
 
@@ -168,6 +183,12 @@ fun TransactionCreateScreen(
                 notes = notes,
                 onNotesChange = viewModel::setNotes,
                 openSelection = { type ->
+
+                    if (type == 4) {
+                        showNumberPadDialog = true
+                        return@TransactionCreateScreen
+                    }
+
                     sheetSelection = type
                     scope.launch {
                         if (scaffoldState.bottomSheetState.isVisible) {
@@ -343,6 +364,19 @@ private fun TransactionCreateScreen(
                 }
             } else {
                 null
+            },
+            trailingIcon =
+            {
+                IconButton(
+                    onClick = {
+                        openSelection?.invoke(4)
+                    },
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_calculater),
+                        contentDescription = ""
+                    )
+                }
             },
             label = {
                 Text(text = stringResource(id = R.string.amount))

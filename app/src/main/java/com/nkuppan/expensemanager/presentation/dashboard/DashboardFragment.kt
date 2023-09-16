@@ -91,9 +91,7 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
         }
 
         binding.accountContainer.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_dashboardFragment_to_navigation_account_selection
-            )
+
         }
 
         binding.dateContainer.setOnClickListener {
@@ -159,10 +157,5 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
     }
 
     private fun navigateTransaction() {
-        findNavController().navigate(
-            R.id.action_dashboardFragment_to_navigation_transaction_create,
-            Bundle().apply {
-                putSerializable("transaction", null)
-            })
     }
 }

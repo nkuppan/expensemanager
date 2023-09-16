@@ -9,8 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
-import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.showSnackBarMessage
 import com.nkuppan.expensemanager.core.ui.fragment.BaseBindingFragment
 import com.nkuppan.expensemanager.databinding.FragmentExpenseGraphListBinding
@@ -34,12 +32,6 @@ class ExpenseGraphFragment : BaseBindingFragment<FragmentExpenseGraphListBinding
         super.onViewCreated(view, savedInstanceState)
 
         binding.actionAdd.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_graphTabFragment_to_transaction_create_navigation,
-                Bundle().apply {
-                    putSerializable("transaction", null)
-                }
-            )
         }
 
         binding.dataRecyclerView.adapter = adapter

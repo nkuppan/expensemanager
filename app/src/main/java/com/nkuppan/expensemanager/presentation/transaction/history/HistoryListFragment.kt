@@ -6,7 +6,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.showSnackBarMessage
 import com.nkuppan.expensemanager.core.ui.fragment.BaseBindingListFragment
@@ -99,12 +98,7 @@ class HistoryListFragment : BaseBindingListFragment() {
 
     private fun navigateToTransactionCreateScreen(transaction: Transaction?) {
         viewLifecycleOwner.lifecycleScope.launch {
-            findNavController().navigate(
-                R.id.action_historyListFragment_to_transaction_create_navigation,
-                Bundle().apply {
-                    putSerializable("transaction", transaction)
-                }
-            )
+
         }
     }
 }

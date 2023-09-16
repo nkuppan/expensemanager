@@ -5,16 +5,12 @@
     android:id="@+id/navigation_transaction_history_list"
     app:startDestination="@id/historyListFragment">
 
-    <include app:graph="@navigation/navigation_transaction_create" />
-
     <fragment
         android:id="@+id/historyListFragment"
         android:name="com.nkuppan.expensemanager.presentation.transaction.history.HistoryListFragment"
         android:label="HistoryListFragment"
         tools:layout="@layout/fragment_list">
-        <action
-            android:id="@+id/action_historyListFragment_to_transaction_create_navigation"
-            app:destination="@id/navigation_transaction_create" />
+
     </fragment>
 
 </navigation>

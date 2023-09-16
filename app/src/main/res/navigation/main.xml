@@ -13,9 +13,7 @@
         <action
             android:id="@+id/action_dashboardFragment_to_navigation_transaction_history_list"
             app:destination="@id/navigation_transaction_history_list" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_navigation_transaction_create"
-            app:destination="@id/navigation_transaction_create" />
+
         <action
             android:id="@+id/action_dashboardFragment_to_navigation_analysis"
             app:destination="@id/navigation_analysis" />
@@ -23,22 +21,15 @@
             android:id="@+id/action_dashboardFragment_to_navigation_settings"
             app:destination="@id/navigation_settings" />
         <action
-            android:id="@+id/action_dashboardFragment_to_navigation_account_selection"
-            app:destination="@id/navigation_account_selection" />
-        <action
             android:id="@+id/action_dashboardFragment_to_navigation_date_filter"
             app:destination="@id/navigation_date_filter" />
     </fragment>
 
     <include app:graph="@navigation/navigation_analysis" />
 
-    <include app:graph="@navigation/navigation_transaction_create" />
-
     <include app:graph="@navigation/navigation_transaction_history_list" />
 
     <include app:graph="@navigation/navigation_settings" />
-
-    <include app:graph="@navigation/navigation_account_selection" />
 
     <include app:graph="@navigation/navigation_date_filter" />
 

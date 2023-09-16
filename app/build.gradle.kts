@@ -90,6 +90,12 @@ dependencies {
     kapt(libs.room.compiler)
     implementation(libs.room.ktx)
 
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m2)
+    implementation(libs.vico.compose.m3)
+    implementation(libs.vico.core)
+    implementation(libs.vico.views)
+
     //Core testing source module it will hold the
     androidTestImplementation(project(":core-testing"))
     testImplementation(project(":core-testing"))
