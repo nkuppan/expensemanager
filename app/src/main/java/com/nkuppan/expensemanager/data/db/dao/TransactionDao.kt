@@ -21,7 +21,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         SELECT 
             `transaction`.*, 
             `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.icon_background_color, `account`.type
+            `account`.name, `account`.icon_background_color, `account`.type, `account`.icon_name
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id
         JOIN `account` ON from_account_id = `account`.id
@@ -35,7 +35,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         SELECT 
             `transaction`.*, 
             `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.icon_background_color, `account`.type
+            `account`.name, `account`.icon_background_color, `account`.type, `account`.icon_name
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id   
         JOIN `account` ON from_account_id = `account`.id
@@ -53,7 +53,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         SELECT 
             `transaction`.*, 
             `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.icon_background_color, `account`.type
+            `account`.name, `account`.icon_background_color, `account`.type, `account`.icon_name
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id
         JOIN `account` ON from_account_id = `account`.id

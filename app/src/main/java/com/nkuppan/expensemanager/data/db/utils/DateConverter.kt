@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import java.util.Date
 
 
-class DateConverter {
+object DateConverter {
 
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {

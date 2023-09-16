@@ -5,7 +5,7 @@ import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.repository.TransactionRepository
 import javax.inject.Inject
 
-class AddTransactionUseCase @Inject constructor(
+class UpdateTransactionUseCase @Inject constructor(
     private val repository: TransactionRepository
 ) {
 
@@ -23,6 +23,6 @@ class AddTransactionUseCase @Inject constructor(
             return Resource.Error(Exception("Amount should be greater than 0"))
         }
 
-        return repository.addTransaction(transaction)
+        return repository.updateTransaction(transaction)
     }
 }

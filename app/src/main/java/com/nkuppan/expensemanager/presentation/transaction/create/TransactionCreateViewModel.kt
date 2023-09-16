@@ -19,6 +19,7 @@ import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUs
 import com.nkuppan.expensemanager.domain.usecase.transaction.AddTransactionUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.DeleteTransactionUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.FindTransactionByIdUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.UpdateTransactionUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,6 +45,7 @@ class TransactionCreateViewModel @Inject constructor(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val findTransactionByIdUseCase: FindTransactionByIdUseCase,
     private val addTransactionUseCase: AddTransactionUseCase,
+    private val updateTransactionUseCase: UpdateTransactionUseCase,
     private val deleteTransactionUseCase: DeleteTransactionUseCase,
 ) : ViewModel() {
 
@@ -62,8 +64,8 @@ class TransactionCreateViewModel @Inject constructor(
     private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
-    private val _currencyType = MutableStateFlow<Int?>(null)
-    val currencyType = _currencyType.asStateFlow()
+    private val _currencyIcon = MutableStateFlow<Int?>(null)
+    val currencyIcon = _currencyIcon.asStateFlow()
 
     private val _notes = MutableStateFlow("")
     val notes = _notes.asStateFlow()
@@ -88,6 +90,8 @@ class TransactionCreateViewModel @Inject constructor(
 
     private var transaction: Transaction? = null
 
+    private var currencyType = R.string.default_currency_type
+
     init {
 
         setDate(Date())
@@ -95,7 +99,8 @@ class TransactionCreateViewModel @Inject constructor(
         setAmount(0.0.toString())
 
         getCurrencyUseCase.invoke().onEach {
-            _currencyType.value = it.getCurrencyIcon()
+            _currencyIcon.value = it.getCurrencyIcon()
+            currencyType = it.type
         }.launchIn(viewModelScope)
 
         getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
@@ -147,6 +152,19 @@ class TransactionCreateViewModel @Inject constructor(
                     setAmount(transaction.amount.toString())
                     setDate(transaction.createdOn)
                     setNotes(transaction.notes)
+                    setCategorySelection(transaction.category)
+                    setAccountSelection(
+                        2,
+                        transaction.fromAccount.toAccountUiModel(currencyType)
+                    )
+                    val toAccount = transaction.toAccount
+                    if (toAccount != null) {
+                        setAccountSelection(
+                            3,
+                            toAccount.toAccountUiModel(currencyType)
+                        )
+                    }
+                    setTransactionType(transaction.type)
                     this@TransactionCreateViewModel.transaction = transaction
                 }
             }
@@ -180,7 +198,12 @@ class TransactionCreateViewModel @Inject constructor(
             notes = notes.value,
             categoryId = selectedCategory.value.id,
             fromAccountId = selectedFromAccount.value.id,
-            toAccountId = selectedToAccount.value.id,
+            toAccountId =
+            if (selectedTransactionType.value == TransactionType.TRANSFER) {
+                selectedToAccount.value.id
+            } else {
+                null
+            },
             type = selectedTransactionType.value,
             amount = amount.toDouble(),
             imagePath = "",
@@ -189,7 +212,13 @@ class TransactionCreateViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            when (addTransactionUseCase.invoke(transaction)) {
+
+            val response = if (this@TransactionCreateViewModel.transaction != null) {
+                updateTransactionUseCase.invoke(transaction)
+            } else {
+                addTransactionUseCase.invoke(transaction)
+            }
+            when (response) {
                 is Resource.Error -> {
                     _message.emit(UiText.StringResource(R.string.unable_to_add_transaction))
                 }

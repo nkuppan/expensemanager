@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -141,7 +143,7 @@ fun TransactionCreateScreen(
         val amount by viewModel.amount.collectAsState()
         val amountErrorMessage by viewModel.amountErrorMessage.collectAsState()
 
-        val currency by viewModel.currencyType.collectAsState()
+        val currency by viewModel.currencyIcon.collectAsState()
         val selectedDate by viewModel.date.collectAsState()
         val selectedTransactionType by viewModel.selectedTransactionType.collectAsState()
         val notes by viewModel.notes.collectAsState()
@@ -304,7 +306,10 @@ private fun TransactionCreateScreen(
         )
     }
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+    ) {
         TransactionTypeSelectionView(
             modifier = Modifier
                 .wrapContentSize()

@@ -10,6 +10,7 @@ import com.nkuppan.expensemanager.data.db.dao.TransactionDao
 import com.nkuppan.expensemanager.data.db.entity.AccountEntity
 import com.nkuppan.expensemanager.data.db.entity.CategoryEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
+import com.nkuppan.expensemanager.data.db.utils.AccountTypeConverter
 import com.nkuppan.expensemanager.data.db.utils.CategoryTypeConverter
 import com.nkuppan.expensemanager.data.db.utils.DateConverter
 import com.nkuppan.expensemanager.data.db.utils.TransactionTypeConverter
@@ -30,6 +31,7 @@ import com.nkuppan.expensemanager.data.db.utils.TransactionTypeConverter
     DateConverter::class,
     TransactionTypeConverter::class,
     CategoryTypeConverter::class,
+    AccountTypeConverter::class,
 )
 abstract class ExpenseManagerDatabase : RoomDatabase() {
 

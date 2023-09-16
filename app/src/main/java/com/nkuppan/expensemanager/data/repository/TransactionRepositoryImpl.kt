@@ -2,7 +2,10 @@ package com.nkuppan.expensemanager.data.repository
 
 import android.util.Log
 import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
+import com.nkuppan.expensemanager.data.db.dao.AccountDao
+import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao
+import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionRelation
 import com.nkuppan.expensemanager.data.mappers.toDomainModel
 import com.nkuppan.expensemanager.data.mappers.toEntityModel
@@ -16,6 +19,8 @@ import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
     private val transactionDao: TransactionDao,
+    private val accountDao: AccountDao,
+    private val categoryDao: CategoryDao,
     private val dispatchers: AppCoroutineDispatchers
 ) : TransactionRepository {
 
@@ -30,7 +35,7 @@ class TransactionRepositoryImpl @Inject constructor(
                 val transaction = transactionDao.findById(transactionId)
 
                 if (transaction != null) {
-                    Resource.Success(transaction.toDomainModel())
+                    Resource.Success(convertTransactionCategoryRelation(transaction))
                 } else {
                     Resource.Error(KotlinNullPointerException())
                 }
@@ -39,12 +44,22 @@ class TransactionRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun addOrUpdateTransaction(transaction: Transaction): Resource<Boolean> =
+    override suspend fun addTransaction(transaction: Transaction): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
                 val response =
                     transactionDao.insert(transaction.toEntityModel())
                 Resource.Success(response != -1L)
+            } catch (exception: Exception) {
+                Resource.Error(exception)
+            }
+        }
+
+    override suspend fun updateTransaction(transaction: Transaction): Resource<Boolean> =
+        withContext(dispatchers.io) {
+            return@withContext try {
+                transactionDao.update(transaction.toEntityModel())
+                Resource.Success(true)
             } catch (exception: Exception) {
                 Resource.Error(exception)
             }
@@ -94,13 +109,35 @@ class TransactionRepositoryImpl @Inject constructor(
         if (transactionWithCategory?.isNotEmpty() == true) {
 
             transactionWithCategory.forEach {
-                val transaction = it.transactionEntity.toDomainModel()
-                transaction.category = it.categoryEntity.toDomainModel()
-                transaction.account = it.fromAccountEntity.toDomainModel()
+                val transaction = convertTransactionCategoryRelation(it)
                 outputTransactions.add(transaction)
             }
         }
         return outputTransactions
+    }
+
+    private fun convertTransactionCategoryRelation(relation: TransactionRelation): Transaction {
+        val transaction = relation.transactionEntity.toDomainModel()
+        transaction.category = relation.categoryEntity.toDomainModel()
+        transaction.fromAccount = relation.fromAccountEntity.toDomainModel()
+        transaction.toAccount = relation.toAccountEntity?.toDomainModel()
+        return transaction
+    }
+
+    private fun convertTransactionCategoryRelation(relation: TransactionEntity): Transaction {
+        val transaction = relation.toDomainModel()
+        categoryDao.findById(transaction.categoryId)?.let {
+            transaction.category = it.toDomainModel()
+        }
+        accountDao.findById(transaction.fromAccountId)?.let {
+            transaction.fromAccount = it.toDomainModel()
+        }
+        transaction.toAccountId?.let {
+            accountDao.findById(transaction.toAccountId)?.let {
+                transaction.toAccount = it.toDomainModel()
+            }
+        }
+        return transaction
     }
 
     override fun getTransactionAmount(

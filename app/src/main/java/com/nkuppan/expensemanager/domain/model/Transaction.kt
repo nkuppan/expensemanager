@@ -19,9 +19,10 @@ data class Transaction(
         "", "",
         Date(), Date()
     ),
-    var account: Account = Account(
+    var fromAccount: Account = Account(
         "", "", AccountType.CASH, "",
         "",
         Date(), Date()
-    )
+    ),
+    var toAccount: Account? = null
 ) : Serializable

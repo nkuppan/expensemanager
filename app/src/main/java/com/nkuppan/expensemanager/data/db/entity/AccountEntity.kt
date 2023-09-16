@@ -3,6 +3,7 @@ package com.nkuppan.expensemanager.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.nkuppan.expensemanager.domain.model.AccountType
 import java.util.Date
 
 
@@ -14,10 +15,10 @@ data class AccountEntity(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "type")
-    val type: Int,
+    val type: AccountType,
     @ColumnInfo(name = "icon_background_color")
     val iconBackgroundColor: String,
-    @ColumnInfo(name = "icon")
+    @ColumnInfo(name = "icon_name")
     val iconName: String,
     @ColumnInfo(name = "amount")
     val amount: Double,

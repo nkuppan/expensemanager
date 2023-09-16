@@ -8,7 +8,9 @@ interface TransactionRepository {
 
     suspend fun findTransactionById(transactionId: String): Resource<Transaction>
 
-    suspend fun addOrUpdateTransaction(transaction: Transaction): Resource<Boolean>
+    suspend fun addTransaction(transaction: Transaction): Resource<Boolean>
+
+    suspend fun updateTransaction(transaction: Transaction): Resource<Boolean>
 
     suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean>
 

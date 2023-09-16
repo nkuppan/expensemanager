@@ -44,8 +44,6 @@ data class TransactionEntity(
     var categoryId: String,
     @ColumnInfo(name = "from_account_id")
     var fromAccountId: String,
-    @ColumnInfo(name = "to_account_id")
-    var toAccountId: String?,
     @ColumnInfo(name = "type")
     var type: TransactionType,
     @ColumnInfo(name = "amount")
@@ -55,5 +53,7 @@ data class TransactionEntity(
     @ColumnInfo(name = "created_on")
     var createdOn: Date,
     @ColumnInfo(name = "updated_on")
-    var updatedOn: Date
+    var updatedOn: Date,
+    @ColumnInfo(name = "to_account_id")
+    var toAccountId: String?,
 )
