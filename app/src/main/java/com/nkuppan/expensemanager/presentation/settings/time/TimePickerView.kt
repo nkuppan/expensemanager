@@ -3,6 +3,7 @@ package com.nkuppan.expensemanager.presentation.settings.time
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -24,7 +25,10 @@ fun TimePickerView(
         modifier = Modifier
             .wrapContentSize()
             .padding(16.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .background(
+                color = MaterialTheme.colorScheme.background,
+                shape = RoundedCornerShape(8.dp)
+            ),
         reminderTimeState = reminderTimeState,
         onTimeSelected = {
             viewModel.setReminderTimeState(it)

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -86,7 +87,10 @@ fun AppTimePickerDialogPreview() {
             modifier = Modifier
                 .wrapContentSize()
                 .padding(16.dp)
-                .background(MaterialTheme.colorScheme.background),
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(8.dp)
+                ),
             onTimeSelected = {},
             onDismiss = {},
         )

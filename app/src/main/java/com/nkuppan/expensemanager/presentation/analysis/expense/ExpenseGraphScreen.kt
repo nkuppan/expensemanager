@@ -30,13 +30,8 @@ private fun ChartScreen() {
     Chart(
         chart = columnChart(),
         model = chartEntryModel,
-        startAxis = rememberStartAxis(
-            title = "Transaction Amount"
-        ),
-        bottomAxis = rememberBottomAxis(
-            title = "Days"
-        ),
-        isZoomEnabled = false
+        startAxis = rememberStartAxis(),
+        bottomAxis = rememberBottomAxis(),
     )
 }
 

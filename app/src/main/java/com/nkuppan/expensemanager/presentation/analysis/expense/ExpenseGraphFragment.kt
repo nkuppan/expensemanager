@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.nkuppan.expensemanager.core.ui.extensions.showSnackBarMessage
 import com.nkuppan.expensemanager.core.ui.fragment.BaseBindingFragment
 import com.nkuppan.expensemanager.databinding.FragmentExpenseGraphListBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,11 +47,6 @@ class ExpenseGraphFragment : BaseBindingFragment<FragmentExpenseGraphListBinding
                         binding.infoContainer.isVisible = !hasRecords
                         binding.dataRecyclerView.isVisible = hasRecords
                         adapter.submitList(it)
-                    }
-                }
-                launch {
-                    viewModel.errorMessage.collectLatest {
-                        binding.root.showSnackBarMessage(it.asString(requireContext()))
                     }
                 }
             }

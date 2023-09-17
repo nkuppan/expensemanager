@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,10 +59,12 @@ fun NumberPadDialogView(
     ) {
         Box(
             modifier = Modifier
+                .wrapContentSize()
                 .padding(16.dp)
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(color = MaterialTheme.colorScheme.surface),
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(8.dp)
+                )
         ) {
             NumberPadScreen(onConfirm)
         }

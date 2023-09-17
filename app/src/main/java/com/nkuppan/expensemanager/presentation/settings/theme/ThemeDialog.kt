@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -66,11 +67,13 @@ fun ThemeDialogViewContent(
     ) {
         Column(
             modifier = Modifier
+                .wrapContentSize()
                 .padding(16.dp)
-                .background(MaterialTheme.colorScheme.background)
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .padding(16.dp),
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                .padding(16.dp)
         ) {
             Text(
                 text = stringResource(id = R.string.choose_theme),
