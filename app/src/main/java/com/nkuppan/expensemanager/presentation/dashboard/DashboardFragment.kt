@@ -80,7 +80,6 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
         binding.toolbar.setOnMenuItemClickListener {
             return@setOnMenuItemClickListener when (it.itemId) {
                 R.id.action_settings -> {
-                    findNavController().navigate(R.id.action_dashboardFragment_to_navigation_settings)
                     true
                 }
 

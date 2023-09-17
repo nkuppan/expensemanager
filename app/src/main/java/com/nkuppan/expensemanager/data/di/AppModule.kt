@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.nkuppan.expensemanager.data.datastore.CurrencyDataStore
+import com.nkuppan.expensemanager.data.datastore.ReminderTimeDataStore
 import com.nkuppan.expensemanager.data.datastore.SettingsDataStore
 import com.nkuppan.expensemanager.data.datastore.ThemeDataStore
 import dagger.Module
@@ -37,8 +38,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideCurrencyDataStore(@ApplicationContext context: Context): CurrencyDataStore {
-        return CurrencyDataStore(
-            context.dataStore
-        )
+        return CurrencyDataStore(context.dataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideReminderTimeDataStore(@ApplicationContext context: Context): ReminderTimeDataStore {
+        return ReminderTimeDataStore(context.dataStore)
     }
 }

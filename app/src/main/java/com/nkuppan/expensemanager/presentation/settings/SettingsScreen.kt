@@ -16,12 +16,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,10 +33,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.extensions.launchReviewWorkflow
+import com.nkuppan.expensemanager.core.ui.extensions.openEmailToOption
+import com.nkuppan.expensemanager.core.ui.extensions.openWebPage
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.presentation.settings.currency.CurrencyDialogView
 import com.nkuppan.expensemanager.presentation.settings.theme.ThemeDialogView
+import com.nkuppan.expensemanager.presentation.settings.time.TimePickerView
 
 
 @Composable
@@ -42,14 +49,18 @@ fun SettingsScreen(
     navController: NavController
 ) {
     val viewModel: SettingsViewModel = hiltViewModel()
-    SettingsScreenScaffoldView(navController)
+    val currency by viewModel.currency.collectAsState()
+    SettingsScreenScaffoldView(navController, currency)
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun SettingsScreenScaffoldView(
-    navController: NavController
+    navController: NavController,
+    currency: Currency? = null
 ) {
+    val context = LocalContext.current
+
     var showThemeSelection by remember { mutableStateOf(false) }
     if (showThemeSelection) {
         ThemeDialogView {
@@ -64,6 +75,13 @@ private fun SettingsScreenScaffoldView(
         }
     }
 
+    var showTimePickerSelection by remember { mutableStateOf(false) }
+    if (showTimePickerSelection) {
+        TimePickerView {
+            showTimePickerSelection = false
+        }
+    }
+
     Scaffold(topBar = {
         TopAppBar(navigationIcon = {
             NavigationButton(navController)
@@ -74,7 +92,8 @@ private fun SettingsScreenScaffoldView(
         SettingsScreenContent(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
+            currency = currency
         ) {
             when (it) {
                 SettingOption.THEME -> {
@@ -86,31 +105,31 @@ private fun SettingsScreenScaffoldView(
                 }
 
                 SettingOption.NOTIFICATION -> {
-
+                    showTimePickerSelection = true
                 }
 
                 SettingOption.INFO -> {
-
+                    openWebPage(context, "http://naveenapps.com/")
                 }
 
                 SettingOption.RATE_US -> {
-
+                    launchReviewWorkflow(context)
                 }
 
                 SettingOption.GITHUB -> {
-
+                    openWebPage(context, "https://www.github.com/nkuppan")
                 }
 
                 SettingOption.TWITTER -> {
-
+                    openWebPage(context, "https://www.twitter.com/naveenkumarn27")
                 }
 
                 SettingOption.INSTAGRAM -> {
-
+                    openWebPage(context, "https://www.instagram.com/naveenkumar_kup")
                 }
 
                 SettingOption.MAIL -> {
-
+                    openEmailToOption(context, "naveenkumarn2@gmail.com")
                 }
             }
         }
@@ -120,6 +139,7 @@ private fun SettingsScreenScaffoldView(
 @Composable
 private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
+    currency: Currency? = null,
     settingOptionSelected: ((SettingOption) -> Unit)? = null
 ) {
     Column(modifier = modifier) {
@@ -143,7 +163,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.currency),
             description = stringResource(id = R.string.select_currency),
-            icon = R.drawable.currency_dollar
+            icon = currency?.icon ?: R.drawable.currency_dollar
         )
         SettingsItem(
             modifier = Modifier
@@ -179,7 +199,7 @@ private fun SettingsScreenContent(
             icon = R.drawable.ic_rate
         )
 
-        DeveloperInfoView()
+        DeveloperInfoView(settingOptionSelected)
     }
 }
 
