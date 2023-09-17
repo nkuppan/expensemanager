@@ -18,7 +18,8 @@ class CurrencyRepositoryImpl @Inject constructor(
     private fun getDefaultCurrency(): Currency {
         return Currency(
             R.string.default_currency_type,
-            R.string.default_currency_name
+            R.string.default_currency_name,
+            R.drawable.currency_dollar
         )
     }
 
@@ -39,39 +40,48 @@ class CurrencyRepositoryImpl @Inject constructor(
         return listOf(
             Currency(
                 R.string.dollar_type,
-                R.string.dollar_name
+                R.string.dollar_name,
+                R.drawable.currency_dollar
             ),
             Currency(
                 R.string.pound_type,
-                R.string.pound_name
+                R.string.pound_name,
+                R.drawable.currency_pound
             ),
             Currency(
                 R.string.euro_type,
-                R.string.euro_name
+                R.string.euro_name,
+                R.drawable.currency_euro
             ),
             Currency(
                 R.string.yen_type,
-                R.string.yen_name
+                R.string.yen_name,
+                R.drawable.currency_yen
             ),
             Currency(
                 R.string.swiss_franc_type,
-                R.string.swiss_franc_name
+                R.string.swiss_franc_name,
+                R.drawable.currency_franc
             ),
             Currency(
                 R.string.lira_type,
-                R.string.lira_name
+                R.string.lira_name,
+                R.drawable.currency_lira
             ),
             Currency(
                 R.string.ruble_type,
-                R.string.ruble_name
+                R.string.ruble_name,
+                R.drawable.currency_ruble
             ),
             Currency(
                 R.string.yuan_type,
-                R.string.yuan_name
+                R.string.yuan_name,
+                R.drawable.currency_yuan
             ),
             Currency(
                 R.string.rupee_type,
-                R.string.rupee_name
+                R.string.rupee_name,
+                R.drawable.currency_rupee
             )
         )
     }

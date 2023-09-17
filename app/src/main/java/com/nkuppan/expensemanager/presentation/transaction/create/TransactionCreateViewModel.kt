@@ -10,7 +10,6 @@ import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.TransactionType
-import com.nkuppan.expensemanager.domain.model.getCurrencyIcon
 import com.nkuppan.expensemanager.domain.model.isExpense
 import com.nkuppan.expensemanager.domain.model.isIncome
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
@@ -99,7 +98,7 @@ class TransactionCreateViewModel @Inject constructor(
         setAmount(0.0.toString())
 
         getCurrencyUseCase.invoke().onEach {
-            _currencyIcon.value = it.getCurrencyIcon()
+            _currencyIcon.value = it.icon
             currencyType = it.type
         }.launchIn(viewModelScope)
 
@@ -231,7 +230,21 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun setAmount(amount: String) {
+
         _amount.value = amount
+
+        if (amount.isBlank()) {
+            _amountErrorMessage.value = UiText.StringResource(R.string.amount_error_message)
+            return
+        }
+
+        if (amount.toDouble() <= 0.0) {
+            _amountErrorMessage.value =
+                UiText.StringResource(R.string.amount_should_greater_than_zero)
+            return
+        }
+
+        _amountErrorMessage.value = null
     }
 
     fun setDate(date: Date) {

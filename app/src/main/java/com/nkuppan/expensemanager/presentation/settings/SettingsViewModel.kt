@@ -42,6 +42,7 @@ class SettingsViewModel @Inject constructor(
         Currency(
             R.string.default_currency_type,
             R.string.default_currency_name,
+            R.drawable.currency_dollar
         )
     )
     val currency = _currency.asStateFlow()

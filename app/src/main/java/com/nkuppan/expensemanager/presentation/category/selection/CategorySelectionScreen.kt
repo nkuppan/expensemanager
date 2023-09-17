@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.presentation.category.list.CategoryItem
 import com.nkuppan.expensemanager.presentation.category.list.DUMMY_DATA
@@ -59,7 +59,7 @@ fun CategorySelectionScreen(
 @Preview
 @Composable
 private fun CategorySelectionScreenPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         CategorySelectionScreen(
             categories = DUMMY_DATA,
             selectedCategory = DUMMY_DATA.firstOrNull()

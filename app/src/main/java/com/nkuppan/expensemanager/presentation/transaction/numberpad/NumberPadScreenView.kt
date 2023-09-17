@@ -40,7 +40,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
-import java.util.Locale
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 
 
 @Composable
@@ -287,7 +287,7 @@ private fun NumberPadScreenView(
                         clear.invoke()
                     }
                 ) {
-                    Text(text = stringResource(id = R.string.clear).toCapital())
+                    Text(text = stringResource(id = R.string.clear).uppercase())
                 }
             }
             TextButton(
@@ -295,7 +295,7 @@ private fun NumberPadScreenView(
                 onClick = {
                     cancel.invoke()
                 }) {
-                Text(text = stringResource(id = R.string.cancel).toCapital())
+                Text(text = stringResource(id = R.string.cancel).uppercase())
             }
             TextButton(
                 modifier = modifier.fillMaxHeight(),
@@ -303,7 +303,7 @@ private fun NumberPadScreenView(
                     confirm.invoke()
                 }
             ) {
-                Text(text = stringResource(id = R.string.ok).toCapital())
+                Text(text = stringResource(id = R.string.ok).uppercase())
             }
         }
     }
@@ -330,14 +330,6 @@ fun RowScope.NumberPadActionText(
     }
 }
 
-fun String.toCapital(): String {
-    return this.replaceFirstChar {
-        if (it.isLowerCase()) it.titlecase(
-            Locale.getDefault()
-        ) else it.toString()
-    }
-}
-
 @Composable
 fun VerticalDivider(
     modifier: Modifier = Modifier,
@@ -359,7 +351,7 @@ fun VerticalDivider(
 @Preview
 @Composable
 fun NumberPadScreenPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         NumberPadScreenView(
             modifier = Modifier.wrapContentHeight(),
             value = "0",
@@ -371,7 +363,7 @@ fun NumberPadScreenPreview() {
 @Preview
 @Composable
 fun NumberPadScreenDialogPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         NumberPadDialogView {
 
         }

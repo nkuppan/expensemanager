@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.domain.model.AccountType
 
 
@@ -97,7 +97,7 @@ private fun RowScope.CustomAccountFilterChip(
 @Preview
 @Composable
 private fun AccountTypeSelectionViewPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         Column {
             AccountTypeSelectionView(
                 modifier = Modifier

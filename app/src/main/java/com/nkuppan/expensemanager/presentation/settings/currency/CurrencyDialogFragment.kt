@@ -20,7 +20,7 @@ class CurrencyDialogFragment : DialogFragment() {
     private val viewModel: CurrencyViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val currencies = viewModel.getCurrencies()
+        val currencies = viewModel.currencies.value
         val currencyTitles = currencies.map { currency ->
             "${getString(currency.name)} (${getString(currency.type)})"
         }.toTypedArray()

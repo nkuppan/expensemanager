@@ -21,7 +21,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -44,6 +43,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
@@ -233,7 +233,7 @@ val DUMMY_DATA = listOf(
 @Preview
 @Composable
 private fun CategoryItemPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         CategoryItem(
             name = "Utilities",
             iconName = "ic_calendar",
@@ -250,7 +250,7 @@ private fun CategoryItemPreview() {
 @Preview
 @Composable
 private fun CategoryListItemLoadingStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         CategoryListScreenScaffoldView(
             rememberNavController(),
             categoryUiState = UiState.Loading,
@@ -261,7 +261,7 @@ private fun CategoryListItemLoadingStatePreview() {
 @Preview
 @Composable
 private fun CategoryListItemEmptyStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         CategoryListScreenScaffoldView(
             rememberNavController(),
             categoryUiState = UiState.Empty,
@@ -272,7 +272,7 @@ private fun CategoryListItemEmptyStatePreview() {
 @Preview
 @Composable
 private fun CategoryListItemSuccessStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         CategoryListScreenScaffoldView(
             rememberNavController(),
             categoryUiState = UiState.Success(

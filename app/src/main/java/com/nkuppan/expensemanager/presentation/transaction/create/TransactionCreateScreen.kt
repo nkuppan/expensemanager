@@ -20,7 +20,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -52,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ClickableTextField
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.AppDatePickerDialog
 import com.nkuppan.expensemanager.core.ui.utils.AppDialog
@@ -524,7 +524,7 @@ private fun TransactionCreateScreen(
 @Preview
 @Composable
 private fun TransactionCreateStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         TransactionCreateScreen(
             currency = R.drawable.currency_dollar,
             selectedCategory = Category(

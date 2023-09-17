@@ -20,7 +20,7 @@ class ThemeDialogFragment : DialogFragment() {
     private val themeViewModel: ThemeViewModel by activityViewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val themes = themeViewModel.getThemes()
+        val themes = themeViewModel.themes.value
         val themeTitles = themes.map { theme -> getString(theme.titleResId) }.toTypedArray()
         val checkedItem = themes.indexOf(theme)
         return MaterialAlertDialogBuilder(requireContext())

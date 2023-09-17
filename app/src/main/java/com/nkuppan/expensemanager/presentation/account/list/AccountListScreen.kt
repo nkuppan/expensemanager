@@ -20,7 +20,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -49,6 +48,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.AccountType
@@ -276,7 +276,7 @@ val DUMMY_DATA = listOf(
 @Preview
 @Composable
 private fun AccountItemPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         AccountItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -293,7 +293,7 @@ private fun AccountItemPreview() {
 @Preview
 @Composable
 private fun AccountListItemLoadingStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         AccountListScreenScaffoldView(
             rememberNavController(),
             accountUiState = UiState.Loading,
@@ -304,7 +304,7 @@ private fun AccountListItemLoadingStatePreview() {
 @Preview
 @Composable
 private fun AccountListItemEmptyStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         AccountListScreenScaffoldView(
             rememberNavController(),
             accountUiState = UiState.Empty,
@@ -315,7 +315,7 @@ private fun AccountListItemEmptyStatePreview() {
 @Preview
 @Composable
 private fun AccountListItemSuccessStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         AccountListScreenScaffoldView(
             rememberNavController(),
             accountUiState = UiState.Success(

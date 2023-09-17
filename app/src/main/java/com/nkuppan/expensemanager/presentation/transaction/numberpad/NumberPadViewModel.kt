@@ -136,14 +136,19 @@ class NumberPadViewModel @Inject constructor() : ViewModel() {
                 return@launch
             }
 
-            kotlin.runCatching {
-                evaluate(newString)
-            }.onSuccess {
-                _calculatedAmount.value = String.format("%.2f", it)
-                _calculatedAmountString.value = newString
-            }.onFailure {
-                _calculatedAmountString.value = newString
-            }
+            calculateString(newString)
+        }
+    }
+
+    private fun calculateString(newString: String) {
+
+        kotlin.runCatching {
+            evaluate(newString)
+        }.onSuccess {
+            _calculatedAmount.value = String.format("%.2f", it)
+            _calculatedAmountString.value = newString
+        }.onFailure {
+            _calculatedAmountString.value = newString
         }
     }
 
@@ -155,9 +160,11 @@ class NumberPadViewModel @Inject constructor() : ViewModel() {
             return
         }
 
-        _calculatedAmountString.value = String.format(
+        val newString = String.format(
             "%s", calculatorString.substring(0, calculatorString.length - 1)
         )
+
+        calculateString(newString)
     }
 
     fun clearAmount() {

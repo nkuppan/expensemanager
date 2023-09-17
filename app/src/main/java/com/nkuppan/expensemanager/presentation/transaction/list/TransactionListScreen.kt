@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -43,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
@@ -264,7 +264,7 @@ fun TransactionItem(
 @Preview
 @Composable
 fun TransactionItemPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         TransactionItem(
             categoryName = "Utilities",
             accountName = "",
@@ -283,7 +283,7 @@ fun TransactionItemPreview() {
 @Preview
 @Composable
 fun TransactionListItemLoadingStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         TransactionListScreen(
             transactionUiState = UiState.Loading,
             modifier = Modifier.fillMaxSize()
@@ -294,7 +294,7 @@ fun TransactionListItemLoadingStatePreview() {
 @Preview
 @Composable
 fun TransactionListItemEmptyStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         TransactionListScreen(
             transactionUiState = UiState.Empty,
             modifier = Modifier.fillMaxSize()
@@ -332,7 +332,7 @@ val DUMMY_DATA = listOf(
 @Preview
 @Composable
 fun TransactionListItemSuccessStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         TransactionListScreen(
             transactionUiState = UiState.Success(
                 DUMMY_DATA

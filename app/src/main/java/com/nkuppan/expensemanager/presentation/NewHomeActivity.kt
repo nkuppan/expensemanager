@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,10 +24,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.presentation.account.create.AccountCreateScreen
 import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
+import com.nkuppan.expensemanager.presentation.analysis.AnalysisScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
+import com.nkuppan.expensemanager.presentation.settings.SettingsScreen
 import com.nkuppan.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,13 +41,12 @@ class NewHomeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            ExpenseManagerTheme {
                 MainPageView()
             }
         }
     }
 }
-
 
 @Composable
 fun MainPageView() {
@@ -115,10 +116,10 @@ fun MainPageView() {
                 )
             }
             composable("analysis") {
-
+                AnalysisScreen(navController)
             }
             composable("settings") {
-
+                SettingsScreen(navController)
             }
         }
     }
@@ -223,7 +224,7 @@ private fun HomePageScreen(navController: NavHostController) {
 @Composable
 fun MainPagePreview() {
 
-    MaterialTheme {
+    ExpenseManagerTheme {
         MainPageView()
     }
 }

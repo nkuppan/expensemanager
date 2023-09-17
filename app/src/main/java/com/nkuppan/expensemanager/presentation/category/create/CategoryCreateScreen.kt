@@ -13,7 +13,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
@@ -40,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.AppDialog
 import com.nkuppan.expensemanager.core.ui.utils.UiText
@@ -308,7 +308,7 @@ private fun CategoryCreateScreen(
 @Preview
 @Composable
 private fun CategoryCreateStatePreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         CategoryCreateScreen(
             onCategoryTypeChange = {
 

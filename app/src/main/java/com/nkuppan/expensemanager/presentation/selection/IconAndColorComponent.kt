@@ -9,7 +9,6 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 
 
 @Composable
@@ -109,7 +109,7 @@ fun IconAndColorComponent(
 @Composable
 @Preview
 private fun IconAndColorComponentPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         IconAndColorComponent(
             selectedColor = "#000000",
             selectedIcon = "ic_add",
