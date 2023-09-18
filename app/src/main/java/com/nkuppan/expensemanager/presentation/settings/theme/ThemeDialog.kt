@@ -3,11 +3,12 @@ package com.nkuppan.expensemanager.presentation.settings.theme
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -65,7 +66,7 @@ fun ThemeDialogViewContent(
             usePlatformDefaultWidth = false
         ),
     ) {
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(16.dp)
@@ -73,26 +74,28 @@ fun ThemeDialogViewContent(
                     color = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .padding(16.dp)
         ) {
-            Text(
-                text = stringResource(id = R.string.choose_theme),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            repeat(themes.size) {
-                val theme = themes[it]
+            item {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    text = stringResource(id = R.string.choose_theme),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            items(themes) { theme ->
                 Row(
                     modifier = Modifier
                         .clickable {
                             onConfirm.invoke(theme)
                         }
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(16.dp),
                 ) {
                     Text(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(top = 16.dp, bottom = 16.dp),
+                        modifier = Modifier.weight(1f),
                         text = stringResource(id = theme.titleResId)
                     )
                     if (selectedTheme.mode == theme.mode) {
