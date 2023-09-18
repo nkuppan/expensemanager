@@ -21,10 +21,10 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         SELECT 
             `transaction`.*, 
             `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.icon_background_color, `account`.type, `account`.icon_name
+            `fromAccount`.name, `fromAccount`.icon_background_color, `fromAccount`.type, `fromAccount`.icon_name
         FROM `transaction`
-        JOIN `category` ON category_id = `category`.id
-        JOIN `account` ON from_account_id = `account`.id
+        JOIN `category` ON category_id = `category`.id   
+        JOIN `account` as fromAccount ON from_account_id = `fromAccount`.id
         ORDER BY `transaction`.created_on DESC
         """
     )
@@ -35,10 +35,10 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         SELECT 
             `transaction`.*, 
             `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.icon_background_color, `account`.type, `account`.icon_name
+            `fromAccount`.name, `fromAccount`.icon_background_color, `fromAccount`.type, `fromAccount`.icon_name
         FROM `transaction`
         JOIN `category` ON category_id = `category`.id   
-        JOIN `account` ON from_account_id = `account`.id
+        JOIN `account` as fromAccount ON from_account_id = `fromAccount`.id
         WHERE `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC
         """
@@ -53,10 +53,10 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         SELECT 
             `transaction`.*, 
             `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `account`.name, `account`.icon_background_color, `account`.type, `account`.icon_name
+            `fromAccount`.name, `fromAccount`.icon_background_color, `fromAccount`.type, `fromAccount`.icon_name
         FROM `transaction`
-        JOIN `category` ON category_id = `category`.id
-        JOIN `account` ON from_account_id = `account`.id
+        JOIN `category` ON category_id = `category`.id   
+        JOIN `account` as fromAccount ON from_account_id = `fromAccount`.id
         WHERE `transaction`.from_account_id=:accountId 
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC

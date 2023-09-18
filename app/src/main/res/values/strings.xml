@@ -5,7 +5,7 @@
     <string name="cancel">Cancel</string>
 
     <string name="value">$ 45,587.30</string>
-    <string name="amount_string">%s %.2f</string>
+    <string name="amount_string">%s %.1f</string>
 
     <string name="app_name">Expense Manager</string>
     <string name="title_category">Category</string>
@@ -292,4 +292,5 @@
     <string name="info">Info</string>
     <string name="about_the_app_information">About app information</string>
     <string name="rate_us_message">It will help us to grow better</string>
+    <string name="month_analysis">Month Analysis</string>
 </resources>

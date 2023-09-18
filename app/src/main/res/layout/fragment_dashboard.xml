@@ -356,37 +356,6 @@
                         tools:listitem="@layout/adapter_transaction_child_item" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <TextView
-                    android:id="@+id/last_seven_day_graph_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_16dp"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:text="@string/last_seven_day"
-                    android:textColor="?attr/colorSecondary"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/transaction_list_container" />
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/last_seven_day_report_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/last_seven_day_graph_title">
-
-                    <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/last_seven_day_graph"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_margin="@dimen/margin_16dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
@@ -394,7 +363,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/last_seven_day_report_container" />
+                    app:layout_constraintTop_toBottomOf="@+id/transaction_list_container" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

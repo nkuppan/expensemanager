@@ -1,17 +1,10 @@
 package com.nkuppan.expensemanager.presentation.dashboard
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
-import com.nkuppan.expensemanager.data.utils.getPreviousDateTime
-import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeTextUseCase
@@ -29,8 +22,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
-import java.text.SimpleDateFormat
-import java.util.Locale
 import javax.inject.Inject
 
 
@@ -69,9 +60,6 @@ class DashboardViewModel @Inject constructor(
     private val _totalIncomeValue = MutableStateFlow(getCurrency(currencySymbol, 0.0))
     val totalIncomeValue = _totalIncomeValue.asStateFlow()
 
-    private val _lastSevenDayAnalysisData = MutableStateFlow<BarData?>(null)
-    val previousDayAnalysisData = _lastSevenDayAnalysisData.asStateFlow()
-
     private val _transactions = MutableStateFlow<List<TransactionUIModel>?>(null)
     val transactions = _transactions.asStateFlow()
 
@@ -100,8 +88,6 @@ class DashboardViewModel @Inject constructor(
 
         getTransactionWithFilterUseCase.invoke().onEach { response ->
 
-            constructPreviousDaysAnalysisGraphData()
-
             _transactions.value = ((response?.map {
                 it.toTransactionUIModel(currencySymbol)
             } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
@@ -113,49 +99,6 @@ class DashboardViewModel @Inject constructor(
             _totalIncome.value = total
             _totalIncomeValue.value = getCurrency(currencySymbol, total)
         }.launchIn(viewModelScope)
-    }
-
-    private fun constructPreviousDaysAnalysisGraphData(numberOfDays: Int = NUMBER_OF_DAYS) {
-
-        getPreviousDaysTransactionWithFilterUseCase.invoke(numberOfDays).onEach {
-            val entries: ArrayList<BarEntry> = ArrayList()
-            _lastSevenDayAnalysisData.value = (constructBarData(numberOfDays, it, entries))
-        }.launchIn(viewModelScope)
-    }
-
-    private fun constructBarData(
-        numberOfDays: Int,
-        response: Map<String, List<Transaction>>,
-        entries: ArrayList<BarEntry>
-    ): BarData {
-        repeat(numberOfDays) { index ->
-            val previousDay = getPreviousDateTime(index)
-
-            val dateTimeValue =
-                SimpleDateFormat("dd MM yyyy", Locale.getDefault()).format(previousDay.time)
-            val data = response[dateTimeValue]
-            val expenseSum =
-                (data?.sumOf { transaction ->
-                    if (transaction.category.type == CategoryType.INCOME) {
-                        transaction.amount
-                    } else {
-                        -transaction.amount
-                    }
-                } ?: 0.0).toFloat()
-
-            Log.i(
-                "TAG", "Analysis: $dateTimeValue $expenseSum"
-            )
-
-            entries.add(
-                BarEntry(index.toFloat(), expenseSum).apply {
-
-                }
-            )
-        }
-
-        val barDataSet = BarDataSet(entries, "Analysis")
-        return BarData(barDataSet)
     }
 
     companion object {

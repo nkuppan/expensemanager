@@ -35,6 +35,10 @@ fun Date.toTransactionDate(): String {
     return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
 }
 
+fun Date.toTransactionDateOnly(): String {
+    return SimpleDateFormat("dd/MM", Locale.getDefault()).format(this)
+}
+
 fun Long.getDateValue(): Date? {
     return if (this > 0) {
         Date(this)

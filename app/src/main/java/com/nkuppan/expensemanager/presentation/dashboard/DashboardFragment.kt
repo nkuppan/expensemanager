@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.mikephil.charting.components.Description
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.showSnackBarMessage
 import com.nkuppan.expensemanager.core.ui.fragment.BaseBindingFragment
@@ -39,11 +38,6 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
         binding.transactionList.isHorizontalScrollBarEnabled = false
         binding.transactionList.setHasFixedSize(false)
         binding.transactionList.layoutManager = LinearLayoutManager(requireContext())
-
-        binding.lastSevenDayGraph.setDrawGridBackground(false)
-        binding.lastSevenDayGraph.description = Description().apply {
-            text = ""
-        }
 
         binding.bottomAppBar.setOnItemSelectedListener {
             return@setOnItemSelectedListener when (it.itemId) {
@@ -128,12 +122,6 @@ class DashboardFragment : BaseBindingFragment<FragmentDashboardBinding>() {
                 launch {
                     viewModel.dateValue.collectLatest {
                         binding.dateValue.text = it
-                    }
-                }
-                launch {
-                    viewModel.previousDayAnalysisData.collectLatest {
-                        binding.lastSevenDayGraph.data = it
-                        binding.lastSevenDayGraph.invalidate()
                     }
                 }
                 launch {

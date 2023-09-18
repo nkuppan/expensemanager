@@ -84,7 +84,7 @@ dependencies {
     implementation(libs.androidx.work.ktx)
     implementation(libs.google.android.play.review)
 
-    implementation(libs.mpcharts)
+    //implementation(libs.mpcharts)
     implementation(libs.jxl)
 
     implementation(libs.room.runtime)

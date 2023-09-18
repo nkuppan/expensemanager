@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.presentation.analysis
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
-import com.nkuppan.expensemanager.presentation.analysis.expense.ExpenseGraphScreen
+import com.nkuppan.expensemanager.presentation.analysis.expense.AnalysisGraphScreen
 
 @Composable
 fun AnalysisScreen(navController: NavController) {
@@ -43,16 +44,23 @@ private fun AnalysisScreenScaffoldView(
         AnalysisScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
+            navController = navController
         )
     }
 }
 
 @Composable
 private fun AnalysisScreenContent(
-    modifier: Modifier = Modifier
-) {
-    ExpenseGraphScreen()
+    navController: NavController,
+    modifier: Modifier = Modifier,
+
+    ) {
+    Column(
+        modifier = modifier
+    ) {
+        AnalysisGraphScreen(navController)
+    }
 }
 
 @Preview
