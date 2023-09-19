@@ -13,6 +13,14 @@ fun getCurrency(
     amount
 )
 
+fun getBalanceCurrency(
+    currencySymbol: Int,
+    amount: Double
+) = UiText.StringResource(
+    R.string.balance_amount_string,
+    getCurrency(currencySymbol, amount)
+)
+
 
 @DrawableRes
 fun AccountType.getPaymentModeIcon(): Int {

@@ -54,8 +54,7 @@ private fun AnalysisScreenScaffoldView(
 private fun AnalysisScreenContent(
     navController: NavController,
     modifier: Modifier = Modifier,
-
-    ) {
+) {
     Column(
         modifier = modifier
     ) {

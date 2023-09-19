@@ -30,6 +30,7 @@ import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
+import com.nkuppan.expensemanager.presentation.home.HomeScreen
 import com.nkuppan.expensemanager.presentation.settings.SettingsScreen
 import com.nkuppan.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
@@ -120,6 +121,9 @@ fun MainPageView() {
             }
             composable("settings") {
                 SettingsScreen(navController)
+            }
+            composable("new_home") {
+                HomeScreen(navController)
             }
         }
     }
@@ -215,6 +219,15 @@ private fun HomePageScreen(navController: NavHostController) {
                     activity.finish()
                 }) {
                 Text(text = "Navigate to Old App")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    navController.navigate("new_home")
+                }) {
+                Text(text = "Navigate New Home Page")
             }
         }
     }

@@ -37,7 +37,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -232,9 +231,8 @@ fun AccountItem(
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = amount,
-                fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.Medium,
-                fontSize = 20.sp
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
             )
         }
         if (endIcon != null) {
@@ -255,21 +253,21 @@ val DUMMY_DATA = listOf(
         name = "Cash",
         icon = "ic_account",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$ 100.00")
+        amount = UiText.DynamicString("$100.00")
     ),
     AccountUiModel(
         id = "2",
         name = "Bank Account - xxxx",
         icon = "ic_account_balance",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$ 100.00")
+        amount = UiText.DynamicString("$100.00")
     ),
     AccountUiModel(
         id = "3",
         name = "Credit Card - xxxx",
         icon = "credit_card",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$ 100.00")
+        amount = UiText.DynamicString("$100.00")
     ),
 )
 
@@ -284,7 +282,7 @@ private fun AccountItemPreview() {
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
-            amount = "$ 100.00",
+            amount = "$100.00",
             endIcon = R.drawable.ic_arrow_right
         )
     }

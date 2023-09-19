@@ -62,7 +62,7 @@ fun AnalysisGraphScreen(navController: NavController) {
             LazyColumn {
                 item {
                     Text(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(start = 16.dp, top = 16.dp),
                         text = stringResource(id = R.string.month_analysis),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
@@ -96,8 +96,9 @@ fun AnalysisGraphScreen(navController: NavController) {
 }
 
 @Composable
-private fun ChartScreen(
-    chart: AnalysisChartData?
+fun ChartScreen(
+    chart: AnalysisChartData?,
+    modifier: Modifier = Modifier,
 ) {
 
     chart ?: return
@@ -109,20 +110,8 @@ private fun ChartScreen(
 
     val marker = rememberMarker()
 
-    /*Chart(
-        chart = lineChart(
-            persistentMarkers = remember(marker) {
-                mapOf(10f to marker)
-            },
-        ),
-        model = chart.chartData,
-        startAxis = rememberStartAxis(),
-        bottomAxis = rememberBottomAxis(guideline = null),
-        marker = marker,
-    )*/
-
     Chart(
-        modifier = Modifier.padding(8.dp),
+        modifier = modifier,
         chart = lineChart(
             persistentMarkers = remember(marker) {
                 mapOf(10f to marker)
@@ -150,9 +139,7 @@ private fun ChartScreen(
         ),
         startAxis = rememberStartAxis(
             itemPlacer = AxisItemPlacer.Vertical.default(4),
-            label = axisLabelComponent(
-                lineCount = 2
-            ),
+            label = axisLabelComponent(),
             valueFormatter = { value, chartValues ->
                 getCurrency(
                     R.string.default_currency_type,
@@ -161,6 +148,7 @@ private fun ChartScreen(
             }
         ),
         bottomAxis = rememberBottomAxis(
+            itemPlacer = AxisItemPlacer.Horizontal.default(6),
             valueFormatter = { value, _ ->
                 chart.dates[value.toInt()]
             }

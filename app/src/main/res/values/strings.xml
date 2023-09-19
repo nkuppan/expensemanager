@@ -5,7 +5,8 @@
     <string name="cancel">Cancel</string>
 
     <string name="value">$ 45,587.30</string>
-    <string name="amount_string">%s %.1f</string>
+    <string name="amount_string">%s%.1f</string>
+    <string name="balance_amount_string">Balance: %s</string>
 
     <string name="app_name">Expense Manager</string>
     <string name="title_category">Category</string>

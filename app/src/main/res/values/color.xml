@@ -16,4 +16,5 @@
     <color name="black_900">#000000</color>
     <color name="black_200">#30000000</color>
     <color name="black_50">#05000000</color>
+    <color name="black_20">#20000000</color>
 </resources>

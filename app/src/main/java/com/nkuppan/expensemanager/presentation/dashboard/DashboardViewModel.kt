@@ -1,17 +1,27 @@
 package com.nkuppan.expensemanager.presentation.dashboard
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.core.ui.utils.getBalanceCurrency
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
+import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeTextUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetPreviousDaysTransactionWithFilterUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsForCurrentMonthUseCase
+import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
+import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
+import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
+import com.nkuppan.expensemanager.presentation.analysis.constructGraphItems
+import com.nkuppan.expensemanager.presentation.home.UISystem
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,6 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
@@ -27,14 +38,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    private val getPreviousDaysTransactionWithFilterUseCase: GetPreviousDaysTransactionWithFilterUseCase,
+    getTransactionsForCurrentMonthUseCase: GetTransactionsForCurrentMonthUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
     getFilterTypeTextUseCase: GetFilterTypeTextUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
-    getExpenseAmountUseCase: GetExpenseAmountUseCase
+    getExpenseAmountUseCase: GetExpenseAmountUseCase,
+    getAccountsUseCase: GetAccountsUseCase,
 ) : ViewModel() {
+
+    var uiSystem by mutableStateOf(UISystem.Home)
+        private set
 
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
@@ -57,11 +72,17 @@ class DashboardViewModel @Inject constructor(
     private val _incomeAmountValue = MutableStateFlow(getCurrency(currencySymbol, 0.0))
     val incomeAmountValue = _incomeAmountValue.asStateFlow()
 
-    private val _totalIncomeValue = MutableStateFlow(getCurrency(currencySymbol, 0.0))
+    private val _totalIncomeValue = MutableStateFlow(getBalanceCurrency(currencySymbol, 0.0))
     val totalIncomeValue = _totalIncomeValue.asStateFlow()
 
     private val _transactions = MutableStateFlow<List<TransactionUIModel>?>(null)
     val transactions = _transactions.asStateFlow()
+
+    private val _chartData = MutableStateFlow<AnalysisChartData?>(null)
+    val chartData = _chartData.asStateFlow()
+
+    private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
+    val accounts = _accounts.asStateFlow()
 
     init {
         getSelectedAccountUseCase.invoke().onEach {
@@ -97,8 +118,34 @@ class DashboardViewModel @Inject constructor(
         _incomeAmountValue.combine(_expenseAmountValue) { _, _ ->
             val total = _incomeAmount.value - _expenseAmount.value
             _totalIncome.value = total
-            _totalIncomeValue.value = getCurrency(currencySymbol, total)
+            _totalIncomeValue.value = getBalanceCurrency(currencySymbol, total)
         }.launchIn(viewModelScope)
+
+
+        getTransactionsForCurrentMonthUseCase.invoke().onEach { response ->
+            val data = constructGraphItems(
+                response,
+                currencySymbol
+            )
+            _chartData.value = data?.chartData
+        }.launchIn(viewModelScope)
+
+
+
+        getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
+            currency.type to accounts
+        }.map { currencyAndAccountPair ->
+
+            val (currencySymbol, accounts) = currencyAndAccountPair
+
+            _accounts.value = accounts.map {
+                it.toAccountUiModel(currencySymbol)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun setUISystem(uiSystem: UISystem) {
+        this.uiSystem = uiSystem
     }
 
     companion object {
