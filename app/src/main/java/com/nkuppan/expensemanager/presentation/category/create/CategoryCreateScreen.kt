@@ -297,10 +297,13 @@ private fun CategoryCreateScreen(
         )
 
         IconAndColorComponent(
-            selectedColor,
-            selectedIcon,
-            openColorPicker,
-            openIconPicker
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            selectedColor = selectedColor,
+            selectedIcon = selectedIcon,
+            openColorPicker = openColorPicker,
+            openIconPicker = openIconPicker
         )
     }
 }

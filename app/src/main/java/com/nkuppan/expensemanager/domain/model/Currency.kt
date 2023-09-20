@@ -1,13 +1,12 @@
 package com.nkuppan.expensemanager.domain.model
 
 import com.nkuppan.expensemanager.R
-import java.io.Serializable
 
 data class Currency(
     val type: Int,
     val name: Int,
     val icon: Int,
-) : Serializable
+)
 
 fun Currency.getCurrencyIcon(): Int {
     return when (type) {

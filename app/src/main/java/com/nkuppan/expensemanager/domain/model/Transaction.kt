@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.domain.model
 
-import java.io.Serializable
 import java.util.Date
 
 data class Transaction(
@@ -20,9 +19,9 @@ data class Transaction(
         Date(), Date()
     ),
     var fromAccount: Account = Account(
-        "", "", AccountType.CASH, "",
+        "", "", AccountType.REGULAR, "",
         "",
         Date(), Date()
     ),
     var toAccount: Account? = null
-) : Serializable
+)

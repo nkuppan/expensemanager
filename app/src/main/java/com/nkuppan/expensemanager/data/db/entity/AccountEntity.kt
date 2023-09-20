@@ -22,6 +22,8 @@ data class AccountEntity(
     val iconName: String,
     @ColumnInfo(name = "amount")
     val amount: Double,
+    @ColumnInfo(name = "credit_limit")
+    val creditLimit: Double,
     @ColumnInfo(name = "created_on")
     val createdOn: Date,
     @ColumnInfo(name = "updated_on")

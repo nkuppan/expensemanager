@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.domain.model
 
-import java.io.Serializable
 import java.util.Date
 
 data class Category(
@@ -11,4 +10,4 @@ data class Category(
     val iconName: String,
     val createdOn: Date,
     val updatedOn: Date
-) : Serializable
+)

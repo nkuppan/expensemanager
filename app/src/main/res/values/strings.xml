@@ -294,4 +294,6 @@
     <string name="about_the_app_information">About app information</string>
     <string name="rate_us_message">It will help us to grow better</string>
     <string name="month_analysis">Month Analysis</string>
+    <string name="credit_limit">Credit Limit</string>
+    <string name="select_time">Select Time</string>
 </resources>

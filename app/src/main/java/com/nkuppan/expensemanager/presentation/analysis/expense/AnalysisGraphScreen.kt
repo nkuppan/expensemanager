@@ -150,7 +150,11 @@ fun ChartScreen(
         bottomAxis = rememberBottomAxis(
             itemPlacer = AxisItemPlacer.Horizontal.default(6),
             valueFormatter = { value, _ ->
-                chart.dates[value.toInt()]
+                if (chart.dates.isNotEmpty()) {
+                    chart.dates[value.toInt()]
+                } else {
+                    ""
+                }
             }
         ),
         model = chart.chartData,

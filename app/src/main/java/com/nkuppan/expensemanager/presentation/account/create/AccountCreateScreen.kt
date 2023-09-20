@@ -3,18 +3,16 @@ package com.nkuppan.expensemanager.presentation.account.create
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -32,11 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,6 +39,8 @@ import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.DecimalTextField
+import com.nkuppan.expensemanager.core.ui.theme.widget.StringTextField
 import com.nkuppan.expensemanager.core.ui.utils.AppDialog
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.AccountType
@@ -127,6 +124,8 @@ fun AccountCreateScreen(
         val nameErrorMessage by viewModel.nameErrorMessage.collectAsState()
         val currentBalance by viewModel.currentBalance.collectAsState()
         val currentBalanceErrorMessage by viewModel.currentBalanceErrorMessage.collectAsState()
+        val creditLimit by viewModel.creditLimit.collectAsState()
+        val creditLimitErrorMessage by viewModel.creditLimitErrorMessage.collectAsState()
         val currencyIcon by viewModel.currencyIcon.collectAsState()
         val colorValue by viewModel.colorValue.collectAsState()
         val iconValue by viewModel.icon.collectAsState()
@@ -141,15 +140,14 @@ fun AccountCreateScreen(
                 nameErrorMessage = nameErrorMessage,
                 currentBalance = currentBalance,
                 currentBalanceErrorMessage = currentBalanceErrorMessage,
+                creditLimit = creditLimit,
+                creditLimitErrorMessage = creditLimitErrorMessage,
                 selectedAccountType = selectedAccountType,
                 onAccountTypeChange = viewModel::setAccountType,
                 currency = currencyIcon,
-                onNameChange = {
-                    viewModel.setNameChange(it)
-                },
-                onCurrentBalanceChange = {
-                    viewModel.setCurrentBalanceChange(it)
-                },
+                onNameChange = viewModel::setNameChange,
+                onCurrentBalanceChange = viewModel::setCurrentBalanceChange,
+                onCreditLimitChange = viewModel::setCreditLimitChange,
                 openColorPicker = {
                     scope.launch {
                         if (sheetSelection != 2) {
@@ -259,23 +257,22 @@ private fun AccountCreateBottomSheetContent(
 private fun AccountCreateScreen(
     onAccountTypeChange: ((AccountType) -> Unit),
     modifier: Modifier = Modifier,
-    selectedAccountType: AccountType = AccountType.BANK_ACCOUNT,
+    selectedAccountType: AccountType = AccountType.REGULAR,
     name: String = "",
     nameErrorMessage: UiText? = null,
     currentBalance: String = "",
     currentBalanceErrorMessage: UiText? = null,
     currency: Int? = null,
     selectedColor: String = "#000000",
-    selectedIcon: String = "ic_calendar",
+    selectedIcon: String = "account_balance",
     openIconPicker: (() -> Unit)? = null,
     openColorPicker: (() -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null,
     onCurrentBalanceChange: ((String) -> Unit)? = null,
+    creditLimit: String = "",
+    creditLimitErrorMessage: UiText? = null,
+    onCreditLimitChange: ((String) -> Unit)? = null,
 ) {
-
-    val context = LocalContext.current
-
-    val focusManager = LocalFocusManager.current
 
     Column(modifier = modifier) {
 
@@ -287,69 +284,54 @@ private fun AccountCreateScreen(
             onAccountTypeChange = onAccountTypeChange
         )
 
-        OutlinedTextField(
+        StringTextField(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 .fillMaxWidth(),
             value = name,
-            singleLine = true,
-            label = {
-                Text(text = stringResource(id = R.string.account_name))
-            },
-            onValueChange = {
-                onNameChange?.invoke(it)
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next
-            ),
-            isError = nameErrorMessage != null,
-            supportingText = if (nameErrorMessage != null) {
-                { Text(text = nameErrorMessage.asString(context)) }
-            } else {
-                null
-            }
-        )
-
-        OutlinedTextField(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-                .fillMaxWidth(),
-            value = currentBalance,
-            singleLine = true,
-            leadingIcon = if (currency != null) {
-                {
-                    Icon(painter = painterResource(id = currency), contentDescription = "")
-                }
-            } else {
-                null
-            },
-            label = {
-                Text(text = stringResource(id = R.string.current_balance))
-            },
-            onValueChange = {
-                onCurrentBalanceChange?.invoke(it)
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus(force = true)
-                }
-            ),
-            isError = currentBalanceErrorMessage != null,
-            supportingText = if (currentBalanceErrorMessage != null) {
-                { Text(text = currentBalanceErrorMessage.asString(context)) }
-            } else {
-                null
-            }
+            errorMessage = nameErrorMessage,
+            onValueChange = onNameChange,
+            label = R.string.account_name
         )
 
         IconAndColorComponent(
-            selectedColor,
-            selectedIcon,
-            openColorPicker,
-            openIconPicker
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                .fillMaxWidth(),
+            selectedColor = selectedColor,
+            selectedIcon = selectedIcon,
+            openColorPicker = openColorPicker,
+            openIconPicker = openIconPicker
+        )
+
+        DecimalTextField(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                .fillMaxWidth(),
+            value = currentBalance,
+            errorMessage = currentBalanceErrorMessage,
+            onValueChange = onCurrentBalanceChange,
+            leadingIcon = currency,
+            label = R.string.current_balance,
+        )
+
+        if (selectedAccountType == AccountType.CREDIT) {
+            DecimalTextField(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                    .fillMaxWidth(),
+                value = creditLimit,
+                errorMessage = creditLimitErrorMessage,
+                onValueChange = onCreditLimitChange,
+                leadingIcon = currency,
+                label = R.string.credit_limit,
+            )
+        }
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
         )
     }
 }

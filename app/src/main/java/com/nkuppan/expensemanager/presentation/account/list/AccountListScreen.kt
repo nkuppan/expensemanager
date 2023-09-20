@@ -29,7 +29,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,9 +49,7 @@ import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.UiState
-import kotlinx.coroutines.launch
 
 
 @Composable
@@ -70,7 +67,7 @@ private fun AccountListScreenScaffoldView(
     navController: NavController,
     accountUiState: UiState<List<AccountUiModel>>
 ) {
-    val scope = rememberCoroutineScope()
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -99,21 +96,13 @@ private fun AccountListScreenScaffoldView(
         }
     ) { innerPadding ->
 
-        val message = stringResource(id = R.string.cannot_edit_cash_account)
-
         AccountListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
             accountUiState = accountUiState
         ) { account ->
-            if (account.type != AccountType.CASH) {
-                navController.navigate("account/create?accountId=${account.id}")
-            } else {
-                scope.launch {
-                    snackbarHostState.showSnackbar(message)
-                }
-            }
+            navController.navigate("account/create?accountId=${account.id}")
         }
     }
 }

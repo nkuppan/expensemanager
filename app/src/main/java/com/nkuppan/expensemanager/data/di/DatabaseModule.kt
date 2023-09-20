@@ -214,7 +214,7 @@ val BASE_ACCOUNT_LIST = listOf(
     Account(
         "1",
         "Cash",
-        AccountType.CASH,
+        AccountType.REGULAR,
         "#4CAF50",
         "savings",
         Calendar.getInstance().time,
@@ -223,7 +223,7 @@ val BASE_ACCOUNT_LIST = listOf(
     Account(
         "2",
         "Card-xxx",
-        AccountType.CREDIT_CARD,
+        AccountType.CREDIT,
         "#4CAF50",
         "credit_card",
         Calendar.getInstance().time,
@@ -232,7 +232,7 @@ val BASE_ACCOUNT_LIST = listOf(
     Account(
         "3",
         "Bank Account",
-        AccountType.BANK_ACCOUNT,
+        AccountType.REGULAR,
         "#4CAF50",
         "account_balance",
         Calendar.getInstance().time,

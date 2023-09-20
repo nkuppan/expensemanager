@@ -24,6 +24,8 @@ import com.nkuppan.expensemanager.presentation.analysis.constructGraphItems
 import com.nkuppan.expensemanager.presentation.home.UISystem
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
+import com.patrykandpatrick.vico.core.entry.entryModelOf
+import com.patrykandpatrick.vico.core.entry.entryOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -127,7 +129,13 @@ class DashboardViewModel @Inject constructor(
                 response,
                 currencySymbol
             )
-            _chartData.value = data?.chartData
+            _chartData.value = data?.chartData ?: AnalysisChartData(
+                chartData = entryModelOf(
+                    listOf(entryOf(0, 0)),
+                    listOf(entryOf(0, 0)),
+                ),
+                dates = emptyList()
+            )
         }.launchIn(viewModelScope)
 
 
@@ -149,7 +157,6 @@ class DashboardViewModel @Inject constructor(
     }
 
     companion object {
-        private const val NUMBER_OF_DAYS = 7
         private const val MAX_TRANSACTIONS_IN_LIST = 5
     }
 }

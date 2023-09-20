@@ -42,7 +42,7 @@ class AccountCreateViewModel @Inject constructor(
     private val _accountUpdated = MutableSharedFlow<Boolean>()
     val accountUpdated = _accountUpdated.asSharedFlow()
 
-    var accountType = MutableStateFlow(AccountType.BANK_ACCOUNT)
+    var accountType = MutableStateFlow(AccountType.REGULAR)
         private set
 
     var name = MutableStateFlow("")
@@ -55,6 +55,12 @@ class AccountCreateViewModel @Inject constructor(
         private set
 
     var currentBalanceErrorMessage = MutableStateFlow<UiText?>(null)
+        private set
+
+    var creditLimit = MutableStateFlow("")
+        private set
+
+    var creditLimitErrorMessage = MutableStateFlow<UiText?>(null)
         private set
 
     var currencyIcon = MutableStateFlow<Int?>(null)
@@ -83,6 +89,7 @@ class AccountCreateViewModel @Inject constructor(
         this.account?.let { accountItem ->
             name.value = accountItem.name
             currentBalance.value = accountItem.amount.toString()
+            creditLimit.value = accountItem.creditLimit.toString()
             accountType.value = accountItem.type
             colorValue.value = accountItem.iconBackgroundColor
             icon.value = accountItem.iconName
@@ -123,6 +130,7 @@ class AccountCreateViewModel @Inject constructor(
 
         val name: String = name.value
         val currentBalance: String = currentBalance.value
+        val creditLimit: String = creditLimit.value
         val color: String = colorValue.value
 
         var isError = false
@@ -141,13 +149,20 @@ class AccountCreateViewModel @Inject constructor(
             return
         }
 
+        val accountType = accountType.value
+
         val account = Account(
             id = account?.id ?: UUID.randomUUID().toString(),
             name = name,
-            type = accountType.value,
+            type = accountType,
             iconBackgroundColor = color,
             iconName = icon.value,
             amount = currentBalance.toDoubleOrNull() ?: 0.0,
+            creditLimit = if (accountType == AccountType.CREDIT) {
+                creditLimit.toDoubleOrNull() ?: 0.0
+            } else {
+                0.0
+            },
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time
         )
@@ -200,9 +215,13 @@ class AccountCreateViewModel @Inject constructor(
         }
     }
 
+    fun setCreditLimitChange(creditLimit: String) {
+        this.creditLimit.value = creditLimit
+    }
+
     companion object {
         private const val DEFAULT_COLOR = "#43A546"
-        private const val DEFAULT_ICON = "ic_calendar"
+        private const val DEFAULT_ICON = "account_balance"
         private const val CATEGORY_ID = "accountId"
     }
 }

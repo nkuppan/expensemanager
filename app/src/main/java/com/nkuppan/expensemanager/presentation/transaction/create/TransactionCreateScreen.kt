@@ -52,16 +52,19 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.theme.ClickableTextField
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.ClickableTextField
 import com.nkuppan.expensemanager.core.ui.utils.AppDatePickerDialog
 import com.nkuppan.expensemanager.core.ui.utils.AppDialog
+import com.nkuppan.expensemanager.core.ui.utils.AppTimePickerDialog
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
+import com.nkuppan.expensemanager.data.utils.toTransactionTimeOnly
 import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.ReminderTimeState
 import com.nkuppan.expensemanager.domain.model.TransactionType
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
@@ -71,6 +74,7 @@ import com.nkuppan.expensemanager.presentation.category.selection.CategorySelect
 import com.nkuppan.expensemanager.presentation.transaction.numberpad.NumberPadDialogView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.Date
 
 
@@ -188,15 +192,14 @@ fun TransactionCreateScreen(
 
                     if (type == 4) {
                         showNumberPadDialog = true
-                        return@TransactionCreateScreen
-                    }
-
-                    sheetSelection = type
-                    scope.launch {
-                        if (scaffoldState.bottomSheetState.isVisible) {
-                            scaffoldState.bottomSheetState.hide()
-                        } else {
-                            scaffoldState.bottomSheetState.expand()
+                    } else {
+                        sheetSelection = type
+                        scope.launch {
+                            if (scaffoldState.bottomSheetState.isVisible) {
+                                scaffoldState.bottomSheetState.hide()
+                            } else {
+                                scaffoldState.bottomSheetState.expand()
+                            }
                         }
                     }
                 }
@@ -334,6 +337,29 @@ private fun TransactionCreateScreen(
             },
         )
     }
+    var showTimePicker by remember {
+        mutableStateOf(false)
+    }
+
+    if (showTimePicker) {
+        AppTimePickerDialog(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(16.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(8.dp)
+                ),
+            reminderTimeState = (selectedDate ?: Date()).toTime(),
+            onTimeSelected = {
+                onDateChange?.invoke((selectedDate ?: Date()).toTime(it))
+                showTimePicker = false
+            },
+            onDismiss = {
+                showTimePicker = false
+            },
+        )
+    }
 
     Column(
         modifier = modifier
@@ -347,18 +373,36 @@ private fun TransactionCreateScreen(
             selectedTransactionType = selectedTransactionType,
             onTransactionTypeChange = onTransactionTypeChange ?: {}
         )
-        ClickableTextField(
+        Row(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .fillMaxWidth(),
-            value = selectedDate?.toTransactionDate() ?: "",
-            label = R.string.select_date,
-            leadingIcon = R.drawable.ic_calendar,
-            onClick = {
-                focusManager.clearFocus(force = true)
-                showDatePicker = true
-            }
-        )
+                .fillMaxWidth()
+        ) {
+            ClickableTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp),
+                value = selectedDate?.toTransactionDate() ?: "",
+                label = R.string.select_date,
+                leadingIcon = R.drawable.ic_calendar,
+                onClick = {
+                    focusManager.clearFocus(force = true)
+                    showDatePicker = true
+                }
+            )
+            ClickableTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp),
+                value = selectedDate?.toTransactionTimeOnly() ?: "",
+                label = R.string.select_time,
+                leadingIcon = R.drawable.ic_time,
+                onClick = {
+                    focusManager.clearFocus(force = true)
+                    showTimePicker = true
+                }
+            )
+        }
 
         OutlinedTextField(
             modifier = Modifier
@@ -529,6 +573,27 @@ private fun TransactionCreateScreen(
     }
 }
 
+fun Date.toTime(): ReminderTimeState {
+    val cal = Calendar.getInstance()
+    cal.time = this
+    val hours = cal.get(Calendar.HOUR_OF_DAY)
+    val minutes = cal.get(Calendar.MINUTE)
+
+    return ReminderTimeState(
+        hour = hours,
+        minute = minutes,
+        is24Hour = false
+    )
+}
+
+fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+    calendar.set(Calendar.HOUR_OF_DAY, reminderTimeState.hour)
+    calendar.set(Calendar.MINUTE, reminderTimeState.minute)
+    return calendar.time
+}
+
 @Preview
 @Composable
 private fun TransactionCreateStatePreview() {
@@ -547,7 +612,7 @@ private fun TransactionCreateStatePreview() {
             selectedFromAccount = AccountUiModel(
                 id = "1",
                 name = "Shopping",
-                type = AccountType.CASH,
+                type = AccountType.REGULAR,
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
                 amount = UiText.DynamicString("$ 0.00"),
@@ -555,7 +620,7 @@ private fun TransactionCreateStatePreview() {
             selectedToAccount = AccountUiModel(
                 id = "1",
                 name = "Shopping",
-                type = AccountType.CASH,
+                type = AccountType.REGULAR,
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
                 amount = UiText.DynamicString("$ 0.00"),

@@ -63,7 +63,7 @@ fun NumberPadDialogView(
                 .padding(16.dp)
                 .background(
                     color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(16.dp)
                 )
         ) {
             NumberPadScreen(onConfirm)
@@ -111,50 +111,47 @@ private fun NumberPadScreenView(
 ) {
     Column(modifier) {
 
-        Surface(shadowElevation = 4.dp) {
-
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Column(
+        Row {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp)
+                    .align(Alignment.CenterVertically)
+            ) {
+                Text(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 16.dp)
-                        .align(Alignment.CenterVertically)
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .alpha(0.7f),
-                        text = amountString,
-                        textAlign = TextAlign.Right,
-                        letterSpacing = 1.sp
-                    )
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = value,
-                        textAlign = TextAlign.Right,
-                        fontSize = 28.sp,
-                    )
-                }
-
-                VerticalDivider(
-                    modifier = Modifier
-                        .padding(start = 8.dp, end = 8.dp, top = 12.dp, bottom = 12.dp)
-                        .height(60.dp)
+                        .fillMaxWidth()
+                        .alpha(0.7f),
+                    text = amountString,
+                    textAlign = TextAlign.Right,
+                    letterSpacing = 1.sp
                 )
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = value,
+                    textAlign = TextAlign.Right,
+                    fontSize = 28.sp,
+                )
+            }
 
-                IconButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .padding(end = 16.dp),
-                    onClick = {
-                        onChange.invoke("")
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_backspace),
-                        contentDescription = null
-                    )
+            VerticalDivider(
+                modifier = Modifier
+                    .padding(start = 8.dp, end = 8.dp, top = 12.dp, bottom = 12.dp)
+                    .height(60.dp)
+            )
+
+            IconButton(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(end = 16.dp),
+                onClick = {
+                    onChange.invoke("")
                 }
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_backspace),
+                    contentDescription = null
+                )
             }
         }
         Surface(

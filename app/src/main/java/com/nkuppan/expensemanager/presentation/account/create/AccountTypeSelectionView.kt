@@ -36,7 +36,7 @@ fun AccountTypeSelectionView(
     Row(modifier = modifier) {
         CustomAccountFilterChip(
             selectedAccountType = selectedAccountType,
-            accountType = AccountType.BANK_ACCOUNT,
+            accountType = AccountType.REGULAR,
             filterName = stringResource(id = R.string.bank_account),
             filterIcon = R.drawable.account_balance,
             filterSelectedColor = R.color.green_500,
@@ -45,7 +45,7 @@ fun AccountTypeSelectionView(
         )
         CustomAccountFilterChip(
             selectedAccountType = selectedAccountType,
-            accountType = AccountType.CREDIT_CARD,
+            accountType = AccountType.CREDIT,
             filterName = stringResource(id = R.string.credit),
             filterIcon = R.drawable.credit_card,
             filterSelectedColor = R.color.green_500,
@@ -103,14 +103,14 @@ private fun AccountTypeSelectionViewPreview() {
                 modifier = Modifier
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
-                selectedAccountType = AccountType.BANK_ACCOUNT,
+                selectedAccountType = AccountType.REGULAR,
                 onAccountTypeChange = {}
             )
             AccountTypeSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                selectedAccountType = AccountType.CREDIT_CARD,
+                selectedAccountType = AccountType.CREDIT,
                 onAccountTypeChange = {}
             )
         }

@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.domain.model
 
-import java.io.Serializable
 import java.util.Date
 
 data class Account(
@@ -11,5 +10,6 @@ data class Account(
     val iconName: String,
     val createdOn: Date,
     val updatedOn: Date,
-    val amount: Double = 0.0
-) : Serializable
+    val amount: Double = 0.0,
+    val creditLimit: Double = 0.0
+)

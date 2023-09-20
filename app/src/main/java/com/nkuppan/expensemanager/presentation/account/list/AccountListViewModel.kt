@@ -70,5 +70,5 @@ data class AccountUiModel(
     val icon: String,
     val iconBackgroundColor: String,
     val amount: UiText,
-    val type: AccountType = AccountType.BANK_ACCOUNT,
+    val type: AccountType = AccountType.REGULAR,
 )

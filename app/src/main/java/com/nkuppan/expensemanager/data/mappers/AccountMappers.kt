@@ -11,6 +11,7 @@ fun Account.toEntityModel(): AccountEntity {
         iconBackgroundColor = iconBackgroundColor,
         iconName = iconName,
         amount = amount,
+        creditLimit = creditLimit,
         createdOn = createdOn,
         updatedOn = updatedOn,
     )
@@ -24,6 +25,7 @@ fun AccountEntity.toDomainModel(): Account {
         iconBackgroundColor = iconBackgroundColor,
         iconName = iconName,
         amount = amount,
+        creditLimit = creditLimit,
         createdOn = createdOn,
         updatedOn = updatedOn,
     )

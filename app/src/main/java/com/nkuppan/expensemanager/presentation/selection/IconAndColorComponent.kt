@@ -1,7 +1,6 @@
 package com.nkuppan.expensemanager.presentation.selection
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ButtonDefaults
@@ -32,16 +31,13 @@ fun IconAndColorComponent(
     selectedColor: String,
     selectedIcon: String,
     openColorPicker: (() -> Unit)?,
-    openIconPicker: (() -> Unit)?
+    openIconPicker: (() -> Unit)?,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
-    Row(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(),
-    ) {
+    Row(modifier = modifier) {
 
         val containerColor = Color(android.graphics.Color.parseColor(selectedColor))
         val contentColor = colorResource(id = R.color.white)
