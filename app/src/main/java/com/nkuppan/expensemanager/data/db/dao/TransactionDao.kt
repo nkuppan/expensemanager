@@ -2,6 +2,9 @@ package com.nkuppan.expensemanager.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
+import androidx.room.Update
+import com.nkuppan.expensemanager.data.db.entity.AccountEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionRelation
 import kotlinx.coroutines.flow.Flow
@@ -87,4 +90,31 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         fromDate: Long,
         toDate: Long
     ): Flow<Double?>
+
+    @Update
+    suspend fun updateAccount(accountEntity: AccountEntity)
+
+    @Query("SELECT * FROM account WHERE id = :id")
+    suspend fun findAccountById(id: String): AccountEntity?
+
+    @Transaction
+    suspend fun insertTransaction(transactionEntity: TransactionEntity): Long {
+        val id = insert(transactionEntity)
+        if (id != -1L) {
+            val accountEntity = findAccountById(transactionEntity.fromAccountId)
+            if (accountEntity != null) {
+                updateAccount(accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount))
+            }
+        }
+        return id
+    }
+
+    @Transaction
+    suspend fun updateTransaction(transactionEntity: TransactionEntity) {
+        update(transactionEntity)
+        val accountEntity = findAccountById(transactionEntity.fromAccountId)
+        if (accountEntity != null) {
+            updateAccount(accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount))
+        }
+    }
 }

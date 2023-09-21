@@ -47,8 +47,7 @@ class TransactionRepositoryImpl @Inject constructor(
     override suspend fun addTransaction(transaction: Transaction): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                val response =
-                    transactionDao.insert(transaction.toEntityModel())
+                val response = transactionDao.insertTransaction(transaction.toEntityModel())
                 Resource.Success(response != -1L)
             } catch (exception: Exception) {
                 Resource.Error(exception)
@@ -58,7 +57,7 @@ class TransactionRepositoryImpl @Inject constructor(
     override suspend fun updateTransaction(transaction: Transaction): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                transactionDao.update(transaction.toEntityModel())
+                transactionDao.updateTransaction(transaction.toEntityModel())
                 Resource.Success(true)
             } catch (exception: Exception) {
                 Resource.Error(exception)
