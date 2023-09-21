@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getBalanceCurrency
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
@@ -56,8 +55,6 @@ class DashboardViewModel @Inject constructor(
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
 
-    private var currencySymbol: Int = R.string.default_currency_type
-
     private val _incomeAmount = MutableStateFlow(0.0)
     private val _expenseAmount = MutableStateFlow(0.0)
     private val _totalIncome = MutableStateFlow(0.0)
@@ -68,13 +65,13 @@ class DashboardViewModel @Inject constructor(
     private val _accountValue = MutableStateFlow("")
     val accountValue = _accountValue.asStateFlow()
 
-    private val _expenseAmountValue = MutableStateFlow(getCurrency(currencySymbol, 0.0))
+    private val _expenseAmountValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val expenseAmountValue = _expenseAmountValue.asStateFlow()
 
-    private val _incomeAmountValue = MutableStateFlow(getCurrency(currencySymbol, 0.0))
+    private val _incomeAmountValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val incomeAmountValue = _incomeAmountValue.asStateFlow()
 
-    private val _totalIncomeValue = MutableStateFlow(getBalanceCurrency(currencySymbol, 0.0))
+    private val _totalIncomeValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val totalIncomeValue = _totalIncomeValue.asStateFlow()
 
     private val _transactions = MutableStateFlow<List<TransactionUIModel>?>(null)
@@ -95,39 +92,41 @@ class DashboardViewModel @Inject constructor(
             _dateValue.value = it
         }.launchIn(viewModelScope)
 
-        getCurrencyUseCase.invoke().combine(getIncomeAmountUseCase.invoke()) { currency, income ->
-            currencySymbol = currency.type
-            val amount = income ?: 0.0
+        getCurrencyUseCase.invoke()
+            .combine(getTransactionWithFilterUseCase.invoke()) { currency, response ->
+
+                _transactions.value = ((response?.map {
+                    it.toTransactionUIModel(currency)
+                } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
+
+            }.launchIn(viewModelScope)
+
+        combine(
+            getCurrencyUseCase.invoke(),
+            getIncomeAmountUseCase.invoke(),
+            getExpenseAmountUseCase.invoke()
+        ) { currency, income, expense ->
+
+            val incomeAmount = income ?: 0.0
             _incomeAmount.value = income ?: 0.0
-            _incomeAmountValue.value = getCurrency(currency.type, amount)
-        }.launchIn(viewModelScope)
+            _incomeAmountValue.value = getCurrency(currency, incomeAmount)
 
-        getCurrencyUseCase.invoke().combine(getExpenseAmountUseCase.invoke()) { currency, expense ->
-            currencySymbol = currency.type
-            val amount = expense ?: 0.0
+            val expenseAmount = expense ?: 0.0
             _expenseAmount.value = expense ?: 0.0
-            _expenseAmountValue.value = getCurrency(currency.type, amount)
-        }.launchIn(viewModelScope)
+            _expenseAmountValue.value = getCurrency(currency, expenseAmount)
 
-        getTransactionWithFilterUseCase.invoke().onEach { response ->
-
-            _transactions.value = ((response?.map {
-                it.toTransactionUIModel(currencySymbol)
-            } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
-
-        }.launchIn(viewModelScope)
-
-        _incomeAmountValue.combine(_expenseAmountValue) { _, _ ->
             val total = _incomeAmount.value - _expenseAmount.value
             _totalIncome.value = total
-            _totalIncomeValue.value = getBalanceCurrency(currencySymbol, total)
+            _totalIncomeValue.value = getBalanceCurrency(currency, total)
         }.launchIn(viewModelScope)
 
 
-        getTransactionsForCurrentMonthUseCase.invoke().onEach { response ->
+        getCurrencyUseCase.invoke().combine(
+            getTransactionsForCurrentMonthUseCase.invoke()
+        ) { currency, response ->
             val data = constructGraphItems(
                 response,
-                currencySymbol
+                currency
             )
             _chartData.value = data?.chartData ?: AnalysisChartData(
                 chartData = entryModelOf(
@@ -141,13 +140,13 @@ class DashboardViewModel @Inject constructor(
 
 
         getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
-            currency.type to accounts
+            currency to accounts
         }.map { currencyAndAccountPair ->
 
-            val (currencySymbol, accounts) = currencyAndAccountPair
+            val (currency, accounts) = currencyAndAccountPair
 
             _accounts.value = accounts.map {
-                it.toAccountUiModel(currencySymbol)
+                it.toAccountUiModel(currency)
             }
         }.launchIn(viewModelScope)
     }

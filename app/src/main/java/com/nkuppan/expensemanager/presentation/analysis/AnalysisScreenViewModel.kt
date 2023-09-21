@@ -2,9 +2,9 @@ package com.nkuppan.expensemanager.presentation.analysis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.data.utils.toTransactionDateOnly
 import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -19,8 +19,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -33,18 +33,16 @@ class AnalysisScreenViewModel @Inject constructor(
     private val _graphItems = MutableStateFlow<UiState<AnalysisData>>(UiState.Loading)
     val graphItems = _graphItems.asStateFlow()
 
-    private var currencySymbol: Int = R.string.default_currency_type
-
     init {
-        getCurrencyUseCase.invoke().onEach {
-            currencySymbol = it.type
-        }.launchIn(viewModelScope)
+        getCurrencyUseCase.invoke().combine(
+            getTransactionsForCurrentMonthUseCase.invoke()
+        ) { currency, response ->
 
-        getTransactionsForCurrentMonthUseCase.invoke().onEach { response ->
-            response ?: return@onEach
+            response ?: return@combine
+
             val data = constructGraphItems(
                 response,
-                currencySymbol
+                currency
             )
             _graphItems.value = if (data == null) UiState.Empty else UiState.Success(data)
         }.launchIn(viewModelScope)
@@ -66,7 +64,7 @@ data class AnalysisChartData(
  */
 suspend fun constructGraphItems(
     data: Map<String, List<Transaction>>?,
-    currencySymbol: Int
+    currencySymbol: Currency
 ): AnalysisData? = withContext(Dispatchers.IO) {
 
     if (data?.isNotEmpty() == true) {

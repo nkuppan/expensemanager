@@ -17,7 +17,17 @@ class CurrencyDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_CURRENCY_SYMBOL] ?: defaultSymbol
     }
 
+    suspend fun setCurrencySymbolPosition(position: Int) = dataStore.edit { preferences ->
+        preferences[KEY_CURRENCY_SYMBOL_POSITION] = position
+    }
+
+    fun getCurrencySymbolPosition(defaultPosition: Int): Flow<Int> =
+        dataStore.data.map { preferences ->
+            preferences[KEY_CURRENCY_SYMBOL_POSITION] ?: defaultPosition
+        }
+
     companion object {
         private val KEY_CURRENCY_SYMBOL = intPreferencesKey("currency_symbol")
+        private val KEY_CURRENCY_SYMBOL_POSITION = intPreferencesKey("currency_symbol_position")
     }
 }

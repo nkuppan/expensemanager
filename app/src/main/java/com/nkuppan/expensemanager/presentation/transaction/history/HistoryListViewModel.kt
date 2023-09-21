@@ -7,6 +7,7 @@ import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -15,9 +16,8 @@ import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroup
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryListViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
-    private val getTransactionGroupByMonthUseCase: GetTransactionGroupByMonthUseCase,
+    getTransactionGroupByMonthUseCase: GetTransactionGroupByMonthUseCase,
     private val findTransactionByIdUseCase: FindTransactionByIdUseCase
 ) : ViewModel() {
 
@@ -41,13 +41,10 @@ class HistoryListViewModel @Inject constructor(
     private val _transactionHistory = Channel<List<HistoryListItem>>()
     val transactionHistory = _transactionHistory.receiveAsFlow()
 
-    private var currencySymbol: Int = R.string.default_currency_type
-
     init {
-        getCurrencyUseCase.invoke().flatMapLatest {
-            currencySymbol = it.type
+        getCurrencyUseCase.invoke().combine(
             getTransactionGroupByMonthUseCase.invoke()
-        }.onEach { result ->
+        ) { currency, result ->
             val values: MutableList<HistoryListItem> = arrayListOf()
             result.forEach { value ->
 
@@ -71,9 +68,9 @@ class HistoryListViewModel @Inject constructor(
 
                 val history = HistoryListItem(
                     titleValue,
-                    getCurrency(currencySymbol, totalAmount),
+                    getCurrency(currency, totalAmount),
                     value.transaction.map {
-                        it.toTransactionUIModel(currencySymbol)
+                        it.toTransactionUIModel(currency)
                     },
                     expanded = false
                 )
@@ -103,10 +100,10 @@ class HistoryListViewModel @Inject constructor(
 }
 
 
-fun Transaction.toTransactionUIModel(currencySymbol: Int): TransactionUIModel {
+fun Transaction.toTransactionUIModel(currency: Currency): TransactionUIModel {
     return TransactionUIModel(
         this.id,
-        getCurrency(currencySymbol, this.amount),
+        getCurrency(currency, this.amount),
         if (this.notes.isBlank()) {
             UiText.StringResource(R.string.not_assigned)
         } else {

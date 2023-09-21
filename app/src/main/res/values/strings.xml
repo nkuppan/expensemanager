@@ -5,7 +5,8 @@
     <string name="cancel">Cancel</string>
 
     <string name="value">$ 45,587.30</string>
-    <string name="amount_string">%s%.1f</string>
+    <string name="prefix_amount_string">%s%.1f</string>
+    <string name="suffix_amount_string">%.1f%s</string>
     <string name="balance_amount_string">Balance: %s</string>
 
     <string name="app_name">Expense Manager</string>
@@ -296,4 +297,6 @@
     <string name="month_analysis">Month Analysis</string>
     <string name="credit_limit">Credit Limit</string>
     <string name="select_time">Select Time</string>
+    <string name="prefix_amount">Prefix ($500)</string>
+    <string name="suffix_amount">Suffix (500$)</string>
 </resources>

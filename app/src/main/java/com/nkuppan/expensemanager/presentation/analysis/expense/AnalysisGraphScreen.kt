@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisScreenViewModel
@@ -106,8 +105,6 @@ fun ChartScreen(
     val expenseColor = colorResource(id = R.color.red_500)
     val incomeColor = colorResource(id = R.color.green_500)
 
-    val context = LocalContext.current
-
     val marker = rememberMarker()
 
     Chart(
@@ -141,10 +138,7 @@ fun ChartScreen(
             itemPlacer = AxisItemPlacer.Vertical.default(4),
             label = axisLabelComponent(),
             valueFormatter = { value, chartValues ->
-                getCurrency(
-                    R.string.default_currency_type,
-                    value.toDouble()
-                ).asString(context = context).replace(" ", "")
+                value.toDouble().toString()
             }
         ),
         bottomAxis = rememberBottomAxis(

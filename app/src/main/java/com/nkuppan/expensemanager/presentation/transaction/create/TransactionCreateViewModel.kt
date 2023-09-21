@@ -7,6 +7,7 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.TransactionType
@@ -89,7 +90,7 @@ class TransactionCreateViewModel @Inject constructor(
 
     private var transaction: Transaction? = null
 
-    private var currencyType = R.string.default_currency_type
+    private var selectedCurrency: Currency? = null
 
     init {
 
@@ -99,20 +100,20 @@ class TransactionCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             _currencyIcon.value = it.icon
-            currencyType = it.type
+            selectedCurrency = it
         }.launchIn(viewModelScope)
 
         getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
-            currency.type to accounts
+            currency to accounts
         }.map { currencyAndAccountPair ->
 
-            val (currencySymbol, accounts) = currencyAndAccountPair
+            val (currency, accounts) = currencyAndAccountPair
 
             val mappedAccounts = if (accounts.isEmpty()) {
                 emptyList()
             } else {
                 accounts.map {
-                    it.toAccountUiModel(currencySymbol)
+                    it.toAccountUiModel(currency)
                 }
             }
             _accounts.value = mappedAccounts
@@ -148,19 +149,21 @@ class TransactionCreateViewModel @Inject constructor(
                 is Resource.Error -> Unit
                 is Resource.Success -> {
                     val transaction = response.data
+                    val currency = selectedCurrency
+                    currency ?: return@launch
                     setAmount(transaction.amount.toString())
                     setDate(transaction.createdOn)
                     setNotes(transaction.notes)
                     setCategorySelection(transaction.category)
                     setAccountSelection(
                         2,
-                        transaction.fromAccount.toAccountUiModel(currencyType)
+                        transaction.fromAccount.toAccountUiModel(currency)
                     )
                     val toAccount = transaction.toAccount
                     if (toAccount != null) {
                         setAccountSelection(
                             3,
-                            toAccount.toAccountUiModel(currencyType)
+                            toAccount.toAccountUiModel(currency)
                         )
                     }
                     setTransactionType(transaction.type)

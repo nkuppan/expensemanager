@@ -6,7 +6,13 @@ data class Currency(
     val type: Int,
     val name: Int,
     val icon: Int,
+    val position: CurrencySymbolPosition = CurrencySymbolPosition.PREFIX
 )
+
+enum class CurrencySymbolPosition {
+    PREFIX,
+    SUFFIX
+}
 
 fun Currency.getCurrencyIcon(): Int {
     return when (type) {

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.Currency
+import com.nkuppan.expensemanager.domain.model.CurrencySymbolPosition
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetAllCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.SaveCurrencyUseCase
@@ -48,5 +49,11 @@ class CurrencyViewModel @Inject constructor(
         viewModelScope.launch {
             saveCurrencyUseCase.invoke(currency)
         }
+    }
+
+    fun setCurrencyPositionType(currencySymbolPosition: CurrencySymbolPosition) {
+        _currentCurrency.value = _currentCurrency.value.copy(
+            position = currencySymbolPosition
+        )
     }
 }

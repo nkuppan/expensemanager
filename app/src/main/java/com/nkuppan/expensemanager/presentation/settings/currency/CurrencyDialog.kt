@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.domain.model.Currency
+import com.nkuppan.expensemanager.domain.model.CurrencySymbolPosition
 
 
 @Composable
@@ -47,7 +48,8 @@ fun CurrencyDialogView(
         onConfirm = {
             viewModel.setCurrency(it)
             complete.invoke()
-        }
+        },
+        onCurrencyPositionTypeChange = viewModel::setCurrencyPositionType
     )
 }
 
@@ -55,7 +57,8 @@ fun CurrencyDialogView(
 fun CurrencyDialogViewContent(
     onConfirm: (Currency?) -> Unit,
     selectedCurrency: Currency,
-    currencies: List<Currency> = emptyList()
+    currencies: List<Currency> = emptyList(),
+    onCurrencyPositionTypeChange: ((CurrencySymbolPosition) -> Unit),
 ) {
     Dialog(
         onDismissRequest = {
@@ -82,6 +85,15 @@ fun CurrencyDialogViewContent(
                     text = stringResource(id = R.string.choose_currency),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
+                )
+            }
+            item {
+                CurrencyPositionTypeSelectionView(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, end = 16.dp),
+                    selectedCurrencyPositionType = selectedCurrency.position,
+                    onCurrencyPositionTypeChange = onCurrencyPositionTypeChange
                 )
             }
             items(currencies) { currency ->
@@ -121,8 +133,7 @@ fun CurrencyDialogViewPreview() {
                 R.string.dollar_name,
                 R.drawable.currency_dollar
             ),
-            currencies =
-            listOf(
+            currencies = listOf(
                 Currency(
                     R.string.dollar_type,
                     R.string.dollar_name,
@@ -168,7 +179,10 @@ fun CurrencyDialogViewPreview() {
                     R.string.rupee_name,
                     R.drawable.currency_rupee
                 )
-            )
+            ),
+            onCurrencyPositionTypeChange = {
+
+            }
         )
     }
 }

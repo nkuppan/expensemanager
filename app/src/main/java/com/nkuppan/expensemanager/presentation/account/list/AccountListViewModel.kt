@@ -6,6 +6,7 @@ import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.AccountType
+import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -34,17 +35,17 @@ class AccountListViewModel @Inject constructor(
     init {
 
         getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
-            currency.type to accounts
+            currency to accounts
         }.map { currencyAndAccountPair ->
 
-            val (currencySymbol, accounts) = currencyAndAccountPair
+            val (currency, accounts) = currencyAndAccountPair
 
             _accounts.value = if (accounts.isEmpty()) {
                 UiState.Empty
             } else {
                 UiState.Success(
                     accounts.map {
-                        it.toAccountUiModel(currencySymbol)
+                        it.toAccountUiModel(currency)
                     }
                 )
             }
@@ -52,13 +53,14 @@ class AccountListViewModel @Inject constructor(
     }
 }
 
-fun Account.toAccountUiModel(currencySymbol: Int) = AccountUiModel(
+fun Account.toAccountUiModel(currency: Currency) = AccountUiModel(
     id = this.id,
     name = this.name,
     icon = this.iconName,
     iconBackgroundColor = this.iconBackgroundColor,
     amount = getCurrency(
-        currencySymbol, this.amount
+        currency,
+        this.amount
     ),
     type = this.type
 )

@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.transaction.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionByNameUseCase
@@ -25,20 +24,17 @@ class TransactionListViewModel @Inject constructor(
     )
     val transactions = _transactions.asStateFlow()
 
-    private var currencySymbol: Int = R.string.default_currency_type
-
     init {
-        getCurrencyUseCase.invoke().onEach {
-            currencySymbol = it.type
-        }.launchIn(viewModelScope)
 
-        getTransactionByNameUseCase.invoke(null).onEach { transactions ->
+        getCurrencyUseCase.invoke().combine(
+            getTransactionByNameUseCase.invoke(null)
+        ) { currency, transactions ->
             _transactions.value = if (transactions.isEmpty()) {
                 UiState.Empty
             } else {
                 UiState.Success(
                     transactions.map {
-                        it.toTransactionUIModel(currencySymbol)
+                        it.toTransactionUIModel(currency)
                     }
                 )
             }
