@@ -3,6 +3,7 @@ package com.nkuppan.expensemanager.data.di
 import com.nkuppan.expensemanager.data.mappers.*
 import com.nkuppan.expensemanager.data.repository.*
 import com.nkuppan.expensemanager.domain.repository.AccountRepository
+import com.nkuppan.expensemanager.domain.repository.BudgetRepository
 import com.nkuppan.expensemanager.domain.repository.CategoryRepository
 import com.nkuppan.expensemanager.domain.repository.CurrencyRepository
 import com.nkuppan.expensemanager.domain.repository.ReminderTimeRepository
@@ -56,4 +57,9 @@ abstract class RepositoryModule {
     abstract fun provideSettingsRepository(
         settingsRepositoryImpl: SettingsRepositoryImpl,
     ): SettingsRepository
+
+    @Binds
+    abstract fun provideBudgetRepository(
+        budgetRepositoryImpl: BudgetRepositoryImpl,
+    ): BudgetRepository
 }

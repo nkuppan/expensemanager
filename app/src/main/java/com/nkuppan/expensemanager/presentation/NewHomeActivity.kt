@@ -1,7 +1,5 @@
 package com.nkuppan.expensemanager.presentation
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -28,6 +25,7 @@ import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.presentation.account.create.AccountCreateScreen
 import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisScreen
+import com.nkuppan.expensemanager.presentation.budget.list.BudgetListScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
 import com.nkuppan.expensemanager.presentation.home.HomeScreen
@@ -116,6 +114,23 @@ fun MainPageView() {
                     backStackEntry.arguments?.getString("accountId")
                 )
             }
+            composable("budget") {
+                BudgetListScreen(navController)
+            }
+            composable(
+                route = "budget/create?budgetId={budgetId}",
+                arguments = listOf(
+                    navArgument("budgetId") {
+                        defaultValue = ""
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                AccountCreateScreen(
+                    navController,
+                    backStackEntry.arguments?.getString("budgetId")
+                )
+            }
             composable("analysis") {
                 AnalysisScreen(navController)
             }
@@ -131,8 +146,6 @@ fun MainPageView() {
 
 @Composable
 private fun HomePageScreen(navController: NavHostController) {
-
-    val activity = LocalContext.current as Activity
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -206,19 +219,27 @@ private fun HomePageScreen(navController: NavHostController) {
                     .wrapContentSize()
                     .align(Alignment.CenterHorizontally),
                 onClick = {
-                    navController.navigate("settings")
+                    navController.navigate("budget")
                 }) {
-                Text(text = "Navigate to Settings")
+                Text(text = "Navigate to Budget List Screen")
             }
             Button(
                 modifier = Modifier
                     .wrapContentSize()
                     .align(Alignment.CenterHorizontally),
                 onClick = {
-                    activity.startActivity(Intent(activity, HomeActivity::class.java))
-                    activity.finish()
+                    navController.navigate("budget/create")
                 }) {
-                Text(text = "Navigate to Old App")
+                Text(text = "Navigate to Budget Create Screen")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    navController.navigate("settings")
+                }) {
+                Text(text = "Navigate to Settings")
             }
             Button(
                 modifier = Modifier

@@ -299,4 +299,6 @@
     <string name="select_time">Select Time</string>
     <string name="prefix_amount">Prefix ($500)</string>
     <string name="suffix_amount">Suffix (500$)</string>
+    <string name="budgets">Budgets</string>
+    <string name="no_budget_available">No budgets available</string>
 </resources>

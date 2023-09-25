@@ -123,15 +123,15 @@ class TransactionCreateViewModel @Inject constructor(
 
         selectedTransactionType.combine(getAllCategoryUseCase.invoke()) { transactionType, categories ->
             transactionType to categories
-        }.onEach {
+        }.onEach { pair ->
 
-            val (transactionType, categories) = it
+            val (transactionType, categories) = pair
 
-            val filteredCategories = categories.filter {
+            val filteredCategories = categories.filter { category ->
                 if (transactionType == TransactionType.EXPENSE) {
-                    it.type.isExpense()
+                    category.type.isExpense()
                 } else {
-                    it.type.isIncome()
+                    category.type.isIncome()
                 }
             }
             _categories.value = filteredCategories

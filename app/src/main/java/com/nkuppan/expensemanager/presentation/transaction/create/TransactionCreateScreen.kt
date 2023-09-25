@@ -463,8 +463,8 @@ private fun TransactionCreateScreen(
             )
             CategoryItem(
                 name = selectedCategory.name,
-                iconName = selectedCategory.iconName,
-                categoryColor = selectedCategory.iconBackgroundColor,
+                icon = selectedCategory.iconName,
+                iconBackgroundColor = selectedCategory.iconBackgroundColor,
                 endIcon = R.drawable.ic_arrow_right,
                 modifier = Modifier
                     .fillMaxWidth()

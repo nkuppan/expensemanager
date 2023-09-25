@@ -125,13 +125,15 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
                     onColorPicked?.invoke(parsedColor)
                 }
                 .height(96.dp)) {
-                Canvas(modifier = Modifier
-                    .padding(24.dp)
-                    .fillMaxSize()
-                    .align(Alignment.Center),
+                Canvas(
+                    modifier = Modifier
+                        .padding(24.dp)
+                        .fillMaxSize()
+                        .align(Alignment.Center),
                     onDraw = {
                         drawCircle(color = Color(parsedColor))
-                    })
+                    }
+                )
             }
         }
     }

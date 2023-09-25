@@ -116,11 +116,11 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     private fun convertTransactionCategoryRelation(relation: TransactionRelation): Transaction {
-        val transaction = relation.transactionEntity.toDomainModel()
-        transaction.category = relation.categoryEntity.toDomainModel()
-        transaction.fromAccount = relation.fromAccountEntity.toDomainModel()
-        transaction.toAccount = relation.toAccountEntity?.toDomainModel()
-        return transaction
+        return relation.transactionEntity.toDomainModel().apply {
+            category = relation.categoryEntity.toDomainModel()
+            fromAccount = relation.fromAccountEntity.toDomainModel()
+            toAccount = relation.toAccountEntity?.toDomainModel()
+        }
     }
 
     private fun convertTransactionCategoryRelation(relation: TransactionEntity): Transaction {

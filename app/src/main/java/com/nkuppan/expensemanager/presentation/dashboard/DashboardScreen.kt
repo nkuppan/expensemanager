@@ -116,7 +116,6 @@ private fun DashboardScreenContent(
                 ) {
                     Text(
                         text = stringResource(id = R.string.this_month),
-                        fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Card(
@@ -136,7 +135,6 @@ private fun DashboardScreenContent(
             Text(
                 modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
                 text = stringResource(id = R.string.title_accounts),
-                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
         }
@@ -200,7 +198,7 @@ fun IncomeExpenseBalanceView(
                 .padding(12.dp)
                 .align(Alignment.CenterHorizontally),
             text = balanceAmount.asString(context),
-            fontSize = 14.sp
+            fontSize = 12.sp
         )
     }
 }
@@ -250,7 +248,6 @@ fun AmountView(
                 text = amount.asString(context),
                 color = colorResource(id = R.color.white),
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
             )
         }
     }

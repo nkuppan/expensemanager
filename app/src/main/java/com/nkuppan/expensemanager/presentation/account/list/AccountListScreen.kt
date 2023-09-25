@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.account.list
 
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,8 +30,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,14 +37,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.UiState
 
@@ -178,38 +174,13 @@ fun AccountItem(
     modifier: Modifier = Modifier,
     @DrawableRes endIcon: Int? = null
 ) {
-    val context = LocalContext.current
-
     Row(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(36.dp)
-                .align(Alignment.CenterVertically),
-        ) {
-            Canvas(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center),
-                onDraw = {
-                    drawCircle(
-                        color = Color(
-                            android.graphics.Color.parseColor(
-                                iconBackgroundColor
-                            )
-                        )
-                    )
-                }
-            )
-            Image(
-                modifier = Modifier
-                    .size(18.dp)
-                    .align(Alignment.Center),
-                painter = painterResource(id = context.getDrawable(icon)),
-                colorFilter = ColorFilter.tint(color = Color.White),
-                contentDescription = name
-            )
-        }
+        IconAndBackgroundView(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            icon = icon,
+            iconBackgroundColor = iconBackgroundColor,
+            name = name
+        )
         Text(
             modifier = Modifier
                 .weight(1f)
@@ -220,8 +191,7 @@ fun AccountItem(
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = amount,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontWeight = FontWeight.Bold
             )
         }
         if (endIcon != null) {

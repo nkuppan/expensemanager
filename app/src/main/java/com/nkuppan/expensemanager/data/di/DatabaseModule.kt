@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.nkuppan.expensemanager.data.db.ExpenseManagerDatabase
 import com.nkuppan.expensemanager.data.db.dao.AccountDao
+import com.nkuppan.expensemanager.data.db.dao.BudgetDao
 import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao
 import com.nkuppan.expensemanager.data.mappers.toEntityModel
@@ -95,6 +96,12 @@ object DatabaseModule {
     @Provides
     fun provideTransactionDao(database: ExpenseManagerDatabase): TransactionDao {
         return database.transactionDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideBudgetDao(database: ExpenseManagerDatabase): BudgetDao {
+        return database.budgetDao()
     }
 }
 

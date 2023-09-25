@@ -5,9 +5,11 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.nkuppan.expensemanager.data.db.dao.AccountDao
+import com.nkuppan.expensemanager.data.db.dao.BudgetDao
 import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao
 import com.nkuppan.expensemanager.data.db.entity.AccountEntity
+import com.nkuppan.expensemanager.data.db.entity.BudgetEntity
 import com.nkuppan.expensemanager.data.db.entity.CategoryEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
 import com.nkuppan.expensemanager.data.db.utils.AccountTypeConverter
@@ -22,7 +24,8 @@ import com.nkuppan.expensemanager.data.db.utils.TransactionTypeConverter
     entities = [
         CategoryEntity::class,
         TransactionEntity::class,
-        AccountEntity::class
+        AccountEntity::class,
+        BudgetEntity::class,
     ],
     version = 2,
     exportSchema = true
@@ -40,4 +43,6 @@ abstract class ExpenseManagerDatabase : RoomDatabase() {
     abstract fun transactionDao(): TransactionDao
 
     abstract fun accountDao(): AccountDao
+
+    abstract fun budgetDao(): BudgetDao
 }

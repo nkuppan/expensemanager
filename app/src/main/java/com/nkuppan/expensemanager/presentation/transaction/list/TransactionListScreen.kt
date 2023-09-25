@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.presentation.transaction.list
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -44,6 +42,7 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
@@ -168,35 +167,11 @@ fun TransactionItem(
     val context = LocalContext.current
 
     Row(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .padding(end = 16.dp)
-                .size(36.dp)
-                .align(Alignment.CenterVertically),
-        ) {
-            Canvas(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center),
-                onDraw = {
-                    drawCircle(
-                        color = Color(
-                            android.graphics.Color.parseColor(
-                                categoryColor
-                            )
-                        )
-                    )
-                }
-            )
-            Image(
-                modifier = Modifier
-                    .size(18.dp)
-                    .align(Alignment.Center),
-                painter = painterResource(id = context.getDrawable(categoryIcon)),
-                colorFilter = ColorFilter.tint(color = Color.White),
-                contentDescription = categoryName
-            )
-        }
+        IconAndBackgroundView(
+            icon = categoryColor,
+            iconBackgroundColor = categoryIcon,
+            name = categoryName
+        )
         Column(
             modifier = Modifier
                 .weight(1f)

@@ -1,11 +1,10 @@
-package com.nkuppan.expensemanager.presentation.category.list
+package com.nkuppan.expensemanager.presentation.budget.list
 
 import android.annotation.SuppressLint
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,21 +18,28 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -41,41 +47,45 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
-import com.nkuppan.expensemanager.domain.model.Category
-import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.UiState
-import java.util.Date
 
 
 @Composable
-fun CategoryListScreen(
+fun BudgetListScreen(
     navController: NavController
 ) {
-    val viewModel: CategoryListViewModel = hiltViewModel()
-    val categoryUiState by viewModel.categories.collectAsState()
-    CategoryListScreenScaffoldView(navController, categoryUiState)
+    val viewModel: BudgetListViewModel = hiltViewModel()
+    val budgetUiState by viewModel.budgets.collectAsState()
+    BudgetListScreenScaffoldView(navController, budgetUiState)
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun CategoryListScreenScaffoldView(
+private fun BudgetListScreenScaffoldView(
     navController: NavController,
-    categoryUiState: UiState<List<Category>>
+    budgetUiState: UiState<List<BudgetUiModel>>
 ) {
+
+    val snackbarHostState = remember { SnackbarHostState() }
+
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         topBar = {
             TopAppBar(
                 navigationIcon = {
                     NavigationButton(navController)
                 },
                 title = {
-                    Text(text = stringResource(R.string.category))
+                    Text(text = stringResource(R.string.budgets))
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("category/create")
+                navController.navigate("budget/create")
             }) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_add),
@@ -84,35 +94,37 @@ private fun CategoryListScreenScaffoldView(
             }
         }
     ) { innerPadding ->
-        CategoryListScreenContent(
+
+        BudgetListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            categoryUiState = categoryUiState
-        ) { categoryId ->
-            navController.navigate("category/create?categoryId=${categoryId}")
+            budgetUiState = budgetUiState
+        ) { budget ->
+            navController.navigate("budget/create?budgetId=${budget.id}")
         }
     }
 }
 
 @Composable
-private fun CategoryListScreenContent(
-    categoryUiState: UiState<List<Category>>,
+private fun BudgetListScreenContent(
+    budgetUiState: UiState<List<BudgetUiModel>>,
     modifier: Modifier = Modifier,
-    onItemClick: ((String) -> Unit)? = null
+    onItemClick: ((BudgetUiModel) -> Unit)? = null
 ) {
 
     val scrollState = rememberLazyListState()
+    val context = LocalContext.current
 
     Box(modifier = modifier) {
 
-        when (categoryUiState) {
+        when (budgetUiState) {
             UiState.Empty -> {
                 Text(
                     modifier = Modifier
                         .wrapContentSize()
                         .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_category_available),
+                    text = stringResource(id = R.string.no_budget_available),
                     textAlign = TextAlign.Center
                 )
             }
@@ -128,17 +140,18 @@ private fun CategoryListScreenContent(
             is UiState.Success -> {
 
                 LazyColumn(state = scrollState) {
-                    items(categoryUiState.data) { category ->
-                        CategoryItem(
-                            name = category.name,
-                            icon = category.iconName,
-                            iconBackgroundColor = category.iconBackgroundColor,
+                    items(budgetUiState.data) { budget ->
+                        BudgetItem(
+                            name = budget.name,
+                            icon = budget.icon,
+                            iconBackgroundColor = budget.iconBackgroundColor,
+                            amount = budget.amount.asString(context),
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    onItemClick?.invoke(category.id)
+                                    onItemClick?.invoke(budget)
                                 }
-                                .padding(16.dp),
+                                .padding(16.dp)
                         )
                     }
                     item {
@@ -156,13 +169,15 @@ private fun CategoryListScreenContent(
 
 @SuppressLint("DiscouragedApi")
 @Composable
-fun CategoryItem(
+fun BudgetItem(
     name: String,
     icon: String,
     iconBackgroundColor: String,
+    amount: String?,
     modifier: Modifier = Modifier,
-    @DrawableRes endIcon: Int? = null
+    percentage: Float = 0.0f
 ) {
+
     Row(modifier = modifier) {
         IconAndBackgroundView(
             modifier = Modifier.align(Alignment.CenterVertically),
@@ -170,89 +185,118 @@ fun CategoryItem(
             iconBackgroundColor = iconBackgroundColor,
             name = name
         )
-        Text(
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically),
-            text = name
-        )
-        if (endIcon != null) {
-            Icon(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                painter = painterResource(id = endIcon),
-                contentDescription = null,
-            )
+        Column(
+            modifier = Modifier.align(Alignment.CenterVertically),
+        ) {
+
+            Row {
+                Text(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    text = name
+                )
+                if (amount != null) {
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .align(Alignment.CenterVertically),
+                        text = amount,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+            Row {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    progress = percentage,
+                    color = Color(android.graphics.Color.parseColor(iconBackgroundColor)),
+                    strokeCap = StrokeCap.Round
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically),
+                    text = percentage.toString(),
+                    fontSize = 12.sp
+                )
+            }
         }
     }
 }
 
 val DUMMY_DATA = listOf(
-    Category(
+    BudgetUiModel(
         id = "1",
-        name = "Category One",
-        type = CategoryType.EXPENSE,
-        iconName = "ic_calendar",
+        name = "Cash",
+        icon = "ic_budget",
         iconBackgroundColor = "#000000",
-        createdOn = Date(),
-        updatedOn = Date()
+        amount = UiText.DynamicString("$100.00")
     ),
-    Category(
+    BudgetUiModel(
         id = "2",
-        name = "Category Two",
-        type = CategoryType.EXPENSE,
-        iconName = "ic_calendar",
+        name = "Bank Budget - xxxx",
+        icon = "ic_budget_balance",
         iconBackgroundColor = "#000000",
-        createdOn = Date(),
-        updatedOn = Date()
+        amount = UiText.DynamicString("$100.00")
+    ),
+    BudgetUiModel(
+        id = "3",
+        name = "Credit Card - xxxx",
+        icon = "credit_card",
+        iconBackgroundColor = "#000000",
+        amount = UiText.DynamicString("$100.00")
     ),
 )
 
 @Preview
 @Composable
-private fun CategoryItemPreview() {
+private fun BudgetItemPreview() {
     ExpenseManagerTheme {
-        CategoryItem(
+        BudgetItem(
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
-            endIcon = R.drawable.ic_arrow_right,
+            amount = "$100.00",
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = colorResource(id = R.color.grey_light))
                 .padding(16.dp),
+            percentage = 78.8f
         )
     }
 }
 
 @Preview
 @Composable
-private fun CategoryListItemLoadingStatePreview() {
+private fun BudgetListItemLoadingStatePreview() {
     ExpenseManagerTheme {
-        CategoryListScreenScaffoldView(
+        BudgetListScreenScaffoldView(
             rememberNavController(),
-            categoryUiState = UiState.Loading,
+            budgetUiState = UiState.Loading,
         )
     }
 }
 
 @Preview
 @Composable
-private fun CategoryListItemEmptyStatePreview() {
+private fun BudgetListItemEmptyStatePreview() {
     ExpenseManagerTheme {
-        CategoryListScreenScaffoldView(
+        BudgetListScreenScaffoldView(
             rememberNavController(),
-            categoryUiState = UiState.Empty,
+            budgetUiState = UiState.Empty,
         )
     }
 }
 
 @Preview
 @Composable
-private fun CategoryListItemSuccessStatePreview() {
+private fun BudgetListItemSuccessStatePreview() {
     ExpenseManagerTheme {
-        CategoryListScreenScaffoldView(
+        BudgetListScreenScaffoldView(
             rememberNavController(),
-            categoryUiState = UiState.Success(
+            budgetUiState = UiState.Success(
                 DUMMY_DATA
             ),
         )
