@@ -83,7 +83,7 @@ fun IconSelectionScreen(onIconPicked: ((Int) -> Unit)? = null) {
                     .clickable {
                         onIconPicked?.invoke(icon)
                     }
-                    .height(96.dp)
+                    .height(72.dp)
             ) {
                 Icon(
                     painter = painterResource(id = icon),

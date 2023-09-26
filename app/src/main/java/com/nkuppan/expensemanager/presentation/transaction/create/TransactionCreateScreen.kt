@@ -473,7 +473,7 @@ private fun TransactionCreateScreen(
                         focusManager.clearFocus(force = true)
                         openSelection?.invoke(1)
                     }
-                    .padding(16.dp),
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
             )
         }
 
@@ -506,7 +506,7 @@ private fun TransactionCreateScreen(
                     focusManager.clearFocus(force = true)
                     openSelection?.invoke(2)
                 }
-                .padding(16.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
         )
         if (selectedTransactionType == TransactionType.TRANSFER) {
 

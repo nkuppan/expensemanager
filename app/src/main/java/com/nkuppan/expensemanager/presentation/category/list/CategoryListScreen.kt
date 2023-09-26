@@ -138,7 +138,7 @@ private fun CategoryListScreenContent(
                                 .clickable {
                                     onItemClick?.invoke(category.id)
                                 }
-                                .padding(16.dp),
+                                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
                         )
                     }
                     item {
@@ -219,7 +219,7 @@ private fun CategoryItemPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .background(color = colorResource(id = R.color.grey_light))
-                .padding(16.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
         )
     }
 }

@@ -124,10 +124,10 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
                 .clickable {
                     onColorPicked?.invoke(parsedColor)
                 }
-                .height(96.dp)) {
+                .height(72.dp)) {
                 Canvas(
                     modifier = Modifier
-                        .padding(24.dp)
+                        .padding(12.dp)
                         .fillMaxSize()
                         .align(Alignment.Center),
                     onDraw = {

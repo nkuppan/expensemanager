@@ -144,7 +144,7 @@ private fun AccountListScreenContent(
                                 .clickable {
                                     onItemClick?.invoke(account)
                                 }
-                                .padding(16.dp),
+                                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
                             name = account.name,
                             icon = account.icon,
                             iconBackgroundColor = account.iconBackgroundColor,
@@ -237,7 +237,7 @@ private fun AccountItemPreview() {
         AccountItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",

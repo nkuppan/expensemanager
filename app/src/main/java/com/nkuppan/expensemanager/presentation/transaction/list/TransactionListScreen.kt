@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,6 +46,7 @@ import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
 import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.core.ui.utils.getColorValue
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
@@ -134,7 +137,7 @@ private fun TransactionListScreen(
                                 .clickable {
                                     onItemClick?.invoke(it)
                                 }
-                                .padding(16.dp),
+                                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
                             categoryName = it.categoryName,
                             categoryColor = it.categoryBackgroundColor,
                             categoryIcon = it.categoryIcon,
@@ -142,6 +145,7 @@ private fun TransactionListScreen(
                             accountIcon = it.accountIcon,
                             amount = it.amount.asString(context),
                             date = it.date,
+                            notes = it.notes,
                             categoryType = it.categoryType
                         )
                     }
@@ -158,6 +162,7 @@ fun TransactionItem(
     accountIcon: String,
     amount: String,
     date: String,
+    notes: UiText?,
     modifier: Modifier = Modifier,
     categoryColor: String = "#000000",
     categoryIcon: String = "ic_calendar",
@@ -168,8 +173,9 @@ fun TransactionItem(
 
     Row(modifier = modifier) {
         IconAndBackgroundView(
-            icon = categoryColor,
-            iconBackgroundColor = categoryIcon,
+            modifier = Modifier.align(Alignment.CenterVertically),
+            icon = categoryIcon,
+            iconBackgroundColor = categoryColor,
             name = categoryName
         )
         Column(
@@ -182,39 +188,40 @@ fun TransactionItem(
                     .fillMaxWidth(),
                 text = categoryName
             )
-            Row(
-                modifier = Modifier.padding(top = 4.dp),
-            ) {
-                Image(
+            Row {
+                Icon(
                     modifier = Modifier
                         .size(12.dp)
                         .align(Alignment.CenterVertically),
                     painter = painterResource(id = context.getDrawable(accountIcon)),
-                    contentDescription = ""
+                    contentDescription = "",
+                    tint = Color(getColorValue(categoryColor))
                 )
                 Text(
                     modifier = Modifier
                         .padding(start = 4.dp)
                         .fillMaxWidth(),
                     fontSize = 12.sp,
-                    text = accountName
+                    text = accountName,
+                    color = Color(getColorValue(categoryColor))
                 )
             }
-            /*if (notes?.isNotBlank() == true) {
+            if (notes != null) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = notes,
+                    text = notes.asString(context),
                     fontSize = 12.sp,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-            }*/
+            }
         }
         Column(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(start = 16.dp)
+                .align(Alignment.CenterVertically)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.End),
@@ -242,15 +249,16 @@ fun TransactionItemPreview() {
     ExpenseManagerTheme {
         TransactionItem(
             categoryName = "Utilities",
-            accountName = "",
+            categoryColor = "#A65A56",
+            accountName = "Card-xxx",
             accountIcon = "ic_account",
             amount = "300 ₹",
             date = "15/11/2019",
+            notes = UiText.DynamicString("Sample notes given as per transaction"),
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(16.dp),
-            categoryColor = "#FFFFFF"
         )
     }
 }

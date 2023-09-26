@@ -96,8 +96,6 @@ class TransactionCreateViewModel @Inject constructor(
 
         setDate(Date())
 
-        setAmount(0.0.toString())
-
         getCurrencyUseCase.invoke().onEach {
             _currencyIcon.value = it.icon
             selectedCurrency = it

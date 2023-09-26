@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.utils.getColorValue
 
 
 @Composable
@@ -37,11 +38,7 @@ fun IconAndBackgroundView(
                 .align(Alignment.Center),
             onDraw = {
                 drawCircle(
-                    color = Color(
-                        android.graphics.Color.parseColor(
-                            iconBackgroundColor
-                        )
-                    )
+                    color = Color(getColorValue(iconBackgroundColor))
                 )
             }
         )

@@ -8,7 +8,6 @@ class HistoryListItem(
     val totalAmount: UiText = UiText.DynamicString(""),
     var transaction: List<TransactionUIModel> = emptyList(),
     var expanded: Boolean = false,
-    var type: ItemType = ItemType.PARENT,
 )
 
 data class TransactionUIModel(

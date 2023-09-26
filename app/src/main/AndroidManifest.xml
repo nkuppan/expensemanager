@@ -34,10 +34,6 @@
             android:value="false" />
 
         <activity
-            android:name=".presentation.HomeActivity"
-            android:exported="true" />
-
-        <activity
             android:name=".presentation.NewHomeActivity"
             android:exported="true">
             <intent-filter>
