@@ -8,7 +8,7 @@ interface BudgetRepository {
 
     fun getBudgets(): Flow<List<Budget>>
 
-    suspend fun findBudget(budgetId: String): Resource<Budget>
+    suspend fun findBudgetById(budgetId: String): Resource<Budget>
 
     suspend fun addBudget(budget: Budget): Resource<Boolean>
 

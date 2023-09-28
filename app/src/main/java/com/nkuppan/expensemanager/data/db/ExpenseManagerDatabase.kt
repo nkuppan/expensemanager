@@ -9,6 +9,8 @@ import com.nkuppan.expensemanager.data.db.dao.BudgetDao
 import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao
 import com.nkuppan.expensemanager.data.db.entity.AccountEntity
+import com.nkuppan.expensemanager.data.db.entity.BudgetAccountEntity
+import com.nkuppan.expensemanager.data.db.entity.BudgetCategoryEntity
 import com.nkuppan.expensemanager.data.db.entity.BudgetEntity
 import com.nkuppan.expensemanager.data.db.entity.CategoryEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
@@ -26,6 +28,8 @@ import com.nkuppan.expensemanager.data.db.utils.TransactionTypeConverter
         TransactionEntity::class,
         AccountEntity::class,
         BudgetEntity::class,
+        BudgetCategoryEntity::class,
+        BudgetAccountEntity::class,
     ],
     version = 2,
     exportSchema = true

@@ -143,6 +143,7 @@ private fun TransactionListScreen(
                             categoryIcon = it.categoryIcon,
                             accountName = it.accountName,
                             accountIcon = it.accountIcon,
+                            accountColor = it.accountColor,
                             amount = it.amount.asString(context),
                             date = it.date,
                             notes = it.notes,
@@ -160,6 +161,7 @@ fun TransactionItem(
     categoryName: String,
     accountName: String,
     accountIcon: String,
+    accountColor: String,
     amount: String,
     date: String,
     notes: UiText?,
@@ -195,7 +197,7 @@ fun TransactionItem(
                         .align(Alignment.CenterVertically),
                     painter = painterResource(id = context.getDrawable(accountIcon)),
                     contentDescription = "",
-                    tint = Color(getColorValue(categoryColor))
+                    tint = Color(getColorValue(accountColor))
                 )
                 Text(
                     modifier = Modifier
@@ -203,7 +205,7 @@ fun TransactionItem(
                         .fillMaxWidth(),
                     fontSize = 12.sp,
                     text = accountName,
-                    color = Color(getColorValue(categoryColor))
+                    color = Color(getColorValue(accountColor))
                 )
             }
             if (notes != null) {
@@ -252,6 +254,7 @@ fun TransactionItemPreview() {
             categoryColor = "#A65A56",
             accountName = "Card-xxx",
             accountIcon = "ic_account",
+            accountColor = "#A65A56x",
             amount = "300 ₹",
             date = "15/11/2019",
             notes = UiText.DynamicString("Sample notes given as per transaction"),
@@ -296,6 +299,7 @@ val DUMMY_DATA = listOf(
         categoryIcon = "ic_add",
         accountName = "DB Bank xxxx",
         accountIcon = "ic_account",
+        accountColor = "#000000",
         date = Date().toString()
     ),
     TransactionUIModel(
@@ -308,6 +312,7 @@ val DUMMY_DATA = listOf(
         categoryIcon = "ic_add",
         accountName = "DB Bank xxxx",
         accountIcon = "ic_account",
+        accountColor = "#000000",
         date = Date().toString()
     ),
 )

@@ -105,7 +105,7 @@ fun Transaction.toTransactionUIModel(currency: Currency): TransactionUIModel {
         this.id,
         getCurrency(currency, this.amount),
         if (this.notes.isBlank()) {
-            UiText.StringResource(R.string.not_assigned)
+            null
         } else {
             UiText.DynamicString(this.notes)
         },
@@ -115,6 +115,7 @@ fun Transaction.toTransactionUIModel(currency: Currency): TransactionUIModel {
         this.category.iconName,
         accountName = this.fromAccount.name,
         this.fromAccount.iconName,
+        accountColor = this.fromAccount.iconBackgroundColor,
         this.createdOn.toTransactionDate(),
     )
 }

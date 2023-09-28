@@ -7,23 +7,29 @@ fun Budget.toEntityModel(): BudgetEntity {
     return BudgetEntity(
         id = id,
         name = name,
-        type = type,
         iconBackgroundColor = iconBackgroundColor,
         iconName = iconName,
         amount = amount,
+        selectedMonth = selectedMonth,
+        isAllCategoriesSelected = isAllCategoriesSelected,
+        isAllAccountsSelected = isAllAccountsSelected,
         createdOn = createdOn,
         updatedOn = updatedOn,
     )
 }
 
-fun BudgetEntity.toDomainModel(): Budget {
+fun BudgetEntity.toDomainModel(categories: List<String>, accounts: List<String>): Budget {
     return Budget(
         id = id,
         name = name,
-        type = type,
         iconBackgroundColor = iconBackgroundColor,
         iconName = iconName,
         amount = amount,
+        selectedMonth = selectedMonth,
+        categories = categories,
+        accounts = accounts,
+        isAllCategoriesSelected = isAllCategoriesSelected,
+        isAllAccountsSelected = isAllAccountsSelected,
         createdOn = createdOn,
         updatedOn = updatedOn,
     )

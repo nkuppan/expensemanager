@@ -103,7 +103,9 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         if (id != -1L) {
             val accountEntity = findAccountById(transactionEntity.fromAccountId)
             if (accountEntity != null) {
-                updateAccount(accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount))
+                updateAccount(
+                    accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount)
+                )
             }
         }
         return id
@@ -114,7 +116,9 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         update(transactionEntity)
         val accountEntity = findAccountById(transactionEntity.fromAccountId)
         if (accountEntity != null) {
-            updateAccount(accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount))
+            updateAccount(
+                accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount)
+            )
         }
     }
 }

@@ -301,4 +301,12 @@
     <string name="suffix_amount">Suffix (500$)</string>
     <string name="budgets">Budgets</string>
     <string name="no_budget_available">No budgets available</string>
+    <string name="budget">Budget</string>
+    <string name="budget_name">Budget Name</string>
+    <string name="budget_delete_error_message">Budget update failed</string>
+    <string name="budget_name_error">Name shouldn\'t be empty</string>
+    <string name="budget_create_error">Unable to create/update the budget</string>
+    <string name="budget_create_success">Budget created/updated successfully</string>
+    <string name="budget_amount">Budget Amount</string>
+    <string name="budget_amount_error">Budget amount shouldn\'t be empty or zero</string>
 </resources>

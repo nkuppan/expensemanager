@@ -13,12 +13,13 @@ class HistoryListItem(
 data class TransactionUIModel(
     val id: String,
     val amount: UiText = UiText.DynamicString(""),
-    val notes: UiText = UiText.DynamicString(""),
+    val notes: UiText?,
     val categoryName: String,
     val categoryType: CategoryType,
     val categoryBackgroundColor: String,
     val categoryIcon: String,
     val accountName: String,
     val accountIcon: String,
+    val accountColor: String,
     val date: String,
 )

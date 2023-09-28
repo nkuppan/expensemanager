@@ -25,6 +25,7 @@ import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.presentation.account.create.AccountCreateScreen
 import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisScreen
+import com.nkuppan.expensemanager.presentation.budget.create.BudgetCreateScreen
 import com.nkuppan.expensemanager.presentation.budget.list.BudgetListScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
@@ -126,7 +127,7 @@ fun MainPageView() {
                     }
                 )
             ) { backStackEntry ->
-                AccountCreateScreen(
+                BudgetCreateScreen(
                     navController,
                     backStackEntry.arguments?.getString("budgetId")
                 )

@@ -19,17 +19,30 @@ class BudgetRepositoryImpl @Inject constructor(
 
     override fun getBudgets(): Flow<List<Budget>> {
         return budgetDao.getBudgets().map { budgets ->
-            return@map budgets?.map { it.toDomainModel() } ?: emptyList()
+            return@map budgets?.map { budget ->
+                val accounts = budgetDao.getBudgetAccounts(budget.id)
+                val categories = budgetDao.getBudgetCategories(budget.id)
+                budget.toDomainModel(
+                    accounts = accounts?.map { it.accountId } ?: emptyList(),
+                    categories = categories?.map { it.categoryId } ?: emptyList()
+                )
+            } ?: emptyList()
         }
     }
 
-    override suspend fun findBudget(budgetId: String): Resource<Budget> =
+    override suspend fun findBudgetById(budgetId: String): Resource<Budget> =
         withContext(dispatchers.io) {
             return@withContext try {
                 val budget = budgetDao.findById(budgetId)
-
                 if (budget != null) {
-                    Resource.Success(budget.toDomainModel())
+                    val accounts = budgetDao.getBudgetAccounts(budget.id)
+                    val categories = budgetDao.getBudgetCategories(budget.id)
+                    Resource.Success(
+                        budget.toDomainModel(
+                            accounts = accounts?.map { it.accountId } ?: emptyList(),
+                            categories = categories?.map { it.categoryId } ?: emptyList()
+                        )
+                    )
                 } else {
                     Resource.Error(KotlinNullPointerException())
                 }
@@ -41,7 +54,9 @@ class BudgetRepositoryImpl @Inject constructor(
     override suspend fun addBudget(budget: Budget): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                val response = budgetDao.insert(budget.toEntityModel())
+                val response = budgetDao.insertBudget(
+                    budget.toEntityModel(), budget.categories, budget.accounts
+                )
                 Resource.Success(response != -1L)
             } catch (exception: Exception) {
                 Resource.Error(exception)
@@ -51,7 +66,9 @@ class BudgetRepositoryImpl @Inject constructor(
     override suspend fun updateBudget(budget: Budget): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                budgetDao.update(budget.toEntityModel())
+                budgetDao.updateBudget(
+                    budget.toEntityModel(), budget.categories, budget.accounts
+                )
                 Resource.Success(true)
             } catch (exception: Exception) {
                 Resource.Error(exception)

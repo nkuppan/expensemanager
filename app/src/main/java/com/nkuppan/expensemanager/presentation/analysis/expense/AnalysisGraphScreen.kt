@@ -84,6 +84,7 @@ fun AnalysisGraphScreen(navController: NavController) {
                         categoryIcon = it.categoryIcon,
                         accountName = it.accountName,
                         accountIcon = it.accountIcon,
+                        accountColor = it.accountColor,
                         amount = it.amount.asString(context),
                         date = it.date,
                         notes = it.notes,

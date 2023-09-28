@@ -35,6 +35,18 @@ fun Date.toTransactionDate(): String {
     return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
 }
 
+fun Date.toTransactionMonth(): String {
+    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).format(this)
+}
+
+fun Date.toTransactionMonthValue(): Int {
+    return SimpleDateFormat("MM", Locale.getDefault()).format(this).toInt()
+}
+
+fun Date.toTransactionYearValue(): Int {
+    return SimpleDateFormat("yyyy", Locale.getDefault()).format(this).toInt()
+}
+
 fun Date.toTransactionDateOnly(): String {
     return SimpleDateFormat("dd/MM", Locale.getDefault()).format(this)
 }
