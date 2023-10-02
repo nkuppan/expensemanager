@@ -166,7 +166,8 @@ fun CategoryItem(
         Text(
             modifier = Modifier
                 .weight(1f)
-                .align(Alignment.CenterVertically),
+                .align(Alignment.CenterVertically)
+                .padding(start = 16.dp, end = 16.dp),
             text = name
         )
         if (endIcon != null) {

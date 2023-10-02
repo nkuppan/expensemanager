@@ -19,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -104,19 +105,32 @@ fun CurrencyDialogViewContent(
                 )
             }
             items(currencies) { currency ->
+                val isSelectedCurrency = selectedCurrency.type == currency.type
                 Row(
                     modifier = Modifier
                         .clickable {
                             onCurrencySelection.invoke(currency)
                         }
                         .fillMaxWidth()
+                        .then(
+                            if (isSelectedCurrency) {
+                                Modifier
+                                    .padding(4.dp)
+                                    .background(
+                                        color = colorResource(id = R.color.green_100),
+                                        shape = RoundedCornerShape(size = 12.dp)
+                                    )
+                            } else {
+                                Modifier
+                            }
+                        )
                         .padding(16.dp),
                 ) {
                     Text(
                         modifier = Modifier.weight(1f),
                         text = "${stringResource(id = currency.name)} (${stringResource(id = currency.type)})"
                     )
-                    if (selectedCurrency.type == currency.type) {
+                    if (isSelectedCurrency) {
                         Icon(
                             modifier = Modifier.align(Alignment.CenterVertically),
                             painter = painterResource(id = R.drawable.ic_done),

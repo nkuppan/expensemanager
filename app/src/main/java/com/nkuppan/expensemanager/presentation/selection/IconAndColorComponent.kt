@@ -1,10 +1,10 @@
 package com.nkuppan.expensemanager.presentation.selection
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -23,6 +23,7 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.extensions.toColor
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.core.ui.theme.widget.RoundIconView
 
 
 @Composable
@@ -41,19 +42,16 @@ fun IconAndColorComponent(
         val containerColor = selectedColor.toColor()
         val contentColor = colorResource(id = R.color.white)
 
-        FilledTonalButton(
-            modifier = Modifier.wrapContentSize(),
-            onClick = {
-                openColorPicker?.invoke()
-                focusManager.clearFocus(force = true)
-            },
-            colors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = containerColor,
-                contentColor = contentColor
-            ), shape = ButtonDefaults.shape
-        ) {
-            Text(text = "")
-        }
+        RoundIconView(
+            modifier = Modifier
+                .size(40.dp)
+                .clickable {
+                    openColorPicker?.invoke()
+                    focusManager.clearFocus(force = true)
+                }
+                .align(Alignment.CenterVertically),
+            iconBackgroundColor = selectedColor
+        )
 
         Text(
             modifier = Modifier

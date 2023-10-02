@@ -32,15 +32,11 @@ fun IconAndBackgroundView(
         modifier = modifier
             .size(36.dp),
     ) {
-        Canvas(
+        RoundIconView(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
-            onDraw = {
-                drawCircle(
-                    color = iconBackgroundColor.toColor()
-                )
-            }
+            iconBackgroundColor = iconBackgroundColor
         )
         Image(
             modifier = Modifier
@@ -49,6 +45,23 @@ fun IconAndBackgroundView(
             painter = painterResource(id = context.getDrawable(icon)),
             colorFilter = ColorFilter.tint(color = Color.White),
             contentDescription = name
+        )
+    }
+}
+
+@Composable
+fun RoundIconView(
+    iconBackgroundColor: String,
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier) {
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.Center),
+            onDraw = {
+                drawCircle(color = iconBackgroundColor.toColor())
+            }
         )
     }
 }
