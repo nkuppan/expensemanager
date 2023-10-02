@@ -2,6 +2,7 @@ package com.nkuppan.expensemanager.presentation.settings.currency
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -28,6 +30,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.data.repository.availableCurrencies
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.CurrencySymbolPosition
 
@@ -43,26 +46,30 @@ fun CurrencyDialogView(
     val currencies by viewModel.currencies.collectAsState()
 
     CurrencyDialogViewContent(
-        selectedCurrency = selectedCurrency,
         currencies = currencies,
-        onConfirm = {
-            viewModel.setCurrency(it)
+        selectedCurrency = selectedCurrency,
+        onCurrencySelection = viewModel::selectThisCurrency,
+        onCurrencyPositionTypeChange = viewModel::setCurrencyPositionType,
+        onDismiss = complete,
+        onSave = {
+            viewModel.saveSelectedCurrency()
             complete.invoke()
         },
-        onCurrencyPositionTypeChange = viewModel::setCurrencyPositionType
     )
 }
 
 @Composable
 fun CurrencyDialogViewContent(
-    onConfirm: (Currency?) -> Unit,
+    currencies: List<Currency>,
     selectedCurrency: Currency,
-    currencies: List<Currency> = emptyList(),
+    onCurrencySelection: (Currency?) -> Unit,
     onCurrencyPositionTypeChange: ((CurrencySymbolPosition) -> Unit),
+    onDismiss: () -> Unit,
+    onSave: () -> Unit,
 ) {
     Dialog(
         onDismissRequest = {
-            onConfirm.invoke(null)
+            onDismiss.invoke()
         },
         properties = DialogProperties(
             usePlatformDefaultWidth = false
@@ -91,7 +98,7 @@ fun CurrencyDialogViewContent(
                 CurrencyPositionTypeSelectionView(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp),
+                        .padding(start = 14.dp, end = 14.dp),
                     selectedCurrencyPositionType = selectedCurrency.position,
                     onCurrencyPositionTypeChange = onCurrencyPositionTypeChange
                 )
@@ -100,7 +107,7 @@ fun CurrencyDialogViewContent(
                 Row(
                     modifier = Modifier
                         .clickable {
-                            onConfirm.invoke(currency)
+                            onCurrencySelection.invoke(currency)
                         }
                         .fillMaxWidth()
                         .padding(16.dp),
@@ -118,6 +125,25 @@ fun CurrencyDialogViewContent(
                     }
                 }
             }
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .align(Alignment.End)
+                    ) {
+                        TextButton(onClick = onDismiss) {
+                            Text(text = stringResource(id = R.string.cancel).uppercase())
+                        }
+                        TextButton(onClick = onSave) {
+                            Text(text = stringResource(id = R.string.ok).uppercase())
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -127,62 +153,18 @@ fun CurrencyDialogViewContent(
 fun CurrencyDialogViewPreview() {
     ExpenseManagerTheme {
         CurrencyDialogViewContent(
-            onConfirm = {},
+            onCurrencySelection = {},
             selectedCurrency = Currency(
                 R.string.dollar_type,
                 R.string.dollar_name,
                 R.drawable.currency_dollar
             ),
-            currencies = listOf(
-                Currency(
-                    R.string.dollar_type,
-                    R.string.dollar_name,
-                    R.drawable.currency_dollar
-                ),
-                Currency(
-                    R.string.pound_type,
-                    R.string.pound_name,
-                    R.drawable.currency_pound
-                ),
-                Currency(
-                    R.string.euro_type,
-                    R.string.euro_name,
-                    R.drawable.currency_euro
-                ),
-                Currency(
-                    R.string.yen_type,
-                    R.string.yen_name,
-                    R.drawable.currency_yen
-                ),
-                Currency(
-                    R.string.swiss_franc_type,
-                    R.string.swiss_franc_name,
-                    R.drawable.currency_franc
-                ),
-                Currency(
-                    R.string.lira_type,
-                    R.string.lira_name,
-                    R.drawable.currency_lira
-                ),
-                Currency(
-                    R.string.ruble_type,
-                    R.string.ruble_name,
-                    R.drawable.currency_ruble
-                ),
-                Currency(
-                    R.string.yuan_type,
-                    R.string.yuan_name,
-                    R.drawable.currency_yuan
-                ),
-                Currency(
-                    R.string.rupee_type,
-                    R.string.rupee_name,
-                    R.drawable.currency_rupee
-                )
-            ),
+            currencies = availableCurrencies,
             onCurrencyPositionTypeChange = {
 
-            }
+            },
+            onDismiss = {},
+            onSave = {},
         )
     }
 }

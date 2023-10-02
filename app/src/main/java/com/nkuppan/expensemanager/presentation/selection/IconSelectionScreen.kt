@@ -63,7 +63,7 @@ private val iconSelectionList = listOf(
     R.drawable.store,
     R.drawable.train,
     R.drawable.travel,
-    R.drawable.wallet,
+    R.drawable.wallet
 )
 
 @Composable

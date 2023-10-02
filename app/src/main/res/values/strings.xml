@@ -232,7 +232,7 @@
     <string name="yuan_type">¥</string>
     <string name="yuan_name">Yuan</string>
 
-    <string name="swiss_franc_type">Fr</string>
+    <string name="swiss_franc_type">₣</string>
     <string name="swiss_franc_name">Swiss Franc</string>
 
     <string name="lira_type">₺</string>

@@ -44,8 +44,15 @@ class CurrencyViewModel @Inject constructor(
         _currencies.value = getAllCurrencyUseCase.invoke()
     }
 
-    fun setCurrency(currency: Currency?) {
+    fun selectThisCurrency(currency: Currency?) {
         currency ?: return
+        viewModelScope.launch {
+            _currentCurrency.value = currency
+        }
+    }
+
+    fun saveSelectedCurrency() {
+        val currency = _currentCurrency.value
         viewModelScope.launch {
             saveCurrencyUseCase.invoke(currency)
         }

@@ -11,6 +11,65 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+private val dollar = Currency(
+    R.string.dollar_type,
+    R.string.dollar_name,
+    R.drawable.currency_dollar
+)
+
+private val euro = Currency(
+    R.string.euro_type,
+    R.string.euro_name,
+    R.drawable.currency_euro
+)
+
+private val lira = Currency(
+    R.string.lira_type,
+    R.string.lira_name,
+    R.drawable.currency_lira
+)
+
+private val pound = Currency(
+    R.string.pound_type,
+    R.string.pound_name,
+    R.drawable.currency_pound
+)
+
+private val ruble = Currency(
+    R.string.ruble_type,
+    R.string.ruble_name,
+    R.drawable.currency_ruble
+)
+
+private val rupee = Currency(
+    R.string.rupee_type,
+    R.string.rupee_name,
+    R.drawable.currency_rupee
+)
+
+private val swissFranc = Currency(
+    R.string.swiss_franc_type,
+    R.string.swiss_franc_name,
+    R.drawable.currency_franc
+)
+
+private val yen = Currency(
+    R.string.yen_type,
+    R.string.yen_name,
+    R.drawable.currency_yen
+)
+
+private val yuan = Currency(
+    R.string.yuan_type,
+    R.string.yuan_name,
+    R.drawable.currency_yuan
+)
+
+val availableCurrencies = listOf(
+    dollar, euro, lira, pound, ruble, rupee, swissFranc, yen, yuan
+)
+
+
 class CurrencyRepositoryImpl @Inject constructor(
     private val dataStore: CurrencyDataStore,
     private val dispatchers: AppCoroutineDispatchers
@@ -47,52 +106,6 @@ class CurrencyRepositoryImpl @Inject constructor(
     }
 
     override fun getAllCurrency(): List<Currency> {
-        return listOf(
-            Currency(
-                R.string.dollar_type,
-                R.string.dollar_name,
-                R.drawable.currency_dollar
-            ),
-            Currency(
-                R.string.pound_type,
-                R.string.pound_name,
-                R.drawable.currency_pound
-            ),
-            Currency(
-                R.string.euro_type,
-                R.string.euro_name,
-                R.drawable.currency_euro
-            ),
-            Currency(
-                R.string.yen_type,
-                R.string.yen_name,
-                R.drawable.currency_yen
-            ),
-            Currency(
-                R.string.swiss_franc_type,
-                R.string.swiss_franc_name,
-                R.drawable.currency_franc
-            ),
-            Currency(
-                R.string.lira_type,
-                R.string.lira_name,
-                R.drawable.currency_lira
-            ),
-            Currency(
-                R.string.ruble_type,
-                R.string.ruble_name,
-                R.drawable.currency_ruble
-            ),
-            Currency(
-                R.string.yuan_type,
-                R.string.yuan_name,
-                R.drawable.currency_yuan
-            ),
-            Currency(
-                R.string.rupee_type,
-                R.string.rupee_name,
-                R.drawable.currency_rupee
-            )
-        )
+        return availableCurrencies
     }
 }
