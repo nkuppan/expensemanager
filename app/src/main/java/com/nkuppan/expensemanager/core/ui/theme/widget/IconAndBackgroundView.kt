@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,9 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
-import com.nkuppan.expensemanager.core.ui.utils.getColorValue
+import com.nkuppan.expensemanager.core.ui.extensions.toColor
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 
 
 @Composable
@@ -29,7 +30,6 @@ fun IconAndBackgroundView(
 
     Box(
         modifier = modifier
-            .padding(end = 16.dp)
             .size(36.dp),
     ) {
         Canvas(
@@ -38,7 +38,7 @@ fun IconAndBackgroundView(
                 .align(Alignment.Center),
             onDraw = {
                 drawCircle(
-                    color = Color(getColorValue(iconBackgroundColor))
+                    color = iconBackgroundColor.toColor()
                 )
             }
         )
@@ -49,6 +49,17 @@ fun IconAndBackgroundView(
             painter = painterResource(id = context.getDrawable(icon)),
             colorFilter = ColorFilter.tint(color = Color.White),
             contentDescription = name
+        )
+    }
+}
+
+@Preview
+@Composable
+fun IconAndBackgroundViewPreview() {
+    ExpenseManagerTheme {
+        IconAndBackgroundView(
+            icon = "ic_calendar",
+            iconBackgroundColor = "#000000",
         )
     }
 }

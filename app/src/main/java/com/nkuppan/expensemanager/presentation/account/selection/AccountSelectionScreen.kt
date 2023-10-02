@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.account.selection
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.core.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.DUMMY_DATA
@@ -34,8 +34,7 @@ fun AccountSelectionScreen(
             SelectionTitle(stringResource(id = R.string.select_account))
         }
         items(accounts) { account ->
-            Box(modifier = Modifier
-                .fillMaxWidth()
+            Box(modifier = ItemSpecModifier
                 .clickable {
                     onItemSelection?.invoke(account)
                 }) {

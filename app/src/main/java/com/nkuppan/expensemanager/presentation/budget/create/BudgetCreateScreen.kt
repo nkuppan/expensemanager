@@ -3,7 +3,6 @@ package com.nkuppan.expensemanager.presentation.budget.create
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,11 +14,8 @@ import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -43,12 +39,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.AppDialog
 import com.nkuppan.expensemanager.core.ui.theme.widget.ClickableTextField
 import com.nkuppan.expensemanager.core.ui.theme.widget.DecimalTextField
+import com.nkuppan.expensemanager.core.ui.theme.widget.MonthPicker
 import com.nkuppan.expensemanager.core.ui.theme.widget.StringTextField
-import com.nkuppan.expensemanager.core.ui.utils.AppDialog
-import com.nkuppan.expensemanager.core.ui.utils.MonthPicker
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.toTransactionMonth
 import com.nkuppan.expensemanager.data.utils.toTransactionMonthValue
@@ -128,9 +124,10 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                 scaffoldState
             )
         }, topBar = {
-            BudgetCreateTopActionBar(
-                navController,
-                budgetId
+            TopNavigationBarWithDeleteAction(
+                navController = navController,
+                title = stringResource(id = R.string.budgets),
+                actionId = budgetId
             ) {
                 showDeleteDialog = true
             }
@@ -203,38 +200,6 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
             }
         }
     }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun BudgetCreateTopActionBar(
-    navController: NavController,
-    budgetId: String?,
-    onClick: () -> Unit,
-) {
-    TopAppBar(navigationIcon = {
-        NavigationButton(
-            navController,
-            navigationIcon = R.drawable.ic_close
-        )
-    }, title = {
-        Row {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                text = stringResource(R.string.budget)
-            )
-            if (budgetId?.isNotBlank() == true) {
-                IconButton(onClick = onClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_delete),
-                        contentDescription = ""
-                    )
-                }
-            }
-        }
-    })
 }
 
 @Composable

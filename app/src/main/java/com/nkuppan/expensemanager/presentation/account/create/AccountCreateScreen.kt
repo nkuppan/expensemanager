@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.account.create
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +11,7 @@ import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -38,10 +34,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.AppDialog
 import com.nkuppan.expensemanager.core.ui.theme.widget.DecimalTextField
 import com.nkuppan.expensemanager.core.ui.theme.widget.StringTextField
-import com.nkuppan.expensemanager.core.ui.utils.AppDialog
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.presentation.selection.ColorSelectionScreen
@@ -111,9 +107,10 @@ fun AccountCreateScreen(
                 scaffoldState
             )
         }, topBar = {
-            AccountCreateTopActionBar(
-                navController,
-                accountId
+            TopNavigationBarWithDeleteAction(
+                navController = navController,
+                title = stringResource(id = R.string.budgets),
+                actionId = accountId
             ) {
                 showDeleteDialog = true
             }
@@ -191,38 +188,6 @@ fun AccountCreateScreen(
             }
         }
     }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun AccountCreateTopActionBar(
-    navController: NavController,
-    accountId: String?,
-    onClick: () -> Unit,
-) {
-    TopAppBar(navigationIcon = {
-        NavigationButton(
-            navController,
-            navigationIcon = R.drawable.ic_close
-        )
-    }, title = {
-        Row {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                text = stringResource(R.string.account)
-            )
-            if (accountId?.isNotBlank() == true) {
-                IconButton(onClick = onClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_delete),
-                        contentDescription = ""
-                    )
-                }
-            }
-        }
-    })
 }
 
 @Composable

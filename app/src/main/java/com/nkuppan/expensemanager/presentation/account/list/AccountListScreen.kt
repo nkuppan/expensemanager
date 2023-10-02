@@ -23,7 +23,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,8 +40,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.core.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.UiState
 
@@ -71,13 +70,9 @@ private fun AccountListScreenScaffoldView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    NavigationButton(navController)
-                },
-                title = {
-                    Text(text = stringResource(R.string.account))
-                }
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.account)
             )
         },
         floatingActionButton = {
@@ -139,12 +134,10 @@ private fun AccountListScreenContent(
                 LazyColumn(state = scrollState) {
                     items(accountUiState.data) { account ->
                         AccountItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
+                            modifier = ItemSpecModifier
                                 .clickable {
                                     onItemClick?.invoke(account)
-                                }
-                                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                                },
                             name = account.name,
                             icon = account.icon,
                             iconBackgroundColor = account.iconBackgroundColor,
@@ -176,7 +169,8 @@ fun AccountItem(
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
             name = name
@@ -184,14 +178,14 @@ fun AccountItem(
         Text(
             modifier = Modifier
                 .weight(1f)
+                .padding(start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterVertically),
             text = name
         )
         if (amount != null) {
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                text = amount,
-                fontWeight = FontWeight.Bold
+                text = amount
             )
         }
         if (endIcon != null) {

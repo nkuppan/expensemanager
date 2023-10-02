@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -15,7 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.presentation.analysis.expense.AnalysisGraphScreen
 
 @Composable
@@ -31,13 +29,9 @@ private fun AnalysisScreenScaffoldView(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    NavigationButton(navController)
-                },
-                title = {
-                    Text(text = stringResource(R.string.analysis))
-                }
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.analysis)
             )
         }
     ) { innerPadding ->

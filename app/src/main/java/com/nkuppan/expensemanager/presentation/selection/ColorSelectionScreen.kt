@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -22,8 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColorInt
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.core.ui.utils.ColorIconSpecModifier
 
 private val colors = listOf(
     "#E57373",
@@ -118,13 +119,13 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
             SelectionTitle(stringResource(id = R.string.choose_color))
         }
         items(colors) { color ->
-            val parsedColor = android.graphics.Color.parseColor(color)
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    onColorPicked?.invoke(parsedColor)
-                }
-                .height(72.dp)) {
+            val parsedColor = color.toColorInt()
+            Box(
+                modifier = ColorIconSpecModifier
+                    .clickable {
+                        onColorPicked?.invoke(parsedColor)
+                    }
+            ) {
                 Canvas(
                     modifier = Modifier
                         .padding(12.dp)

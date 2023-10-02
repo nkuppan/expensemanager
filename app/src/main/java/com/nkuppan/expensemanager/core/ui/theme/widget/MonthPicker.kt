@@ -1,4 +1,4 @@
-package com.nkuppan.expensemanager.core.ui.utils
+package com.nkuppan.expensemanager.core.ui.theme.widget
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -37,6 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 
 @Composable
 fun MonthPicker(
@@ -198,7 +198,7 @@ fun MonthPicker(
 @Preview
 @Composable
 fun MonthPickerPreview() {
-    MaterialTheme {
+    ExpenseManagerTheme {
         MonthPicker(
             currentMonth = 1, currentYear = 2023,
             confirmButtonCLicked = { month, year ->

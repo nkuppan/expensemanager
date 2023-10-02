@@ -25,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -53,11 +52,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.AppDatePickerDialog
+import com.nkuppan.expensemanager.core.ui.theme.widget.AppDialog
+import com.nkuppan.expensemanager.core.ui.theme.widget.AppTimePickerDialog
 import com.nkuppan.expensemanager.core.ui.theme.widget.ClickableTextField
-import com.nkuppan.expensemanager.core.ui.utils.AppDatePickerDialog
-import com.nkuppan.expensemanager.core.ui.utils.AppDialog
-import com.nkuppan.expensemanager.core.ui.utils.AppTimePickerDialog
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.data.utils.toTransactionTimeOnly
@@ -151,10 +150,12 @@ fun TransactionCreateScreen(
                 viewModel,
                 scaffoldState
             )
-        }, topBar = {
-            TransactionCreateTopActionBar(
-                navController,
-                transactionId
+        },
+        topBar = {
+            TopNavigationBarWithDeleteAction(
+                navController = navController,
+                title = stringResource(id = R.string.transaction),
+                actionId = transactionId
             ) {
                 showDeleteDialog = true
             }
@@ -217,38 +218,6 @@ fun TransactionCreateScreen(
             }
         }
     }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun TransactionCreateTopActionBar(
-    navController: NavController,
-    transactionId: String?,
-    onClick: () -> Unit,
-) {
-    TopAppBar(navigationIcon = {
-        NavigationButton(
-            navController,
-            navigationIcon = R.drawable.ic_close
-        )
-    }, title = {
-        Row {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                text = stringResource(R.string.transaction)
-            )
-            if (transactionId?.isNotBlank() == true) {
-                IconButton(onClick = onClick) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_delete),
-                        contentDescription = ""
-                    )
-                }
-            }
-        }
-    })
 }
 
 @Composable

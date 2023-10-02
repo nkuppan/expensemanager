@@ -20,7 +20,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,8 +42,8 @@ import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getColorValue
 import com.nkuppan.expensemanager.domain.model.CategoryType
@@ -62,15 +61,9 @@ fun TransactionListScreen(
     val transactionUiState by viewModel.transactions.collectAsState()
     Scaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    NavigationButton(
-                        navController = navController
-                    )
-                },
-                title = {
-                    Text(text = stringResource(R.string.transaction))
-                }
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.transaction)
             )
         },
         floatingActionButton = {

@@ -12,17 +12,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.core.ui.extensions.toColor
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 
 
@@ -39,19 +38,21 @@ fun IconAndColorComponent(
 
     Row(modifier = modifier) {
 
-        val containerColor = Color(android.graphics.Color.parseColor(selectedColor))
+        val containerColor = selectedColor.toColor()
         val contentColor = colorResource(id = R.color.white)
 
         FilledTonalButton(
-            modifier = Modifier.wrapContentSize(), onClick = {
+            modifier = Modifier.wrapContentSize(),
+            onClick = {
                 openColorPicker?.invoke()
                 focusManager.clearFocus(force = true)
-            }, colors = ButtonDefaults.filledTonalButtonColors(
+            },
+            colors = ButtonDefaults.filledTonalButtonColors(
                 containerColor = containerColor,
                 contentColor = contentColor
             ), shape = ButtonDefaults.shape
         ) {
-            Text(text = stringResource(id = R.string.select_color))
+            Text(text = "")
         }
 
         Text(

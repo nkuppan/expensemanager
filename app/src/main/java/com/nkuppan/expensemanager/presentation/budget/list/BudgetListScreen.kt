@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -19,34 +20,33 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.core.ui.extensions.toColor
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.core.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.UiState
 
@@ -74,13 +74,9 @@ private fun BudgetListScreenScaffoldView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    NavigationButton(navController)
-                },
-                title = {
-                    Text(text = stringResource(R.string.budgets))
-                }
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.budgets)
             )
         },
         floatingActionButton = {
@@ -146,12 +142,9 @@ private fun BudgetListScreenContent(
                             icon = budget.icon,
                             iconBackgroundColor = budget.iconBackgroundColor,
                             amount = budget.amount.asString(context),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onItemClick?.invoke(budget)
-                                }
-                                .padding(16.dp)
+                            modifier = ItemSpecModifier.clickable {
+                                onItemClick?.invoke(budget)
+                            }
                         )
                     }
                     item {
@@ -180,7 +173,9 @@ fun BudgetItem(
 
     Row(modifier = modifier) {
         IconAndBackgroundView(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
             name = name
@@ -194,7 +189,8 @@ fun BudgetItem(
                     modifier = Modifier
                         .weight(1f)
                         .align(Alignment.CenterVertically),
-                    text = name
+                    text = name,
+                    style = MaterialTheme.typography.bodyLarge
                 )
                 if (amount != null) {
                     Text(
@@ -202,25 +198,26 @@ fun BudgetItem(
                             .padding(start = 8.dp)
                             .align(Alignment.CenterVertically),
                         text = amount,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.titleMedium
                     )
                 }
             }
-            Row {
+            Row(modifier = Modifier.padding(top = 4.dp)) {
                 LinearProgressIndicator(
                     modifier = Modifier
                         .weight(1f)
+                        .height(6.dp)
                         .align(Alignment.CenterVertically),
                     progress = percentage,
-                    color = Color(android.graphics.Color.parseColor(iconBackgroundColor)),
+                    color = iconBackgroundColor.toColor(),
                     strokeCap = StrokeCap.Round
                 )
                 Text(
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .align(Alignment.CenterVertically),
-                    text = percentage.toString(),
-                    fontSize = 12.sp
+                    text = "$percentage %",
+                    style = MaterialTheme.typography.labelSmall
                 )
             }
         }
@@ -260,9 +257,7 @@ private fun BudgetItemPreview() {
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = ItemSpecModifier,
             percentage = 78.8f
         )
     }

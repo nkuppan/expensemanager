@@ -14,7 +14,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,7 +36,7 @@ import com.nkuppan.expensemanager.core.ui.extensions.launchReviewWorkflow
 import com.nkuppan.expensemanager.core.ui.extensions.openEmailToOption
 import com.nkuppan.expensemanager.core.ui.extensions.openWebPage
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.presentation.settings.currency.CurrencyDialogView
 import com.nkuppan.expensemanager.presentation.settings.theme.ThemeDialogView
@@ -82,13 +81,14 @@ private fun SettingsScreenScaffoldView(
         }
     }
 
-    Scaffold(topBar = {
-        TopAppBar(navigationIcon = {
-            NavigationButton(navController)
-        }, title = {
-            Text(text = stringResource(R.string.settings))
-        })
-    }) { innerPadding ->
+    Scaffold(
+        topBar = {
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.settings)
+            )
+        }
+    ) { innerPadding ->
         SettingsScreenContent(
             modifier = Modifier
                 .fillMaxSize()

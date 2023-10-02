@@ -19,7 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,6 +37,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
@@ -69,10 +69,9 @@ private fun DashboardScreenScaffoldView(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = stringResource(R.string.title_home))
-                }
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.title_home)
             )
         }
     ) { innerPadding ->

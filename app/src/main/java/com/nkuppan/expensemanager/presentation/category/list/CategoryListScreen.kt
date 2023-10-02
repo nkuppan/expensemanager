@@ -22,7 +22,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,8 +38,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.NavigationButton
 import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
+import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.core.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
@@ -64,13 +64,9 @@ private fun CategoryListScreenScaffoldView(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    NavigationButton(navController)
-                },
-                title = {
-                    Text(text = stringResource(R.string.category))
-                }
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.category)
             )
         },
         floatingActionButton = {
@@ -133,12 +129,9 @@ private fun CategoryListScreenContent(
                             name = category.name,
                             icon = category.iconName,
                             iconBackgroundColor = category.iconBackgroundColor,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onItemClick?.invoke(category.id)
-                                }
-                                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                            modifier = ItemSpecModifier.clickable {
+                                onItemClick?.invoke(category.id)
+                            },
                         )
                     }
                     item {
