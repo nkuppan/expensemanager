@@ -3,7 +3,6 @@ package com.nkuppan.expensemanager.presentation.analysis
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,7 +22,6 @@ fun AnalysisScreen(navController: NavController) {
 
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AnalysisScreenScaffoldView(
     navController: NavController
 ) {

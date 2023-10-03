@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -46,6 +45,7 @@ import com.nkuppan.expensemanager.core.ui.theme.widget.IconAndBackgroundView
 import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.core.ui.utils.UiText
 import com.nkuppan.expensemanager.core.ui.utils.getColorValue
+import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
@@ -53,7 +53,6 @@ import java.util.Date
 
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun TransactionListScreen(
     navController: NavController
 ) {
@@ -63,7 +62,8 @@ fun TransactionListScreen(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.transaction)
+                title = stringResource(R.string.transaction),
+                disableBackIcon = true
             )
         },
         floatingActionButton = {
@@ -285,8 +285,8 @@ fun TransactionListItemEmptyStatePreview() {
 val DUMMY_DATA = listOf(
     TransactionUIModel(
         id = "1",
-        notes = UiText.DynamicString("Transaction One"),
-        amount = UiText.DynamicString("Transaction One"),
+        notes = UiText.DynamicString("Sample Description"),
+        amount = UiText.DynamicString("100.00$"),
         categoryName = "Clothing",
         categoryType = CategoryType.EXPENSE,
         categoryBackgroundColor = "#000000",
@@ -294,20 +294,20 @@ val DUMMY_DATA = listOf(
         accountName = "DB Bank xxxx",
         accountIcon = "ic_account",
         accountColor = "#000000",
-        date = Date().toString()
+        date = Date().toTransactionDate()
     ),
     TransactionUIModel(
         id = "2",
-        notes = UiText.DynamicString("Transaction One"),
-        amount = UiText.DynamicString("Transaction One"),
-        categoryName = "Clothing",
+        notes = UiText.DynamicString("Sample Description"),
+        amount = UiText.DynamicString("100.00$"),
+        categoryName = "Utilities",
         categoryType = CategoryType.INCOME,
         categoryBackgroundColor = "#000000",
         categoryIcon = "ic_add",
         accountName = "DB Bank xxxx",
         accountIcon = "ic_account",
         accountColor = "#000000",
-        date = Date().toString()
+        date = Date().toTransactionDate()
     ),
 )
 

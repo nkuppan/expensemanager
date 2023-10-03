@@ -181,26 +181,25 @@ fun CategoryItem(
     }
 }
 
-val DUMMY_DATA = listOf(
-    Category(
-        id = "1",
-        name = "Category One",
+fun getData(index: Int): Category {
+    return Category(
+        id = "$index",
+        name = "Category $index",
         type = CategoryType.EXPENSE,
         iconName = "ic_calendar",
         iconBackgroundColor = "#000000",
         createdOn = Date(),
         updatedOn = Date()
-    ),
-    Category(
-        id = "2",
-        name = "Category Two",
-        type = CategoryType.EXPENSE,
-        iconName = "ic_calendar",
-        iconBackgroundColor = "#000000",
-        createdOn = Date(),
-        updatedOn = Date()
-    ),
-)
+    )
+}
+
+fun getRandomData(): List<Category> {
+    return buildList {
+        repeat(15) {
+            add(getData(it))
+        }
+    }
+}
 
 @Preview
 @Composable
@@ -248,9 +247,7 @@ private fun CategoryListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         CategoryListScreenScaffoldView(
             rememberNavController(),
-            categoryUiState = UiState.Success(
-                DUMMY_DATA
-            ),
+            categoryUiState = UiState.Success(getRandomData()),
         )
     }
 }
