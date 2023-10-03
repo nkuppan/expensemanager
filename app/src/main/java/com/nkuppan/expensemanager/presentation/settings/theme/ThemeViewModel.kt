@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.Theme
-import com.nkuppan.expensemanager.domain.usecase.settings.theme.GetThemeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.theme.GetThemesUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.theme.SaveThemeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,13 +19,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ThemeViewModel @Inject constructor(
-    getSelectedTheme: GetThemeUseCase,
+    getSelectedTheme: GetCurrentThemeUseCase,
     getThemesUseCase: GetThemesUseCase,
     private val saveThemeUseCase: SaveThemeUseCase,
 ) : ViewModel() {
 
     private val _currentTheme =
-        MutableStateFlow(Theme(AppCompatDelegate.MODE_NIGHT_NO, R.string.light))
+        MutableStateFlow(Theme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM, R.string.system_default))
     val currentTheme = _currentTheme.asStateFlow()
 
     private val _themes = MutableStateFlow<List<Theme>>(emptyList())

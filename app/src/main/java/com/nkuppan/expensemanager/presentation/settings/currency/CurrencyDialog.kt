@@ -122,9 +122,10 @@ fun CurrencyDialogViewContent(
                                     )
                             } else {
                                 Modifier
+                                    .padding(4.dp)
                             }
                         )
-                        .padding(16.dp),
+                        .padding(12.dp),
                 ) {
                     Text(
                         modifier = Modifier.weight(1f),

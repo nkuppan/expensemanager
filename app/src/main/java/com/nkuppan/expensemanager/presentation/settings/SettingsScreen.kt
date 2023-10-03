@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -38,6 +37,7 @@ import com.nkuppan.expensemanager.core.ui.extensions.openWebPage
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.domain.model.Currency
+import com.nkuppan.expensemanager.domain.model.Theme
 import com.nkuppan.expensemanager.presentation.settings.currency.CurrencyDialogView
 import com.nkuppan.expensemanager.presentation.settings.theme.ThemeDialogView
 import com.nkuppan.expensemanager.presentation.settings.time.TimePickerView
@@ -49,14 +49,15 @@ fun SettingsScreen(
 ) {
     val viewModel: SettingsViewModel = hiltViewModel()
     val currency by viewModel.currency.collectAsState()
-    SettingsScreenScaffoldView(navController, currency)
+    val theme by viewModel.theme.collectAsState()
+    SettingsScreenScaffoldView(navController, currency, theme)
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun SettingsScreenScaffoldView(
     navController: NavController,
-    currency: Currency? = null
+    currency: Currency? = null,
+    theme: Theme? = null,
 ) {
     val context = LocalContext.current
 
@@ -93,7 +94,8 @@ private fun SettingsScreenScaffoldView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            currency = currency
+            currency = currency,
+            theme = theme,
         ) {
             when (it) {
                 SettingOption.THEME -> {
@@ -140,6 +142,7 @@ private fun SettingsScreenScaffoldView(
 private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     currency: Currency? = null,
+    theme: Theme? = null,
     settingOptionSelected: ((SettingOption) -> Unit)? = null
 ) {
     Column(modifier = modifier) {
@@ -151,7 +154,10 @@ private fun SettingsScreenContent(
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.theme),
-            description = stringResource(id = R.string.system_default),
+            description = if (theme != null)
+                (stringResource(id = theme.titleResId))
+            else
+                stringResource(id = R.string.system_default),
             icon = R.drawable.ic_palette
         )
         SettingsItem(

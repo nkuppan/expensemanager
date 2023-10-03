@@ -5,7 +5,7 @@ import com.nkuppan.expensemanager.domain.repository.ThemeRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class GetThemeUseCase @Inject constructor(private val repository: ThemeRepository) {
+class GetCurrentThemeUseCase @Inject constructor(private val repository: ThemeRepository) {
 
     operator fun invoke(): Flow<Theme> {
         return repository.getSelectedTheme()

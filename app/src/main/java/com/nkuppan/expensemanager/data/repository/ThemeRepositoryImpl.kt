@@ -12,20 +12,19 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+
+val defaultTheme = Theme(
+    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+    R.string.system_default
+)
+
 class ThemeRepositoryImpl @Inject constructor(
     private val dataStore: ThemeDataStore,
     private val dispatchers: AppCoroutineDispatchers
 ) : ThemeRepository {
 
     private fun getDefaultTheme(): Theme {
-        return when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> Theme(
-                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-                R.string.system_default
-            )
-
-            else -> Theme(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY, R.string.set_by_battery_saver)
-        }
+        return defaultTheme
     }
 
     override suspend fun saveTheme(theme: Theme): Boolean = withContext(dispatchers.main) {
