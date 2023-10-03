@@ -20,7 +20,7 @@ import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.analysis.constructGraphItems
-import com.nkuppan.expensemanager.presentation.home.UISystem
+import com.nkuppan.expensemanager.presentation.home.HomeScreenBottomBarItems
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
 import com.patrykandpatrick.vico.core.entry.entryModelOf
@@ -49,7 +49,7 @@ class DashboardViewModel @Inject constructor(
     getAccountsUseCase: GetAccountsUseCase,
 ) : ViewModel() {
 
-    var uiSystem by mutableStateOf(UISystem.Home)
+    var homeScreenBottomBarItems by mutableStateOf(HomeScreenBottomBarItems.Home)
         private set
 
     private val _errorMessage = Channel<UiText>()
@@ -151,8 +151,8 @@ class DashboardViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setUISystem(uiSystem: UISystem) {
-        this.uiSystem = uiSystem
+    fun setUISystem(homeScreenBottomBarItems: HomeScreenBottomBarItems) {
+        this.homeScreenBottomBarItems = homeScreenBottomBarItems
     }
 
     companion object {

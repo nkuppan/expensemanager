@@ -66,6 +66,8 @@ dependencies {
     implementation(libs.androidx.metrics)
     implementation(libs.androidx.tracing.ktx)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.accompanist.permissions)
+    implementation(libs.accompanist.systemUIController)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

@@ -175,7 +175,8 @@ fun IncomeExpenseBalanceView(
                 amount = expenseAmount,
                 modifier = Modifier
                     .padding(end = 8.dp)
-                    .weight(1f)
+                    .weight(1f),
+                title = stringResource(id = R.string.expense)
             )
             AmountView(
                 color = R.color.green_500,
@@ -183,7 +184,8 @@ fun IncomeExpenseBalanceView(
                 amount = incomeAmount,
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .weight(1f)
+                    .weight(1f),
+                title = stringResource(id = R.string.income)
             )
         }
 
@@ -207,7 +209,8 @@ fun AmountView(
     @ColorRes color: Int,
     @DrawableRes icon: Int,
     amount: UiText,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    title: String
 ) {
 
     val context = LocalContext.current
@@ -238,7 +241,7 @@ fun AmountView(
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.expense),
+                text = title,
                 color = colorResource(id = R.color.white),
                 fontSize = 12.sp
             )
@@ -260,8 +263,8 @@ fun IncomeExpenseBalanceViewPreview() {
             modifier = Modifier
                 .fillMaxSize(),
             expenseAmount = UiText.DynamicString("$500.0"),
-            incomeAmount = UiText.DynamicString("$500.0"),
-            balanceAmount = UiText.DynamicString("Balance $500.0"),
+            incomeAmount = UiText.DynamicString("$200.0"),
+            balanceAmount = UiText.DynamicString("Balance - $300.0"),
             chartData = AnalysisChartData(
                 chartData = entryModelOf(
                     listOf(entryOf(0, 1), entryOf(1, 2), entryOf(2, 3)),

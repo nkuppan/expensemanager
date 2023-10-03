@@ -176,6 +176,7 @@ fun TransactionItem(
         Column(
             modifier = Modifier
                 .weight(1f)
+                .padding(start = 16.dp)
                 .align(Alignment.CenterVertically)
         ) {
             Text(

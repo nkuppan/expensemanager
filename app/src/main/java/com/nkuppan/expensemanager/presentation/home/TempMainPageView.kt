@@ -1,12 +1,8 @@
-package com.nkuppan.expensemanager.presentation
+package com.nkuppan.expensemanager.presentation.home
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
@@ -29,24 +25,10 @@ import com.nkuppan.expensemanager.presentation.budget.create.BudgetCreateScreen
 import com.nkuppan.expensemanager.presentation.budget.list.BudgetListScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
-import com.nkuppan.expensemanager.presentation.home.HomeScreen
 import com.nkuppan.expensemanager.presentation.settings.SettingsScreen
 import com.nkuppan.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class NewHomeActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            ExpenseManagerTheme {
-                MainPageView()
-            }
-        }
-    }
-}
 
 @Composable
 fun MainPageView() {
@@ -54,10 +36,8 @@ fun MainPageView() {
     val navController = rememberNavController()
 
     Scaffold {
+        it.calculateTopPadding()
         NavHost(
-            modifier = Modifier.padding(
-                bottom = it.calculateTopPadding()
-            ),
             navController = navController,
             startDestination = "home"
         ) {
@@ -263,5 +243,3 @@ fun MainPagePreview() {
         MainPageView()
     }
 }
-
-

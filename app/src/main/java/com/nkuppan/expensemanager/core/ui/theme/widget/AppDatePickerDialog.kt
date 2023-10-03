@@ -54,9 +54,7 @@ fun AppDatePickerDialog(
             }
         }
     ) {
-        DatePicker(
-            state = datePickerState
-        )
+        DatePicker(state = datePickerState)
     }
 }
 

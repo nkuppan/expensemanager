@@ -24,12 +24,8 @@ class ThemeViewModel @Inject constructor(
     private val saveThemeUseCase: SaveThemeUseCase,
 ) : ViewModel() {
 
-    private val _currentTheme: MutableStateFlow<Theme> = MutableStateFlow(
-        Theme(
-            AppCompatDelegate.MODE_NIGHT_NO,
-            R.string.light
-        )
-    )
+    private val _currentTheme =
+        MutableStateFlow(Theme(AppCompatDelegate.MODE_NIGHT_NO, R.string.light))
     val currentTheme = _currentTheme.asStateFlow()
 
     private val _themes = MutableStateFlow<List<Theme>>(emptyList())

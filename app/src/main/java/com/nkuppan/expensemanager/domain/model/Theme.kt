@@ -1,8 +1,9 @@
 package com.nkuppan.expensemanager.domain.model
 
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDelegate.NightMode
 
 data class Theme(
-    val mode: Int,
+    @NightMode val mode: Int,
     @StringRes val titleResId: Int
 )

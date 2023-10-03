@@ -8,7 +8,6 @@ import com.nkuppan.expensemanager.data.datastore.ThemeDataStore
 import com.nkuppan.expensemanager.domain.model.Theme
 import com.nkuppan.expensemanager.domain.repository.ThemeRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -39,7 +38,7 @@ class ThemeRepositoryImpl @Inject constructor(
     }
 
     override suspend fun applyTheme() = withContext(dispatchers.io) {
-        val theme = getSelectedTheme().first()
+        val theme = Theme(AppCompatDelegate.MODE_NIGHT_YES, R.string.dark)
         withContext(dispatchers.main) {
             val mode = theme.mode
             AppCompatDelegate.setDefaultNightMode(mode)

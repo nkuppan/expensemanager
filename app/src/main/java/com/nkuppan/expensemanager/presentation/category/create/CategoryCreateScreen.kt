@@ -110,7 +110,7 @@ fun CategoryCreateScreen(
         }, topBar = {
             TopNavigationBarWithDeleteAction(
                 navController = navController,
-                title = stringResource(id = R.string.budgets),
+                title = stringResource(id = R.string.category),
                 actionId = categoryId
             ) {
                 showDeleteDialog = true

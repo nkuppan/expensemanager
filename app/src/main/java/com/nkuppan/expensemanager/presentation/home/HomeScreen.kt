@@ -2,14 +2,12 @@ package com.nkuppan.expensemanager.presentation.home
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,9 +27,9 @@ fun HomeScreen(
     Scaffold(
         bottomBar = {
             NavigationBar {
-                UISystem.values().forEach { uiSystem ->
+                HomeScreenBottomBarItems.values().forEach { uiSystem ->
                     NavigationBarItem(
-                        selected = viewModel.uiSystem == uiSystem,
+                        selected = viewModel.homeScreenBottomBarItems == uiSystem,
                         onClick = { viewModel.setUISystem(uiSystem) },
                         icon = {
                             Icon(
@@ -45,24 +43,25 @@ fun HomeScreen(
             }
         },
     ) { paddingValues ->
+        paddingValues.calculateTopPadding()
         Crossfade(
-            viewModel.uiSystem, label = ""
+            viewModel.homeScreenBottomBarItems, label = ""
         ) { uiSystem ->
-            Column(modifier = Modifier.padding(paddingValues)) {
+            Column {
                 when (uiSystem) {
-                    UISystem.Home -> {
+                    HomeScreenBottomBarItems.Home -> {
                         DashboardScreen(navController)
                     }
 
-                    UISystem.Analysis -> {
+                    HomeScreenBottomBarItems.Analysis -> {
                         AnalysisScreen(navController = navController)
                     }
 
-                    UISystem.Transaction -> {
+                    HomeScreenBottomBarItems.Transaction -> {
                         TransactionListScreen(navController = navController)
                     }
 
-                    UISystem.Category -> {
+                    HomeScreenBottomBarItems.Category -> {
                         CategoryListScreen(navController = navController)
                     }
                 }

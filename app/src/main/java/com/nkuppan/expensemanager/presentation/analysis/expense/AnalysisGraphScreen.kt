@@ -140,7 +140,7 @@ fun ChartScreen(
             itemPlacer = AxisItemPlacer.Vertical.default(4),
             label = axisLabelComponent(),
             valueFormatter = { value, chartValues ->
-                value.toDouble().toString()
+                String.format("%.2f", value)
             }
         ),
         bottomAxis = rememberBottomAxis(
@@ -165,8 +165,32 @@ fun ChartScreenPreview() {
         ChartScreen(
             AnalysisChartData(
                 chartData = entryModelOf(
-                    listOf(entryOf(0, 1), entryOf(1, 2), entryOf(2, 3)),
-                    listOf(entryOf(0, 4), entryOf(1, 3), entryOf(2, 2)),
+                    listOf(
+                        entryOf(0, 1),
+                        entryOf(1, 2),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3)
+                    ),
+                    listOf(
+                        entryOf(0, 4),
+                        entryOf(1, 3),
+                        entryOf(2, 2),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3),
+                        entryOf(2, 3)
+                    ),
                 ),
                 dates = listOf(
                     "08/09",

@@ -16,41 +16,49 @@ import androidx.core.app.TaskStackBuilder
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.domain.repository.ReminderTimeRepository
+import com.nkuppan.expensemanager.presentation.HomeActivity
 import com.nkuppan.expensemanager.presentation.settings.workers.NotificationWorker
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 import kotlin.math.abs
 
 
-object NotificationScheduler {
+class NotificationScheduler @Inject constructor(
+    private val reminderTimeRepository: ReminderTimeRepository
+) {
 
-    internal fun setReminder(context: Context) {
+    suspend fun setReminder(context: Context) {
 
         WorkManager.getInstance(context).cancelAllWork()
 
-        val calendar = getTimeInMillis(context)
-        val lTimeDelay = abs(Date().time - calendar.timeInMillis)
+        val calendar = getTimeInMillis()
+        val timeDelay = abs(Date().time - calendar.timeInMillis)
 
         val request = OneTimeWorkRequestBuilder<NotificationWorker>()
             .setInitialDelay(
-                lTimeDelay,
+                timeDelay,
                 TimeUnit.MILLISECONDS
             ).build()
 
         WorkManager.getInstance(context).enqueue(request)
     }
 
-    internal fun cancelReminder(context: Context) {
+    fun cancelReminder(context: Context) {
         WorkManager.getInstance(context).cancelAllWork()
     }
 
-    private fun getTimeInMillis(context: Context): Calendar {
+    private suspend fun getTimeInMillis(): Calendar {
 
-        /*val lHour = PreferenceManager.getAlarmTimeHour(context)
-        val lMinute = PreferenceManager.getAlarmTimeMinute(context)*/
+        val reminderTimeState = reminderTimeRepository.getReminderTime().first()
 
-        val hour = 0
-        val minute = 0
+        val hour = reminderTimeState.hour
+        val minute = reminderTimeState.minute
 
         val calendar = Calendar.getInstance()
 
@@ -146,25 +154,27 @@ object NotificationChannelId {
 
 open class AlarmReceiver : BroadcastReceiver() {
 
+    @Inject
+    lateinit var notificationScheduler: NotificationScheduler
+
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onReceive(context: Context, intent: Intent) {
 
-        if (intent.action != null) {
-
+        GlobalScope.launch {
             if (Intent.ACTION_BOOT_COMPLETED == intent.action) {
-                // Set the alarm here.
                 Log.d(TAG, "onReceive: BOOT_COMPLETED")
-                NotificationScheduler.setReminder(context)
-                return
+                notificationScheduler.setReminder(context)
+                return@launch
             }
-        }
 
-        //Trigger the notification
-        /*NotificationScheduler.showNotification(
-            context,
-            HomeActivity::class.java,
-            context.getString(R.string.notification_title),
-            context.getString(R.string.add_transaction)
-        )*/
+            //Trigger the notification
+            notificationScheduler.showNotification(
+                context,
+                HomeActivity::class.java,
+                context.getString(R.string.notification_title),
+                context.getString(R.string.add_transaction)
+            )
+        }
     }
 
     companion object {

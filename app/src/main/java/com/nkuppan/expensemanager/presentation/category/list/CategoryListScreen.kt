@@ -1,6 +1,7 @@
 package com.nkuppan.expensemanager.presentation.category.list
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -17,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -57,7 +57,6 @@ fun CategoryListScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun CategoryListScreenScaffoldView(
     navController: NavController,
     categoryUiState: UiState<List<Category>>
@@ -241,6 +240,7 @@ private fun CategoryListItemEmptyStatePreview() {
 }
 
 @Preview
+@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 private fun CategoryListItemSuccessStatePreview() {
     ExpenseManagerTheme {
