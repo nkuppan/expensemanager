@@ -2,8 +2,8 @@ package com.nkuppan.expensemanager.presentation.budget.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.core.ui.utils.getCurrency
+import com.nkuppan.expensemanager.common.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.UiState

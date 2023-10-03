@@ -31,11 +31,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.extensions.launchReviewWorkflow
-import com.nkuppan.expensemanager.core.ui.extensions.openEmailToOption
-import com.nkuppan.expensemanager.core.ui.extensions.openWebPage
-import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.common.ui.extensions.launchReviewWorkflow
+import com.nkuppan.expensemanager.common.ui.extensions.openEmailToOption
+import com.nkuppan.expensemanager.common.ui.extensions.openWebPage
+import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Theme
 import com.nkuppan.expensemanager.presentation.settings.currency.CurrencyDialogView

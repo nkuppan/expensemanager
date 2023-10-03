@@ -1,6 +1,6 @@
 package com.nkuppan.expensemanager.data.repository
 
-import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
+import com.nkuppan.expensemanager.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.data.datastore.ReminderTimeDataStore
 import com.nkuppan.expensemanager.domain.model.ReminderTimeState
 import com.nkuppan.expensemanager.domain.repository.ReminderTimeRepository

@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.presentation.analysis.expense.AnalysisGraphScreen
 
 @Composable

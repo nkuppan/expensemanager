@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.Resource

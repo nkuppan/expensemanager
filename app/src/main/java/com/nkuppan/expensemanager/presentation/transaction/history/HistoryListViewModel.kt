@@ -3,8 +3,8 @@ package com.nkuppan.expensemanager.presentation.transaction.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.core.ui.utils.getCurrency
+import com.nkuppan.expensemanager.common.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.utils.getCurrency
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Currency

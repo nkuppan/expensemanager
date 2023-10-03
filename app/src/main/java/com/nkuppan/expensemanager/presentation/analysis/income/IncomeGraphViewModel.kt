@@ -3,7 +3,7 @@ package com.nkuppan.expensemanager.presentation.analysis.income
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisData

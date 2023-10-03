@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.core.ui.utils.UiText
-import com.nkuppan.expensemanager.core.ui.utils.getBalanceCurrency
-import com.nkuppan.expensemanager.core.ui.utils.getCurrency
+import com.nkuppan.expensemanager.common.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.utils.getBalanceCurrency
+import com.nkuppan.expensemanager.common.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase

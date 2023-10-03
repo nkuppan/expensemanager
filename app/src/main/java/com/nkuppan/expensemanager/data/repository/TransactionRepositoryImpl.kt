@@ -1,7 +1,7 @@
 package com.nkuppan.expensemanager.data.repository
 
 import android.util.Log
-import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
+import com.nkuppan.expensemanager.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.data.db.dao.AccountDao
 import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.data.db.dao.TransactionDao

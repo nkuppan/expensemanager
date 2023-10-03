@@ -35,9 +35,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.widget.TopNavigationBar
-import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData

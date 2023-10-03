@@ -1,6 +1,6 @@
 package com.nkuppan.expensemanager.presentation.transaction.history
 
-import com.nkuppan.expensemanager.core.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
 
 class HistoryListItem(

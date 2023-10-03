@@ -20,10 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.extensions.getDrawable
-import com.nkuppan.expensemanager.core.ui.extensions.toColor
-import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.core.ui.theme.widget.RoundIconView
+import com.nkuppan.expensemanager.common.ui.extensions.getDrawable
+import com.nkuppan.expensemanager.common.ui.extensions.toColor
+import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.theme.widget.RoundIconView
 
 
 @Composable

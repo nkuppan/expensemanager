@@ -17,7 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.presentation.account.create.AccountCreateScreen
 import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisScreen

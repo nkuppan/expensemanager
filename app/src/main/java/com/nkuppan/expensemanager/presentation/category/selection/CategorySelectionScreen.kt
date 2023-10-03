@@ -14,10 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.presentation.category.list.CategoryItem
-import com.nkuppan.expensemanager.presentation.category.list.DUMMY_DATA
+import com.nkuppan.expensemanager.presentation.category.list.getRandomData
 import com.nkuppan.expensemanager.presentation.selection.SelectionTitle
 
 @Composable
@@ -78,8 +78,8 @@ fun CategorySelectionScreen(
 private fun CategorySelectionScreenPreview() {
     ExpenseManagerTheme {
         CategorySelectionScreen(
-            categories = DUMMY_DATA,
-            selectedCategory = DUMMY_DATA.firstOrNull()
+            categories = getRandomData(),
+            selectedCategory = getRandomData().firstOrNull()
         )
     }
 }
