@@ -5,7 +5,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
-import com.nkuppan.expensemanager.core.testing.BaseCoroutineTest
 import com.nkuppan.expensemanager.core.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.data.db.ExpenseManagerDatabase
 import com.nkuppan.expensemanager.data.db.dao.AccountDao
@@ -19,7 +18,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class AccountRepositoryImplTest : BaseCoroutineTest() {
+class AccountRepositoryImplTest : com.nkuppan.expensemanager.core.testing.BaseCoroutineTest() {
 
     private lateinit var accountDao: AccountDao
 

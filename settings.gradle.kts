@@ -19,5 +19,4 @@ dependencyResolutionManagement {
 rootProject.name = "expensemanager"
 
 include(":app")
-include(":core-testing")
 include(":macrobenchmark")

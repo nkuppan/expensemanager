@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.work.ktx)
     implementation(libs.google.android.play.review)
+    implementation(libs.app.update.ktx)
 
     //implementation(libs.mpcharts)
     implementation(libs.jxl)
@@ -99,9 +100,28 @@ dependencies {
     implementation(libs.vico.core)
     implementation(libs.vico.views)
 
-    //Core testing source module it will hold the
-    androidTestImplementation(project(":core-testing"))
-    testImplementation(project(":core-testing"))
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.androidx.test.core.arch)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.test.rules)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.mockito)
+    androidTestImplementation(libs.truth)
 
-    implementation(libs.app.update.ktx)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.turbine)
+    testImplementation(libs.androidx.test.espresso.core)
+    testImplementation(libs.androidx.test.uiautomator)
+    testImplementation(libs.androidx.test.ext)
+    testImplementation(libs.androidx.test.core.arch)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.androidx.test.rules)
+    testImplementation(libs.androidx.test.runner)
+    testImplementation(libs.mockito)
+    testImplementation(libs.truth)
 }

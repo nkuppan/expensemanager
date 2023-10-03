@@ -230,21 +230,24 @@ val DUMMY_DATA = listOf(
         name = "Cash",
         icon = "ic_budget",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$100.00")
+        amount = UiText.DynamicString("$100.00"),
+        transactionAmount = UiText.DynamicString("$100.00"),
     ),
     BudgetUiModel(
         id = "2",
         name = "Bank Budget - xxxx",
         icon = "ic_budget_balance",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$100.00")
+        amount = UiText.DynamicString("$100.00"),
+        transactionAmount = UiText.DynamicString("$100.00"),
     ),
     BudgetUiModel(
         id = "3",
         name = "Credit Card - xxxx",
         icon = "credit_card",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$100.00")
+        amount = UiText.DynamicString("$100.00"),
+        transactionAmount = UiText.DynamicString("$100.00"),
     ),
 )
 

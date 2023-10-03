@@ -69,9 +69,11 @@ private fun CategoryListScreenScaffoldView(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                navController.navigate("category/create")
-            }) {
+            FloatingActionButton(
+                onClick = {
+                    navController.navigate("category/create")
+                }
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_add),
                     contentDescription = ""
