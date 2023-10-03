@@ -31,7 +31,7 @@ import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListS
 
 
 @Composable
-fun MainPageView() {
+fun TempMainPageView() {
 
     val navController = rememberNavController()
 
@@ -42,7 +42,7 @@ fun MainPageView() {
             startDestination = "home"
         ) {
             composable("home") {
-                HomePageScreen(navController)
+                TempHomePageScreen(navController)
             }
             composable("category") {
                 CategoryListScreen(navController)
@@ -126,7 +126,7 @@ fun MainPageView() {
 }
 
 @Composable
-private fun HomePageScreen(navController: NavHostController) {
+private fun TempHomePageScreen(navController: NavHostController) {
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -240,6 +240,6 @@ private fun HomePageScreen(navController: NavHostController) {
 fun MainPagePreview() {
 
     ExpenseManagerTheme {
-        MainPageView()
+        TempMainPageView()
     }
 }

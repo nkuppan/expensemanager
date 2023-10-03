@@ -15,7 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.nkuppan.expensemanager.core.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.domain.model.Theme
-import com.nkuppan.expensemanager.presentation.home.MainPageView
+import com.nkuppan.expensemanager.presentation.home.TempMainPageView
 import com.nkuppan.expensemanager.presentation.settings.theme.ThemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,7 +43,7 @@ internal class HomeActivity : ComponentActivity() {
             }
 
             ExpenseManagerTheme(useDarkTheme = isDarkTheme) {
-                MainPageView()
+                TempMainPageView()
             }
         }
     }

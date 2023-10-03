@@ -37,14 +37,15 @@ class BudgetListViewModel @Inject constructor(
             currency to budget
         }.map { currencyAndBudgetPair ->
 
-            val (currency, budget) = currencyAndBudgetPair
+            val (currency, budgets) = currencyAndBudgetPair
 
-            _budgets.value = if (budget.isEmpty()) {
+            _budgets.value = if (budgets.isEmpty()) {
                 UiState.Empty
             } else {
                 UiState.Success(
-                    budget.map {
-                        it.toBudgetUiModel(currency)
+                    budgets.map {
+                        val budget = it.toBudgetUiModel(currency)
+                        budget
                     }
                 )
             }
@@ -52,12 +53,18 @@ class BudgetListViewModel @Inject constructor(
     }
 }
 
-fun Budget.toBudgetUiModel(currency: Currency) = BudgetUiModel(
+fun Budget.toBudgetUiModel(
+    currency: Currency
+) = BudgetUiModel(
     id = this.id,
     name = this.name,
     icon = this.iconName,
     iconBackgroundColor = this.iconBackgroundColor,
     amount = getCurrency(
+        currency,
+        this.amount
+    ),
+    transactionAmount = getCurrency(
         currency,
         this.amount
     ),
@@ -70,4 +77,5 @@ data class BudgetUiModel(
     val icon: String,
     val iconBackgroundColor: String,
     val amount: UiText,
+    val transactionAmount: UiText
 )
