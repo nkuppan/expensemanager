@@ -6,7 +6,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.FilterType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -16,36 +17,55 @@ class SettingsDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
 
-    suspend fun setAccountId(accountId: String) = dataStore.edit { preferences ->
-        preferences[KEY_SELECTED_ACCOUNT_ID] = accountId
+    suspend fun setCategoryTypes(categoryTypes: List<CategoryType>?) =
+        dataStore.edit { preferences ->
+            preferences[KEY_CATEGORY_TYPES] =
+                categoryTypes?.map { it.ordinal.toString() }?.toSet() ?: emptySet()
+        }
+
+    fun getCategoryTypes(): Flow<List<CategoryType>?> = dataStore.data.map { preferences ->
+        preferences[KEY_CATEGORY_TYPES]?.toList()?.map { CategoryType.values()[it.toInt()] }
+            ?: emptyList()
     }
 
-    fun getAccountId(): Flow<String> = dataStore.data.map { preferences ->
-        preferences[KEY_SELECTED_ACCOUNT_ID] ?: "-1"
+    suspend fun setAccounts(accounts: List<String>?) = dataStore.edit { preferences ->
+        preferences[KEY_SELECTED_ACCOUNTS] = accounts?.toSet() ?: emptySet()
+    }
+
+    fun getAccounts(): Flow<List<String>?> = dataStore.data.map { preferences ->
+        preferences[KEY_SELECTED_ACCOUNTS]?.toList() ?: emptyList()
+    }
+
+    suspend fun setCategories(categories: List<String>?) = dataStore.edit { preferences ->
+        preferences[KEY_SELECTED_CATEGORIES] = categories?.toSet() ?: emptySet()
+    }
+
+    fun getCategories(): Flow<List<String>?> = dataStore.data.map { preferences ->
+        preferences[KEY_SELECTED_CATEGORIES]?.toList() ?: emptyList()
     }
 
     suspend fun setFilterType(filterType: FilterType) = dataStore.edit { preferences ->
-        preferences[KEY_FILTER_TYPE] = filterType.ordinal
+        preferences[KEY_DATE_FILTER_TYPE] = filterType.ordinal
     }
 
     fun getFilterType(): Flow<FilterType> = dataStore.data.map { preferences ->
-        FilterType.values()[preferences[KEY_FILTER_TYPE] ?: FilterType.THIS_MONTH.ordinal]
+        FilterType.values()[preferences[KEY_DATE_FILTER_TYPE] ?: FilterType.TODAY.ordinal]
     }
 
     suspend fun setCustomFilterStartDate(startDate: Long) = dataStore.edit { preferences ->
-        preferences[KEY_CUSTOM_FILTER_START_DATE_TYPE] = startDate
+        preferences[KEY_CUSTOM_RANGE_START_DATE_TYPE] = startDate
     }
 
     fun getCustomFilterStartDate(): Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[KEY_CUSTOM_FILTER_START_DATE_TYPE]
+        preferences[KEY_CUSTOM_RANGE_START_DATE_TYPE]
     }
 
     suspend fun setCustomFilterEndDate(startDate: Long) = dataStore.edit { preferences ->
-        preferences[KEY_CUSTOM_FILTER_END_DATE_TYPE] = startDate
+        preferences[KEY_CUSTOM_RANGE_END_DATE_TYPE] = startDate
     }
 
     fun getCustomFilterEndDate(): Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[KEY_CUSTOM_FILTER_END_DATE_TYPE]
+        preferences[KEY_CUSTOM_RANGE_END_DATE_TYPE]
     }
 
     suspend fun setReminder(reminder: Boolean) = dataStore.edit { preferences ->
@@ -56,13 +76,24 @@ class SettingsDataStore @Inject constructor(
         preferences[KEY_REMINDER] ?: true
     }
 
-    companion object {
-        private val KEY_CUSTOM_FILTER_START_DATE_TYPE =
-            longPreferencesKey("custom_filter_start_date")
-        private val KEY_CUSTOM_FILTER_END_DATE_TYPE = longPreferencesKey("custom_filter_end_date")
+    suspend fun setFilterEnabled(enableFilter: Boolean) = dataStore.edit { preferences ->
+        preferences[KEY_FILTER_ENABLED] = enableFilter
+    }
 
-        private val KEY_FILTER_TYPE = intPreferencesKey("filter_type")
-        private val KEY_SELECTED_ACCOUNT_ID = stringPreferencesKey("selected_account_id")
+    fun isFilterEnabled(): Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[KEY_FILTER_ENABLED] ?: false
+    }
+
+    companion object {
         private val KEY_REMINDER = booleanPreferencesKey("reminder")
+
+        private val KEY_FILTER_ENABLED = booleanPreferencesKey("filter_enabled")
+
+        private val KEY_DATE_FILTER_TYPE = intPreferencesKey("date_filter_type")
+        private val KEY_CUSTOM_RANGE_START_DATE_TYPE = longPreferencesKey("custom_range_start_date")
+        private val KEY_CUSTOM_RANGE_END_DATE_TYPE = longPreferencesKey("custom_range_end_date")
+        private val KEY_SELECTED_ACCOUNTS = stringSetPreferencesKey("selected_accounts")
+        private val KEY_SELECTED_CATEGORIES = stringSetPreferencesKey("selected_categories")
+        private val KEY_CATEGORY_TYPES = stringSetPreferencesKey("category_types")
     }
 }

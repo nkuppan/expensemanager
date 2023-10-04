@@ -4,7 +4,7 @@ import android.content.Context
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.data.datastore.SettingsDataStore
-import com.nkuppan.expensemanager.data.utils.getDateTime
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.FilterType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.repository.SettingsRepository
@@ -12,7 +12,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import java.util.Calendar
+import org.joda.time.DateTime
 import java.util.Date
 import javax.inject.Inject
 
@@ -21,14 +21,33 @@ class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers
 ) : SettingsRepository {
-
-    override fun getAccountId(): Flow<String> {
-        return dataStore.getAccountId()
+    override fun getCategoryTypes(): Flow<List<CategoryType>?> {
+        return dataStore.getCategoryTypes()
     }
 
-    override suspend fun setAccountId(accountId: String?): Resource<Boolean> =
+    override suspend fun setCategoryTypes(categoryTypes: List<CategoryType>?): Resource<Boolean> =
         withContext(dispatcher.io) {
-            dataStore.setAccountId(accountId ?: "-1")
+            dataStore.setCategoryTypes(categoryTypes)
+            return@withContext Resource.Success(true)
+        }
+
+    override fun getAccounts(): Flow<List<String>?> {
+        return dataStore.getAccounts()
+    }
+
+    override suspend fun setAccounts(accounts: List<String>?): Resource<Boolean> =
+        withContext(dispatcher.io) {
+            dataStore.setAccounts(accounts)
+            return@withContext Resource.Success(true)
+        }
+
+    override fun getCategories(): Flow<List<String>?> {
+        return dataStore.getCategories()
+    }
+
+    override suspend fun setCategories(categories: List<String>?): Resource<Boolean> =
+        withContext(dispatcher.io) {
+            dataStore.setCategories(categories)
             return@withContext Resource.Success(true)
         }
 
@@ -38,13 +57,12 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override suspend fun getFilterRangeValue(filterType: FilterType): String {
         return when (filterType) {
+            FilterType.TODAY -> context.getString(R.string.this_month)
+            FilterType.THIS_WEEK -> context.getString(R.string.this_week)
             FilterType.THIS_MONTH -> context.getString(R.string.this_month)
-            FilterType.LAST_MONTH -> context.getString(R.string.previous_month)
-            FilterType.LAST_THREE_MONTH -> context.getString(R.string.last_three_month)
-            FilterType.LAST_SIX_MONTH -> context.getString(R.string.last_six_month)
-            FilterType.LAST_YEAR -> context.getString(R.string.last_year)
-            FilterType.ALL -> context.getString(R.string.all)
+            FilterType.THIS_YEAR -> context.getString(R.string.this_year)
             FilterType.CUSTOM -> context.getString(R.string.custom)
+            FilterType.ALL -> context.getString(R.string.all)
         }
     }
 
@@ -76,104 +94,68 @@ class SettingsRepositoryImpl @Inject constructor(
             return@withContext Resource.Success(true)
         }
 
+    override fun isFilterEnabled(): Flow<Boolean> {
+        return dataStore.isFilterEnabled()
+    }
+
+    override suspend fun setFilterEnabled(filterEnable: Boolean): Resource<Boolean> =
+        withContext(dispatcher.io) {
+            dataStore.setFilterEnabled(filterEnable)
+            return@withContext Resource.Success(true)
+        }
+
 
     private suspend fun getFilterValue(filterType: FilterType): List<Long> {
         return when (filterType) {
-            FilterType.THIS_MONTH -> getThisMonthValues()
-            FilterType.LAST_MONTH -> getPreviousMonthValues()
-            FilterType.LAST_THREE_MONTH -> getLastThreeMonthValues()
-            FilterType.LAST_SIX_MONTH -> getLastSixMonthValues()
-            FilterType.LAST_YEAR -> getLastYearValues()
+            FilterType.TODAY -> getTodayRange()
+            FilterType.THIS_WEEK -> getThisWeekRange()
+            FilterType.THIS_MONTH -> getThisMonthRange()
+            FilterType.THIS_YEAR -> getThisYearRange()
             FilterType.ALL -> listOf(0, 0)
-            FilterType.CUSTOM -> getCustomFilterRange()
+            FilterType.CUSTOM -> getCustomRange()
         }
     }
 
-    private suspend fun getCustomFilterRange(): List<Long> {
+    private suspend fun getCustomRange(): List<Long> {
         return listOf(
             dataStore.getCustomFilterStartDate().first() ?: 0,
             dataStore.getCustomFilterEndDate().first() ?: 0,
         )
     }
 
-    private fun getThisMonthValues(): List<Long> {
-
-        val startDate = getDateTime()
-        startDate.set(Calendar.DAY_OF_MONTH, 1)
-        val fromDate = startDate.timeInMillis
-
-        startDate.set(Calendar.DAY_OF_MONTH, startDate.getActualMaximum(Calendar.DAY_OF_MONTH))
-        startDate.set(Calendar.HOUR_OF_DAY, 24)
-        val toDate = startDate.timeInMillis
-
-        return listOf(fromDate, toDate)
+    private fun getTodayRange(): List<Long> {
+        val startOfTheDay = DateTime().withTimeAtStartOfDay().millis
+        val endOfTheDay = DateTime().plusDays(1).withTimeAtStartOfDay().millis
+        return listOf(startOfTheDay, endOfTheDay)
     }
 
-    private fun getPreviousMonthValues(): List<Long> {
+    private fun getThisWeekRange(): List<Long> {
+        val startDayOfWeek = DateTime().withDayOfWeek(0).withTimeAtStartOfDay().millis
+        val endDayOfWeek = DateTime()
+            .run {
+                return@run dayOfWeek().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+            }
 
-        val startDate = getDateTime()
-        startDate.add(Calendar.MONTH, -1)
-        startDate.set(Calendar.DATE, 1)
-        val fromDate = startDate.timeInMillis
-
-        startDate.set(Calendar.DAY_OF_MONTH, startDate.getActualMaximum(Calendar.DAY_OF_MONTH))
-        startDate.set(Calendar.HOUR_OF_DAY, 24)
-        val toDate = startDate.timeInMillis
-
-        return listOf(fromDate, toDate)
+        return listOf(startDayOfWeek, endDayOfWeek)
     }
 
-    private fun getLastThreeMonthValues(): List<Long> {
+    private fun getThisMonthRange(): List<Long> {
+        val startDayOfMonth = DateTime().withDayOfMonth(0).withTimeAtStartOfDay().millis
+        val endDayOfMonth = DateTime()
+            .run {
+                return@run dayOfMonth().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+            }
 
-        var previousMonthStartDate = getDateTime()
-        previousMonthStartDate.add(Calendar.MONTH, -3)
-        previousMonthStartDate.set(Calendar.DATE, 1)
-        val fromDate = previousMonthStartDate.timeInMillis
-
-        previousMonthStartDate = getDateTime()
-        previousMonthStartDate.set(Calendar.HOUR_OF_DAY, 24)
-        previousMonthStartDate.set(
-            Calendar.DAY_OF_MONTH,
-            previousMonthStartDate.getActualMaximum(Calendar.DAY_OF_MONTH)
-        )
-        val toDate = previousMonthStartDate.timeInMillis
-
-        return listOf(fromDate, toDate)
+        return listOf(startDayOfMonth, endDayOfMonth)
     }
 
-    private fun getLastSixMonthValues(): List<Long> {
+    private fun getThisYearRange(): List<Long> {
+        val startDayOfMonth = DateTime().withMonthOfYear(0).withTimeAtStartOfDay().millis
+        val endDayOfMonth = DateTime()
+            .run {
+                return@run monthOfYear().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+            }
 
-        var previousMonthStartDate = getDateTime()
-        previousMonthStartDate.add(Calendar.MONTH, -6)
-        previousMonthStartDate.set(Calendar.DATE, 1)
-        val fromDate = previousMonthStartDate.timeInMillis
-
-        previousMonthStartDate = getDateTime()
-        previousMonthStartDate.set(Calendar.HOUR_OF_DAY, 24)
-        previousMonthStartDate.set(
-            Calendar.DAY_OF_MONTH,
-            previousMonthStartDate.getActualMaximum(Calendar.DAY_OF_MONTH)
-        )
-        val toDate = previousMonthStartDate.timeInMillis
-
-        return listOf(fromDate, toDate)
-    }
-
-    private fun getLastYearValues(): List<Long> {
-
-        var previousMonthStartDate = getDateTime()
-        previousMonthStartDate.add(Calendar.MONTH, -12)
-        previousMonthStartDate.set(Calendar.DATE, 1)
-        val fromDate = previousMonthStartDate.timeInMillis
-
-        previousMonthStartDate = getDateTime()
-        previousMonthStartDate.set(Calendar.HOUR_OF_DAY, 24)
-        previousMonthStartDate.set(
-            Calendar.DAY_OF_MONTH,
-            previousMonthStartDate.getActualMaximum(Calendar.DAY_OF_MONTH)
-        )
-        val toDate = previousMonthStartDate.timeInMillis
-
-        return listOf(fromDate, toDate)
+        return listOf(startDayOfMonth, endDayOfMonth)
     }
 }

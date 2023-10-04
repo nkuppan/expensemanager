@@ -13,16 +13,18 @@ class GetSelectedAccountUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) {
 
-    operator fun invoke(): Flow<Account?> {
-        return settingsRepository.getAccountId().map {
-            it?.let { accountId ->
-                when (val response = accountRepository.findAccount(accountId)) {
-                    is Resource.Error -> {
-                        null
-                    }
-
-                    is Resource.Success -> {
-                        response.data
+    operator fun invoke(): Flow<List<Account>?> {
+        return settingsRepository.getAccounts().map { accounts ->
+            return@map buildList<Account> {
+                if (accounts != null) {
+                    repeat(accounts.size) {
+                        val account = accounts[it]
+                        when (val response = accountRepository.findAccount(account)) {
+                            is Resource.Error -> Unit
+                            is Resource.Success -> {
+                                add(response.data)
+                            }
+                        }
                     }
                 }
             }

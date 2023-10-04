@@ -76,6 +76,7 @@
 
 
     <string name="title_home">Home</string>
+    <string name="this_week">This week</string>
     <string name="this_month">This month</string>
     <string name="view_all">View all</string>
     <string name="last_seven_day">Last 7 Days Analysis</string>
@@ -252,10 +253,6 @@
     <string name="set_by_battery_saver">Set by battery saver</string>
     <string name="system_default">System default</string>
 
-    <string name="previous_month">Previous Month</string>
-    <string name="last_three_month">Last Three Month</string>
-    <string name="last_six_month">Last Six Month</string>
-    <string name="last_year">Last Year</string>
     <string name="all">All</string>
     <string name="custom">Custom</string>
     <string name="select_color">Select Color</string>
@@ -309,4 +306,5 @@
     <string name="budget_create_success">Budget created/updated successfully</string>
     <string name="budget_amount">Budget Amount</string>
     <string name="budget_amount_error">Budget amount shouldn\'t be empty or zero</string>
+    <string name="this_year">This year</string>
 </resources>

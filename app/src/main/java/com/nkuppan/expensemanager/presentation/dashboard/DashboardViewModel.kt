@@ -11,7 +11,7 @@ import com.nkuppan.expensemanager.common.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeTextUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeNameUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -42,7 +42,7 @@ class DashboardViewModel @Inject constructor(
     getTransactionsForCurrentMonthUseCase: GetTransactionsForCurrentMonthUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
-    getFilterTypeTextUseCase: GetFilterTypeTextUseCase,
+    getFilterTypeNameUseCase: GetFilterTypeNameUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
     getExpenseAmountUseCase: GetExpenseAmountUseCase,
@@ -85,10 +85,10 @@ class DashboardViewModel @Inject constructor(
 
     init {
         getSelectedAccountUseCase.invoke().onEach {
-            _accountValue.value = it?.name ?: "All"
+            //_accountValue.value = it?.name ?: "All"
         }.launchIn(viewModelScope)
 
-        getFilterTypeTextUseCase.invoke().onEach {
+        getFilterTypeNameUseCase.invoke().onEach {
             _dateValue.value = it
         }.launchIn(viewModelScope)
 

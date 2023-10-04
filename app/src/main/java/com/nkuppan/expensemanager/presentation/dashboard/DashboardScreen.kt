@@ -41,7 +41,7 @@ import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
-import com.nkuppan.expensemanager.presentation.analysis.expense.ChartScreen
+import com.nkuppan.expensemanager.presentation.analysis.ChartScreen
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
 

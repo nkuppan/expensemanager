@@ -87,7 +87,7 @@ dependencies {
     implementation(libs.google.android.play.review)
     implementation(libs.app.update.ktx)
 
-    //implementation(libs.mpcharts)
+    implementation(libs.mpcharts)
     implementation(libs.jxl)
 
     implementation(libs.room.runtime)
@@ -99,6 +99,7 @@ dependencies {
     implementation(libs.vico.compose.m3)
     implementation(libs.vico.core)
     implementation(libs.vico.views)
+    implementation(libs.joda.time)
 
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.turbine)

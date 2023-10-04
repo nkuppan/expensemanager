@@ -19,31 +19,16 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Query("SELECT * from `transaction` WHERE from_account_id=:accountId ORDER BY `transaction`.created_on DESC")
     fun getTransactionsByAccountId(accountId: String): Flow<List<TransactionEntity>?>
 
-    @Query(
-        """
-        SELECT 
-            `transaction`.*, 
-            `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `fromAccount`.name, `fromAccount`.icon_background_color, `fromAccount`.type, `fromAccount`.icon_name
-        FROM `transaction`
-        JOIN `category` ON category_id = `category`.id   
-        JOIN `account` as fromAccount ON from_account_id = `fromAccount`.id
-        ORDER BY `transaction`.created_on DESC
-        """
-    )
+    @Transaction
+    @Query("SELECT * FROM `transaction`")
     fun getAllTransaction(): Flow<List<TransactionRelation>?>
 
+    @Transaction
     @Query(
         """
-        SELECT 
-            `transaction`.*, 
-            `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `fromAccount`.name, `fromAccount`.icon_background_color, `fromAccount`.type, `fromAccount`.icon_name
-        FROM `transaction`
-        JOIN `category` ON category_id = `category`.id   
-        JOIN `account` as fromAccount ON from_account_id = `fromAccount`.id
-        WHERE `transaction`.created_on BETWEEN :fromDate AND :toDate
-        ORDER BY `transaction`.created_on DESC
+        SELECT * FROM `transaction`
+        WHERE created_on BETWEEN :fromDate AND :toDate
+        ORDER BY created_on DESC
         """
     )
     fun getTransactionsByDateFilter(
@@ -51,6 +36,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         toDate: Long
     ): Flow<List<TransactionRelation>?>
 
+    @Transaction
     @Query(
         """
         SELECT 

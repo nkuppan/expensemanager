@@ -1,3 +1,8 @@
 package com.nkuppan.expensemanager.presentation.category.transaction
 
-class CategoryTransactionListScreen
+import androidx.compose.runtime.Composable
+
+@Composable
+fun CategoryTransactionListScreen() {
+
+}

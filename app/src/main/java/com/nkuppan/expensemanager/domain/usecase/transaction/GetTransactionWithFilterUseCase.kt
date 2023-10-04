@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.domain.usecase.transaction
 
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.FilterType
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.repository.SettingsRepository
@@ -14,36 +15,53 @@ class GetTransactionWithFilterUseCase @Inject constructor(
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
     fun invoke(): Flow<List<Transaction>?> {
-        return settingsRepository.getAccountId()
-            .combine(settingsRepository.getFilterType()) { accountId, filterType ->
-
-                val filterTypeRanges = settingsRepository.getFilterRange(filterType)
-
-                val isValidAccount = accountId?.isNotBlank() == true && accountId != "-1"
-
-                val flows = if (filterType == FilterType.ALL) {
-                    if (isValidAccount) {
-                        transactionRepository.getTransactionsByAccountId(accountId!!)
-                    } else {
-                        transactionRepository.getAllTransaction()
-                    }
+        return combine(
+            settingsRepository.isFilterEnabled(),
+            settingsRepository.getCategoryTypes(),
+            settingsRepository.getCategories(),
+            settingsRepository.getAccounts(),
+            settingsRepository.getFilterType()
+        ) { isFilterEnabled, categoryTypes, categories, accounts, filterType ->
+            val filterTypeRanges = settingsRepository.getFilterRange(filterType)
+            val isValidAccount = accounts?.isNotEmpty() == true && accounts.firstOrNull() != "-1"
+            FilterValue(
+                filterType,
+                filterTypeRanges,
+                accounts,
+                categories,
+                categoryTypes,
+                isValidAccount
+            )
+        }.flatMapLatest {
+            return@flatMapLatest if (it.filterType == FilterType.ALL) {
+                if (it.isValidAccountId) {
+                    transactionRepository.getTransactionsByAccountId(it.accounts?.first()!!)
                 } else {
-                    if (isValidAccount) {
-                        transactionRepository.getTransactionByAccountIdAndDateFilter(
-                            accountId!!,
-                            filterTypeRanges[0],
-                            filterTypeRanges[1]
-                        )
-                    } else {
-                        transactionRepository.getTransactionByDateFilter(
-                            filterTypeRanges[0],
-                            filterTypeRanges[1]
-                        )
-                    }
+                    transactionRepository.getAllTransaction()
                 }
-                return@combine flows
-            }.flatMapLatest {
-                it
+            } else {
+                if (it.isValidAccountId) {
+                    transactionRepository.getTransactionByAccountIdAndDateFilter(
+                        it.accounts?.first()!!,
+                        it.filterRange[0],
+                        it.filterRange[1]
+                    )
+                } else {
+                    transactionRepository.getTransactionByDateFilter(
+                        it.filterRange[0],
+                        it.filterRange[1]
+                    )
+                }
             }
+        }
     }
 }
+
+data class FilterValue(
+    val filterType: FilterType,
+    val filterRange: List<Long>,
+    val accounts: List<String>? = null,
+    val categories: List<String>? = null,
+    val categoryTypes: List<CategoryType>? = null,
+    val isValidAccountId: Boolean
+)
