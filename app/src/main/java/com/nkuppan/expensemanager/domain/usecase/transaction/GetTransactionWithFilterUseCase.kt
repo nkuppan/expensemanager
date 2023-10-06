@@ -23,26 +23,26 @@ class GetTransactionWithFilterUseCase @Inject constructor(
             settingsRepository.getFilterType()
         ) { isFilterEnabled, categoryTypes, categories, accounts, filterType ->
             val filterTypeRanges = settingsRepository.getFilterRange(filterType)
-            val isValidAccount = accounts?.isNotEmpty() == true && accounts.firstOrNull() != "-1"
             FilterValue(
+                isFilterEnabled,
                 filterType,
                 filterTypeRanges,
                 accounts,
                 categories,
-                categoryTypes,
-                isValidAccount
+                categoryTypes
             )
         }.flatMapLatest {
+            val accountId = it.accounts?.firstOrNull()
             return@flatMapLatest if (it.filterType == FilterType.ALL) {
-                if (it.isValidAccountId) {
-                    transactionRepository.getTransactionsByAccountId(it.accounts?.first()!!)
+                if (it.isFilterEnabled && accountId != null) {
+                    transactionRepository.getTransactionsByAccountId(accountId)
                 } else {
                     transactionRepository.getAllTransaction()
                 }
             } else {
-                if (it.isValidAccountId) {
+                if (it.isFilterEnabled && accountId != null) {
                     transactionRepository.getTransactionByAccountIdAndDateFilter(
-                        it.accounts?.first()!!,
+                        accountId,
                         it.filterRange[0],
                         it.filterRange[1]
                     )
@@ -58,10 +58,10 @@ class GetTransactionWithFilterUseCase @Inject constructor(
 }
 
 data class FilterValue(
+    val isFilterEnabled: Boolean,
     val filterType: FilterType,
     val filterRange: List<Long>,
     val accounts: List<String>? = null,
     val categories: List<String>? = null,
     val categoryTypes: List<CategoryType>? = null,
-    val isValidAccountId: Boolean
 )

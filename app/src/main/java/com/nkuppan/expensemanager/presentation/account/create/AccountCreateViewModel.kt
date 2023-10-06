@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.utils.UiText
+import com.nkuppan.expensemanager.common.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.AccountType
+import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.getCurrencyIcon
 import com.nkuppan.expensemanager.domain.usecase.account.AddAccountUseCase
@@ -72,12 +74,22 @@ class AccountCreateViewModel @Inject constructor(
     var icon = MutableStateFlow(DEFAULT_ICON)
         private set
 
+    var availableCreditLimit = MutableStateFlow<UiText?>(null)
+        private set
+
     private var account: Account? = null
+
+    private var currency: Currency = Currency(
+        R.string.dollar_type,
+        R.string.dollar_name,
+        R.drawable.currency_dollar
+    )
 
     init {
         readAccountInfo(savedStateHandle.get<String>(CATEGORY_ID))
 
         getCurrencyUseCase.invoke().onEach {
+            currency = it
             currencyIcon.value = it.getCurrencyIcon()
         }.launchIn(viewModelScope)
     }
@@ -93,8 +105,21 @@ class AccountCreateViewModel @Inject constructor(
             accountType.value = accountItem.type
             colorValue.value = accountItem.iconBackgroundColor
             icon.value = accountItem.iconName
+            updateAccountValue(accountItem)
         }
     }
+
+    private fun updateAccountValue(accountItem: Account?) {
+        availableCreditLimit.value = getCurrency(
+            currency,
+            if (accountItem != null) {
+                accountItem.creditLimit - accountItem.amount
+            } else {
+                0.0
+            }
+        )
+    }
+
 
     private fun readAccountInfo(accountId: String?) {
         accountId ?: return
@@ -191,6 +216,10 @@ class AccountCreateViewModel @Inject constructor(
 
     fun setAccountType(accountType: AccountType) {
         this.accountType.value = accountType
+
+        if (accountType == AccountType.CREDIT) {
+            updateAccountValue(account)
+        }
     }
 
     fun setIcon(icon: String) {

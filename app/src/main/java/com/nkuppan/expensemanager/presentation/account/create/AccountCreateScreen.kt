@@ -1,17 +1,22 @@
 package com.nkuppan.expensemanager.presentation.account.create
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -26,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -127,6 +133,7 @@ fun AccountCreateScreen(
         val colorValue by viewModel.colorValue.collectAsState()
         val iconValue by viewModel.icon.collectAsState()
         val selectedAccountType by viewModel.accountType.collectAsState()
+        val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
 
         Box(modifier = Modifier.fillMaxSize()) {
             AccountCreateScreen(
@@ -145,6 +152,7 @@ fun AccountCreateScreen(
                 onNameChange = viewModel::setNameChange,
                 onCurrentBalanceChange = viewModel::setCurrentBalanceChange,
                 onCreditLimitChange = viewModel::setCreditLimitChange,
+                availableCreditLimit = availableCreditLimit,
                 openColorPicker = {
                     scope.launch {
                         if (sheetSelection != 2) {
@@ -237,7 +245,10 @@ private fun AccountCreateScreen(
     creditLimit: String = "",
     creditLimitErrorMessage: UiText? = null,
     onCreditLimitChange: ((String) -> Unit)? = null,
+    availableCreditLimit: UiText? = null
 ) {
+
+    val context = LocalContext.current
 
     Column(modifier = modifier) {
 
@@ -280,7 +291,7 @@ private fun AccountCreateScreen(
             label = R.string.current_balance,
         )
 
-        if (selectedAccountType == AccountType.CREDIT) {
+        if (selectedAccountType == AccountType.CREDIT && availableCreditLimit != null) {
             DecimalTextField(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
@@ -291,6 +302,26 @@ private fun AccountCreateScreen(
                 leadingIcon = currency,
                 label = R.string.credit_limit,
             )
+
+            Row(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                    .background(
+                        color = colorResource(id = R.color.green_100),
+                        shape = RoundedCornerShape(4.dp)
+                    )
+                    .padding(16.dp)
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(id = R.string.available_balance),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = availableCreditLimit.asString(context),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            }
         }
 
         Spacer(

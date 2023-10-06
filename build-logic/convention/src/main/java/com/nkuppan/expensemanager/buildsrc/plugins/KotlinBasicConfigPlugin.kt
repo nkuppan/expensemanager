@@ -10,7 +10,7 @@ class KotlinBasicConfigPlugin : Plugin<Project> {
 
             with(pluginManager) {
                 apply("org.jetbrains.kotlin.android")
-                apply("org.jetbrains.kotlin.kapt")
+                apply("com.google.devtools.ksp")
             }
 
             configureKotlinJVM()
