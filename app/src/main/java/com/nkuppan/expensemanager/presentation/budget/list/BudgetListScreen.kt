@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -61,7 +60,6 @@ fun BudgetListScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun BudgetListScreenScaffoldView(
     navController: NavController,
     budgetUiState: UiState<List<BudgetUiModel>>

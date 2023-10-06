@@ -80,13 +80,13 @@ fun AnalysisGraphScreen(navController: NavController) {
                         categoryName = it.categoryName,
                         categoryColor = it.categoryBackgroundColor,
                         categoryIcon = it.categoryIcon,
-                        accountName = it.accountName,
-                        accountIcon = it.accountIcon,
-                        accountColor = it.accountColor,
+                        fromAccountName = it.fromAccountName,
+                        fromAccountIcon = it.fromAccountIcon,
+                        fromAccountColor = it.fromAccountColor,
                         amount = it.amount.asString(context),
                         date = it.date,
                         notes = it.notes,
-                        categoryType = it.categoryType
+                        transactionType = it.transactionType
                     )
                 }
             }

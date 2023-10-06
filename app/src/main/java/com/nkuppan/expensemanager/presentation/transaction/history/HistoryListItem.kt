@@ -1,7 +1,7 @@
 package com.nkuppan.expensemanager.presentation.transaction.history
 
 import com.nkuppan.expensemanager.common.ui.utils.UiText
-import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.TransactionType
 
 class HistoryListItem(
     val text: UiText? = null,
@@ -15,11 +15,14 @@ data class TransactionUIModel(
     val amount: UiText = UiText.DynamicString(""),
     val notes: UiText?,
     val categoryName: String,
-    val categoryType: CategoryType,
+    val transactionType: TransactionType,
     val categoryBackgroundColor: String,
     val categoryIcon: String,
-    val accountName: String,
-    val accountIcon: String,
-    val accountColor: String,
     val date: String,
+    val fromAccountName: String,
+    val fromAccountIcon: String,
+    val fromAccountColor: String,
+    val toAccountName: String? = null,
+    val toAccountIcon: String? = null,
+    val toAccountColor: String? = null,
 )

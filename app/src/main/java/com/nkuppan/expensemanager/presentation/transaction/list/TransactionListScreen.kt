@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,13 +30,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
@@ -46,7 +44,7 @@ import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.common.ui.utils.getColorValue
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
-import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.TransactionType
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import java.util.Date
@@ -134,13 +132,16 @@ private fun TransactionListScreen(
                             categoryName = it.categoryName,
                             categoryColor = it.categoryBackgroundColor,
                             categoryIcon = it.categoryIcon,
-                            accountName = it.accountName,
-                            accountIcon = it.accountIcon,
-                            accountColor = it.accountColor,
                             amount = it.amount.asString(context),
                             date = it.date,
                             notes = it.notes,
-                            categoryType = it.categoryType
+                            transactionType = it.transactionType,
+                            fromAccountName = it.fromAccountName,
+                            fromAccountIcon = it.fromAccountIcon,
+                            fromAccountColor = it.fromAccountColor,
+                            toAccountName = it.toAccountName,
+                            toAccountIcon = it.toAccountIcon,
+                            toAccountColor = it.toAccountColor,
                         )
                     }
                 }
@@ -152,25 +153,38 @@ private fun TransactionListScreen(
 @Composable
 fun TransactionItem(
     categoryName: String,
-    accountName: String,
-    accountIcon: String,
-    accountColor: String,
+    fromAccountName: String,
+    fromAccountIcon: String,
+    fromAccountColor: String,
     amount: String,
     date: String,
     notes: UiText?,
     modifier: Modifier = Modifier,
+    toAccountName: String? = null,
+    toAccountIcon: String? = null,
+    toAccountColor: String? = null,
     categoryColor: String = "#000000",
     categoryIcon: String = "ic_calendar",
-    categoryType: CategoryType = CategoryType.EXPENSE
+    transactionType: TransactionType = TransactionType.EXPENSE
 ) {
 
     val context = LocalContext.current
+    val isTransfer = toAccountName?.isNotBlank()
 
     Row(modifier = modifier) {
         IconAndBackgroundView(
             modifier = Modifier.align(Alignment.CenterVertically),
-            icon = categoryIcon,
-            iconBackgroundColor = categoryColor,
+            icon = if (isTransfer == true) {
+                "ic_transfer_account"
+            } else {
+                categoryIcon
+            },
+            iconBackgroundColor =
+            if (isTransfer == true) {
+                "#166EF7"
+            } else {
+                categoryColor
+            },
             name = categoryName
         )
         Column(
@@ -179,38 +193,39 @@ fun TransactionItem(
                 .padding(start = 16.dp)
                 .align(Alignment.CenterVertically)
         ) {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = categoryName
-            )
-            Row {
-                Icon(
-                    modifier = Modifier
-                        .size(12.dp)
-                        .align(Alignment.CenterVertically),
-                    painter = painterResource(id = context.getDrawable(accountIcon)),
-                    contentDescription = "",
-                    tint = Color(getColorValue(accountColor))
+            if (isTransfer == true && toAccountIcon != null && toAccountColor != null) {
+                AccountNameWithIcon(
+                    fromAccountIcon,
+                    fromAccountColor,
+                    fromAccountName
                 )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 4.dp)
-                        .fillMaxWidth(),
-                    fontSize = 12.sp,
-                    text = accountName,
-                    color = Color(getColorValue(accountColor))
+                AccountNameWithIcon(
+                    toAccountIcon,
+                    toAccountColor,
+                    toAccountName
                 )
-            }
-            if (notes != null) {
+            } else {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = notes.asString(context),
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    text = categoryName,
+                    style = MaterialTheme.typography.bodyLarge
                 )
+                AccountNameWithIcon(
+                    fromAccountIcon,
+                    fromAccountColor,
+                    fromAccountName
+                )
+                if (notes != null) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        text = notes.asString(context),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
             }
         }
         Column(
@@ -222,20 +237,48 @@ fun TransactionItem(
             Text(
                 modifier = Modifier.align(Alignment.End),
                 text = amount,
-                fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.Medium,
-                color = if (categoryType == CategoryType.EXPENSE)
-                    colorResource(id = R.color.red_500)
-                else
-                    colorResource(id = R.color.green_500)
+                style = MaterialTheme.typography.titleMedium,
+                color = when (transactionType) {
+                    TransactionType.EXPENSE -> colorResource(id = R.color.red_500)
+                    TransactionType.INCOME -> colorResource(id = R.color.green_500)
+                    else -> Color.Unspecified
+                }
             )
             Text(
                 modifier = Modifier.align(Alignment.End),
                 text = date,
-                fontSize = 12.sp,
-                fontStyle = FontStyle.Normal,
+                style = MaterialTheme.typography.labelMedium
             )
         }
+    }
+}
+
+@Composable
+private fun AccountNameWithIcon(
+    fromAccountIcon: String,
+    fromAccountColor: String,
+    fromAccountName: String
+) {
+
+    val context = LocalContext.current
+
+    Row {
+        Icon(
+            modifier = Modifier
+                .size(12.dp)
+                .align(Alignment.CenterVertically),
+            painter = painterResource(id = context.getDrawable(fromAccountIcon)),
+            contentDescription = "",
+            tint = Color(getColorValue(fromAccountColor))
+        )
+        Text(
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .fillMaxWidth(),
+            text = fromAccountName,
+            color = Color(getColorValue(fromAccountColor)),
+            style = MaterialTheme.typography.labelMedium
+        )
     }
 }
 
@@ -246,9 +289,9 @@ fun TransactionItemPreview() {
         TransactionItem(
             categoryName = "Utilities",
             categoryColor = "#A65A56",
-            accountName = "Card-xxx",
-            accountIcon = "ic_account",
-            accountColor = "#A65A56x",
+            fromAccountName = "Card-xxx",
+            fromAccountIcon = "ic_account",
+            fromAccountColor = "#A65A56x",
             amount = "300 ₹",
             date = "15/11/2019",
             notes = UiText.DynamicString("Sample notes given as per transaction"),
@@ -288,12 +331,12 @@ val DUMMY_DATA = listOf(
         notes = UiText.DynamicString("Sample Description"),
         amount = UiText.DynamicString("100.00$"),
         categoryName = "Clothing",
-        categoryType = CategoryType.EXPENSE,
+        transactionType = TransactionType.EXPENSE,
         categoryBackgroundColor = "#000000",
         categoryIcon = "ic_add",
-        accountName = "DB Bank xxxx",
-        accountIcon = "ic_account",
-        accountColor = "#000000",
+        fromAccountName = "DB Bank xxxx",
+        fromAccountIcon = "ic_account",
+        fromAccountColor = "#000000",
         date = Date().toTransactionDate()
     ),
     TransactionUIModel(
@@ -301,13 +344,29 @@ val DUMMY_DATA = listOf(
         notes = UiText.DynamicString("Sample Description"),
         amount = UiText.DynamicString("100.00$"),
         categoryName = "Utilities",
-        categoryType = CategoryType.INCOME,
+        transactionType = TransactionType.INCOME,
         categoryBackgroundColor = "#000000",
         categoryIcon = "ic_add",
-        accountName = "DB Bank xxxx",
-        accountIcon = "ic_account",
-        accountColor = "#000000",
+        fromAccountName = "DB Bank xxxx",
+        fromAccountIcon = "ic_account",
+        fromAccountColor = "#000000",
         date = Date().toTransactionDate()
+    ),
+    TransactionUIModel(
+        id = "3",
+        notes = UiText.DynamicString("New Description about expense"),
+        amount = UiText.DynamicString("100.00$"),
+        categoryName = "Utilities",
+        transactionType = TransactionType.TRANSFER,
+        categoryBackgroundColor = "#000000",
+        categoryIcon = "ic_add",
+        date = Date().toTransactionDate(),
+        fromAccountName = "DB Bank xxxx",
+        fromAccountIcon = "ic_account",
+        fromAccountColor = "#000000",
+        toAccountName = "Another DB Bank xxxx",
+        toAccountIcon = "ic_account",
+        toAccountColor = "#000000"
     ),
 )
 

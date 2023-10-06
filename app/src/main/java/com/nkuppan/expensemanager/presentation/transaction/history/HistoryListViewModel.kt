@@ -110,12 +110,15 @@ fun Transaction.toTransactionUIModel(currency: Currency): TransactionUIModel {
             UiText.DynamicString(this.notes)
         },
         this.category.name,
-        this.category.type,
+        this.type,
         this.category.iconBackgroundColor,
         this.category.iconName,
-        accountName = this.fromAccount.name,
-        this.fromAccount.iconName,
-        accountColor = this.fromAccount.iconBackgroundColor,
-        this.createdOn.toTransactionDate(),
+        date = this.createdOn.toTransactionDate(),
+        fromAccountName = this.fromAccount.name,
+        fromAccountIcon = this.fromAccount.iconName,
+        fromAccountColor = this.fromAccount.iconBackgroundColor,
+        toAccountName = this.toAccount?.name,
+        toAccountIcon = this.toAccount?.iconName,
+        toAccountColor = this.toAccount?.iconBackgroundColor,
     )
 }

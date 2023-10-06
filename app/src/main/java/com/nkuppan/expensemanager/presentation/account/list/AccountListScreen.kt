@@ -16,9 +16,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +58,6 @@ fun AccountListScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AccountListScreenScaffoldView(
     navController: NavController,
     accountUiState: UiState<List<AccountUiModel>>
@@ -180,12 +180,18 @@ fun AccountItem(
                 .weight(1f)
                 .padding(start = 16.dp, end = 16.dp)
                 .align(Alignment.CenterVertically),
-            text = name
+            text = name,
+            style = MaterialTheme.typography.bodyLarge,
         )
         if (amount != null) {
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                text = amount
+                text = amount,
+                style = MaterialTheme.typography.titleMedium,
+                color = if (true)
+                    colorResource(id = R.color.red_500)
+                else
+                    colorResource(id = R.color.green_500)
             )
         }
         if (endIcon != null) {
