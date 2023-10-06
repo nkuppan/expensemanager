@@ -5,3 +5,7 @@ enum class TransactionType {
     EXPENSE,
     TRANSFER
 }
+
+fun TransactionType.isTransfer(): Boolean {
+    return this == TransactionType.TRANSFER
+}

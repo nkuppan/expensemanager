@@ -92,14 +92,16 @@ class DashboardViewModel @Inject constructor(
             _dateValue.value = it
         }.launchIn(viewModelScope)
 
-        getCurrencyUseCase.invoke()
-            .combine(getTransactionWithFilterUseCase.invoke()) { currency, response ->
+        combine(
+            getCurrencyUseCase.invoke(),
+            getTransactionWithFilterUseCase.invoke()
+        ) { currency, response ->
 
-                _transactions.value = ((response?.map {
-                    it.toTransactionUIModel(currency)
-                } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
+            _transactions.value = ((response?.map {
+                it.toTransactionUIModel(currency)
+            } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
 
-            }.launchIn(viewModelScope)
+        }.launchIn(viewModelScope)
 
         combine(
             getCurrencyUseCase.invoke(),
@@ -121,7 +123,8 @@ class DashboardViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
 
-        getCurrencyUseCase.invoke().combine(
+        combine(
+            getCurrencyUseCase.invoke(),
             getTransactionsForCurrentMonthUseCase.invoke()
         ) { currency, response ->
             val data = constructGraphItems(

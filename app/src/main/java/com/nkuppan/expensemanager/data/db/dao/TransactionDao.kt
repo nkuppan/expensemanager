@@ -84,27 +84,63 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     suspend fun findAccountById(id: String): AccountEntity?
 
     @Transaction
-    suspend fun insertTransaction(transactionEntity: TransactionEntity): Long {
+    suspend fun insertTransaction(
+        transactionEntity: TransactionEntity,
+        amountToDetect: Double,
+        isTransfer: Boolean
+    ): Long {
         val id = insert(transactionEntity)
         if (id != -1L) {
             val accountEntity = findAccountById(transactionEntity.fromAccountId)
             if (accountEntity != null) {
                 updateAccount(
-                    accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount)
+                    accountEntity.copy(
+                        amount = accountEntity.amount + amountToDetect
+                    )
                 )
+            }
+            if (isTransfer && transactionEntity.toAccountId?.isNotBlank() == true) {
+                val toAccountEntity = findAccountById(
+                    transactionEntity.toAccountId!!
+                )
+                if (toAccountEntity != null) {
+                    updateAccount(
+                        toAccountEntity.copy(
+                            amount = toAccountEntity.amount + (amountToDetect * -1)
+                        )
+                    )
+                }
             }
         }
         return id
     }
 
     @Transaction
-    suspend fun updateTransaction(transactionEntity: TransactionEntity) {
+    suspend fun updateTransaction(
+        transactionEntity: TransactionEntity,
+        amountToDetect: Double,
+        isTransfer: Boolean
+    ) {
         update(transactionEntity)
         val accountEntity = findAccountById(transactionEntity.fromAccountId)
         if (accountEntity != null) {
             updateAccount(
-                accountEntity.copy(amount = accountEntity.amount - transactionEntity.amount)
+                accountEntity.copy(
+                    amount = accountEntity.amount + amountToDetect
+                )
             )
+        }
+        if (isTransfer && transactionEntity.toAccountId?.isNotBlank() == true) {
+            val toAccountEntity = findAccountById(
+                transactionEntity.toAccountId!!
+            )
+            if (toAccountEntity != null) {
+                updateAccount(
+                    toAccountEntity.copy(
+                        amount = toAccountEntity.amount + (amountToDetect * -1)
+                    )
+                )
+            }
         }
     }
 }
