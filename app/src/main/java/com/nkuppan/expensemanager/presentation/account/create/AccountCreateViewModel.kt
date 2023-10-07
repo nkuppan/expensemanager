@@ -110,13 +110,19 @@ class AccountCreateViewModel @Inject constructor(
     }
 
     private fun updateAccountValue(accountItem: Account?) {
+        updateAvailableCreditLimit(
+            accountItem?.creditLimit ?: 0.0,
+            accountItem?.amount ?: 0.0
+        )
+    }
+
+    private fun updateAvailableCreditLimit(
+        creditLimit: Double,
+        amount: Double
+    ) {
         availableCreditLimit.value = getCurrency(
-            currency,
-            if (accountItem != null) {
-                accountItem.creditLimit - accountItem.amount
-            } else {
-                0.0
-            }
+            currency = currency,
+            amount = creditLimit + amount
         )
     }
 
@@ -242,10 +248,20 @@ class AccountCreateViewModel @Inject constructor(
         } else {
             currentBalanceErrorMessage.value = null
         }
+
+        updateAvailableCreditLimit(
+            this.creditLimit.value.toDoubleOrNull() ?: 0.0,
+            this.currentBalance.value.toDoubleOrNull() ?: 0.0,
+        )
     }
 
     fun setCreditLimitChange(creditLimit: String) {
         this.creditLimit.value = creditLimit
+
+        updateAvailableCreditLimit(
+            this.creditLimit.value.toDoubleOrNull() ?: 0.0,
+            this.currentBalance.value.toDoubleOrNull() ?: 0.0,
+        )
     }
 
     companion object {

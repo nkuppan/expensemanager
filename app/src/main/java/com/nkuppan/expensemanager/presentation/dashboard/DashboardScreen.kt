@@ -30,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -69,7 +68,8 @@ private fun DashboardScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.title_home)
+                title = stringResource(R.string.title_home),
+                disableBackIcon = true
             )
         }
     ) { innerPadding ->
@@ -197,7 +197,7 @@ fun IncomeExpenseBalanceView(
                 .padding(12.dp)
                 .align(Alignment.CenterHorizontally),
             text = balanceAmount.asString(context),
-            fontSize = 12.sp
+            style = MaterialTheme.typography.labelMedium,
         )
     }
 }
@@ -241,13 +241,13 @@ fun AmountView(
                 modifier = Modifier.fillMaxWidth(),
                 text = title,
                 color = colorResource(id = R.color.white),
-                fontSize = 12.sp
+                style = MaterialTheme.typography.labelMedium
             )
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = amount.asString(context),
                 color = colorResource(id = R.color.white),
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium,
             )
         }
     }

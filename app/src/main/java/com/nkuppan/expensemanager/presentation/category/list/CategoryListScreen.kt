@@ -65,7 +65,8 @@ private fun CategoryListScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.category)
+                title = stringResource(R.string.category),
+                disableBackIcon = true
             )
         },
         floatingActionButton = {
@@ -144,6 +145,8 @@ private fun CategoryListScreenContent(
                     }
                 }
             }
+
+            else -> {}
         }
     }
 }

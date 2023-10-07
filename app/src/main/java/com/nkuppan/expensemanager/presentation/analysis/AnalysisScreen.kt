@@ -28,7 +28,8 @@ private fun AnalysisScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.analysis)
+                title = stringResource(R.string.analysis),
+                disableBackIcon = true
             )
         }
     ) { innerPadding ->
