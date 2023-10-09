@@ -307,4 +307,5 @@
     <string name="budget_amount">Budget Amount</string>
     <string name="budget_amount_error">Budget amount shouldn\'t be empty or zero</string>
     <string name="this_year">This year</string>
+    <string name="categories">Categories</string>
 </resources>

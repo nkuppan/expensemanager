@@ -6,7 +6,11 @@ import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.common.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.Currency
+import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.model.Transaction
+import com.nkuppan.expensemanager.domain.model.TransactionType
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.domain.usecase.budget.GetBudgetTransactionsUseCase
 import com.nkuppan.expensemanager.domain.usecase.budget.GetBudgetsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +27,7 @@ import javax.inject.Inject
 class BudgetListViewModel @Inject constructor(
     getBudgetsUseCase: GetBudgetsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
+    getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase,
 ) : ViewModel() {
 
     private val _errorMessage = MutableSharedFlow<UiText>()
@@ -44,7 +49,17 @@ class BudgetListViewModel @Inject constructor(
             } else {
                 UiState.Success(
                     budgets.map {
-                        val budget = it.toBudgetUiModel(currency)
+                        val transactionAmount =
+                            when (val response = getBudgetTransactionsUseCase(it)) {
+                                is Resource.Error -> {
+                                    0.0
+                                }
+
+                                is Resource.Success -> {
+                                    response.data.toTransactionSum()
+                                }
+                            }
+                        val budget = it.toBudgetUiModel(currency, transactionAmount)
                         budget
                     }
                 )
@@ -53,8 +68,33 @@ class BudgetListViewModel @Inject constructor(
     }
 }
 
+fun List<Transaction>.toTransactionSum(): Double {
+    val finalAmount = this.sumOf {
+        when (it.type) {
+            TransactionType.INCOME -> {
+                it.amount
+            }
+
+            TransactionType.EXPENSE -> {
+                it.amount * -1
+            }
+
+            TransactionType.TRANSFER -> {
+                0.0
+            }
+        }
+    }
+
+    return if (finalAmount < 0) {
+        finalAmount * -1
+    } else {
+        0.0
+    }
+}
+
 fun Budget.toBudgetUiModel(
-    currency: Currency
+    currency: Currency,
+    transactionAmount: Double,
 ) = BudgetUiModel(
     id = this.id,
     name = this.name,
@@ -66,8 +106,9 @@ fun Budget.toBudgetUiModel(
     ),
     transactionAmount = getCurrency(
         currency,
-        this.amount
+        transactionAmount
     ),
+    percent = (transactionAmount / this.amount).toFloat() * 100
 )
 
 
@@ -77,5 +118,6 @@ data class BudgetUiModel(
     val icon: String,
     val iconBackgroundColor: String,
     val amount: UiText,
-    val transactionAmount: UiText
+    val transactionAmount: UiText,
+    val percent: Float,
 )

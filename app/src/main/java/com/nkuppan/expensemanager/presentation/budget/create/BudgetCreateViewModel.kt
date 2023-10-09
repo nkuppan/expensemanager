@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.utils.UiText
+import com.nkuppan.expensemanager.data.utils.toTransactionMonth
 import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.getCurrencyIcon
@@ -123,6 +124,7 @@ class BudgetCreateViewModel @Inject constructor(
 
         val name: String = name.value
         val color: String = colorValue.value
+        val date: Date = _date.value
         val amount: Double? = amount.value.toDoubleOrNull()
 
         if (name.isBlank()) {
@@ -137,17 +139,18 @@ class BudgetCreateViewModel @Inject constructor(
 
         val categories = emptyList<String>()
         val accounts = emptyList<String>()
+
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
             name = name,
             iconBackgroundColor = color,
             iconName = icon.value,
             amount = amount,
-            selectedMonth = "09 2023",
+            selectedMonth = date.toTransactionMonth(),
             categories = categories,
             accounts = accounts,
-            isAllCategoriesSelected = categories.isEmpty(),
-            isAllAccountsSelected = accounts.isEmpty(),
+            isAllCategoriesSelected = true,
+            isAllAccountsSelected = true,
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time
         )

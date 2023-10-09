@@ -95,17 +95,19 @@ class TransactionRepositoryImpl @Inject constructor(
         }
 
 
-    override fun getTransactionsByAccountId(accountId: String): Flow<List<Transaction>?> =
-        transactionDao.getTransactionsByAccountId(accountId).map { transaction ->
+    override fun getTransactionsByAccountId(
+        accounts: List<String>
+    ): Flow<List<Transaction>?> =
+        transactionDao.getTransactionsByAccounts(accounts).map { transaction ->
             transaction?.map { it.toDomainModel() }
         }
 
     override fun getTransactionByAccountIdAndDateFilter(
-        accountId: String,
+        accounts: List<String>,
         startDate: Long,
         endDate: Long
     ): Flow<List<Transaction>> =
-        transactionDao.getTransactionsByAccountIdAndDateFilter(accountId, startDate, endDate).map {
+        transactionDao.getTransactionsByAccountIdAndDateFilter(accounts, startDate, endDate).map {
             Log.i("TAG", "getTransactionByAccountIdAndDateFilter: ${it?.size}")
             convertTransactionAndCategory(it)
         }
@@ -159,13 +161,29 @@ class TransactionRepositoryImpl @Inject constructor(
     }
 
     override fun getTransactionAmount(
-        accountId: String,
-        categoryType: Int,
+        accounts: List<String>,
+        categories: List<String>,
+        categoryType: List<Int>,
         startDate: Long,
         endDate: Long
     ): Flow<Double?> {
         return transactionDao.getTransactionTotalAmount(
-            accountId, categoryType, startDate, endDate
+            accounts, categories, categoryType, startDate, endDate
         )
+    }
+
+    override fun getFilteredTransaction(
+        accounts: List<String>,
+        categories: List<String>,
+        categoryType: List<Int>,
+        startDate: Long,
+        endDate: Long
+    ): Flow<List<Transaction>?> {
+        return transactionDao.getFilteredTransaction(
+            accounts, categories, categoryType, startDate, endDate
+        ).map {
+            Log.i("TAG", "getTransactionByAccountIdAndDateFilter: ${it?.size}")
+            convertTransactionAndCategory(it)
+        }
     }
 }

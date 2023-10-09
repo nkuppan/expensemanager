@@ -49,7 +49,7 @@ class SettingsDataStore @Inject constructor(
     }
 
     fun getFilterType(): Flow<FilterType> = dataStore.data.map { preferences ->
-        FilterType.values()[preferences[KEY_DATE_FILTER_TYPE] ?: FilterType.TODAY.ordinal]
+        FilterType.values()[preferences[KEY_DATE_FILTER_TYPE] ?: FilterType.THIS_MONTH.ordinal]
     }
 
     suspend fun setCustomFilterStartDate(startDate: Long) = dataStore.edit { preferences ->

@@ -14,12 +14,14 @@ interface TransactionRepository {
 
     suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean>
 
-    fun getTransactionsByAccountId(accountId: String): Flow<List<Transaction>?>
+    fun getTransactionsByAccountId(
+        accounts: List<String>
+    ): Flow<List<Transaction>?>
 
     fun getAllTransaction(): Flow<List<Transaction>?>
 
     fun getTransactionByAccountIdAndDateFilter(
-        accountId: String,
+        accounts: List<String>,
         startDate: Long,
         endDate: Long
     ): Flow<List<Transaction>>
@@ -30,9 +32,18 @@ interface TransactionRepository {
     ): Flow<List<Transaction>>
 
     fun getTransactionAmount(
-        accountId: String,
-        categoryType: Int,
+        accounts: List<String>,
+        categories: List<String>,
+        categoryType: List<Int>,
         startDate: Long,
         endDate: Long
     ): Flow<Double?>
+
+    fun getFilteredTransaction(
+        accounts: List<String>,
+        categories: List<String>,
+        categoryType: List<Int>,
+        startDate: Long,
+        endDate: Long
+    ): Flow<List<Transaction>?>
 }

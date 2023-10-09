@@ -140,6 +140,8 @@ private fun BudgetListScreenContent(
                             icon = budget.icon,
                             iconBackgroundColor = budget.iconBackgroundColor,
                             amount = budget.amount.asString(context),
+                            transactionAmount = budget.transactionAmount.asString(context),
+                            percentage = budget.percent,
                             modifier = ItemSpecModifier.clickable {
                                 onItemClick?.invoke(budget)
                             }
@@ -165,6 +167,7 @@ fun BudgetItem(
     icon: String,
     iconBackgroundColor: String,
     amount: String?,
+    transactionAmount: String?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f
 ) {
@@ -206,7 +209,7 @@ fun BudgetItem(
                         .weight(1f)
                         .height(6.dp)
                         .align(Alignment.CenterVertically),
-                    progress = percentage,
+                    progress = percentage / 100,
                     color = iconBackgroundColor.toColor(),
                     strokeCap = StrokeCap.Round
                 )
@@ -214,12 +217,22 @@ fun BudgetItem(
                     modifier = Modifier
                         .padding(start = 8.dp)
                         .align(Alignment.CenterVertically),
-                    text = "$percentage %",
+                    text = percentage.toPercentString(),
                     style = MaterialTheme.typography.labelSmall
                 )
             }
+
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = "$transactionAmount of $amount",
+                style = MaterialTheme.typography.labelSmall
+            )
         }
     }
+}
+
+fun Float.toPercentString(): String {
+    return String.format("%.2f %%", this)
 }
 
 val DUMMY_DATA = listOf(
@@ -230,6 +243,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = UiText.DynamicString("$100.00"),
         transactionAmount = UiText.DynamicString("$100.00"),
+        percent = 0.9f
     ),
     BudgetUiModel(
         id = "2",
@@ -238,6 +252,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = UiText.DynamicString("$100.00"),
         transactionAmount = UiText.DynamicString("$100.00"),
+        percent = 0.9f
     ),
     BudgetUiModel(
         id = "3",
@@ -246,6 +261,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = UiText.DynamicString("$100.00"),
         transactionAmount = UiText.DynamicString("$100.00"),
+        percent = 0.9f
     ),
 )
 
@@ -258,6 +274,7 @@ private fun BudgetItemPreview() {
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
+            transactionAmount = "$78.00",
             modifier = ItemSpecModifier,
             percentage = 78.8f
         )

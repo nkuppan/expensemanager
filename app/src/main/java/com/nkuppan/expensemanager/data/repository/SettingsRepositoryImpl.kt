@@ -4,6 +4,10 @@ import android.content.Context
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.data.datastore.SettingsDataStore
+import com.nkuppan.expensemanager.data.utils.getThisMonthRange
+import com.nkuppan.expensemanager.data.utils.getThisWeekRange
+import com.nkuppan.expensemanager.data.utils.getThisYearRange
+import com.nkuppan.expensemanager.data.utils.getTodayRange
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.FilterType
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -12,7 +16,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import org.joda.time.DateTime
 import java.util.Date
 import javax.inject.Inject
 
@@ -121,41 +124,5 @@ class SettingsRepositoryImpl @Inject constructor(
             dataStore.getCustomFilterStartDate().first() ?: 0,
             dataStore.getCustomFilterEndDate().first() ?: 0,
         )
-    }
-
-    private fun getTodayRange(): List<Long> {
-        val startOfTheDay = DateTime().withTimeAtStartOfDay().millis
-        val endOfTheDay = DateTime().plusDays(1).withTimeAtStartOfDay().millis
-        return listOf(startOfTheDay, endOfTheDay)
-    }
-
-    private fun getThisWeekRange(): List<Long> {
-        val startDayOfWeek = DateTime().withDayOfWeek(0).withTimeAtStartOfDay().millis
-        val endDayOfWeek = DateTime()
-            .run {
-                return@run dayOfWeek().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
-            }
-
-        return listOf(startDayOfWeek, endDayOfWeek)
-    }
-
-    private fun getThisMonthRange(): List<Long> {
-        val startDayOfMonth = DateTime().withDayOfMonth(0).withTimeAtStartOfDay().millis
-        val endDayOfMonth = DateTime()
-            .run {
-                return@run dayOfMonth().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
-            }
-
-        return listOf(startDayOfMonth, endDayOfMonth)
-    }
-
-    private fun getThisYearRange(): List<Long> {
-        val startDayOfMonth = DateTime().withMonthOfYear(0).withTimeAtStartOfDay().millis
-        val endDayOfMonth = DateTime()
-            .run {
-                return@run monthOfYear().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
-            }
-
-        return listOf(startDayOfMonth, endDayOfMonth)
     }
 }

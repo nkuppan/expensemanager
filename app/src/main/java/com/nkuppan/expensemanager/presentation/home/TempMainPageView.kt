@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.presentation.account.create.AccountCreateScreen
 import com.nkuppan.expensemanager.presentation.account.list.AccountListScreen
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisScreen
@@ -25,10 +26,13 @@ import com.nkuppan.expensemanager.presentation.budget.create.BudgetCreateScreen
 import com.nkuppan.expensemanager.presentation.budget.list.BudgetListScreen
 import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScreen
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
+import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionListScreen
 import com.nkuppan.expensemanager.presentation.settings.SettingsScreen
 import com.nkuppan.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
 
+
+var isCategoryPaage = false
 
 @Composable
 fun TempMainPageView() {
@@ -117,6 +121,17 @@ fun TempMainPageView() {
             }
             composable("settings") {
                 SettingsScreen(navController)
+            }
+            composable(
+                "category_group_transaction?categoryType={categoryType}",
+                arguments = listOf(
+                    navArgument("categoryType") {
+                        defaultValue = CategoryType.EXPENSE.ordinal
+                        type = NavType.IntType
+                    }
+                )
+            ) { backStackEntry ->
+                CategoryTransactionListScreen(navController)
             }
             composable("new_home") {
                 HomeScreen(navController)
@@ -221,6 +236,21 @@ private fun TempHomePageScreen(navController: NavHostController) {
                     navController.navigate("settings")
                 }) {
                 Text(text = "Navigate to Settings")
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    if (isCategoryPaage) {
+                        isCategoryPaage = false
+                        navController.navigate("category_group_transaction?categoryType=${CategoryType.EXPENSE.ordinal}")
+                    } else {
+                        isCategoryPaage = true
+                        navController.navigate("category_group_transaction?categoryType=${CategoryType.INCOME.ordinal}")
+                    }
+                }) {
+                Text(text = "Navigate Category Transaction Group Page")
             }
             Button(
                 modifier = Modifier

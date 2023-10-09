@@ -76,17 +76,20 @@ fun AnalysisGraphScreen(navController: NavController) {
                             .clickable {
                                 navController.navigate("transaction/create?transactionId=${it.id}")
                             }
-                            .padding(16.dp),
+                            .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
                         categoryName = it.categoryName,
                         categoryColor = it.categoryBackgroundColor,
                         categoryIcon = it.categoryIcon,
-                        fromAccountName = it.fromAccountName,
-                        fromAccountIcon = it.fromAccountIcon,
-                        fromAccountColor = it.fromAccountColor,
                         amount = it.amount.asString(context),
                         date = it.date,
                         notes = it.notes,
-                        transactionType = it.transactionType
+                        transactionType = it.transactionType,
+                        fromAccountName = it.fromAccountName,
+                        fromAccountIcon = it.fromAccountIcon,
+                        fromAccountColor = it.fromAccountColor,
+                        toAccountName = it.toAccountName,
+                        toAccountIcon = it.toAccountIcon,
+                        toAccountColor = it.toAccountColor,
                     )
                 }
             }

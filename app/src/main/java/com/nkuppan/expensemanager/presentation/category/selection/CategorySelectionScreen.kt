@@ -17,7 +17,7 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.presentation.category.list.CategoryItem
-import com.nkuppan.expensemanager.presentation.category.list.getRandomData
+import com.nkuppan.expensemanager.presentation.category.list.getRandomCategoryData
 import com.nkuppan.expensemanager.presentation.selection.SelectionTitle
 
 @Composable
@@ -78,8 +78,8 @@ fun CategorySelectionScreen(
 private fun CategorySelectionScreenPreview() {
     ExpenseManagerTheme {
         CategorySelectionScreen(
-            categories = getRandomData(),
-            selectedCategory = getRandomData().firstOrNull()
+            categories = getRandomCategoryData(),
+            selectedCategory = getRandomCategoryData().firstOrNull()
         )
     }
 }

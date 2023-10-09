@@ -1,34 +1,44 @@
 package com.nkuppan.expensemanager.data.utils
 
+import org.joda.time.DateTime
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-
-fun getDateTime(): Calendar {
-    // get today and clear time of day
-    val calendar = Calendar.getInstance()
-    calendar.set(Calendar.HOUR_OF_DAY, 0)
-    // ! clear would not reset the hour of day !
-    calendar.clear(Calendar.MINUTE)
-    calendar.clear(Calendar.SECOND)
-    calendar.clear(Calendar.MILLISECOND)
-    return calendar
+fun getTodayRange(): List<Long> {
+    val startOfTheDay = DateTime().withTimeAtStartOfDay().millis
+    val endOfTheDay = DateTime().plusDays(1).withTimeAtStartOfDay().millis
+    return listOf(startOfTheDay, endOfTheDay)
 }
 
+fun getThisWeekRange(): List<Long> {
+    val startDayOfWeek = DateTime().withDayOfWeek(1).withTimeAtStartOfDay().millis
+    val endDayOfWeek = DateTime()
+        .run {
+            return@run dayOfWeek().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+        }
 
-fun getPreviousDateTime(numberOfDays: Int): Calendar {
-    // get today and clear time of day
-    val calendar = Calendar.getInstance()
-    calendar.set(Calendar.HOUR_OF_DAY, 0)
-    // ! clear would not reset the hour of day !
-    calendar.clear(Calendar.MINUTE)
-    calendar.clear(Calendar.SECOND)
-    calendar.clear(Calendar.MILLISECOND)
+    return listOf(startDayOfWeek, endDayOfWeek)
+}
 
-    calendar.add(Calendar.DAY_OF_YEAR, -numberOfDays)
-    return calendar
+fun getThisMonthRange(): List<Long> {
+    val startDayOfMonth = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
+    val endDayOfMonth = DateTime()
+        .run {
+            return@run dayOfMonth().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+        }
+
+    return listOf(startDayOfMonth, endDayOfMonth)
+}
+
+fun getThisYearRange(): List<Long> {
+    val startDayOfMonth = DateTime().withMonthOfYear(1).withTimeAtStartOfDay().millis
+    val endDayOfMonth = DateTime()
+        .run {
+            return@run monthOfYear().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+        }
+
+    return listOf(startDayOfMonth, endDayOfMonth)
 }
 
 fun Date.toTransactionDate(): String {
@@ -37,6 +47,10 @@ fun Date.toTransactionDate(): String {
 
 fun Date.toTransactionMonth(): String {
     return SimpleDateFormat("MM/yyyy", Locale.getDefault()).format(this)
+}
+
+fun String.fromTransactionMonthToDate(): Date? {
+    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).parse(this)
 }
 
 fun Date.toTransactionMonthValue(): Int {
@@ -53,12 +67,4 @@ fun Date.toTransactionDateOnly(): String {
 
 fun Date.toTransactionTimeOnly(): String {
     return SimpleDateFormat("HH:mm", Locale.getDefault()).format(this)
-}
-
-fun Long.getDateValue(): Date? {
-    return if (this > 0) {
-        Date(this)
-    } else {
-        null
-    }
 }

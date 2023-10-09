@@ -145,8 +145,6 @@ private fun CategoryListScreenContent(
                     }
                 }
             }
-
-            else -> {}
         }
     }
 }
@@ -184,7 +182,7 @@ fun CategoryItem(
     }
 }
 
-fun getData(index: Int): Category {
+fun getCategoryData(index: Int): Category {
     return Category(
         id = "$index",
         name = "Category $index",
@@ -196,10 +194,10 @@ fun getData(index: Int): Category {
     )
 }
 
-fun getRandomData(): List<Category> {
+fun getRandomCategoryData(): List<Category> {
     return buildList {
         repeat(15) {
-            add(getData(it))
+            add(getCategoryData(it))
         }
     }
 }
@@ -250,7 +248,7 @@ private fun CategoryListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         CategoryListScreenScaffoldView(
             rememberNavController(),
-            categoryUiState = UiState.Success(getRandomData()),
+            categoryUiState = UiState.Success(getRandomCategoryData()),
         )
     }
 }

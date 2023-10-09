@@ -32,17 +32,17 @@ class GetTransactionWithFilterUseCase @Inject constructor(
                 categoryTypes
             )
         }.flatMapLatest {
-            val accountId = it.accounts?.firstOrNull()
+            val accounts = it.accounts
             return@flatMapLatest if (it.filterType == FilterType.ALL) {
-                if (it.isFilterEnabled && accountId != null) {
-                    transactionRepository.getTransactionsByAccountId(accountId)
+                if (it.isFilterEnabled && accounts != null) {
+                    transactionRepository.getTransactionsByAccountId(accounts)
                 } else {
                     transactionRepository.getAllTransaction()
                 }
             } else {
-                if (it.isFilterEnabled && accountId != null) {
+                if (it.isFilterEnabled && accounts != null) {
                     transactionRepository.getTransactionByAccountIdAndDateFilter(
-                        accountId,
+                        accounts,
                         it.filterRange[0],
                         it.filterRange[1]
                     )
