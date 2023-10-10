@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
@@ -23,7 +24,16 @@ class DateFilterViewModel @Inject constructor(
     private val _filterType = MutableStateFlow(FilterType.THIS_MONTH)
     val filterType = _filterType.asStateFlow()
 
-    val filterTypes = MutableStateFlow(FilterType.values().map {
+    private val _fromDate = MutableStateFlow(Date())
+    val fromDate = _fromDate.asStateFlow()
+
+    private val _toDate = MutableStateFlow(Date())
+    val toDate = _toDate.asStateFlow()
+
+    private val _showCustomRangeSelection = MutableStateFlow(false)
+    val showCustomRangeSelection = _showCustomRangeSelection.asStateFlow()
+
+    val filterTypes = MutableStateFlow(FilterType.values().map { it ->
         FilterTypeUiModel(
             filterType = it,
             name = it.toString().replace("_", " ")
@@ -33,14 +43,19 @@ class DateFilterViewModel @Inject constructor(
 
     init {
         getFilterTypeUseCase.invoke().onEach {
-            _filterType.value = it
+            updateFilterType(it)
         }.launchIn(viewModelScope)
+    }
+
+    private fun updateFilterType(filterType: FilterType) {
+        _filterType.value = filterType
+        _showCustomRangeSelection.value = filterType == FilterType.CUSTOM
     }
 
     fun setFilterType(filterType: FilterType?) {
         filterType ?: return
         viewModelScope.launch {
-            _filterType.value = filterType
+            updateFilterType(filterType)
         }
     }
 

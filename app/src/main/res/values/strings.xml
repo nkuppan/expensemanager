@@ -309,4 +309,6 @@
     <string name="this_year">This year</string>
     <string name="categories">Categories</string>
     <string name="filter_message">Can select the date filter to view expenses</string>
+    <string name="from_date">From date</string>
+    <string name="to_date">To date</string>
 </resources>
