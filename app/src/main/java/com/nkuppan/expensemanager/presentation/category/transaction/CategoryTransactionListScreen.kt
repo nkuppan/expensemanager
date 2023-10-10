@@ -207,7 +207,7 @@ fun CategoryTransactionItem(
                 LinearProgressIndicator(
                     modifier = Modifier
                         .weight(1f)
-                        .height(6.dp)
+                        .height(8.dp)
                         .align(Alignment.CenterVertically),
                     progress = percentage / 100,
                     color = iconBackgroundColor.toColor(),

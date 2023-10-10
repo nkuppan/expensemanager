@@ -39,6 +39,7 @@ import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Theme
 import com.nkuppan.expensemanager.presentation.settings.currency.CurrencyDialogView
+import com.nkuppan.expensemanager.presentation.settings.datefilter.DateFilterView
 import com.nkuppan.expensemanager.presentation.settings.theme.ThemeDialogView
 import com.nkuppan.expensemanager.presentation.settings.time.TimePickerView
 
@@ -82,6 +83,13 @@ private fun SettingsScreenScaffoldView(
         }
     }
 
+    var showDateFilter by remember { mutableStateOf(false) }
+    if (showDateFilter) {
+        DateFilterView {
+            showDateFilter = false
+        }
+    }
+
     Scaffold(
         topBar = {
             TopNavigationBar(
@@ -108,6 +116,10 @@ private fun SettingsScreenScaffoldView(
 
                 SettingOption.NOTIFICATION -> {
                     showTimePickerSelection = true
+                }
+
+                SettingOption.FILTER -> {
+                    showDateFilter = true
                 }
 
                 SettingOption.INFO -> {
@@ -181,6 +193,18 @@ private fun SettingsScreenContent(
             title = stringResource(id = R.string.notification),
             description = stringResource(id = R.string.selected_daily_reminder_time),
             icon = R.drawable.ic_edit_notifications
+        )
+
+        SettingsItem(
+            modifier = Modifier
+                .clickable {
+                    settingOptionSelected?.invoke(SettingOption.FILTER)
+                }
+                .padding(top = 8.dp, bottom = 8.dp)
+                .fillMaxWidth(),
+            title = stringResource(id = R.string.filter),
+            description = stringResource(id = R.string.filter_message),
+            icon = R.drawable.ic_filter
         )
         SettingsItem(
             modifier = Modifier
@@ -296,6 +320,7 @@ private enum class SettingOption {
     THEME,
     CURRENCY,
     NOTIFICATION,
+    FILTER,
     INFO,
     RATE_US,
     GITHUB,

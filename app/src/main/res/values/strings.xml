@@ -308,4 +308,5 @@
     <string name="budget_amount_error">Budget amount shouldn\'t be empty or zero</string>
     <string name="this_year">This year</string>
     <string name="categories">Categories</string>
+    <string name="filter_message">Can select the date filter to view expenses</string>
 </resources>

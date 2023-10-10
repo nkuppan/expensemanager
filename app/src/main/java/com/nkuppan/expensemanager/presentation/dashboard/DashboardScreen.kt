@@ -68,8 +68,7 @@ private fun DashboardScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.title_home),
-                disableBackIcon = true
+                title = stringResource(R.string.title_home)
             )
         }
     ) { innerPadding ->
