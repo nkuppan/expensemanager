@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.account.list
 
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -79,7 +78,7 @@ private fun AccountListScreenScaffoldView(
             FloatingActionButton(onClick = {
                 navController.navigate("account/create")
             }) {
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_add),
                     contentDescription = ""
                 )

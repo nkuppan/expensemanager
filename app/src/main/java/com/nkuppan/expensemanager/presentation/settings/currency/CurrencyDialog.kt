@@ -143,6 +143,7 @@ fun CurrencyDialogViewContent(
             item {
                 Column(
                     modifier = Modifier
+                        .padding(top = 8.dp, start = 16.dp, bottom = 8.dp)
                         .fillMaxWidth()
                 ) {
                     Row(

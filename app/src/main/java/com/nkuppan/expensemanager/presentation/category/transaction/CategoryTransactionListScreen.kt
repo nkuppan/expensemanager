@@ -1,6 +1,6 @@
 package com.nkuppan.expensemanager.presentation.category.transaction
 
-import androidx.compose.foundation.Image
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -83,7 +84,7 @@ fun CategoryTransactionListScreen(
             FloatingActionButton(onClick = {
                 navController.navigate("account/create")
             }) {
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_add),
                     contentDescription = ""
                 )
@@ -280,7 +281,8 @@ private fun CategoryTransactionListItemEmptyStatePreview() {
     }
 }
 
-@Preview
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun CategoryTransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {

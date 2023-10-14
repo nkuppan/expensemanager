@@ -61,8 +61,23 @@ class DateFilterViewModel @Inject constructor(
 
     fun save() {
         viewModelScope.launch {
-            saveFilterTypeUseCase.invoke(_filterType.value)
+            val selectedFilter = _filterType.value
+            saveFilterTypeUseCase.invoke(
+                selectedFilter,
+                listOf(
+                    _fromDate.value,
+                    _toDate.value,
+                )
+            )
         }
+    }
+
+    fun setFromDate(date: Date) {
+        this._fromDate.value = date
+    }
+
+    fun setToDate(date: Date) {
+        this._toDate.value = date
     }
 }
 

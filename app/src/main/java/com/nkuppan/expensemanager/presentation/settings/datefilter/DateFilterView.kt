@@ -36,6 +36,12 @@ import com.nkuppan.expensemanager.common.ui.theme.widget.ClickableTextField
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 
 
+enum class DateTypeSelection {
+    FROM_DATE,
+    TO_DATE
+}
+
+
 @Composable
 fun DateFilterView(
     complete: () -> Unit
@@ -53,6 +59,8 @@ fun DateFilterView(
 
     var showDatePicker by remember { mutableStateOf(false) }
 
+    var dateTypeSelection by remember { mutableStateOf(DateTypeSelection.FROM_DATE) }
+
     if (showDatePicker) {
         AppDatePickerDialog(
             modifier = Modifier
@@ -62,9 +70,18 @@ fun DateFilterView(
                     color = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(8.dp)
                 ),
-            selectedDate = fromDate,
-            onDateSelected = {
+            selectedDate = if (dateTypeSelection == DateTypeSelection.FROM_DATE) {
+                fromDate
+            } else {
+                toDate
+            },
+            onDateSelected = { date ->
                 showDatePicker = false
+                if (dateTypeSelection == DateTypeSelection.FROM_DATE) {
+                    viewModel.setFromDate(date)
+                } else {
+                    viewModel.setToDate(date)
+                }
             },
             onDismiss = {
                 showDatePicker = false
@@ -139,7 +156,7 @@ fun DateFilterView(
                     ) {
                         Row(
                             modifier = Modifier
-                                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                                .padding(top = 8.dp, start = 16.dp, bottom = 8.dp)
                                 .fillMaxWidth()
                         ) {
                             ClickableTextField(
@@ -151,6 +168,7 @@ fun DateFilterView(
                                 leadingIcon = R.drawable.ic_calendar,
                                 onClick = {
                                     focusManager.clearFocus()
+                                    dateTypeSelection = DateTypeSelection.FROM_DATE
                                     showDatePicker = true
                                 }
                             )
@@ -163,6 +181,7 @@ fun DateFilterView(
                                 leadingIcon = R.drawable.ic_calendar,
                                 onClick = {
                                     focusManager.clearFocus()
+                                    dateTypeSelection = DateTypeSelection.TO_DATE
                                     showDatePicker = true
                                 }
                             )
@@ -176,7 +195,9 @@ fun DateFilterView(
                         .fillMaxWidth()
                 ) {
                     Row(
-                        modifier = Modifier.align(Alignment.End)
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .align(Alignment.End)
                     ) {
                         TextButton(onClick = complete) {
                             Text(text = stringResource(id = R.string.cancel).uppercase())
