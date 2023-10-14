@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -32,10 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 
 @Composable
@@ -62,7 +65,7 @@ fun MonthPicker(
         "DEC"
     )
 
-    var month by remember { mutableStateOf(months[currentMonth]) }
+    var month by remember { mutableStateOf(months[if (currentMonth - 1 < 0) 0 else currentMonth - 1]) }
 
     var year by remember { mutableIntStateOf(currentYear) }
 
@@ -169,7 +172,6 @@ fun MonthPicker(
             }
         },
         confirmButton = {
-
             TextButton(
                 onClick = {
                     confirmButtonCLicked(
@@ -178,7 +180,7 @@ fun MonthPicker(
                     )
                 }
             ) {
-                Text(text = "OK".uppercase())
+                Text(text = stringResource(id = R.string.ok).uppercase())
             }
         },
         dismissButton = {
@@ -188,7 +190,7 @@ fun MonthPicker(
                     cancelClicked()
                 }
             ) {
-                Text(text = "Cancel".uppercase())
+                Text(text = stringResource(id = R.string.cancel).uppercase())
             }
         },
         onDismissRequest = cancelClicked
@@ -200,7 +202,11 @@ fun MonthPicker(
 fun MonthPickerPreview() {
     ExpenseManagerTheme {
         MonthPicker(
-            currentMonth = 1, currentYear = 2023,
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(16.dp),
+            currentMonth = 1,
+            currentYear = 2023,
             confirmButtonCLicked = { month, year ->
 
             },

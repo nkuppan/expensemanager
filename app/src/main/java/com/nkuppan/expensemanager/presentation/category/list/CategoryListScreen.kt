@@ -3,7 +3,6 @@ package com.nkuppan.expensemanager.presentation.category.list
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -75,7 +74,7 @@ private fun CategoryListScreenScaffoldView(
                     navController.navigate("category/create")
                 }
             ) {
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_add),
                     contentDescription = ""
                 )

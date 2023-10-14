@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.presentation.transaction.list
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -68,7 +67,7 @@ fun TransactionListScreen(
             FloatingActionButton(onClick = {
                 navController.navigate("transaction/create")
             }) {
-                Image(
+                Icon(
                     painter = painterResource(id = R.drawable.ic_add),
                     contentDescription = ""
                 )

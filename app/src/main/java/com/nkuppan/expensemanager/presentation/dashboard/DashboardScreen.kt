@@ -4,16 +4,20 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,7 +36,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
@@ -64,14 +67,13 @@ private fun DashboardScreenScaffoldView(
     val chartData by viewModel.chartData.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
 
-    Scaffold(
-        topBar = {
-            TopNavigationBar(
-                navController = navController,
-                title = stringResource(R.string.title_home)
-            )
-        }
-    ) { innerPadding ->
+    Scaffold(topBar = {
+        TopNavigationBar(
+            navController = navController,
+            title = stringResource(R.string.title_home),
+            disableBackIcon = true
+        )
+    }) { innerPadding ->
         DashboardScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
@@ -97,7 +99,10 @@ private fun DashboardScreenContent(
 
     val context = LocalContext.current
 
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
         item {
             IncomeExpenseBalanceView(
                 incomeAmount = incomeAmount,
@@ -107,20 +112,24 @@ private fun DashboardScreenContent(
         }
         item {
             if (chartData != null) {
-                Column(
-                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.this_month),
-                        fontWeight = FontWeight.Bold
+                Card(
+                    modifier = Modifier.padding(16.dp),
+                    shape = MaterialTheme.shapes.small,
+                    colors = CardDefaults.elevatedCardColors(),
+                    elevation = CardDefaults.elevatedCardElevation(
+                        defaultElevation = 2.dp
                     )
-                    Card(
-                        modifier = Modifier.padding(top = 8.dp),
-                        shape = MaterialTheme.shapes.large,
-                        colors = CardDefaults.elevatedCardColors()
+                ) {
+                    Column(
+                        modifier = Modifier.padding(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
+                        Text(
+                            text = stringResource(id = R.string.this_month),
+                            fontWeight = FontWeight.Bold
+                        )
                         ChartScreen(
-                            modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+
                             chart = chartData
                         )
                     }
@@ -135,18 +144,16 @@ private fun DashboardScreenContent(
             )
         }
         items(accounts) { account ->
-            AccountItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        //onItemClick?.invoke(account)
-                    }
-                    .padding(16.dp),
+            AccountItem(modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    //onItemClick?.invoke(account)
+                }
+                .padding(16.dp),
                 name = account.name,
                 icon = account.icon,
                 iconBackgroundColor = account.iconBackgroundColor,
-                amount = account.amount.asString(context)
-            )
+                amount = account.amount.asString(context))
         }
     }
 }
@@ -157,54 +164,20 @@ fun IncomeExpenseBalanceView(
     expenseAmount: UiText,
     balanceAmount: UiText,
 ) {
-
-    val context = LocalContext.current
-
-    Column(
+    AmountInfoWidget(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-    ) {
-        Row {
-            AmountView(
-                color = R.color.red_500,
-                icon = R.drawable.ic_arrow_upward,
-                amount = expenseAmount,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .weight(1f),
-                title = stringResource(id = R.string.expense)
-            )
-            AmountView(
-                color = R.color.green_500,
-                icon = R.drawable.ic_arrow_downward,
-                amount = incomeAmount,
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .weight(1f),
-                title = stringResource(id = R.string.income)
-            )
-        }
-
-        Text(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .background(
-                    color = colorResource(id = R.color.black_20),
-                    shape = RoundedCornerShape(24.dp)
-                )
-                .padding(12.dp)
-                .align(Alignment.CenterHorizontally),
-            text = balanceAmount.asString(context),
-            style = MaterialTheme.typography.labelMedium,
-        )
-    }
+        expenseAmount = expenseAmount,
+        incomeAmount = incomeAmount,
+        balanceAmount = balanceAmount
+    )
 }
 
 @Composable
 fun AmountView(
     @ColorRes color: Int,
-    @DrawableRes icon: Int,
+    @DrawableRes icon: Int?,
     amount: UiText,
     modifier: Modifier = Modifier,
     title: String
@@ -212,43 +185,115 @@ fun AmountView(
 
     val context = LocalContext.current
 
-    Row(
-        modifier = modifier
-            .background(
-                color = colorResource(id = color),
-                shape = RoundedCornerShape(size = 36.dp)
-            )
-    ) {
-        Icon(
-            modifier = Modifier
-                .padding(8.dp)
-                .background(
-                    color = colorResource(id = R.color.black_200),
-                    shape = RoundedCornerShape(24.dp)
-                )
-                .padding(8.dp),
-            painter = painterResource(id = icon),
-            contentDescription = null,
-            tint = colorResource(id = R.color.white)
-        )
-        Column(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .fillMaxWidth(),
-        ) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = title,
-                color = colorResource(id = R.color.white),
-                style = MaterialTheme.typography.labelMedium
-            )
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = amount.asString(context),
-                color = colorResource(id = R.color.white),
-                style = MaterialTheme.typography.titleMedium,
+    Row(modifier = modifier) {
+        if (icon != null) {
+            Icon(
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .background(
+                        color = colorResource(id = color),
+                        shape = CircleShape
+                    )
+                    .size(16.dp)
+                    .align(Alignment.CenterVertically),
+                painter = painterResource(id = icon),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSecondary
             )
         }
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically),
+            text = title,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Text(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(start = 8.dp)
+                .align(Alignment.CenterVertically),
+            text = amount.asString(context),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+    }
+}
+
+@Composable
+fun AmountInfoWidget(
+    modifier: Modifier,
+    expenseAmount: UiText,
+    incomeAmount: UiText,
+    balanceAmount: UiText,
+) {
+    Card(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.small,
+        colors = CardDefaults.outlinedCardColors(),
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 2.dp
+        )
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Row {
+                Column {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(id = R.string.transaction_summary),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "This Month(Oct 2023)",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+
+            AmountView(
+                color = R.color.red_500,
+                icon = R.drawable.ic_arrow_upward,
+                amount = expenseAmount,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.expense)
+            )
+            AmountView(
+                color = R.color.green_500,
+                icon = R.drawable.ic_arrow_downward,
+                amount = incomeAmount,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.income)
+            )
+            Divider()
+            AmountView(
+                color = R.color.green_500,
+                icon = null,
+                amount = balanceAmount,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.total)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun AmountViewPreview() {
+    ExpenseManagerTheme {
+        AmountInfoWidget(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            expenseAmount = UiText.DynamicString("100.00$"),
+            incomeAmount = UiText.DynamicString("100.00$"),
+            balanceAmount = UiText.DynamicString("0.00$"),
+        )
     }
 }
 
@@ -257,17 +302,15 @@ fun AmountView(
 fun IncomeExpenseBalanceViewPreview() {
     ExpenseManagerTheme {
         DashboardScreenContent(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             expenseAmount = UiText.DynamicString("$500.0"),
             incomeAmount = UiText.DynamicString("$200.0"),
-            balanceAmount = UiText.DynamicString("Balance - $300.0"),
+            balanceAmount = UiText.DynamicString("$300.0"),
             chartData = AnalysisChartData(
                 chartData = entryModelOf(
                     listOf(entryOf(0, 1), entryOf(1, 2), entryOf(2, 3)),
                     listOf(entryOf(0, 4), entryOf(1, 3), entryOf(2, 2)),
-                ),
-                dates = listOf(
+                ), dates = listOf(
                     "08/09",
                     "18/09",
                     "21/09",
@@ -281,13 +324,5 @@ fun IncomeExpenseBalanceViewPreview() {
                 )
             )
         )
-    }
-}
-
-@Preview
-@Composable
-fun DashboardScreenPreview() {
-    ExpenseManagerTheme {
-        DashboardScreen(rememberNavController())
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.utils.UiText
+import com.nkuppan.expensemanager.data.utils.fromTransactionMonthToDate
 import com.nkuppan.expensemanager.data.utils.toTransactionMonth
 import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -86,6 +87,7 @@ class BudgetCreateViewModel @Inject constructor(
             amount.value = budgetItem.amount.toString()
             colorValue.value = budgetItem.iconBackgroundColor
             icon.value = budgetItem.iconName
+            budgetItem.selectedMonth.fromTransactionMonthToDate()?.let { setDate(it) }
         }
     }
 

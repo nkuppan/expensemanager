@@ -7,7 +7,7 @@
     <string name="value">$ 45,587.30</string>
     <string name="prefix_amount_string">%s%.1f</string>
     <string name="suffix_amount_string">%.1f%s</string>
-    <string name="balance_amount_string">Balance: %s</string>
+    <string name="balance_amount_string">%s</string>
 
     <string name="app_name">Expense Manager</string>
     <string name="title_category">Category</string>
@@ -311,4 +311,6 @@
     <string name="filter_message">Can select the date filter to view expenses</string>
     <string name="from_date">From date</string>
     <string name="to_date">To date</string>
+    <string name="total">Total</string>
+    <string name="transaction_summary">Transactions Summary</string>
 </resources>
