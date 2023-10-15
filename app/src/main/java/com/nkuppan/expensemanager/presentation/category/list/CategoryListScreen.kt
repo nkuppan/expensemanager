@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -178,6 +180,42 @@ fun CategoryItem(
                 contentDescription = null,
             )
         }
+    }
+}
+
+@SuppressLint("DiscouragedApi")
+@Composable
+fun CategoryCheckedItem(
+    name: String,
+    icon: String,
+    iconBackgroundColor: String,
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
+    onCheckedChange: ((Boolean) -> Unit)? = null
+) {
+    Row(modifier = modifier) {
+        IconAndBackgroundView(
+            modifier = Modifier
+                .align(Alignment.CenterVertically),
+            icon = icon,
+            iconBackgroundColor = iconBackgroundColor,
+            name = name
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 16.dp, end = 16.dp)
+                .align(Alignment.CenterVertically),
+            text = name,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        Checkbox(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 8.dp),
+            checked = isSelected,
+            onCheckedChange = onCheckedChange
+        )
     }
 }
 

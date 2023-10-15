@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -205,6 +206,42 @@ fun AccountItem(
     }
 }
 
+@SuppressLint("DiscouragedApi")
+@Composable
+fun AccountCheckedItem(
+    name: String,
+    icon: String,
+    iconBackgroundColor: String,
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
+    onCheckedChange: ((Boolean) -> Unit)? = null
+) {
+    Row(modifier = modifier) {
+        IconAndBackgroundView(
+            modifier = Modifier
+                .align(Alignment.CenterVertically),
+            icon = icon,
+            iconBackgroundColor = iconBackgroundColor,
+            name = name
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 16.dp, end = 16.dp)
+                .align(Alignment.CenterVertically),
+            text = name,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        Checkbox(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 8.dp),
+            checked = isSelected,
+            onCheckedChange = onCheckedChange
+        )
+    }
+}
+
 val DUMMY_DATA = listOf(
     AccountUiModel(
         id = "1",
@@ -242,6 +279,22 @@ private fun AccountItemPreview() {
             iconBackgroundColor = "#000000",
             amount = "$100.00",
             endIcon = R.drawable.ic_arrow_right
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun AccountCheckedItemPreview() {
+    ExpenseManagerTheme {
+        AccountCheckedItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+            name = "First Account",
+            icon = "savings",
+            iconBackgroundColor = "#000000",
+            isSelected = true
         )
     }
 }

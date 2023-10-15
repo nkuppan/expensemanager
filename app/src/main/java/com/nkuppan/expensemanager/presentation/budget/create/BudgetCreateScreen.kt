@@ -1,8 +1,10 @@
 package com.nkuppan.expensemanager.presentation.budget.create
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,11 +13,13 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -29,6 +33,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -49,6 +54,8 @@ import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.toTransactionMonth
 import com.nkuppan.expensemanager.data.utils.toTransactionMonthValue
 import com.nkuppan.expensemanager.data.utils.toTransactionYearValue
+import com.nkuppan.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
+import com.nkuppan.expensemanager.presentation.category.selection.MultipleCategoriesSelectionScreen
 import com.nkuppan.expensemanager.presentation.selection.ColorSelectionScreen
 import com.nkuppan.expensemanager.presentation.selection.IconAndColorComponent
 import com.nkuppan.expensemanager.presentation.selection.IconSelectionScreen
@@ -159,29 +166,37 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                 onDateChange = viewModel::setDate,
                 openColorPicker = {
                     scope.launch {
-                        if (sheetSelection != 2) {
-                            sheetSelection = 2
-                            scaffoldState.bottomSheetState.expand()
-                        } else {
-                            if (scaffoldState.bottomSheetState.isVisible) {
-                                scaffoldState.bottomSheetState.hide()
-                            } else {
-                                scaffoldState.bottomSheetState.expand()
-                            }
+                        updateThisNumberAndOpenBottomSheet(
+                            sheetSelection, 2, scaffoldState
+                        )?.let {
+                            sheetSelection = it
                         }
                     }
                 },
                 openIconPicker = {
                     scope.launch {
-                        if (sheetSelection != 1) {
-                            sheetSelection = 1
-                            scaffoldState.bottomSheetState.expand()
-                        } else {
-                            if (scaffoldState.bottomSheetState.isVisible) {
-                                scaffoldState.bottomSheetState.hide()
-                            } else {
-                                scaffoldState.bottomSheetState.expand()
-                            }
+                        updateThisNumberAndOpenBottomSheet(
+                            sheetSelection, 1, scaffoldState
+                        )?.let {
+                            sheetSelection = it
+                        }
+                    }
+                },
+                openAccountSelection = {
+                    scope.launch {
+                        updateThisNumberAndOpenBottomSheet(
+                            sheetSelection, 3, scaffoldState
+                        )?.let {
+                            sheetSelection = it
+                        }
+                    }
+                },
+                openCategorySelection = {
+                    scope.launch {
+                        updateThisNumberAndOpenBottomSheet(
+                            sheetSelection, 4, scaffoldState
+                        )?.let {
+                            sheetSelection = it
                         }
                     }
                 }
@@ -202,6 +217,26 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+private suspend fun updateThisNumberAndOpenBottomSheet(
+    sheetSelection: Int,
+    checkNumber: Int,
+    scaffoldState: BottomSheetScaffoldState
+): Int? {
+    if (sheetSelection != checkNumber) {
+        scaffoldState.bottomSheetState.expand()
+        return checkNumber
+    } else {
+        if (scaffoldState.bottomSheetState.isVisible) {
+            scaffoldState.bottomSheetState.hide()
+        } else {
+            scaffoldState.bottomSheetState.expand()
+        }
+    }
+
+    return null
+}
+
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun BudgetCreateBottomSheetContent(
@@ -212,18 +247,40 @@ private fun BudgetCreateBottomSheetContent(
 ) {
     val context = LocalContext.current
 
-    if (sheetSelection == 1) {
-        IconSelectionScreen {
-            scope.launch {
-                viewModel.setIcon(context.resources.getResourceName(it))
-                scaffoldState.bottomSheetState.hide()
+    when (sheetSelection) {
+        1 -> {
+            IconSelectionScreen {
+                scope.launch {
+                    viewModel.setIcon(context.resources.getResourceName(it))
+                    scaffoldState.bottomSheetState.hide()
+                }
             }
         }
-    } else {
-        ColorSelectionScreen {
-            scope.launch {
-                viewModel.setColorValue(it)
-                scaffoldState.bottomSheetState.hide()
+
+        2 -> {
+            ColorSelectionScreen {
+                scope.launch {
+                    viewModel.setColorValue(it)
+                    scaffoldState.bottomSheetState.hide()
+                }
+            }
+        }
+
+        3 -> {
+            MultipleAccountSelectionScreen {
+                scope.launch {
+                    viewModel.setAccounts(it)
+                    scaffoldState.bottomSheetState.hide()
+                }
+            }
+        }
+
+        4 -> {
+            MultipleCategoriesSelectionScreen {
+                scope.launch {
+                    viewModel.setCategories(it)
+                    scaffoldState.bottomSheetState.hide()
+                }
             }
         }
     }
@@ -246,6 +303,8 @@ private fun BudgetCreateScreen(
     onNameChange: ((String) -> Unit)? = null,
     onAmountChange: ((String) -> Unit)? = null,
     onDateChange: ((Date) -> Unit)? = null,
+    openAccountSelection: (() -> Unit)? = null,
+    openCategorySelection: (() -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -322,10 +381,77 @@ private fun BudgetCreateScreen(
             label = R.string.budget_amount,
         )
 
+        Divider(
+            modifier = Modifier.padding(top = 16.dp)
+        )
+
+        BudgetSelectedItemView(
+            modifier = Modifier
+                .clickable {
+                    openAccountSelection?.invoke()
+                }
+                .padding(16.dp)
+                .fillMaxWidth(),
+            title = stringResource(id = R.string.select_account),
+            icon = painterResource(id = R.drawable.savings),
+            selectedCount = stringResource(id = R.string.all)
+        )
+
+        BudgetSelectedItemView(
+            modifier = Modifier
+                .clickable {
+                    openCategorySelection?.invoke()
+                }
+                .padding(16.dp)
+                .fillMaxWidth(),
+            title = stringResource(id = R.string.select_category),
+            icon = painterResource(id = R.drawable.ic_filter_list),
+            selectedCount = stringResource(id = R.string.all)
+        )
+
+        Divider()
+
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
+        )
+    }
+}
+
+@Composable
+private fun BudgetSelectedItemView(
+    title: String,
+    selectedCount: String,
+    icon: Painter,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier
+    ) {
+        Icon(
+            painter = icon,
+            contentDescription = null
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp)
+                .weight(1f)
+                .align(Alignment.CenterVertically),
+            text = title,
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp)
+                .align(Alignment.CenterVertically),
+            text = selectedCount,
+        )
+
+        Icon(
+            painter = painterResource(id = R.drawable.ic_arrow_right),
+            contentDescription = null
         )
     }
 }

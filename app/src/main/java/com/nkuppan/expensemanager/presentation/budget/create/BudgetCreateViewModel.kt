@@ -8,6 +8,7 @@ import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.fromTransactionMonthToDate
 import com.nkuppan.expensemanager.data.utils.toTransactionMonth
 import com.nkuppan.expensemanager.domain.model.Budget
+import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.getCurrencyIcon
 import com.nkuppan.expensemanager.domain.usecase.budget.AddBudgetUseCase
@@ -15,6 +16,7 @@ import com.nkuppan.expensemanager.domain.usecase.budget.DeleteBudgetUseCase
 import com.nkuppan.expensemanager.domain.usecase.budget.FindBudgetByIdUseCase
 import com.nkuppan.expensemanager.domain.usecase.budget.UpdateBudgetUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,6 +69,9 @@ class BudgetCreateViewModel @Inject constructor(
 
     private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
     val date = _date.asStateFlow()
+
+    private var selectedAccounts = emptyList<AccountUiModel>()
+    private var selectedCategories = emptyList<Category>()
 
     private var budget: Budget? = null
 
@@ -140,7 +145,10 @@ class BudgetCreateViewModel @Inject constructor(
         }
 
         val categories = emptyList<String>()
-        val accounts = emptyList<String>()
+
+        val accounts = selectedAccounts.map {
+            it.id
+        }
 
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
@@ -204,6 +212,14 @@ class BudgetCreateViewModel @Inject constructor(
 
     fun setDate(date: Date) {
         _date.value = date
+    }
+
+    fun setAccounts(selectedAccounts: List<AccountUiModel>) {
+        this.selectedAccounts = selectedAccounts
+    }
+
+    fun setCategories(selectedCategories: List<Category>) {
+        this.selectedCategories = selectedCategories
     }
 
     companion object {
