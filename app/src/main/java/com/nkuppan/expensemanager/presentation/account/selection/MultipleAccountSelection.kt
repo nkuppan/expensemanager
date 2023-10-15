@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.presentation.account.selection
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,8 +33,10 @@ import com.nkuppan.expensemanager.presentation.selection.SelectionTitle
 
 @Composable
 fun MultipleAccountSelectionScreen(
-    onItemSelection: ((List<AccountUiModel>) -> Unit)? = null
+    onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)? = null
 ) {
+
+    val context = LocalContext.current
 
     val viewModel: AccountSelectionViewModel = hiltViewModel()
     val accounts by viewModel.accounts.collectAsState()
@@ -43,7 +47,18 @@ fun MultipleAccountSelectionScreen(
         accounts = accounts,
         selectedAccounts = selectedAccounts,
         onApplyChanges = {
-            onItemSelection?.invoke(selectedAccounts)
+            if (selectedAccounts.isNotEmpty()) {
+                onItemSelection?.invoke(
+                    selectedAccounts,
+                    selectedAccounts.size == accounts.size
+                )
+            } else {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.account_selection_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         },
         onClearChanges = viewModel::clearChanges,
         onItemSelection = viewModel::selectThisAccount

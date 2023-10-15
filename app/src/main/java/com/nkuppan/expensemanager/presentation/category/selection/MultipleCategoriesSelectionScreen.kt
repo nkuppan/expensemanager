@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.presentation.category.selection
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,8 +33,10 @@ import com.nkuppan.expensemanager.presentation.selection.SelectionTitle
 
 @Composable
 fun MultipleCategoriesSelectionScreen(
-    onItemSelection: ((List<Category>) -> Unit)? = null
+    onItemSelection: ((List<Category>, Boolean) -> Unit)? = null
 ) {
+
+    val context = LocalContext.current
 
     val viewModel: CategorySelectionViewModel = hiltViewModel()
     val categories by viewModel.categories.collectAsState()
@@ -43,7 +47,18 @@ fun MultipleCategoriesSelectionScreen(
         categories = categories,
         selectedCategories = selectedCategories,
         onApplyChanges = {
-            onItemSelection?.invoke(selectedCategories)
+            if (selectedCategories.isNotEmpty()) {
+                onItemSelection?.invoke(
+                    selectedCategories,
+                    selectedCategories.size == categories.size
+                )
+            } else {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.category_selection_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         },
         onClearChanges = viewModel::clearChanges,
         onItemSelection = viewModel::selectThisAccount

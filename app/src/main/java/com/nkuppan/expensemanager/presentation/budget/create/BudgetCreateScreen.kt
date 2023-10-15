@@ -150,6 +150,9 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
         val iconValue by viewModel.icon.collectAsState()
         val selectedDate by viewModel.date.collectAsState()
 
+        val accountCount by viewModel.accountCount.collectAsState()
+        val categoriesCount by viewModel.categoriesCount.collectAsState()
+
         Box(modifier = Modifier.fillMaxSize()) {
             BudgetCreateScreen(
                 modifier = Modifier.padding(innerPadding),
@@ -161,6 +164,8 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                 amountErrorMessage = amountErrorMessage,
                 selectedDate = selectedDate,
                 currency = currencyIcon,
+                accountCount = accountCount,
+                categoriesCount = categoriesCount,
                 onNameChange = viewModel::setNameChange,
                 onAmountChange = viewModel::setAmountChange,
                 onDateChange = viewModel::setDate,
@@ -267,18 +272,18 @@ private fun BudgetCreateBottomSheetContent(
         }
 
         3 -> {
-            MultipleAccountSelectionScreen {
+            MultipleAccountSelectionScreen { items, selected ->
                 scope.launch {
-                    viewModel.setAccounts(it)
+                    viewModel.setAccounts(items, selected)
                     scaffoldState.bottomSheetState.hide()
                 }
             }
         }
 
         4 -> {
-            MultipleCategoriesSelectionScreen {
+            MultipleCategoriesSelectionScreen { items, selected ->
                 scope.launch {
-                    viewModel.setCategories(it)
+                    viewModel.setCategories(items, selected)
                     scaffoldState.bottomSheetState.hide()
                 }
             }
@@ -298,6 +303,8 @@ private fun BudgetCreateScreen(
     selectedColor: String = "#000000",
     selectedIcon: String = "savings",
     selectedDate: Date? = null,
+    categoriesCount: UiText? = null,
+    accountCount: UiText? = null,
     openIconPicker: (() -> Unit)? = null,
     openColorPicker: (() -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null,
@@ -307,7 +314,7 @@ private fun BudgetCreateScreen(
     openCategorySelection: (() -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
-
+    val context = LocalContext.current
     var showDatePicker by remember { mutableStateOf(false) }
 
     if (showDatePicker) {
@@ -394,7 +401,7 @@ private fun BudgetCreateScreen(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
             icon = painterResource(id = R.drawable.savings),
-            selectedCount = stringResource(id = R.string.all)
+            selectedCount = accountCount?.asString(context) ?: stringResource(id = R.string.all)
         )
 
         BudgetSelectedItemView(
@@ -406,7 +413,7 @@ private fun BudgetCreateScreen(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_category),
             icon = painterResource(id = R.drawable.ic_filter_list),
-            selectedCount = stringResource(id = R.string.all)
+            selectedCount = categoriesCount?.asString(context) ?: stringResource(id = R.string.all)
         )
 
         Divider()

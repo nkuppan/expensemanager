@@ -70,8 +70,18 @@ class BudgetCreateViewModel @Inject constructor(
     private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
+    private val _accountCount: MutableStateFlow<UiText> =
+        MutableStateFlow(UiText.StringResource(R.string.all))
+    val accountCount = _accountCount.asStateFlow()
+
+    private val _categoriesCount: MutableStateFlow<UiText> =
+        MutableStateFlow(UiText.StringResource(R.string.all))
+    val categoriesCount = _categoriesCount.asStateFlow()
+
     private var selectedAccounts = emptyList<AccountUiModel>()
+    private var isAllAccountsSelected = true
     private var selectedCategories = emptyList<Category>()
+    private var isAllCategoriesSelected = true
 
     private var budget: Budget? = null
 
@@ -144,7 +154,9 @@ class BudgetCreateViewModel @Inject constructor(
             return
         }
 
-        val categories = emptyList<String>()
+        val categories = selectedCategories.map {
+            it.id
+        }
 
         val accounts = selectedAccounts.map {
             it.id
@@ -159,8 +171,8 @@ class BudgetCreateViewModel @Inject constructor(
             selectedMonth = date.toTransactionMonth(),
             categories = categories,
             accounts = accounts,
-            isAllCategoriesSelected = true,
-            isAllAccountsSelected = true,
+            isAllCategoriesSelected = isAllCategoriesSelected,
+            isAllAccountsSelected = isAllAccountsSelected,
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time
         )
@@ -214,12 +226,24 @@ class BudgetCreateViewModel @Inject constructor(
         _date.value = date
     }
 
-    fun setAccounts(selectedAccounts: List<AccountUiModel>) {
+    fun setAccounts(selectedAccounts: List<AccountUiModel>, isAllSelected: Boolean) {
         this.selectedAccounts = selectedAccounts
+        this.isAllAccountsSelected = isAllSelected
+        _accountCount.value = if (isAllSelected) {
+            UiText.StringResource(R.string.all)
+        } else {
+            UiText.DynamicString(selectedAccounts.size.toString())
+        }
     }
 
-    fun setCategories(selectedCategories: List<Category>) {
+    fun setCategories(selectedCategories: List<Category>, isAllSelected: Boolean) {
         this.selectedCategories = selectedCategories
+        this.isAllCategoriesSelected = isAllSelected
+        _categoriesCount.value = if (isAllSelected) {
+            UiText.StringResource(R.string.all)
+        } else {
+            UiText.DynamicString(selectedCategories.size.toString())
+        }
     }
 
     companion object {

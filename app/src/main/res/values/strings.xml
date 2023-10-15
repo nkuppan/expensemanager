@@ -316,4 +316,6 @@
     <string name="all_categories">All Categories</string>
     <string name="all_account">All accounts</string>
     <string name="clear_all">Clear All</string>
+    <string name="category_selection_message">Should select at least one category to proceed</string>
+    <string name="account_selection_message">Should select at least one account to proceed</string>
 </resources>
