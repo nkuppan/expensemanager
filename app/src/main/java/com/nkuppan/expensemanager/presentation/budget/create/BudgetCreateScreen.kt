@@ -26,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -55,6 +54,7 @@ import com.nkuppan.expensemanager.data.utils.toTransactionMonth
 import com.nkuppan.expensemanager.data.utils.toTransactionMonthValue
 import com.nkuppan.expensemanager.data.utils.toTransactionYearValue
 import com.nkuppan.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
+import com.nkuppan.expensemanager.presentation.budget.create.BudgetCreateSheetSelection.*
 import com.nkuppan.expensemanager.presentation.category.selection.MultipleCategoriesSelectionScreen
 import com.nkuppan.expensemanager.presentation.selection.ColorSelectionScreen
 import com.nkuppan.expensemanager.presentation.selection.IconAndColorComponent
@@ -64,6 +64,14 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
+
+enum class BudgetCreateSheetSelection {
+    ICON_SELECTION,
+    COLOR_SELECTION,
+    ACCOUNT_SELECTION,
+    CATEGORY_SELECTION
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +90,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
 
     val viewModel: BudgetCreateViewModel = hiltViewModel()
 
-    var sheetSelection by remember { mutableIntStateOf(1) }
+    var sheetSelection by remember { mutableStateOf(COLOR_SELECTION) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
@@ -171,38 +179,54 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                 onDateChange = viewModel::setDate,
                 openColorPicker = {
                     scope.launch {
-                        updateThisNumberAndOpenBottomSheet(
-                            sheetSelection, 2, scaffoldState
-                        )?.let {
-                            sheetSelection = it
+                        val oldSelection = sheetSelection
+                        if (oldSelection != COLOR_SELECTION) {
+                            sheetSelection = COLOR_SELECTION
                         }
+                        hideOrShowBottomSheet(
+                            oldSelection,
+                            COLOR_SELECTION,
+                            scaffoldState
+                        )
                     }
                 },
                 openIconPicker = {
                     scope.launch {
-                        updateThisNumberAndOpenBottomSheet(
-                            sheetSelection, 1, scaffoldState
-                        )?.let {
-                            sheetSelection = it
+                        val oldSelection = sheetSelection
+                        if (oldSelection != ICON_SELECTION) {
+                            sheetSelection = ICON_SELECTION
                         }
+                        hideOrShowBottomSheet(
+                            oldSelection,
+                            ICON_SELECTION,
+                            scaffoldState
+                        )
                     }
                 },
                 openAccountSelection = {
                     scope.launch {
-                        updateThisNumberAndOpenBottomSheet(
-                            sheetSelection, 3, scaffoldState
-                        )?.let {
-                            sheetSelection = it
+                        val oldSelection = sheetSelection
+                        if (oldSelection != ACCOUNT_SELECTION) {
+                            sheetSelection = ACCOUNT_SELECTION
                         }
+                        hideOrShowBottomSheet(
+                            oldSelection,
+                            ACCOUNT_SELECTION,
+                            scaffoldState
+                        )
                     }
                 },
                 openCategorySelection = {
                     scope.launch {
-                        updateThisNumberAndOpenBottomSheet(
-                            sheetSelection, 4, scaffoldState
-                        )?.let {
-                            sheetSelection = it
+                        val oldSelection = sheetSelection
+                        if (oldSelection != CATEGORY_SELECTION) {
+                            sheetSelection = CATEGORY_SELECTION
                         }
+                        hideOrShowBottomSheet(
+                            oldSelection,
+                            CATEGORY_SELECTION,
+                            scaffoldState
+                        )
                     }
                 }
             )
@@ -223,14 +247,13 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-private suspend fun updateThisNumberAndOpenBottomSheet(
-    sheetSelection: Int,
-    checkNumber: Int,
+private suspend fun hideOrShowBottomSheet(
+    oldSelection: BudgetCreateSheetSelection,
+    currentSelection: BudgetCreateSheetSelection,
     scaffoldState: BottomSheetScaffoldState
-): Int? {
-    if (sheetSelection != checkNumber) {
+) {
+    if (oldSelection != currentSelection) {
         scaffoldState.bottomSheetState.expand()
-        return checkNumber
     } else {
         if (scaffoldState.bottomSheetState.isVisible) {
             scaffoldState.bottomSheetState.hide()
@@ -238,14 +261,12 @@ private suspend fun updateThisNumberAndOpenBottomSheet(
             scaffoldState.bottomSheetState.expand()
         }
     }
-
-    return null
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun BudgetCreateBottomSheetContent(
-    sheetSelection: Int,
+    sheetSelection: BudgetCreateSheetSelection,
     scope: CoroutineScope,
     viewModel: BudgetCreateViewModel,
     scaffoldState: BottomSheetScaffoldState
@@ -253,7 +274,7 @@ private fun BudgetCreateBottomSheetContent(
     val context = LocalContext.current
 
     when (sheetSelection) {
-        1 -> {
+        ICON_SELECTION -> {
             IconSelectionScreen {
                 scope.launch {
                     viewModel.setIcon(context.resources.getResourceName(it))
@@ -262,7 +283,7 @@ private fun BudgetCreateBottomSheetContent(
             }
         }
 
-        2 -> {
+        COLOR_SELECTION -> {
             ColorSelectionScreen {
                 scope.launch {
                     viewModel.setColorValue(it)
@@ -271,7 +292,7 @@ private fun BudgetCreateBottomSheetContent(
             }
         }
 
-        3 -> {
+        ACCOUNT_SELECTION -> {
             MultipleAccountSelectionScreen { items, selected ->
                 scope.launch {
                     viewModel.setAccounts(items, selected)
@@ -280,7 +301,7 @@ private fun BudgetCreateBottomSheetContent(
             }
         }
 
-        4 -> {
+        CATEGORY_SELECTION -> {
             MultipleCategoriesSelectionScreen { items, selected ->
                 scope.launch {
                     viewModel.setCategories(items, selected)
