@@ -16,7 +16,13 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Query("SELECT * from `transaction` WHERE id=:id")
     fun findById(id: String): TransactionEntity?
 
-    @Query("SELECT * from `transaction` WHERE from_account_id IN(:accounts) ORDER BY `transaction`.created_on DESC")
+    @Query(
+        """
+        SELECT * from `transaction` 
+        WHERE from_account_id IN(:accounts) 
+        ORDER BY `transaction`.created_on DESC
+        """
+    )
     fun getTransactionsByAccounts(
         accounts: List<String>
     ): Flow<List<TransactionEntity>?>
@@ -41,13 +47,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Transaction
     @Query(
         """
-        SELECT 
-            `transaction`.*, 
-            `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `fromAccount`.name, `fromAccount`.icon_background_color, `fromAccount`.type, `fromAccount`.icon_name
-        FROM `transaction`
-        JOIN `category` ON category_id = `category`.id   
-        JOIN `account` as fromAccount ON from_account_id = `fromAccount`.id
+        SELECT * FROM `transaction`
         WHERE `transaction`.from_account_id IN(:accounts) 
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC
@@ -61,14 +61,10 @@ interface TransactionDao : BaseDao<TransactionEntity> {
 
     @Query(
         """
-        SELECT 
-            SUM(`transaction`.amount)
-        FROM `transaction`
-        JOIN `category` ON category_id = `category`.id
-        JOIN `account` ON from_account_id = `account`.id
+        SELECT SUM(`transaction`.amount) FROM `transaction`
         WHERE `transaction`.from_account_id IN(:accounts) 
-        OR `category`.id IN(:categories)
-        OR `category`.type IN(:categoryTypes)
+        OR `transaction`.id IN(:categories)
+        OR `transaction`.type IN(:transactionTypes)
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC
         """
@@ -76,23 +72,17 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     fun getTransactionTotalAmount(
         accounts: List<String>,
         categories: List<String>,
-        categoryTypes: List<Int>,
+        transactionTypes: List<Int>,
         fromDate: Long,
         toDate: Long
     ): Flow<Double?>
 
     @Query(
         """
-        SELECT 
-            `transaction`.*, 
-            `category`.name, `category`.icon_background_color, `category`.icon_name,`category`.type,
-            `fromAccount`.name, `fromAccount`.icon_background_color, `fromAccount`.type, `fromAccount`.icon_name
-        FROM `transaction`
-        JOIN `category` ON category_id = `category`.id
-        JOIN `account` as fromAccount ON from_account_id = `fromAccount`.id
+        SELECT * FROM `transaction`
         WHERE `transaction`.from_account_id IN(:accounts) 
-        OR `category`.id IN(:categories)
-        OR `category`.type IN(:categoryTypes)
+        AND `transaction`.category_id IN(:categories)
+        AND `transaction`.type IN(:transactionTypes)
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC
         """
@@ -100,7 +90,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     fun getFilteredTransaction(
         accounts: List<String>,
         categories: List<String>,
-        categoryTypes: List<Int>,
+        transactionTypes: List<Int>,
         fromDate: Long,
         toDate: Long
     ): Flow<List<TransactionRelation>?>

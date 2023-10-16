@@ -59,8 +59,7 @@ class BudgetListViewModel @Inject constructor(
                                     response.data.toTransactionSum()
                                 }
                             }
-                        val budget = it.toBudgetUiModel(currency, transactionAmount)
-                        budget
+                        it.toBudgetUiModel(currency, transactionAmount)
                     }
                 )
             }

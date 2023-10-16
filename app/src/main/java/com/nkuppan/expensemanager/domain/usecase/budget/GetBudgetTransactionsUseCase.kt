@@ -6,37 +6,49 @@ import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
+import com.nkuppan.expensemanager.domain.repository.AccountRepository
+import com.nkuppan.expensemanager.domain.repository.CategoryRepository
 import com.nkuppan.expensemanager.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
 import org.joda.time.DateTime
 import javax.inject.Inject
 
 class GetBudgetTransactionsUseCase @Inject constructor(
-    private val repository: TransactionRepository,
+    private val categoryRepository: CategoryRepository,
+    private val accountRepository: AccountRepository,
+    private val transactionRepository: TransactionRepository,
 ) {
     suspend operator fun invoke(budget: Budget): Resource<List<Transaction>> {
 
-        val transaction = if (budget.isAllAccountsSelected && budget.isAllCategoriesSelected) {
-            repository.getAllTransaction().firstOrNull()?.filter {
-                it.createdOn.toTransactionMonth() == budget.selectedMonth
-            }
+        val accounts: List<String> = if (budget.isAllAccountsSelected) {
+            accountRepository.getAccounts().firstOrNull()?.map { it.id } ?: emptyList()
         } else {
-            val date = budget.selectedMonth.fromTransactionMonthToDate()
-            val startDayOfMonth = DateTime(date).withDayOfMonth(1).withTimeAtStartOfDay().millis
-            val endDayOfMonth = DateTime()
-                .run {
-                    return@run dayOfMonth().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
-                }
+            budget.accounts
+        }
 
-            repository.getFilteredTransaction(
-                accounts = budget.accounts,
-                categories = budget.categories,
-                categoryType = CategoryType.values().map { it.ordinal }.toList(),
-                startDate = startDayOfMonth,
-                endDate = endDayOfMonth,
-            ).firstOrNull()?.filter {
-                it.createdOn.toTransactionMonth() == budget.selectedMonth
+        val categories: List<String> = if (budget.isAllCategoriesSelected) {
+            categoryRepository.getCategories().firstOrNull()?.map { it.id } ?: emptyList()
+        } else {
+            budget.categories
+        }
+
+        val date = budget.selectedMonth.fromTransactionMonthToDate()
+        val startDayOfMonth = DateTime(date).withDayOfMonth(1)
+            .withTimeAtStartOfDay().millis
+        val endDayOfMonth = DateTime()
+            .run {
+                return@run dayOfMonth().withMaximumValue().plus(1)
+                    .withTimeAtStartOfDay().millis
             }
+
+        val transaction = transactionRepository.getFilteredTransaction(
+            accounts = accounts,
+            categories = categories,
+            categoryType = CategoryType.values().map { it.ordinal }.toList(),
+            startDate = startDayOfMonth,
+            endDate = endDayOfMonth,
+        ).firstOrNull()?.filter {
+            it.createdOn.toTransactionMonth() == budget.selectedMonth
         }
 
         return Resource.Success(transaction ?: emptyList())
