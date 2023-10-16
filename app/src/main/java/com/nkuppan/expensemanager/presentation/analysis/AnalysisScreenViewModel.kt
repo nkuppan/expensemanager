@@ -2,13 +2,14 @@ package com.nkuppan.expensemanager.presentation.analysis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.toTransactionDateOnly
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsForCurrentMonthUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsMapUseCase
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
@@ -27,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AnalysisScreenViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
-    getTransactionsForCurrentMonthUseCase: GetTransactionsForCurrentMonthUseCase
+    getTransactionsMapUseCase: GetTransactionsMapUseCase
 ) : ViewModel() {
 
     private val _graphItems = MutableStateFlow<UiState<AnalysisData>>(UiState.Loading)
@@ -35,7 +36,7 @@ class AnalysisScreenViewModel @Inject constructor(
 
     init {
         getCurrencyUseCase.invoke().combine(
-            getTransactionsForCurrentMonthUseCase.invoke()
+            getTransactionsMapUseCase.invoke()
         ) { currency, response ->
 
             response ?: return@combine
@@ -57,6 +58,7 @@ data class AnalysisData(
 data class AnalysisChartData(
     val chartData: ChartEntryModel,
     val dates: List<String>,
+    val title: UiText? = null,
 )
 
 /**

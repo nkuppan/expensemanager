@@ -139,10 +139,11 @@ private fun CategoryTransactionListScreenContent(
                 LazyColumn(state = scrollState) {
                     items(uiState.data) { categoryTransaction ->
                         CategoryTransactionItem(
-                            modifier = ItemSpecModifier
+                            modifier = Modifier
                                 .clickable {
                                     onItemClick?.invoke(categoryTransaction)
-                                },
+                                }
+                                .then(ItemSpecModifier),
                             name = categoryTransaction.category.name,
                             icon = categoryTransaction.category.iconName,
                             iconBackgroundColor = categoryTransaction.category.iconBackgroundColor,

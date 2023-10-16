@@ -9,13 +9,12 @@ import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.common.ui.utils.getBalanceCurrency
 import com.nkuppan.expensemanager.common.ui.utils.getCurrency
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.account.GetSelectedAccountUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeNameUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsForCurrentMonthUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsMapUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
@@ -39,9 +38,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    getTransactionsForCurrentMonthUseCase: GetTransactionsForCurrentMonthUseCase,
+    getTransactionsMapUseCase: GetTransactionsMapUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
-    getSelectedAccountUseCase: GetSelectedAccountUseCase,
     getFilterTypeNameUseCase: GetFilterTypeNameUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
@@ -59,12 +57,6 @@ class DashboardViewModel @Inject constructor(
     private val _expenseAmount = MutableStateFlow(0.0)
     private val _totalIncome = MutableStateFlow(0.0)
 
-    private val _dateValue = MutableStateFlow("")
-    val dateValue = _dateValue.asStateFlow()
-
-    private val _accountValue = MutableStateFlow("")
-    val accountValue = _accountValue.asStateFlow()
-
     private val _expenseAmountValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val expenseAmountValue = _expenseAmountValue.asStateFlow()
 
@@ -73,6 +65,9 @@ class DashboardViewModel @Inject constructor(
 
     private val _totalIncomeValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val totalIncomeValue = _totalIncomeValue.asStateFlow()
+
+    private val _transactionPeriod = MutableStateFlow<UiText>(UiText.DynamicString(""))
+    val transactionPeriod = _transactionPeriod.asStateFlow()
 
     private val _transactions = MutableStateFlow<List<TransactionUIModel>?>(null)
     val transactions = _transactions.asStateFlow()
@@ -84,12 +79,8 @@ class DashboardViewModel @Inject constructor(
     val accounts = _accounts.asStateFlow()
 
     init {
-        getSelectedAccountUseCase.invoke().onEach {
-            //_accountValue.value = it?.name ?: "All"
-        }.launchIn(viewModelScope)
-
         getFilterTypeNameUseCase.invoke().onEach {
-            _dateValue.value = it
+            _transactionPeriod.value = UiText.DynamicString(it)
         }.launchIn(viewModelScope)
 
         combine(
@@ -125,17 +116,14 @@ class DashboardViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getTransactionsForCurrentMonthUseCase.invoke()
+            getTransactionsMapUseCase.invoke()
         ) { currency, response ->
             val data = constructGraphItems(
                 response,
                 currency
             )
             _chartData.value = data?.chartData ?: AnalysisChartData(
-                chartData = entryModelOf(
-                    listOf(entryOf(0, 0)),
-                    listOf(entryOf(0, 0)),
-                ),
+                chartData = entryModelOf(listOf(entryOf(0, 0))),
                 dates = emptyList()
             )
         }.launchIn(viewModelScope)

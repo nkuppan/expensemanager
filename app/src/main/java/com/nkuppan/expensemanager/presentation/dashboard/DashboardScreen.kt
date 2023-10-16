@@ -18,10 +18,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,7 +41,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
@@ -54,6 +56,7 @@ fun DashboardScreen(navController: NavController) {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardScreenScaffoldView(
     navController: NavController
@@ -63,15 +66,29 @@ private fun DashboardScreenScaffoldView(
     val incomeAmount by viewModel.incomeAmountValue.collectAsState()
     val expenseAmount by viewModel.expenseAmountValue.collectAsState()
     val balanceAmount by viewModel.totalIncomeValue.collectAsState()
+    val transactionPeriod by viewModel.transactionPeriod.collectAsState()
 
     val chartData by viewModel.chartData.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
 
     Scaffold(topBar = {
-        TopNavigationBar(
-            navController = navController,
-            title = stringResource(R.string.title_home),
-            disableBackIcon = true
+        TopAppBar(
+            title = {
+                Text(
+                    text = stringResource(R.string.title_home),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            },
+            actions = {
+                IconButton(onClick = {
+                    navController.navigate("settings")
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_settings),
+                        contentDescription = stringResource(id = R.string.settings)
+                    )
+                }
+            }
         )
     }) { innerPadding ->
         DashboardScreenContent(
@@ -81,6 +98,7 @@ private fun DashboardScreenScaffoldView(
             incomeAmount = incomeAmount,
             expenseAmount = expenseAmount,
             balanceAmount = balanceAmount,
+            transactionPeriod = transactionPeriod,
             chartData = chartData,
             accounts = accounts,
         )
@@ -92,6 +110,7 @@ private fun DashboardScreenContent(
     incomeAmount: UiText,
     expenseAmount: UiText,
     balanceAmount: UiText,
+    transactionPeriod: UiText,
     chartData: AnalysisChartData?,
     modifier: Modifier = Modifier,
     accounts: List<AccountUiModel> = emptyList(),
@@ -107,7 +126,8 @@ private fun DashboardScreenContent(
             IncomeExpenseBalanceView(
                 incomeAmount = incomeAmount,
                 expenseAmount = expenseAmount,
-                balanceAmount = balanceAmount
+                balanceAmount = balanceAmount,
+                transactionPeriod = transactionPeriod,
             )
         }
         item {
@@ -125,11 +145,11 @@ private fun DashboardScreenContent(
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         Text(
-                            text = stringResource(id = R.string.this_month),
+                            text = chartData.title?.asString(context)
+                                ?: stringResource(id = R.string.this_month),
                             fontWeight = FontWeight.Bold
                         )
                         ChartScreen(
-
                             chart = chartData
                         )
                     }
@@ -163,6 +183,7 @@ fun IncomeExpenseBalanceView(
     incomeAmount: UiText,
     expenseAmount: UiText,
     balanceAmount: UiText,
+    transactionPeriod: UiText,
 ) {
     AmountInfoWidget(
         modifier = Modifier
@@ -170,7 +191,8 @@ fun IncomeExpenseBalanceView(
             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
         expenseAmount = expenseAmount,
         incomeAmount = incomeAmount,
-        balanceAmount = balanceAmount
+        balanceAmount = balanceAmount,
+        transactionPeriod = transactionPeriod
     )
 }
 
@@ -225,7 +247,11 @@ fun AmountInfoWidget(
     expenseAmount: UiText,
     incomeAmount: UiText,
     balanceAmount: UiText,
+    transactionPeriod: UiText,
 ) {
+
+    val context = LocalContext.current
+
     Card(
         modifier = modifier,
         shape = MaterialTheme.shapes.small,
@@ -247,7 +273,7 @@ fun AmountInfoWidget(
                     )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "This Month(Oct 2023)",
+                        text = transactionPeriod.asString(context),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
@@ -293,6 +319,7 @@ private fun AmountViewPreview() {
             expenseAmount = UiText.DynamicString("100.00$"),
             incomeAmount = UiText.DynamicString("100.00$"),
             balanceAmount = UiText.DynamicString("0.00$"),
+            transactionPeriod = UiText.DynamicString("This Month(Oct 2023)"),
         )
     }
 }
@@ -306,6 +333,7 @@ fun IncomeExpenseBalanceViewPreview() {
             expenseAmount = UiText.DynamicString("$500.0"),
             incomeAmount = UiText.DynamicString("$200.0"),
             balanceAmount = UiText.DynamicString("$300.0"),
+            transactionPeriod = UiText.DynamicString("This Month(Oct 2023)"),
             chartData = AnalysisChartData(
                 chartData = entryModelOf(
                     listOf(entryOf(0, 1), entryOf(1, 2), entryOf(2, 3)),

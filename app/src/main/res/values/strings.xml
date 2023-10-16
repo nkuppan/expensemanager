@@ -312,7 +312,7 @@
     <string name="from_date">From date</string>
     <string name="to_date">To date</string>
     <string name="total">Total</string>
-    <string name="transaction_summary">Transactions Summary</string>
+    <string name="transaction_summary">Summary</string>
     <string name="all_categories">All Categories</string>
     <string name="all_account">All accounts</string>
     <string name="clear_all">Clear All</string>

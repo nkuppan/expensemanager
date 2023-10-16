@@ -134,10 +134,11 @@ private fun AccountListScreenContent(
                 LazyColumn(state = scrollState) {
                     items(accountUiState.data) { account ->
                         AccountItem(
-                            modifier = ItemSpecModifier
+                            modifier = Modifier
                                 .clickable {
                                     onItemClick?.invoke(account)
-                                },
+                                }
+                                .then(ItemSpecModifier),
                             name = account.name,
                             icon = account.icon,
                             iconBackgroundColor = account.iconBackgroundColor,

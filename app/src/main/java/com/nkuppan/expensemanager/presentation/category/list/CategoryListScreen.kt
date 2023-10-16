@@ -132,9 +132,11 @@ private fun CategoryListScreenContent(
                             name = category.name,
                             icon = category.iconName,
                             iconBackgroundColor = category.iconBackgroundColor,
-                            modifier = ItemSpecModifier.clickable {
-                                onItemClick?.invoke(category.id)
-                            },
+                            modifier = Modifier
+                                .clickable {
+                                    onItemClick?.invoke(category.id)
+                                }
+                                .then(ItemSpecModifier),
                         )
                     }
                     item {

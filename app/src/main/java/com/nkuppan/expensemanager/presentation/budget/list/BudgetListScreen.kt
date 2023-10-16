@@ -142,9 +142,11 @@ private fun BudgetListScreenContent(
                             amount = budget.amount.asString(context),
                             transactionAmount = budget.transactionAmount.asString(context),
                             percentage = budget.percent,
-                            modifier = ItemSpecModifier.clickable {
-                                onItemClick?.invoke(budget)
-                            }
+                            modifier = Modifier
+                                .clickable {
+                                    onItemClick?.invoke(budget)
+                                }
+                                .then(ItemSpecModifier),
                         )
                     }
                     item {
