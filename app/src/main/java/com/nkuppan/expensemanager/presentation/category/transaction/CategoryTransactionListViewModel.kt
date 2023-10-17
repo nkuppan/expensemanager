@@ -1,5 +1,7 @@
 package com.nkuppan.expensemanager.presentation.category.transaction
 
+import androidx.annotation.ColorInt
+import androidx.core.graphics.toColorInt
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,7 +26,7 @@ class CategoryTransactionListViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
 ) : ViewModel() {
-    private val _categoryTransaction = MutableStateFlow<UiState<List<CategoryTransaction>>>(
+    private val _categoryTransaction = MutableStateFlow<UiState<CategoryTransactionUiModel>>(
         UiState.Loading
     )
     val categoryTransaction = _categoryTransaction.asStateFlow()
@@ -67,14 +69,41 @@ class CategoryTransactionListViewModel @Inject constructor(
             }
 
             _categoryTransaction.value =
-                UiState.Success(categoryTransactions.sortedByDescending { it.percent })
+                UiState.Success(
+                    CategoryTransactionUiModel(
+                        pieChartData = categoryTransactions.sortedByDescending { it.percent }.map {
+                            PieChartData(
+                                name = it.category.name,
+                                value = it.percent,
+                                color = it.category.iconBackgroundColor.toColorInt(),
+                            )
+                        },
+                        totalAmount = getCurrency(
+                            currency = currency,
+                            amount = totalAmount
+                        ),
+                        categoryTransactions = categoryTransactions.sortedByDescending { it.percent }
+                    )
+                )
         }.launchIn(viewModelScope)
     }
 }
+
+data class PieChartData(
+    var name: String,
+    var value: Float,
+    @ColorInt var color: Int,
+)
 
 data class CategoryTransaction(
     val category: Category,
     val percent: Float,
     val amount: UiText,
     val transaction: List<Transaction> = emptyList()
+)
+
+data class CategoryTransactionUiModel(
+    val totalAmount: UiText,
+    val pieChartData: List<PieChartData>,
+    val categoryTransactions: List<CategoryTransaction>
 )

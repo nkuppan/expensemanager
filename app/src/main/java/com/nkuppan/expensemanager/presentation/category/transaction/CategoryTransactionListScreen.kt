@@ -1,6 +1,10 @@
 package com.nkuppan.expensemanager.presentation.category.transaction
 
 import android.content.res.Configuration
+import android.graphics.Color
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,15 +36,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.text.buildSpannedString
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.extensions.toColor
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
@@ -65,7 +75,7 @@ fun CategoryTransactionListScreen(
 @Composable
 fun CategoryTransactionListScreen(
     navController: NavController,
-    uiState: UiState<List<CategoryTransaction>>
+    uiState: UiState<CategoryTransactionUiModel>
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -105,7 +115,7 @@ fun CategoryTransactionListScreen(
 
 @Composable
 private fun CategoryTransactionListScreenContent(
-    uiState: UiState<List<CategoryTransaction>>,
+    uiState: UiState<CategoryTransactionUiModel>,
     modifier: Modifier = Modifier,
     onItemClick: ((CategoryTransaction) -> Unit)? = null
 ) {
@@ -137,7 +147,13 @@ private fun CategoryTransactionListScreenContent(
             is UiState.Success -> {
 
                 LazyColumn(state = scrollState) {
-                    items(uiState.data) { categoryTransaction ->
+                    item {
+                        PieChartView(
+                            uiState.data.totalAmount.asString(context),
+                            uiState.data.pieChartData
+                        )
+                    }
+                    items(uiState.data.categoryTransactions) { categoryTransaction ->
                         CategoryTransactionItem(
                             modifier = Modifier
                                 .clickable {
@@ -162,6 +178,107 @@ private fun CategoryTransactionListScreenContent(
             }
         }
     }
+}
+
+@Composable
+fun PieChartView(
+    totalAmount: String,
+    chartData: List<PieChartData>
+) {
+
+    Crossfade(targetState = chartData, label = "") { pieChartData ->
+        // on below line we are creating an
+        // android view for pie chart.
+        AndroidView(factory = { context ->
+            // on below line we are creating a pie chart
+            // and specifying layout params.
+            PieChart(context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    // on below line we are specifying layout
+                    // params as MATCH PARENT for height and width.
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    600,
+                )
+                // on below line we are setting description
+                // enables for our pie chart.
+                this.description.isEnabled = false
+
+                // on below line we are setting draw hole
+                // to false not to draw hole in pie chart
+                this.isHighlightPerTapEnabled = false
+                this.isDragDecelerationEnabled = false
+                this.isDrawHoleEnabled = true
+                this.holeRadius = 75f
+                this.setTouchEnabled(false)
+
+                this.setDrawSlicesUnderHole(true)
+                this.setCenterTextSize(16f)
+                this.centerText = buildSpannedString {
+                    append(context.getString(R.string.total))
+                    append("\n")
+                    append(totalAmount)
+                }
+
+                // on below line we are enabling legend.
+                this.legend.isEnabled = false
+                //this.animateY(500, Easing.EaseInOutQuad);
+            }
+        },
+            // on below line we are specifying modifier
+            // for it and specifying padding to it.
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(5.dp), update = {
+                // on below line we are calling update pie chart
+                // method and passing pie chart and list of data.
+                updatePieChartWithData(it, pieChartData)
+            })
+    }
+}
+
+fun updatePieChartWithData(
+    chart: PieChart,
+    data: List<PieChartData>
+) {
+    val entries = mutableListOf<PieEntry>()
+    val colors = mutableListOf<Int>()
+
+    for (i in data.indices) {
+        val item = data[i]
+        entries.add(
+            PieEntry(
+                item.value, item.name
+            )
+        )
+        colors.add(item.color)
+    }
+
+    val pieDataSet = PieDataSet(entries, "")
+    pieDataSet.isHighlightEnabled = false
+    pieDataSet.colors = colors
+    pieDataSet.setValueTextColors(colors)
+    pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+    pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+    pieDataSet.sliceSpace = 2f
+    pieDataSet.valueTextSize = 10f
+    pieDataSet.isUsingSliceColorAsValueLineColor = true
+    pieDataSet.valueLinePart1Length = .2f
+    pieDataSet.valueLineWidth = 2f
+    pieDataSet.valueFormatter = object : ValueFormatter() {
+        override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
+            return pieEntry?.label ?: ""
+        }
+    }
+    // on below line we are creating
+    // a variable for pie data
+    val pieData = PieData(pieDataSet)
+
+    // on below line we are setting this
+    // pie data in chart data.
+    chart.data = pieData
+    // on below line we are
+    // calling invalidate in chart.
+    chart.invalidate()
 }
 
 @Composable
@@ -199,10 +316,6 @@ fun CategoryTransactionItem(
                         .align(Alignment.CenterVertically),
                     text = amount,
                     style = MaterialTheme.typography.titleMedium,
-                    color = if (true)
-                        colorResource(id = R.color.red_500)
-                    else
-                        colorResource(id = R.color.green_500)
                 )
             }
             Row {
@@ -227,19 +340,31 @@ fun CategoryTransactionItem(
     }
 }
 
-fun getRandomCategoryTransactionData(): List<CategoryTransaction> {
-    return buildList {
-        repeat(15) {
-            add(
-                CategoryTransaction(
-                    category = getCategoryData(it),
-                    amount = UiText.DynamicString("100$"),
-                    percent = Random(100).nextFloat(),
-                    transaction = emptyList()
+
+private val getPieChartData = listOf(
+    PieChartData("Chrome", 34.68f, Color.parseColor("#43A546")),
+    PieChartData("Firefox", 16.60F, Color.parseColor("#F44336")),
+    PieChartData("Safari", 16.15F, Color.parseColor("#166EF7")),
+    PieChartData("Internet Explorer", 15.62F, Color.parseColor("#121212")),
+)
+
+fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
+    return CategoryTransactionUiModel(
+        pieChartData = getPieChartData,
+        totalAmount = UiText.DynamicString("100.00$"),
+        categoryTransactions = buildList {
+            repeat(15) {
+                add(
+                    CategoryTransaction(
+                        category = getCategoryData(it),
+                        amount = UiText.DynamicString("100$"),
+                        percent = Random(100).nextFloat(),
+                        transaction = emptyList()
+                    )
                 )
-            )
+            }
         }
-    }
+    )
 }
 
 

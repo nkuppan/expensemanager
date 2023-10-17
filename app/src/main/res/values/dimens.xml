@@ -25,4 +25,5 @@
     <dimen name="social_image_height">36dp</dimen>
     <dimen name="amount_text_size">20sp</dimen>
     <dimen name="transaction_notes_text_size">12sp</dimen>
+    <dimen name="chart_height">600dp</dimen>
 </resources>
