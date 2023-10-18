@@ -66,27 +66,31 @@ class CategoryTransactionListViewModel @Inject constructor(
                         )
                     )
                 }
-            }
+            }.sortedByDescending { it.percent }
 
             _categoryTransaction.value =
                 UiState.Success(
                     CategoryTransactionUiModel(
-                        pieChartData = categoryTransactions.sortedByDescending { it.percent }.map {
-                            PieChartData(
-                                name = it.category.name,
-                                value = it.percent,
-                                color = it.category.iconBackgroundColor.toColorInt(),
-                            )
+                        pieChartData = categoryTransactions.map {
+                            it.toChartModel()
                         },
                         totalAmount = getCurrency(
                             currency = currency,
                             amount = totalAmount
                         ),
-                        categoryTransactions = categoryTransactions.sortedByDescending { it.percent }
+                        categoryTransactions = categoryTransactions
                     )
                 )
         }.launchIn(viewModelScope)
     }
+}
+
+fun CategoryTransaction.toChartModel(): PieChartData {
+    return PieChartData(
+        name = this.category.name,
+        value = this.percent,
+        color = this.category.iconBackgroundColor.toColorInt(),
+    )
 }
 
 data class PieChartData(

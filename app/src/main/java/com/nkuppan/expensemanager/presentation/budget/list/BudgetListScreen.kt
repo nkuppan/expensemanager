@@ -177,7 +177,6 @@ fun BudgetItem(
     Row(modifier = modifier) {
         IconAndBackgroundView(
             modifier = Modifier
-                .padding(end = 16.dp)
                 .align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,

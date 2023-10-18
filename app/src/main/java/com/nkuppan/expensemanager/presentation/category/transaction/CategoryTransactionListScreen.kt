@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.category.transaction
 
 import android.content.res.Configuration
 import android.graphics.Color
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
@@ -55,9 +54,11 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.extensions.toColor
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.common.ui.theme.widget.IconAndBackgroundView
+import com.nkuppan.expensemanager.common.ui.theme.widget.SmallIconAndBackgroundView
 import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.common.ui.utils.UiText
+import com.nkuppan.expensemanager.common.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.budget.list.toPercentString
 import com.nkuppan.expensemanager.presentation.category.list.getCategoryData
@@ -87,12 +88,13 @@ fun CategoryTransactionListScreen(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.categories)
+                title = stringResource(R.string.categories),
+                disableBackIcon = true
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("account/create")
+                navController.navigate("transaction/create")
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_add),
@@ -150,7 +152,9 @@ private fun CategoryTransactionListScreenContent(
                     item {
                         PieChartView(
                             uiState.data.totalAmount.asString(context),
-                            uiState.data.pieChartData
+                            uiState.data.pieChartData,
+                            chartHeight = 600,
+                            hideValues = false,
                         )
                     }
                     items(uiState.data.categoryTransactions) { categoryTransaction ->
@@ -182,9 +186,14 @@ private fun CategoryTransactionListScreenContent(
 
 @Composable
 fun PieChartView(
-    totalAmount: String,
-    chartData: List<PieChartData>
+    totalAmountText: String,
+    chartData: List<PieChartData>,
+    chartHeight: Int = 600,
+    hideValues: Boolean = false,
+    chartWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT
 ) {
+    val colorCode = MaterialTheme.colorScheme.onBackground.hashCode()
+    val holeColor = MaterialTheme.colorScheme.background.hashCode()
 
     Crossfade(targetState = chartData, label = "") { pieChartData ->
         // on below line we are creating an
@@ -196,8 +205,8 @@ fun PieChartView(
                 layoutParams = LinearLayout.LayoutParams(
                     // on below line we are specifying layout
                     // params as MATCH PARENT for height and width.
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    600,
+                    chartWidth,
+                    chartHeight,
                 )
                 // on below line we are setting description
                 // enables for our pie chart.
@@ -209,36 +218,38 @@ fun PieChartView(
                 this.isDragDecelerationEnabled = false
                 this.isDrawHoleEnabled = true
                 this.holeRadius = 75f
+                this.setHoleColor(holeColor)
                 this.setTouchEnabled(false)
-
+                this.setUsePercentValues(true)
                 this.setDrawSlicesUnderHole(true)
                 this.setCenterTextSize(16f)
+                this.setCenterTextColor(colorCode)
                 this.centerText = buildSpannedString {
-                    append(context.getString(R.string.total))
-                    append("\n")
-                    append(totalAmount)
+                    append(totalAmountText)
                 }
 
                 // on below line we are enabling legend.
                 this.legend.isEnabled = false
-                //this.animateY(500, Easing.EaseInOutQuad);
+                //this.animateY(1000, Easing.EaseInOutQuad);
             }
         },
             // on below line we are specifying modifier
             // for it and specifying padding to it.
             modifier = Modifier
-                .wrapContentSize()
-                .padding(5.dp), update = {
+                .wrapContentSize(),
+            update = {
                 // on below line we are calling update pie chart
                 // method and passing pie chart and list of data.
-                updatePieChartWithData(it, pieChartData)
-            })
+                updatePieChartWithData(it, pieChartData, hideValues)
+            }
+        )
     }
 }
 
 fun updatePieChartWithData(
     chart: PieChart,
-    data: List<PieChartData>
+    data: List<PieChartData>,
+    hideValues: Boolean
 ) {
     val entries = mutableListOf<PieEntry>()
     val colors = mutableListOf<Int>()
@@ -246,38 +257,40 @@ fun updatePieChartWithData(
     for (i in data.indices) {
         val item = data[i]
         entries.add(
-            PieEntry(
-                item.value, item.name
-            )
+            PieEntry(item.value)
         )
         colors.add(item.color)
     }
 
     val pieDataSet = PieDataSet(entries, "")
+
     pieDataSet.isHighlightEnabled = false
     pieDataSet.colors = colors
     pieDataSet.setValueTextColors(colors)
-    pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-    pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-    pieDataSet.sliceSpace = 2f
+    pieDataSet.sliceSpace = 3f
     pieDataSet.valueTextSize = 10f
     pieDataSet.isUsingSliceColorAsValueLineColor = true
     pieDataSet.valueLinePart1Length = .2f
     pieDataSet.valueLineWidth = 2f
-    pieDataSet.valueFormatter = object : ValueFormatter() {
-        override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
-            return pieEntry?.label ?: ""
+
+    if (hideValues.not()) {
+        pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+        pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+        pieDataSet.valueFormatter = object : ValueFormatter() {
+            override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
+                return data.find { it.value == pieEntry?.value }?.name ?: ""
+            }
+        }
+    } else {
+        pieDataSet.valueFormatter = object : ValueFormatter() {
+            override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
+                return ""
+            }
         }
     }
-    // on below line we are creating
-    // a variable for pie data
-    val pieData = PieData(pieDataSet)
 
-    // on below line we are setting this
-    // pie data in chart data.
+    val pieData = PieData(pieDataSet)
     chart.data = pieData
-    // on below line we are
-    // calling invalidate in chart.
     chart.invalidate()
 }
 
@@ -292,8 +305,7 @@ fun CategoryTransactionItem(
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
+            modifier = Modifier.align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
             name = name
@@ -341,7 +353,7 @@ fun CategoryTransactionItem(
 }
 
 
-private val getPieChartData = listOf(
+val getPieChartData = listOf(
     PieChartData("Chrome", 34.68f, Color.parseColor("#43A546")),
     PieChartData("Firefox", 16.60F, Color.parseColor("#F44336")),
     PieChartData("Safari", 16.15F, Color.parseColor("#166EF7")),
@@ -351,7 +363,7 @@ private val getPieChartData = listOf(
 fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
     return CategoryTransactionUiModel(
         pieChartData = getPieChartData,
-        totalAmount = UiText.DynamicString("100.00$"),
+        totalAmount = UiText.DynamicString("Total \n 100.00$"),
         categoryTransactions = buildList {
             repeat(15) {
                 add(
@@ -365,6 +377,54 @@ fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
             }
         }
     )
+}
+
+@Composable
+fun CategoryTransactionSmallItem(
+    name: String,
+    icon: String,
+    iconBackgroundColor: String,
+    amount: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier) {
+        SmallIconAndBackgroundView(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            icon = icon,
+            iconBackgroundColor = iconBackgroundColor,
+            name = name
+        )
+        Text(
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically)
+                .padding(start = 16.dp, end = 16.dp),
+            text = name,
+            style = MaterialTheme.typography.bodySmall
+        )
+        Text(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            text = amount,
+            style = MaterialTheme.typography.labelSmall
+        )
+    }
+}
+
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun CategoryTransactionSmallItemPreview() {
+    ExpenseManagerTheme {
+        CategoryTransactionSmallItem(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+            name = "Utilities",
+            icon = "ic_calendar",
+            iconBackgroundColor = "#000000",
+            amount = "$100.00",
+        )
+    }
 }
 
 

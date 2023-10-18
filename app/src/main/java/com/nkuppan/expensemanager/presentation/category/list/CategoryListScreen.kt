@@ -6,6 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,6 +43,7 @@ import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.common.ui.theme.widget.IconAndBackgroundView
 import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
+import com.nkuppan.expensemanager.common.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
@@ -152,7 +154,6 @@ private fun CategoryListScreenContent(
     }
 }
 
-@SuppressLint("DiscouragedApi")
 @Composable
 fun CategoryItem(
     name: String,
@@ -197,8 +198,7 @@ fun CategoryCheckedItem(
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
+            modifier = Modifier.align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
             name = name
@@ -241,20 +241,23 @@ fun getRandomCategoryData(): List<Category> {
     }
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryItemPreview() {
     ExpenseManagerTheme {
-        CategoryItem(
-            name = "Utilities",
-            icon = "ic_calendar",
-            iconBackgroundColor = "#000000",
-            endIcon = R.drawable.ic_arrow_right,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = colorResource(id = R.color.grey_light))
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
-        )
+        Column {
+
+            CategoryItem(
+                name = "Utilities",
+                icon = "ic_calendar",
+                iconBackgroundColor = "#000000",
+                endIcon = R.drawable.ic_arrow_right,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = colorResource(id = R.color.grey_light))
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+            )
+        }
     }
 }
 

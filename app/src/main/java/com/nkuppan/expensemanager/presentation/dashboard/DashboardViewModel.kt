@@ -8,17 +8,22 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.common.ui.utils.getBalanceCurrency
 import com.nkuppan.expensemanager.common.ui.utils.getCurrency
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeNameUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsMapUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.analysis.constructGraphItems
+import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransaction
+import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
+import com.nkuppan.expensemanager.presentation.category.transaction.toChartModel
 import com.nkuppan.expensemanager.presentation.home.HomeScreenBottomBarItems
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
@@ -45,6 +50,7 @@ class DashboardViewModel @Inject constructor(
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
     getExpenseAmountUseCase: GetExpenseAmountUseCase,
     getAccountsUseCase: GetAccountsUseCase,
+    getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
 ) : ViewModel() {
 
     var homeScreenBottomBarItems by mutableStateOf(HomeScreenBottomBarItems.Home)
@@ -77,6 +83,9 @@ class DashboardViewModel @Inject constructor(
 
     private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
     val accounts = _accounts.asStateFlow()
+
+    private val _categoryTransaction = MutableStateFlow<CategoryTransactionUiModel?>(null)
+    val categoryTransaction = _categoryTransaction.asStateFlow()
 
     init {
         getFilterTypeNameUseCase.invoke().onEach {
@@ -139,6 +148,49 @@ class DashboardViewModel @Inject constructor(
             _accounts.value = accounts.map {
                 it.toAccountUiModel(currency)
             }
+        }.launchIn(viewModelScope)
+
+        combine(
+            getCurrencyUseCase.invoke(),
+            getTransactionGroupByCategoryUseCase.invoke()
+        ) { currency, transaction ->
+
+            val filteredTransaction = transaction.filter { it.key.type == CategoryType.EXPENSE }
+
+            val totalAmount =
+                filteredTransaction.map { it.value.sumOf { transactions -> transactions.amount } }
+                    .sumOf { it }
+
+            val categoryTransactions = buildList {
+                filteredTransaction.map {
+                    val totalSpentAmount = it.value.sumOf {
+                        it.amount
+                    }
+                    add(
+                        CategoryTransaction(
+                            it.key,
+                            percent = (totalSpentAmount / totalAmount).toFloat() * 100,
+                            getCurrency(
+                                currency = currency,
+                                amount = totalSpentAmount
+                            ),
+                            it.value
+                        )
+                    )
+                }
+            }.sortedByDescending { it.percent }.take(4)
+
+            _categoryTransaction.value =
+                CategoryTransactionUiModel(
+                    pieChartData = categoryTransactions.map {
+                        it.toChartModel()
+                    },
+                    totalAmount = getCurrency(
+                        currency = currency,
+                        amount = totalAmount
+                    ),
+                    categoryTransactions = categoryTransactions
+                )
         }.launchIn(viewModelScope)
     }
 

@@ -10,11 +10,14 @@ import androidx.compose.ui.unit.dp
 
 private const val COMMON_PADDING = 16
 
-private const val ICON_SIZE = 28
+private const val SMALL_ICON_SIZE = 24
+private const val ICON_SIZE = 36
 private const val COLOR_ICON_SIZE = 72
 
+val SmallIconSpecModifier = Modifier
+    .size(SMALL_ICON_SIZE.dp)
+
 val IconSpecModifier = Modifier
-    .padding(end = COMMON_PADDING.dp)
     .size(ICON_SIZE.dp)
 
 val ItemSpecModifier = Modifier
