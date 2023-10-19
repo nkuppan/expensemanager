@@ -122,6 +122,10 @@ private fun SettingsScreenScaffoldView(
                     showDateFilter = true
                 }
 
+                SettingOption.EXPORT -> {
+                    navController.navigate("export")
+                }
+
                 SettingOption.INFO -> {
                     openWebPage(context, "http://naveenapps.com/")
                 }
@@ -194,7 +198,6 @@ private fun SettingsScreenContent(
             description = stringResource(id = R.string.selected_daily_reminder_time),
             icon = R.drawable.ic_edit_notifications
         )
-
         SettingsItem(
             modifier = Modifier
                 .clickable {
@@ -205,6 +208,17 @@ private fun SettingsScreenContent(
             title = stringResource(id = R.string.filter),
             description = stringResource(id = R.string.filter_message),
             icon = R.drawable.ic_filter
+        )
+        SettingsItem(
+            modifier = Modifier
+                .clickable {
+                    settingOptionSelected?.invoke(SettingOption.EXPORT)
+                }
+                .padding(top = 8.dp, bottom = 8.dp)
+                .fillMaxWidth(),
+            title = stringResource(id = R.string.export),
+            description = stringResource(id = R.string.export_message),
+            icon = R.drawable.ic_export
         )
         SettingsItem(
             modifier = Modifier
@@ -321,6 +335,7 @@ private enum class SettingOption {
     CURRENCY,
     NOTIFICATION,
     FILTER,
+    EXPORT,
     INFO,
     RATE_US,
     GITHUB,

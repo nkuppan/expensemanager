@@ -41,6 +41,10 @@ fun getThisYearRange(): List<Long> {
     return listOf(startDayOfMonth, endDayOfMonth)
 }
 
+fun Long.toDate(): Date {
+    return Date(this)
+}
+
 fun Date.toTransactionDate(): String {
     return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
 }

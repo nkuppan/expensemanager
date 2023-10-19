@@ -183,7 +183,9 @@ fun BudgetItem(
             name = name
         )
         Column(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 16.dp),
         ) {
 
             Row {

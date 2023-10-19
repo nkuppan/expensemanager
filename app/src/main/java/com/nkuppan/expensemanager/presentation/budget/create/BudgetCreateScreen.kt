@@ -413,7 +413,7 @@ private fun BudgetCreateScreen(
             modifier = Modifier.padding(top = 16.dp)
         )
 
-        BudgetSelectedItemView(
+        SelectedItemView(
             modifier = Modifier
                 .clickable {
                     openAccountSelection?.invoke()
@@ -425,7 +425,7 @@ private fun BudgetCreateScreen(
             selectedCount = accountCount?.asString(context) ?: stringResource(id = R.string.all)
         )
 
-        BudgetSelectedItemView(
+        SelectedItemView(
             modifier = Modifier
                 .clickable {
                     openCategorySelection?.invoke()
@@ -448,7 +448,7 @@ private fun BudgetCreateScreen(
 }
 
 @Composable
-private fun BudgetSelectedItemView(
+fun SelectedItemView(
     title: String,
     selectedCount: String,
     icon: Painter,

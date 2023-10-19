@@ -86,6 +86,7 @@ dependencies {
     implementation(libs.androidx.work.ktx)
     implementation(libs.google.android.play.review)
     implementation(libs.app.update.ktx)
+    implementation("com.opencsv:opencsv:4.6")
 
     implementation(libs.mpcharts)
     implementation(libs.jxl)

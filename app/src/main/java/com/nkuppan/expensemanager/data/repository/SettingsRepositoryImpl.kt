@@ -8,6 +8,10 @@ import com.nkuppan.expensemanager.data.utils.getThisMonthRange
 import com.nkuppan.expensemanager.data.utils.getThisWeekRange
 import com.nkuppan.expensemanager.data.utils.getThisYearRange
 import com.nkuppan.expensemanager.data.utils.getTodayRange
+import com.nkuppan.expensemanager.data.utils.toDate
+import com.nkuppan.expensemanager.data.utils.toTransactionDate
+import com.nkuppan.expensemanager.data.utils.toTransactionMonth
+import com.nkuppan.expensemanager.data.utils.toTransactionYearValue
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.FilterType
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -69,6 +73,10 @@ class SettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getFilterRangeDateString(filterType: FilterType): String {
+        return getFilterDateValue(filterType)
+    }
+
     override suspend fun getFilterRange(filterType: FilterType): List<Long> {
         return getFilterValue(filterType)
     }
@@ -116,6 +124,32 @@ class SettingsRepositoryImpl @Inject constructor(
             FilterType.THIS_YEAR -> getThisYearRange()
             FilterType.ALL -> listOf(0, 0)
             FilterType.CUSTOM -> getCustomRange()
+        }
+    }
+
+
+    private fun getFilterDateValue(filterType: FilterType): String {
+        return when (filterType) {
+            FilterType.TODAY -> {
+                getTodayRange()[0].toDate().toTransactionDate()
+            }
+
+            FilterType.THIS_WEEK -> {
+                "${
+                    getThisWeekRange()[0].toDate().toTransactionDate()
+                }-${getThisWeekRange()[1].toDate().toTransactionDate()}"
+            }
+
+            FilterType.THIS_MONTH -> getThisMonthRange()[0].toDate().toTransactionMonth()
+            FilterType.THIS_YEAR -> getThisYearRange()[0].toDate().toTransactionYearValue()
+                .toString()
+
+            FilterType.ALL -> context.getString(R.string.all)
+            FilterType.CUSTOM -> {
+                "${
+                    getThisWeekRange()[0].toDate().toTransactionDate()
+                }-${getThisWeekRange()[1].toDate().toTransactionDate()}"
+            }
         }
     }
 

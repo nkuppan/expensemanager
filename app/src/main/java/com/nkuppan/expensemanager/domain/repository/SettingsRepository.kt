@@ -26,6 +26,8 @@ interface SettingsRepository {
 
     suspend fun getFilterRangeValue(filterType: FilterType): String
 
+    suspend fun getFilterRangeDateString(filterType: FilterType): String
+
     suspend fun getFilterRange(filterType: FilterType): List<Long>
 
     suspend fun setCustomFilterRange(customFilterRange: List<Date>): Resource<Boolean>

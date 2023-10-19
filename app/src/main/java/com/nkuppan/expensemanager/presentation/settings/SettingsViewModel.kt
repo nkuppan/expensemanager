@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
-    getCurrentThemeUseCase: GetCurrentThemeUseCase
+    getCurrentThemeUseCase: GetCurrentThemeUseCase,
 ) : ViewModel() {
 
     private val _currency: MutableStateFlow<Currency> = MutableStateFlow(

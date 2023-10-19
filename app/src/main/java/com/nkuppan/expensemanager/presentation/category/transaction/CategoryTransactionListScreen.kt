@@ -418,7 +418,7 @@ private fun CategoryTransactionSmallItemPreview() {
         CategoryTransactionSmallItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                .then(ItemSpecModifier),
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
@@ -435,7 +435,7 @@ private fun CategoryTransactionItemPreview() {
         CategoryTransactionItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                .then(ItemSpecModifier),
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",

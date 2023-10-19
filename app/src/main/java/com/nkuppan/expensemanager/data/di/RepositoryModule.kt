@@ -6,6 +6,7 @@ import com.nkuppan.expensemanager.domain.repository.AccountRepository
 import com.nkuppan.expensemanager.domain.repository.BudgetRepository
 import com.nkuppan.expensemanager.domain.repository.CategoryRepository
 import com.nkuppan.expensemanager.domain.repository.CurrencyRepository
+import com.nkuppan.expensemanager.domain.repository.ExportRepository
 import com.nkuppan.expensemanager.domain.repository.ReminderTimeRepository
 import com.nkuppan.expensemanager.domain.repository.SettingsRepository
 import com.nkuppan.expensemanager.domain.repository.ThemeRepository
@@ -62,4 +63,9 @@ abstract class RepositoryModule {
     abstract fun provideBudgetRepository(
         budgetRepositoryImpl: BudgetRepositoryImpl,
     ): BudgetRepository
+
+    @Binds
+    abstract fun provideExportRepository(
+        exportRepositoryImpl: ExportRepositoryImpl,
+    ): ExportRepository
 }

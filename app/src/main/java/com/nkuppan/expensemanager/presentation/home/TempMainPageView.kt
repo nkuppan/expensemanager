@@ -28,6 +28,7 @@ import com.nkuppan.expensemanager.presentation.category.create.CategoryCreateScr
 import com.nkuppan.expensemanager.presentation.category.list.CategoryListScreen
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionListScreen
 import com.nkuppan.expensemanager.presentation.settings.SettingsScreen
+import com.nkuppan.expensemanager.presentation.settings.export.ExportScreen
 import com.nkuppan.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionListScreen
 
@@ -121,6 +122,9 @@ fun TempMainPageView() {
             }
             composable("settings") {
                 SettingsScreen(navController)
+            }
+            composable("export") {
+                ExportScreen(navController)
             }
             composable(
                 "category_group_transaction?categoryType={categoryType}",

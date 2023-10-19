@@ -24,7 +24,7 @@ import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 @Composable
 fun TopNavigationBar(
     navController: NavController,
-    title: String,
+    title: String?,
     disableBackIcon: Boolean = false
 ) {
     TopAppBar(
@@ -34,10 +34,12 @@ fun TopNavigationBar(
             }
         },
         title = {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge
-            )
+            if (title != null) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
         }
     )
 }
@@ -81,6 +83,10 @@ fun TopNavigationBarWithDeleteAction(
 private fun TopNavigationBarWithDeleteAction() {
     ExpenseManagerTheme {
         Column {
+            TopNavigationBar(
+                navController = rememberNavController(),
+                title = null,
+            )
             TopNavigationBar(
                 navController = rememberNavController(),
                 title = stringResource(id = R.string.account),

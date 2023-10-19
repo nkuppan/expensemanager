@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.DUMMY_DATA
@@ -55,7 +56,7 @@ fun AccountSelectionScreen(
                                 .padding(4.dp)
                         }
                     )
-                    .padding(12.dp)
+                    .then(ItemSpecModifier)
             ) {
                 AccountItem(
                     modifier = Modifier

@@ -21,7 +21,12 @@ val IconSpecModifier = Modifier
     .size(ICON_SIZE.dp)
 
 val ItemSpecModifier = Modifier
-    .padding(COMMON_PADDING.dp)
+    .padding(
+        start = COMMON_PADDING.dp,
+        end = COMMON_PADDING.dp,
+        top = (COMMON_PADDING / 1.5).dp,
+        bottom = (COMMON_PADDING / 1.5).dp
+    )
     .wrapContentHeight()
     .fillMaxWidth()
 

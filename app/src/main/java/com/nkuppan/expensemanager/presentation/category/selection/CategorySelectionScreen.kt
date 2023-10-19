@@ -35,6 +35,9 @@ fun CategorySelectionScreen(
             val isSelected = selectedCategory?.id == category.id
             Box(
                 modifier = Modifier
+                    .clickable {
+                        onItemSelection?.invoke(category)
+                    }
                     .then(
                         if (isSelected) {
                             Modifier
@@ -49,9 +52,6 @@ fun CategorySelectionScreen(
                         }
                     )
                     .padding(12.dp)
-                    .clickable {
-                        onItemSelection?.invoke(category)
-                    }
             ) {
                 CategoryItem(
                     modifier = Modifier

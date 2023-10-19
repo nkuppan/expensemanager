@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionItem
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
@@ -76,7 +77,7 @@ fun AnalysisGraphScreen(navController: NavController) {
                             .clickable {
                                 navController.navigate("transaction/create?transactionId=${it.id}")
                             }
-                            .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                            .then(ItemSpecModifier),
                         categoryName = it.categoryName,
                         categoryColor = it.categoryBackgroundColor,
                         categoryIcon = it.categoryIcon,

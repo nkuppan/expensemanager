@@ -255,7 +255,7 @@ private fun CategoryItemPreview() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = colorResource(id = R.color.grey_light))
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    .then(ItemSpecModifier)
             )
         }
     }

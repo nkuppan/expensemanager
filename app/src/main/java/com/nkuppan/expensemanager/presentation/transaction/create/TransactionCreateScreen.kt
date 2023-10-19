@@ -57,6 +57,7 @@ import com.nkuppan.expensemanager.common.ui.theme.widget.AppDialog
 import com.nkuppan.expensemanager.common.ui.theme.widget.AppTimePickerDialog
 import com.nkuppan.expensemanager.common.ui.theme.widget.ClickableTextField
 import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBarWithDeleteAction
+import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.data.utils.toTransactionTimeOnly
@@ -475,13 +476,13 @@ private fun TransactionCreateScreen(
                     focusManager.clearFocus(force = true)
                     openSelection?.invoke(2)
                 }
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                .then(ItemSpecModifier)
         )
         if (selectedTransactionType == TransactionType.TRANSFER) {
 
             Text(
                 modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
+                    .then(ItemSpecModifier)
                     .fillMaxWidth(),
                 text = stringResource(id = R.string.to_account),
                 fontWeight = FontWeight.SemiBold,

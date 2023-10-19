@@ -40,6 +40,7 @@ import com.nkuppan.expensemanager.common.ui.extensions.getDrawable
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.common.ui.theme.widget.IconAndBackgroundView
 import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.common.ui.utils.getColorValue
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
@@ -127,7 +128,7 @@ private fun TransactionListScreen(
                                 .clickable {
                                     onItemClick?.invoke(it)
                                 }
-                                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                                .then(ItemSpecModifier),
                             categoryName = it.categoryName,
                             categoryColor = it.categoryBackgroundColor,
                             categoryIcon = it.categoryIcon,

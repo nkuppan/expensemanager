@@ -118,7 +118,7 @@
     <string name="spreadsheet_export_message">Your expense details will be exported into a spreadsheet file format.</string>
 
     <string name="export">Export</string>
-    <string name="export_message">Tacking backup for your database</string>
+    <string name="export_message">Export your data and analyse in your preferred format</string>
     <string name="import_title">Import</string>
     <string name="import_description">Importing backup file will retain the last data.</string>
 
@@ -318,4 +318,7 @@
     <string name="clear_all">Clear All</string>
     <string name="category_selection_message">Should select at least one category to proceed</string>
     <string name="account_selection_message">Should select at least one account to proceed</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="select_range">Select Range</string>
 </resources>
