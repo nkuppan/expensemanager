@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.category.transaction
 
 import androidx.annotation.ColorInt
 import androidx.core.graphics.toColorInt
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.common.ui.utils.UiText
@@ -22,7 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CategoryTransactionListViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
 ) : ViewModel() {
@@ -31,17 +29,15 @@ class CategoryTransactionListViewModel @Inject constructor(
     )
     val categoryTransaction = _categoryTransaction.asStateFlow()
 
-    private var categoryType: CategoryType = CategoryType.EXPENSE
+    private val _categoryType = MutableStateFlow(CategoryType.EXPENSE)
+    val categoryType = _categoryType.asStateFlow()
 
     init {
-
-        categoryType = CategoryType.values()[savedStateHandle.get<Int>("categoryType")
-            ?: CategoryType.EXPENSE.ordinal]
-
         combine(
+            categoryType,
             getCurrencyUseCase.invoke(),
             getTransactionGroupByCategoryUseCase.invoke()
-        ) { currency, transaction ->
+        ) { categoryType, currency, transaction ->
 
             val filteredTransaction = transaction.filter { it.key.type == categoryType }
 
@@ -82,6 +78,10 @@ class CategoryTransactionListViewModel @Inject constructor(
                     )
                 )
         }.launchIn(viewModelScope)
+    }
+
+    fun setCategoryType(categoryType: CategoryType) {
+        this._categoryType.value = categoryType
     }
 }
 

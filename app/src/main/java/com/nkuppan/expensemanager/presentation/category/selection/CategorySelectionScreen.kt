@@ -47,17 +47,13 @@ fun CategorySelectionScreen(
                                     shape = RoundedCornerShape(size = 12.dp)
                                 )
                         } else {
-                            Modifier
-                                .padding(4.dp)
+                            Modifier.padding(4.dp)
                         }
                     )
                     .padding(12.dp)
             ) {
                 CategoryItem(
-                    modifier = Modifier
-                        .clickable {
-                            onItemSelection?.invoke(category)
-                        },
+                    modifier = Modifier,
                     name = category.name,
                     icon = category.iconName,
                     iconBackgroundColor = category.iconBackgroundColor,

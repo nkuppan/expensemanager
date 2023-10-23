@@ -1,13 +1,12 @@
 package com.nkuppan.expensemanager.common.ui.theme.widget
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePicker
@@ -30,7 +29,6 @@ fun AppTimePickerDialog(
     reminderTimeState: ReminderTimeState,
     onTimeSelected: (ReminderTimeState) -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
 
     val timePickerState = rememberTimePickerState(
@@ -47,30 +45,35 @@ fun AppTimePickerDialog(
             usePlatformDefaultWidth = false
         ),
     ) {
-        Column(modifier = modifier) {
-            TimePicker(
-                modifier = modifier,
-                state = timePickerState,
-            )
+        Surface(
+            modifier = Modifier.padding(16.dp),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Column(modifier = Modifier.wrapContentSize()) {
+                TimePicker(
+                    modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
+                    state = timePickerState,
+                )
 
-            Row(
-                modifier = Modifier.align(Alignment.End)
-            ) {
-                TextButton(onClick = {
-                    onDismiss.invoke()
-                }) {
-                    Text(text = stringResource(id = R.string.cancel).uppercase())
-                }
-                TextButton(onClick = {
-                    onTimeSelected.invoke(
-                        ReminderTimeState(
-                            timePickerState.hour,
-                            timePickerState.minute,
-                            timePickerState.is24hour,
+                Row(
+                    modifier = Modifier.align(Alignment.End)
+                ) {
+                    TextButton(onClick = {
+                        onDismiss.invoke()
+                    }) {
+                        Text(text = stringResource(id = R.string.cancel).uppercase())
+                    }
+                    TextButton(onClick = {
+                        onTimeSelected.invoke(
+                            ReminderTimeState(
+                                timePickerState.hour,
+                                timePickerState.minute,
+                                timePickerState.is24hour,
+                            )
                         )
-                    )
-                }) {
-                    Text(text = stringResource(id = R.string.select).uppercase())
+                    }) {
+                        Text(text = stringResource(id = R.string.select).uppercase())
+                    }
                 }
             }
         }
@@ -84,15 +87,7 @@ fun AppTimePickerDialogPreview() {
     ExpenseManagerTheme {
         AppTimePickerDialog(
             reminderTimeState = ReminderTimeState(10, 0, false),
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
-                ),
             onTimeSelected = {},
-            onDismiss = {},
-        )
+        ) {}
     }
 }

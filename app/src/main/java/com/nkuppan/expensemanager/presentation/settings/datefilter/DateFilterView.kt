@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -96,117 +97,116 @@ fun DateFilterView(
             usePlatformDefaultWidth = false
         ),
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
-                )
+        Surface(
+            modifier = Modifier.padding(16.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
-            item {
-                Text(
-                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, bottom = 8.dp),
-                    text = stringResource(id = R.string.date_filter).uppercase(),
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
-            items(filterTypes) { filter ->
-                val isSelectedCurrency = selectedFilterType == filter.filterType
-                Row(
-                    modifier = Modifier
-                        .clickable {
-                            viewModel.setFilterType(filter.filterType)
-                        }
-                        .fillMaxWidth()
-                        .then(
-                            if (isSelectedCurrency) {
-                                Modifier
-                                    .padding(4.dp)
-                                    .background(
-                                        color = colorResource(id = R.color.green_100),
-                                        shape = RoundedCornerShape(size = 12.dp)
-                                    )
-                            } else {
-                                Modifier
-                                    .padding(4.dp)
-                            }
-                        )
-                        .padding(12.dp),
-                ) {
+            LazyColumn(
+                modifier = Modifier.wrapContentSize()
+            ) {
+                item {
                     Text(
-                        modifier = Modifier.weight(1f),
-                        text = filter.name
+                        modifier = Modifier.padding(top = 16.dp, start = 16.dp, bottom = 8.dp),
+                        text = stringResource(id = R.string.date_filter).uppercase(),
+                        style = MaterialTheme.typography.titleMedium
                     )
-                    if (isSelectedCurrency) {
-                        Icon(
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                            painter = painterResource(id = R.drawable.ic_done),
-                            contentDescription = null
+                }
+                items(filterTypes) { filter ->
+                    val isSelectedCurrency = selectedFilterType == filter.filterType
+                    Row(
+                        modifier = Modifier
+                            .clickable {
+                                viewModel.setFilterType(filter.filterType)
+                            }
+                            .fillMaxWidth()
+                            .then(
+                                if (isSelectedCurrency) {
+                                    Modifier
+                                        .padding(4.dp)
+                                        .background(
+                                            color = colorResource(id = R.color.green_100),
+                                            shape = RoundedCornerShape(size = 12.dp)
+                                        )
+                                } else {
+                                    Modifier
+                                        .padding(4.dp)
+                                }
+                            )
+                            .padding(12.dp),
+                    ) {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = filter.name
                         )
+                        if (isSelectedCurrency) {
+                            Icon(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                painter = painterResource(id = R.drawable.ic_done),
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
-            }
-            item {
-                if (showCustomRangeSelection) {
+                item {
+                    if (showCustomRangeSelection) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .padding(top = 8.dp, start = 16.dp, bottom = 8.dp, end = 16.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                ClickableTextField(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(end = 8.dp),
+                                    value = fromDate.toTransactionDate(),
+                                    label = R.string.from_date,
+                                    leadingIcon = R.drawable.ic_calendar,
+                                    onClick = {
+                                        focusManager.clearFocus()
+                                        dateTypeSelection = DateTypeSelection.FROM_DATE
+                                        showDatePicker = true
+                                    }
+                                )
+                                ClickableTextField(
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .padding(start = 8.dp),
+                                    value = toDate.toTransactionDate(),
+                                    label = R.string.to_date,
+                                    leadingIcon = R.drawable.ic_calendar,
+                                    onClick = {
+                                        focusManager.clearFocus()
+                                        dateTypeSelection = DateTypeSelection.TO_DATE
+                                        showDatePicker = true
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+                item {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {
                         Row(
                             modifier = Modifier
-                                .padding(top = 8.dp, start = 16.dp, bottom = 8.dp, end = 16.dp)
-                                .fillMaxWidth()
+                                .padding(16.dp)
+                                .align(Alignment.End)
                         ) {
-                            ClickableTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = 8.dp),
-                                value = fromDate.toTransactionDate(),
-                                label = R.string.from_date,
-                                leadingIcon = R.drawable.ic_calendar,
-                                onClick = {
-                                    focusManager.clearFocus()
-                                    dateTypeSelection = DateTypeSelection.FROM_DATE
-                                    showDatePicker = true
-                                }
-                            )
-                            ClickableTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(start = 8.dp),
-                                value = toDate.toTransactionDate(),
-                                label = R.string.to_date,
-                                leadingIcon = R.drawable.ic_calendar,
-                                onClick = {
-                                    focusManager.clearFocus()
-                                    dateTypeSelection = DateTypeSelection.TO_DATE
-                                    showDatePicker = true
-                                }
-                            )
-                        }
-                    }
-                }
-            }
-            item {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .align(Alignment.End)
-                    ) {
-                        TextButton(onClick = complete) {
-                            Text(text = stringResource(id = R.string.cancel).uppercase())
-                        }
-                        TextButton(onClick = {
-                            viewModel.save()
-                            complete.invoke()
-                        }) {
-                            Text(text = stringResource(id = R.string.select).uppercase())
+                            TextButton(onClick = complete) {
+                                Text(text = stringResource(id = R.string.cancel).uppercase())
+                            }
+                            TextButton(onClick = {
+                                viewModel.save()
+                                complete.invoke()
+                            }) {
+                                Text(text = stringResource(id = R.string.select).uppercase())
+                            }
                         }
                     }
                 }

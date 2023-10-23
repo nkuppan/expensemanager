@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -23,7 +23,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -31,6 +30,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.common.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.data.repository.availableCurrencies
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.CurrencySymbolPosition
@@ -76,86 +76,86 @@ fun CurrencyDialogViewContent(
             usePlatformDefaultWidth = false
         ),
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
-                )
+        Surface(
+            modifier = Modifier.padding(16.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
-            item {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    text = stringResource(id = R.string.choose_currency),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            item {
-                CurrencyPositionTypeSelectionView(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 14.dp, end = 14.dp),
-                    selectedCurrencyPositionType = selectedCurrency.position,
-                    onCurrencyPositionTypeChange = onCurrencyPositionTypeChange
-                )
-            }
-            items(currencies) { currency ->
-                val isSelectedCurrency = selectedCurrency.type == currency.type
-                Row(
-                    modifier = Modifier
-                        .clickable {
-                            onCurrencySelection.invoke(currency)
-                        }
-                        .fillMaxWidth()
-                        .then(
-                            if (isSelectedCurrency) {
-                                Modifier
-                                    .padding(4.dp)
-                                    .background(
-                                        color = colorResource(id = R.color.green_100),
-                                        shape = RoundedCornerShape(size = 12.dp)
-                                    )
-                            } else {
-                                Modifier
-                                    .padding(4.dp)
-                            }
-                        )
-                        .padding(12.dp),
-                ) {
+            LazyColumn(
+                modifier = Modifier
+                    .wrapContentSize()
+            ) {
+                item {
                     Text(
-                        modifier = Modifier.weight(1f),
-                        text = "${stringResource(id = currency.name)} (${stringResource(id = currency.type)})"
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        text = stringResource(id = R.string.choose_currency),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                    if (isSelectedCurrency) {
-                        Icon(
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                            painter = painterResource(id = R.drawable.ic_done),
-                            contentDescription = null
-                        )
-                    }
                 }
-            }
-            item {
-                Column(
-                    modifier = Modifier
-                        .padding(top = 8.dp, start = 16.dp, bottom = 8.dp)
-                        .fillMaxWidth()
-                ) {
+                item {
+                    CurrencyPositionTypeSelectionView(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 14.dp, end = 14.dp),
+                        selectedCurrencyPositionType = selectedCurrency.position,
+                        onCurrencyPositionTypeChange = onCurrencyPositionTypeChange
+                    )
+                }
+                items(currencies) { currency ->
+                    val isSelectedCurrency = selectedCurrency.type == currency.type
                     Row(
                         modifier = Modifier
-                            .wrapContentSize()
-                            .align(Alignment.End)
+                            .clickable {
+                                onCurrencySelection.invoke(currency)
+                            }
+                            .fillMaxWidth()
+                            .then(
+                                if (isSelectedCurrency) {
+                                    Modifier
+                                        .padding(4.dp)
+                                        .background(
+                                            color = colorResource(id = R.color.green_100),
+                                            shape = RoundedCornerShape(size = 12.dp)
+                                        )
+                                } else {
+                                    Modifier
+                                        .padding(4.dp)
+                                }
+                            )
+                            .padding(12.dp),
                     ) {
-                        TextButton(onClick = onDismiss) {
-                            Text(text = stringResource(id = R.string.cancel).uppercase())
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = "${stringResource(id = currency.name)} (${stringResource(id = currency.type)})"
+                        )
+                        if (isSelectedCurrency) {
+                            Icon(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                painter = painterResource(id = R.drawable.ic_done),
+                                contentDescription = null
+                            )
                         }
-                        TextButton(onClick = onSave) {
-                            Text(text = stringResource(id = R.string.ok).uppercase())
+                    }
+                }
+                item {
+                    Column(
+                        modifier = Modifier
+                            .padding(top = 8.dp, start = 16.dp, bottom = 8.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .align(Alignment.End)
+                        ) {
+                            TextButton(onClick = onDismiss) {
+                                Text(text = stringResource(id = R.string.cancel).uppercase())
+                            }
+                            TextButton(onClick = onSave) {
+                                Text(text = stringResource(id = R.string.ok).uppercase())
+                            }
                         }
                     }
                 }
@@ -164,7 +164,7 @@ fun CurrencyDialogViewContent(
     }
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 fun CurrencyDialogViewPreview() {
     ExpenseManagerTheme {

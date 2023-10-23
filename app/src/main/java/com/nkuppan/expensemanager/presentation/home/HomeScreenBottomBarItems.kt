@@ -11,5 +11,5 @@ enum class HomeScreenBottomBarItems(
     Home(R.string.title_home, R.drawable.ic_home),
     Analysis(R.string.analysis, R.drawable.ic_chart),
     Transaction(R.string.transaction, R.drawable.ic_transfer),
-    Category(R.string.category, R.drawable.ic_category),
+    Category(R.string.categories, R.drawable.ic_category),
 }

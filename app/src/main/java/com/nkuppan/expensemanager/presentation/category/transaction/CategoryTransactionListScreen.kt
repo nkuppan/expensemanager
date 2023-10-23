@@ -1,10 +1,11 @@
 package com.nkuppan.expensemanager.presentation.category.transaction
 
-import android.content.res.Configuration
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.widget.LinearLayout
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,11 +27,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -59,17 +64,91 @@ import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.common.utils.AppPreviewsLightAndDarkMode
+import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.budget.list.toPercentString
 import com.nkuppan.expensemanager.presentation.category.list.getCategoryData
 import kotlin.random.Random
 
+@SuppressLint("ComposableDestinationInComposeScope")
 @Composable
-fun CategoryTransactionListScreen(
+fun CategoryTransactionTabScreen(
     navController: NavController
+) {
+
+    val titles = listOf(
+        stringResource(id = R.string.income).uppercase(),
+        stringResource(id = R.string.expense).uppercase(),
+    )
+    var tabIndex by remember { mutableIntStateOf(CategoryType.INCOME.ordinal) }
+
+    Scaffold(
+        topBar = {
+            TopNavigationBar(
+                navController = navController,
+                title = stringResource(R.string.categories),
+                disableBackIcon = true
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate("transaction/create")
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_add),
+                    contentDescription = ""
+                )
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TabRow(selectedTabIndex = tabIndex) {
+                titles.forEachIndexed { index, title ->
+                    Tab(
+                        text = { Text(title) },
+                        selected = tabIndex == index,
+                        onClick = { tabIndex = index }
+                    )
+                }
+            }
+            CategoryTransactionScreen(
+                navController,
+                CategoryType.values()[tabIndex]
+            )
+        }
+    }
+}
+
+@Composable
+private fun CategoryTransactionScreen(
+    navController: NavController,
+    categoryType: CategoryType
 ) {
     val viewModel: CategoryTransactionListViewModel = hiltViewModel()
     val uiState by viewModel.categoryTransaction.collectAsState()
+    viewModel.setCategoryType(categoryType)
+    CategoryTransactionListScreenContent(
+        modifier = Modifier.fillMaxSize(),
+        uiState = uiState
+    ) { _ ->
+        navController.navigate("transaction/create")
+    }
+}
+
+@Composable
+private fun CategoryTransactionListScreen(
+    navController: NavController,
+    categoryType: CategoryType
+) {
+    val viewModel: CategoryTransactionListViewModel = hiltViewModel()
+    val uiState by viewModel.categoryTransaction.collectAsState()
+    viewModel.setCategoryType(categoryType)
     CategoryTransactionListScreen(navController, uiState)
 }
 
@@ -109,7 +188,7 @@ fun CategoryTransactionListScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
             uiState = uiState
-        ) { account ->
+        ) { _ ->
             navController.navigate("transaction/create")
         }
     }
@@ -155,6 +234,7 @@ private fun CategoryTransactionListScreenContent(
                             uiState.data.pieChartData,
                             chartHeight = 600,
                             hideValues = false,
+                            modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
                         )
                     }
                     items(uiState.data.categoryTransactions) { categoryTransaction ->
@@ -188,6 +268,7 @@ private fun CategoryTransactionListScreenContent(
 fun PieChartView(
     totalAmountText: String,
     chartData: List<PieChartData>,
+    modifier: Modifier = Modifier,
     chartHeight: Int = 600,
     hideValues: Boolean = false,
     chartWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT
@@ -198,45 +279,48 @@ fun PieChartView(
     Crossfade(targetState = chartData, label = "") { pieChartData ->
         // on below line we are creating an
         // android view for pie chart.
-        AndroidView(factory = { context ->
-            // on below line we are creating a pie chart
-            // and specifying layout params.
-            PieChart(context).apply {
-                layoutParams = LinearLayout.LayoutParams(
-                    // on below line we are specifying layout
-                    // params as MATCH PARENT for height and width.
-                    chartWidth,
-                    chartHeight,
-                )
-                // on below line we are setting description
-                // enables for our pie chart.
-                this.description.isEnabled = false
+        AndroidView(
+            modifier = modifier.wrapContentSize(),
+            factory = { context ->
+                // on below line we are creating a pie chart
+                // and specifying layout params.
+                PieChart(context).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        // on below line we are specifying layout
+                        // params as MATCH PARENT for height and width.
+                        chartWidth,
+                        chartHeight,
+                    )
+                    // on below line we are setting description
+                    // enables for our pie chart.
+                    this.description.isEnabled = false
 
-                // on below line we are setting draw hole
-                // to false not to draw hole in pie chart
-                this.isHighlightPerTapEnabled = false
-                this.isDragDecelerationEnabled = false
-                this.isDrawHoleEnabled = true
-                this.holeRadius = 75f
-                this.setHoleColor(holeColor)
-                this.setTouchEnabled(false)
-                this.setUsePercentValues(true)
-                this.setDrawSlicesUnderHole(true)
-                this.setCenterTextSize(16f)
-                this.setCenterTextColor(colorCode)
-                this.centerText = buildSpannedString {
-                    append(totalAmountText)
+                    // on below line we are setting draw hole
+                    // to false not to draw hole in pie chart
+                    this.isHighlightPerTapEnabled = false
+                    this.isDragDecelerationEnabled = false
+                    this.isDrawHoleEnabled = true
+                    this.holeRadius = 75f
+                    this.setHoleColor(holeColor)
+                    this.setTouchEnabled(false)
+                    this.setUsePercentValues(true)
+                    this.setDrawSlicesUnderHole(true)
+                    if (hideValues) {
+                        this.setCenterTextSize(12f)
+                    } else {
+                        this.setCenterTextSize(16f)
+                    }
+
+                    this.setCenterTextColor(colorCode)
+                    this.centerText = buildSpannedString {
+                        append(totalAmountText)
+                    }
+
+                    // on below line we are enabling legend.
+                    this.legend.isEnabled = false
+                    //this.animateY(1000, Easing.EaseInOutQuad);
                 }
-
-                // on below line we are enabling legend.
-                this.legend.isEnabled = false
-                //this.animateY(1000, Easing.EaseInOutQuad);
-            }
-        },
-            // on below line we are specifying modifier
-            // for it and specifying padding to it.
-            modifier = Modifier
-                .wrapContentSize(),
+            },
             update = {
                 // on below line we are calling update pie chart
                 // method and passing pie chart and list of data.
@@ -268,7 +352,11 @@ fun updatePieChartWithData(
     pieDataSet.colors = colors
     pieDataSet.setValueTextColors(colors)
     pieDataSet.sliceSpace = 3f
-    pieDataSet.valueTextSize = 10f
+    if (hideValues) {
+        pieDataSet.valueTextSize = 6f
+    } else {
+        pieDataSet.valueTextSize = 10f
+    }
     pieDataSet.isUsingSliceColorAsValueLineColor = true
     pieDataSet.valueLinePart1Length = .2f
     pieDataSet.valueLineWidth = 2f
@@ -467,14 +555,23 @@ private fun CategoryTransactionListItemEmptyStatePreview() {
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         CategoryTransactionListScreen(
             rememberNavController(),
             uiState = UiState.Success(getRandomCategoryTransactionData()),
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun CategoryTransactionTabScreenPreview() {
+    ExpenseManagerTheme {
+        CategoryTransactionTabScreen(
+            rememberNavController()
         )
     }
 }

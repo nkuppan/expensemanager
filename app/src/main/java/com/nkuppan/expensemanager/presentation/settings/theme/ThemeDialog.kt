@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -67,58 +67,57 @@ fun ThemeDialogViewContent(
             usePlatformDefaultWidth = false
         ),
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
-                )
+        Surface(
+            modifier = Modifier.padding(16.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
-            item {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    text = stringResource(id = R.string.choose_theme),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            items(themes) { theme ->
-                val isThemeSelected = selectedTheme.mode == theme.mode
-                Row(
-                    modifier = Modifier
-                        .clickable {
-                            onConfirm.invoke(theme)
-                        }
-                        .fillMaxWidth()
-                        .then(
-                            if (isThemeSelected) {
-                                Modifier
-                                    .padding(4.dp)
-                                    .background(
-                                        color = colorResource(id = R.color.green_100),
-                                        shape = RoundedCornerShape(size = 12.dp)
-                                    )
-                            } else {
-                                Modifier
-                                    .padding(4.dp)
-                            }
-                        )
-                        .padding(12.dp),
-                ) {
+            LazyColumn(
+                modifier = Modifier.wrapContentSize()
+            ) {
+                item {
                     Text(
-                        modifier = Modifier.weight(1f),
-                        text = stringResource(id = theme.titleResId)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        text = stringResource(id = R.string.choose_theme),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
                     )
-                    if (isThemeSelected) {
-                        Icon(
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                            painter = painterResource(id = R.drawable.ic_done),
-                            contentDescription = null
+                }
+                items(themes) { theme ->
+                    val isThemeSelected = selectedTheme.mode == theme.mode
+                    Row(
+                        modifier = Modifier
+                            .clickable {
+                                onConfirm.invoke(theme)
+                            }
+                            .fillMaxWidth()
+                            .then(
+                                if (isThemeSelected) {
+                                    Modifier
+                                        .padding(4.dp)
+                                        .background(
+                                            color = colorResource(id = R.color.green_100),
+                                            shape = RoundedCornerShape(size = 12.dp)
+                                        )
+                                } else {
+                                    Modifier
+                                        .padding(4.dp)
+                                }
+                            )
+                            .padding(12.dp),
+                    ) {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(id = theme.titleResId)
                         )
+                        if (isThemeSelected) {
+                            Icon(
+                                modifier = Modifier.align(Alignment.CenterVertically),
+                                painter = painterResource(id = R.drawable.ic_done),
+                                contentDescription = null
+                            )
+                        }
                     }
                 }
             }
