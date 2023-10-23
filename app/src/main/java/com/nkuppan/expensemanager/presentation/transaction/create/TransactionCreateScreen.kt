@@ -313,22 +313,14 @@ private fun TransactionCreateScreen(
 
     if (showTimePicker) {
         AppTimePickerDialog(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
-                ),
             reminderTimeState = (selectedDate ?: Date()).toTime(),
             onTimeSelected = {
                 onDateChange?.invoke((selectedDate ?: Date()).toTime(it))
                 showTimePicker = false
             },
-            onDismiss = {
-                showTimePicker = false
-            },
-        )
+        ) {
+            showTimePicker = false
+        }
     }
 
     Column(
