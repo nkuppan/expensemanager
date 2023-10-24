@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.presentation.category.transaction
 
+import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
@@ -64,17 +65,28 @@ class CategoryTransactionListViewModel @Inject constructor(
                 }
             }.sortedByDescending { it.percent }
 
+            val pieChartData = if (categoryTransactions.isEmpty()) {
+                listOf(
+                    getDummyPieChartData(),
+                    getDummyPieChartData(),
+                    getDummyPieChartData(),
+                    getDummyPieChartData()
+                )
+            } else {
+                categoryTransactions.map {
+                    it.toChartModel()
+                }
+            }
             _categoryTransaction.value =
                 UiState.Success(
                     CategoryTransactionUiModel(
-                        pieChartData = categoryTransactions.map {
-                            it.toChartModel()
-                        },
+                        pieChartData = pieChartData,
                         totalAmount = getCurrency(
                             currency = currency,
                             amount = totalAmount
                         ),
-                        categoryTransactions = categoryTransactions
+                        categoryTransactions = categoryTransactions,
+                        hideValues = categoryTransactions.isEmpty()
                     )
                 )
         }.launchIn(viewModelScope)
@@ -90,6 +102,14 @@ fun CategoryTransaction.toChartModel(): PieChartData {
         name = this.category.name,
         value = this.percent,
         color = this.category.iconBackgroundColor.toColorInt(),
+    )
+}
+
+fun getDummyPieChartData(): PieChartData {
+    return PieChartData(
+        name = "",
+        value = 25.0f,
+        color = Color.parseColor("#30000000"),
     )
 }
 
@@ -109,5 +129,6 @@ data class CategoryTransaction(
 data class CategoryTransactionUiModel(
     val totalAmount: UiText,
     val pieChartData: List<PieChartData>,
-    val categoryTransactions: List<CategoryTransaction>
+    val categoryTransactions: List<CategoryTransaction>,
+    val hideValues: Boolean = false
 )

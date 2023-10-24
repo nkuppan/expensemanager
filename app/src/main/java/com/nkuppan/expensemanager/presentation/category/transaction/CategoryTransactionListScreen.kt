@@ -50,6 +50,7 @@ import androidx.core.text.buildSpannedString
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -222,7 +223,7 @@ private fun CategoryTransactionListScreenContent(
                             uiState.data.totalAmount.asString(context),
                             uiState.data.pieChartData,
                             chartHeight = 600,
-                            hideValues = false,
+                            hideValues = uiState.data.hideValues,
                             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
                         )
                     }
@@ -239,6 +240,17 @@ private fun CategoryTransactionListScreenContent(
                             amount = categoryTransaction.amount.asString(context),
                             percentage = categoryTransaction.percent
                         )
+                    }
+                    item {
+                        if (uiState.data.categoryTransactions.isEmpty()) {
+                            Text(
+                                text = stringResource(id = R.string.no_transactions_available),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(36.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                     item {
                         Spacer(
@@ -307,7 +319,7 @@ fun PieChartView(
 
                     // on below line we are enabling legend.
                     this.legend.isEnabled = false
-                    //this.animateY(1000, Easing.EaseInOutQuad);
+                    this.animateY(1000, Easing.EaseInOutQuad)
                 }
             },
             update = {
