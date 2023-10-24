@@ -9,10 +9,10 @@ import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionRelation
 import com.nkuppan.expensemanager.data.mappers.toDomainModel
 import com.nkuppan.expensemanager.data.mappers.toEntityModel
-import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.TransactionType
+import com.nkuppan.expensemanager.domain.model.isIncome
 import com.nkuppan.expensemanager.domain.model.isTransfer
 import com.nkuppan.expensemanager.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
@@ -68,9 +68,11 @@ class TransactionRepositoryImpl @Inject constructor(
     override suspend fun updateTransaction(transaction: Transaction): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
+                val transactionEntity = transaction.toEntityModel()
+                transactionDao.removePreviousEnteredAmount(transactionEntity)
                 transactionDao.updateTransaction(
-                    transaction.toEntityModel(),
-                    if (transaction.category.type == CategoryType.INCOME) {
+                    transactionEntity,
+                    if (transaction.type.isIncome()) {
                         transaction.amount
                     } else {
                         transaction.amount * -1
@@ -86,8 +88,9 @@ class TransactionRepositoryImpl @Inject constructor(
     override suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {
-                val response =
-                    transactionDao.delete(transaction.toEntityModel())
+                val transactionEntity = transaction.toEntityModel()
+                transactionDao.removePreviousEnteredAmount(transactionEntity)
+                val response = transactionDao.delete(transactionEntity)
                 Resource.Success(response != -1)
             } catch (exception: Exception) {
                 Resource.Error(exception)

@@ -16,9 +16,9 @@ import androidx.core.app.TaskStackBuilder
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.data.workers.NotificationWorker
 import com.nkuppan.expensemanager.domain.repository.ReminderTimeRepository
 import com.nkuppan.expensemanager.presentation.HomeActivity
-import com.nkuppan.expensemanager.presentation.settings.workers.NotificationWorker
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
@@ -102,14 +102,17 @@ class NotificationScheduler @Inject constructor(
 
         val notification = builder.setContentTitle(title)
             .setContentText(content).setAutoCancel(true)
-            .setSound(alarmSound).setSmallIcon(R.drawable.ic_notification)
+            .setSound(alarmSound).setSmallIcon(R.drawable.account_balance_wallet)
             .setContentIntent(pendingIntent).build()
 
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE)
                     as NotificationManager
 
-        notificationManager.notify(NotificationId.DAILY_REMINDER_REQUEST_CODE, notification)
+        notificationManager.notify(
+            NotificationId.DAILY_REMINDER_REQUEST_CODE,
+            notification
+        )
     }
 
     private fun createChannelIfRequired(aContext: Context) {

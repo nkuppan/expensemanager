@@ -7,6 +7,8 @@ import androidx.room.Update
 import com.nkuppan.expensemanager.data.db.entity.AccountEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionEntity
 import com.nkuppan.expensemanager.data.db.entity.TransactionRelation
+import com.nkuppan.expensemanager.domain.model.TransactionType
+import com.nkuppan.expensemanager.domain.model.isTransfer
 import kotlinx.coroutines.flow.Flow
 
 
@@ -133,13 +135,49 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         return id
     }
 
+    suspend fun removePreviousEnteredAmount(transactionEntity: TransactionEntity) {
+
+        val previousTransaction = findById(transactionEntity.id)
+
+        if (previousTransaction != null) {
+            val previousAmountToDetect = if (previousTransaction.type == TransactionType.INCOME) {
+                previousTransaction.amount * -1
+            } else {
+                previousTransaction.amount
+            }
+            val previousSelectedFromAccount = findAccountById(previousTransaction.fromAccountId)
+            if (previousSelectedFromAccount != null) {
+                updateAccount(
+                    previousSelectedFromAccount.copy(
+                        amount = previousSelectedFromAccount.amount + previousAmountToDetect
+                    )
+                )
+            }
+
+            if (previousTransaction.type.isTransfer() && previousTransaction.toAccountId?.isNotBlank() == true) {
+                val toAccountEntity = findAccountById(
+                    previousTransaction.toAccountId!!
+                )
+                if (toAccountEntity != null) {
+                    updateAccount(
+                        toAccountEntity.copy(
+                            amount = toAccountEntity.amount + (previousAmountToDetect * -1)
+                        )
+                    )
+                }
+            }
+        }
+    }
+
     @Transaction
     suspend fun updateTransaction(
         transactionEntity: TransactionEntity,
         amountToDetect: Double,
         isTransfer: Boolean
     ) {
+
         update(transactionEntity)
+
         val accountEntity = findAccountById(transactionEntity.fromAccountId)
         if (accountEntity != null) {
             updateAccount(

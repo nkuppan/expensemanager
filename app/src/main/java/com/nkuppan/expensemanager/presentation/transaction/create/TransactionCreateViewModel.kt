@@ -126,10 +126,10 @@ class TransactionCreateViewModel @Inject constructor(
             val (transactionType, categories) = pair
 
             val filteredCategories = categories.filter { category ->
-                if (transactionType == TransactionType.EXPENSE) {
-                    category.type.isExpense()
-                } else {
+                if (transactionType.isIncome()) {
                     category.type.isIncome()
+                } else {
+                    category.type.isExpense()
                 }
             }
             _categories.value = filteredCategories
@@ -174,6 +174,8 @@ class TransactionCreateViewModel @Inject constructor(
     fun doSave() {
 
         val amount = this.amount.value
+
+        val previousAmount = this.transaction?.amount ?: 0.0
 
         if (amount.isBlank()) {
             _amountErrorMessage.value = UiText.StringResource(R.string.amount_error_message)

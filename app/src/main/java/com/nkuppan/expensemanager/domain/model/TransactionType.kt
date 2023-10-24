@@ -9,3 +9,7 @@ enum class TransactionType {
 fun TransactionType.isTransfer(): Boolean {
     return this == TransactionType.TRANSFER
 }
+
+fun TransactionType.isIncome(): Boolean {
+    return this == TransactionType.INCOME
+}

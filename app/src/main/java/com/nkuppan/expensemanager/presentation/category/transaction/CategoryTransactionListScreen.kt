@@ -142,17 +142,6 @@ private fun CategoryTransactionScreen(
 }
 
 @Composable
-private fun CategoryTransactionListScreen(
-    navController: NavController,
-    categoryType: CategoryType
-) {
-    val viewModel: CategoryTransactionListViewModel = hiltViewModel()
-    val uiState by viewModel.categoryTransaction.collectAsState()
-    viewModel.setCategoryType(categoryType)
-    CategoryTransactionListScreen(navController, uiState)
-}
-
-@Composable
 fun CategoryTransactionListScreen(
     navController: NavController,
     uiState: UiState<CategoryTransactionUiModel>

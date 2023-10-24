@@ -42,7 +42,7 @@ internal class HomeActivity : ComponentActivity() {
                 )
             }
 
-            ExpenseManagerTheme(useDarkTheme = isDarkTheme) {
+            ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
                 TempMainPageView()
             }
         }

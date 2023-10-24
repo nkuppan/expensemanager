@@ -1,4 +1,4 @@
-package com.nkuppan.expensemanager.presentation.settings.workers
+package com.nkuppan.expensemanager.data.workers
 
 import android.content.Context
 import androidx.work.Worker
