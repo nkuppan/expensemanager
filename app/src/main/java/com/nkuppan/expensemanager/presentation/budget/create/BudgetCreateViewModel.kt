@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.fromTransactionMonthToDate
 import com.nkuppan.expensemanager.data.utils.toTransactionMonth
 import com.nkuppan.expensemanager.domain.model.Budget
@@ -17,6 +16,7 @@ import com.nkuppan.expensemanager.domain.usecase.budget.FindBudgetByIdUseCase
 import com.nkuppan.expensemanager.domain.usecase.budget.UpdateBudgetUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
+import com.nkuppan.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -29,11 +29,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.common.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.data.repository.availableCurrencies
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.CurrencySymbolPosition
+import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable

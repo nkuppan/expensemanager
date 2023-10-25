@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Currency
@@ -22,6 +21,7 @@ import com.nkuppan.expensemanager.domain.usecase.transaction.FindTransactionById
 import com.nkuppan.expensemanager.domain.usecase.transaction.UpdateTransactionUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
+import com.nkuppan.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -174,8 +174,6 @@ class TransactionCreateViewModel @Inject constructor(
     fun doSave() {
 
         val amount = this.amount.value
-
-        val previousAmount = this.transaction?.amount ?: 0.0
 
         if (amount.isBlank()) {
             _amountErrorMessage.value = UiText.StringResource(R.string.amount_error_message)

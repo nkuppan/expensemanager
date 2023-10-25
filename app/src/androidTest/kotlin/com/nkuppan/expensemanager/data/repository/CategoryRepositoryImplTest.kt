@@ -6,11 +6,11 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
 import com.nkuppan.expensemanager.common.testing.BaseCoroutineTest
-import com.nkuppan.expensemanager.common.utils.AppCoroutineDispatchers
 import com.nkuppan.expensemanager.data.db.ExpenseManagerDatabase
 import com.nkuppan.expensemanager.data.db.dao.CategoryDao
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.repository.CategoryRepository
+import com.nkuppan.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

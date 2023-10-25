@@ -1,7 +1,7 @@
 package com.nkuppan.expensemanager.presentation.transaction.history
 
-import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.TransactionType
+import com.nkuppan.expensemanager.ui.utils.UiText
 
 class HistoryListItem(
     val text: UiText? = null,

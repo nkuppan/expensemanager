@@ -41,13 +41,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.common.ui.extensions.toColor
-import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.common.ui.theme.widget.IconAndBackgroundView
-import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBar
-import com.nkuppan.expensemanager.common.ui.utils.ItemSpecModifier
-import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.ui.extensions.toColor
+import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.ui.theme.widget.IconAndBackgroundView
+import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
+import com.nkuppan.expensemanager.ui.utils.UiText
 
 
 @Composable

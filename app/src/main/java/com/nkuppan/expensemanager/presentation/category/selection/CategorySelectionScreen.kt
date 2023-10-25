@@ -14,11 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.presentation.category.list.CategoryItem
 import com.nkuppan.expensemanager.presentation.category.list.getRandomCategoryData
 import com.nkuppan.expensemanager.presentation.selection.SelectionTitle
+import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 
 @Composable
 fun CategorySelectionScreen(

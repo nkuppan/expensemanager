@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.analysis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.data.utils.toTransactionDateOnly
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Currency
@@ -12,6 +11,7 @@ import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUs
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsMapUseCase
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
+import com.nkuppan.expensemanager.ui.utils.UiText
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.entry.FloatEntry

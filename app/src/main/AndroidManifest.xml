@@ -49,7 +49,7 @@
         </activity>
         <!-- Register the Alarm Receiver -->
         <provider
-            android:name=".common.utils.GenericFileProvider"
+            android:name=".utils.GenericFileProvider"
             android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -15,14 +15,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.common.ui.theme.widget.AppCardView
-import com.nkuppan.expensemanager.common.ui.utils.UiText
-import com.nkuppan.expensemanager.common.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionSmallItem
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.nkuppan.expensemanager.presentation.category.transaction.PieChartView
 import com.nkuppan.expensemanager.presentation.category.transaction.getRandomCategoryTransactionData
+import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.ui.theme.widget.AppCardView
+import com.nkuppan.expensemanager.ui.utils.UiText
+import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable

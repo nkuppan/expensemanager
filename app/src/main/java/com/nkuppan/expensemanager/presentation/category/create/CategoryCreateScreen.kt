@@ -36,14 +36,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.common.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.common.ui.theme.widget.AppDialog
-import com.nkuppan.expensemanager.common.ui.theme.widget.TopNavigationBarWithDeleteAction
-import com.nkuppan.expensemanager.common.ui.utils.UiText
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.presentation.selection.ColorSelectionScreen
 import com.nkuppan.expensemanager.presentation.selection.IconAndColorComponent
 import com.nkuppan.expensemanager.presentation.selection.IconSelectionScreen
+import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.ui.theme.widget.AppDialog
+import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBarWithDeleteAction
+import com.nkuppan.expensemanager.ui.utils.UiText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
