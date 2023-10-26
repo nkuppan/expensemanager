@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -34,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +41,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable
@@ -57,14 +56,11 @@ fun NumberPadDialogView(
             usePlatformDefaultWidth = false
         ),
     ) {
-        Box(
+        Surface(
             modifier = Modifier
-                .wrapContentSize()
                 .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(16.dp)
-                )
+                .wrapContentSize(),
+            shape = RoundedCornerShape(8.dp)
         ) {
             NumberPadScreen(onConfirm)
         }
@@ -154,10 +150,7 @@ private fun NumberPadScreenView(
                 )
             }
         }
-        Surface(
-            shadowElevation = 2.dp
-        ) {
-
+        Surface(shadowElevation = 2.dp) {
             Column {
                 Row(modifier = Modifier.fillMaxWidth()) {
                     NumberPadActionText(
@@ -349,7 +342,7 @@ fun VerticalDivider(
     )
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenPreview() {
     ExpenseManagerTheme {
@@ -361,7 +354,7 @@ fun NumberPadScreenPreview() {
     }
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenDialogPreview() {
     ExpenseManagerTheme {

@@ -2,6 +2,7 @@ package com.nkuppan.expensemanager.presentation.account.create
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -33,7 +34,10 @@ fun AccountTypeSelectionView(
     modifier: Modifier = Modifier
 ) {
 
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         CustomAccountFilterChip(
             selectedAccountType = selectedAccountType,
             accountType = AccountType.REGULAR,
@@ -52,7 +56,6 @@ fun AccountTypeSelectionView(
             onAccountTypeChange = onAccountTypeChange,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .padding(start = 16.dp)
         )
     }
 }

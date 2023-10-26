@@ -2,11 +2,14 @@ package com.nkuppan.expensemanager.presentation.settings.export
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.usecase.settings.export.ExportFileUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterRangeDateStringUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeUseCase
+import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
+import com.nkuppan.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,6 +31,12 @@ class ExportViewModel @Inject constructor(
     private val _exportFileType = MutableStateFlow(ExportFileType.CSV)
     val exportFileType = _exportFileType.asStateFlow()
 
+    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
+    val accountCount = _accountCount.asStateFlow()
+
+    private var selectedAccounts = emptyList<AccountUiModel>()
+    private var isAllAccountsSelected = true
+
     init {
         getFilterTypeUseCase.invoke().map {
             _selectedDateRange.value = getFilterRangeDateStringUseCase.invoke(it)
@@ -38,18 +47,21 @@ class ExportViewModel @Inject constructor(
         this._exportFileType.value = exportFileType
     }
 
+    fun setAccounts(selectedAccounts: List<AccountUiModel>, isAllSelected: Boolean) {
+        this.selectedAccounts = selectedAccounts
+        this.isAllAccountsSelected = isAllSelected
+        _accountCount.value = if (isAllSelected) {
+            UiText.StringResource(R.string.all)
+        } else {
+            UiText.DynamicString(selectedAccounts.size.toString())
+        }
+    }
+
     fun export() {
         viewModelScope.launch {
-            when (val response = exportFileUseCase.invoke(_exportFileType.value)) {
-                is Resource.Error -> {
-
-                }
-
-                is Resource.Success -> {
-                    if (response.data) {
-
-                    }
-                }
+            when (exportFileUseCase.invoke(_exportFileType.value)) {
+                is Resource.Error -> Unit
+                is Resource.Success -> Unit
             }
         }
     }

@@ -13,3 +13,7 @@ fun TransactionType.isTransfer(): Boolean {
 fun TransactionType.isIncome(): Boolean {
     return this == TransactionType.INCOME
 }
+
+fun TransactionType.isExpense(): Boolean {
+    return this == TransactionType.EXPENSE
+}

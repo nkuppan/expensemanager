@@ -2,26 +2,33 @@ package com.nkuppan.expensemanager.presentation.settings.export
 
 import android.Manifest
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,10 +42,14 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.domain.model.ExportFileType
+import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
+import com.nkuppan.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.nkuppan.expensemanager.presentation.budget.create.SelectedItemView
 import com.nkuppan.expensemanager.presentation.settings.datefilter.DateFilterView
 import com.nkuppan.expensemanager.ui.theme.widget.ClickableTextField
 import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBar
+import com.nkuppan.expensemanager.ui.utils.UiText
+import kotlinx.coroutines.launch
 import java.util.Date
 
 
@@ -60,51 +71,97 @@ fun ExportScreen(navController: NavController) {
     val viewModel: ExportViewModel = hiltViewModel()
     val selectedDateRange by viewModel.selectedDateRange.collectAsState()
     val exportFileType by viewModel.exportFileType.collectAsState()
+    val accountCount by viewModel.accountCount.collectAsState()
     ExportScreenScaffoldView(
         navController = navController,
         selectedDateRange = selectedDateRange,
         exportFileType = exportFileType,
+        accountCount = accountCount,
         onExportFileTypeChange = viewModel::setExportFileType,
         onExport = viewModel::export,
+        setAccounts = viewModel::setAccounts
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenScaffoldView(
     navController: NavController,
     selectedDateRange: String?,
     exportFileType: ExportFileType,
-    onExportFileTypeChange: ((ExportFileType) -> Unit),
-    onExport: (() -> Unit),
+    accountCount: UiText,
+    onExportFileTypeChange: (ExportFileType) -> Unit,
+    onExport: () -> Unit,
+    setAccounts: (List<AccountUiModel>, Boolean) -> Unit,
 ) {
-    Scaffold(topBar = {
-        TopNavigationBar(
-            navController = navController, title = null
+    val scope = rememberCoroutineScope()
+
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        rememberStandardBottomSheetState(
+            skipHiddenState = false,
+            initialValue = SheetValue.Hidden
         )
-    }, floatingActionButton = {
-        ExtendedFloatingActionButton(onClick = onExport) {
-            Row {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_export),
-                    contentDescription = null
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 8.dp, end = 8.dp)
-                        .align(Alignment.CenterVertically),
-                    text = stringResource(id = R.string.export).uppercase()
-                )
+    )
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 0.dp,
+        sheetContent = {
+            MultipleAccountSelectionScreen { items, selected ->
+                scope.launch {
+                    setAccounts.invoke(items, selected)
+                    scaffoldState.bottomSheetState.hide()
+                }
             }
+        },
+        topBar = {
+            TopNavigationBar(
+                navController = navController, title = null
+            )
         }
-    }) { innerPadding ->
-        ExportScreenContent(
+    ) { innerPadding ->
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            selectedDateRange,
-            exportFileType,
-            onExportFileTypeChange
-        )
+                .padding(innerPadding)
+        ) {
+
+            ExportScreenContent(
+                modifier = Modifier.fillMaxWidth(),
+                selectedDateRange,
+                exportFileType,
+                accountCount,
+                onExportFileTypeChange,
+                openAccountSelection = {
+                    scope.launch {
+                        if (scaffoldState.bottomSheetState.isVisible) {
+                            scaffoldState.bottomSheetState.hide()
+                        } else {
+                            scaffoldState.bottomSheetState.expand()
+                        }
+                    }
+                }
+            )
+
+            ExtendedFloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                onClick = onExport
+            ) {
+                Row {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_export),
+                        contentDescription = null
+                    )
+                    Text(
+                        modifier = Modifier
+                            .padding(start = 8.dp, end = 8.dp)
+                            .align(Alignment.CenterVertically),
+                        text = stringResource(id = R.string.export).uppercase()
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -113,9 +170,12 @@ private fun ExportScreenContent(
     modifier: Modifier = Modifier,
     selectedDate: String? = Date().toTransactionDate(),
     exportFileType: ExportFileType,
-    onExportFileTypeChange: ((ExportFileType) -> Unit)
+    accountCount: UiText,
+    onExportFileTypeChange: (ExportFileType) -> Unit,
+    openAccountSelection: () -> Unit
 ) {
 
+    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     var showDateFilter by remember { mutableStateOf(false) }
@@ -153,14 +213,16 @@ private fun ExportScreenContent(
 
         Spacer(modifier = Modifier.padding(8.dp))
 
-        SelectedItemView(modifier = Modifier
-            .clickable {
-                //openAccountSelection?.invoke()
-            }
-            .padding(16.dp)
-            .fillMaxWidth(),
+        SelectedItemView(
+            modifier = Modifier
+                .clickable {
+                    openAccountSelection.invoke()
+                }
+                .padding(16.dp)
+                .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
             icon = painterResource(id = R.drawable.savings),
-            selectedCount = stringResource(id = R.string.all))
+            selectedCount = accountCount.asString(context)
+        )
     }
 }

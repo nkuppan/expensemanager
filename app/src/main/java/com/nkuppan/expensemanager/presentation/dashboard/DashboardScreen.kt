@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,6 +34,7 @@ import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.analysis.ChartScreen
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.ui.theme.widget.AppCardView
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
@@ -135,26 +134,16 @@ private fun DashboardScreenContent(
         }
         item {
             if (chartData != null) {
-                Card(
-                    modifier = Modifier.padding(16.dp),
-                    shape = MaterialTheme.shapes.small,
-                    colors = CardDefaults.elevatedCardColors(),
-                    elevation = CardDefaults.elevatedCardElevation(
-                        defaultElevation = 2.dp
-                    )
-                ) {
+                AppCardView(modifier = Modifier.padding(16.dp)) {
                     Column(
                         modifier = Modifier.padding(8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
-                        Text(
-                            text = chartData.title?.asString(context)
-                                ?: stringResource(id = R.string.this_month),
-                            fontWeight = FontWeight.Bold
+                        WidgetHeader(
+                            title = stringResource(id = R.string.analysis),
+                            subTitle = transactionPeriod.asString(context)
                         )
-                        ChartScreen(
-                            chart = chartData
-                        )
+                        ChartScreen(chart = chartData)
                     }
                 }
             }

@@ -1,6 +1,6 @@
 package com.nkuppan.expensemanager.presentation.settings.currency
 
-import androidx.annotation.ColorRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -9,12 +9,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,12 +29,14 @@ fun CurrencyPositionTypeSelectionView(
     modifier: Modifier = Modifier
 ) {
 
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         CustomCategoryFilterChip(
             selectedCurrencyPositionType = selectedCurrencyPositionType,
             currencySymbolPosition = CurrencySymbolPosition.PREFIX,
             name = stringResource(id = R.string.prefix_amount),
-            filterSelectedColor = R.color.blue_500,
             onCurrencyPositionTypeChange = onCurrencyPositionTypeChange,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -45,12 +46,10 @@ fun CurrencyPositionTypeSelectionView(
             selectedCurrencyPositionType = selectedCurrencyPositionType,
             currencySymbolPosition = CurrencySymbolPosition.SUFFIX,
             name = stringResource(id = R.string.suffix_amount),
-            filterSelectedColor = R.color.blue_500,
             onCurrencyPositionTypeChange = onCurrencyPositionTypeChange,
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f)
-                .padding(start = 16.dp)
         )
     }
 }
@@ -61,7 +60,6 @@ private fun RowScope.CustomCategoryFilterChip(
     selectedCurrencyPositionType: CurrencySymbolPosition,
     currencySymbolPosition: CurrencySymbolPosition,
     name: String,
-    @ColorRes filterSelectedColor: Int,
     onCurrencyPositionTypeChange: ((CurrencySymbolPosition) -> Unit),
     modifier: Modifier = Modifier,
 ) {
@@ -78,9 +76,9 @@ private fun RowScope.CustomCategoryFilterChip(
             )
         },
         colors = FilterChipDefaults.filterChipColors(
-            selectedLabelColor = Color.White,
-            selectedContainerColor = colorResource(id = filterSelectedColor),
-            selectedLeadingIconColor = Color.White
+            selectedLabelColor = MaterialTheme.colorScheme.onSecondary,
+            selectedContainerColor = MaterialTheme.colorScheme.secondary,
+            selectedLeadingIconColor = MaterialTheme.colorScheme.onSecondary
         )
     )
 }
