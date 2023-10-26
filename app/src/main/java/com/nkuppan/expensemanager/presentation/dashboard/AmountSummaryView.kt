@@ -6,10 +6,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -18,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -48,8 +51,8 @@ fun IncomeExpenseBalanceView(
 }
 
 @Composable
-fun AmountView(
-    @ColorRes color: Int,
+fun ColorIconAmountView(
+    @ColorRes color: Int?,
     @DrawableRes icon: Int?,
     amount: UiText,
     modifier: Modifier = Modifier,
@@ -59,7 +62,7 @@ fun AmountView(
     val context = LocalContext.current
 
     Row(modifier = modifier) {
-        if (icon != null) {
+        if (icon != null && color != null) {
             Icon(
                 modifier = Modifier
                     .padding(end = 8.dp)
@@ -68,10 +71,19 @@ fun AmountView(
                         shape = CircleShape
                     )
                     .size(16.dp)
+                    .padding(2.dp)
                     .align(Alignment.CenterVertically),
                 painter = painterResource(id = icon),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSecondary
+            )
+        } else {
+            Spacer(
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .size(16.dp)
+                    .padding(2.dp)
+                    .align(Alignment.CenterVertically)
             )
         }
         Text(
@@ -88,6 +100,11 @@ fun AmountView(
                 .align(Alignment.CenterVertically),
             text = amount.asString(context),
             style = MaterialTheme.typography.bodyMedium,
+            color = if (color != null) {
+                colorResource(id = color)
+            } else {
+                Color.Unspecified
+            }
         )
     }
 }
@@ -108,22 +125,12 @@ fun AmountInfoWidget(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Row {
-                Column {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.transaction_summary),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = transactionPeriod.asString(context),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
+            WidgetHeader(
+                title = stringResource(id = R.string.transaction_summary),
+                subTitle = transactionPeriod.asString(context)
+            )
 
-            AmountView(
+            ColorIconAmountView(
                 color = R.color.red_500,
                 icon = R.drawable.ic_arrow_upward,
                 amount = expenseAmount,
@@ -131,7 +138,7 @@ fun AmountInfoWidget(
                     .fillMaxWidth(),
                 title = stringResource(id = R.string.expense)
             )
-            AmountView(
+            ColorIconAmountView(
                 color = R.color.green_500,
                 icon = R.drawable.ic_arrow_downward,
                 amount = incomeAmount,
@@ -140,8 +147,8 @@ fun AmountInfoWidget(
                 title = stringResource(id = R.string.income)
             )
             Divider()
-            AmountView(
-                color = R.color.green_500,
+            ColorIconAmountView(
+                color = null,
                 icon = null,
                 amount = balanceAmount,
                 modifier = Modifier
@@ -149,6 +156,37 @@ fun AmountInfoWidget(
                 title = stringResource(id = R.string.total)
             )
         }
+    }
+}
+
+@Composable
+fun WidgetHeader(
+    title: String,
+    subTitle: String,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier) {
+        Text(
+            modifier = Modifier
+                .wrapContentWidth()
+                .align(Alignment.CenterVertically),
+            text = title,
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(start = 4.dp, end = 4.dp),
+            text = "-",
+            style = MaterialTheme.typography.bodySmall
+        )
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterVertically),
+            text = subTitle,
+            style = MaterialTheme.typography.bodySmall
+        )
     }
 }
 

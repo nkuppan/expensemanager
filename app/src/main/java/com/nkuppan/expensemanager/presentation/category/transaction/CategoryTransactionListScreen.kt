@@ -478,10 +478,11 @@ fun CategoryTransactionSmallItem(
 ) {
     Row(modifier = modifier) {
         SmallIconAndBackgroundView(
-            modifier = Modifier.align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
-            name = name
+            modifier = Modifier.align(Alignment.CenterVertically),
+            name = name,
+            iconSize = 12.dp
         )
         Text(
             modifier = Modifier

@@ -8,8 +8,6 @@ interface AccountRepository {
 
     fun getAccounts(): Flow<List<Account>>
 
-    suspend fun getAllAccount(): Resource<List<Account>>
-
     suspend fun findAccount(accountId: String): Resource<Account>
 
     suspend fun addAccount(account: Account): Resource<Boolean>

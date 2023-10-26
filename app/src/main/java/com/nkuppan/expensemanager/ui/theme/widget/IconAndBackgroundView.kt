@@ -44,11 +44,15 @@ fun SmallIconAndBackgroundView(
     icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
-    name: String? = null
+    name: String? = null,
+    iconSize: Dp = 12.dp
 ) {
     IconView(
         modifier.then(SmallIconSpecModifier),
-        iconBackgroundColor, icon, name, 12.dp,
+        iconBackgroundColor = iconBackgroundColor,
+        icon = icon,
+        name = name,
+        iconSize = iconSize,
     )
 }
 
@@ -109,6 +113,7 @@ fun IconAndBackgroundViewPreview() {
             SmallIconAndBackgroundView(
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
+                iconSize = 12.dp,
             )
         }
     }

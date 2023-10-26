@@ -23,20 +23,6 @@ class AccountRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getAllAccount(): Resource<List<Account>> = withContext(dispatchers.io) {
-        return@withContext try {
-            val account = accountDao.getAllValues()
-
-            if (account != null) {
-                Resource.Success(account.map { it.toDomainModel() })
-            } else {
-                Resource.Error(KotlinNullPointerException())
-            }
-        } catch (e: Exception) {
-            Resource.Error(e)
-        }
-    }
-
     override suspend fun findAccount(accountId: String): Resource<Account> =
         withContext(dispatchers.io) {
             return@withContext try {

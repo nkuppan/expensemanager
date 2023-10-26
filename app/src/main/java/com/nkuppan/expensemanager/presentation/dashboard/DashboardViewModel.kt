@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeNameUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetSelectedFilterNameAndDateRangeUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
@@ -45,12 +45,12 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     getTransactionsMapUseCase: GetTransactionsMapUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
-    getFilterTypeNameUseCase: GetFilterTypeNameUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
     getExpenseAmountUseCase: GetExpenseAmountUseCase,
     getAccountsUseCase: GetAccountsUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
+    getSelectedFilterNameAndDateRangeUseCase: GetSelectedFilterNameAndDateRangeUseCase,
 ) : ViewModel() {
 
     var homeScreenBottomBarItems by mutableStateOf(HomeScreenBottomBarItems.Home)
@@ -88,7 +88,7 @@ class DashboardViewModel @Inject constructor(
     val categoryTransaction = _categoryTransaction.asStateFlow()
 
     init {
-        getFilterTypeNameUseCase.invoke().onEach {
+        getSelectedFilterNameAndDateRangeUseCase.invoke().onEach {
             _transactionPeriod.value = UiText.DynamicString(it)
         }.launchIn(viewModelScope)
 

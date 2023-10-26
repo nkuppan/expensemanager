@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,21 +37,11 @@ fun CategoryAmountView(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Row {
-                Column {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.categories),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = transactionPeriod.asString(context),
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-            }
-            Row {
+            WidgetHeader(
+                title = stringResource(id = R.string.categories),
+                subTitle = transactionPeriod.asString(context)
+            )
+            Row(modifier = Modifier.padding(top = 8.dp)) {
                 PieChartView(
                     totalAmountText = categoryTransactionUiModel.totalAmount.asString(context),
                     chartData = categoryTransactionUiModel.pieChartData,

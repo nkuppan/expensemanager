@@ -1,19 +1,30 @@
 package com.nkuppan.expensemanager.ui.theme.widget
 
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.material3.Card
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+
+private val roundedCornerShape = RoundedCornerShape(8.dp)
 
 @Composable
 fun AppCardView(
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
+    isPrimary: Boolean = false,
+    content: @Composable () -> Unit
 ) {
-    Card(
+    val backgroundBubbleColor = if (isPrimary) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.colorScheme.surfaceVariant
+    }
+
+    Surface(
         modifier = modifier,
-        shape = MaterialTheme.shapes.small,
+        color = backgroundBubbleColor,
+        shape = roundedCornerShape,
         content = content
     )
 }

@@ -2,24 +2,23 @@ package com.nkuppan.expensemanager.domain.usecase.settings.account
 
 import com.nkuppan.expensemanager.domain.model.Account
 import com.nkuppan.expensemanager.domain.model.Resource
-import com.nkuppan.expensemanager.domain.repository.AccountRepository
-import com.nkuppan.expensemanager.domain.repository.SettingsRepository
+import com.nkuppan.expensemanager.domain.usecase.account.FindAccountByIdUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetSelectedAccountUseCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
-    private val accountRepository: AccountRepository
+    private val getFilteredAccountsUseCase: GetFilteredAccountsUseCase,
+    private val findAccountByIdUseCase: FindAccountByIdUseCase
 ) {
 
     operator fun invoke(): Flow<List<Account>?> {
-        return settingsRepository.getAccounts().map { accounts ->
+        return getFilteredAccountsUseCase.invoke().map { accountIds ->
             return@map buildList<Account> {
-                if (accounts != null) {
-                    repeat(accounts.size) {
-                        val account = accounts[it]
-                        when (val response = accountRepository.findAccount(account)) {
+                if (accountIds?.isNotEmpty() == true) {
+                    repeat(accountIds.size) {
+                        val accountId = accountIds[it]
+                        when (val response = findAccountByIdUseCase.invoke(accountId)) {
                             is Resource.Error -> Unit
                             is Resource.Success -> {
                                 add(response.data)
