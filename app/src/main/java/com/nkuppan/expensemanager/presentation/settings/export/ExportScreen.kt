@@ -1,6 +1,11 @@
 package com.nkuppan.expensemanager.presentation.settings.export
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +57,23 @@ import com.nkuppan.expensemanager.ui.utils.UiText
 import kotlinx.coroutines.launch
 import java.util.Date
 
+private fun createFile(fileType: ExportFileType): Intent? {
+    return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
+        Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            if (fileType == ExportFileType.PDF) {
+                type = "application/pdf"
+                putExtra(Intent.EXTRA_TITLE, "export_file.pdf")
+            } else {
+                type = "application/csv"
+                putExtra(Intent.EXTRA_TITLE, "export_file.csv")
+            }
+        }
+    } else {
+        null
+    }
+}
+
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -68,17 +90,37 @@ fun ExportScreen(navController: NavController) {
             }
         }
     }
+
     val viewModel: ExportViewModel = hiltViewModel()
     val selectedDateRange by viewModel.selectedDateRange.collectAsState()
     val exportFileType by viewModel.exportFileType.collectAsState()
     val accountCount by viewModel.accountCount.collectAsState()
+
+    val fileCreatorIntent = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode != RESULT_OK) {
+            return@rememberLauncherForActivityResult
+        }
+
+        it.data?.data?.also { uri ->
+            viewModel.export(uri)
+        }
+    }
+
     ExportScreenScaffoldView(
         navController = navController,
         selectedDateRange = selectedDateRange,
         exportFileType = exportFileType,
         accountCount = accountCount,
         onExportFileTypeChange = viewModel::setExportFileType,
-        onExport = viewModel::export,
+        onExport = {
+            createFile(fileType = exportFileType)?.let {
+                fileCreatorIntent.launch(it)
+            } ?: run {
+                viewModel.export(null)
+            }
+        },
         setAccounts = viewModel::setAccounts
     )
 }

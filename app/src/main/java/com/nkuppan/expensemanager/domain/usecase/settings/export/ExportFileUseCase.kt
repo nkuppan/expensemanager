@@ -9,14 +9,14 @@ class ExportFileUseCase @Inject constructor(
     private val exportRepository: ExportRepository
 ) {
 
-    suspend operator fun invoke(exportFileType: ExportFileType): Resource<Boolean> {
+    suspend operator fun invoke(exportFileType: ExportFileType, uri: String?): Resource<Boolean> {
         return when (exportFileType) {
             ExportFileType.CSV -> {
-                exportRepository.createCsvFile()
+                exportRepository.createCsvFile(uri)
             }
 
             ExportFileType.PDF -> {
-                exportRepository.createPdfFile()
+                exportRepository.createPdfFile(uri)
             }
         }
     }

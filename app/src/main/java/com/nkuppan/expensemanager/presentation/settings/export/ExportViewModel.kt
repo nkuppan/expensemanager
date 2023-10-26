@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.presentation.settings.export
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
@@ -57,9 +58,9 @@ class ExportViewModel @Inject constructor(
         }
     }
 
-    fun export() {
+    fun export(uri: Uri?) {
         viewModelScope.launch {
-            when (exportFileUseCase.invoke(_exportFileType.value)) {
+            when (exportFileUseCase.invoke(_exportFileType.value, uri?.toString())) {
                 is Resource.Error -> Unit
                 is Resource.Success -> Unit
             }

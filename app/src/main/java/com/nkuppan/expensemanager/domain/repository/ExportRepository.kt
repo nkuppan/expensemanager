@@ -4,7 +4,7 @@ import com.nkuppan.expensemanager.domain.model.Resource
 
 interface ExportRepository {
 
-    suspend fun createCsvFile(): Resource<Boolean>
+    suspend fun createCsvFile(uri: String?): Resource<Boolean>
 
-    suspend fun createPdfFile(): Resource<Boolean>
+    suspend fun createPdfFile(uri: String?): Resource<Boolean>
 }
