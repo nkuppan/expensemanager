@@ -8,7 +8,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.FilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -44,12 +44,14 @@ class SettingsDataStore @Inject constructor(
         preferences[KEY_SELECTED_CATEGORIES]?.toList() ?: emptyList()
     }
 
-    suspend fun setFilterType(filterType: FilterType) = dataStore.edit { preferences ->
-        preferences[KEY_DATE_FILTER_TYPE] = filterType.ordinal
-    }
+    suspend fun setFilterType(dateRangeFilterType: DateRangeFilterType) =
+        dataStore.edit { preferences ->
+            preferences[KEY_DATE_FILTER_TYPE] = dateRangeFilterType.ordinal
+        }
 
-    fun getFilterType(): Flow<FilterType> = dataStore.data.map { preferences ->
-        FilterType.values()[preferences[KEY_DATE_FILTER_TYPE] ?: FilterType.THIS_MONTH.ordinal]
+    fun getFilterType(): Flow<DateRangeFilterType> = dataStore.data.map { preferences ->
+        DateRangeFilterType.values()[preferences[KEY_DATE_FILTER_TYPE]
+            ?: DateRangeFilterType.THIS_MONTH.ordinal]
     }
 
     suspend fun setCustomFilterStartDate(startDate: Long) = dataStore.edit { preferences ->

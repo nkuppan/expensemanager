@@ -8,7 +8,7 @@ import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsMapUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsGroupByDateUseCase
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
 import com.nkuppan.expensemanager.ui.utils.UiText
@@ -28,7 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AnalysisScreenViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
-    getTransactionsMapUseCase: GetTransactionsMapUseCase
+    getTransactionsGroupByDateUseCase: GetTransactionsGroupByDateUseCase
 ) : ViewModel() {
 
     private val _graphItems = MutableStateFlow<UiState<AnalysisData>>(UiState.Loading)
@@ -36,7 +36,7 @@ class AnalysisScreenViewModel @Inject constructor(
 
     init {
         getCurrencyUseCase.invoke().combine(
-            getTransactionsMapUseCase.invoke()
+            getTransactionsGroupByDateUseCase.invoke()
         ) { currency, response ->
 
             response ?: return@combine

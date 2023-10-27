@@ -2,9 +2,9 @@ package com.nkuppan.expensemanager.presentation.settings.datefilter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nkuppan.expensemanager.domain.model.FilterType
-import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.filter.SaveFilterTypeUseCase
+import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterTypeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.SaveFilterTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,8 +21,8 @@ class DateFilterViewModel @Inject constructor(
     private val saveFilterTypeUseCase: SaveFilterTypeUseCase,
 ) : ViewModel() {
 
-    private val _filterType = MutableStateFlow(FilterType.THIS_MONTH)
-    val filterType = _filterType.asStateFlow()
+    private val _DateRange_filterType = MutableStateFlow(DateRangeFilterType.THIS_MONTH)
+    val filterType = _DateRange_filterType.asStateFlow()
 
     private val _fromDate = MutableStateFlow(Date())
     val fromDate = _fromDate.asStateFlow()
@@ -33,9 +33,9 @@ class DateFilterViewModel @Inject constructor(
     private val _showCustomRangeSelection = MutableStateFlow(false)
     val showCustomRangeSelection = _showCustomRangeSelection.asStateFlow()
 
-    val filterTypes = MutableStateFlow(FilterType.values().map { it ->
+    val dateRangeFilterTypes = MutableStateFlow(DateRangeFilterType.values().map { it ->
         FilterTypeUiModel(
-            filterType = it,
+            dateRangeFilterType = it,
             name = it.toString().replace("_", " ")
                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() },
         )
@@ -47,21 +47,21 @@ class DateFilterViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun updateFilterType(filterType: FilterType) {
-        _filterType.value = filterType
-        _showCustomRangeSelection.value = filterType == FilterType.CUSTOM
+    private fun updateFilterType(dateRangeFilterType: DateRangeFilterType) {
+        _DateRange_filterType.value = dateRangeFilterType
+        _showCustomRangeSelection.value = dateRangeFilterType == DateRangeFilterType.CUSTOM
     }
 
-    fun setFilterType(filterType: FilterType?) {
-        filterType ?: return
+    fun setFilterType(dateRangeFilterType: DateRangeFilterType?) {
+        dateRangeFilterType ?: return
         viewModelScope.launch {
-            updateFilterType(filterType)
+            updateFilterType(dateRangeFilterType)
         }
     }
 
     fun save() {
         viewModelScope.launch {
-            val selectedFilter = _filterType.value
+            val selectedFilter = _DateRange_filterType.value
             saveFilterTypeUseCase.invoke(
                 selectedFilter,
                 listOf(
@@ -82,6 +82,6 @@ class DateFilterViewModel @Inject constructor(
 }
 
 data class FilterTypeUiModel(
-    val filterType: FilterType,
+    val dateRangeFilterType: DateRangeFilterType,
     val name: String
 )

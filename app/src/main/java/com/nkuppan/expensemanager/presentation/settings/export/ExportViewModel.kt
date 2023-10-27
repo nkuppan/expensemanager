@@ -4,11 +4,12 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
 import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterRangeDateStringUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterTypeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.export.ExportFileUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterRangeDateStringUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetFilterTypeUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,11 +36,13 @@ class ExportViewModel @Inject constructor(
     private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
     val accountCount = _accountCount.asStateFlow()
 
+    private var selectedDateRangeFilterType = DateRangeFilterType.TODAY
     private var selectedAccounts = emptyList<AccountUiModel>()
     private var isAllAccountsSelected = true
 
     init {
         getFilterTypeUseCase.invoke().map {
+            selectedDateRangeFilterType = it
             _selectedDateRange.value = getFilterRangeDateStringUseCase.invoke(it)
         }.launchIn(viewModelScope)
     }
@@ -60,7 +63,14 @@ class ExportViewModel @Inject constructor(
 
     fun export(uri: Uri?) {
         viewModelScope.launch {
-            when (exportFileUseCase.invoke(_exportFileType.value, uri?.toString())) {
+            val response = exportFileUseCase.invoke(
+                _exportFileType.value,
+                uri?.toString(),
+                selectedDateRangeFilterType,
+                selectedAccounts,
+                isAllAccountsSelected
+            )
+            when (response) {
                 is Resource.Error -> Unit
                 is Resource.Success -> Unit
             }

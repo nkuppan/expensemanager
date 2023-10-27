@@ -1,6 +1,7 @@
 package com.nkuppan.expensemanager.domain.usecase.settings.filter
 
-import com.nkuppan.expensemanager.domain.model.FilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterRangeUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -17,7 +18,7 @@ class GetFilterRangeUseCaseTest {
 
     @Test
     fun whenUserRequestTodayDateTimeRange() = runTest {
-        val result = getGetFilterRangeUseCase.invoke(FilterType.TODAY)
+        val result = getGetFilterRangeUseCase.invoke(DateRangeFilterType.TODAY)
         print(result)
     }
 }

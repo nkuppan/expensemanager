@@ -19,6 +19,10 @@ class DeleteTransactionUseCase @Inject constructor(
             return Resource.Error(Exception("Category type shouldn't be blank"))
         }
 
+        if (transaction.fromAccountId.isBlank()) {
+            return Resource.Error(Exception("From account shouldn't be blank"))
+        }
+
         return repository.deleteTransaction(transaction)
     }
 }

@@ -53,7 +53,7 @@ fun DateFilterView(
     val viewModel: DateFilterViewModel = hiltViewModel()
     val selectedFilterType by viewModel.filterType.collectAsState()
     val showCustomRangeSelection by viewModel.showCustomRangeSelection.collectAsState()
-    val filterTypes by viewModel.filterTypes.collectAsState()
+    val filterTypes by viewModel.dateRangeFilterTypes.collectAsState()
 
     val fromDate by viewModel.fromDate.collectAsState()
     val toDate by viewModel.toDate.collectAsState()
@@ -112,11 +112,11 @@ fun DateFilterView(
                     )
                 }
                 items(filterTypes) { filter ->
-                    val isSelectedCurrency = selectedFilterType == filter.filterType
+                    val isSelectedCurrency = selectedFilterType == filter.dateRangeFilterType
                     Row(
                         modifier = Modifier
                             .clickable {
-                                viewModel.setFilterType(filter.filterType)
+                                viewModel.setFilterType(filter.dateRangeFilterType)
                             }
                             .fillMaxWidth()
                             .then(

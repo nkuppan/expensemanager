@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.filter.GetSelectedFilterNameAndDateRangeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetSelectedFilterNameAndDateRangeUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsMapUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionsGroupByDateUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
@@ -43,7 +43,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    getTransactionsMapUseCase: GetTransactionsMapUseCase,
+    getTransactionsGroupByDateUseCase: GetTransactionsGroupByDateUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getIncomeAmountUseCase: GetIncomeAmountUseCase,
@@ -125,7 +125,7 @@ class DashboardViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getTransactionsMapUseCase.invoke()
+            getTransactionsGroupByDateUseCase.invoke()
         ) { currency, response ->
             val data = constructGraphItems(
                 response,

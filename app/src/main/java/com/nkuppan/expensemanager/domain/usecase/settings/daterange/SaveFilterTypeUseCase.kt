@@ -1,18 +1,19 @@
-package com.nkuppan.expensemanager.domain.usecase.settings.filter
+package com.nkuppan.expensemanager.domain.usecase.settings.daterange
 
-import com.nkuppan.expensemanager.domain.model.FilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
 import com.nkuppan.expensemanager.domain.model.Resource
-import com.nkuppan.expensemanager.domain.repository.SettingsRepository
+import com.nkuppan.expensemanager.domain.repository.DateRangeFilterRepository
+import com.nkuppan.expensemanager.domain.usecase.settings.filter.SetCustomFilterRangeUseCase
 import java.util.Date
 import javax.inject.Inject
 
 class SaveFilterTypeUseCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+    private val dateRangeFilterRepository: DateRangeFilterRepository,
     private val setCustomFilterRangeUseCase: SetCustomFilterRangeUseCase,
 ) {
 
     suspend operator fun invoke(
-        filterType: FilterType,
+        dateRangeFilterType: DateRangeFilterType,
         customRanges: List<Date>
     ): Resource<Boolean> {
         return when (val response = setCustomFilterRangeUseCase.invoke(customRanges)) {
@@ -21,7 +22,7 @@ class SaveFilterTypeUseCase @Inject constructor(
             }
 
             is Resource.Success -> {
-                settingsRepository.setFilterType(filterType)
+                dateRangeFilterRepository.setDateRangeFilterType(dateRangeFilterType)
             }
         }
     }

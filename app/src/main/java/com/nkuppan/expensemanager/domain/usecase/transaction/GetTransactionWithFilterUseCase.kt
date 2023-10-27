@@ -1,8 +1,9 @@
 package com.nkuppan.expensemanager.domain.usecase.transaction
 
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.FilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
 import com.nkuppan.expensemanager.domain.model.Transaction
+import com.nkuppan.expensemanager.domain.repository.DateRangeFilterRepository
 import com.nkuppan.expensemanager.domain.repository.SettingsRepository
 import com.nkuppan.expensemanager.domain.repository.TransactionRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 class GetTransactionWithFilterUseCase @Inject constructor(
     private val settingsRepository: SettingsRepository,
+    private val dateRangeFilterRepository: DateRangeFilterRepository,
     private val transactionRepository: TransactionRepository
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -20,9 +22,9 @@ class GetTransactionWithFilterUseCase @Inject constructor(
             settingsRepository.getCategoryTypes(),
             settingsRepository.getCategories(),
             settingsRepository.getAccounts(),
-            settingsRepository.getFilterType()
+            dateRangeFilterRepository.getDateRangeFilterType()
         ) { isFilterEnabled, categoryTypes, categories, accounts, filterType ->
-            val filterTypeRanges = settingsRepository.getFilterRange(filterType)
+            val filterTypeRanges = dateRangeFilterRepository.getDateRanges(filterType)
             FilterValue(
                 isFilterEnabled,
                 filterType,
@@ -33,7 +35,7 @@ class GetTransactionWithFilterUseCase @Inject constructor(
             )
         }.flatMapLatest {
             val accounts = it.accounts
-            return@flatMapLatest if (it.filterType == FilterType.ALL) {
+            return@flatMapLatest if (it.dateRangeFilterType == DateRangeFilterType.ALL) {
                 if (it.isFilterEnabled && accounts != null) {
                     transactionRepository.getTransactionsByAccountId(accounts)
                 } else {
@@ -59,7 +61,7 @@ class GetTransactionWithFilterUseCase @Inject constructor(
 
 data class FilterValue(
     val isFilterEnabled: Boolean,
-    val filterType: FilterType,
+    val dateRangeFilterType: DateRangeFilterType,
     val filterRange: List<Long>,
     val accounts: List<String>? = null,
     val categories: List<String>? = null,

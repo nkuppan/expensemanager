@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
 
-class GetTransactionsMapUseCase @Inject constructor(
+class GetTransactionsGroupByDateUseCase @Inject constructor(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
 ) {
     fun invoke(): Flow<Map<String, List<Transaction>>?> {

@@ -321,4 +321,5 @@
     <string name="csv">CSV</string>
     <string name="pdf">PDF</string>
     <string name="select_range">Select Range</string>
+    <string name="time">Time</string>
 </resources>
