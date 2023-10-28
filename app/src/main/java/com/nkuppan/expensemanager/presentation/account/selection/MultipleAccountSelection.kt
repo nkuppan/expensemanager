@@ -116,7 +116,7 @@ fun MultipleAccountSelectionScreen(
                         Text(text = stringResource(id = R.string.select).uppercase())
                     }
                 }
-                Spacer(modifier = Modifier.padding(8.dp))
+                Spacer(modifier = Modifier.padding(16.dp))
             }
         }
     }

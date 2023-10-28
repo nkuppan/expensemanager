@@ -11,21 +11,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -89,13 +89,6 @@ fun ExportScreen(navController: NavController) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-            skipHiddenState = false,
-            initialValue = SheetValue.Hidden
-        ),
-        snackbarHostState
-    )
     val writePermission = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     LaunchedEffect(writePermission) {
@@ -131,7 +124,7 @@ fun ExportScreen(navController: NavController) {
 
     if (success != null) {
         LaunchedEffect(key1 = "completed", block = {
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = success?.message?.asString(context) ?: "",
                 actionLabel = context.getString(R.string.share),
                 withDismissAction = true
@@ -150,12 +143,11 @@ fun ExportScreen(navController: NavController) {
 
     if (error != null) {
         LaunchedEffect(key1 = "error", block = {
-            scaffoldState.snackbarHostState.showSnackbar(error?.asString(context) ?: "")
+            snackbarHostState.showSnackbar(error?.asString(context) ?: "")
         })
     }
 
     ExportScreenScaffoldView(
-        scaffoldState = scaffoldState,
         navController = navController,
         selectedDateRange = selectedDateRange,
         exportFileType = exportFileType,
@@ -168,14 +160,14 @@ fun ExportScreen(navController: NavController) {
                 viewModel.export(null)
             }
         },
-        setAccounts = viewModel::setAccounts
+        setAccounts = viewModel::setAccounts,
+        snackbarHostState = snackbarHostState,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenScaffoldView(
-    scaffoldState: BottomSheetScaffoldState,
     navController: NavController,
     selectedDateRange: String?,
     exportFileType: ExportFileType,
@@ -183,19 +175,35 @@ private fun ExportScreenScaffoldView(
     onExportFileTypeChange: (ExportFileType) -> Unit,
     onExport: () -> Unit,
     setAccounts: (List<AccountUiModel>, Boolean) -> Unit,
+    snackbarHostState: SnackbarHostState,
 ) {
     val scope = rememberCoroutineScope()
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetContent = {
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState()
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = bottomSheetState,
+            windowInsets = WindowInsets(0.dp)
+        ) {
             MultipleAccountSelectionScreen { items, selected ->
-                scope.launch {
-                    setAccounts.invoke(items, selected)
-                    scaffoldState.bottomSheetState.hide()
+                setAccounts.invoke(items, selected)
+                scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                    if (!bottomSheetState.isVisible) {
+                        showBottomSheet = false
+                    }
                 }
             }
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
             TopNavigationBar(
@@ -217,10 +225,10 @@ private fun ExportScreenScaffoldView(
                 onExportFileTypeChange,
                 openAccountSelection = {
                     scope.launch {
-                        if (scaffoldState.bottomSheetState.isVisible) {
-                            scaffoldState.bottomSheetState.hide()
+                        if (bottomSheetState.isVisible) {
+                            bottomSheetState.hide()
                         } else {
-                            scaffoldState.bottomSheetState.expand()
+                            showBottomSheet = true
                         }
                     }
                 }

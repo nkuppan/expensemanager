@@ -130,13 +130,18 @@ class ExportRepositoryImpl @Inject constructor(
     private fun getFileName(exportFileType: ExportFileType): String {
         return when (exportFileType) {
             ExportFileType.CSV -> {
-                "export_file_${Date().time}.csv"
+                "export_file_${Date().time}${CSV_FILE_EXTENSION}"
             }
 
             ExportFileType.PDF -> {
-                "export_file_${Date().time}.pdf"
+                "export_file_${Date().time}${PDF_FILE_EXTENSION}"
             }
         }
+    }
+
+    companion object {
+        private const val CSV_FILE_EXTENSION = ".csv"
+        private const val PDF_FILE_EXTENSION = ".pdf"
     }
 }
 
