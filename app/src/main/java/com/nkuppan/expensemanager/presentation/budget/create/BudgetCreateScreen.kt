@@ -6,22 +6,24 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -59,7 +61,6 @@ import com.nkuppan.expensemanager.ui.theme.widget.MonthPicker
 import com.nkuppan.expensemanager.ui.theme.widget.StringTextField
 import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.ui.utils.UiText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -81,12 +82,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
 
     val scope = rememberCoroutineScope()
 
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-            skipHiddenState = false,
-            initialValue = SheetValue.Hidden
-        )
-    )
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val viewModel: BudgetCreateViewModel = hiltViewModel()
 
@@ -113,7 +109,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
     if (budgetCreated) {
         LaunchedEffect(key1 = "completed", block = {
             navController.popBackStack()
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = context.getString(R.string.budget_create_success)
             )
         })
@@ -122,23 +118,38 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
     val errorMessage by viewModel.errorMessage.collectAsState(null)
     if (errorMessage != null) {
         LaunchedEffect(key1 = "errorMessage", block = {
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = errorMessage!!.asString(context)
             )
         })
     }
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetContent = {
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState()
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = bottomSheetState,
+            windowInsets = WindowInsets(0.dp)
+        ) {
             BudgetCreateBottomSheetContent(
                 sheetSelection,
-                scope,
-                viewModel,
-                scaffoldState
-            )
-        }, topBar = {
+                viewModel
+            ) {
+                showBottomSheet = false
+            }
+        }
+    }
+
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        topBar = {
             TopNavigationBarWithDeleteAction(
                 navController = navController,
                 title = stringResource(id = R.string.budgets),
@@ -183,11 +194,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                         if (oldSelection != COLOR_SELECTION) {
                             sheetSelection = COLOR_SELECTION
                         }
-                        hideOrShowBottomSheet(
-                            oldSelection,
-                            COLOR_SELECTION,
-                            scaffoldState
-                        )
+                        showBottomSheet = true
                     }
                 },
                 openIconPicker = {
@@ -196,11 +203,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                         if (oldSelection != ICON_SELECTION) {
                             sheetSelection = ICON_SELECTION
                         }
-                        hideOrShowBottomSheet(
-                            oldSelection,
-                            ICON_SELECTION,
-                            scaffoldState
-                        )
+                        showBottomSheet = true
                     }
                 },
                 openAccountSelection = {
@@ -209,11 +212,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                         if (oldSelection != ACCOUNT_SELECTION) {
                             sheetSelection = ACCOUNT_SELECTION
                         }
-                        hideOrShowBottomSheet(
-                            oldSelection,
-                            ACCOUNT_SELECTION,
-                            scaffoldState
-                        )
+                        showBottomSheet = true
                     }
                 },
                 openCategorySelection = {
@@ -222,11 +221,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
                         if (oldSelection != CATEGORY_SELECTION) {
                             sheetSelection = CATEGORY_SELECTION
                         }
-                        hideOrShowBottomSheet(
-                            oldSelection,
-                            CATEGORY_SELECTION,
-                            scaffoldState
-                        )
+                        showBottomSheet = true
                     }
                 }
             )
@@ -267,46 +262,37 @@ private suspend fun hideOrShowBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun BudgetCreateBottomSheetContent(
     sheetSelection: BudgetCreateSheetSelection,
-    scope: CoroutineScope,
     viewModel: BudgetCreateViewModel,
-    scaffoldState: BottomSheetScaffoldState
+    hideBottomSheet: () -> Unit
 ) {
     val context = LocalContext.current
 
     when (sheetSelection) {
         ICON_SELECTION -> {
             IconSelectionScreen {
-                scope.launch {
-                    viewModel.setIcon(context.resources.getResourceName(it))
-                    scaffoldState.bottomSheetState.hide()
-                }
+                viewModel.setIcon(context.resources.getResourceName(it))
+                hideBottomSheet.invoke()
             }
         }
 
         COLOR_SELECTION -> {
             ColorSelectionScreen {
-                scope.launch {
-                    viewModel.setColorValue(it)
-                    scaffoldState.bottomSheetState.hide()
-                }
+                viewModel.setColorValue(it)
+                hideBottomSheet.invoke()
             }
         }
 
         ACCOUNT_SELECTION -> {
             MultipleAccountSelectionScreen { items, selected ->
-                scope.launch {
-                    viewModel.setAccounts(items, selected)
-                    scaffoldState.bottomSheetState.hide()
-                }
+                viewModel.setAccounts(items, selected)
+                hideBottomSheet.invoke()
             }
         }
 
         CATEGORY_SELECTION -> {
             MultipleCategoriesSelectionScreen { items, selected ->
-                scope.launch {
-                    viewModel.setCategories(items, selected)
-                    scaffoldState.bottomSheetState.hide()
-                }
+                viewModel.setCategories(items, selected)
+                hideBottomSheet.invoke()
             }
         }
     }
