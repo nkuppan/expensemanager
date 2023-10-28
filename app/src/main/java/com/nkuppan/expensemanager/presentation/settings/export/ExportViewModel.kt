@@ -27,6 +27,12 @@ class ExportViewModel @Inject constructor(
     private val exportFileUseCase: ExportFileUseCase,
 ) : ViewModel() {
 
+    private val _error = MutableStateFlow<UiText?>(null)
+    val error = _error.asStateFlow()
+
+    private val _success = MutableStateFlow<UiText?>(null)
+    val success = _success.asStateFlow()
+
     private val _selectedDateRange = MutableStateFlow<String?>(null)
     val selectedDateRange = _selectedDateRange.asStateFlow()
 
@@ -71,8 +77,13 @@ class ExportViewModel @Inject constructor(
                 isAllAccountsSelected
             )
             when (response) {
-                is Resource.Error -> Unit
-                is Resource.Success -> Unit
+                is Resource.Error -> {
+                    _error.value = UiText.StringResource(R.string.export_error_message)
+                }
+
+                is Resource.Success -> {
+                    _success.value = UiText.StringResource(R.string.export_success_message)
+                }
             }
         }
     }

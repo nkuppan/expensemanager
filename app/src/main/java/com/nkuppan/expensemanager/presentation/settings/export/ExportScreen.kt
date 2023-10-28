@@ -20,6 +20,7 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -78,6 +79,10 @@ private fun createFile(fileType: ExportFileType): Intent? {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ExportScreen(navController: NavController) {
+
+    val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val writePermission = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     LaunchedEffect(writePermission) {
@@ -96,6 +101,9 @@ fun ExportScreen(navController: NavController) {
     val exportFileType by viewModel.exportFileType.collectAsState()
     val accountCount by viewModel.accountCount.collectAsState()
 
+    val success by viewModel.success.collectAsState()
+    val error by viewModel.error.collectAsState()
+
     val fileCreatorIntent = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) {
@@ -106,6 +114,23 @@ fun ExportScreen(navController: NavController) {
         it.data?.data?.also { uri ->
             viewModel.export(uri)
         }
+    }
+
+    if (success != null) {
+        LaunchedEffect(key1 = "completed", block = {
+            scope.launch {
+                snackbarHostState.showSnackbar(success?.asString(context) ?: "")
+                navController.popBackStack()
+            }
+        })
+    }
+
+    if (error != null) {
+        LaunchedEffect(key1 = "error", block = {
+            scope.launch {
+                snackbarHostState.showSnackbar(error?.asString(context) ?: "")
+            }
+        })
     }
 
     ExportScreenScaffoldView(

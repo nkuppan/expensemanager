@@ -322,4 +322,6 @@
     <string name="pdf">PDF</string>
     <string name="select_range">Select Range</string>
     <string name="time">Time</string>
+    <string name="export_error_message">Unknown error happened while exporting the file</string>
+    <string name="export_success_message">File exported successfully</string>
 </resources>
