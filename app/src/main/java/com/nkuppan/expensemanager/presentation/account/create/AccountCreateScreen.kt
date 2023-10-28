@@ -1,7 +1,6 @@
 package com.nkuppan.expensemanager.presentation.account.create
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -130,6 +128,14 @@ fun AccountCreateScreen(
             ) {
                 showDeleteDialog = true
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = viewModel::saveOrUpdateAccount) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_done),
+                    contentDescription = ""
+                )
+            }
         }
     ) { innerPadding ->
 
@@ -145,58 +151,42 @@ fun AccountCreateScreen(
         val selectedAccountType by viewModel.accountType.collectAsState()
         val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
 
-        Box(
+        AccountCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            AccountCreateScreen(
-                modifier = Modifier.fillMaxSize(),
-                selectedColor = colorValue,
-                selectedIcon = iconValue,
-                name = name,
-                nameErrorMessage = nameErrorMessage,
-                currentBalance = currentBalance,
-                currentBalanceErrorMessage = currentBalanceErrorMessage,
-                creditLimit = creditLimit,
-                creditLimitErrorMessage = creditLimitErrorMessage,
-                selectedAccountType = selectedAccountType,
-                onAccountTypeChange = viewModel::setAccountType,
-                currency = currencyIcon,
-                onNameChange = viewModel::setNameChange,
-                onCurrentBalanceChange = viewModel::setCurrentBalanceChange,
-                onCreditLimitChange = viewModel::setCreditLimitChange,
-                availableCreditLimit = availableCreditLimit,
-                openColorPicker = {
-                    scope.launch {
-                        if (sheetSelection != 2) {
-                            sheetSelection = 2
-                        }
-                        showBottomSheet = true
+                .padding(innerPadding),
+            selectedColor = colorValue,
+            selectedIcon = iconValue,
+            name = name,
+            nameErrorMessage = nameErrorMessage,
+            currentBalance = currentBalance,
+            currentBalanceErrorMessage = currentBalanceErrorMessage,
+            creditLimit = creditLimit,
+            creditLimitErrorMessage = creditLimitErrorMessage,
+            selectedAccountType = selectedAccountType,
+            onAccountTypeChange = viewModel::setAccountType,
+            currency = currencyIcon,
+            onNameChange = viewModel::setNameChange,
+            onCurrentBalanceChange = viewModel::setCurrentBalanceChange,
+            onCreditLimitChange = viewModel::setCreditLimitChange,
+            availableCreditLimit = availableCreditLimit,
+            openColorPicker = {
+                scope.launch {
+                    if (sheetSelection != 2) {
+                        sheetSelection = 2
                     }
-                },
-                openIconPicker = {
-                    scope.launch {
-                        if (sheetSelection != 1) {
-                            sheetSelection = 1
-                        }
-                        showBottomSheet = true
-                    }
+                    showBottomSheet = true
                 }
-            )
-
-            FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                onClick = viewModel::saveOrUpdateAccount
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_done),
-                    contentDescription = ""
-                )
+            },
+            openIconPicker = {
+                scope.launch {
+                    if (sheetSelection != 1) {
+                        sheetSelection = 1
+                    }
+                    showBottomSheet = true
+                }
             }
-        }
+        )
     }
 }
 

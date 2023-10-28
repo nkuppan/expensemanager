@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.budget.create
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -156,6 +155,14 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
             ) {
                 showDeleteDialog = true
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = viewModel::saveOrUpdateBudget) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_done),
+                    contentDescription = ""
+                )
+            }
         }
     ) { innerPadding ->
 
@@ -171,76 +178,60 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
         val accountCount by viewModel.accountCount.collectAsState()
         val categoriesCount by viewModel.categoriesCount.collectAsState()
 
-        Box(
+        BudgetCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            BudgetCreateScreen(
-                modifier = Modifier.fillMaxSize(),
-                selectedColor = colorValue,
-                selectedIcon = iconValue,
-                name = name,
-                nameErrorMessage = nameErrorMessage,
-                amount = amount,
-                amountErrorMessage = amountErrorMessage,
-                selectedDate = selectedDate,
-                currency = currencyIcon,
-                accountCount = accountCount,
-                categoriesCount = categoriesCount,
-                onNameChange = viewModel::setNameChange,
-                onAmountChange = viewModel::setAmountChange,
-                onDateChange = viewModel::setDate,
-                openColorPicker = {
-                    scope.launch {
-                        val oldSelection = sheetSelection
-                        if (oldSelection != COLOR_SELECTION) {
-                            sheetSelection = COLOR_SELECTION
-                        }
-                        showBottomSheet = true
+                .padding(innerPadding),
+            selectedColor = colorValue,
+            selectedIcon = iconValue,
+            name = name,
+            nameErrorMessage = nameErrorMessage,
+            amount = amount,
+            amountErrorMessage = amountErrorMessage,
+            selectedDate = selectedDate,
+            currency = currencyIcon,
+            accountCount = accountCount,
+            categoriesCount = categoriesCount,
+            onNameChange = viewModel::setNameChange,
+            onAmountChange = viewModel::setAmountChange,
+            onDateChange = viewModel::setDate,
+            openColorPicker = {
+                scope.launch {
+                    val oldSelection = sheetSelection
+                    if (oldSelection != COLOR_SELECTION) {
+                        sheetSelection = COLOR_SELECTION
                     }
-                },
-                openIconPicker = {
-                    scope.launch {
-                        val oldSelection = sheetSelection
-                        if (oldSelection != ICON_SELECTION) {
-                            sheetSelection = ICON_SELECTION
-                        }
-                        showBottomSheet = true
-                    }
-                },
-                openAccountSelection = {
-                    scope.launch {
-                        val oldSelection = sheetSelection
-                        if (oldSelection != ACCOUNT_SELECTION) {
-                            sheetSelection = ACCOUNT_SELECTION
-                        }
-                        showBottomSheet = true
-                    }
-                },
-                openCategorySelection = {
-                    scope.launch {
-                        val oldSelection = sheetSelection
-                        if (oldSelection != CATEGORY_SELECTION) {
-                            sheetSelection = CATEGORY_SELECTION
-                        }
-                        showBottomSheet = true
-                    }
+                    showBottomSheet = true
                 }
-            )
-
-            FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                onClick = viewModel::saveOrUpdateBudget
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_done),
-                    contentDescription = ""
-                )
+            },
+            openIconPicker = {
+                scope.launch {
+                    val oldSelection = sheetSelection
+                    if (oldSelection != ICON_SELECTION) {
+                        sheetSelection = ICON_SELECTION
+                    }
+                    showBottomSheet = true
+                }
+            },
+            openAccountSelection = {
+                scope.launch {
+                    val oldSelection = sheetSelection
+                    if (oldSelection != ACCOUNT_SELECTION) {
+                        sheetSelection = ACCOUNT_SELECTION
+                    }
+                    showBottomSheet = true
+                }
+            },
+            openCategorySelection = {
+                scope.launch {
+                    val oldSelection = sheetSelection
+                    if (oldSelection != CATEGORY_SELECTION) {
+                        sheetSelection = CATEGORY_SELECTION
+                    }
+                    showBottomSheet = true
+                }
             }
-        }
+        )
     }
 }
 

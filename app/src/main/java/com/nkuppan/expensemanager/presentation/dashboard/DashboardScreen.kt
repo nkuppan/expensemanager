@@ -84,7 +84,7 @@ private fun DashboardScreenScaffoldView(
     }) { innerPadding ->
         DashboardScreenContent(
             modifier = Modifier
-                .padding(innerPadding)
+                .padding(top = innerPadding.calculateTopPadding())
                 .fillMaxSize(),
             incomeAmount = incomeAmount,
             expenseAmount = expenseAmount,

@@ -1,6 +1,5 @@
 package com.nkuppan.expensemanager.presentation.category.create
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -125,6 +123,14 @@ fun CategoryCreateScreen(
             ) {
                 showDeleteDialog = true
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = viewModel::saveOrUpdateCategory) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_done),
+                    contentDescription = ""
+                )
+            }
         }
     ) { innerPadding ->
 
@@ -134,48 +140,37 @@ fun CategoryCreateScreen(
         val iconValue by viewModel.icon.collectAsState()
         val selectedCategoryType by viewModel.categoryType.collectAsState()
 
-        Box(modifier = Modifier.fillMaxSize()) {
-            CategoryCreateScreen(
-                modifier = Modifier.padding(innerPadding),
-                selectedColor = colorValue,
-                selectedIcon = iconValue,
-                name = name,
-                nameErrorMessage = nameErrorMessage,
-                selectedCategoryType = selectedCategoryType,
-                onCategoryTypeChange = viewModel::setCategoryType,
-                onNameChange = {
-                    viewModel.setNameChange(it)
-                },
-                openColorPicker = {
-                    scope.launch {
-                        if (sheetSelection != 2) {
-                            sheetSelection = 2
-                        }
-                        showBottomSheet = true
-                    }
-                },
-                openIconPicker = {
-                    scope.launch {
-                        if (sheetSelection != 1) {
-                            sheetSelection = 1
-                        }
-                        showBottomSheet = true
-                    }
-                }
-            )
 
-            FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                onClick = viewModel::saveOrUpdateCategory
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_done),
-                    contentDescription = ""
-                )
+        CategoryCreateScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            selectedColor = colorValue,
+            selectedIcon = iconValue,
+            name = name,
+            nameErrorMessage = nameErrorMessage,
+            selectedCategoryType = selectedCategoryType,
+            onCategoryTypeChange = viewModel::setCategoryType,
+            onNameChange = {
+                viewModel.setNameChange(it)
+            },
+            openColorPicker = {
+                scope.launch {
+                    if (sheetSelection != 2) {
+                        sheetSelection = 2
+                    }
+                    showBottomSheet = true
+                }
+            },
+            openIconPicker = {
+                scope.launch {
+                    if (sheetSelection != 1) {
+                        sheetSelection = 1
+                    }
+                    showBottomSheet = true
+                }
             }
-        }
+        )
     }
 }
 

@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.presentation.transaction.create
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -168,6 +167,14 @@ fun TransactionCreateScreen(
             ) {
                 showDeleteDialog = true
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = viewModel::doSave) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_done),
+                    contentDescription = ""
+                )
+            }
         }
     ) { innerPadding ->
 
@@ -183,48 +190,35 @@ fun TransactionCreateScreen(
         val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
         val selectedToAccount by viewModel.selectedToAccount.collectAsState()
 
-        Box(
+        TransactionCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            TransactionCreateScreen(
-                selectedCategory = category,
-                selectedFromAccount = selectedFromAccount,
-                selectedToAccount = selectedToAccount,
-                currency = currency,
-                amount = amount,
-                amountErrorMessage = amountErrorMessage,
-                amountChange = viewModel::setAmount,
-                selectedDate = selectedDate,
-                onDateChange = viewModel::setDate,
-                selectedTransactionType = selectedTransactionType,
-                onTransactionTypeChange = viewModel::setTransactionType,
-                notes = notes,
-                onNotesChange = viewModel::setNotes,
-                openSelection = { type ->
-                    if (type == 4) {
-                        showNumberPadDialog = true
-                    } else {
-                        sheetSelection = type
-                        showBottomSheet = true
-                    }
+                .padding(innerPadding),
+            selectedCategory = category,
+            selectedFromAccount = selectedFromAccount,
+            selectedToAccount = selectedToAccount,
+            currency = currency,
+            amount = amount,
+            amountErrorMessage = amountErrorMessage,
+            amountChange = viewModel::setAmount,
+            selectedDate = selectedDate,
+            onDateChange = viewModel::setDate,
+            selectedTransactionType = selectedTransactionType,
+            onTransactionTypeChange = viewModel::setTransactionType,
+            notes = notes,
+            onNotesChange = viewModel::setNotes,
+            openSelection = { type ->
+                if (type == 4) {
+                    showNumberPadDialog = true
+                } else {
+                    sheetSelection = type
+                    showBottomSheet = true
                 }
-            )
-            FloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                onClick = viewModel::doSave
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_done),
-                    contentDescription = ""
-                )
             }
-        }
+        )
     }
 }
+
 
 @Composable
 private fun TransactionCreateBottomSheetContent(

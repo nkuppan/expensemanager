@@ -7,7 +7,6 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -209,37 +208,9 @@ private fun ExportScreenScaffoldView(
             TopNavigationBar(
                 navController = navController, title = null
             )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-
-            ExportScreenContent(
-                modifier = Modifier.fillMaxWidth(),
-                selectedDateRange,
-                exportFileType,
-                accountCount,
-                onExportFileTypeChange,
-                openAccountSelection = {
-                    scope.launch {
-                        if (bottomSheetState.isVisible) {
-                            bottomSheetState.hide()
-                        } else {
-                            showBottomSheet = true
-                        }
-                    }
-                }
-            )
-
-            ExtendedFloatingActionButton(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                onClick = onExport
-            ) {
+        },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(onClick = onExport) {
                 Row {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_export),
@@ -254,6 +225,25 @@ private fun ExportScreenScaffoldView(
                 }
             }
         }
+    ) { innerPadding ->
+        ExportScreenContent(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            selectedDateRange,
+            exportFileType,
+            accountCount,
+            onExportFileTypeChange,
+            openAccountSelection = {
+                scope.launch {
+                    if (bottomSheetState.isVisible) {
+                        bottomSheetState.hide()
+                    } else {
+                        showBottomSheet = true
+                    }
+                }
+            }
+        )
     }
 }
 
