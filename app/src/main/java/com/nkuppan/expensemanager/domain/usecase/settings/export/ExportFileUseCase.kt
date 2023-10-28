@@ -19,7 +19,7 @@ class ExportFileUseCase @Inject constructor(
         dateRangeFilterType: DateRangeFilterType,
         accounts: List<AccountUiModel>,
         isAllAccountsSelected: Boolean
-    ): Resource<Boolean> {
+    ): Resource<String?> {
 
         return when (
             val transactions = getExportTransactionsUseCase.invoke(

@@ -13,7 +13,9 @@ import com.nkuppan.expensemanager.domain.usecase.settings.export.ExportFileUseCa
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -27,11 +29,11 @@ class ExportViewModel @Inject constructor(
     private val exportFileUseCase: ExportFileUseCase,
 ) : ViewModel() {
 
-    private val _error = MutableStateFlow<UiText?>(null)
-    val error = _error.asStateFlow()
+    private val _error = MutableSharedFlow<UiText?>()
+    val error = _error.asSharedFlow()
 
-    private val _success = MutableStateFlow<UiText?>(null)
-    val success = _success.asStateFlow()
+    private val _success = MutableSharedFlow<ExportData?>()
+    val success = _success.asSharedFlow()
 
     private val _selectedDateRange = MutableStateFlow<String?>(null)
     val selectedDateRange = _selectedDateRange.asStateFlow()
@@ -78,13 +80,23 @@ class ExportViewModel @Inject constructor(
             )
             when (response) {
                 is Resource.Error -> {
-                    _error.value = UiText.StringResource(R.string.export_error_message)
+                    _error.emit(UiText.StringResource(R.string.export_error_message))
                 }
 
                 is Resource.Success -> {
-                    _success.value = UiText.StringResource(R.string.export_success_message)
+                    _success.emit(
+                        ExportData(
+                            message = UiText.StringResource(R.string.export_success_message),
+                            fileUri = response.data ?: ""
+                        )
+                    )
                 }
             }
         }
     }
 }
+
+data class ExportData(
+    val message: UiText,
+    val fileUri: String
+)

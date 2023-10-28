@@ -324,4 +324,5 @@
     <string name="time">Time</string>
     <string name="export_error_message">Unknown error happened while exporting the file</string>
     <string name="export_success_message">File exported successfully</string>
+    <string name="share">Share</string>
 </resources>

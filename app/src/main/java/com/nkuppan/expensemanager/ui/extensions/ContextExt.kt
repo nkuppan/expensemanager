@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.core.net.toUri
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.nkuppan.expensemanager.R
 
@@ -59,4 +60,14 @@ fun launchReviewWorkflow(context: Context) {
             }
         }
     }
+}
+
+fun Context.shareThisFile(fileUri: String) {
+    val shareIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_STREAM, fileUri.toUri())
+        type = "*/*"
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    }
+    startActivity(Intent.createChooser(shareIntent, null))
 }

@@ -2,11 +2,13 @@ package com.nkuppan.expensemanager.data.repository
 
 import android.content.Context
 import android.graphics.pdf.PdfDocument
+import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.data.utils.toTransactionDate
 import com.nkuppan.expensemanager.data.utils.toTransactionTimeOnly
+import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
 import com.nkuppan.expensemanager.domain.repository.ExportRepository
@@ -14,9 +16,11 @@ import com.nkuppan.expensemanager.utils.AppCoroutineDispatchers
 import com.opencsv.CSVWriter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
@@ -28,10 +32,10 @@ class ExportRepositoryImpl @Inject constructor(
     override suspend fun createCsvFile(
         uri: String?,
         transactions: List<Transaction>
-    ): Resource<Boolean> =
+    ): Resource<String?> =
         withContext(dispatchers.io) {
             kotlin.runCatching {
-                generateFile("sample.csv", uri) { output ->
+                val fileUri = generateFile(getFileName(ExportFileType.CSV), uri) { output ->
                     val writer = CSVWriter(output.writer())
                     val data = mutableListOf<Array<String>>()
                     data.add(
@@ -63,49 +67,75 @@ class ExportRepositoryImpl @Inject constructor(
                     writer.writeAll(data)
                     writer.close()
                 }
-                Resource.Success(true)
+                Resource.Success(fileUri)
             }.onFailure {
                 Log.i("error", it.localizedMessage ?: "")
                 Resource.Error(Exception(it))
-            }.getOrNull() ?: Resource.Success(false)
+            }.getOrNull() ?: Resource.Error(java.lang.Exception())
         }
 
     override suspend fun createPdfFile(
         uri: String?,
         transactions: List<Transaction>
-    ): Resource<Boolean> =
+    ): Resource<String?> =
         withContext(dispatchers.io) {
             kotlin.runCatching {
-                generateFile("sample.pdf", uri) {
+                val fileUri = generateFile(getFileName(ExportFileType.PDF), uri) { output ->
                     val document = PdfDocument()
                     val pageInfo = PdfDocument.PageInfo.Builder(
                         100, 100, 1
                     ).create()
                     val page = document.startPage(pageInfo)
                     document.finishPage(page)
-                    document.writeTo(it)
+                    document.writeTo(output)
                     document.close()
                 }
-                Resource.Success(true)
+                Resource.Success(fileUri)
             }.onFailure {
                 Log.i("error", it.localizedMessage ?: "")
                 Resource.Error(Exception(it))
-            }.getOrNull() ?: Resource.Success(false)
+            }.getOrNull() ?: Resource.Error(java.lang.Exception())
         }
 
-    private fun generateFile(fileName: String, uri: String?, write: (FileOutputStream) -> Unit) {
+    private fun generateFile(
+        fileName: String,
+        uri: String?,
+        write: (FileOutputStream) -> Unit
+    ): String? {
         try {
-            if (uri != null) {
+            return if (uri != null) {
                 context.contentResolver.openFileDescriptor(uri.toUri(), "w")?.use {
                     write.invoke(FileOutputStream(it.fileDescriptor))
                 }
+                uri
             } else {
-                context.openFileOutput(fileName, Context.MODE_PRIVATE).use(write)
+                val directory = File(Environment.getExternalStorageDirectory(), "Expense Manager")
+                if (directory.exists().not()) {
+                    directory.mkdirs()
+                }
+                val file = File(directory, fileName)
+                file.outputStream().use {
+                    write.invoke(it)
+                }
+                directory.toUri().toString()
             }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
+        }
+        return null
+    }
+
+    private fun getFileName(exportFileType: ExportFileType): String {
+        return when (exportFileType) {
+            ExportFileType.CSV -> {
+                "export_file_${Date().time}.csv"
+            }
+
+            ExportFileType.PDF -> {
+                "export_file_${Date().time}.pdf"
+            }
         }
     }
 }

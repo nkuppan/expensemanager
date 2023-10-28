@@ -15,12 +15,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -52,6 +54,7 @@ import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.nkuppan.expensemanager.presentation.budget.create.SelectedItemView
 import com.nkuppan.expensemanager.presentation.settings.datefilter.DateFilterView
+import com.nkuppan.expensemanager.ui.extensions.shareThisFile
 import com.nkuppan.expensemanager.ui.theme.widget.ClickableTextField
 import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.ui.utils.UiText
@@ -64,10 +67,10 @@ private fun createFile(fileType: ExportFileType): Intent? {
             addCategory(Intent.CATEGORY_OPENABLE)
             if (fileType == ExportFileType.PDF) {
                 type = "application/pdf"
-                putExtra(Intent.EXTRA_TITLE, "export_file.pdf")
+                putExtra(Intent.EXTRA_TITLE, "export_file_${Date().time}.pdf")
             } else {
                 type = "application/csv"
-                putExtra(Intent.EXTRA_TITLE, "export_file.csv")
+                putExtra(Intent.EXTRA_TITLE, "export_file_${Date().time}.csv")
             }
         }
     } else {
@@ -76,13 +79,23 @@ private fun createFile(fileType: ExportFileType): Intent? {
 }
 
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(
+    ExperimentalPermissionsApi::class,
+    ExperimentalMaterial3Api::class
+)
 @Composable
 fun ExportScreen(navController: NavController) {
 
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
-    val scope = rememberCoroutineScope()
+
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        rememberStandardBottomSheetState(
+            skipHiddenState = false,
+            initialValue = SheetValue.Hidden
+        ),
+        snackbarHostState
+    )
     val writePermission = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     LaunchedEffect(writePermission) {
@@ -101,8 +114,8 @@ fun ExportScreen(navController: NavController) {
     val exportFileType by viewModel.exportFileType.collectAsState()
     val accountCount by viewModel.accountCount.collectAsState()
 
-    val success by viewModel.success.collectAsState()
-    val error by viewModel.error.collectAsState()
+    val success by viewModel.success.collectAsState(null)
+    val error by viewModel.error.collectAsState(null)
 
     val fileCreatorIntent = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -118,22 +131,31 @@ fun ExportScreen(navController: NavController) {
 
     if (success != null) {
         LaunchedEffect(key1 = "completed", block = {
-            scope.launch {
-                snackbarHostState.showSnackbar(success?.asString(context) ?: "")
-                navController.popBackStack()
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = success?.message?.asString(context) ?: "",
+                actionLabel = context.getString(R.string.share),
+                withDismissAction = true
+            ).run {
+                when (this) {
+                    SnackbarResult.Dismissed -> Unit
+                    SnackbarResult.ActionPerformed -> {
+                        success?.fileUri?.let {
+                            context.shareThisFile(it)
+                        }
+                    }
+                }
             }
         })
     }
 
     if (error != null) {
         LaunchedEffect(key1 = "error", block = {
-            scope.launch {
-                snackbarHostState.showSnackbar(error?.asString(context) ?: "")
-            }
+            scaffoldState.snackbarHostState.showSnackbar(error?.asString(context) ?: "")
         })
     }
 
     ExportScreenScaffoldView(
+        scaffoldState = scaffoldState,
         navController = navController,
         selectedDateRange = selectedDateRange,
         exportFileType = exportFileType,
@@ -153,6 +175,7 @@ fun ExportScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenScaffoldView(
+    scaffoldState: BottomSheetScaffoldState,
     navController: NavController,
     selectedDateRange: String?,
     exportFileType: ExportFileType,
@@ -163,12 +186,6 @@ private fun ExportScreenScaffoldView(
 ) {
     val scope = rememberCoroutineScope()
 
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-            skipHiddenState = false,
-            initialValue = SheetValue.Hidden
-        )
-    )
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetPeekHeight = 0.dp,
