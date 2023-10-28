@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,18 +16,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -72,7 +73,6 @@ import com.nkuppan.expensemanager.ui.theme.widget.ClickableTextField
 import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.ui.utils.UiText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -89,12 +89,9 @@ fun TransactionCreateScreen(
 
     val scope = rememberCoroutineScope()
 
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-            skipHiddenState = false,
-            initialValue = SheetValue.Hidden
-        )
-    )
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val viewModel: TransactionCreateViewModel = hiltViewModel()
 
@@ -125,7 +122,7 @@ fun TransactionCreateScreen(
                 amount ?: return@NumberPadDialogView
                 scope.launch {
                     viewModel.setAmount(amount)
-                    scaffoldState.bottomSheetState.hide()
+                    showBottomSheet = false
                 }
             }
         )
@@ -135,22 +132,33 @@ fun TransactionCreateScreen(
     if (transactionCreated) {
         LaunchedEffect(key1 = "completed", block = {
             navController.popBackStack()
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = context.getString(R.string.transaction_create_success)
             )
         })
     }
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetContent = {
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = bottomSheetState,
+            windowInsets = WindowInsets(0.dp)
+        ) {
+
             TransactionCreateBottomSheetContent(
                 sheetSelection,
-                scope,
                 viewModel,
-                scaffoldState
-            )
+            ) {
+                showBottomSheet = false
+            }
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
             TopNavigationBarWithDeleteAction(
@@ -175,7 +183,11 @@ fun TransactionCreateScreen(
         val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
         val selectedToAccount by viewModel.selectedToAccount.collectAsState()
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
             TransactionCreateScreen(
                 selectedCategory = category,
                 selectedFromAccount = selectedFromAccount,
@@ -191,18 +203,11 @@ fun TransactionCreateScreen(
                 notes = notes,
                 onNotesChange = viewModel::setNotes,
                 openSelection = { type ->
-
                     if (type == 4) {
                         showNumberPadDialog = true
                     } else {
                         sheetSelection = type
-                        scope.launch {
-                            if (scaffoldState.bottomSheetState.isVisible) {
-                                scaffoldState.bottomSheetState.hide()
-                            } else {
-                                scaffoldState.bottomSheetState.expand()
-                            }
-                        }
+                        showBottomSheet = true
                     }
                 }
             )
@@ -222,12 +227,10 @@ fun TransactionCreateScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun TransactionCreateBottomSheetContent(
     sheetSelection: Int,
-    scope: CoroutineScope,
     viewModel: TransactionCreateViewModel,
-    scaffoldState: BottomSheetScaffoldState
+    hideBottomSheet: () -> Unit
 ) {
     if (sheetSelection == 1) {
         val categories by viewModel.categories.collectAsState()
@@ -236,10 +239,8 @@ private fun TransactionCreateBottomSheetContent(
             categories = categories,
             selectedCategory = selectedCategory,
         ) { category ->
-            scope.launch {
-                viewModel.setCategorySelection(category)
-                scaffoldState.bottomSheetState.hide()
-            }
+            viewModel.setCategorySelection(category)
+            hideBottomSheet.invoke()
         }
     } else {
         val accounts by viewModel.accounts.collectAsState()
@@ -253,10 +254,8 @@ private fun TransactionCreateBottomSheetContent(
                 selectedToAccount
             },
         ) { account ->
-            scope.launch {
-                viewModel.setAccountSelection(sheetSelection, account)
-                scaffoldState.bottomSheetState.hide()
-            }
+            viewModel.setAccountSelection(sheetSelection, account)
+            hideBottomSheet.invoke()
         }
     }
 }
@@ -430,7 +429,6 @@ private fun TransactionCreateScreen(
                 endIcon = R.drawable.ic_arrow_right,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = colorResource(id = R.color.grey_light))
                     .clickable {
                         focusManager.clearFocus(force = true)
                         openSelection?.invoke(1)
@@ -463,7 +461,6 @@ private fun TransactionCreateScreen(
             amount = selectedFromAccount.amount.asString(context),
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = colorResource(id = R.color.grey_light))
                 .clickable {
                     focusManager.clearFocus(force = true)
                     openSelection?.invoke(2)

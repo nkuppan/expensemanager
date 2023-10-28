@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -172,9 +171,13 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
         val accountCount by viewModel.accountCount.collectAsState()
         val categoriesCount by viewModel.categoriesCount.collectAsState()
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
             BudgetCreateScreen(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier.fillMaxSize(),
                 selectedColor = colorValue,
                 selectedIcon = iconValue,
                 name = name,
@@ -241,25 +244,7 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-private suspend fun hideOrShowBottomSheet(
-    oldSelection: BudgetCreateSheetSelection,
-    currentSelection: BudgetCreateSheetSelection,
-    scaffoldState: BottomSheetScaffoldState
-) {
-    if (oldSelection != currentSelection) {
-        scaffoldState.bottomSheetState.expand()
-    } else {
-        if (scaffoldState.bottomSheetState.isVisible) {
-            scaffoldState.bottomSheetState.hide()
-        } else {
-            scaffoldState.bottomSheetState.expand()
-        }
-    }
-}
-
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun BudgetCreateBottomSheetContent(
     sheetSelection: BudgetCreateSheetSelection,
     viewModel: BudgetCreateViewModel,

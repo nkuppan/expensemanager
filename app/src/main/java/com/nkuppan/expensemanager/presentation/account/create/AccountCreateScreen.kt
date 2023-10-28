@@ -5,20 +5,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SheetValue
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,7 +50,6 @@ import com.nkuppan.expensemanager.ui.theme.widget.DecimalTextField
 import com.nkuppan.expensemanager.ui.theme.widget.StringTextField
 import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.ui.utils.UiText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -64,12 +64,7 @@ fun AccountCreateScreen(
 
     val scope = rememberCoroutineScope()
 
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        rememberStandardBottomSheetState(
-            skipHiddenState = false,
-            initialValue = SheetValue.Hidden
-        )
-    )
+    val snackbarHostState = remember { SnackbarHostState() }
 
     val viewModel: AccountCreateViewModel = hiltViewModel()
 
@@ -96,23 +91,38 @@ fun AccountCreateScreen(
     if (accountCreated) {
         LaunchedEffect(key1 = "completed", block = {
             navController.popBackStack()
-            scaffoldState.snackbarHostState.showSnackbar(
+            snackbarHostState.showSnackbar(
                 message = context.getString(R.string.account_create_success)
             )
         })
     }
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 0.dp,
-        sheetContent = {
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState()
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = bottomSheetState,
+            windowInsets = WindowInsets(0.dp)
+        ) {
+
             AccountCreateBottomSheetContent(
                 sheetSelection,
-                scope,
                 viewModel,
-                scaffoldState
-            )
-        }, topBar = {
+            ) {
+                showBottomSheet = false
+            }
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        topBar = {
             TopNavigationBarWithDeleteAction(
                 navController = navController,
                 title = stringResource(id = R.string.account),
@@ -135,9 +145,13 @@ fun AccountCreateScreen(
         val selectedAccountType by viewModel.accountType.collectAsState()
         val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
 
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
             AccountCreateScreen(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier.fillMaxSize(),
                 selectedColor = colorValue,
                 selectedIcon = iconValue,
                 name = name,
@@ -157,28 +171,16 @@ fun AccountCreateScreen(
                     scope.launch {
                         if (sheetSelection != 2) {
                             sheetSelection = 2
-                            scaffoldState.bottomSheetState.expand()
-                        } else {
-                            if (scaffoldState.bottomSheetState.isVisible) {
-                                scaffoldState.bottomSheetState.hide()
-                            } else {
-                                scaffoldState.bottomSheetState.expand()
-                            }
                         }
+                        showBottomSheet = true
                     }
                 },
                 openIconPicker = {
                     scope.launch {
                         if (sheetSelection != 1) {
                             sheetSelection = 1
-                            scaffoldState.bottomSheetState.expand()
-                        } else {
-                            if (scaffoldState.bottomSheetState.isVisible) {
-                                scaffoldState.bottomSheetState.hide()
-                            } else {
-                                scaffoldState.bottomSheetState.expand()
-                            }
                         }
+                        showBottomSheet = true
                     }
                 }
             )
@@ -199,28 +201,22 @@ fun AccountCreateScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AccountCreateBottomSheetContent(
     sheetSelection: Int,
-    scope: CoroutineScope,
     viewModel: AccountCreateViewModel,
-    scaffoldState: BottomSheetScaffoldState
+    hideBottomSheet: () -> Unit
 ) {
     val context = LocalContext.current
 
     if (sheetSelection == 1) {
         IconSelectionScreen {
-            scope.launch {
-                viewModel.setIcon(context.resources.getResourceName(it))
-                scaffoldState.bottomSheetState.hide()
-            }
+            viewModel.setIcon(context.resources.getResourceName(it))
+            hideBottomSheet.invoke()
         }
     } else {
         ColorSelectionScreen {
-            scope.launch {
-                viewModel.setColorValue(it)
-                scaffoldState.bottomSheetState.hide()
-            }
+            viewModel.setColorValue(it)
+            hideBottomSheet.invoke()
         }
     }
 }
