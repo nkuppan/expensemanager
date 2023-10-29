@@ -39,7 +39,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
             DateRangeFilterType.THIS_MONTH -> context.getString(R.string.this_month)
             DateRangeFilterType.THIS_YEAR -> context.getString(R.string.this_year)
             DateRangeFilterType.CUSTOM -> context.getString(R.string.custom)
-            DateRangeFilterType.ALL -> context.getString(R.string.all)
+            DateRangeFilterType.ALL -> context.getString(R.string.all_time)
         }
     }
 
@@ -100,7 +100,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
             DateRangeFilterType.THIS_YEAR -> getThisYearRange()[0].toDate().toTransactionYearValue()
                 .toString()
 
-            DateRangeFilterType.ALL -> context.getString(R.string.all)
+            DateRangeFilterType.ALL -> context.getString(R.string.all_time)
             DateRangeFilterType.CUSTOM -> {
                 "${
                     getThisWeekRange()[0].toDate().toTransactionDate()

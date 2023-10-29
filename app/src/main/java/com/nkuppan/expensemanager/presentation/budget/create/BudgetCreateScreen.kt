@@ -384,7 +384,8 @@ private fun BudgetCreateScreen(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
             icon = painterResource(id = R.drawable.savings),
-            selectedCount = accountCount?.asString(context) ?: stringResource(id = R.string.all)
+            selectedCount = accountCount?.asString(context)
+                ?: stringResource(id = R.string.all_time)
         )
 
         SelectedItemView(
@@ -396,7 +397,8 @@ private fun BudgetCreateScreen(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_category),
             icon = painterResource(id = R.drawable.ic_filter_list),
-            selectedCount = categoriesCount?.asString(context) ?: stringResource(id = R.string.all)
+            selectedCount = categoriesCount?.asString(context)
+                ?: stringResource(id = R.string.all_time)
         )
 
         Divider()

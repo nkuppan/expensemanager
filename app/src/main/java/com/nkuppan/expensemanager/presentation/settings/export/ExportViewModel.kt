@@ -41,7 +41,7 @@ class ExportViewModel @Inject constructor(
     private val _exportFileType = MutableStateFlow(ExportFileType.CSV)
     val exportFileType = _exportFileType.asStateFlow()
 
-    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
+    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
     val accountCount = _accountCount.asStateFlow()
 
     private var selectedDateRangeFilterType = DateRangeFilterType.TODAY
@@ -63,7 +63,7 @@ class ExportViewModel @Inject constructor(
         this.selectedAccounts = selectedAccounts
         this.isAllAccountsSelected = isAllSelected
         _accountCount.value = if (isAllSelected) {
-            UiText.StringResource(R.string.all)
+            UiText.StringResource(R.string.all_time)
         } else {
             UiText.DynamicString(selectedAccounts.size.toString())
         }

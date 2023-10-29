@@ -253,7 +253,7 @@
     <string name="set_by_battery_saver">Set by battery saver</string>
     <string name="system_default">System default</string>
 
-    <string name="all">All</string>
+    <string name="all_time">All time</string>
     <string name="custom">Custom</string>
     <string name="select_color">Select Color</string>
     <string name="category_create_success">Category created/modified successfully</string>

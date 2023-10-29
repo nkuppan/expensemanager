@@ -1,6 +1,7 @@
 package com.nkuppan.expensemanager.presentation.budget.list
 
 import android.annotation.SuppressLint
+import androidx.annotation.ColorRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,7 +44,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.UiState
-import com.nkuppan.expensemanager.ui.extensions.toColor
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.ui.theme.widget.IconAndBackgroundView
 import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBar
@@ -139,6 +140,7 @@ private fun BudgetListScreenContent(
                             name = budget.name,
                             icon = budget.icon,
                             iconBackgroundColor = budget.iconBackgroundColor,
+                            progressBarColor = budget.progressBarColor,
                             amount = budget.amount.asString(context),
                             transactionAmount = budget.transactionAmount.asString(context),
                             percentage = budget.percent,
@@ -168,6 +170,7 @@ fun BudgetItem(
     name: String,
     icon: String,
     iconBackgroundColor: String,
+    @ColorRes progressBarColor: Int,
     amount: String?,
     transactionAmount: String?,
     modifier: Modifier = Modifier,
@@ -213,7 +216,7 @@ fun BudgetItem(
                         .height(8.dp)
                         .align(Alignment.CenterVertically),
                     progress = percentage / 100,
-                    color = iconBackgroundColor.toColor(),
+                    color = colorResource(id = progressBarColor),
                     strokeCap = StrokeCap.Round
                 )
                 Text(
@@ -246,6 +249,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = UiText.DynamicString("$100.00"),
         transactionAmount = UiText.DynamicString("$100.00"),
+        progressBarColor = R.color.orange_500,
         percent = 0.9f
     ),
     BudgetUiModel(
@@ -255,6 +259,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = UiText.DynamicString("$100.00"),
         transactionAmount = UiText.DynamicString("$100.00"),
+        progressBarColor = R.color.orange_500,
         percent = 0.9f
     ),
     BudgetUiModel(
@@ -264,6 +269,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = UiText.DynamicString("$100.00"),
         transactionAmount = UiText.DynamicString("$100.00"),
+        progressBarColor = R.color.orange_500,
         percent = 0.9f
     ),
 )
@@ -279,6 +285,7 @@ private fun BudgetItemPreview() {
             amount = "$100.00",
             transactionAmount = "$78.00",
             modifier = ItemSpecModifier,
+            progressBarColor = R.color.orange_500,
             percentage = 78.8f
         )
     }

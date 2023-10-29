@@ -2,6 +2,7 @@ package com.nkuppan.expensemanager.presentation.budget.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -59,7 +60,19 @@ class BudgetListViewModel @Inject constructor(
                                     response.data.toTransactionSum()
                                 }
                             }
-                        it.toBudgetUiModel(currency, transactionAmount)
+                        val percent = (transactionAmount / it.amount).toFloat() * 100
+                        it.toBudgetUiModel(
+                            currency,
+                            transactionAmount,
+                            when {
+                                percent < 0f -> R.color.green_500
+                                percent in 0f..35f -> R.color.green_500
+                                percent in 36f..60f -> R.color.light_green_500
+                                percent in 61f..850f -> R.color.orange_500
+                                else -> R.color.red_500
+                            },
+                            percent
+                        )
                     }
                 )
             }
@@ -94,11 +107,14 @@ fun List<Transaction>.toTransactionSum(): Double {
 fun Budget.toBudgetUiModel(
     currency: Currency,
     transactionAmount: Double,
+    progressBarColor: Int,
+    percent: Float,
 ) = BudgetUiModel(
     id = this.id,
     name = this.name,
     icon = this.iconName,
     iconBackgroundColor = this.iconBackgroundColor,
+    progressBarColor = progressBarColor,
     amount = getCurrency(
         currency,
         this.amount
@@ -107,7 +123,7 @@ fun Budget.toBudgetUiModel(
         currency,
         transactionAmount
     ),
-    percent = (transactionAmount / this.amount).toFloat() * 100
+    percent = percent
 )
 
 
@@ -116,6 +132,7 @@ data class BudgetUiModel(
     val name: String,
     val icon: String,
     val iconBackgroundColor: String,
+    val progressBarColor: Int,
     val amount: UiText,
     val transactionAmount: UiText,
     val percent: Float,

@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.domain.usecase.settings.daterange
 
+import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
 import com.nkuppan.expensemanager.domain.repository.DateRangeFilterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,9 +14,13 @@ class GetSelectedFilterNameAndDateRangeUseCase @Inject constructor(
 
     operator fun invoke(): Flow<String> {
         return getFilterTypeUseCase.invoke().map {
-            val filterRangeText = getFilterRangeDateStringUseCase.invoke(it)
+            val filterRangeText = if (it != DateRangeFilterType.ALL) {
+                " (${getFilterRangeDateStringUseCase.invoke(it)})"
+            } else {
+                ""
+            }
             val filterNameText = dateRangeFilterRepository.getDateRangeFilterRangeName(it)
-            return@map "${filterNameText}(${filterRangeText})"
+            return@map "${filterNameText}${filterRangeText}"
         }
     }
 }

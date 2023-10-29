@@ -70,10 +70,11 @@ class BudgetCreateViewModel @Inject constructor(
     private val _date = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
-    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
+    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
     val accountCount = _accountCount.asStateFlow()
 
-    private val _categoriesCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
+    private val _categoriesCount =
+        MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
     val categoriesCount = _categoriesCount.asStateFlow()
 
     private var selectedAccounts = emptyList<AccountUiModel>()
@@ -228,7 +229,7 @@ class BudgetCreateViewModel @Inject constructor(
         this.selectedAccounts = selectedAccounts
         this.isAllAccountsSelected = isAllSelected
         _accountCount.value = if (isAllSelected) {
-            UiText.StringResource(R.string.all)
+            UiText.StringResource(R.string.all_time)
         } else {
             UiText.DynamicString(selectedAccounts.size.toString())
         }
@@ -238,7 +239,7 @@ class BudgetCreateViewModel @Inject constructor(
         this.selectedCategories = selectedCategories
         this.isAllCategoriesSelected = isAllSelected
         _categoriesCount.value = if (isAllSelected) {
-            UiText.StringResource(R.string.all)
+            UiText.StringResource(R.string.all_time)
         } else {
             UiText.DynamicString(selectedCategories.size.toString())
         }
