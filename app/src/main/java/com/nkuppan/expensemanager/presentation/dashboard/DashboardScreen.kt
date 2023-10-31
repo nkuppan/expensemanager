@@ -1,43 +1,62 @@
 package com.nkuppan.expensemanager.presentation.dashboard
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.domain.usecase.transaction.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
-import com.nkuppan.expensemanager.presentation.analysis.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.analysis.ChartScreen
+import com.nkuppan.expensemanager.presentation.category.list.getCategoryData
+import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransaction
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
+import com.nkuppan.expensemanager.presentation.category.transaction.getDummyPieChartData
+import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
+import com.nkuppan.expensemanager.presentation.transaction.list.TransactionItem
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.theme.widget.AppCardView
+import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
+import kotlin.random.Random
 
 
 @Composable
@@ -60,31 +79,17 @@ private fun DashboardScreenScaffoldView(
 
     val chartData by viewModel.chartData.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
+    val transactions by viewModel.transactions.collectAsState()
     val categoryTransaction by viewModel.categoryTransaction.collectAsState()
 
-    Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(R.string.title_home),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            },
-            actions = {
-                IconButton(onClick = {
-                    navController.navigate("settings")
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_settings),
-                        contentDescription = stringResource(id = R.string.settings)
-                    )
-                }
-            }
-        )
-    }) { innerPadding ->
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+    ) { innerPadding ->
+        innerPadding.calculateTopPadding()
         DashboardScreenContent(
             modifier = Modifier
-                .padding(top = innerPadding.calculateTopPadding())
                 .fillMaxSize(),
             incomeAmount = incomeAmount,
             expenseAmount = expenseAmount,
@@ -92,67 +97,121 @@ private fun DashboardScreenScaffoldView(
             transactionPeriod = transactionPeriod,
             chartData = chartData,
             accounts = accounts,
+            transactions = transactions,
             categoryTransaction = categoryTransaction,
+            navController = navController
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DashboardScreenContent(
+    navController: NavController,
     incomeAmount: UiText,
     expenseAmount: UiText,
     balanceAmount: UiText,
     transactionPeriod: UiText,
-    chartData: AnalysisChartData?,
+    chartData: AnalysisChartData,
     modifier: Modifier = Modifier,
     accounts: List<AccountUiModel> = emptyList(),
-    categoryTransaction: CategoryTransactionUiModel? = null,
+    transactions: List<TransactionUIModel> = emptyList(),
+    categoryTransaction: CategoryTransactionUiModel,
 ) {
 
     val context = LocalContext.current
 
-    LazyColumn(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-    ) {
+    LazyColumn(modifier = modifier) {
+        item {
+            TopAppBar(
+                title = {
+                    Row {
+                        Image(
+                            modifier = Modifier
+                                .clickable(
+                                    onClick = {
+
+                                    }
+                                )
+                                .size(32.dp)
+                                .border(
+                                    1.5.dp, MaterialTheme.colorScheme.primary, CircleShape
+                                )
+                                .border(3.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                                .clip(CircleShape)
+                                .align(Alignment.CenterVertically),
+                            painter = painterResource(id = R.drawable.someone_else),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = null,
+                        )
+                        Column(
+                            modifier = Modifier.padding(start = 8.dp)
+                        ) {
+                            Text(
+                                text = stringResource(R.string.hello),
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                            Text(
+                                text = stringResource(id = R.string.guest),
+                                style = MaterialTheme.typography.titleLarge
+                            )
+                        }
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        navController.navigate("settings")
+                    }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_settings),
+                            contentDescription = stringResource(id = R.string.settings)
+                        )
+                    }
+                }
+            )
+        }
         item {
             IncomeExpenseBalanceView(
                 incomeAmount = incomeAmount,
                 expenseAmount = expenseAmount,
                 balanceAmount = balanceAmount,
                 transactionPeriod = transactionPeriod,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
             )
         }
         item {
-            if (categoryTransaction != null) {
-                CategoryAmountView(
-                    modifier = Modifier.padding(16.dp),
-                    transactionPeriod = transactionPeriod,
-                    categoryTransactionUiModel = categoryTransaction
-                )
-            }
+            CategoryAmountView(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                transactionPeriod = transactionPeriod,
+                categoryTransactionUiModel = categoryTransaction
+            )
         }
         item {
-            if (chartData != null) {
-                AppCardView(modifier = Modifier.padding(16.dp)) {
-                    Column(
-                        modifier = Modifier.padding(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        WidgetHeader(
-                            title = stringResource(id = R.string.analysis),
-                            subTitle = transactionPeriod.asString(context)
-                        )
-                        ChartScreen(chart = chartData)
-                    }
+            Surface(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                shape = RoundedCornerShape(8.dp),
+                tonalElevation = 1.dp
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    WidgetHeader(
+                        title = stringResource(id = R.string.analysis),
+                        subTitle = transactionPeriod.asString(context)
+                    )
+                    ChartScreen(chart = chartData)
                 }
             }
         }
         item {
-            Text(
-                modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                text = stringResource(id = R.string.title_accounts),
-                fontWeight = FontWeight.Bold
+            DashboardWidgetTitle(
+                title = stringResource(id = R.string.title_accounts),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
             )
         }
         items(accounts) { account ->
@@ -161,20 +220,73 @@ private fun DashboardScreenContent(
                 .clickable {
                     //onItemClick?.invoke(account)
                 }
-                .padding(16.dp),
+                .then(ItemSpecModifier),
                 name = account.name,
                 icon = account.icon,
                 iconBackgroundColor = account.iconBackgroundColor,
                 amount = account.amount.asString(context))
         }
+        item {
+            DashboardWidgetTitle(
+                title = stringResource(id = R.string.transaction),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+            )
+        }
+        items(transactions) { transaction ->
+            TransactionItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        //onItemClick?.invoke(transaction)
+                    }
+                    .then(ItemSpecModifier),
+                categoryName = transaction.categoryName,
+                categoryColor = transaction.categoryBackgroundColor,
+                categoryIcon = transaction.categoryIcon,
+                amount = transaction.amount.asString(context),
+                date = transaction.date,
+                notes = transaction.notes,
+                transactionType = transaction.transactionType,
+                fromAccountName = transaction.fromAccountName,
+                fromAccountIcon = transaction.fromAccountIcon,
+                fromAccountColor = transaction.fromAccountColor,
+                toAccountName = transaction.toAccountName,
+                toAccountIcon = transaction.toAccountIcon,
+                toAccountColor = transaction.toAccountColor,
+            )
+        }
     }
 }
+
+@Composable
+private fun DashboardWidgetTitle(
+    title: String,
+    modifier: Modifier
+) {
+    Box(
+        modifier = modifier
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            text = stringResource(id = R.string.view_all),
+            style = MaterialTheme.typography.labelMedium
+        )
+    }
+}
+
 
 @Preview
 @Composable
 fun IncomeExpenseBalanceViewPreview() {
     ExpenseManagerTheme {
         DashboardScreenContent(
+            navController = rememberNavController(),
             modifier = Modifier.fillMaxSize(),
             expenseAmount = UiText.DynamicString("$500.0"),
             incomeAmount = UiText.DynamicString("$200.0"),
@@ -196,6 +308,27 @@ fun IncomeExpenseBalanceViewPreview() {
                     "28/09",
                     "28/09"
                 )
+            ),
+            categoryTransaction = CategoryTransactionUiModel(
+                pieChartData = listOf(
+                    getDummyPieChartData(""),
+                    getDummyPieChartData(""),
+                    getDummyPieChartData(""),
+                    getDummyPieChartData("")
+                ),
+                totalAmount = UiText.DynamicString("Expenses"),
+                categoryTransactions = buildList {
+                    repeat(15) {
+                        add(
+                            CategoryTransaction(
+                                category = getCategoryData(it),
+                                amount = UiText.DynamicString("100$"),
+                                percent = Random(100).nextFloat(),
+                                transaction = emptyList()
+                            )
+                        )
+                    }
+                }.take(5)
             )
         )
     }

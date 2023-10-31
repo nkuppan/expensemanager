@@ -89,7 +89,7 @@
     <string name="category_delete_error_message">Unable to delete this category</string>
     <string name="title_color_picker">Color picker</string>
     <string name="category_name">Category Name</string>
-    <string name="expense">Expense</string>
+    <string name="spending">Spending</string>
     <string name="balance">Balance</string>
     <string name="income">Income</string>
     <string name="category_type">Category type</string>
@@ -106,7 +106,7 @@
     <string name="no_income_available">No income</string>
 
     <string-array name="graph_items">
-        <item>@string/expense</item>
+        <item>@string/spending</item>
         <item>@string/income</item>
     </string-array>
 
@@ -325,4 +325,6 @@
     <string name="export_error_message">Unknown error happened while exporting the file</string>
     <string name="export_success_message">File exported successfully</string>
     <string name="share">Share</string>
+    <string name="hello">Hello!</string>
+    <string name="guest">Guest</string>
 </resources>

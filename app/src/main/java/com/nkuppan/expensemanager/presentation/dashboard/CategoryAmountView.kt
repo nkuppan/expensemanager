@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,7 +20,6 @@ import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTran
 import com.nkuppan.expensemanager.presentation.category.transaction.PieChartView
 import com.nkuppan.expensemanager.presentation.category.transaction.getRandomCategoryTransactionData
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.theme.widget.AppCardView
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 
@@ -32,7 +33,11 @@ fun CategoryAmountView(
 
     val context = LocalContext.current
 
-    AppCardView(modifier = modifier) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        tonalElevation = 1.dp
+    ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),

@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,11 +40,10 @@ fun IncomeExpenseBalanceView(
     expenseAmount: UiText,
     balanceAmount: UiText,
     transactionPeriod: UiText,
+    modifier: Modifier = Modifier,
 ) {
-    AmountInfoWidget(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+    NewAmountInfoWidget(
+        modifier = modifier,
         expenseAmount = expenseAmount,
         incomeAmount = incomeAmount,
         balanceAmount = balanceAmount,
@@ -136,7 +137,7 @@ fun AmountInfoWidget(
                 amount = expenseAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.expense)
+                title = stringResource(id = R.string.spending)
             )
             ColorIconAmountView(
                 color = R.color.green_500,
@@ -171,7 +172,7 @@ fun WidgetHeader(
                 .wrapContentWidth()
                 .align(Alignment.CenterVertically),
             text = title,
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Text(
             modifier = Modifier
@@ -190,6 +191,78 @@ fun WidgetHeader(
     }
 }
 
+
+@Composable
+fun NewAmountInfoWidget(
+    modifier: Modifier,
+    expenseAmount: UiText,
+    incomeAmount: UiText,
+    balanceAmount: UiText,
+    transactionPeriod: UiText,
+) {
+
+    val context = LocalContext.current
+
+    val period = transactionPeriod.asString(context)
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        NewColorIconAmountView(
+            amount = incomeAmount,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            title = stringResource(id = R.string.income),
+            colorResource = R.color.green_100
+        )
+        NewColorIconAmountView(
+            amount = expenseAmount,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            title = stringResource(id = R.string.spending),
+            colorResource = R.color.red_100
+        )
+    }
+}
+
+@Composable
+fun NewColorIconAmountView(
+    amount: UiText,
+    title: String,
+    @ColorRes colorResource: Int,
+    modifier: Modifier = Modifier
+) {
+
+    val context = LocalContext.current
+
+    Surface(
+        modifier = modifier,
+        color = colorResource(id = colorResource),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+            )
+            Text(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 4.dp),
+                text = amount.asString(context),
+                style = MaterialTheme.typography.headlineSmall,
+            )
+        }
+    }
+}
+
+private const val AMOUNT_VALUE = "100.00 $"
+
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
@@ -198,9 +271,25 @@ private fun AmountViewPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            expenseAmount = UiText.DynamicString("100.00$"),
-            incomeAmount = UiText.DynamicString("100.00$"),
-            balanceAmount = UiText.DynamicString("0.00$"),
+            expenseAmount = UiText.DynamicString(AMOUNT_VALUE),
+            incomeAmount = UiText.DynamicString(AMOUNT_VALUE),
+            balanceAmount = UiText.DynamicString("0.00 $"),
+            transactionPeriod = UiText.DynamicString("This Month(Oct 2023)"),
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun NewAmountViewPreview() {
+    ExpenseManagerTheme {
+        NewAmountInfoWidget(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            expenseAmount = UiText.DynamicString(AMOUNT_VALUE),
+            incomeAmount = UiText.DynamicString(AMOUNT_VALUE),
+            balanceAmount = UiText.DynamicString("0.00 $"),
             transactionPeriod = UiText.DynamicString("This Month(Oct 2023)"),
         )
     }

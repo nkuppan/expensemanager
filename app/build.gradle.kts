@@ -67,6 +67,7 @@ dependencies {
     implementation(libs.androidx.material)
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.profileinstaller)
 
     implementation(libs.androidx.compose.activity)
     implementation(libs.androidx.compose.animation)
@@ -128,7 +129,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.mockito)
     androidTestImplementation(libs.truth)
-
 
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)

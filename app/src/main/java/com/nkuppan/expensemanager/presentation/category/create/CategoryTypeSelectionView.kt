@@ -42,7 +42,7 @@ fun CategoryTypeSelectionView(
         )
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
-            filterName = stringResource(id = R.string.expense),
+            filterName = stringResource(id = R.string.spending),
             isSelected = selectedCategoryType.isExpense(),
             filterIcon = R.drawable.ic_arrow_upward,
             filterSelectedColor = R.color.red_500,

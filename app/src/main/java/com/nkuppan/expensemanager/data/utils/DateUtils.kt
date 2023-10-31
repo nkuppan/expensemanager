@@ -15,7 +15,7 @@ fun getThisWeekRange(): List<Long> {
     val startDayOfWeek = DateTime().withDayOfWeek(1).withTimeAtStartOfDay().millis
     val endDayOfWeek = DateTime()
         .run {
-            return@run dayOfWeek().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+            return@run dayOfWeek().withMaximumValue().plusDays(1).withTimeAtStartOfDay().millis
         }
 
     return listOf(startDayOfWeek, endDayOfWeek)
@@ -25,7 +25,8 @@ fun getThisMonthRange(): List<Long> {
     val startDayOfMonth = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
     val endDayOfMonth = DateTime()
         .run {
-            return@run dayOfMonth().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+            return@run dayOfMonth().withMaximumValue().plusDays(1)
+                .withTimeAtStartOfDay().millis
         }
 
     return listOf(startDayOfMonth, endDayOfMonth)
@@ -35,7 +36,7 @@ fun getThisYearRange(): List<Long> {
     val startDayOfMonth = DateTime().withMonthOfYear(1).withTimeAtStartOfDay().millis
     val endDayOfMonth = DateTime()
         .run {
-            return@run monthOfYear().withMaximumValue().plus(1).withTimeAtStartOfDay().millis
+            return@run monthOfYear().withMaximumValue().plusDays(1).withTimeAtStartOfDay().millis
         }
 
     return listOf(startDayOfMonth, endDayOfMonth)

@@ -79,7 +79,7 @@ fun CategoryTransactionTabScreen(
 
     val titles = listOf(
         stringResource(id = R.string.income).uppercase(),
-        stringResource(id = R.string.expense).uppercase(),
+        stringResource(id = R.string.spending).uppercase(),
     )
     var tabIndex by remember { mutableIntStateOf(CategoryType.INCOME.ordinal) }
 
