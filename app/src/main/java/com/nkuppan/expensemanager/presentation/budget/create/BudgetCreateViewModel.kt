@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.fromTransactionMonthToDate
-import com.nkuppan.expensemanager.data.utils.toTransactionMonth
+import com.nkuppan.expensemanager.data.utils.fromMonthAndYear
+import com.nkuppan.expensemanager.data.utils.toMonthAndYear
 import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -101,7 +101,7 @@ class BudgetCreateViewModel @Inject constructor(
             amount.value = budgetItem.amount.toString()
             colorValue.value = budgetItem.iconBackgroundColor
             icon.value = budgetItem.iconName
-            budgetItem.selectedMonth.fromTransactionMonthToDate()?.let { setDate(it) }
+            budgetItem.selectedMonth.fromMonthAndYear()?.let { setDate(it) }
         }
     }
 
@@ -167,7 +167,7 @@ class BudgetCreateViewModel @Inject constructor(
             iconBackgroundColor = color,
             iconName = icon.value,
             amount = amount,
-            selectedMonth = date.toTransactionMonth(),
+            selectedMonth = date.toMonthAndYear(),
             categories = categories,
             accounts = accounts,
             isAllCategoriesSelected = isAllCategoriesSelected,

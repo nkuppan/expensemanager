@@ -6,8 +6,8 @@ import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.toTransactionDate
-import com.nkuppan.expensemanager.data.utils.toTransactionTimeOnly
+import com.nkuppan.expensemanager.data.utils.toCompleteDate
+import com.nkuppan.expensemanager.data.utils.toTimeAndMinutes
 import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.model.Transaction
@@ -53,8 +53,8 @@ class ExportRepositoryImpl @Inject constructor(
                         transactions.forEach { transaction ->
                             data.add(
                                 arrayOf(
-                                    transaction.createdOn.toTransactionDate(),
-                                    transaction.createdOn.toTransactionTimeOnly(),
+                                    transaction.createdOn.toCompleteDate(),
+                                    transaction.createdOn.toTimeAndMinutes(),
                                     transaction.category.name,
                                     transaction.fromAccount.name,
                                     transaction.toAccount?.name ?: "",

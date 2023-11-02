@@ -32,7 +32,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.toTransactionDate
+import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.ui.theme.widget.AppDatePickerDialog
 import com.nkuppan.expensemanager.ui.theme.widget.ClickableTextField
 
@@ -162,7 +162,7 @@ fun DateFilterView(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(end = 8.dp),
-                                    value = fromDate.toTransactionDate(),
+                                    value = fromDate.toCompleteDate(),
                                     label = R.string.from_date,
                                     leadingIcon = R.drawable.ic_calendar,
                                     onClick = {
@@ -175,7 +175,7 @@ fun DateFilterView(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(start = 8.dp),
-                                    value = toDate.toTransactionDate(),
+                                    value = toDate.toCompleteDate(),
                                     label = R.string.to_date,
                                     leadingIcon = R.drawable.ic_calendar,
                                     onClick = {

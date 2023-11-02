@@ -3,7 +3,7 @@ package com.nkuppan.expensemanager.presentation.settings.datefilter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
-import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterTypeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeFilterTypeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.SaveFilterTypeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DateFilterViewModel @Inject constructor(
-    getFilterTypeUseCase: GetFilterTypeUseCase,
+    getDateRangeFilterTypeUseCase: GetDateRangeFilterTypeUseCase,
     private val saveFilterTypeUseCase: SaveFilterTypeUseCase,
 ) : ViewModel() {
 
@@ -42,7 +42,7 @@ class DateFilterViewModel @Inject constructor(
     }.toList())
 
     init {
-        getFilterTypeUseCase.invoke().onEach {
+        getDateRangeFilterTypeUseCase.invoke().onEach {
             updateFilterType(it)
         }.launchIn(viewModelScope)
     }

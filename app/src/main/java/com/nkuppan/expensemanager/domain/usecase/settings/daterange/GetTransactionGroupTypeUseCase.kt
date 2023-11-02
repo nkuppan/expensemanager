@@ -2,14 +2,14 @@ package com.nkuppan.expensemanager.domain.usecase.settings.daterange
 
 import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
 import com.nkuppan.expensemanager.domain.repository.DateRangeFilterRepository
-import kotlinx.coroutines.flow.Flow
+import com.nkuppan.expensemanager.domain.usecase.transaction.GroupType
 import javax.inject.Inject
 
-class GetFilterTypeUseCase @Inject constructor(
+class GetTransactionGroupTypeUseCase @Inject constructor(
     private val dateRangeFilterRepository: DateRangeFilterRepository
 ) {
 
-    operator fun invoke(): Flow<DateRangeFilterType> {
-        return dateRangeFilterRepository.getDateRangeFilterType()
+    suspend operator fun invoke(dateRangeFilterType: DateRangeFilterType): GroupType {
+        return dateRangeFilterRepository.getTransactionGroupType(dateRangeFilterType)
     }
 }

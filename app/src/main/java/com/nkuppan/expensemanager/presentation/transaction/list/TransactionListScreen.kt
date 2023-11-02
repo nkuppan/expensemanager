@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.toTransactionDate
+import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.domain.model.TransactionType
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
@@ -337,7 +337,7 @@ val DUMMY_DATA = listOf(
         fromAccountName = "DB Bank xxxx",
         fromAccountIcon = "ic_account",
         fromAccountColor = "#000000",
-        date = Date().toTransactionDate()
+        date = Date().toCompleteDate()
     ),
     TransactionUIModel(
         id = "2",
@@ -350,7 +350,7 @@ val DUMMY_DATA = listOf(
         fromAccountName = "DB Bank xxxx",
         fromAccountIcon = "ic_account",
         fromAccountColor = "#000000",
-        date = Date().toTransactionDate()
+        date = Date().toCompleteDate()
     ),
     TransactionUIModel(
         id = "3",
@@ -360,7 +360,7 @@ val DUMMY_DATA = listOf(
         transactionType = TransactionType.TRANSFER,
         categoryBackgroundColor = "#000000",
         categoryIcon = "ic_add",
-        date = Date().toTransactionDate(),
+        date = Date().toCompleteDate(),
         fromAccountName = "DB Bank xxxx",
         fromAccountIcon = "ic_account",
         fromAccountColor = "#000000",

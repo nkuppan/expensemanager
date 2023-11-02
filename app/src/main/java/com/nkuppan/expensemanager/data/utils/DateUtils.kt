@@ -42,34 +42,42 @@ fun getThisYearRange(): List<Long> {
     return listOf(startDayOfMonth, endDayOfMonth)
 }
 
-fun Long.toDate(): Date {
+fun Long.toCompleteDate(): Date {
     return Date(this)
 }
 
-fun Date.toTransactionDate(): String {
-    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
+fun Date.toDate(): String {
+    return SimpleDateFormat("dd", Locale.getDefault()).format(this)
 }
 
-fun Date.toTransactionMonth(): String {
-    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).format(this)
-}
-
-fun String.fromTransactionMonthToDate(): Date? {
-    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).parse(this)
-}
-
-fun Date.toTransactionMonthValue(): Int {
-    return SimpleDateFormat("MM", Locale.getDefault()).format(this).toInt()
-}
-
-fun Date.toTransactionYearValue(): Int {
-    return SimpleDateFormat("yyyy", Locale.getDefault()).format(this).toInt()
-}
-
-fun Date.toTransactionDateOnly(): String {
+fun Date.toDateAndMonth(): String {
     return SimpleDateFormat("dd/MM", Locale.getDefault()).format(this)
 }
 
-fun Date.toTransactionTimeOnly(): String {
+fun Date.toCompleteDate(): String {
+    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
+}
+
+fun Date.toMonthAndYear(): String {
+    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).format(this)
+}
+
+fun String.fromMonthAndYear(): Date? {
+    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).parse(this)
+}
+
+fun Date.toMonth(): Int {
+    return SimpleDateFormat("MM", Locale.getDefault()).format(this).toInt()
+}
+
+fun Date.toYearInt(): Int {
+    return this.toYear().toInt()
+}
+
+fun Date.toYear(): String {
+    return SimpleDateFormat("yyyy", Locale.getDefault()).format(this)
+}
+
+fun Date.toTimeAndMinutes(): String {
     return SimpleDateFormat("HH:mm", Locale.getDefault()).format(this)
 }

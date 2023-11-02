@@ -1,7 +1,7 @@
 package com.nkuppan.expensemanager.domain.usecase.budget
 
-import com.nkuppan.expensemanager.data.utils.fromTransactionMonthToDate
-import com.nkuppan.expensemanager.data.utils.toTransactionMonth
+import com.nkuppan.expensemanager.data.utils.fromMonthAndYear
+import com.nkuppan.expensemanager.data.utils.toMonthAndYear
 import com.nkuppan.expensemanager.domain.model.Budget
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -32,7 +32,7 @@ class GetBudgetTransactionsUseCase @Inject constructor(
             budget.categories
         }
 
-        val date = budget.selectedMonth.fromTransactionMonthToDate()
+        val date = budget.selectedMonth.fromMonthAndYear()
         val startDayOfMonth = DateTime(date).withDayOfMonth(1)
             .withTimeAtStartOfDay().millis
         val endDayOfMonth = DateTime()
@@ -48,7 +48,7 @@ class GetBudgetTransactionsUseCase @Inject constructor(
             startDate = startDayOfMonth,
             endDate = endDayOfMonth,
         ).firstOrNull()?.filter {
-            it.createdOn.toTransactionMonth() == budget.selectedMonth
+            it.createdOn.toMonthAndYear() == budget.selectedMonth
         }
 
         return Resource.Success(transaction ?: emptyList())

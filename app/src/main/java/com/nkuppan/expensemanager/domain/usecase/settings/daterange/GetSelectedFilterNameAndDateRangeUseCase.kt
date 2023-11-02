@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 class GetSelectedFilterNameAndDateRangeUseCase @Inject constructor(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
-    private val getFilterTypeUseCase: GetFilterTypeUseCase,
+    private val getDateRangeFilterTypeUseCase: GetDateRangeFilterTypeUseCase,
     private val getFilterRangeDateStringUseCase: GetFilterRangeDateStringUseCase,
 ) {
 
     operator fun invoke(): Flow<String> {
-        return getFilterTypeUseCase.invoke().map {
+        return getDateRangeFilterTypeUseCase.invoke().map {
             val filterRangeText = if (it != DateRangeFilterType.ALL) {
                 " (${getFilterRangeDateStringUseCase.invoke(it)})"
             } else {

@@ -47,7 +47,7 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.toTransactionDate
+import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
@@ -250,7 +250,7 @@ private fun ExportScreenScaffoldView(
 @Composable
 private fun ExportScreenContent(
     modifier: Modifier = Modifier,
-    selectedDate: String? = Date().toTransactionDate(),
+    selectedDate: String? = Date().toCompleteDate(),
     exportFileType: ExportFileType,
     accountCount: UiText,
     onExportFileTypeChange: (ExportFileType) -> Unit,

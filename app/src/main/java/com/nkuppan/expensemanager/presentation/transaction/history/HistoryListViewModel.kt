@@ -3,7 +3,7 @@ package com.nkuppan.expensemanager.presentation.transaction.history
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.toTransactionDate
+import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.Resource
@@ -113,7 +113,7 @@ fun Transaction.toTransactionUIModel(currency: Currency): TransactionUIModel {
         this.type,
         this.category.iconBackgroundColor,
         this.category.iconName,
-        date = this.createdOn.toTransactionDate(),
+        date = this.createdOn.toCompleteDate(),
         fromAccountName = this.fromAccount.name,
         fromAccountIcon = this.fromAccount.iconName,
         fromAccountColor = this.fromAccount.iconBackgroundColor,

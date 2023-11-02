@@ -42,9 +42,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.toTransactionMonth
-import com.nkuppan.expensemanager.data.utils.toTransactionMonthValue
-import com.nkuppan.expensemanager.data.utils.toTransactionYearValue
+import com.nkuppan.expensemanager.data.utils.toMonth
+import com.nkuppan.expensemanager.data.utils.toMonthAndYear
+import com.nkuppan.expensemanager.data.utils.toYearInt
 import com.nkuppan.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.nkuppan.expensemanager.presentation.budget.create.BudgetCreateSheetSelection.*
 import com.nkuppan.expensemanager.presentation.category.selection.MultipleCategoriesSelectionScreen
@@ -309,8 +309,8 @@ private fun BudgetCreateScreen(
                     color = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(8.dp)
                 ),
-            currentMonth = (selectedDate ?: Date()).toTransactionMonthValue(),
-            currentYear = (selectedDate ?: Date()).toTransactionYearValue(),
+            currentMonth = (selectedDate ?: Date()).toMonth(),
+            currentYear = (selectedDate ?: Date()).toYearInt(),
             confirmButtonCLicked = { month, year ->
                 SimpleDateFormat("MM-yyyy", Locale.getDefault()).parse("${month}-${year}")?.let {
                     onDateChange?.invoke(
@@ -331,7 +331,7 @@ private fun BudgetCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 .fillMaxWidth(),
-            value = selectedDate?.toTransactionMonth() ?: "",
+            value = selectedDate?.toMonthAndYear() ?: "",
             label = R.string.select_date,
             leadingIcon = R.drawable.ic_calendar,
             onClick = {

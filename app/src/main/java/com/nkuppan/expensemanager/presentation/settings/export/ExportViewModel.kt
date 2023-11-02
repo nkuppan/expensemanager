@@ -7,8 +7,8 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
 import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.domain.model.Resource
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeFilterTypeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterRangeDateStringUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterTypeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.export.ExportFileUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.ui.utils.UiText
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExportViewModel @Inject constructor(
-    getFilterTypeUseCase: GetFilterTypeUseCase,
+    getDateRangeFilterTypeUseCase: GetDateRangeFilterTypeUseCase,
     getFilterRangeDateStringUseCase: GetFilterRangeDateStringUseCase,
     private val exportFileUseCase: ExportFileUseCase,
 ) : ViewModel() {
@@ -49,7 +49,7 @@ class ExportViewModel @Inject constructor(
     private var isAllAccountsSelected = true
 
     init {
-        getFilterTypeUseCase.invoke().map {
+        getDateRangeFilterTypeUseCase.invoke().map {
             selectedDateRangeFilterType = it
             _selectedDateRange.value = getFilterRangeDateStringUseCase.invoke(it)
         }.launchIn(viewModelScope)

@@ -51,8 +51,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.data.utils.toTransactionDate
-import com.nkuppan.expensemanager.data.utils.toTransactionTimeOnly
+import com.nkuppan.expensemanager.data.utils.toCompleteDate
+import com.nkuppan.expensemanager.data.utils.toTimeAndMinutes
 import com.nkuppan.expensemanager.domain.model.AccountType
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
@@ -337,7 +337,7 @@ private fun TransactionCreateScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 8.dp),
-                value = selectedDate?.toTransactionDate() ?: "",
+                value = selectedDate?.toCompleteDate() ?: "",
                 label = R.string.select_date,
                 leadingIcon = R.drawable.ic_calendar,
                 onClick = {
@@ -349,7 +349,7 @@ private fun TransactionCreateScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp),
-                value = selectedDate?.toTransactionTimeOnly() ?: "",
+                value = selectedDate?.toTimeAndMinutes() ?: "",
                 label = R.string.select_time,
                 leadingIcon = R.drawable.ic_time,
                 onClick = {
