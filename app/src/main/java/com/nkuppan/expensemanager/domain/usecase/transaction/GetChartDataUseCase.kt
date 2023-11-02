@@ -4,11 +4,11 @@ import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.data.utils.toMonthAndYear
 import com.nkuppan.expensemanager.data.utils.toYear
 import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.TransactionUIModel
+import com.nkuppan.expensemanager.domain.model.toTransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeFilterTypeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetTransactionGroupTypeUseCase
-import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
-import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.utils.AppCoroutineDispatchers
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel

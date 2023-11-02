@@ -61,11 +61,11 @@ import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.presentation.budget.list.toPercentString
 import com.nkuppan.expensemanager.presentation.category.list.getCategoryData
+import com.nkuppan.expensemanager.ui.components.IconAndBackgroundView
+import com.nkuppan.expensemanager.ui.components.SmallIconAndBackgroundView
+import com.nkuppan.expensemanager.ui.components.TopNavigationBar
 import com.nkuppan.expensemanager.ui.extensions.toColor
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.theme.widget.IconAndBackgroundView
-import com.nkuppan.expensemanager.ui.theme.widget.SmallIconAndBackgroundView
-import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode

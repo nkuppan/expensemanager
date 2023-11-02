@@ -201,4 +201,5 @@
     <string name="share">Share</string>
     <string name="hello">Hello!</string>
     <string name="guest">Guest</string>
+    <string name="balance">Balance</string>
 </resources>

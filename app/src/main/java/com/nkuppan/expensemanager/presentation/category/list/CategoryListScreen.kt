@@ -42,9 +42,9 @@ import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.Category
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.ui.components.IconAndBackgroundView
+import com.nkuppan.expensemanager.ui.components.TopNavigationBar
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.theme.widget.IconAndBackgroundView
-import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBar
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 import java.util.Date
@@ -254,7 +254,7 @@ private fun CategoryItemPreview() {
                 endIcon = R.drawable.ic_arrow_right,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = colorResource(id = R.color.grey_light))
+                    .background(color = colorResource(id = R.color.black_100))
                     .then(ItemSpecModifier)
             )
         }

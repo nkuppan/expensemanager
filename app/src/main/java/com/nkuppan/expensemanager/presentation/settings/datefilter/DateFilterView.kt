@@ -33,8 +33,8 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.data.utils.toCompleteDate
-import com.nkuppan.expensemanager.ui.theme.widget.AppDatePickerDialog
-import com.nkuppan.expensemanager.ui.theme.widget.ClickableTextField
+import com.nkuppan.expensemanager.ui.components.AppDatePickerDialog
+import com.nkuppan.expensemanager.ui.components.ClickableTextField
 
 
 enum class DateTypeSelection {

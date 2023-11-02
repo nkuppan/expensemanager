@@ -1,4 +1,4 @@
-package com.nkuppan.expensemanager.ui.theme.widget
+package com.nkuppan.expensemanager.ui.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog

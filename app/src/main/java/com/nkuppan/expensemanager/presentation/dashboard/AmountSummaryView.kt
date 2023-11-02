@@ -29,8 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.ui.components.AppCardView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.theme.widget.AppCardView
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 
@@ -42,12 +42,14 @@ fun IncomeExpenseBalanceView(
     transactionPeriod: UiText,
     modifier: Modifier = Modifier,
 ) {
+    //TODO Remove this
+    println(transactionPeriod.asString(LocalContext.current))
+
     NewAmountInfoWidget(
         modifier = modifier,
         expenseAmount = expenseAmount,
         incomeAmount = incomeAmount,
-        balanceAmount = balanceAmount,
-        transactionPeriod = transactionPeriod
+        balanceAmount = balanceAmount
     )
 }
 
@@ -198,12 +200,10 @@ fun NewAmountInfoWidget(
     expenseAmount: UiText,
     incomeAmount: UiText,
     balanceAmount: UiText,
-    transactionPeriod: UiText,
+    showBalance: Boolean = false
 ) {
 
     val context = LocalContext.current
-
-    val period = transactionPeriod.asString(context)
 
     Row(
         modifier = modifier,
@@ -225,6 +225,16 @@ fun NewAmountInfoWidget(
             title = stringResource(id = R.string.spending),
             colorResource = R.color.red_100
         )
+        if (showBalance) {
+            NewColorIconAmountView(
+                amount = balanceAmount,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                title = stringResource(id = R.string.balance),
+                colorResource = R.color.black_100
+            )
+        }
     }
 }
 
@@ -261,7 +271,7 @@ fun NewColorIconAmountView(
     }
 }
 
-private const val AMOUNT_VALUE = "100.00 $"
+private const val AMOUNT_VALUE = "100000.0$"
 
 @AppPreviewsLightAndDarkMode
 @Composable
@@ -290,7 +300,6 @@ private fun NewAmountViewPreview() {
             expenseAmount = UiText.DynamicString(AMOUNT_VALUE),
             incomeAmount = UiText.DynamicString(AMOUNT_VALUE),
             balanceAmount = UiText.DynamicString("0.00 $"),
-            transactionPeriod = UiText.DynamicString("This Month(Oct 2023)"),
         )
     }
 }

@@ -41,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.domain.model.TransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.transaction.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
@@ -49,7 +50,6 @@ import com.nkuppan.expensemanager.presentation.category.list.getCategoryData
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransaction
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.nkuppan.expensemanager.presentation.category.transaction.getDummyPieChartData
-import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
 import com.nkuppan.expensemanager.presentation.transaction.list.TransactionItem
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier

@@ -64,12 +64,12 @@ import com.nkuppan.expensemanager.presentation.account.selection.AccountSelectio
 import com.nkuppan.expensemanager.presentation.category.list.CategoryItem
 import com.nkuppan.expensemanager.presentation.category.selection.CategorySelectionScreen
 import com.nkuppan.expensemanager.presentation.transaction.numberpad.NumberPadDialogView
+import com.nkuppan.expensemanager.ui.components.AppDatePickerDialog
+import com.nkuppan.expensemanager.ui.components.AppDialog
+import com.nkuppan.expensemanager.ui.components.AppTimePickerDialog
+import com.nkuppan.expensemanager.ui.components.ClickableTextField
+import com.nkuppan.expensemanager.ui.components.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.theme.widget.AppDatePickerDialog
-import com.nkuppan.expensemanager.ui.theme.widget.AppDialog
-import com.nkuppan.expensemanager.ui.theme.widget.AppTimePickerDialog
-import com.nkuppan.expensemanager.ui.theme.widget.ClickableTextField
-import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBarWithDeleteAction
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.ui.utils.UiText
 import kotlinx.coroutines.launch
@@ -481,7 +481,7 @@ private fun TransactionCreateScreen(
                 amount = selectedToAccount.amount.asString(context),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = colorResource(id = R.color.grey_light))
+                    .background(color = colorResource(id = R.color.black_100))
                     .clickable {
                         focusManager.clearFocus(force = true)
                         openSelection?.invoke(3)

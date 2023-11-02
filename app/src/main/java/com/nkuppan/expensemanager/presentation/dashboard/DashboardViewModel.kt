@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.domain.model.CategoryType
+import com.nkuppan.expensemanager.domain.model.TransactionUIModel
+import com.nkuppan.expensemanager.domain.model.toTransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetSelectedFilterNameAndDateRangeUseCase
@@ -19,8 +21,6 @@ import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.nkuppan.expensemanager.presentation.home.HomeScreenBottomBarItems
-import com.nkuppan.expensemanager.presentation.transaction.history.TransactionUIModel
-import com.nkuppan.expensemanager.presentation.transaction.history.toTransactionUIModel
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.ui.utils.getBalanceCurrency
 import com.nkuppan.expensemanager.ui.utils.getCurrency

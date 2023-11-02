@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.nkuppan.expensemanager.ui.theme.widget.AppTimePickerDialog
+import com.nkuppan.expensemanager.ui.components.AppTimePickerDialog
 
 @Composable
 fun TimePickerView(

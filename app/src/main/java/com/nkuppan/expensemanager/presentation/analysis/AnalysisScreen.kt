@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.ui.components.TopNavigationBar
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.theme.widget.TopNavigationBar
 
 @Composable
 fun AnalysisScreen(navController: NavController) {

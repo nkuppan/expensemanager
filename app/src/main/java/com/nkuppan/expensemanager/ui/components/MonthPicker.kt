@@ -1,4 +1,4 @@
-package com.nkuppan.expensemanager.ui.theme.widget
+package com.nkuppan.expensemanager.ui.components
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
