@@ -15,9 +15,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
 import com.nkuppan.expensemanager.presentation.account.list.AccountItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
-import com.nkuppan.expensemanager.presentation.account.list.DUMMY_DATA
 import com.nkuppan.expensemanager.presentation.selection.SelectionTitle
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
@@ -84,8 +84,8 @@ fun AccountSelectionScreen(
 private fun AccountSelectionScreenPreview() {
     ExpenseManagerTheme {
         AccountSelectionScreen(
-            accounts = DUMMY_DATA,
-            selectedAccount = DUMMY_DATA.firstOrNull()
+            accounts = ACCOUNT_DUMMY_DATA,
+            selectedAccount = ACCOUNT_DUMMY_DATA.firstOrNull()
         )
     }
 }

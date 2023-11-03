@@ -62,7 +62,8 @@ fun Account.toAccountUiModel(currency: Currency) = AccountUiModel(
         currency,
         this.amount
     ),
-    type = this.type
+    type = this.type,
+    isDeclining = this.amount < 0
 )
 
 
@@ -73,4 +74,5 @@ data class AccountUiModel(
     val iconBackgroundColor: String,
     val amount: UiText,
     val type: AccountType = AccountType.REGULAR,
+    val isDeclining: Boolean = false
 )

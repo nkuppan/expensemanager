@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
 import com.nkuppan.expensemanager.presentation.account.list.AccountCheckedItem
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
-import com.nkuppan.expensemanager.presentation.account.list.DUMMY_DATA
 import com.nkuppan.expensemanager.presentation.selection.SelectionTitle
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 
@@ -128,8 +128,8 @@ fun MultipleAccountSelectionScreen(
 private fun MultipleAccountSelectionScreenPreview() {
     ExpenseManagerTheme {
         MultipleAccountSelectionScreen(
-            accounts = DUMMY_DATA,
-            selectedAccounts = DUMMY_DATA,
+            accounts = ACCOUNT_DUMMY_DATA,
+            selectedAccounts = ACCOUNT_DUMMY_DATA,
             onApplyChanges = {},
             onClearChanges = {},
             onItemSelection = null

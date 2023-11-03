@@ -153,10 +153,12 @@ fun ExportScreen(navController: NavController) {
         accountCount = accountCount,
         onExportFileTypeChange = viewModel::setExportFileType,
         onExport = {
-            createFile(fileType = exportFileType)?.let {
-                fileCreatorIntent.launch(it)
-            } ?: run {
-                viewModel.export(null)
+            if (exportFileType != ExportFileType.PDF) {
+                createFile(fileType = exportFileType)?.let {
+                    fileCreatorIntent.launch(it)
+                } ?: run {
+                    viewModel.export(null)
+                }
             }
         },
         setAccounts = viewModel::setAccounts,
@@ -210,7 +212,9 @@ private fun ExportScreenScaffoldView(
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(onClick = onExport) {
+            ExtendedFloatingActionButton(
+                onClick = onExport,
+            ) {
                 Row {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_export),
@@ -306,5 +310,13 @@ private fun ExportScreenContent(
             icon = painterResource(id = R.drawable.savings),
             selectedCount = accountCount.asString(context)
         )
+        if (exportFileType == ExportFileType.PDF) {
+            Text(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.export_disabled_message)
+            )
+        }
     }
 }

@@ -202,12 +202,9 @@ fun NewAmountInfoWidget(
     balanceAmount: UiText,
     showBalance: Boolean = false
 ) {
-
-    val context = LocalContext.current
-
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         NewColorIconAmountView(
             amount = incomeAmount,

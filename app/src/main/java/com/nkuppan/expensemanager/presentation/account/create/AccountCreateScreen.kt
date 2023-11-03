@@ -1,5 +1,6 @@
 package com.nkuppan.expensemanager.presentation.account.create
 
+import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -150,6 +151,7 @@ fun AccountCreateScreen(
         val iconValue by viewModel.icon.collectAsState()
         val selectedAccountType by viewModel.accountType.collectAsState()
         val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
+        val availableCreditLimitColor by viewModel.availableCreditLimitColor.collectAsState()
 
         AccountCreateScreen(
             modifier = Modifier
@@ -170,6 +172,7 @@ fun AccountCreateScreen(
             onCurrentBalanceChange = viewModel::setCurrentBalanceChange,
             onCreditLimitChange = viewModel::setCreditLimitChange,
             availableCreditLimit = availableCreditLimit,
+            availableCreditLimitColor = availableCreditLimitColor,
             openColorPicker = {
                 scope.launch {
                     if (sheetSelection != 2) {
@@ -231,7 +234,8 @@ private fun AccountCreateScreen(
     creditLimit: String = "",
     creditLimitErrorMessage: UiText? = null,
     onCreditLimitChange: ((String) -> Unit)? = null,
-    availableCreditLimit: UiText? = null
+    availableCreditLimit: UiText? = null,
+    @ColorRes availableCreditLimitColor: Int = R.color.green_100,
 ) {
 
     val context = LocalContext.current
@@ -277,7 +281,7 @@ private fun AccountCreateScreen(
             label = R.string.current_balance,
         )
 
-        if (selectedAccountType == AccountType.CREDIT && availableCreditLimit != null) {
+        if (selectedAccountType == AccountType.CREDIT) {
             DecimalTextField(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
@@ -288,12 +292,13 @@ private fun AccountCreateScreen(
                 leadingIcon = currency,
                 label = R.string.credit_limit,
             )
-
+        }
+        if (availableCreditLimit != null) {
             Row(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                     .background(
-                        color = colorResource(id = R.color.green_100),
+                        color = colorResource(id = availableCreditLimitColor),
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(16.dp)

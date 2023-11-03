@@ -77,6 +77,9 @@ class AccountCreateViewModel @Inject constructor(
     var availableCreditLimit = MutableStateFlow<UiText?>(null)
         private set
 
+    var availableCreditLimitColor = MutableStateFlow(R.color.green_100)
+        private set
+
     private var account: Account? = null
 
     private var currency: Currency = Currency(
@@ -91,6 +94,7 @@ class AccountCreateViewModel @Inject constructor(
         getCurrencyUseCase.invoke().onEach {
             currency = it
             currencyIcon.value = it.getCurrencyIcon()
+            updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
     }
 
@@ -111,7 +115,11 @@ class AccountCreateViewModel @Inject constructor(
 
     private fun updateAccountValue(accountItem: Account?) {
         updateAvailableCreditLimit(
-            accountItem?.creditLimit ?: 0.0,
+            if (accountType.value == AccountType.CREDIT) {
+                accountItem?.creditLimit ?: 0.0
+            } else {
+                0.0
+            },
             accountItem?.amount ?: 0.0
         )
     }
@@ -120,10 +128,18 @@ class AccountCreateViewModel @Inject constructor(
         creditLimit: Double,
         amount: Double
     ) {
+        val totalAmount = creditLimit + amount
+
         availableCreditLimit.value = getCurrency(
             currency = currency,
-            amount = creditLimit + amount
+            amount = totalAmount
         )
+
+        availableCreditLimitColor.value = if (totalAmount < 0) {
+            R.color.red_100
+        } else {
+            R.color.green_100
+        }
     }
 
 
@@ -222,10 +238,7 @@ class AccountCreateViewModel @Inject constructor(
 
     fun setAccountType(accountType: AccountType) {
         this.accountType.value = accountType
-
-        if (accountType == AccountType.CREDIT) {
-            updateAccountValue(account)
-        }
+        updateAccountValue(account)
     }
 
     fun setIcon(icon: String) {

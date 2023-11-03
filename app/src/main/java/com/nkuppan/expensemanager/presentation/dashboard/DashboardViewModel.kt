@@ -56,10 +56,6 @@ class DashboardViewModel @Inject constructor(
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
 
-    private val _incomeAmount = MutableStateFlow(0.0)
-    private val _expenseAmount = MutableStateFlow(0.0)
-    private val _totalIncome = MutableStateFlow(0.0)
-
     private val _expenseAmountValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val expenseAmountValue = _expenseAmountValue.asStateFlow()
 
@@ -118,15 +114,12 @@ class DashboardViewModel @Inject constructor(
         ) { currency, income, expense ->
 
             val incomeAmount = income ?: 0.0
-            _incomeAmount.value = income ?: 0.0
             _incomeAmountValue.value = getCurrency(currency, incomeAmount)
 
             val expenseAmount = expense ?: 0.0
-            _expenseAmount.value = expense ?: 0.0
             _expenseAmountValue.value = getCurrency(currency, expenseAmount)
 
-            val total = _incomeAmount.value - _expenseAmount.value
-            _totalIncome.value = total
+            val total = incomeAmount - expenseAmount
             _totalIncomeValue.value = getBalanceCurrency(currency, total)
         }.launchIn(viewModelScope)
 

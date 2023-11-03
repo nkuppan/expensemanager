@@ -202,4 +202,5 @@
     <string name="hello">Hello!</string>
     <string name="guest">Guest</string>
     <string name="balance">Balance</string>
+    <string name="export_disabled_message"><b>Note:</b> We are yet to support the PDF export feature. We will add them as soon as possible.</string>
 </resources>
