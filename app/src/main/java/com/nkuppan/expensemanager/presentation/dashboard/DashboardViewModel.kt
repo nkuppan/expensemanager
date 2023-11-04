@@ -56,14 +56,8 @@ class DashboardViewModel @Inject constructor(
     private val _errorMessage = Channel<UiText>()
     val errorMessage = _errorMessage.receiveAsFlow()
 
-    private val _expenseAmountValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
-    val expenseAmountValue = _expenseAmountValue.asStateFlow()
-
-    private val _incomeAmountValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
-    val incomeAmountValue = _incomeAmountValue.asStateFlow()
-
-    private val _totalIncomeValue = MutableStateFlow<UiText>(UiText.DynamicString(""))
-    val totalIncomeValue = _totalIncomeValue.asStateFlow()
+    private val _amountUiState = MutableStateFlow(AmountUiState())
+    val amountUiState = _amountUiState.asStateFlow()
 
     private val _transactionPeriod = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val transactionPeriod = _transactionPeriod.asStateFlow()
@@ -113,14 +107,17 @@ class DashboardViewModel @Inject constructor(
             getExpenseAmountUseCase.invoke()
         ) { currency, income, expense ->
 
-            val incomeAmount = income ?: 0.0
-            _incomeAmountValue.value = getCurrency(currency, incomeAmount)
+            val incomeValue = income ?: 0.0
+            val expenseValue = expense ?: 0.0
+            val incomeAmount = getCurrency(currency, incomeValue)
+            val expenseAmount = getCurrency(currency, expenseValue)
+            val balanceAmount = getBalanceCurrency(currency, (incomeValue - expenseValue))
 
-            val expenseAmount = expense ?: 0.0
-            _expenseAmountValue.value = getCurrency(currency, expenseAmount)
-
-            val total = incomeAmount - expenseAmount
-            _totalIncomeValue.value = getBalanceCurrency(currency, total)
+            _amountUiState.value = _amountUiState.value.copy(
+                income = incomeAmount,
+                expense = expenseAmount,
+                balance = balanceAmount,
+            )
         }.launchIn(viewModelScope)
 
 
@@ -155,6 +152,12 @@ class DashboardViewModel @Inject constructor(
     }
 
     companion object {
-        private const val MAX_TRANSACTIONS_IN_LIST = 5
+        private const val MAX_TRANSACTIONS_IN_LIST = 10
     }
 }
+
+data class AmountUiState(
+    val income: UiText = UiText.DynamicString("0.0$"),
+    val expense: UiText = UiText.DynamicString("0.0$"),
+    val balance: UiText = UiText.DynamicString("0.0$"),
+)
