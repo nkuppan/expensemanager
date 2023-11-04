@@ -235,7 +235,7 @@ private fun AccountCreateScreen(
     creditLimitErrorMessage: UiText? = null,
     onCreditLimitChange: ((String) -> Unit)? = null,
     availableCreditLimit: UiText? = null,
-    @ColorRes availableCreditLimitColor: Int = R.color.green_100,
+    @ColorRes availableCreditLimitColor: Int = R.color.green_500,
 ) {
 
     val context = LocalContext.current
@@ -298,7 +298,7 @@ private fun AccountCreateScreen(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                     .background(
-                        color = colorResource(id = availableCreditLimitColor),
+                        color = colorResource(id = availableCreditLimitColor).copy(.1f),
                         shape = RoundedCornerShape(4.dp)
                     )
                     .padding(16.dp)

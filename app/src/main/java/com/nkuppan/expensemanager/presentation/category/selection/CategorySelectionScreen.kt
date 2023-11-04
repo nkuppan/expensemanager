@@ -43,7 +43,7 @@ fun CategorySelectionScreen(
                             Modifier
                                 .padding(4.dp)
                                 .background(
-                                    color = colorResource(id = R.color.green_100),
+                                    color = colorResource(id = R.color.green_500).copy(alpha = .1f),
                                     shape = RoundedCornerShape(size = 12.dp)
                                 )
                         } else {

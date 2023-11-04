@@ -77,7 +77,7 @@ class AccountCreateViewModel @Inject constructor(
     var availableCreditLimit = MutableStateFlow<UiText?>(null)
         private set
 
-    var availableCreditLimitColor = MutableStateFlow(R.color.green_100)
+    var availableCreditLimitColor = MutableStateFlow(R.color.green_500)
         private set
 
     private var account: Account? = null
@@ -136,9 +136,9 @@ class AccountCreateViewModel @Inject constructor(
         )
 
         availableCreditLimitColor.value = if (totalAmount < 0) {
-            R.color.red_100
+            R.color.red_500
         } else {
-            R.color.green_100
+            R.color.green_500
         }
     }
 

@@ -212,7 +212,7 @@ fun NewAmountInfoWidget(
                 .fillMaxWidth()
                 .weight(1f),
             title = stringResource(id = R.string.income),
-            colorResource = R.color.green_100
+            colorResource = R.color.green_500
         )
         NewColorIconAmountView(
             amount = expenseAmount,
@@ -220,7 +220,7 @@ fun NewAmountInfoWidget(
                 .fillMaxWidth()
                 .weight(1f),
             title = stringResource(id = R.string.spending),
-            colorResource = R.color.red_100
+            colorResource = R.color.red_500
         )
         if (showBalance) {
             NewColorIconAmountView(
@@ -247,7 +247,7 @@ fun NewColorIconAmountView(
 
     Surface(
         modifier = modifier,
-        color = colorResource(id = colorResource),
+        color = colorResource(id = colorResource).copy(alpha = .1f),
         shape = RoundedCornerShape(8.dp)
     ) {
         Column(
