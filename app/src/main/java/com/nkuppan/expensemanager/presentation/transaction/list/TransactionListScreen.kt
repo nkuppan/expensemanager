@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -36,9 +37,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.data.utils.fromCompleteDate
 import com.nkuppan.expensemanager.data.utils.toCompleteDate
+import com.nkuppan.expensemanager.data.utils.toDate
+import com.nkuppan.expensemanager.data.utils.toDay
+import com.nkuppan.expensemanager.data.utils.toMonthYear
 import com.nkuppan.expensemanager.domain.model.TransactionType
-import com.nkuppan.expensemanager.domain.model.TransactionUIModel
+import com.nkuppan.expensemanager.domain.model.TransactionUiItem
+import com.nkuppan.expensemanager.domain.model.TransactionUiState
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.ui.components.IconAndBackgroundView
 import com.nkuppan.expensemanager.ui.components.TopNavigationBar
@@ -47,6 +53,7 @@ import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.ui.utils.getColorValue
+import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 import java.util.Date
 
 
@@ -79,22 +86,19 @@ fun TransactionListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            transactionUiState = transactionUiState,
-            onItemClick = { transaction ->
-                navController.navigate("transaction/create?transactionId=${transaction.id}")
-            }
-        )
+            transactionUiState = transactionUiState
+        ) { transaction ->
+            navController.navigate("transaction/create?transactionId=${transaction.id}")
+        }
     }
 }
 
 @Composable
 private fun TransactionListScreen(
-    transactionUiState: UiState<List<TransactionUIModel>>,
+    transactionUiState: UiState<List<TransactionUiState>>,
     modifier: Modifier = Modifier,
-    onItemClick: ((TransactionUIModel) -> Unit)? = null
+    onItemClick: ((TransactionUiItem) -> Unit)? = null
 ) {
-
-    val context = LocalContext.current
 
     val scrollState = rememberLazyListState()
 
@@ -122,31 +126,101 @@ private fun TransactionListScreen(
             is UiState.Success -> {
                 LazyColumn(state = scrollState) {
                     items(transactionUiState.data) {
-                        TransactionItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    onItemClick?.invoke(it)
-                                }
-                                .then(ItemSpecModifier),
-                            categoryName = it.categoryName,
-                            categoryColor = it.categoryBackgroundColor,
-                            categoryIcon = it.categoryIcon,
-                            amount = it.amount.asString(context),
-                            date = it.date,
-                            notes = it.notes,
-                            transactionType = it.transactionType,
-                            fromAccountName = it.fromAccountName,
-                            fromAccountIcon = it.fromAccountIcon,
-                            fromAccountColor = it.fromAccountColor,
-                            toAccountName = it.toAccountName,
-                            toAccountIcon = it.toAccountIcon,
-                            toAccountColor = it.toAccountColor,
+                        TransactionGroupItem(
+                            it, onItemClick
                         )
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun TransactionGroupItem(
+    transactionUiState: TransactionUiState,
+    onItemClick: ((TransactionUiItem) -> Unit)?,
+    isLastItem: Boolean = false
+) {
+
+    val context = LocalContext.current
+
+    Column {
+        TransactionHeaderItem(
+            transactionUiState.date,
+            transactionUiState.amountTextColor,
+            transactionUiState.totalAmount
+        )
+        transactionUiState.transactions.forEach {
+            TransactionItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        onItemClick?.invoke(it)
+                    }
+                    .then(ItemSpecModifier),
+                categoryName = it.categoryName,
+                categoryColor = it.categoryBackgroundColor,
+                categoryIcon = it.categoryIcon,
+                amount = it.amount.asString(context),
+                date = it.date,
+                notes = it.notes,
+                transactionType = it.transactionType,
+                fromAccountName = it.fromAccountName,
+                fromAccountIcon = it.fromAccountIcon,
+                fromAccountColor = it.fromAccountColor,
+                toAccountName = it.toAccountName,
+                toAccountIcon = it.toAccountIcon,
+                toAccountColor = it.toAccountColor,
+            )
+        }
+        if (isLastItem.not()) {
+            Divider(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+        }
+    }
+}
+
+@Composable
+fun TransactionHeaderItem(
+    date: String,
+    textColor: Int,
+    totalAmount: UiText
+) {
+    val context = LocalContext.current
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 4.dp),
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.CenterVertically),
+            text = date.fromCompleteDate().toDate(),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center
+        )
+        Column(
+            modifier = Modifier
+                .padding(start = 12.dp)
+                .weight(1f)
+                .align(Alignment.CenterVertically),
+        ) {
+            Text(
+                text = date.fromCompleteDate().toMonthYear(),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = date.fromCompleteDate().toDay(),
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+        Text(
+            modifier = Modifier
+                .padding(start = 16.dp)
+                .align(Alignment.CenterVertically),
+            text = totalAmount.asString(context),
+            color = colorResource(id = textColor),
+            style = MaterialTheme.typography.titleMedium,
+        )
     }
 }
 
@@ -282,15 +356,15 @@ private fun AccountNameWithIcon(
     }
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
-fun TransactionItemPreview() {
+fun TransactionUiStatePreview() {
     ExpenseManagerTheme {
         TransactionItem(
             categoryName = "Utilities",
             categoryColor = "#A65A56",
             fromAccountName = "Card-xxx",
-            fromAccountIcon = "ic_account",
+            fromAccountIcon = "account_balance",
             fromAccountColor = "#A65A56x",
             amount = "300 ₹",
             date = "15/11/2019",
@@ -299,6 +373,17 @@ fun TransactionItemPreview() {
                 .fillMaxWidth()
                 .background(Color.White)
                 .padding(16.dp),
+        )
+    }
+}
+
+@Preview
+@Composable
+fun TransactionItemPreview() {
+    ExpenseManagerTheme {
+        TransactionGroupItem(
+            getTransactionUiState(),
+            {}
         )
     }
 }
@@ -326,48 +411,34 @@ fun TransactionListItemEmptyStatePreview() {
 }
 
 val DUMMY_DATA = listOf(
-    TransactionUIModel(
-        id = "1",
-        notes = UiText.DynamicString("Sample Description"),
-        amount = UiText.DynamicString("100.00$"),
-        categoryName = "Clothing",
-        transactionType = TransactionType.EXPENSE,
-        categoryBackgroundColor = "#000000",
-        categoryIcon = "ic_add",
-        fromAccountName = "DB Bank xxxx",
-        fromAccountIcon = "ic_account",
-        fromAccountColor = "#000000",
-        date = Date().toCompleteDate()
-    ),
-    TransactionUIModel(
-        id = "2",
-        notes = UiText.DynamicString("Sample Description"),
-        amount = UiText.DynamicString("100.00$"),
-        categoryName = "Utilities",
-        transactionType = TransactionType.INCOME,
-        categoryBackgroundColor = "#000000",
-        categoryIcon = "ic_add",
-        fromAccountName = "DB Bank xxxx",
-        fromAccountIcon = "ic_account",
-        fromAccountColor = "#000000",
-        date = Date().toCompleteDate()
-    ),
-    TransactionUIModel(
-        id = "3",
-        notes = UiText.DynamicString("New Description about expense"),
-        amount = UiText.DynamicString("100.00$"),
-        categoryName = "Utilities",
-        transactionType = TransactionType.TRANSFER,
-        categoryBackgroundColor = "#000000",
-        categoryIcon = "ic_add",
-        date = Date().toCompleteDate(),
-        fromAccountName = "DB Bank xxxx",
-        fromAccountIcon = "ic_account",
-        fromAccountColor = "#000000",
-        toAccountName = "Another DB Bank xxxx",
-        toAccountIcon = "ic_account",
-        toAccountColor = "#000000"
-    ),
+    getTransactionUiState(),
+    getTransactionUiState(),
+    getTransactionUiState(),
+)
+
+private fun getTransactionItem() = TransactionUiItem(
+    id = "1",
+    notes = UiText.DynamicString("Sample Description"),
+    amount = UiText.DynamicString("100.00$"),
+    categoryName = "Clothing",
+    transactionType = TransactionType.EXPENSE,
+    categoryBackgroundColor = "#000000",
+    categoryIcon = "car_rental",
+    fromAccountName = "DB Bank xxxx",
+    fromAccountIcon = "account_balance",
+    fromAccountColor = "#000000",
+    date = Date().toCompleteDate()
+)
+
+private fun getTransactionUiState() = TransactionUiState(
+    date = "12/10/2023",
+    amountTextColor = R.color.red_500,
+    totalAmount = UiText.DynamicString("100.00$"),
+    transactions = buildList {
+        repeat(3) {
+            add(getTransactionItem())
+        }
+    }
 )
 
 @Preview

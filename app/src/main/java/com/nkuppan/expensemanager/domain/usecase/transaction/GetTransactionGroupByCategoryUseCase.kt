@@ -81,9 +81,9 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                     }
                 }
                 buildList {
-                    categories?.size?.let {
-                        repeat(it) {
-                            add(getDummyPieChartData(categories[it].name))
+                    categories?.size?.let { size ->
+                        repeat(size) {
+                            add(getDummyPieChartData(categories[it].name, (100 / size).toFloat()))
                         }
                     }
                 }

@@ -304,6 +304,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         name = "Cash",
         icon = "account_balance_wallet",
         iconBackgroundColor = "#000000",
+        amountTextColor = R.color.green_500,
         amount = UiText.DynamicString("$100.00")
     ),
     AccountUiModel(
@@ -311,6 +312,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         name = "Bank Account - xxxx",
         icon = "account_balance",
         iconBackgroundColor = "#000000",
+        amountTextColor = R.color.green_500,
         amount = UiText.DynamicString("$100.00")
     ),
     AccountUiModel(
@@ -318,6 +320,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         name = "Credit Card - xxxx",
         icon = "credit_card",
         iconBackgroundColor = "#000000",
+        amountTextColor = R.color.green_500,
         amount = UiText.DynamicString("$100.00")
     ),
 )

@@ -8,6 +8,7 @@ import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.nkuppan.expensemanager.presentation.transaction.list.getAmountTextColor
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.ui.utils.getCurrency
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,7 +64,7 @@ fun Account.toAccountUiModel(currency: Currency) = AccountUiModel(
         this.amount
     ),
     type = this.type,
-    isDeclining = this.amount < 0
+    amountTextColor = this.amount.getAmountTextColor()
 )
 
 
@@ -73,6 +74,6 @@ data class AccountUiModel(
     val icon: String,
     val iconBackgroundColor: String,
     val amount: UiText,
-    val type: AccountType = AccountType.REGULAR,
-    val isDeclining: Boolean = false
+    val amountTextColor: Int,
+    val type: AccountType = AccountType.REGULAR
 )

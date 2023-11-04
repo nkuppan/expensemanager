@@ -58,6 +58,12 @@ fun Date.toCompleteDate(): String {
     return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
 }
 
+fun String.fromCompleteDate(): Date {
+    return kotlin.runCatching {
+        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(this)
+    }.getOrNull() ?: Date()
+}
+
 fun Date.toMonthAndYear(): String {
     return SimpleDateFormat("MM/yyyy", Locale.getDefault()).format(this)
 }
@@ -80,4 +86,12 @@ fun Date.toYear(): String {
 
 fun Date.toTimeAndMinutes(): String {
     return SimpleDateFormat("HH:mm", Locale.getDefault()).format(this)
+}
+
+fun Date.toMonthYear(): String {
+    return SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(this)
+}
+
+fun Date.toDay(): String {
+    return SimpleDateFormat("EEEE", Locale.getDefault()).format(this)
 }

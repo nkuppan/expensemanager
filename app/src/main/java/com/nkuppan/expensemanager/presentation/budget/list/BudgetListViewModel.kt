@@ -57,7 +57,7 @@ class BudgetListViewModel @Inject constructor(
                                 }
 
                                 is Resource.Success -> {
-                                    response.data.toTransactionSum()
+                                    response.data.toBudgetSum()
                                 }
                             }
                         val percent = (transactionAmount / it.amount).toFloat() * 100
@@ -80,8 +80,18 @@ class BudgetListViewModel @Inject constructor(
     }
 }
 
-fun List<Transaction>.toTransactionSum(): Double {
-    val finalAmount = this.sumOf {
+fun List<Transaction>.toBudgetSum(): Double {
+    val finalAmount = toTransactionSum()
+
+    return if (finalAmount < 0) {
+        finalAmount * -1
+    } else {
+        0.0
+    }
+}
+
+fun List<Transaction>.toTransactionSum() =
+    this.sumOf {
         when (it.type) {
             TransactionType.INCOME -> {
                 it.amount
@@ -96,13 +106,6 @@ fun List<Transaction>.toTransactionSum(): Double {
             }
         }
     }
-
-    return if (finalAmount < 0) {
-        finalAmount * -1
-    } else {
-        0.0
-    }
-}
 
 fun Budget.toBudgetUiModel(
     currency: Currency,

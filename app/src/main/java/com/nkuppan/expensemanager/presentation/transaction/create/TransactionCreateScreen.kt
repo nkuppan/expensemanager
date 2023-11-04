@@ -568,6 +568,7 @@ private fun TransactionCreateStatePreview() {
                 type = AccountType.REGULAR,
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
+                amountTextColor = R.color.red_500,
                 amount = UiText.DynamicString("$ 0.00"),
             ),
             selectedToAccount = AccountUiModel(
@@ -576,6 +577,7 @@ private fun TransactionCreateStatePreview() {
                 type = AccountType.REGULAR,
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
+                amountTextColor = R.color.green_500,
                 amount = UiText.DynamicString("$ 0.00"),
             )
         )

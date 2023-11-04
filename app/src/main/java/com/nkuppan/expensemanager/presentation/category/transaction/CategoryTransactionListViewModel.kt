@@ -34,8 +34,16 @@ class CategoryTransactionListViewModel @Inject constructor(
     init {
         categoryType.flatMapMerge {
             getTransactionGroupByCategoryUseCase.invoke(it)
-        }.onEach {
-            _categoryTransaction.value = UiState.Success(it)
+        }.onEach { model ->
+            _categoryTransaction.value = UiState.Success(
+                if (model.hideValues) {
+                    model.copy(
+                        categoryTransactions = emptyList()
+                    )
+                } else {
+                    model
+                }
+            )
         }.launchIn(viewModelScope)
     }
 
@@ -52,10 +60,10 @@ fun CategoryTransaction.toChartModel(): PieChartData {
     )
 }
 
-fun getDummyPieChartData(categoryName: String): PieChartData {
+fun getDummyPieChartData(categoryName: String, percent: Float): PieChartData {
     return PieChartData(
         name = categoryName,
-        value = 25.0f,
+        value = percent,
         color = Color.parseColor("#40121212"),
     )
 }

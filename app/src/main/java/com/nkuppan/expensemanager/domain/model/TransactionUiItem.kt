@@ -4,7 +4,16 @@ import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.ui.utils.getCurrency
 
-data class TransactionUIModel(
+
+data class TransactionUiState(
+    val date: String,
+    val amountTextColor: Int,
+    val totalAmount: UiText,
+    val transactions: List<TransactionUiItem>,
+    val isLastItem: Boolean = false
+)
+
+data class TransactionUiItem(
     val id: String,
     val amount: UiText = UiText.DynamicString(""),
     val notes: UiText?,
@@ -21,8 +30,8 @@ data class TransactionUIModel(
     val toAccountColor: String? = null,
 )
 
-fun Transaction.toTransactionUIModel(currency: Currency): TransactionUIModel {
-    return TransactionUIModel(
+fun Transaction.toTransactionUIModel(currency: Currency): TransactionUiItem {
+    return TransactionUiItem(
         this.id,
         getCurrency(currency, this.amount),
         if (this.notes.isBlank()) {

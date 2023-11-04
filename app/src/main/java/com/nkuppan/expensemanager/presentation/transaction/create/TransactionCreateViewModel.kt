@@ -306,7 +306,8 @@ class TransactionCreateViewModel @Inject constructor(
             name = "Shopping",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
-            amount = UiText.DynamicString("$ 0.00")
+            amount = UiText.DynamicString("$ 0.00"),
+            amountTextColor = R.color.green_500
         )
     }
 }

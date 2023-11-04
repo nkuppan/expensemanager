@@ -4,7 +4,7 @@ import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.data.utils.toMonthAndYear
 import com.nkuppan.expensemanager.data.utils.toYear
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.TransactionUIModel
+import com.nkuppan.expensemanager.domain.model.TransactionUiItem
 import com.nkuppan.expensemanager.domain.model.toTransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeFilterTypeUseCase
@@ -42,7 +42,7 @@ class GetChartDataUseCase @Inject constructor(
             } ?: emptyMap()
 
             val data = if (transactionGroupByDate.isNotEmpty()) {
-                val transaction = mutableListOf<TransactionUIModel>()
+                val transaction = mutableListOf<TransactionUiItem>()
                 val dates = mutableListOf<String>()
                 val expenses = mutableListOf<FloatEntry>()
                 val incomes = mutableListOf<FloatEntry>()
@@ -102,7 +102,7 @@ class GetChartDataUseCase @Inject constructor(
 }
 
 data class AnalysisData(
-    val transactions: List<TransactionUIModel>,
+    val transactions: List<TransactionUiItem>,
     val chartData: AnalysisChartData? = null,
 )
 

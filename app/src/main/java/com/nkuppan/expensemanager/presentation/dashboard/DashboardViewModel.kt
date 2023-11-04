@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.TransactionUIModel
+import com.nkuppan.expensemanager.domain.model.TransactionUiItem
 import com.nkuppan.expensemanager.domain.model.toTransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -68,7 +68,7 @@ class DashboardViewModel @Inject constructor(
     private val _transactionPeriod = MutableStateFlow<UiText>(UiText.DynamicString(""))
     val transactionPeriod = _transactionPeriod.asStateFlow()
 
-    private val _transactions = MutableStateFlow<List<TransactionUIModel>>(emptyList())
+    private val _transactions = MutableStateFlow<List<TransactionUiItem>>(emptyList())
     val transactions = _transactions.asStateFlow()
 
     private val _chartData = MutableStateFlow(

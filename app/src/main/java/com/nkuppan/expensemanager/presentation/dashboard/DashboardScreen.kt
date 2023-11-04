@@ -46,7 +46,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.domain.model.TransactionUIModel
+import com.nkuppan.expensemanager.domain.model.TransactionUiItem
 import com.nkuppan.expensemanager.domain.usecase.transaction.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
@@ -176,7 +176,7 @@ private fun DashboardScreenContent(
     chartData: AnalysisChartData,
     modifier: Modifier = Modifier,
     accounts: List<AccountUiModel> = emptyList(),
-    transactions: List<TransactionUIModel> = emptyList(),
+    transactions: List<TransactionUiItem> = emptyList(),
     categoryTransaction: CategoryTransactionUiModel,
 ) {
 
@@ -210,7 +210,7 @@ private fun DashboardScreenContent(
                 LazyRow(
                     modifier = Modifier
                         .padding(top = 16.dp),
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(accounts) {
@@ -220,11 +220,7 @@ private fun DashboardScreenContent(
                             name = it.name,
                             icon = it.icon,
                             amount = it.amount,
-                            amountTextColor = if (it.isDeclining) {
-                                colorResource(id = R.color.red_500)
-                            } else {
-                                colorResource(id = R.color.green_500)
-                            },
+                            amountTextColor = colorResource(id = it.amountTextColor),
                             backgroundColor = it.iconBackgroundColor.toColor().copy(alpha = .1f),
                         )
                     }
@@ -305,10 +301,10 @@ private fun DashboardScreenContent(
 }
 
 @Composable
-private fun DashboardWidgetTitle(
+fun DashboardWidgetTitle(
     title: String,
-    onViewAllClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onViewAllClick: (() -> Unit)? = null
 ) {
     Box(
         modifier = modifier
@@ -317,13 +313,15 @@ private fun DashboardWidgetTitle(
             text = title,
             style = MaterialTheme.typography.titleLarge
         )
-        Text(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .clickable { onViewAllClick.invoke() },
-            text = stringResource(id = R.string.view_all).uppercase(),
-            style = MaterialTheme.typography.labelMedium
-        )
+        if (onViewAllClick != null) {
+            Text(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .clickable { onViewAllClick.invoke() },
+                text = stringResource(id = R.string.view_all).uppercase(),
+                style = MaterialTheme.typography.labelMedium
+            )
+        }
     }
 }
 
@@ -359,10 +357,10 @@ fun IncomeExpenseBalanceViewPreview() {
             modifier = Modifier.fillMaxSize(),
             categoryTransaction = CategoryTransactionUiModel(
                 pieChartData = listOf(
-                    getDummyPieChartData(""),
-                    getDummyPieChartData(""),
-                    getDummyPieChartData(""),
-                    getDummyPieChartData("")
+                    getDummyPieChartData("", 25.0f),
+                    getDummyPieChartData("", 25.0f),
+                    getDummyPieChartData("", 25.0f),
+                    getDummyPieChartData("", 25.0f)
                 ),
                 totalAmount = UiText.DynamicString("Expenses"),
                 categoryTransactions = buildList {

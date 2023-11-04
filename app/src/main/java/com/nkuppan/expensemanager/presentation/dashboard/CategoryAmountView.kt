@@ -33,20 +33,17 @@ fun CategoryAmountView(
 
     val context = LocalContext.current
 
+
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
-        tonalElevation = 1.dp
+        shape = RoundedCornerShape(8.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            WidgetHeader(
-                title = stringResource(id = R.string.categories),
-                subTitle = transactionPeriod.asString(context)
+        Column {
+            DashboardWidgetTitle(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(id = R.string.categories)
             )
-            Row(modifier = Modifier.padding(top = 8.dp)) {
+            Row(modifier = Modifier.padding(top = 16.dp)) {
                 PieChartView(
                     totalAmountText = categoryTransactionUiModel.totalAmount.asString(context),
                     chartData = categoryTransactionUiModel.pieChartData,
@@ -57,6 +54,7 @@ fun CategoryAmountView(
                 Column(
                     modifier = Modifier
                         .wrapContentHeight()
+                        .padding(start = 16.dp)
                         .align(Alignment.CenterVertically),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
