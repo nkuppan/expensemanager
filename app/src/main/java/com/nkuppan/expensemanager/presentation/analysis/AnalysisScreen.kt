@@ -50,7 +50,7 @@ private fun AnalysisScreenContent(
     Column(
         modifier = modifier
     ) {
-        AnalysisGraphScreen(navController)
+        AnalysisGraphScreen()
     }
 }
 
