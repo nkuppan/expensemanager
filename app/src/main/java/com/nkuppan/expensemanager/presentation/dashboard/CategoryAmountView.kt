@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionSmallItem
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
-import com.nkuppan.expensemanager.presentation.category.transaction.PieChartView
 import com.nkuppan.expensemanager.presentation.category.transaction.getRandomCategoryTransactionData
+import com.nkuppan.expensemanager.ui.components.PieChartView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 
@@ -69,11 +70,13 @@ fun CategoryAmountView(
 @Composable
 fun CategoryAmountViewPreview() {
     ExpenseManagerTheme {
-        CategoryAmountView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            categoryTransactionUiModel = getRandomCategoryTransactionData()
-        )
+        Surface {
+            CategoryAmountView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                categoryTransactionUiModel = getRandomCategoryTransactionData()
+            )
+        }
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -45,9 +46,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.TransactionUiItem
+import com.nkuppan.expensemanager.domain.usecase.budget.BudgetUiModel
 import com.nkuppan.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.list.DashBoardAccountItem
+import com.nkuppan.expensemanager.presentation.budget.list.DashBoardBudgetItem
 import com.nkuppan.expensemanager.presentation.category.list.getCategoryData
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransaction
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
@@ -74,30 +77,27 @@ private fun DashboardScreenScaffoldView(
     val viewModel: DashboardViewModel = hiltViewModel()
 
     val amountUiState by viewModel.amountUiState.collectAsState()
-    val transactionPeriod by viewModel.transactionPeriod.collectAsState()
 
     val accounts by viewModel.accounts.collectAsState()
     val transactions by viewModel.transactions.collectAsState()
+    val budgets by viewModel.budgets.collectAsState()
     val categoryTransaction by viewModel.categoryTransaction.collectAsState()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            DashboardTopAppbar(navController)
-        }
-    ) { innerPadding ->
+    Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
+        DashboardTopAppbar(navController)
+    }) { innerPadding ->
         innerPadding.calculateTopPadding()
         DashboardScreenContent(
             navController = navController,
             amountUiState = amountUiState,
-            transactionPeriod = transactionPeriod,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
             accounts = accounts,
             transactions = transactions,
+            budgets = budgets,
             categoryTransaction = categoryTransaction
         )
     }
@@ -106,72 +106,68 @@ private fun DashboardScreenScaffoldView(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun DashboardTopAppbar(navController: NavController) {
-    TopAppBar(
-        title = {
-            Row {
-                Image(
-                    modifier = Modifier
-                        .clickable(
-                            onClick = {
+    TopAppBar(title = {
+        Row {
+            Image(
+                modifier = Modifier
+                    .clickable(onClick = {
 
-                            }
-                        )
-                        .size(32.dp)
-                        .border(
-                            1.5.dp, MaterialTheme.colorScheme.primary, CircleShape
-                        )
-                        .border(3.dp, MaterialTheme.colorScheme.surface, CircleShape)
-                        .clip(CircleShape)
-                        .align(Alignment.CenterVertically),
-                    painter = painterResource(id = R.drawable.someone_else),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = null,
+                    })
+                    .size(32.dp)
+                    .border(
+                        1.5.dp, MaterialTheme.colorScheme.primary, CircleShape
+                    )
+                    .border(3.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                    .clip(CircleShape)
+                    .align(Alignment.CenterVertically),
+                painter = painterResource(id = R.drawable.someone_else),
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+            )
+            Column(
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.hello),
+                    style = MaterialTheme.typography.titleSmall
                 )
-                Column(
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.hello),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                    Text(
-                        text = stringResource(id = R.string.guest),
-                        style = MaterialTheme.typography.titleLarge
-                    )
-                }
-            }
-        },
-        actions = {
-            IconButton(onClick = {
-                navController.navigate("settings")
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_settings),
-                    contentDescription = stringResource(id = R.string.settings)
+                Text(
+                    text = stringResource(id = R.string.guest),
+                    style = MaterialTheme.typography.titleLarge
                 )
             }
         }
-    )
+    }, actions = {
+        IconButton(onClick = {
+            navController.navigate("settings")
+        }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_settings),
+                contentDescription = stringResource(id = R.string.settings)
+            )
+        }
+    })
 }
 
 @Composable
 private fun DashboardScreenContent(
     navController: NavController,
     amountUiState: AmountUiState,
-    transactionPeriod: UiText,
     modifier: Modifier = Modifier,
     accounts: List<AccountUiModel> = emptyList(),
     transactions: List<TransactionUiItem> = emptyList(),
+    budgets: List<BudgetUiModel> = emptyList(),
     categoryTransaction: CategoryTransactionUiModel,
 ) {
 
     val context = LocalContext.current
 
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier
+    ) {
         item {
             IncomeExpenseBalanceView(
                 amountUiState = amountUiState,
-                transactionPeriod = transactionPeriod,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
@@ -179,27 +175,27 @@ private fun DashboardScreenContent(
         }
         item {
             DashboardWidgetTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 title = stringResource(id = R.string.title_accounts),
                 onViewAllClick = {
                     navController.navigate("account")
                 },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
             )
         }
         if (accounts.isNotEmpty()) {
-            item {
+            item(accounts) {
                 LazyRow(
                     modifier = Modifier
+                        .fillMaxWidth()
                         .padding(top = 16.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(accounts) {
                         DashBoardAccountItem(
-                            modifier = Modifier
-                                .wrapContentWidth(),
+                            modifier = Modifier.wrapContentWidth(),
                             name = it.name,
                             icon = it.icon,
                             amount = it.amount,
@@ -216,23 +212,67 @@ private fun DashboardScreenContent(
         }
         item {
             CategoryAmountView(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 categoryTransactionUiModel = categoryTransaction
             )
         }
         item {
             DashboardWidgetTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                title = stringResource(id = R.string.budgets),
+                onViewAllClick = {
+                    navController.navigate("budget")
+                }
+            )
+        }
+        if (budgets.isNotEmpty()) {
+            item(budgets) {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(budgets) { budget ->
+                        DashBoardBudgetItem(
+                            modifier = Modifier
+                                .clickable {
+                                    navController.navigate("budget/create?budgetId=${budget.id}")
+                                },
+                            name = budget.name,
+                            backgroundColor = budget.iconBackgroundColor.toColor()
+                                .copy(alpha = .1f),
+                            progressBarColor = budget.progressBarColor,
+                            amount = budget.amount.asString(context),
+                            transactionAmount = budget.transactionAmount.asString(context),
+                            percentage = budget.percent,
+                        )
+                    }
+                }
+            }
+        } else {
+            item {
+                DashboardEmptyView(stringResource(id = R.string.no_budget_available))
+            }
+        }
+        item {
+            DashboardWidgetTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
                 title = stringResource(id = R.string.transaction),
                 onViewAllClick = {
                     navController.navigate("transaction")
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp)
+                }
             )
         }
         if (transactions.isNotEmpty()) {
-            items(transactions) { transaction ->
+            items(transactions, key = {
+                it.id
+            }) { transaction ->
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -260,36 +300,23 @@ private fun DashboardScreenContent(
                 DashboardEmptyView(stringResource(id = R.string.no_transactions_available))
             }
         }
-        /*item {
-            Column(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            ) {
-                DashboardWidgetTitle(
-                    title = stringResource(id = R.string.analysis),
-                    onViewAllClick = {
-                        navController.navigate("transaction")
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-                ChartScreen(chart = chartData)
-            }
-        }*/
+        item {
+            Spacer(modifier = Modifier.padding(24.dp))
+        }
     }
 }
 
 @Composable
 fun DashboardWidgetTitle(
-    title: String,
-    modifier: Modifier = Modifier,
+    title: String, modifier:
+    Modifier = Modifier,
     onViewAllClick: (() -> Unit)? = null
 ) {
     Box(
         modifier = modifier
     ) {
         Text(
-            text = title,
-            style = MaterialTheme.typography.headlineSmall
+            text = title, style = MaterialTheme.typography.headlineSmall
         )
         if (onViewAllClick != null) {
             Text(
@@ -311,8 +338,7 @@ fun DashboardEmptyView(emptyViewMessage: String) {
             .fillMaxWidth()
     ) {
         Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = emptyViewMessage
+            modifier = Modifier.align(Alignment.Center), text = emptyViewMessage
         )
     }
 }
@@ -325,7 +351,6 @@ fun IncomeExpenseBalanceViewPreview() {
         DashboardScreenContent(
             navController = rememberNavController(),
             amountUiState = AmountUiState(),
-            transactionPeriod = UiText.DynamicString("This Month(Oct 2023)"),
             modifier = Modifier.fillMaxSize(),
             accounts = ACCOUNT_DUMMY_DATA,
             categoryTransaction = CategoryTransactionUiModel(

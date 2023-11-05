@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -24,6 +26,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,12 +34,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,6 +49,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.domain.usecase.budget.BudgetUiModel
 import com.nkuppan.expensemanager.ui.components.IconAndBackgroundView
 import com.nkuppan.expensemanager.ui.components.TopNavigationBar
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
@@ -237,6 +243,73 @@ fun BudgetItem(
     }
 }
 
+
+@Composable
+fun DashBoardBudgetItem(
+    name: String,
+    @ColorRes progressBarColor: Int,
+    amount: String?,
+    transactionAmount: String?,
+    modifier: Modifier = Modifier,
+    percentage: Float = 0.0f,
+    backgroundColor: Color
+) {
+    Surface(
+        modifier = modifier,
+        color = backgroundColor,
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .width(260.dp)
+        ) {
+            Row {
+                Text(
+                    modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
+                    text = name,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.titleMedium,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(start = 4.dp),
+                    text = transactionAmount ?: "",
+                    style = MaterialTheme.typography.headlineSmall,
+                )
+            }
+            Row(modifier = Modifier.padding(top = 4.dp)) {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(8.dp)
+                        .align(Alignment.CenterVertically),
+                    progress = percentage / 100,
+                    color = colorResource(id = progressBarColor),
+                    strokeCap = StrokeCap.Round
+                )
+                Text(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically),
+                    text = percentage.toPercentString(),
+                    style = MaterialTheme.typography.labelSmall
+                )
+            }
+
+            Text(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                text = "$transactionAmount of $amount",
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+    }
+}
+
 fun Float.toPercentString(): String {
     return String.format("%.2f %%", this)
 }
@@ -287,6 +360,22 @@ private fun BudgetItemPreview() {
             modifier = ItemSpecModifier,
             progressBarColor = R.color.orange_500,
             percentage = 78.8f
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun DashboardBudgetItemPreview() {
+    ExpenseManagerTheme {
+        DashBoardBudgetItem(
+            name = "This Month Budget",
+            progressBarColor = R.color.orange_500,
+            amount = "$100.00",
+            transactionAmount = "$78.00",
+            modifier = ItemSpecModifier,
+            percentage = 78.8f,
+            backgroundColor = colorResource(id = R.color.blue_500).copy(alpha = .1f)
         )
     }
 }

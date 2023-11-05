@@ -37,7 +37,7 @@ class GetBudgetTransactionsUseCase @Inject constructor(
             .withTimeAtStartOfDay().millis
         val endDayOfMonth = DateTime()
             .run {
-                return@run dayOfMonth().withMaximumValue().plus(1)
+                return@run dayOfMonth().withMaximumValue().plusDays(1)
                     .withTimeAtStartOfDay().millis
             }
 

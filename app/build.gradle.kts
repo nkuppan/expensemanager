@@ -4,6 +4,7 @@ plugins {
     id("nkuppan.plugin.compose")
     id("nkuppan.plugin.hilt")
     id("androidx.navigation.safeargs")
+    id("kotlin-parcelize")
 }
 
 android {

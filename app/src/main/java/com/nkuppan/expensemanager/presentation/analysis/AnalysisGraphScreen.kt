@@ -1,31 +1,39 @@
 package com.nkuppan.expensemanager.presentation.analysis
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.nkuppan.expensemanager.R
+import com.nkuppan.expensemanager.domain.model.AverageData
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.domain.model.WholeAverageData
 import com.nkuppan.expensemanager.domain.usecase.transaction.AnalysisChartData
-import com.nkuppan.expensemanager.presentation.transaction.list.TransactionItem
+import com.nkuppan.expensemanager.presentation.dashboard.DashboardWidgetTitle
+import com.nkuppan.expensemanager.presentation.dashboard.IncomeExpenseBalanceView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
+import com.nkuppan.expensemanager.ui.utils.UiText
+import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
@@ -38,13 +46,13 @@ import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
 
 @Composable
-fun AnalysisGraphScreen(navController: NavController) {
-
-    val context = LocalContext.current
+fun AnalysisGraphScreen() {
 
     val viewModel: AnalysisScreenViewModel = hiltViewModel()
 
     val graphData by viewModel.graphItems.collectAsState()
+    val averageData by viewModel.averageData.collectAsState()
+    val amountUiState by viewModel.amountUiState.collectAsState()
 
     when (val response = graphData) {
         UiState.Empty -> {
@@ -60,42 +68,108 @@ fun AnalysisGraphScreen(navController: NavController) {
 
             LazyColumn {
                 item {
-                    Text(
-                        modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                        text = stringResource(id = R.string.month_analysis),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                    ChartScreen(
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                        chart = newGraphData.chartData
                     )
                 }
-                item {
-                    ChartScreen(newGraphData.chartData)
-                }
 
-                items(newGraphData.transactions) {
-                    TransactionItem(
+                item {
+                    IncomeExpenseBalanceView(
+                        amountUiState = amountUiState,
+                        showBalance = true,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {
-                                navController.navigate("transaction/create?transactionId=${it.id}")
-                            }
-                            .then(ItemSpecModifier),
-                        categoryName = it.categoryName,
-                        categoryColor = it.categoryBackgroundColor,
-                        categoryIcon = it.categoryIcon,
-                        amount = it.amount.asString(context),
-                        date = it.date,
-                        notes = it.notes,
-                        transactionType = it.transactionType,
-                        fromAccountName = it.fromAccountName,
-                        fromAccountIcon = it.fromAccountIcon,
-                        fromAccountColor = it.fromAccountColor,
-                        toAccountName = it.toAccountName,
-                        toAccountIcon = it.toAccountIcon,
-                        toAccountColor = it.toAccountColor,
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                    )
+                }
+
+                item {
+                    TransactionAverageItem(
+                        modifier = Modifier.padding(16.dp),
+                        averageData = averageData
                     )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun TransactionAverageItem(
+    averageData: WholeAverageData,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        tonalElevation = 1.dp
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            DashboardWidgetTitle(title = stringResource(id = R.string.average))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.day))
+                    Text(text = stringResource(id = R.string.week))
+                    Text(text = stringResource(id = R.string.month))
+                }
+                AverageAmountItems(
+                    averageData = averageData.incomeAverageData,
+                    textColor = colorResource(id = R.color.green_500)
+                )
+                AverageAmountItems(
+                    averageData = averageData.expenseAverageData,
+                    textColor = colorResource(id = R.color.red_500)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AverageAmountItems(
+    averageData: AverageData,
+    textColor: Color = colorResource(id = R.color.green_500)
+) {
+    val context = LocalContext.current
+    Column(
+        modifier = Modifier.wrapContentSize(),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.End),
+            text = averageData.perDay.asString(context),
+            color = textColor,
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.End
+        )
+        Text(
+            modifier = Modifier.align(Alignment.End),
+            text = averageData.perWeek.asString(context),
+            color = textColor,
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.End
+        )
+        Text(
+            modifier = Modifier.align(Alignment.End),
+            text = averageData.perMonth.asString(context),
+            color = textColor,
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.End
+        )
     }
 }
 
@@ -115,9 +189,6 @@ fun ChartScreen(
     Chart(
         modifier = modifier,
         chart = lineChart(
-            persistentMarkers = remember(marker) {
-                mapOf(10f to marker)
-            },
             lines = listOf(
                 lineSpec(
                     lineColor = expenseColor,
@@ -140,14 +211,15 @@ fun ChartScreen(
             ),
         ),
         startAxis = rememberStartAxis(
-            itemPlacer = AxisItemPlacer.Vertical.default(4),
+            itemPlacer = AxisItemPlacer.Vertical.default(6),
             label = axisLabelComponent(),
-            valueFormatter = { value, chartValues ->
-                String.format("%.2f", value)
+            valueFormatter = { value, _ ->
+                String.format("%.1f", value)
             }
         ),
         bottomAxis = rememberBottomAxis(
-            itemPlacer = AxisItemPlacer.Horizontal.default(6),
+            itemPlacer = AxisItemPlacer.Horizontal.default(5),
+            label = axisLabelComponent(),
             valueFormatter = { value, _ ->
                 if (chart.dates.isNotEmpty()) {
                     chart.dates[value.toInt()]
@@ -208,6 +280,27 @@ fun ChartScreenPreview() {
                     "28/09"
                 )
             )
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+fun TransactionAverageItemPreview() {
+    ExpenseManagerTheme {
+        TransactionAverageItem(
+            WholeAverageData(
+                AverageData(
+                    UiText.DynamicString("10.0$"),
+                    UiText.DynamicString("0.0$"),
+                    UiText.DynamicString("100.0$"),
+                ),
+                AverageData(
+                    UiText.DynamicString("10.0$"),
+                    UiText.DynamicString("0.0$"),
+                    UiText.DynamicString("100.0$"),
+                )
+            ),
         )
     }
 }

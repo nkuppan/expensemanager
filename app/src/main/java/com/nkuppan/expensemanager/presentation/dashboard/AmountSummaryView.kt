@@ -37,17 +37,15 @@ import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 @Composable
 fun IncomeExpenseBalanceView(
     amountUiState: AmountUiState,
-    transactionPeriod: UiText,
     modifier: Modifier = Modifier,
+    showBalance: Boolean = false,
 ) {
-    //TODO Remove this
-    println(transactionPeriod.asString(LocalContext.current))
-
     NewAmountInfoWidget(
         modifier = modifier,
         expenseAmount = amountUiState.expense,
         incomeAmount = amountUiState.income,
-        balanceAmount = amountUiState.balance
+        balanceAmount = amountUiState.balance,
+        showBalance = showBalance
     )
 }
 

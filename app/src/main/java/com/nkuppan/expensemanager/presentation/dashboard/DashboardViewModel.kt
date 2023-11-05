@@ -9,12 +9,10 @@ import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.TransactionUiItem
 import com.nkuppan.expensemanager.domain.model.toTransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.account.GetAccountsUseCase
+import com.nkuppan.expensemanager.domain.usecase.budget.BudgetUiModel
+import com.nkuppan.expensemanager.domain.usecase.budget.GetBudgetsUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetSelectedFilterNameAndDateRangeUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.AnalysisChartData
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetChartDataUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetExpenseAmountUseCase
-import com.nkuppan.expensemanager.domain.usecase.transaction.GetIncomeAmountUseCase
+import com.nkuppan.expensemanager.domain.usecase.transaction.GetAmountStateUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.nkuppan.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
@@ -22,10 +20,6 @@ import com.nkuppan.expensemanager.presentation.account.list.toAccountUiModel
 import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.nkuppan.expensemanager.presentation.home.HomeScreenBottomBarItems
 import com.nkuppan.expensemanager.ui.utils.UiText
-import com.nkuppan.expensemanager.ui.utils.getBalanceCurrency
-import com.nkuppan.expensemanager.ui.utils.getCurrency
-import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.patrykandpatrick.vico.core.entry.entryOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,14 +34,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
-    getChartDataUseCase: GetChartDataUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
-    getIncomeAmountUseCase: GetIncomeAmountUseCase,
-    getExpenseAmountUseCase: GetExpenseAmountUseCase,
+    getAmountStateUseCase: GetAmountStateUseCase,
     getAccountsUseCase: GetAccountsUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
-    getSelectedFilterNameAndDateRangeUseCase: GetSelectedFilterNameAndDateRangeUseCase,
+    getBudgetsUseCase: GetBudgetsUseCase,
 ) : ViewModel() {
 
     var homeScreenBottomBarItems by mutableStateOf(HomeScreenBottomBarItems.Home)
@@ -59,19 +51,11 @@ class DashboardViewModel @Inject constructor(
     private val _amountUiState = MutableStateFlow(AmountUiState())
     val amountUiState = _amountUiState.asStateFlow()
 
-    private val _transactionPeriod = MutableStateFlow<UiText>(UiText.DynamicString(""))
-    val transactionPeriod = _transactionPeriod.asStateFlow()
-
     private val _transactions = MutableStateFlow<List<TransactionUiItem>>(emptyList())
     val transactions = _transactions.asStateFlow()
 
-    private val _chartData = MutableStateFlow(
-        AnalysisChartData(
-            chartData = entryModelOf(listOf(entryOf(0, 0))),
-            dates = emptyList()
-        )
-    )
-    val chartData = _chartData.asStateFlow()
+    private val _budgets = MutableStateFlow<List<BudgetUiModel>>(emptyList())
+    val budgets = _budgets.asStateFlow()
 
     private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
     val accounts = _accounts.asStateFlow()
@@ -86,10 +70,6 @@ class DashboardViewModel @Inject constructor(
     val categoryTransaction = _categoryTransaction.asStateFlow()
 
     init {
-        getSelectedFilterNameAndDateRangeUseCase.invoke().onEach {
-            _transactionPeriod.value = UiText.DynamicString(it)
-        }.launchIn(viewModelScope)
-
         combine(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke()
@@ -101,31 +81,8 @@ class DashboardViewModel @Inject constructor(
 
         }.launchIn(viewModelScope)
 
-        combine(
-            getCurrencyUseCase.invoke(),
-            getIncomeAmountUseCase.invoke(),
-            getExpenseAmountUseCase.invoke()
-        ) { currency, income, expense ->
-
-            val incomeValue = income ?: 0.0
-            val expenseValue = expense ?: 0.0
-            val incomeAmount = getCurrency(currency, incomeValue)
-            val expenseAmount = getCurrency(currency, expenseValue)
-            val balanceAmount = getBalanceCurrency(currency, (incomeValue - expenseValue))
-
-            _amountUiState.value = _amountUiState.value.copy(
-                income = incomeAmount,
-                expense = expenseAmount,
-                balance = balanceAmount,
-            )
-        }.launchIn(viewModelScope)
-
-
-        getChartDataUseCase.invoke().onEach { response ->
-            _chartData.value = response.chartData ?: AnalysisChartData(
-                chartData = entryModelOf(listOf(entryOf(0, 0))),
-                dates = emptyList()
-            )
+        getAmountStateUseCase.invoke().onEach {
+            _amountUiState.value = it
         }.launchIn(viewModelScope)
 
         getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
@@ -144,6 +101,10 @@ class DashboardViewModel @Inject constructor(
                 pieChartData = it.pieChartData.take(4),
                 categoryTransactions = it.categoryTransactions.take(4)
             )
+        }.launchIn(viewModelScope)
+
+        getBudgetsUseCase.invoke().onEach {
+            _budgets.value = it
         }.launchIn(viewModelScope)
     }
 

@@ -3,11 +3,13 @@ package com.nkuppan.expensemanager.domain.usecase.transaction
 import com.nkuppan.expensemanager.data.utils.toCompleteDate
 import com.nkuppan.expensemanager.data.utils.toMonthAndYear
 import com.nkuppan.expensemanager.data.utils.toYear
-import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.TransactionUiItem
+import com.nkuppan.expensemanager.domain.model.isExpense
+import com.nkuppan.expensemanager.domain.model.isIncome
 import com.nkuppan.expensemanager.domain.model.toTransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeFilterTypeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterRangeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetTransactionGroupTypeUseCase
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.utils.AppCoroutineDispatchers
@@ -18,12 +20,14 @@ import com.patrykandpatrick.vico.core.entry.entryOf
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import org.joda.time.DateTime
 import java.util.Date
 import javax.inject.Inject
 
 class GetChartDataUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getDateRangeFilterTypeUseCase: GetDateRangeFilterTypeUseCase,
+    private val getFilterRangeUseCase: GetFilterRangeUseCase,
     private val getTransactionGroupTypeUseCase: GetTransactionGroupTypeUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val dispatcher: AppCoroutineDispatchers,
@@ -41,49 +45,72 @@ class GetChartDataUseCase @Inject constructor(
                 return@groupBy groupValue(groupType, transaction.createdOn)
             } ?: emptyMap()
 
-            val data = if (transactionGroupByDate.isNotEmpty()) {
-                val transaction = mutableListOf<TransactionUiItem>()
-                val dates = mutableListOf<String>()
-                val expenses = mutableListOf<FloatEntry>()
-                val incomes = mutableListOf<FloatEntry>()
-                var index = 0
-                transactionGroupByDate.forEach { pair ->
-                    dates.add(pair.key)
-                    transaction.addAll(pair.value.map { it.toTransactionUIModel(currency) })
-                    expenses.add(
-                        entryOf(
-                            index,
-                            pair.value.sumOf {
-                                if (it.category.type == CategoryType.EXPENSE) -it.amount else 0.0
-                            }
-                        )
-                    )
-                    incomes.add(
-                        entryOf(
-                            index,
-                            pair.value.sumOf {
-                                if (it.category.type == CategoryType.INCOME) it.amount else 0.0
-                            }
-                        )
-                    )
-                    index++
+            val ranges = getFilterRangeUseCase.invoke(filterType)
+            var fromDate = DateTime(ranges[0])
+            val toDate = DateTime(ranges[1])
+
+
+            val transaction = mutableListOf<TransactionUiItem>()
+            val dates = mutableListOf<String>()
+            val expenses = mutableListOf<FloatEntry>()
+            val incomes = mutableListOf<FloatEntry>()
+            var index = 0
+
+            while (fromDate < toDate) {
+                val key = groupValue(groupType, fromDate.toDate())
+                val values = transactionGroupByDate[key]
+                dates.add(key)
+
+                if (values != null) {
+                    transaction.addAll(values.map { it.toTransactionUIModel(currency) })
                 }
 
-                AnalysisData(
-                    transaction,
-                    AnalysisChartData(
-                        ChartEntryModelProducer(listOf(expenses, incomes)).getModel(),
-                        dates
+                expenses.add(
+                    entryOf(
+                        index,
+                        values?.sumOf {
+                            if (it.category.type.isExpense()) it.amount else 0.0
+                        } ?: 0.0
                     )
                 )
-            } else {
-                AnalysisData(
-                    transactions = emptyList()
+                incomes.add(
+                    entryOf(
+                        index,
+                        values?.sumOf {
+                            if (it.category.type.isIncome()) it.amount else 0.0
+                        } ?: 0.0
+                    )
                 )
+                fromDate = getAdjustedDateTime(groupType, fromDate)
+                index++
             }
 
-            return@combine data
+
+            return@combine AnalysisData(
+                transaction,
+                AnalysisChartData(
+                    ChartEntryModelProducer(listOf(expenses, incomes)).getModel(),
+                    dates
+                )
+            )
         }.flowOn(dispatcher.computation)
+    }
+
+    private fun getAdjustedDateTime(
+        groupType: GroupType,
+        fromDate: DateTime
+    ) = when (groupType) {
+        GroupType.YEAR -> {
+            fromDate.plusYears(1)
+        }
+
+        GroupType.MONTH -> {
+            fromDate.plusMonths(1)
+        }
+
+        GroupType.DATE -> {
+            fromDate.plusDays(1)
+        }
     }
 
     private fun groupValue(groupType: GroupType, transactionDate: Date) = when (groupType) {
