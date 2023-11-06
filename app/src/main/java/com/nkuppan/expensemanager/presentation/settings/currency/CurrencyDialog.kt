@@ -33,7 +33,7 @@ import com.nkuppan.expensemanager.data.repository.availableCurrencies
 import com.nkuppan.expensemanager.domain.model.Currency
 import com.nkuppan.expensemanager.domain.model.CurrencySymbolPosition
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
+import com.nkuppan.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable

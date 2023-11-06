@@ -32,8 +32,8 @@ import com.nkuppan.expensemanager.domain.usecase.transaction.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.dashboard.DashboardWidgetTitle
 import com.nkuppan.expensemanager.presentation.dashboard.IncomeExpenseBalanceView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.ui.utils.UiText
-import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis

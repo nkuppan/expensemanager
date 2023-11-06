@@ -19,7 +19,7 @@ import com.nkuppan.expensemanager.presentation.category.transaction.CategoryTran
 import com.nkuppan.expensemanager.presentation.category.transaction.getRandomCategoryTransactionData
 import com.nkuppan.expensemanager.ui.components.PieChartView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
+import com.nkuppan.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable

@@ -166,6 +166,11 @@ private fun DashboardScreenContent(
         modifier = modifier
     ) {
         item {
+            FilterView(
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        item {
             IncomeExpenseBalanceView(
                 amountUiState = amountUiState,
                 modifier = Modifier

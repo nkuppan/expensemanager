@@ -41,7 +41,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
-import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
+import com.nkuppan.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable

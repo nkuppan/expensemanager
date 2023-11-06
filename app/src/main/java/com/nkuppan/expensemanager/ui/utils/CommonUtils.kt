@@ -26,11 +26,3 @@ fun getCurrency(
         }
     }
 }
-
-fun getBalanceCurrency(
-    currency: Currency,
-    amount: Double
-) = UiText.StringResource(
-    R.string.balance_amount_string,
-    getCurrency(currency, amount)
-)

@@ -57,9 +57,9 @@ import com.nkuppan.expensemanager.ui.components.SmallIconAndBackgroundView
 import com.nkuppan.expensemanager.ui.components.TopNavigationBar
 import com.nkuppan.expensemanager.ui.extensions.toColor
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.ui.utils.ItemSpecModifier
 import com.nkuppan.expensemanager.ui.utils.UiText
-import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 import kotlin.random.Random
 
 @SuppressLint("ComposableDestinationInComposeScope")

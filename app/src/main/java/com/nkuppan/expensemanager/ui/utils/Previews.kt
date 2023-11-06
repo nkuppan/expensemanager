@@ -1,4 +1,4 @@
-package com.nkuppan.expensemanager.utils
+package com.nkuppan.expensemanager.ui.utils
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview

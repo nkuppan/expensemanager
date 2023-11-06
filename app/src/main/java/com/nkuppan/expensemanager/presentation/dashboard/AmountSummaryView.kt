@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import com.nkuppan.expensemanager.R
 import com.nkuppan.expensemanager.ui.components.AppCardView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
+import com.nkuppan.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.nkuppan.expensemanager.ui.utils.UiText
-import com.nkuppan.expensemanager.utils.AppPreviewsLightAndDarkMode
 
 @Composable
 fun IncomeExpenseBalanceView(

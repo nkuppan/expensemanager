@@ -2,7 +2,6 @@ package com.nkuppan.expensemanager.domain.usecase.transaction
 
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.nkuppan.expensemanager.presentation.dashboard.AmountUiState
-import com.nkuppan.expensemanager.ui.utils.getBalanceCurrency
 import com.nkuppan.expensemanager.ui.utils.getCurrency
 import com.nkuppan.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +26,7 @@ class GetAmountStateUseCase @Inject constructor(
             val expenseValue = expense ?: 0.0
             val incomeAmount = getCurrency(currency, incomeValue)
             val expenseAmount = getCurrency(currency, expenseValue)
-            val balanceAmount = getBalanceCurrency(currency, (incomeValue - expenseValue))
+            val balanceAmount = getCurrency(currency, (incomeValue - expenseValue))
 
             AmountUiState(
                 income = incomeAmount,
