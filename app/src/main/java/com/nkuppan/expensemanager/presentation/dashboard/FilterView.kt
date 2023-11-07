@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -26,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.nkuppan.expensemanager.R
-import com.nkuppan.expensemanager.presentation.settings.datefilter.DateFilterView
+import com.nkuppan.expensemanager.presentation.settings.datefilter.DateFilterSelectionView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,7 +39,7 @@ fun FilterView(modifier: Modifier = Modifier) {
     val date by viewModel.date.collectAsState()
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -48,22 +49,31 @@ fun FilterView(modifier: Modifier = Modifier) {
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
-            DateFilterView {
+            DateFilterSelectionView {
                 showBottomSheet = false
             }
         }
     }
 
-    Row(
-        modifier = modifier.padding(top = 8.dp, end = 6.dp)
-    ) {
+    FilterContentView(modifier, date) {
+        showBottomSheet = true
+    }
+}
+
+@Composable
+private fun FilterContentView(
+    modifier: Modifier,
+    date: String,
+    showBottomSheet: () -> Unit
+) {
+    Row(modifier = modifier) {
         Row(
             modifier = Modifier
                 .weight(1f)
                 .align(Alignment.CenterVertically)
                 .height(40.dp)
                 .clickable {
-                    showBottomSheet = true
+                    showBottomSheet.invoke()
                 }
         ) {
             Icon(
@@ -79,7 +89,8 @@ fun FilterView(modifier: Modifier = Modifier) {
                     .align(Alignment.CenterVertically),
                 text = date,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = 1
+                maxLines = 1,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
         IconButton(onClick = { /*TODO*/ }) {
@@ -107,6 +118,8 @@ fun FilterView(modifier: Modifier = Modifier) {
 @Composable
 fun FilterViewPreview() {
     ExpenseManagerTheme {
-        FilterView(modifier = Modifier.fillMaxWidth())
+        FilterContentView(modifier = Modifier.fillMaxWidth(), date = "This Month (11/2023)") {
+
+        }
     }
 }

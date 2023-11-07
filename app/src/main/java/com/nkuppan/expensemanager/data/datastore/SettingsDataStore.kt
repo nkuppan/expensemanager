@@ -8,7 +8,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.nkuppan.expensemanager.domain.model.CategoryType
-import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -44,30 +44,30 @@ class SettingsDataStore @Inject constructor(
         preferences[KEY_SELECTED_CATEGORIES]?.toList() ?: emptyList()
     }
 
-    suspend fun setFilterType(dateRangeFilterType: DateRangeFilterType) =
+    suspend fun setFilterType(dateRangeType: DateRangeType) =
         dataStore.edit { preferences ->
-            preferences[KEY_DATE_FILTER_TYPE] = dateRangeFilterType.ordinal
+            preferences[KEY_DATE_FILTER_TYPE] = dateRangeType.ordinal
         }
 
-    fun getFilterType(): Flow<DateRangeFilterType> = dataStore.data.map { preferences ->
-        DateRangeFilterType.values()[preferences[KEY_DATE_FILTER_TYPE]
-            ?: DateRangeFilterType.THIS_MONTH.ordinal]
+    fun getFilterType(): Flow<DateRangeType> = dataStore.data.map { preferences ->
+        DateRangeType.values()[preferences[KEY_DATE_FILTER_TYPE]
+            ?: DateRangeType.THIS_MONTH.ordinal]
     }
 
-    suspend fun setCustomFilterStartDate(startDate: Long) = dataStore.edit { preferences ->
-        preferences[KEY_CUSTOM_RANGE_START_DATE_TYPE] = startDate
+    suspend fun setDateRangeStartDate(startDate: Long) = dataStore.edit { preferences ->
+        preferences[KEY_DATE_RANGE_START_TIME_TYPE] = startDate
     }
 
-    fun getCustomFilterStartDate(): Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[KEY_CUSTOM_RANGE_START_DATE_TYPE]
+    fun getDateRangeStartDate(): Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[KEY_DATE_RANGE_START_TIME_TYPE]
     }
 
-    suspend fun setCustomFilterEndDate(startDate: Long) = dataStore.edit { preferences ->
-        preferences[KEY_CUSTOM_RANGE_END_DATE_TYPE] = startDate
+    suspend fun setDateRangeEndDate(startDate: Long) = dataStore.edit { preferences ->
+        preferences[KEY_DATE_RANGE_END_TIME_TYPE] = startDate
     }
 
-    fun getCustomFilterEndDate(): Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[KEY_CUSTOM_RANGE_END_DATE_TYPE]
+    fun getDateRangeEndDate(): Flow<Long?> = dataStore.data.map { preferences ->
+        preferences[KEY_DATE_RANGE_END_TIME_TYPE]
     }
 
     suspend fun setReminder(reminder: Boolean) = dataStore.edit { preferences ->
@@ -92,8 +92,8 @@ class SettingsDataStore @Inject constructor(
         private val KEY_FILTER_ENABLED = booleanPreferencesKey("filter_enabled")
 
         private val KEY_DATE_FILTER_TYPE = intPreferencesKey("date_filter_type")
-        private val KEY_CUSTOM_RANGE_START_DATE_TYPE = longPreferencesKey("custom_range_start_date")
-        private val KEY_CUSTOM_RANGE_END_DATE_TYPE = longPreferencesKey("custom_range_end_date")
+        private val KEY_DATE_RANGE_START_TIME_TYPE = longPreferencesKey("date_range_start_date")
+        private val KEY_DATE_RANGE_END_TIME_TYPE = longPreferencesKey("date_range_end_date")
         private val KEY_SELECTED_ACCOUNTS = stringSetPreferencesKey("selected_accounts")
         private val KEY_SELECTED_CATEGORIES = stringSetPreferencesKey("selected_categories")
         private val KEY_CATEGORY_TYPES = stringSetPreferencesKey("category_types")

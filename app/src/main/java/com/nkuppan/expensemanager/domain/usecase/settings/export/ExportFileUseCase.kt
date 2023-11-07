@@ -1,6 +1,6 @@
 package com.nkuppan.expensemanager.domain.usecase.settings.export
 
-import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeType
 import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.repository.ExportRepository
@@ -16,14 +16,14 @@ class ExportFileUseCase @Inject constructor(
     suspend operator fun invoke(
         exportFileType: ExportFileType,
         uri: String?,
-        dateRangeFilterType: DateRangeFilterType,
+        dateRangeType: DateRangeType,
         accounts: List<AccountUiModel>,
         isAllAccountsSelected: Boolean
     ): Resource<String?> {
 
         return when (
             val transactions = getExportTransactionsUseCase.invoke(
-                dateRangeFilterType,
+                dateRangeType,
                 accounts.map { it.id },
                 isAllAccountsSelected
             )

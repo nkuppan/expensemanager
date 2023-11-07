@@ -1,13 +1,12 @@
 package com.nkuppan.expensemanager.domain.usecase.transaction
 
 import com.nkuppan.expensemanager.domain.model.AverageData
-import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeType
 import com.nkuppan.expensemanager.domain.model.WholeAverageData
 import com.nkuppan.expensemanager.domain.model.isExpense
 import com.nkuppan.expensemanager.domain.model.isIncome
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeFilterTypeUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterRangeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.nkuppan.expensemanager.ui.utils.getCurrency
 import com.nkuppan.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow
@@ -19,69 +18,66 @@ import javax.inject.Inject
 class GetAverageDataUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
-    private val getDateRangeFilterTypeUseCase: GetDateRangeFilterTypeUseCase,
-    private val getFilterRangeUseCase: GetFilterRangeUseCase,
+    private val getDateRangeUseCase: GetDateRangeUseCase,
     private val dispatcher: AppCoroutineDispatchers,
 ) {
     fun invoke(): Flow<WholeAverageData> {
         return combine(
             getCurrencyUseCase.invoke(),
-            getDateRangeFilterTypeUseCase.invoke(),
+            getDateRangeUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(),
-        ) { currency, filterType, transactions ->
+        ) { currency, dateRangeModel, transactions ->
             val incomeAmount =
                 transactions?.filter { it.type.isIncome() }?.sumOf { it.amount } ?: 0.0
             val expenseAmount =
                 transactions?.filter { it.type.isExpense() }?.sumOf { it.amount } ?: 0.0
 
-            val ranges = getFilterRangeUseCase.invoke(filterType)
+            val ranges = dateRangeModel.dateRanges
 
             val calendar: Calendar = Calendar.getInstance()
             calendar.timeInMillis = ranges[0]
 
-            val weeksPerMonth = when (filterType) {
-                DateRangeFilterType.TODAY,
-                DateRangeFilterType.THIS_WEEK,
-                DateRangeFilterType.THIS_MONTH -> {
+            val weeksPerMonth = when (dateRangeModel.type) {
+                DateRangeType.TODAY,
+                DateRangeType.THIS_WEEK,
+                DateRangeType.THIS_MONTH -> {
                     calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
                 }
 
-                DateRangeFilterType.CUSTOM,
-                DateRangeFilterType.ALL,
-                DateRangeFilterType.THIS_YEAR -> {
+                DateRangeType.CUSTOM,
+                DateRangeType.ALL,
+                DateRangeType.THIS_YEAR -> {
                     calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
                 }
             }
 
-            val daysPerMonth =
-                when (filterType) {
-                    DateRangeFilterType.TODAY,
-                    DateRangeFilterType.THIS_WEEK,
-                    DateRangeFilterType.THIS_MONTH -> {
-                        calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                    }
-
-                    DateRangeFilterType.CUSTOM,
-                    DateRangeFilterType.ALL,
-                    DateRangeFilterType.THIS_YEAR -> {
-                        calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
-                    }
+            val daysPerMonth = when (dateRangeModel.type) {
+                DateRangeType.TODAY,
+                DateRangeType.THIS_WEEK,
+                DateRangeType.THIS_MONTH -> {
+                    calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
                 }
 
-            val monthsPerYear =
-                when (filterType) {
-                    DateRangeFilterType.TODAY,
-                    DateRangeFilterType.THIS_WEEK,
-                    DateRangeFilterType.THIS_MONTH -> {
-                        1
-                    }
-
-                    DateRangeFilterType.CUSTOM,
-                    DateRangeFilterType.ALL,
-                    DateRangeFilterType.THIS_YEAR -> {
-                        calendar.getActualMaximum(Calendar.MONTH) + 1
-                    }
+                DateRangeType.CUSTOM,
+                DateRangeType.ALL,
+                DateRangeType.THIS_YEAR -> {
+                    calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
                 }
+            }
+
+            val monthsPerYear = when (dateRangeModel.type) {
+                DateRangeType.TODAY,
+                DateRangeType.THIS_WEEK,
+                DateRangeType.THIS_MONTH -> {
+                    1
+                }
+
+                DateRangeType.CUSTOM,
+                DateRangeType.ALL,
+                DateRangeType.THIS_YEAR -> {
+                    calendar.getActualMaximum(Calendar.MONTH) + 1
+                }
+            }
 
             WholeAverageData(
                 expenseAverageData = AverageData(

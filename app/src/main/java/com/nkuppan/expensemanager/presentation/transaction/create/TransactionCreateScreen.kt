@@ -89,7 +89,7 @@ fun TransactionCreateScreen(
     val scope = rememberCoroutineScope()
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val snackbarHostState = remember { SnackbarHostState() }
 
     val viewModel: TransactionCreateViewModel = hiltViewModel()
@@ -481,7 +481,6 @@ private fun TransactionCreateScreen(
                 amount = selectedToAccount.amount.asString(context),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = colorResource(id = R.color.black_100))
                     .clickable {
                         focusManager.clearFocus(force = true)
                         openSelection?.invoke(3)

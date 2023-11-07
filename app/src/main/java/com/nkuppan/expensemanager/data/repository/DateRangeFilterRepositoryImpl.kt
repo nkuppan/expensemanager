@@ -12,7 +12,8 @@ import com.nkuppan.expensemanager.data.utils.toDate
 import com.nkuppan.expensemanager.data.utils.toDateAndMonth
 import com.nkuppan.expensemanager.data.utils.toMonthAndYear
 import com.nkuppan.expensemanager.data.utils.toYear
-import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeModel
+import com.nkuppan.expensemanager.domain.model.DateRangeType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.repository.DateRangeFilterRepository
 import com.nkuppan.expensemanager.domain.usecase.transaction.GroupType
@@ -32,75 +33,98 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
     private val dispatcher: AppCoroutineDispatchers
 ) : DateRangeFilterRepository {
 
-    override fun getDateRangeFilterType(): Flow<DateRangeFilterType> {
-        return dataStore.getFilterType()
-    }
-
-    override suspend fun getDateRangeFilterRangeName(dateRangeFilterType: DateRangeFilterType): String {
-        return when (dateRangeFilterType) {
-            DateRangeFilterType.TODAY -> context.getString(R.string.today)
-            DateRangeFilterType.THIS_WEEK -> context.getString(R.string.this_week)
-            DateRangeFilterType.THIS_MONTH -> context.getString(R.string.this_month)
-            DateRangeFilterType.THIS_YEAR -> context.getString(R.string.this_year)
-            DateRangeFilterType.CUSTOM -> context.getString(R.string.custom)
-            DateRangeFilterType.ALL -> context.getString(R.string.all_time)
-        }
-    }
-
-    override suspend fun getDateRangeFilterTypeString(dateRangeFilterType: DateRangeFilterType): String {
-        return getFilterDateValue(dateRangeFilterType)
-    }
-
-    override suspend fun getDateRanges(dateRangeFilterType: DateRangeFilterType): List<Long> {
-        return getDateRangeValues(dateRangeFilterType)
-    }
-
-    override suspend fun setDateRangeFilterType(dateRangeFilterType: DateRangeFilterType): Resource<Boolean> =
-        withContext(dispatcher.io) {
-            dataStore.setFilterType(dateRangeFilterType)
-            return@withContext Resource.Success(true)
-        }
-
-    override suspend fun setCustomDateRanges(customDateRanges: List<Date>): Resource<Boolean> =
-        withContext(dispatcher.io)
-        {
-            dataStore.setCustomFilterStartDate(customDateRanges[0].time)
-            dataStore.setCustomFilterEndDate(customDateRanges[1].time)
-            return@withContext Resource.Success(true)
-        }
-
-
-    private suspend fun getDateRangeValues(dateRangeFilterType: DateRangeFilterType): List<Long> {
-        return when (dateRangeFilterType) {
-            DateRangeFilterType.TODAY -> getTodayRange()
-            DateRangeFilterType.THIS_WEEK -> getThisWeekRange()
-            DateRangeFilterType.THIS_MONTH -> getThisMonthRange()
-            DateRangeFilterType.THIS_YEAR -> getThisYearRange()
-            DateRangeFilterType.ALL -> listOf(0, Long.MAX_VALUE)
-            DateRangeFilterType.CUSTOM -> getCustomRange()
-        }
-    }
-
-    private suspend fun getCustomRange(): List<Long> {
-        return listOf(
-            dataStore.getCustomFilterStartDate().first() ?: 0,
-            dataStore.getCustomFilterEndDate().first() ?: 0,
+    override suspend fun getAllDateRanges(): Resource<List<DateRangeModel>> {
+        return Resource.Success(
+            buildList {
+                DateRangeType.values().forEach {
+                    add(
+                        DateRangeModel(
+                            name = getDateRangeFilterRangeName(it),
+                            description = getFilterDateValue(it),
+                            type = it,
+                            dateRanges = getAllDateRanges(it)
+                        )
+                    )
+                }
+            }
         )
     }
 
-    private suspend fun getFilterDateValue(dateRangeFilterType: DateRangeFilterType): String {
+    override fun getDateRangeFilterType(): Flow<DateRangeType> {
+        return dataStore.getFilterType()
+    }
 
-        val dateRanges = getDateRangeValues(dateRangeFilterType)
+    override suspend fun getDateRangeFilterRangeName(dateRangeType: DateRangeType): String {
+        return when (dateRangeType) {
+            DateRangeType.TODAY -> context.getString(R.string.today)
+            DateRangeType.THIS_WEEK -> context.getString(R.string.this_week)
+            DateRangeType.THIS_MONTH -> context.getString(R.string.this_month)
+            DateRangeType.THIS_YEAR -> context.getString(R.string.this_year)
+            DateRangeType.CUSTOM -> context.getString(R.string.custom)
+            DateRangeType.ALL -> context.getString(R.string.all_time)
+        }
+    }
+
+    override suspend fun getDateRangeFilterTypeString(dateRangeType: DateRangeType): DateRangeModel {
+        return DateRangeModel(
+            name = getDateRangeFilterRangeName(dateRangeType),
+            description = getFilterDateValue(dateRangeType),
+            type = dateRangeType,
+            dateRanges = getAllDateRanges(dateRangeType)
+        )
+    }
+
+    override suspend fun getAllDateRanges(dateRangeType: DateRangeType): List<Long> {
+        return getDateRangeValues(dateRangeType)
+    }
+
+    override suspend fun setDateRangeFilterType(dateRangeType: DateRangeType): Resource<Boolean> =
+        withContext(dispatcher.io) {
+            dataStore.setFilterType(dateRangeType)
+            return@withContext Resource.Success(true)
+        }
+
+    override suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean> =
+        withContext(dispatcher.io)
+        {
+            dataStore.setDateRangeStartDate(dateRanges[0].time)
+            dataStore.setDateRangeEndDate(dateRanges[1].time)
+            return@withContext Resource.Success(true)
+        }
+
+
+    private suspend fun getDateRangeValues(dateRangeType: DateRangeType): List<Long> {
+        return when (dateRangeType) {
+            DateRangeType.TODAY -> getTodayRange()
+            DateRangeType.THIS_WEEK -> getThisWeekRange()
+            DateRangeType.THIS_MONTH -> getThisMonthRange()
+            DateRangeType.THIS_YEAR -> getThisYearRange()
+            DateRangeType.ALL -> listOf(0, Long.MAX_VALUE)
+            DateRangeType.CUSTOM -> getDateRange()
+        }
+    }
+
+    private suspend fun getDateRange(): List<Long> {
+        val defaultTime = Date().time
+        return listOf(
+            dataStore.getDateRangeStartDate().first() ?: defaultTime,
+            dataStore.getDateRangeEndDate().first() ?: defaultTime,
+        )
+    }
+
+    private suspend fun getFilterDateValue(dateRangeType: DateRangeType): String {
+
+        val dateRanges = getDateRangeValues(dateRangeType)
         val fromDate = dateRanges[0].toCompleteDate()
         val toDate = dateRanges[1].toCompleteDate()
 
-        return when (dateRangeFilterType) {
-            DateRangeFilterType.TODAY -> fromDate.toCompleteDate()
-            DateRangeFilterType.THIS_MONTH -> fromDate.toMonthAndYear()
-            DateRangeFilterType.THIS_YEAR -> fromDate.toYear()
-            DateRangeFilterType.ALL -> context.getString(R.string.all_time)
-            DateRangeFilterType.THIS_WEEK,
-            DateRangeFilterType.CUSTOM -> getFormattedDateRangeString(fromDate, toDate)
+        return when (dateRangeType) {
+            DateRangeType.TODAY -> fromDate.toCompleteDate()
+            DateRangeType.THIS_MONTH -> fromDate.toMonthAndYear()
+            DateRangeType.THIS_YEAR -> fromDate.toYear()
+            DateRangeType.ALL -> ""
+            DateRangeType.THIS_WEEK,
+            DateRangeType.CUSTOM -> getFormattedDateRangeString(fromDate, toDate)
         }
     }
 
@@ -121,10 +145,10 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
 
 
     override suspend fun getTransactionGroupType(
-        dateRangeFilterType: DateRangeFilterType
+        dateRangeType: DateRangeType
     ): GroupType = withContext(Dispatchers.IO) {
 
-        val dateRanges = getDateRangeValues(dateRangeFilterType)
+        val dateRanges = getDateRangeValues(dateRangeType)
         val fromDate = dateRanges[0]
         val fromDateTime = DateTime(fromDate)
         val toDate = dateRanges[1]
@@ -141,19 +165,19 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
             isCrossingYears = true
         }
 
-        return@withContext when (dateRangeFilterType) {
-            DateRangeFilterType.THIS_YEAR -> {
+        return@withContext when (dateRangeType) {
+            DateRangeType.THIS_YEAR -> {
                 GroupType.MONTH
             }
 
-            DateRangeFilterType.THIS_MONTH,
-            DateRangeFilterType.THIS_WEEK,
-            DateRangeFilterType.TODAY -> {
+            DateRangeType.THIS_MONTH,
+            DateRangeType.THIS_WEEK,
+            DateRangeType.TODAY -> {
                 GroupType.DATE
             }
 
-            DateRangeFilterType.ALL,
-            DateRangeFilterType.CUSTOM -> {
+            DateRangeType.ALL,
+            DateRangeType.CUSTOM -> {
                 if (isCrossingYears) {
                     GroupType.YEAR
                 } else if (isCrossingMonths) {

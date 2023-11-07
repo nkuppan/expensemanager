@@ -46,6 +46,7 @@ import com.nkuppan.expensemanager.domain.model.TransactionType
 import com.nkuppan.expensemanager.domain.model.TransactionUiItem
 import com.nkuppan.expensemanager.domain.model.TransactionUiState
 import com.nkuppan.expensemanager.domain.model.UiState
+import com.nkuppan.expensemanager.presentation.dashboard.FilterView
 import com.nkuppan.expensemanager.ui.components.IconAndBackgroundView
 import com.nkuppan.expensemanager.ui.components.TopNavigationBar
 import com.nkuppan.expensemanager.ui.extensions.getDrawable
@@ -125,6 +126,9 @@ private fun TransactionListScreen(
 
             is UiState.Success -> {
                 LazyColumn(state = scrollState) {
+                    item {
+                        FilterView(modifier = Modifier.fillMaxWidth())
+                    }
                     items(transactionUiState.data) {
                         TransactionGroupItem(
                             it, onItemClick

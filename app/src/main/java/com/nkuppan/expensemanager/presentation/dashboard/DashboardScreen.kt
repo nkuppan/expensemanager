@@ -167,7 +167,9 @@ private fun DashboardScreenContent(
     ) {
         item {
             FilterView(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, end = 6.dp)
             )
         }
         item {

@@ -8,8 +8,7 @@ import com.nkuppan.expensemanager.domain.model.isExpense
 import com.nkuppan.expensemanager.domain.model.isIncome
 import com.nkuppan.expensemanager.domain.model.toTransactionUIModel
 import com.nkuppan.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeFilterTypeUseCase
-import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetFilterRangeUseCase
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetTransactionGroupTypeUseCase
 import com.nkuppan.expensemanager.ui.utils.UiText
 import com.nkuppan.expensemanager.utils.AppCoroutineDispatchers
@@ -26,26 +25,25 @@ import javax.inject.Inject
 
 class GetChartDataUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
-    private val getDateRangeFilterTypeUseCase: GetDateRangeFilterTypeUseCase,
-    private val getFilterRangeUseCase: GetFilterRangeUseCase,
+    private val getDateRangeUseCase: GetDateRangeUseCase,
     private val getTransactionGroupTypeUseCase: GetTransactionGroupTypeUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val dispatcher: AppCoroutineDispatchers,
 ) {
     fun invoke(): Flow<AnalysisData> {
         return combine(
-            getDateRangeFilterTypeUseCase.invoke(),
+            getDateRangeUseCase.invoke(),
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke()
-        ) { filterType, currency, transactions ->
+        ) { dateRangeModel, currency, transactions ->
 
-            val groupType = getTransactionGroupTypeUseCase(filterType)
+            val groupType = getTransactionGroupTypeUseCase.invoke(dateRangeModel.type)
 
             val transactionGroupByDate = transactions?.groupBy { transaction ->
                 return@groupBy groupValue(groupType, transaction.createdOn)
             } ?: emptyMap()
 
-            val ranges = getFilterRangeUseCase.invoke(filterType)
+            val ranges = dateRangeModel.dateRanges
             var fromDate = DateTime(ranges[0])
             val toDate = DateTime(ranges[1])
 

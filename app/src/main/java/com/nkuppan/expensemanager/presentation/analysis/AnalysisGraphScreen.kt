@@ -30,6 +30,7 @@ import com.nkuppan.expensemanager.domain.model.UiState
 import com.nkuppan.expensemanager.domain.model.WholeAverageData
 import com.nkuppan.expensemanager.domain.usecase.transaction.AnalysisChartData
 import com.nkuppan.expensemanager.presentation.dashboard.DashboardWidgetTitle
+import com.nkuppan.expensemanager.presentation.dashboard.FilterView
 import com.nkuppan.expensemanager.presentation.dashboard.IncomeExpenseBalanceView
 import com.nkuppan.expensemanager.ui.theme.ExpenseManagerTheme
 import com.nkuppan.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
@@ -68,8 +69,15 @@ fun AnalysisGraphScreen() {
 
             LazyColumn {
                 item {
+                    FilterView(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 6.dp)
+                    )
+                }
+                item {
                     ChartScreen(
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                         chart = newGraphData.chartData
                     )
                 }

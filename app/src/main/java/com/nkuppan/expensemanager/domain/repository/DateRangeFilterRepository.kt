@@ -1,6 +1,7 @@
 package com.nkuppan.expensemanager.domain.repository
 
-import com.nkuppan.expensemanager.domain.model.DateRangeFilterType
+import com.nkuppan.expensemanager.domain.model.DateRangeModel
+import com.nkuppan.expensemanager.domain.model.DateRangeType
 import com.nkuppan.expensemanager.domain.model.Resource
 import com.nkuppan.expensemanager.domain.usecase.transaction.GroupType
 import kotlinx.coroutines.flow.Flow
@@ -8,17 +9,19 @@ import java.util.Date
 
 interface DateRangeFilterRepository {
 
-    fun getDateRangeFilterType(): Flow<DateRangeFilterType>
+    suspend fun getAllDateRanges(): Resource<List<DateRangeModel>>
 
-    suspend fun setDateRangeFilterType(dateRangeFilterType: DateRangeFilterType): Resource<Boolean>
+    fun getDateRangeFilterType(): Flow<DateRangeType>
 
-    suspend fun getDateRangeFilterRangeName(dateRangeFilterType: DateRangeFilterType): String
+    suspend fun setDateRangeFilterType(dateRangeType: DateRangeType): Resource<Boolean>
 
-    suspend fun getDateRangeFilterTypeString(dateRangeFilterType: DateRangeFilterType): String
+    suspend fun getDateRangeFilterRangeName(dateRangeType: DateRangeType): String
 
-    suspend fun getDateRanges(dateRangeFilterType: DateRangeFilterType): List<Long>
+    suspend fun getDateRangeFilterTypeString(dateRangeType: DateRangeType): DateRangeModel
 
-    suspend fun setCustomDateRanges(customDateRanges: List<Date>): Resource<Boolean>
+    suspend fun getAllDateRanges(dateRangeType: DateRangeType): List<Long>
 
-    suspend fun getTransactionGroupType(dateRangeFilterType: DateRangeFilterType): GroupType
+    suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean>
+
+    suspend fun getTransactionGroupType(dateRangeType: DateRangeType): GroupType
 }

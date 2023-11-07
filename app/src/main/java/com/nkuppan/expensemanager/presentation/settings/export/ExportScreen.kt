@@ -52,7 +52,7 @@ import com.nkuppan.expensemanager.domain.model.ExportFileType
 import com.nkuppan.expensemanager.presentation.account.list.AccountUiModel
 import com.nkuppan.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.nkuppan.expensemanager.presentation.budget.create.SelectedItemView
-import com.nkuppan.expensemanager.presentation.settings.datefilter.DateFilterView
+import com.nkuppan.expensemanager.presentation.settings.datefilter.DateFilterSelectionView
 import com.nkuppan.expensemanager.ui.components.ClickableTextField
 import com.nkuppan.expensemanager.ui.components.TopNavigationBar
 import com.nkuppan.expensemanager.ui.extensions.shareThisFile
@@ -181,7 +181,7 @@ private fun ExportScreenScaffoldView(
     val scope = rememberCoroutineScope()
 
     var showBottomSheet by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     if (showBottomSheet) {
         ModalBottomSheet(
@@ -266,7 +266,7 @@ private fun ExportScreenContent(
 
     var showDateFilter by remember { mutableStateOf(false) }
     if (showDateFilter) {
-        DateFilterView {
+        DateFilterSelectionView {
             showDateFilter = false
         }
     }
