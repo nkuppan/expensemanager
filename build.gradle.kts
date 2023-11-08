@@ -8,4 +8,5 @@ plugins {
     alias(libs.plugins.gms) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.benchmark) apply false
+    alias(libs.plugins.org.jetbrains.kotlin.android) apply false
 }

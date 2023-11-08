@@ -69,6 +69,7 @@ mockito = "4.0.0"
 jxl = "2.6.12"
 truth = "1.1.4"
 vico = "1.11.1"
+org-jetbrains-kotlin-android = "1.9.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -205,5 +206,6 @@ roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 oss-license = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicense" }
 benchmark = { id = "androidx.benchmark", version.ref = "benchmark" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
 
 
