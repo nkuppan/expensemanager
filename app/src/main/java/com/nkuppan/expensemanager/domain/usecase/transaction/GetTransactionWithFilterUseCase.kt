@@ -3,16 +3,16 @@ package com.nkuppan.expensemanager.domain.usecase.transaction
 import com.nkuppan.expensemanager.domain.model.CategoryType
 import com.nkuppan.expensemanager.domain.model.DateRangeType
 import com.nkuppan.expensemanager.domain.model.Transaction
-import com.nkuppan.expensemanager.domain.repository.DateRangeFilterRepository
 import com.nkuppan.expensemanager.domain.repository.SettingsRepository
 import com.nkuppan.expensemanager.domain.repository.TransactionRepository
+import com.nkuppan.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class GetTransactionWithFilterUseCase @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val dateRangeFilterRepository: DateRangeFilterRepository,
+    private val getDateRangeUseCase: GetDateRangeUseCase,
     private val transactionRepository: TransactionRepository
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -22,13 +22,12 @@ class GetTransactionWithFilterUseCase @Inject constructor(
             settingsRepository.getCategoryTypes(),
             settingsRepository.getCategories(),
             settingsRepository.getAccounts(),
-            dateRangeFilterRepository.getDateRangeFilterType()
-        ) { isFilterEnabled, categoryTypes, categories, accounts, filterType ->
-            val filterTypeRanges = dateRangeFilterRepository.getAllDateRanges(filterType)
+            getDateRangeUseCase.invoke()
+        ) { isFilterEnabled, categoryTypes, categories, accounts, dateRangeModel ->
             FilterValue(
                 isFilterEnabled,
-                filterType,
-                filterTypeRanges,
+                dateRangeModel.type,
+                dateRangeModel.dateRanges,
                 accounts,
                 categories,
                 categoryTypes
