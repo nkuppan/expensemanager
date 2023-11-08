@@ -1,0 +1,20 @@
+package com.naveenapps.expensemanager.domain.usecase.account
+
+import com.naveenapps.expensemanager.domain.model.Account
+import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.domain.repository.AccountRepository
+import javax.inject.Inject
+
+class FindAccountByIdUseCase @Inject constructor(
+    private val repository: AccountRepository
+) {
+
+    suspend operator fun invoke(accountId: String?): Resource<Account> {
+
+        if (accountId.isNullOrBlank()) {
+            return Resource.Error(Exception("Provide valid account id value"))
+        }
+
+        return repository.findAccount(accountId)
+    }
+}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.nkuppan.expensemanager">
+    package="com.naveenapps.expensemanager">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -59,7 +59,7 @@
         </provider>
 
         <receiver
-            android:name="com.nkuppan.expensemanager.presentation.settings.utils.AlarmReceiver"
+            android:name="com.naveenapps.expensemanager.presentation.settings.utils.AlarmReceiver"
             android:enabled="false"
             android:exported="false">
             <intent-filter>

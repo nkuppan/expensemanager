@@ -4,7 +4,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.nkuppan.expensemanager.buildlogic"
+group = "com.naveenapps.expensemanager.buildlogic"
 
 // Configure the build-logic plugins to target JDK 17
 // This matches the JDK used to build the project, and is not related to what is running on device.
@@ -30,29 +30,29 @@ dependencies {
 gradlePlugin {
     plugins {
         create("AndroidLibraryBasicConfigPlugin") {
-            id = "nkuppan.plugin.android.library"
+            id = "naveenapps.plugin.android.library"
             implementationClass =
-                "com.nkuppan.expensemanager.buildsrc.plugins.AndroidLibraryBasicConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidLibraryBasicConfigPlugin"
         }
         create("AndroidAppBasicConfigPlugin") {
-            id = "nkuppan.plugin.android.app"
+            id = "naveenapps.plugin.android.app"
             implementationClass =
-                "com.nkuppan.expensemanager.buildsrc.plugins.AndroidAppBasicConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidAppBasicConfigPlugin"
         }
         create("KotlinBasicConfigPlugin") {
-            id = "nkuppan.plugin.kotlin.basic"
+            id = "naveenapps.plugin.kotlin.basic"
             implementationClass =
-                "com.nkuppan.expensemanager.buildsrc.plugins.KotlinBasicConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.KotlinBasicConfigPlugin"
         }
         create("AndroidHiltPlugin") {
-            id = "nkuppan.plugin.hilt"
+            id = "naveenapps.plugin.hilt"
             implementationClass =
-                "com.nkuppan.expensemanager.buildsrc.plugins.AndroidHiltPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidHiltPlugin"
         }
         create("AndroidComposeConfigPlugin") {
-            id = "nkuppan.plugin.compose"
+            id = "naveenapps.plugin.compose"
             implementationClass =
-                "com.nkuppan.expensemanager.buildsrc.plugins.AndroidComposeConfigPlugin"
+                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidComposeConfigPlugin"
         }
     }
 }

@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:166992984781:android:edab93a38de4052c",
         "android_client_info": {
-          "package_name": "com.nkuppan.expensemanager"
+          "package_name": "com.naveenapps.expensemanager"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "166992984781-clur9ipqs19s747o1h7ipanujotg4htg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.nkuppan.expensemanager",
+            "package_name": "com.naveenapps.expensemanager",
             "certificate_hash": "23dee6c8b2433cbb9a4a52e31af72e89f7b1fba5"
           }
         },

@@ -1,18 +1,18 @@
 plugins {
-    id("nkuppan.plugin.android.app")
-    id("nkuppan.plugin.kotlin.basic")
-    id("nkuppan.plugin.compose")
-    id("nkuppan.plugin.hilt")
+    id("naveenapps.plugin.android.app")
+    id("naveenapps.plugin.kotlin.basic")
+    id("naveenapps.plugin.compose")
+    id("naveenapps.plugin.hilt")
     id("androidx.navigation.safeargs")
     id("kotlin-parcelize")
 }
 
 android {
 
-    namespace = "com.nkuppan.expensemanager"
+    namespace = "com.naveenapps.expensemanager"
 
     defaultConfig {
-        applicationId = "com.nkuppan.expensemanager"
+        applicationId = "com.naveenapps.expensemanager"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

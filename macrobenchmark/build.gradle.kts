@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.nkuppan.expensemanager.benchmark"
+    namespace = "com.naveenapps.expensemanager.benchmark"
 
     compileSdk = 34
 
