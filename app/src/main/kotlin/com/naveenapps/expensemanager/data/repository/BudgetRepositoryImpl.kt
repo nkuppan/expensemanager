@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.data.repository
 
+import com.naveenapps.expensemanager.core.database.dao.BudgetDao
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.data.db.dao.BudgetDao
 import com.naveenapps.expensemanager.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.domain.repository.BudgetRepository

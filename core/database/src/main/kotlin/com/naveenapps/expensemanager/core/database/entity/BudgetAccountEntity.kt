@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.data.db.entity
+package com.naveenapps.expensemanager.core.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

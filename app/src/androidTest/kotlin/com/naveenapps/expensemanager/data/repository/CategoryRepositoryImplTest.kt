@@ -5,9 +5,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
+import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
+import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.data.db.ExpenseManagerDatabase
-import com.naveenapps.expensemanager.data.db.dao.CategoryDao
 import com.naveenapps.expensemanager.domain.repository.CategoryRepository
 import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -62,4 +62,14 @@ class SettingsRepositoryImpl @Inject constructor(
             dataStore.setFilterEnabled(filterEnable)
             return@withContext Resource.Success(true)
         }
+
+    override fun isPreloaded(): Flow<Boolean> {
+        return dataStore.isPreloaded()
+    }
+
+    override suspend fun setPreloaded(preloaded: Boolean): Resource<Boolean> =
+        withContext(dispatcher.io) {
+            dataStore.setPreloaded(preloaded)
+            return@withContext Resource.Success(true)
+        }
 }

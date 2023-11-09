@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.data.db.dao
+package com.naveenapps.expensemanager.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -6,9 +6,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.naveenapps.expensemanager.data.db.entity.BudgetAccountEntity
-import com.naveenapps.expensemanager.data.db.entity.BudgetCategoryEntity
-import com.naveenapps.expensemanager.data.db.entity.BudgetEntity
+import com.naveenapps.expensemanager.core.database.entity.BudgetAccountEntity
+import com.naveenapps.expensemanager.core.database.entity.BudgetCategoryEntity
+import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 import java.util.UUID

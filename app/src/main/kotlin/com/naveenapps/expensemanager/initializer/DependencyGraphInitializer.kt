@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.data.startup
+package com.naveenapps.expensemanager.initializer
 
 import android.content.Context
 import androidx.startup.Initializer

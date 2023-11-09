@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.data.db.dao
+package com.naveenapps.expensemanager.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

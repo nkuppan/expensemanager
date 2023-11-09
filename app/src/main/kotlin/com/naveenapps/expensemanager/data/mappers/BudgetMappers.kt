@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.data.mappers
 
+import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import com.naveenapps.expensemanager.core.model.Budget
-import com.naveenapps.expensemanager.data.db.entity.BudgetEntity
 
 fun Budget.toEntityModel(): BudgetEntity {
     return BudgetEntity(

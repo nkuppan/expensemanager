@@ -54,5 +54,10 @@ gradlePlugin {
             implementationClass =
                 "com.naveenapps.expensemanager.buildsrc.plugins.AndroidComposeConfigPlugin"
         }
+        create("AndroidRoomPlugin") {
+            id = "naveenapps.plugin.room"
+            implementationClass =
+                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidRoomPlugin"
+        }
     }
 }

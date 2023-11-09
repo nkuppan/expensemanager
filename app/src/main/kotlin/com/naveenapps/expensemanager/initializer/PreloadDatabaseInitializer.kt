@@ -1,110 +1,21 @@
-package com.naveenapps.expensemanager.di
+package com.naveenapps.expensemanager.initializer
 
 import android.content.Context
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.startup.Initializer
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.data.db.ExpenseManagerDatabase
-import com.naveenapps.expensemanager.data.db.dao.AccountDao
-import com.naveenapps.expensemanager.data.db.dao.BudgetDao
-import com.naveenapps.expensemanager.data.db.dao.CategoryDao
-import com.naveenapps.expensemanager.data.db.dao.TransactionDao
-import com.naveenapps.expensemanager.data.mappers.toEntityModel
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
+import com.naveenapps.expensemanager.domain.usecase.account.AddAccountUseCase
+import com.naveenapps.expensemanager.domain.usecase.category.AddCategoryUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.GetPreloadStatusUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.SetPreloadStatusUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
-import javax.inject.Singleton
-
-@InstallIn(SingletonComponent::class)
-@Module
-object DatabaseModule {
-
-    private const val DATA_BASE_NAME = "expense_manager_database.db"
-
-    private fun setupBaseValues(database: ExpenseManagerDatabase) {
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            val categoryCount = database.categoryDao().getCount()
-
-            if (categoryCount == 0L) {
-                BASE_CATEGORY_LIST.forEach { value ->
-                    val categoryEntity = value.toEntityModel()
-                    database.categoryDao().insert(categoryEntity)
-                }
-            }
-
-            val accountCount = database.accountDao().getCount()
-
-            if (accountCount == 0L) {
-                BASE_ACCOUNT_LIST.forEach { value ->
-                    val accountEntity = value.toEntityModel()
-                    database.accountDao().insert(accountEntity)
-                }
-            }
-        }
-    }
-
-
-    @Singleton
-    @Provides
-    fun provideRoomDatabase(
-        @ApplicationContext context: Context
-    ): ExpenseManagerDatabase {
-
-        var database: ExpenseManagerDatabase? = null
-
-        database = Room.databaseBuilder(
-            context,
-            ExpenseManagerDatabase::class.java,
-            DATA_BASE_NAME
-        ).addCallback(object : RoomDatabase.Callback() {
-            override fun onCreate(db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-                if (database != null) {
-                    setupBaseValues(database as ExpenseManagerDatabase)
-                }
-            }
-        }).build()
-
-        return database
-    }
-
-    @Singleton
-    @Provides
-    fun provideCategoryDao(database: ExpenseManagerDatabase): CategoryDao {
-        return database.categoryDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideAccountDao(database: ExpenseManagerDatabase): AccountDao {
-        return database.accountDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideTransactionDao(database: ExpenseManagerDatabase): TransactionDao {
-        return database.transactionDao()
-    }
-
-    @Singleton
-    @Provides
-    fun provideBudgetDao(database: ExpenseManagerDatabase): BudgetDao {
-        return database.budgetDao()
-    }
-}
-
+import java.util.Calendar
+import java.util.Date
+import javax.inject.Inject
 
 val BASE_CATEGORY_LIST = listOf(
     Category(
@@ -246,3 +157,45 @@ val BASE_ACCOUNT_LIST = listOf(
         Calendar.getInstance().time,
     )
 )
+
+class PreloadDatabaseInitializer : Initializer<Unit> {
+
+    @Inject
+    lateinit var getPreloadStatusUseCase: GetPreloadStatusUseCase
+
+    @Inject
+    lateinit var setPreloadStatusUseCase: SetPreloadStatusUseCase
+
+    @Inject
+    lateinit var addAccountUseCase: AddAccountUseCase
+
+    @Inject
+    lateinit var addCategoryUseCase: AddCategoryUseCase
+
+    override fun create(context: Context) {
+
+        InitializerEntryPoint.resolve(context).inject(this)
+
+        CoroutineScope(Dispatchers.Main).launch {
+
+            val isPreloaded = getPreloadStatusUseCase.invoke()
+
+            if (isPreloaded.not()) {
+
+                BASE_CATEGORY_LIST.forEach { value ->
+                    addCategoryUseCase.invoke(value)
+                }
+
+                BASE_ACCOUNT_LIST.forEach { value ->
+                    addAccountUseCase.invoke(value)
+                }
+
+                setPreloadStatusUseCase.invoke(true)
+            }
+        }
+    }
+
+    override fun dependencies(): List<Class<out Initializer<*>>> {
+        return listOf(DependencyGraphInitializer::class.java)
+    }
+}

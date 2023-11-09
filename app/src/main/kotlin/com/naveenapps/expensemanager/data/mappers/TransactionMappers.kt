@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.data.mappers
 
+import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.model.Transaction
-import com.naveenapps.expensemanager.data.db.entity.TransactionEntity
 
 fun Transaction.toEntityModel(): TransactionEntity {
     return TransactionEntity(

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.data.startup
+package com.naveenapps.expensemanager.initializer
 
 import android.content.Context
 import dagger.hilt.EntryPoint
@@ -23,5 +23,5 @@ interface InitializerEntryPoint {
 
     fun inject(initializer: ThemeInitializer)
 
-    fun inject(initializer: DatabaseInitializer)
+    fun inject(initializer: PreloadDatabaseInitializer)
 }

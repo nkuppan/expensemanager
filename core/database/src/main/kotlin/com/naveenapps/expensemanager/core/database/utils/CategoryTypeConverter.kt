@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.data.db.utils
+package com.naveenapps.expensemanager.core.database.utils
 
 import androidx.room.TypeConverter
 import com.naveenapps.expensemanager.core.model.CategoryType

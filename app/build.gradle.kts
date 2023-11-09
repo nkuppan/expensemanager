@@ -61,9 +61,8 @@ android {
 }
 
 dependencies {
-    //implementation(projects.core.model)
-
     implementation(project(":core:model"))
+    implementation(project(":core:database"))
 
     implementation(libs.colorpicker)
 

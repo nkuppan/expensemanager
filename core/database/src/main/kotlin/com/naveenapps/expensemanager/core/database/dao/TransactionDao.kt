@@ -1,14 +1,14 @@
-package com.naveenapps.expensemanager.data.db.dao
+package com.naveenapps.expensemanager.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import com.naveenapps.expensemanager.core.database.entity.AccountEntity
+import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
+import com.naveenapps.expensemanager.core.database.entity.TransactionRelation
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isTransfer
-import com.naveenapps.expensemanager.data.db.entity.AccountEntity
-import com.naveenapps.expensemanager.data.db.entity.TransactionEntity
-import com.naveenapps.expensemanager.data.db.entity.TransactionRelation
 import kotlinx.coroutines.flow.Flow
 
 

@@ -1,8 +1,8 @@
-package com.naveenapps.expensemanager.data.db.dao
+package com.naveenapps.expensemanager.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.naveenapps.expensemanager.data.db.entity.AccountEntity
+import com.naveenapps.expensemanager.core.database.entity.AccountEntity
 import kotlinx.coroutines.flow.Flow
 
 

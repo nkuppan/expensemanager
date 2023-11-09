@@ -25,4 +25,8 @@ interface SettingsRepository {
     fun isFilterEnabled(): Flow<Boolean>
 
     suspend fun setFilterEnabled(filterEnable: Boolean): Resource<Boolean>
+
+    fun isPreloaded(): Flow<Boolean>
+
+    suspend fun setPreloaded(preloaded: Boolean): Resource<Boolean>
 }
