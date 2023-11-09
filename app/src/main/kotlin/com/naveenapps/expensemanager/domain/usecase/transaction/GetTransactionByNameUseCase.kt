@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.domain.model.Transaction
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

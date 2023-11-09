@@ -1,10 +1,10 @@
 package com.naveenapps.expensemanager.data.repository
 
+import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.data.db.dao.AccountDao
 import com.naveenapps.expensemanager.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.data.mappers.toEntityModel
-import com.naveenapps.expensemanager.domain.model.Account
-import com.naveenapps.expensemanager.domain.model.Resource
 import com.naveenapps.expensemanager.domain.repository.AccountRepository
 import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow

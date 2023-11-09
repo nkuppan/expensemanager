@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.data.mappers
 
+import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.data.db.entity.CategoryEntity
-import com.naveenapps.expensemanager.domain.model.Category
 
 fun Category.toEntityModel(): CategoryEntity {
     return CategoryEntity(

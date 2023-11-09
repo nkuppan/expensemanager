@@ -1,11 +1,11 @@
 package com.naveenapps.expensemanager.domain.usecase.budget
 
+import com.naveenapps.expensemanager.core.model.Budget
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.data.utils.fromMonthAndYear
 import com.naveenapps.expensemanager.data.utils.toMonthAndYear
-import com.naveenapps.expensemanager.domain.model.Budget
-import com.naveenapps.expensemanager.domain.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.Resource
-import com.naveenapps.expensemanager.domain.model.Transaction
 import com.naveenapps.expensemanager.domain.repository.AccountRepository
 import com.naveenapps.expensemanager.domain.repository.CategoryRepository
 import com.naveenapps.expensemanager.domain.repository.TransactionRepository

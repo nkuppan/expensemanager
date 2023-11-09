@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.repository
 
-import com.naveenapps.expensemanager.domain.model.Currency
+import com.naveenapps.expensemanager.core.model.Currency
 import kotlinx.coroutines.flow.Flow
 
 interface CurrencyRepository {

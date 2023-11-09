@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.Category
-import com.naveenapps.expensemanager.domain.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.usecase.category.AddCategoryUseCase
 import com.naveenapps.expensemanager.domain.usecase.category.DeleteCategoryUseCase
 import com.naveenapps.expensemanager.domain.usecase.category.FindCategoryByIdUseCase

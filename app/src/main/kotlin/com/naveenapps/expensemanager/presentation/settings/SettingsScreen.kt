@@ -36,8 +36,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.Currency
-import com.naveenapps.expensemanager.domain.model.Theme
+import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.presentation.settings.currency.CurrencyDialogView
 import com.naveenapps.expensemanager.presentation.settings.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.presentation.settings.theme.ThemeDialogView

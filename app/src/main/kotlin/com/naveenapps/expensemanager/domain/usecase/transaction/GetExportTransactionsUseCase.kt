@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.domain.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.DateRangeType
-import com.naveenapps.expensemanager.domain.model.Resource
-import com.naveenapps.expensemanager.domain.model.Transaction
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.domain.repository.AccountRepository
 import com.naveenapps.expensemanager.domain.repository.CategoryRepository
 import com.naveenapps.expensemanager.domain.repository.TransactionRepository

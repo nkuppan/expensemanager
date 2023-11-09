@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.data.repository
 
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.data.datastore.SettingsDataStore
-import com.naveenapps.expensemanager.domain.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.Resource
 import com.naveenapps.expensemanager.domain.repository.SettingsRepository
 import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow

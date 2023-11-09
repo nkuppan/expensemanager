@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.Theme
+import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.theme.GetThemesUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.theme.SaveThemeUseCase

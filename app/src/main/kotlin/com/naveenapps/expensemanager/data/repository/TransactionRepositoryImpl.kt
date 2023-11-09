@@ -1,6 +1,11 @@
 package com.naveenapps.expensemanager.data.repository
 
 import android.util.Log
+import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isTransfer
 import com.naveenapps.expensemanager.data.db.dao.AccountDao
 import com.naveenapps.expensemanager.data.db.dao.CategoryDao
 import com.naveenapps.expensemanager.data.db.dao.TransactionDao
@@ -8,11 +13,6 @@ import com.naveenapps.expensemanager.data.db.entity.TransactionEntity
 import com.naveenapps.expensemanager.data.db.entity.TransactionRelation
 import com.naveenapps.expensemanager.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.data.mappers.toEntityModel
-import com.naveenapps.expensemanager.domain.model.Resource
-import com.naveenapps.expensemanager.domain.model.Transaction
-import com.naveenapps.expensemanager.domain.model.TransactionType
-import com.naveenapps.expensemanager.domain.model.isIncome
-import com.naveenapps.expensemanager.domain.model.isTransfer
 import com.naveenapps.expensemanager.domain.repository.TransactionRepository
 import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow
@@ -156,8 +156,8 @@ class TransactionRepositoryImpl @Inject constructor(
             transaction.fromAccount = it.toDomainModel()
         }
         transaction.toAccountId?.let {
-            accountDao.findById(transaction.toAccountId)?.let {
-                transaction.toAccount = it.toDomainModel()
+            accountDao.findById(it)?.let { accountEntity ->
+                transaction.toAccount = accountEntity.toDomainModel()
             }
         }
         return transaction

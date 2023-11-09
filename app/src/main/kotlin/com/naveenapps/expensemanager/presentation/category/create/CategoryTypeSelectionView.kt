@@ -12,9 +12,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.isExpense
-import com.naveenapps.expensemanager.domain.model.isIncome
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 

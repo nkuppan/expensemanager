@@ -29,9 +29,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
 import com.naveenapps.expensemanager.data.repository.availableCurrencies
-import com.naveenapps.expensemanager.domain.model.Currency
-import com.naveenapps.expensemanager.domain.model.CurrencySymbolPosition
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 

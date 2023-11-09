@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.repository
 
-import com.naveenapps.expensemanager.domain.model.ReminderTimeState
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import kotlinx.coroutines.flow.Flow
 
 interface ReminderTimeRepository {

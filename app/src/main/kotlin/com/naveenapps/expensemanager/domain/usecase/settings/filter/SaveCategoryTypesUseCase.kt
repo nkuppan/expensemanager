@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.filter
 
-import com.naveenapps.expensemanager.domain.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.repository.SettingsRepository
 import javax.inject.Inject
 

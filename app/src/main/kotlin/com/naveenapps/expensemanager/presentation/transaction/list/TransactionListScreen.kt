@@ -37,12 +37,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.data.utils.fromCompleteDate
 import com.naveenapps.expensemanager.data.utils.toCompleteDate
 import com.naveenapps.expensemanager.data.utils.toDate
 import com.naveenapps.expensemanager.data.utils.toDay
 import com.naveenapps.expensemanager.data.utils.toMonthYear
-import com.naveenapps.expensemanager.domain.model.TransactionType
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.model.TransactionUiState
 import com.naveenapps.expensemanager.domain.model.UiState

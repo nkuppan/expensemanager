@@ -30,9 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.DateRangeModel
+import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.data.utils.toCompleteDate
-import com.naveenapps.expensemanager.domain.model.DateRangeModel
-import com.naveenapps.expensemanager.domain.model.DateRangeType
 import com.naveenapps.expensemanager.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.ui.components.ClickableTextField
 import java.util.Date

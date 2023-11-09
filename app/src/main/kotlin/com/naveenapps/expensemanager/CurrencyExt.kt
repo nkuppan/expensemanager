@@ -1,18 +1,7 @@
-package com.naveenapps.expensemanager.domain.model
+package com.naveenapps.expensemanager
 
-import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.Currency
 
-data class Currency(
-    val type: Int,
-    val name: Int,
-    val icon: Int,
-    val position: CurrencySymbolPosition = CurrencySymbolPosition.PREFIX
-)
-
-enum class CurrencySymbolPosition {
-    PREFIX,
-    SUFFIX
-}
 
 fun Currency.getCurrencyIcon(): Int {
     return when (type) {

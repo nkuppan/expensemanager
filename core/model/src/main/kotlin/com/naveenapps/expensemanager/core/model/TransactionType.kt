@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.domain.model
+package com.naveenapps.expensemanager.core.model
 
 enum class TransactionType {
     INCOME,

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.theme
 
-import com.naveenapps.expensemanager.domain.model.Resource
-import com.naveenapps.expensemanager.domain.model.Theme
+import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.domain.repository.ThemeRepository
 import javax.inject.Inject
 

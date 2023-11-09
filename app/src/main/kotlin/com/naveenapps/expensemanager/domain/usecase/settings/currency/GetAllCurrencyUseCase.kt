@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.currency
 
-import com.naveenapps.expensemanager.domain.model.Currency
+import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.domain.repository.CurrencyRepository
 import javax.inject.Inject
 

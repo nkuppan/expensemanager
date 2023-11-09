@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.domain.model
+package com.naveenapps.expensemanager.core.model
 
 data class ReminderTimeState(
     val hour: Int,

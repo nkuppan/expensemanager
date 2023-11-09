@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.naveenapps.expensemanager.domain.model.TransactionType
+import com.naveenapps.expensemanager.core.model.TransactionType
 import java.util.Date
 
 

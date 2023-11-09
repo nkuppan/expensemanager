@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.daterange
 
-import com.naveenapps.expensemanager.domain.model.DateRangeModel
+import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.domain.repository.DateRangeFilterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.domain.usecase.category
 
-import com.naveenapps.expensemanager.domain.model.Category
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.Resource
 import javax.inject.Inject
 
 class CheckCategoryValidationUseCase @Inject constructor() {

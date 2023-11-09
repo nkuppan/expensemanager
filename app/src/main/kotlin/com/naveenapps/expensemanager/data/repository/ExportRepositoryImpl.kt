@@ -6,11 +6,11 @@ import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.ExportFileType
+import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.data.utils.toCompleteDate
 import com.naveenapps.expensemanager.data.utils.toTimeAndMinutes
-import com.naveenapps.expensemanager.domain.model.ExportFileType
-import com.naveenapps.expensemanager.domain.model.Resource
-import com.naveenapps.expensemanager.domain.model.Transaction
 import com.naveenapps.expensemanager.domain.repository.ExportRepository
 import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import com.opencsv.CSVWriter

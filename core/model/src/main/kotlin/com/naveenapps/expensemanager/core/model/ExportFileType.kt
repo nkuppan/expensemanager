@@ -1,3 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
-class Sample
+enum class ExportFileType {
+    CSV,
+    PDF
+}

@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.domain.repository
 
-import com.naveenapps.expensemanager.domain.model.DateRangeModel
-import com.naveenapps.expensemanager.domain.model.DateRangeType
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.DateRangeModel
+import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.usecase.transaction.GroupType
 import kotlinx.coroutines.flow.Flow
 import java.util.Date

@@ -47,7 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.CategoryType
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.presentation.budget.list.toPercentString
 import com.naveenapps.expensemanager.presentation.category.list.getCategoryData

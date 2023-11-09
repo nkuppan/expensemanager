@@ -3,8 +3,8 @@ package com.naveenapps.expensemanager.presentation.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.Currency
-import com.naveenapps.expensemanager.domain.model.Theme
+import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

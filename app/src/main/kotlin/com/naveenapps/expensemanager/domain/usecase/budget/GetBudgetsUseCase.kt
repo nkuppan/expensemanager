@@ -1,10 +1,10 @@
 package com.naveenapps.expensemanager.domain.usecase.budget
 
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.Budget
-import com.naveenapps.expensemanager.domain.model.Currency
-import com.naveenapps.expensemanager.domain.model.Resource
-import com.naveenapps.expensemanager.domain.model.isExpense
+import com.naveenapps.expensemanager.core.model.Budget
+import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.domain.repository.BudgetRepository
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.ui.utils.UiText

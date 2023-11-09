@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.ui.utils
 
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.Currency
-import com.naveenapps.expensemanager.domain.model.CurrencySymbolPosition
+import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
 
 fun getCurrency(
     currency: Currency,

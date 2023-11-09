@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.data.repository
 
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.data.datastore.ReminderTimeDataStore
-import com.naveenapps.expensemanager.domain.model.ReminderTimeState
 import com.naveenapps.expensemanager.domain.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow

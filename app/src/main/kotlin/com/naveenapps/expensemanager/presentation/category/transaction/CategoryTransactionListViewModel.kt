@@ -5,9 +5,9 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.domain.model.Category
-import com.naveenapps.expensemanager.domain.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.Transaction
+import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.ui.utils.UiText

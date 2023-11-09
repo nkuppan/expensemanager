@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.domain.repository
 
-import com.naveenapps.expensemanager.domain.model.Resource
-import com.naveenapps.expensemanager.domain.model.Transaction
+import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.Transaction
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {

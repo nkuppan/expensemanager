@@ -4,9 +4,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.DateRangeType
-import com.naveenapps.expensemanager.domain.model.ExportFileType
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.ExportFileType
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.export.ExportFileUseCase
 import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel

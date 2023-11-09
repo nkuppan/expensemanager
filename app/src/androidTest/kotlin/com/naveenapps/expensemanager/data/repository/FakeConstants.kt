@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.data.repository
 
-import com.naveenapps.expensemanager.domain.model.Account
-import com.naveenapps.expensemanager.domain.model.AccountType
-import com.naveenapps.expensemanager.domain.model.Category
-import com.naveenapps.expensemanager.domain.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.AccountType
+import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.CategoryType
 import java.util.Date
 
 val FAKE_CATEGORY = Category(

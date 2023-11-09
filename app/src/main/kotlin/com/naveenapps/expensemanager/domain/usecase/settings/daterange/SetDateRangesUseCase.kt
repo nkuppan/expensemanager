@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.daterange
 
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.repository.DateRangeFilterRepository
 import java.util.Date
 import javax.inject.Inject

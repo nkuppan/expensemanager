@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.filter
 
-import com.naveenapps.expensemanager.domain.model.CategoryType
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

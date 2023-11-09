@@ -3,8 +3,8 @@ package com.naveenapps.expensemanager.data.repository
 import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.data.datastore.ThemeDataStore
-import com.naveenapps.expensemanager.domain.model.Theme
 import com.naveenapps.expensemanager.domain.repository.ThemeRepository
 import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow

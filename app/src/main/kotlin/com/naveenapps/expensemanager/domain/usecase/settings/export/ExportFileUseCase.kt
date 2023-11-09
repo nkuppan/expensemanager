@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.export
 
-import com.naveenapps.expensemanager.domain.model.DateRangeType
-import com.naveenapps.expensemanager.domain.model.ExportFileType
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.ExportFileType
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.repository.ExportRepository
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetExportTransactionsUseCase
 import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel

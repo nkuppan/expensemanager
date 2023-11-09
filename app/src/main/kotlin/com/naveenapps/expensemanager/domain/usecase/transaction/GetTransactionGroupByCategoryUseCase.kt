@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.domain.model.CategoryType
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransaction

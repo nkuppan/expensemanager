@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.ReminderTimeState
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)

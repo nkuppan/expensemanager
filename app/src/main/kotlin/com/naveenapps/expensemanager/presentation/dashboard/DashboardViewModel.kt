@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.domain.model.CategoryType
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
 import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase

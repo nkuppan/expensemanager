@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.data.db.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.naveenapps.expensemanager.domain.model.AccountType
+import com.naveenapps.expensemanager.core.model.AccountType
 import java.util.Date
 
 

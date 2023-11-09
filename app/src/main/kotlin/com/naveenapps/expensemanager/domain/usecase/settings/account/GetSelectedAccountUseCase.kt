@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.account
 
-import com.naveenapps.expensemanager.domain.model.Account
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.usecase.account.FindAccountByIdUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

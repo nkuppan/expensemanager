@@ -4,7 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.naveenapps.expensemanager.domain.model.ReminderTimeState
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

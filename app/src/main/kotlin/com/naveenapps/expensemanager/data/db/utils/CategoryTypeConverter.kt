@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.data.db.utils
 
 import androidx.room.TypeConverter
-import com.naveenapps.expensemanager.domain.model.CategoryType
+import com.naveenapps.expensemanager.core.model.CategoryType
 
 
 object CategoryTypeConverter {

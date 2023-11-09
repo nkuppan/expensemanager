@@ -27,7 +27,7 @@ include(":core:datastore")
 include(":core:designsystem")
 include(":core:model")
 include(":core:notification")
-//include(":core:navigation")
+include(":core:navigation")
 include(":core:testing")
 
 include(":feature:account")

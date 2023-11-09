@@ -1,11 +1,11 @@
 package com.naveenapps.expensemanager.domain.usecase.transaction
 
+import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.data.utils.toCompleteDate
 import com.naveenapps.expensemanager.data.utils.toMonthAndYear
 import com.naveenapps.expensemanager.data.utils.toYear
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
-import com.naveenapps.expensemanager.domain.model.isExpense
-import com.naveenapps.expensemanager.domain.model.isIncome
 import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase

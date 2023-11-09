@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.domain.model.CategoryType
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.presentation.selection.ColorSelectionScreen
 import com.naveenapps.expensemanager.presentation.selection.IconAndColorComponent
 import com.naveenapps.expensemanager.presentation.selection.IconSelectionScreen

@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.domain.repository
 
-import com.naveenapps.expensemanager.domain.model.Theme
+import com.naveenapps.expensemanager.core.model.Theme
 import kotlinx.coroutines.flow.Flow
 
 interface ThemeRepository {

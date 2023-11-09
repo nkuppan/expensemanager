@@ -47,8 +47,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.data.utils.toCompleteDate
-import com.naveenapps.expensemanager.domain.model.ExportFileType
 import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.presentation.budget.create.SelectedItemView

@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.presentation.category.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.domain.model.Category
+import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel

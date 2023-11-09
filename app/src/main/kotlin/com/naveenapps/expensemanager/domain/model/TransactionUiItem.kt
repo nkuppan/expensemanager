@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.domain.model
 
+import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.data.utils.toCompleteDate
 import com.naveenapps.expensemanager.ui.utils.UiText
 import com.naveenapps.expensemanager.ui.utils.getCurrency

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.domain.repository
 
-import com.naveenapps.expensemanager.domain.model.Budget
-import com.naveenapps.expensemanager.domain.model.Resource
+import com.naveenapps.expensemanager.core.model.Budget
+import com.naveenapps.expensemanager.core.model.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface BudgetRepository {

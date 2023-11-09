@@ -6,9 +6,9 @@ package com.naveenapps.expensemanager.domain.model
  */
 sealed class UiState<out R> {
 
-    object Loading : UiState<Nothing>()
+    data object Loading : UiState<Nothing>()
 
     data class Success<out T>(val data: T) : UiState<T>()
 
-    object Empty : UiState<Nothing>()
+    data object Empty : UiState<Nothing>()
 }

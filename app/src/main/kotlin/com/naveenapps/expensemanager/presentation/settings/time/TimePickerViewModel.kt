@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.presentation.settings.time
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.domain.model.ReminderTimeState
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.domain.usecase.settings.time.GetReminderTimeUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.time.SaveReminderTimeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
