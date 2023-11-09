@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -124,14 +123,18 @@ private fun DashboardTopAppbar(navController: NavController) {
                 contentScale = ContentScale.Crop,
                 contentDescription = null,
             )
-            Column(
-                modifier = Modifier.padding(start = 8.dp)
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 8.dp),
             ) {
                 Text(
+                    modifier = Modifier.align(Alignment.CenterVertically),
                     text = stringResource(R.string.hello),
                     style = MaterialTheme.typography.titleSmall
                 )
                 Text(
+                    modifier = Modifier.align(Alignment.CenterVertically),
                     text = stringResource(id = R.string.guest),
                     style = MaterialTheme.typography.titleLarge
                 )

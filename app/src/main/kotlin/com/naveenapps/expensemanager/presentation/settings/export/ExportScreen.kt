@@ -78,10 +78,7 @@ private fun createFile(fileType: ExportFileType): Intent? {
 }
 
 
-@OptIn(
-    ExperimentalPermissionsApi::class,
-    ExperimentalMaterial3Api::class
-)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ExportScreen(navController: NavController) {
 
@@ -251,6 +248,7 @@ private fun ExportScreenScaffoldView(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenContent(
     modifier: Modifier = Modifier,
@@ -264,10 +262,20 @@ private fun ExportScreenContent(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
-    var showDateFilter by remember { mutableStateOf(false) }
-    if (showDateFilter) {
-        DateFilterSelectionView {
-            showDateFilter = false
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showBottomSheet = false
+            },
+            sheetState = bottomSheetState,
+            windowInsets = WindowInsets(0.dp)
+        ) {
+            DateFilterSelectionView {
+                showBottomSheet = false
+            }
         }
     }
 
@@ -294,7 +302,7 @@ private fun ExportScreenContent(
             leadingIcon = R.drawable.ic_calendar,
             onClick = {
                 focusManager.clearFocus(force = true)
-                showDateFilter = true
+                showBottomSheet = true
             })
 
         Spacer(modifier = Modifier.padding(8.dp))
