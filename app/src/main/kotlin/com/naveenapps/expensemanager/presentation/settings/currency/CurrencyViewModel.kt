@@ -2,11 +2,11 @@ package com.naveenapps.expensemanager.presentation.settings.currency
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetAllCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetAllCurrencyUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.SaveCurrencyUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.filter
 
-import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeByTypeUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeByTypeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test

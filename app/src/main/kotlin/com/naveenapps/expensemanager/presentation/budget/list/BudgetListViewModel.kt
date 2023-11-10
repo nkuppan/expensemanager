@@ -3,10 +3,10 @@ package com.naveenapps.expensemanager.presentation.budget.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.domain.usecase.budget.BudgetUiModel
-import com.naveenapps.expensemanager.domain.usecase.budget.GetBudgetsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

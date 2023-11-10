@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionSmallItem
-import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.presentation.category.transaction.getRandomCategoryTransactionData
 import com.naveenapps.expensemanager.ui.components.PieChartView
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme

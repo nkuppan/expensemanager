@@ -3,12 +3,12 @@ package com.naveenapps.expensemanager.presentation.account.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.AccountType
+import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.presentation.transaction.list.getAmountTextColor
 import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -68,15 +68,4 @@ fun Account.toAccountUiModel(amount: Amount) = AccountUiModel(
     amount = amount,
     type = this.type,
     amountTextColor = this.amount.getAmountTextColor()
-)
-
-
-data class AccountUiModel(
-    val id: String,
-    val name: String,
-    val icon: String,
-    val iconBackgroundColor: String,
-    val amount: Amount,
-    val amountTextColor: Int,
-    val type: AccountType = AccountType.REGULAR
 )

@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import com.naveenapps.expensemanager.domain.usecase.settings.theme.ApplyThemeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.ApplyThemeUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

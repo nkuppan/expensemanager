@@ -3,14 +3,16 @@ package com.naveenapps.expensemanager.presentation.analysis
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.domain.model.AverageData
-import com.naveenapps.expensemanager.domain.model.WholeAverageData
-import com.naveenapps.expensemanager.domain.usecase.transaction.AnalysisData
-import com.naveenapps.expensemanager.domain.usecase.transaction.GetAmountStateUseCase
-import com.naveenapps.expensemanager.domain.usecase.transaction.GetAverageDataUseCase
-import com.naveenapps.expensemanager.domain.usecase.transaction.GetChartDataUseCase
-import com.naveenapps.expensemanager.presentation.dashboard.AmountUiState
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageDataUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDataUseCase
+import com.naveenapps.expensemanager.core.model.AmountUiState
+import com.naveenapps.expensemanager.core.model.AverageData
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.WholeAverageData
+import com.patrykandpatrick.vico.core.entry.ChartEntryModel
+import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
+import com.patrykandpatrick.vico.core.entry.entryOf
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,16 +27,10 @@ class AnalysisScreenViewModel @Inject constructor(
     getAmountStateUseCase: GetAmountStateUseCase,
 ) : ViewModel() {
 
-    private val currency = Currency(
-        com.naveenapps.expensemanager.core.data.R.string.dollar_type,
-        com.naveenapps.expensemanager.core.data.R.string.dollar_name,
-        com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
-    )
-
     private val _amountUiState = MutableStateFlow(AmountUiState())
     val amountUiState = _amountUiState.asStateFlow()
 
-    private val _graphItems = MutableStateFlow<UiState<AnalysisData>>(UiState.Loading)
+    private val _graphItems = MutableStateFlow<UiState<AnalysisUiData>>(UiState.Loading)
     val graphItems = _graphItems.asStateFlow()
 
     private val _averageData = MutableStateFlow(
@@ -55,7 +51,26 @@ class AnalysisScreenViewModel @Inject constructor(
 
     init {
         getChartDataUseCase.invoke().onEach { response ->
-            _graphItems.value = UiState.Success(response)
+            _graphItems.value = UiState.Success(
+                AnalysisUiData(
+                    transactions = response.transactions,
+                    chartData = response.chartData?.let { chart ->
+                        AnalysisUiChartData(
+                            chartData = ChartEntryModelProducer(
+                                chart.chartData.map {
+                                    it.map { entry ->
+                                        entryOf(
+                                            entry.index,
+                                            entry.total
+                                        )
+                                    }
+                                }
+                            ).getModel(),
+                            dates = chart.dates
+                        )
+                    }
+                )
+            )
         }.launchIn(viewModelScope)
 
         getAverageDataUseCase.invoke().onEach { response ->
@@ -67,3 +82,15 @@ class AnalysisScreenViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 }
+
+
+data class AnalysisUiData(
+    val transactions: List<TransactionUiItem>,
+    val chartData: AnalysisUiChartData? = null,
+)
+
+data class AnalysisUiChartData(
+    val chartData: ChartEntryModel,
+    val dates: List<String>,
+    val title: String? = null,
+)

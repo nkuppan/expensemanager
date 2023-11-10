@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
 import com.naveenapps.expensemanager.presentation.account.list.AccountCheckedItem
-import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
 import com.naveenapps.expensemanager.presentation.selection.SelectionTitle
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 

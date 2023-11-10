@@ -54,13 +54,13 @@ import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.model.AccountType
+import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.presentation.account.list.AccountItem
-import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.selection.AccountSelectionScreen
 import com.naveenapps.expensemanager.presentation.category.list.CategoryItem
 import com.naveenapps.expensemanager.presentation.category.selection.CategorySelectionScreen

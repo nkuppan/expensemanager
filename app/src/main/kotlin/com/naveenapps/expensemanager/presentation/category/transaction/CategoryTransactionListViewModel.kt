@@ -1,16 +1,11 @@
 package com.naveenapps.expensemanager.presentation.category.transaction
 
-import android.graphics.Color
-import androidx.annotation.ColorInt
-import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
+import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.core.model.Transaction
-import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -51,39 +46,3 @@ class CategoryTransactionListViewModel @Inject constructor(
         this._categoryType.value = categoryType
     }
 }
-
-fun CategoryTransaction.toChartModel(): PieChartData {
-    return PieChartData(
-        name = this.category.name,
-        value = this.percent,
-        color = this.category.iconBackgroundColor.toColorInt(),
-    )
-}
-
-fun getDummyPieChartData(categoryName: String, percent: Float): PieChartData {
-    return PieChartData(
-        name = categoryName,
-        value = percent,
-        color = Color.parseColor("#40121212"),
-    )
-}
-
-data class PieChartData(
-    var name: String,
-    var value: Float,
-    @ColorInt var color: Int,
-)
-
-data class CategoryTransaction(
-    val category: Category,
-    val percent: Float,
-    val amount: Amount,
-    val transaction: List<Transaction> = emptyList()
-)
-
-data class CategoryTransactionUiModel(
-    val totalAmount: Amount,
-    val pieChartData: List<PieChartData>,
-    val categoryTransactions: List<CategoryTransaction>,
-    val hideValues: Boolean = false
-)

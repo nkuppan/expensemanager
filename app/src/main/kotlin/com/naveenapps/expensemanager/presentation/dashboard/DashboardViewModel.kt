@@ -5,21 +5,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountUiState
+import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.TransactionUiItem
-import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
-import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
-import com.naveenapps.expensemanager.domain.usecase.budget.BudgetUiModel
-import com.naveenapps.expensemanager.domain.usecase.budget.GetBudgetsUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.domain.usecase.transaction.GetAmountStateUseCase
-import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
-import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
-import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.presentation.account.list.toAccountUiModel
-import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.presentation.home.HomeScreenBottomBarItems
 import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -126,9 +127,3 @@ class DashboardViewModel @Inject constructor(
         private const val MAX_TRANSACTIONS_IN_LIST = 10
     }
 }
-
-data class AmountUiState(
-    val income: String = "",
-    val expense: String = "",
-    val balance: String = "",
-)

@@ -2,14 +2,14 @@ package com.naveenapps.expensemanager.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
+import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.GetPreloadStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.SetPreloadStatusUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.domain.usecase.account.AddAccountUseCase
-import com.naveenapps.expensemanager.domain.usecase.category.AddCategoryUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.GetPreloadStatusUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.SetPreloadStatusUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

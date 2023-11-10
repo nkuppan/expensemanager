@@ -3,10 +3,10 @@ package com.naveenapps.expensemanager.presentation.settings.theme
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetThemesUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.SaveThemeUseCase
 import com.naveenapps.expensemanager.core.model.Theme
-import com.naveenapps.expensemanager.domain.usecase.settings.theme.GetCurrentThemeUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.theme.GetThemesUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.theme.SaveThemeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.ui.components.AppCardView
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.UiText

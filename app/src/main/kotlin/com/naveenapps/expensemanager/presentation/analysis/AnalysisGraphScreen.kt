@@ -25,9 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.domain.model.AverageData
-import com.naveenapps.expensemanager.domain.model.WholeAverageData
-import com.naveenapps.expensemanager.domain.usecase.transaction.AnalysisChartData
+import com.naveenapps.expensemanager.core.model.AverageData
+import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.naveenapps.expensemanager.presentation.dashboard.DashboardWidgetTitle
 import com.naveenapps.expensemanager.presentation.dashboard.FilterView
 import com.naveenapps.expensemanager.presentation.dashboard.IncomeExpenseBalanceView
@@ -179,7 +178,7 @@ private fun AverageAmountItems(
 
 @Composable
 fun ChartScreen(
-    chart: AnalysisChartData?,
+    chart: AnalysisUiChartData?,
     modifier: Modifier = Modifier,
 ) {
 
@@ -242,7 +241,7 @@ fun ChartScreen(
 fun ChartScreenPreview() {
     ExpenseManagerTheme {
         ChartScreen(
-            AnalysisChartData(
+            AnalysisUiChartData(
                 chartData = entryModelOf(
                     listOf(
                         entryOf(0, 1),

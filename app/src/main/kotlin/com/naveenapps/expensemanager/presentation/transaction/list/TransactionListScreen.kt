@@ -45,8 +45,8 @@ import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.domain.model.TransactionUiItem
-import com.naveenapps.expensemanager.domain.model.TransactionUiState
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.TransactionUiState
 import com.naveenapps.expensemanager.presentation.dashboard.FilterView
 import com.naveenapps.expensemanager.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.ui.components.TopNavigationBar

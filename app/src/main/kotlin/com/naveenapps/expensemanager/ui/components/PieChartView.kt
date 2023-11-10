@@ -14,7 +14,7 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.naveenapps.expensemanager.presentation.category.transaction.PieChartData
+import com.naveenapps.expensemanager.core.model.PieChartData
 
 
 @Composable

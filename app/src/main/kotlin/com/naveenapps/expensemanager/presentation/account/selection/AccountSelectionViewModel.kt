@@ -2,10 +2,10 @@ package com.naveenapps.expensemanager.presentation.account.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel

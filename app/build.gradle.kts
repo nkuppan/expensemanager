@@ -66,6 +66,7 @@ dependencies {
     implementation(project(":core:datastore"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:model"))
+    implementation(project(":core:domain"))
     implementation(project(":core:data"))
 
     implementation(libs.colorpicker)
@@ -124,4 +125,7 @@ dependencies {
     implementation(libs.vico.core)
     implementation(libs.vico.views)
     implementation(libs.joda.time)
+
+    testImplementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
 }

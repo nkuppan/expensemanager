@@ -43,17 +43,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.domain.model.TransactionUiItem
-import com.naveenapps.expensemanager.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.model.AmountUiState
+import com.naveenapps.expensemanager.core.model.CategoryTransaction
+import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
-import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.presentation.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.presentation.category.list.getCategoryData
-import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransaction
-import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
-import com.naveenapps.expensemanager.presentation.category.transaction.getDummyPieChartData
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.ui.extensions.toColor
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
@@ -168,7 +169,7 @@ private fun DashboardScreenContent(
             FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp, end = 6.dp)
+                    .padding(end = 6.dp)
             )
         }
         item {
