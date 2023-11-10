@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
@@ -15,6 +16,7 @@ import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.FindTransactionByIdUseCase
@@ -43,6 +45,7 @@ class TransactionCreateViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     getAccountsUseCase: GetAccountsUseCase,
     getAllCategoryUseCase: GetAllCategoryUseCase,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val findTransactionByIdUseCase: FindTransactionByIdUseCase,
     private val addTransactionUseCase: AddTransactionUseCase,
     private val updateTransactionUseCase: UpdateTransactionUseCase,
@@ -111,7 +114,12 @@ class TransactionCreateViewModel @Inject constructor(
                 emptyList()
             } else {
                 accounts.map {
-                    it.toAccountUiModel(currency)
+                    it.toAccountUiModel(
+                        getFormattedAmountUseCase.invoke(
+                            it.amount,
+                            currency
+                        )
+                    )
                 }
             }
             _accounts.value = mappedAccounts
@@ -155,13 +163,23 @@ class TransactionCreateViewModel @Inject constructor(
                     setCategorySelection(transaction.category)
                     setAccountSelection(
                         2,
-                        transaction.fromAccount.toAccountUiModel(currency)
+                        transaction.fromAccount.toAccountUiModel(
+                            getFormattedAmountUseCase.invoke(
+                                transaction.fromAccount.amount,
+                                currency
+                            )
+                        )
                     )
                     val toAccount = transaction.toAccount
                     if (toAccount != null) {
                         setAccountSelection(
                             3,
-                            toAccount.toAccountUiModel(currency)
+                            toAccount.toAccountUiModel(
+                                getFormattedAmountUseCase.invoke(
+                                    toAccount.amount,
+                                    currency
+                                )
+                            )
                         )
                     }
                     setTransactionType(transaction.type)
@@ -205,7 +223,7 @@ class TransactionCreateViewModel @Inject constructor(
                 null
             },
             type = selectedTransactionType.value,
-            amount = amount.toDouble(),
+            amount = Amount(amount.toDouble()),
             imagePath = "",
             createdOn = date.value,
             updatedOn = Calendar.getInstance().time
@@ -306,7 +324,7 @@ class TransactionCreateViewModel @Inject constructor(
             name = "Shopping",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
-            amount = UiText.DynamicString("$ 0.00"),
+            amount = Amount(0.0, "$ 0.00"),
             amountTextColor = R.color.green_500
         )
     }

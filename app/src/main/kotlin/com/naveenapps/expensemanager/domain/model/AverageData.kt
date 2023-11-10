@@ -1,14 +1,12 @@
 package com.naveenapps.expensemanager.domain.model
 
-import com.naveenapps.expensemanager.ui.utils.UiText
-
 data class WholeAverageData(
     val expenseAverageData: AverageData,
     val incomeAverageData: AverageData,
 )
 
 data class AverageData(
-    val perDay: UiText,
-    val perWeek: UiText,
-    val perMonth: UiText,
+    val perDay: String,
+    val perWeek: String,
+    val perMonth: String,
 )

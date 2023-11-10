@@ -54,6 +54,7 @@ import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.model.AccountType
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
@@ -452,7 +453,7 @@ private fun TransactionCreateScreen(
             icon = selectedFromAccount.icon,
             iconBackgroundColor = selectedFromAccount.iconBackgroundColor,
             endIcon = R.drawable.ic_arrow_right,
-            amount = selectedFromAccount.amount.asString(context),
+            amount = selectedFromAccount.amount.amountString,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
@@ -478,7 +479,7 @@ private fun TransactionCreateScreen(
                 icon = selectedToAccount.icon,
                 iconBackgroundColor = selectedToAccount.iconBackgroundColor,
                 endIcon = R.drawable.ic_arrow_right,
-                amount = selectedToAccount.amount.asString(context),
+                amount = selectedToAccount.amount.amountString,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
@@ -568,7 +569,7 @@ private fun TransactionCreateStatePreview() {
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
                 amountTextColor = R.color.red_500,
-                amount = UiText.DynamicString("$ 0.00"),
+                amount = Amount(0.0, "$ 0.00"),
             ),
             selectedToAccount = AccountUiModel(
                 id = "1",
@@ -577,7 +578,7 @@ private fun TransactionCreateStatePreview() {
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
                 amountTextColor = R.color.green_500,
-                amount = UiText.DynamicString("$ 0.00"),
+                amount = Amount(0.0, "$ 0.00"),
             )
         )
     }

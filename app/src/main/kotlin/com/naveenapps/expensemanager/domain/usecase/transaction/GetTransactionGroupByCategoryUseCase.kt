@@ -3,11 +3,11 @@ package com.naveenapps.expensemanager.domain.usecase.transaction
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransaction
 import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.presentation.category.transaction.getDummyPieChartData
 import com.naveenapps.expensemanager.presentation.category.transaction.toChartModel
-import com.naveenapps.expensemanager.ui.utils.getCurrency
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
@@ -16,6 +16,7 @@ import javax.inject.Inject
 class GetTransactionGroupByCategoryUseCase @Inject constructor(
     private val getAllCategoryUseCase: GetAllCategoryUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
 ) {
     fun invoke(categoryType: CategoryType): Flow<CategoryTransactionUiModel> {
@@ -34,21 +35,21 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
             val filteredTransaction = maps.filter { it.key.type == categoryType }
 
             val totalAmount =
-                filteredTransaction.map { it.value.sumOf { transactions -> transactions.amount } }
+                filteredTransaction.map { it.value.sumOf { transactions -> transactions.amount.amount } }
                     .sumOf { it }
 
             val categoryTransactions = buildList {
                 filteredTransaction.map {
                     val totalSpentAmount = it.value.sumOf {
-                        it.amount
+                        it.amount.amount
                     }
                     add(
                         CategoryTransaction(
                             it.key,
                             percent = (totalSpentAmount / totalAmount).toFloat() * 100,
-                            getCurrency(
-                                currency = currency,
-                                amount = totalSpentAmount
+                            getFormattedAmountUseCase.invoke(
+                                amount = totalSpentAmount,
+                                currency = currency
                             ),
                             it.value
                         )
@@ -70,9 +71,9 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                                 CategoryTransaction(
                                     categories[it],
                                     percent = 0.0f,
-                                    getCurrency(
-                                        currency = currency,
-                                        amount = 0.0
+                                    getFormattedAmountUseCase.invoke(
+                                        amount = 0.0,
+                                        currency = currency
                                     ),
                                     emptyList()
                                 )
@@ -95,9 +96,9 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
 
             CategoryTransactionUiModel(
                 pieChartData = pieChartData,
-                totalAmount = getCurrency(
-                    currency = currency,
-                    amount = totalAmount
+                totalAmount = getFormattedAmountUseCase.invoke(
+                    amount = totalAmount,
+                    currency = currency
                 ),
                 categoryTransactions = newCategoryTransaction,
                 hideValues = categoryTransactions.isEmpty()

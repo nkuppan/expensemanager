@@ -36,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,12 +48,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.ui.utils.UiText
 
 
 @Composable
@@ -115,7 +114,6 @@ private fun BudgetListScreenContent(
 ) {
 
     val scrollState = rememberLazyListState()
-    val context = LocalContext.current
 
     Box(modifier = modifier) {
 
@@ -147,8 +145,8 @@ private fun BudgetListScreenContent(
                             icon = budget.icon,
                             iconBackgroundColor = budget.iconBackgroundColor,
                             progressBarColor = budget.progressBarColor,
-                            amount = budget.amount.asString(context),
-                            transactionAmount = budget.transactionAmount.asString(context),
+                            amount = budget.amount,
+                            transactionAmount = budget.transactionAmount,
                             percentage = budget.percent,
                             modifier = Modifier
                                 .clickable {
@@ -177,8 +175,8 @@ fun BudgetItem(
     icon: String,
     iconBackgroundColor: String,
     @ColorRes progressBarColor: Int,
-    amount: String?,
-    transactionAmount: String?,
+    amount: Amount?,
+    transactionAmount: Amount?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f
 ) {
@@ -210,7 +208,7 @@ fun BudgetItem(
                         modifier = Modifier
                             .padding(start = 8.dp)
                             .align(Alignment.CenterVertically),
-                        text = amount,
+                        text = amount.amountString ?: "",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -320,8 +318,8 @@ val DUMMY_DATA = listOf(
         name = "Cash",
         icon = "ic_budget",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$100.00"),
-        transactionAmount = UiText.DynamicString("$100.00"),
+        amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+        transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         progressBarColor = R.color.orange_500,
         percent = 0.9f
     ),
@@ -330,8 +328,8 @@ val DUMMY_DATA = listOf(
         name = "Bank Budget - xxxx",
         icon = "ic_budget_balance",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$100.00"),
-        transactionAmount = UiText.DynamicString("$100.00"),
+        amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+        transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         progressBarColor = R.color.orange_500,
         percent = 0.9f
     ),
@@ -340,8 +338,8 @@ val DUMMY_DATA = listOf(
         name = "Credit Card - xxxx",
         icon = "credit_card",
         iconBackgroundColor = "#000000",
-        amount = UiText.DynamicString("$100.00"),
-        transactionAmount = UiText.DynamicString("$100.00"),
+        amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+        transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         progressBarColor = R.color.orange_500,
         percent = 0.9f
     ),
@@ -355,8 +353,8 @@ private fun BudgetItemPreview() {
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
-            amount = "$100.00",
-            transactionAmount = "$78.00",
+            amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+            transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             modifier = ItemSpecModifier,
             progressBarColor = R.color.orange_500,
             percentage = 78.8f

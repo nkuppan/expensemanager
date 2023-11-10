@@ -48,12 +48,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.presentation.dashboard.AMOUNT_VALUE
 import com.naveenapps.expensemanager.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.ui.utils.UiText
 
 
 @Composable
@@ -114,7 +115,6 @@ private fun AccountListScreenContent(
 ) {
 
     val scrollState = rememberLazyListState()
-    val context = LocalContext.current
 
     Box(modifier = modifier) {
 
@@ -150,7 +150,7 @@ private fun AccountListScreenContent(
                             name = account.name,
                             icon = account.icon,
                             iconBackgroundColor = account.iconBackgroundColor,
-                            amount = account.amount.asString(context)
+                            amount = account.amount.amountString
                         )
                     }
                     item {
@@ -255,7 +255,7 @@ fun DashBoardAccountItem(
     name: String,
     icon: String,
     modifier: Modifier = Modifier,
-    amount: UiText,
+    amount: String,
     amountTextColor: Color,
     backgroundColor: Color,
 ) {
@@ -291,7 +291,7 @@ fun DashBoardAccountItem(
                     .wrapContentSize()
                     .padding(top = 16.dp),
                 color = amountTextColor,
-                text = amount.asString(context),
+                text = amount,
                 style = MaterialTheme.typography.headlineSmall,
             )
         }
@@ -305,7 +305,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         icon = "account_balance_wallet",
         iconBackgroundColor = "#000000",
         amountTextColor = R.color.green_500,
-        amount = UiText.DynamicString("$100.00")
+        amount = Amount(100.0, "$100.00")
     ),
     AccountUiModel(
         id = "2",
@@ -313,7 +313,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         icon = "account_balance",
         iconBackgroundColor = "#000000",
         amountTextColor = R.color.green_500,
-        amount = UiText.DynamicString("$100.00")
+        amount = Amount(100.0, "$100.00")
     ),
     AccountUiModel(
         id = "3",
@@ -321,7 +321,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         icon = "credit_card",
         iconBackgroundColor = "#000000",
         amountTextColor = R.color.green_500,
-        amount = UiText.DynamicString("$100.00")
+        amount = Amount(100.0, "$100.00")
     ),
 )
 
@@ -335,7 +335,7 @@ private fun DashBoardAccountItemPreview() {
                 .padding(16.dp),
             name = "Utilities is having a lengthy one",
             icon = "ic_calendar",
-            amount = UiText.DynamicString("0.0$"),
+            amount = AMOUNT_VALUE,
             amountTextColor = colorResource(id = R.color.green_500),
             backgroundColor = colorResource(id = R.color.black_100),
         )

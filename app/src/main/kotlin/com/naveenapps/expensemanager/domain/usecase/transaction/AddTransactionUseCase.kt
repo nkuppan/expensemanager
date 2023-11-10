@@ -18,7 +18,7 @@ class AddTransactionUseCase @Inject constructor(
             return Resource.Error(Exception("Category type color shouldn't be blank"))
         }
 
-        if (transaction.amount < 0.0) {
+        if (transaction.amount.amount < 0.0) {
             return Resource.Error(Exception("Amount should be greater than 0"))
         }
 

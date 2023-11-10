@@ -1,27 +1,29 @@
-package com.naveenapps.expensemanager.ui.utils
+package com.naveenapps.expensemanager.core.data.utils
 
-import com.naveenapps.expensemanager.R
+import android.content.Context
+import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
 
 fun getCurrency(
+    context: Context,
     currency: Currency,
     amount: Double
-): UiText {
+): String {
     return when (currency.position) {
         CurrencySymbolPosition.PREFIX -> {
-            UiText.StringResource(
+            context.getString(
                 R.string.prefix_amount_string,
-                UiText.StringResource(currency.type),
+                context.getString(currency.type),
                 amount
             )
         }
 
         CurrencySymbolPosition.SUFFIX -> {
-            UiText.StringResource(
+            context.getString(
                 R.string.suffix_amount_string,
                 amount,
-                UiText.StringResource(currency.type)
+                context.getString(currency.type)
             )
         }
     }

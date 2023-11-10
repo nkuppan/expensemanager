@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,9 +28,6 @@ fun AccountSelectionScreen(
     selectedAccount: AccountUiModel? = null,
     onItemSelection: ((AccountUiModel) -> Unit)? = null
 ) {
-
-    val context = LocalContext.current
-
     LazyColumn(modifier = modifier) {
         item {
             SelectionTitle(stringResource(id = R.string.select_account))
@@ -66,7 +62,7 @@ fun AccountSelectionScreen(
                     name = account.name,
                     icon = account.icon,
                     iconBackgroundColor = account.iconBackgroundColor,
-                    amount = account.amount.asString(context),
+                    amount = account.amount.amountString,
                     endIcon = if (isSelected) {
                         R.drawable.ic_done
                     } else {

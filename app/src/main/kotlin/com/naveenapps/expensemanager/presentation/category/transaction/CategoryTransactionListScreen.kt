@@ -37,7 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -48,6 +47,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.presentation.budget.list.toPercentString
 import com.naveenapps.expensemanager.presentation.category.list.getCategoryData
@@ -58,7 +58,6 @@ import com.naveenapps.expensemanager.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.ui.extensions.toColor
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.ui.utils.UiText
 import kotlin.random.Random
 
 @SuppressLint("ComposableDestinationInComposeScope")
@@ -182,7 +181,6 @@ private fun CategoryTransactionListScreenContent(
 ) {
 
     val scrollState = rememberLazyListState()
-    val context = LocalContext.current
 
     Box(modifier = modifier) {
 
@@ -210,7 +208,7 @@ private fun CategoryTransactionListScreenContent(
                 LazyColumn(state = scrollState) {
                     item {
                         PieChartView(
-                            uiState.data.totalAmount.asString(context),
+                            uiState.data.totalAmount.amountString ?: "",
                             uiState.data.pieChartData,
                             chartHeight = 600,
                             hideValues = uiState.data.hideValues,
@@ -227,7 +225,7 @@ private fun CategoryTransactionListScreenContent(
                             name = categoryTransaction.category.name,
                             icon = categoryTransaction.category.iconName,
                             iconBackgroundColor = categoryTransaction.category.iconBackgroundColor,
-                            amount = categoryTransaction.amount.asString(context),
+                            amount = categoryTransaction.amount.amountString ?: "",
                             percentage = categoryTransaction.percent
                         )
                     }
@@ -324,13 +322,13 @@ val getPieChartData = listOf(
 fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
     return CategoryTransactionUiModel(
         pieChartData = getPieChartData,
-        totalAmount = UiText.DynamicString("Total \n 100.00$"),
+        totalAmount = Amount(300.0, "300.00$"),
         categoryTransactions = buildList {
             repeat(15) {
                 add(
                     CategoryTransaction(
                         category = getCategoryData(it),
-                        amount = UiText.DynamicString("100$"),
+                        amount = Amount(300.0, "300.00$"),
                         percent = Random(100).nextFloat(),
                         transaction = emptyList()
                     )

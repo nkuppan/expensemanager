@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +32,6 @@ import com.naveenapps.expensemanager.presentation.dashboard.DashboardWidgetTitle
 import com.naveenapps.expensemanager.presentation.dashboard.FilterView
 import com.naveenapps.expensemanager.presentation.dashboard.IncomeExpenseBalanceView
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.UiText
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
@@ -151,28 +149,27 @@ private fun AverageAmountItems(
     averageData: AverageData,
     textColor: Color = colorResource(id = R.color.green_500)
 ) {
-    val context = LocalContext.current
     Column(
         modifier = Modifier.wrapContentSize(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
             modifier = Modifier.align(Alignment.End),
-            text = averageData.perDay.asString(context),
+            text = averageData.perDay,
             color = textColor,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.End
         )
         Text(
             modifier = Modifier.align(Alignment.End),
-            text = averageData.perWeek.asString(context),
+            text = averageData.perWeek,
             color = textColor,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.End
         )
         Text(
             modifier = Modifier.align(Alignment.End),
-            text = averageData.perMonth.asString(context),
+            text = averageData.perMonth,
             color = textColor,
             style = MaterialTheme.typography.titleMedium,
             textAlign = TextAlign.End
@@ -298,14 +295,14 @@ fun TransactionAverageItemPreview() {
         TransactionAverageItem(
             WholeAverageData(
                 AverageData(
-                    UiText.DynamicString("10.0$"),
-                    UiText.DynamicString("0.0$"),
-                    UiText.DynamicString("100.0$"),
+                    "10.0$",
+                    "10.0$",
+                    "10.0$",
                 ),
                 AverageData(
-                    UiText.DynamicString("10.0$"),
-                    UiText.DynamicString("0.0$"),
-                    UiText.DynamicString("100.0$"),
+                    "10.0$",
+                    "10.0$",
+                    "10.0$",
                 )
             ),
         )

@@ -10,7 +10,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
@@ -26,9 +25,6 @@ fun CategoryAmountView(
     modifier: Modifier = Modifier,
     categoryTransactionUiModel: CategoryTransactionUiModel
 ) {
-
-    val context = LocalContext.current
-
     Column(modifier = modifier) {
         DashboardWidgetTitle(
             modifier = Modifier.fillMaxWidth(),
@@ -36,7 +32,7 @@ fun CategoryAmountView(
         )
         Row(modifier = Modifier.padding(top = 16.dp)) {
             PieChartView(
-                totalAmountText = categoryTransactionUiModel.totalAmount.asString(context),
+                totalAmountText = categoryTransactionUiModel.totalAmount.amountString ?: "",
                 chartData = categoryTransactionUiModel.pieChartData,
                 hideValues = true,
                 chartHeight = 300,
@@ -56,7 +52,7 @@ fun CategoryAmountView(
                             name = item.category.name,
                             icon = item.category.iconName,
                             iconBackgroundColor = item.category.iconBackgroundColor,
-                            amount = item.amount.asString(context)
+                            amount = item.amount.amountString ?: ""
                         )
                     }
                 }

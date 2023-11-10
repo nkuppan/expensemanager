@@ -8,7 +8,7 @@ data class Transaction(
     val categoryId: String,
     val fromAccountId: String,
     val toAccountId: String?,
-    val amount: Double,
+    val amount: Amount,
     val imagePath: String,
     val type: TransactionType,
     val createdOn: Date,

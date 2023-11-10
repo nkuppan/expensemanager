@@ -6,11 +6,11 @@ import androidx.core.graphics.toColorInt
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
-import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -77,12 +77,12 @@ data class PieChartData(
 data class CategoryTransaction(
     val category: Category,
     val percent: Float,
-    val amount: UiText,
+    val amount: Amount,
     val transaction: List<Transaction> = emptyList()
 )
 
 data class CategoryTransactionUiModel(
-    val totalAmount: UiText,
+    val totalAmount: Amount,
     val pieChartData: List<PieChartData>,
     val categoryTransactions: List<CategoryTransaction>,
     val hideValues: Boolean = false

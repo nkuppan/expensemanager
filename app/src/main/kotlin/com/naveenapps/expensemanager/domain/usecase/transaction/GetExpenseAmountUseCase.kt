@@ -12,7 +12,7 @@ class GetExpenseAmountUseCase @Inject constructor(
     operator fun invoke(): Flow<Double?> {
         return getTransactionWithFilterUseCase.invoke().map { transactions ->
             return@map transactions?.filter { it.type == TransactionType.EXPENSE }?.sumOf {
-                it.amount
+                it.amount.amount
             } ?: 0.0
         }
     }

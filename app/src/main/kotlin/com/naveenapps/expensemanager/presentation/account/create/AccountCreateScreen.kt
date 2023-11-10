@@ -40,6 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.model.AccountType
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.presentation.selection.ColorSelectionScreen
 import com.naveenapps.expensemanager.presentation.selection.IconAndColorComponent
 import com.naveenapps.expensemanager.presentation.selection.IconSelectionScreen
@@ -234,12 +235,9 @@ private fun AccountCreateScreen(
     creditLimit: String = "",
     creditLimitErrorMessage: UiText? = null,
     onCreditLimitChange: ((String) -> Unit)? = null,
-    availableCreditLimit: UiText? = null,
+    availableCreditLimit: Amount? = null,
     @ColorRes availableCreditLimitColor: Int = R.color.green_500,
 ) {
-
-    val context = LocalContext.current
-
     Column(modifier = modifier) {
 
         AccountTypeSelectionView(
@@ -309,7 +307,7 @@ private fun AccountCreateScreen(
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = availableCreditLimit.asString(context),
+                    text = availableCreditLimit.amountString ?: "",
                     style = MaterialTheme.typography.titleMedium,
                 )
             }

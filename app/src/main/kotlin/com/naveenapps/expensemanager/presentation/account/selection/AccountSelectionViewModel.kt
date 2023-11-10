@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.ui.utils.UiText
@@ -14,14 +15,14 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountSelectionViewModel @Inject constructor(
-    getAccountsUseCase: GetAccountsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
+    getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    getAccountsUseCase: GetAccountsUseCase,
 ) : ViewModel() {
 
     private val _errorMessage = MutableSharedFlow<UiText>()
@@ -35,14 +36,27 @@ class AccountSelectionViewModel @Inject constructor(
 
     init {
 
-        getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
-            currency to accounts
-        }.map { currencyAndAccountPair ->
+        combine(
+            getCurrencyUseCase.invoke(),
+            getAccountsUseCase.invoke()
+        ) { currency, accounts ->
 
-            val (currency, accounts) = currencyAndAccountPair
-
-            _accounts.value = accounts.map { it.toAccountUiModel(currency) }
-            _selectedAccounts.value = accounts.map { it.toAccountUiModel(currency) }
+            _accounts.value = accounts.map {
+                it.toAccountUiModel(
+                    getFormattedAmountUseCase.invoke(
+                        it.amount,
+                        currency
+                    )
+                )
+            }
+            _selectedAccounts.value = accounts.map {
+                it.toAccountUiModel(
+                    getFormattedAmountUseCase.invoke(
+                        it.amount,
+                        currency
+                    )
+                )
+            }
         }.launchIn(viewModelScope)
     }
 

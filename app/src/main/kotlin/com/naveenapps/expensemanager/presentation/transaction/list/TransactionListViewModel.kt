@@ -8,9 +8,9 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.domain.model.TransactionUiState
 import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.presentation.budget.list.toTransactionSum
-import com.naveenapps.expensemanager.ui.utils.getCurrency
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TransactionListViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
+    getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase
 ) : ViewModel() {
 
@@ -31,7 +32,8 @@ class TransactionListViewModel @Inject constructor(
 
     init {
 
-        getCurrencyUseCase.invoke().combine(
+        combine(
+            getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke()
         ) { currency, transactions ->
             _transactions.value = if (transactions.isNullOrEmpty()) {
@@ -45,8 +47,15 @@ class TransactionListViewModel @Inject constructor(
                         TransactionUiState(
                             date = it.key,
                             amountTextColor = totalAmount.getAmountTextColor(),
-                            totalAmount = getCurrency(currency, totalAmount),
-                            transactions = it.value.map { it.toTransactionUIModel(currency) },
+                            totalAmount = getFormattedAmountUseCase.invoke(totalAmount, currency),
+                            transactions = it.value.map { transaction ->
+                                transaction.toTransactionUIModel(
+                                    getFormattedAmountUseCase.invoke(
+                                        transaction.amount.amount,
+                                        currency
+                                    )
+                                )
+                            },
                         )
                     }
                 )

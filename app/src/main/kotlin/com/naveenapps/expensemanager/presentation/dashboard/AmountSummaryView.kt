@@ -192,9 +192,9 @@ fun WidgetHeader(
 @Composable
 fun NewAmountInfoWidget(
     modifier: Modifier,
-    expenseAmount: UiText,
-    incomeAmount: UiText,
-    balanceAmount: UiText,
+    expenseAmount: String,
+    incomeAmount: String,
+    balanceAmount: String,
     showBalance: Boolean = false
 ) {
     Row(
@@ -232,14 +232,11 @@ fun NewAmountInfoWidget(
 
 @Composable
 fun NewColorIconAmountView(
-    amount: UiText,
+    amount: String,
     title: String,
     @ColorRes colorResource: Int,
     modifier: Modifier = Modifier
 ) {
-
-    val context = LocalContext.current
-
     Surface(
         modifier = modifier,
         color = colorResource(id = colorResource).copy(alpha = .1f),
@@ -256,14 +253,14 @@ fun NewColorIconAmountView(
                 modifier = Modifier
                     .wrapContentSize()
                     .padding(top = 4.dp),
-                text = amount.asString(context),
+                text = amount,
                 style = MaterialTheme.typography.headlineSmall,
             )
         }
     }
 }
 
-private const val AMOUNT_VALUE = "100000.0$"
+const val AMOUNT_VALUE = "100000.0$"
 
 @com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
@@ -289,9 +286,9 @@ private fun NewAmountViewPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            expenseAmount = UiText.DynamicString(AMOUNT_VALUE),
-            incomeAmount = UiText.DynamicString(AMOUNT_VALUE),
-            balanceAmount = UiText.DynamicString("0.00 $"),
+            expenseAmount = AMOUNT_VALUE,
+            incomeAmount = AMOUNT_VALUE,
+            balanceAmount = "0.00 $",
         )
     }
 }

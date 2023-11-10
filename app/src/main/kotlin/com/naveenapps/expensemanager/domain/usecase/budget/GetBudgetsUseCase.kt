@@ -1,20 +1,21 @@
 package com.naveenapps.expensemanager.domain.usecase.budget
 
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.data.repository.BudgetRepository
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
-import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.naveenapps.expensemanager.ui.utils.UiText
-import com.naveenapps.expensemanager.ui.utils.getCurrency
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class GetBudgetsUseCase @Inject constructor(
-    private val repository: com.naveenapps.expensemanager.core.data.repository.BudgetRepository,
+    private val repository: BudgetRepository,
     private val getCurrencyUseCase: GetCurrencyUseCase,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase,
 ) {
     operator fun invoke(): Flow<List<BudgetUiModel>> {
@@ -30,13 +31,13 @@ class GetBudgetsUseCase @Inject constructor(
                         }
 
                         is Resource.Success -> {
-                            response.data.filter { it.type.isExpense() }.sumOf { it.amount }
+                            response.data.filter { it.type.isExpense() }.sumOf { it.amount.amount }
                         }
                     }
                 val percent = (transactionAmount / it.amount).toFloat() * 100
                 it.toBudgetUiModel(
-                    currency,
-                    transactionAmount,
+                    budgetAmount = getFormattedAmountUseCase(it.amount, currency),
+                    transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
                     when {
                         percent < 0f -> R.color.green_500
                         percent in 0f..35f -> R.color.green_500
@@ -53,8 +54,8 @@ class GetBudgetsUseCase @Inject constructor(
 
 
 fun Budget.toBudgetUiModel(
-    currency: Currency,
-    transactionAmount: Double,
+    budgetAmount: Amount,
+    transactionAmount: Amount,
     progressBarColor: Int,
     percent: Float,
 ) = BudgetUiModel(
@@ -63,14 +64,8 @@ fun Budget.toBudgetUiModel(
     icon = this.iconName,
     iconBackgroundColor = this.iconBackgroundColor,
     progressBarColor = progressBarColor,
-    amount = getCurrency(
-        currency,
-        this.amount
-    ),
-    transactionAmount = getCurrency(
-        currency,
-        transactionAmount
-    ),
+    amount = budgetAmount,
+    transactionAmount = transactionAmount,
     percent = percent
 )
 
@@ -81,7 +76,7 @@ data class BudgetUiModel(
     val icon: String,
     val iconBackgroundColor: String,
     val progressBarColor: Int,
-    val amount: UiText,
-    val transactionAmount: UiText,
+    val amount: Amount,
+    val transactionAmount: Amount,
     val percent: Float,
 )

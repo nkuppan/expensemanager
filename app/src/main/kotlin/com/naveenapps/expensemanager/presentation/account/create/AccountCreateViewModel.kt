@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.domain.usecase.account.AddAccountUseCase
@@ -13,9 +14,9 @@ import com.naveenapps.expensemanager.domain.usecase.account.DeleteAccountUseCase
 import com.naveenapps.expensemanager.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.domain.usecase.account.UpdateAccountUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.getCurrencyIcon
 import com.naveenapps.expensemanager.ui.utils.UiText
-import com.naveenapps.expensemanager.ui.utils.getCurrency
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +33,7 @@ import javax.inject.Inject
 class AccountCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val findAccountByIdUseCase: FindAccountByIdUseCase,
     private val addAccountUseCase: AddAccountUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase,
@@ -74,7 +76,7 @@ class AccountCreateViewModel @Inject constructor(
     var icon = MutableStateFlow(DEFAULT_ICON)
         private set
 
-    var availableCreditLimit = MutableStateFlow<UiText?>(null)
+    var availableCreditLimit = MutableStateFlow<Amount?>(null)
         private set
 
     var availableCreditLimitColor = MutableStateFlow(R.color.green_500)
@@ -130,9 +132,9 @@ class AccountCreateViewModel @Inject constructor(
     ) {
         val totalAmount = creditLimit + amount
 
-        availableCreditLimit.value = getCurrency(
-            currency = currency,
-            amount = totalAmount
+        availableCreditLimit.value = getFormattedAmountUseCase.invoke(
+            amount = totalAmount,
+            currency = currency
         )
 
         availableCreditLimitColor.value = if (totalAmount < 0) {

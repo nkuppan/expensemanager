@@ -1,10 +1,14 @@
 package com.naveenapps.expensemanager.core.data.repository
 
+import android.content.Context
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.R
+import com.naveenapps.expensemanager.core.data.utils.getCurrency
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
@@ -70,6 +74,7 @@ val availableCurrencies = listOf(
 
 
 class CurrencyRepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val dataStore: CurrencyDataStore,
     private val dispatchers: AppCoroutineDispatchers
 ) : CurrencyRepository {
@@ -106,5 +111,15 @@ class CurrencyRepositoryImpl @Inject constructor(
 
     override fun getAllCurrency(): List<Currency> {
         return availableCurrencies
+    }
+
+    override fun getFormattedCurrency(amount: Amount): Amount {
+        return amount.copy(
+            amountString = getCurrency(
+                context = context,
+                currency = amount.currency ?: dollar,
+                amount = amount.amount
+            )
+        )
     }
 }

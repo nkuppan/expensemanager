@@ -37,11 +37,11 @@ fun List<Transaction>.toTransactionSum() =
     this.sumOf {
         when (it.type) {
             TransactionType.INCOME -> {
-                it.amount
+                it.amount.amount
             }
 
             TransactionType.EXPENSE -> {
-                it.amount * -1
+                it.amount.amount * -1
             }
 
             TransactionType.TRANSFER -> {

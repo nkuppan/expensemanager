@@ -3,10 +3,6 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
-    <string name="prefix_amount_string">%s%.1f</string>
-    <string name="suffix_amount_string">%.1f%s</string>
-    <string name="balance_amount_string">%s</string>
-
     <string name="app_name">Expense Manager</string>
 
 

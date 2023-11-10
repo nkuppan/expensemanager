@@ -34,7 +34,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
@@ -58,7 +58,6 @@ import com.naveenapps.expensemanager.presentation.transaction.list.TransactionIt
 import com.naveenapps.expensemanager.ui.extensions.toColor
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.ui.utils.UiText
 import kotlin.random.Random
 
 
@@ -162,9 +161,6 @@ private fun DashboardScreenContent(
     budgets: List<BudgetUiModel> = emptyList(),
     categoryTransaction: CategoryTransactionUiModel,
 ) {
-
-    val context = LocalContext.current
-
     LazyColumn(
         modifier = modifier
     ) {
@@ -208,7 +204,7 @@ private fun DashboardScreenContent(
                             modifier = Modifier.wrapContentWidth(),
                             name = it.name,
                             icon = it.icon,
-                            amount = it.amount,
+                            amount = it.amount.amountString ?: "",
                             amountTextColor = colorResource(id = it.amountTextColor),
                             backgroundColor = it.iconBackgroundColor.toColor().copy(alpha = .1f),
                         )
@@ -256,8 +252,8 @@ private fun DashboardScreenContent(
                             backgroundColor = budget.iconBackgroundColor.toColor()
                                 .copy(alpha = .1f),
                             progressBarColor = budget.progressBarColor,
-                            amount = budget.amount.asString(context),
-                            transactionAmount = budget.transactionAmount.asString(context),
+                            amount = budget.amount.amountString,
+                            transactionAmount = budget.transactionAmount.amountString,
                             percentage = budget.percent,
                         )
                     }
@@ -293,7 +289,7 @@ private fun DashboardScreenContent(
                     categoryName = transaction.categoryName,
                     categoryColor = transaction.categoryBackgroundColor,
                     categoryIcon = transaction.categoryIcon,
-                    amount = transaction.amount.asString(context),
+                    amount = transaction.amount,
                     date = transaction.date,
                     notes = transaction.notes,
                     transactionType = transaction.transactionType,
@@ -370,13 +366,13 @@ fun IncomeExpenseBalanceViewPreview() {
                     getDummyPieChartData("", 25.0f),
                     getDummyPieChartData("", 25.0f)
                 ),
-                totalAmount = UiText.DynamicString("Expenses"),
+                totalAmount = Amount(0.0, "Expenses"),
                 categoryTransactions = buildList {
                     repeat(15) {
                         add(
                             CategoryTransaction(
                                 category = getCategoryData(it),
-                                amount = UiText.DynamicString("100$"),
+                                amount = Amount(0.0, "100.00$"),
                                 percent = Random(100).nextFloat(),
                                 transaction = emptyList()
                             )

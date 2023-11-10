@@ -58,7 +58,7 @@ class ExportRepositoryImpl @Inject constructor(
                                     transaction.fromAccount.name,
                                     transaction.toAccount?.name ?: "",
                                     transaction.notes,
-                                    transaction.amount.toTrimAmount(),
+                                    transaction.amount.amount.toTrimAmount(),
                                 )
                             )
                         }

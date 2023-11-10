@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
-import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.presentation.transaction.list.getAmountTextColor
 import com.naveenapps.expensemanager.ui.utils.UiText
-import com.naveenapps.expensemanager.ui.utils.getCurrency
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +25,7 @@ import javax.inject.Inject
 class AccountListViewModel @Inject constructor(
     getAccountsUseCase: GetAccountsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
 ) : ViewModel() {
 
     private val _errorMessage = MutableSharedFlow<UiText>()
@@ -46,7 +47,12 @@ class AccountListViewModel @Inject constructor(
             } else {
                 UiState.Success(
                     accounts.map {
-                        it.toAccountUiModel(currency)
+                        it.toAccountUiModel(
+                            getFormattedAmountUseCase.invoke(
+                                it.amount,
+                                currency
+                            )
+                        )
                     }
                 )
             }
@@ -54,15 +60,12 @@ class AccountListViewModel @Inject constructor(
     }
 }
 
-fun Account.toAccountUiModel(currency: Currency) = AccountUiModel(
+fun Account.toAccountUiModel(amount: Amount) = AccountUiModel(
     id = this.id,
     name = this.name,
     icon = this.iconName,
     iconBackgroundColor = this.iconBackgroundColor,
-    amount = getCurrency(
-        currency,
-        this.amount
-    ),
+    amount = amount,
     type = this.type,
     amountTextColor = this.amount.getAmountTextColor()
 )
@@ -73,7 +76,7 @@ data class AccountUiModel(
     val name: String,
     val icon: String,
     val iconBackgroundColor: String,
-    val amount: UiText,
+    val amount: Amount,
     val amountTextColor: Int,
     val type: AccountType = AccountType.REGULAR
 )

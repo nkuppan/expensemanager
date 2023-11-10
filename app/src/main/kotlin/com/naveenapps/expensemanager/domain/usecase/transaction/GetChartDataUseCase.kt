@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetTransactionGroupTypeUseCase
 import com.naveenapps.expensemanager.ui.utils.UiText
@@ -26,6 +27,7 @@ import javax.inject.Inject
 
 class GetChartDataUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getDateRangeUseCase: GetDateRangeUseCase,
     private val getTransactionGroupTypeUseCase: GetTransactionGroupTypeUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
@@ -61,14 +63,23 @@ class GetChartDataUseCase @Inject constructor(
                 dates.add(key)
 
                 if (values != null) {
-                    transaction.addAll(values.map { it.toTransactionUIModel(currency) })
+                    transaction.addAll(
+                        values.map {
+                            it.toTransactionUIModel(
+                                getFormattedAmountUseCase.invoke(
+                                    it.amount.amount,
+                                    currency
+                                )
+                            )
+                        }
+                    )
                 }
 
                 expenses.add(
                     entryOf(
                         index,
                         values?.sumOf {
-                            if (it.category.type.isExpense()) it.amount else 0.0
+                            if (it.category.type.isExpense()) it.amount.amount else 0.0
                         } ?: 0.0
                     )
                 )
@@ -76,7 +87,7 @@ class GetChartDataUseCase @Inject constructor(
                     entryOf(
                         index,
                         values?.sumOf {
-                            if (it.category.type.isIncome()) it.amount else 0.0
+                            if (it.category.type.isIncome()) it.amount.amount else 0.0
                         } ?: 0.0
                     )
                 )

@@ -1,25 +1,23 @@
 package com.naveenapps.expensemanager.domain.model
 
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
-import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.ui.utils.UiText
-import com.naveenapps.expensemanager.ui.utils.getCurrency
 
 
 data class TransactionUiState(
     val date: String,
     val amountTextColor: Int,
-    val totalAmount: UiText,
+    val totalAmount: Amount,
     val transactions: List<TransactionUiItem>,
     val isLastItem: Boolean = false
 )
 
 data class TransactionUiItem(
     val id: String,
-    val amount: UiText = UiText.DynamicString(""),
-    val notes: UiText?,
+    val amount: Amount = Amount(0.0),
+    val notes: String?,
     val categoryName: String,
     val transactionType: TransactionType,
     val categoryBackgroundColor: String,
@@ -33,15 +31,11 @@ data class TransactionUiItem(
     val toAccountColor: String? = null,
 )
 
-fun Transaction.toTransactionUIModel(currency: Currency): TransactionUiItem {
+fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
     return TransactionUiItem(
         this.id,
-        getCurrency(currency, this.amount),
-        if (this.notes.isBlank()) {
-            null
-        } else {
-            UiText.DynamicString(this.notes)
-        },
+        amount,
+        this.notes,
         this.category.name,
         this.type,
         this.category.iconBackgroundColor,

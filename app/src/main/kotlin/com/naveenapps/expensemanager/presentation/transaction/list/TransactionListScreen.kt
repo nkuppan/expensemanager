@@ -43,6 +43,7 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.model.TransactionUiState
@@ -52,7 +53,6 @@ import com.naveenapps.expensemanager.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.ui.utils.UiText
 import com.naveenapps.expensemanager.ui.utils.getColorValue
 import java.util.Date
 
@@ -145,9 +145,6 @@ fun TransactionGroupItem(
     onItemClick: ((TransactionUiItem) -> Unit)?,
     isLastItem: Boolean = false
 ) {
-
-    val context = LocalContext.current
-
     Column {
         TransactionHeaderItem(
             transactionUiState.date,
@@ -165,7 +162,7 @@ fun TransactionGroupItem(
                 categoryName = it.categoryName,
                 categoryColor = it.categoryBackgroundColor,
                 categoryIcon = it.categoryIcon,
-                amount = it.amount.asString(context),
+                amount = it.amount,
                 date = it.date,
                 notes = it.notes,
                 transactionType = it.transactionType,
@@ -187,9 +184,8 @@ fun TransactionGroupItem(
 fun TransactionHeaderItem(
     date: String,
     textColor: Int,
-    totalAmount: UiText
+    totalAmount: Amount
 ) {
-    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -220,7 +216,7 @@ fun TransactionHeaderItem(
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.CenterVertically),
-            text = totalAmount.asString(context),
+            text = totalAmount.amountString ?: "",
             color = colorResource(id = textColor),
             style = MaterialTheme.typography.titleMedium,
         )
@@ -233,9 +229,9 @@ fun TransactionItem(
     fromAccountName: String,
     fromAccountIcon: String,
     fromAccountColor: String,
-    amount: String,
+    amount: Amount,
     date: String,
-    notes: UiText?,
+    notes: String?,
     modifier: Modifier = Modifier,
     toAccountName: String? = null,
     toAccountIcon: String? = null,
@@ -244,8 +240,6 @@ fun TransactionItem(
     categoryIcon: String = "ic_calendar",
     transactionType: TransactionType = TransactionType.EXPENSE
 ) {
-
-    val context = LocalContext.current
     val isTransfer = toAccountName?.isNotBlank()
 
     Row(modifier = modifier) {
@@ -293,11 +287,11 @@ fun TransactionItem(
                     fromAccountColor,
                     fromAccountName
                 )
-                if (notes != null) {
+                if (notes?.isNotBlank() == true) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        text = notes.asString(context),
+                        text = notes,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = MaterialTheme.typography.labelMedium
@@ -313,7 +307,7 @@ fun TransactionItem(
         ) {
             Text(
                 modifier = Modifier.align(Alignment.End),
-                text = amount,
+                text = amount.amountString ?: "",
                 style = MaterialTheme.typography.titleMedium,
                 color = when (transactionType) {
                     TransactionType.EXPENSE -> colorResource(id = R.color.red_500)
@@ -369,9 +363,9 @@ fun TransactionUiStatePreview() {
             fromAccountName = "Card-xxx",
             fromAccountIcon = "account_balance",
             fromAccountColor = "#A65A56x",
-            amount = "300 ₹",
+            amount = Amount(amount = 300.0, amountString = "300 ₹"),
             date = "15/11/2019",
-            notes = UiText.DynamicString("Sample notes given as per transaction"),
+            notes = "Sample notes given as per transaction",
             modifier = Modifier
                 .fillMaxWidth()
                 .background(Color.White)
@@ -421,8 +415,8 @@ val DUMMY_DATA = listOf(
 
 private fun getTransactionItem() = TransactionUiItem(
     id = "1",
-    notes = UiText.DynamicString("Sample Description"),
-    amount = UiText.DynamicString("100.00$"),
+    notes = "Sample Description",
+    amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     categoryName = "Clothing",
     transactionType = TransactionType.EXPENSE,
     categoryBackgroundColor = "#000000",
@@ -436,7 +430,7 @@ private fun getTransactionItem() = TransactionUiItem(
 private fun getTransactionUiState() = TransactionUiState(
     date = "12/10/2023",
     amountTextColor = R.color.red_500,
-    totalAmount = UiText.DynamicString("100.00$"),
+    totalAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactions = buildList {
         repeat(3) {
             add(getTransactionItem())

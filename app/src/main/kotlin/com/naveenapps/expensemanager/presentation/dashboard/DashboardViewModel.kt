@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
@@ -12,6 +13,7 @@ import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -26,7 +28,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
@@ -36,6 +37,7 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
+    getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getAmountStateUseCase: GetAmountStateUseCase,
     getAccountsUseCase: GetAccountsUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
@@ -63,7 +65,7 @@ class DashboardViewModel @Inject constructor(
     private val _categoryTransaction = MutableStateFlow(
         CategoryTransactionUiModel(
             pieChartData = listOf(),
-            totalAmount = UiText.DynamicString("Expenses"),
+            totalAmount = Amount(0.0),
             categoryTransactions = emptyList()
         )
     )
@@ -76,7 +78,12 @@ class DashboardViewModel @Inject constructor(
         ) { currency, response ->
 
             _transactions.value = ((response?.map {
-                it.toTransactionUIModel(currency)
+                it.toTransactionUIModel(
+                    getFormattedAmountUseCase.invoke(
+                        it.amount.amount,
+                        currency
+                    )
+                )
             } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
 
         }.launchIn(viewModelScope)
@@ -85,14 +92,17 @@ class DashboardViewModel @Inject constructor(
             _amountUiState.value = it
         }.launchIn(viewModelScope)
 
-        getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
-            currency to accounts
-        }.map { currencyAndAccountPair ->
-
-            val (currency, accounts) = currencyAndAccountPair
-
+        combine(
+            getCurrencyUseCase.invoke(),
+            getAccountsUseCase.invoke()
+        ) { currency, accounts ->
             _accounts.value = accounts.map {
-                it.toAccountUiModel(currency)
+                it.toAccountUiModel(
+                    getFormattedAmountUseCase.invoke(
+                        it.amount,
+                        currency
+                    )
+                )
             }
         }.launchIn(viewModelScope)
 
@@ -118,7 +128,7 @@ class DashboardViewModel @Inject constructor(
 }
 
 data class AmountUiState(
-    val income: UiText = UiText.DynamicString("0.0$"),
-    val expense: UiText = UiText.DynamicString("0.0$"),
-    val balance: UiText = UiText.DynamicString("0.0$"),
+    val income: String = "",
+    val expense: String = "",
+    val balance: String = "",
 )

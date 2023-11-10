@@ -7,8 +7,8 @@ import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.domain.model.AverageData
 import com.naveenapps.expensemanager.domain.model.WholeAverageData
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
-import com.naveenapps.expensemanager.ui.utils.getCurrency
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -17,6 +17,7 @@ import javax.inject.Inject
 
 class GetAverageDataUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
+    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getDateRangeUseCase: GetDateRangeUseCase,
     private val dispatcher: AppCoroutineDispatchers,
@@ -28,9 +29,9 @@ class GetAverageDataUseCase @Inject constructor(
             getTransactionWithFilterUseCase.invoke(),
         ) { currency, dateRangeModel, transactions ->
             val incomeAmount =
-                transactions?.filter { it.type.isIncome() }?.sumOf { it.amount } ?: 0.0
+                transactions?.filter { it.type.isIncome() }?.sumOf { it.amount.amount } ?: 0.0
             val expenseAmount =
-                transactions?.filter { it.type.isExpense() }?.sumOf { it.amount } ?: 0.0
+                transactions?.filter { it.type.isExpense() }?.sumOf { it.amount.amount } ?: 0.0
 
             val ranges = dateRangeModel.dateRanges
 
@@ -41,13 +42,13 @@ class GetAverageDataUseCase @Inject constructor(
                 DateRangeType.TODAY,
                 DateRangeType.THIS_WEEK,
                 DateRangeType.THIS_MONTH -> {
-                    calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
+                    1 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
                 }
 
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
                 DateRangeType.THIS_YEAR -> {
-                    calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
+                    1 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
                 }
             }
 
@@ -55,13 +56,13 @@ class GetAverageDataUseCase @Inject constructor(
                 DateRangeType.TODAY,
                 DateRangeType.THIS_WEEK,
                 DateRangeType.THIS_MONTH -> {
-                    calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                    1 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
                 }
 
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
                 DateRangeType.THIS_YEAR -> {
-                    calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
+                    1 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
                 }
             }
 
@@ -69,26 +70,44 @@ class GetAverageDataUseCase @Inject constructor(
                 DateRangeType.TODAY,
                 DateRangeType.THIS_WEEK,
                 DateRangeType.THIS_MONTH -> {
-                    1
+                    1 / 1
                 }
 
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
                 DateRangeType.THIS_YEAR -> {
-                    calendar.getActualMaximum(Calendar.MONTH) + 1
+                    1 / calendar.getActualMaximum(Calendar.MONTH) + 1
                 }
             }
 
             WholeAverageData(
                 expenseAverageData = AverageData(
-                    perDay = getCurrency(currency, (expenseAmount / daysPerMonth)),
-                    perWeek = getCurrency(currency, (expenseAmount / weeksPerMonth)),
-                    perMonth = getCurrency(currency, (expenseAmount / monthsPerYear)),
+                    perDay = getFormattedAmountUseCase.invoke(
+                        (expenseAmount * daysPerMonth),
+                        currency
+                    ).amountString.orEmpty(),
+                    perWeek = getFormattedAmountUseCase.invoke(
+                        (expenseAmount * weeksPerMonth),
+                        currency
+                    ).amountString.orEmpty(),
+                    perMonth = getFormattedAmountUseCase.invoke(
+                        (expenseAmount * monthsPerYear),
+                        currency
+                    ).amountString.orEmpty(),
                 ),
                 incomeAverageData = AverageData(
-                    perDay = getCurrency(currency, (incomeAmount / daysPerMonth)),
-                    perWeek = getCurrency(currency, (incomeAmount / weeksPerMonth)),
-                    perMonth = getCurrency(currency, (incomeAmount / monthsPerYear)),
+                    perDay = getFormattedAmountUseCase.invoke(
+                        (incomeAmount * daysPerMonth),
+                        currency
+                    ).amountString.orEmpty(),
+                    perWeek = getFormattedAmountUseCase.invoke(
+                        (incomeAmount * weeksPerMonth),
+                        currency
+                    ).amountString.orEmpty(),
+                    perMonth = getFormattedAmountUseCase.invoke(
+                        (incomeAmount * monthsPerYear),
+                        currency
+                    ).amountString.orEmpty(),
                 )
             )
         }.flowOn(dispatcher.computation)
