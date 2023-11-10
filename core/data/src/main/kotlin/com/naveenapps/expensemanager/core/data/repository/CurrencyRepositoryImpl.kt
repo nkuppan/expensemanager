@@ -73,6 +73,8 @@ val availableCurrencies = listOf(
 )
 
 
+private const val MINUS_SYMBOL = "-"
+
 class CurrencyRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dataStore: CurrencyDataStore,
@@ -119,7 +121,13 @@ class CurrencyRepositoryImpl @Inject constructor(
                 context = context,
                 currency = amount.currency ?: dollar,
                 amount = amount.amount
-            )
+            ).let {
+                return@let if (it.contains(MINUS_SYMBOL)) {
+                    "${MINUS_SYMBOL}${it.replace(MINUS_SYMBOL, "")}"
+                } else {
+                    it
+                }
+            }
         )
     }
 }
