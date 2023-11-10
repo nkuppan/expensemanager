@@ -32,7 +32,6 @@ import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable
@@ -163,7 +162,7 @@ fun CurrencyDialogViewContent(
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 fun CurrencyDialogViewPreview() {
     ExpenseManagerTheme {

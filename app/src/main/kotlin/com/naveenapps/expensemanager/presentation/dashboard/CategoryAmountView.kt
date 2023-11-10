@@ -19,7 +19,6 @@ import com.naveenapps.expensemanager.presentation.category.transaction.CategoryT
 import com.naveenapps.expensemanager.presentation.category.transaction.getRandomCategoryTransactionData
 import com.naveenapps.expensemanager.ui.components.PieChartView
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable
@@ -66,7 +65,7 @@ fun CategoryAmountView(
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 fun CategoryAmountViewPreview() {
     ExpenseManagerTheme {

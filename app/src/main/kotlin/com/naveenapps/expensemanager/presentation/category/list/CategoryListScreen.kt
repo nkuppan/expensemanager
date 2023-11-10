@@ -39,13 +39,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
 import java.util.Date
 
@@ -241,7 +240,7 @@ fun getRandomCategoryData(): List<Category> {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryItemPreview() {
     ExpenseManagerTheme {

@@ -41,7 +41,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable
@@ -342,7 +341,7 @@ fun VerticalDivider(
     )
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenPreview() {
     ExpenseManagerTheme {
@@ -354,7 +353,7 @@ fun NumberPadScreenPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenDialogPreview() {
     ExpenseManagerTheme {

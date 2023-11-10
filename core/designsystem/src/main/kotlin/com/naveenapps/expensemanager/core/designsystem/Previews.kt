@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.utils
+package com.naveenapps.expensemanager.core.designsystem
 
 import android.content.res.Configuration
 import androidx.compose.ui.tooling.preview.Preview

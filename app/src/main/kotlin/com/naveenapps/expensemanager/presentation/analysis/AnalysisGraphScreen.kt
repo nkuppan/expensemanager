@@ -25,15 +25,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.domain.model.AverageData
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.domain.model.WholeAverageData
 import com.naveenapps.expensemanager.domain.usecase.transaction.AnalysisChartData
 import com.naveenapps.expensemanager.presentation.dashboard.DashboardWidgetTitle
 import com.naveenapps.expensemanager.presentation.dashboard.FilterView
 import com.naveenapps.expensemanager.presentation.dashboard.IncomeExpenseBalanceView
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.ui.utils.UiText
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
@@ -292,7 +291,7 @@ fun ChartScreenPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionAverageItemPreview() {
     ExpenseManagerTheme {

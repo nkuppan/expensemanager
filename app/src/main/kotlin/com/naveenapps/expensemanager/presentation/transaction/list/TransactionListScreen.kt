@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
@@ -45,13 +46,11 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.model.TransactionUiState
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.presentation.dashboard.FilterView
 import com.naveenapps.expensemanager.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.ui.utils.UiText
 import com.naveenapps.expensemanager.ui.utils.getColorValue
@@ -360,7 +359,7 @@ private fun AccountNameWithIcon(
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionUiStatePreview() {
     ExpenseManagerTheme {

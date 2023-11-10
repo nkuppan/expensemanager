@@ -3,9 +3,9 @@ package com.naveenapps.expensemanager.presentation.transaction.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.domain.model.TransactionUiState
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetTransactionWithFilterUseCase

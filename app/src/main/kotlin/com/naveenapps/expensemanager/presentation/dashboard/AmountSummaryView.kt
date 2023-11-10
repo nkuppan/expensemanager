@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.ui.components.AppCardView
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.ui.utils.UiText
 
 @Composable
@@ -266,7 +265,7 @@ fun NewColorIconAmountView(
 
 private const val AMOUNT_VALUE = "100000.0$"
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
     ExpenseManagerTheme {
@@ -282,7 +281,7 @@ private fun AmountViewPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 private fun NewAmountViewPreview() {
     ExpenseManagerTheme {

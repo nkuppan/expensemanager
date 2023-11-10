@@ -47,8 +47,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.presentation.budget.list.toPercentString
 import com.naveenapps.expensemanager.presentation.category.list.getCategoryData
 import com.naveenapps.expensemanager.ui.components.IconAndBackgroundView
@@ -57,7 +57,6 @@ import com.naveenapps.expensemanager.ui.components.SmallIconAndBackgroundView
 import com.naveenapps.expensemanager.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.ui.extensions.toColor
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.ui.utils.UiText
 import kotlin.random.Random
@@ -374,7 +373,7 @@ fun CategoryTransactionSmallItem(
 }
 
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionSmallItemPreview() {
     ExpenseManagerTheme {
@@ -430,7 +429,7 @@ private fun CategoryTransactionListItemEmptyStatePreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {
@@ -441,7 +440,7 @@ private fun CategoryTransactionListItemSuccessStatePreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionTabScreenPreview() {
     ExpenseManagerTheme {

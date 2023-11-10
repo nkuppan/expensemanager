@@ -2,10 +2,10 @@ package com.naveenapps.expensemanager.presentation.account.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.presentation.transaction.list.getAmountTextColor

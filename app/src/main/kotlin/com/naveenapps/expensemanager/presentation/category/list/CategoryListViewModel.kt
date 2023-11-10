@@ -2,8 +2,8 @@ package com.naveenapps.expensemanager.presentation.category.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.domain.usecase.category.GetAllCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -2,9 +2,9 @@ package com.naveenapps.expensemanager.presentation.analysis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.domain.model.AverageData
-import com.naveenapps.expensemanager.domain.model.UiState
 import com.naveenapps.expensemanager.domain.model.WholeAverageData
 import com.naveenapps.expensemanager.domain.usecase.transaction.AnalysisData
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetAmountStateUseCase
