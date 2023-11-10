@@ -2,11 +2,10 @@ package com.naveenapps.expensemanager.domain.usecase.budget
 
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.domain.repository.BudgetRepository
 import javax.inject.Inject
 
 class FindBudgetByIdUseCase @Inject constructor(
-    private val repository: BudgetRepository
+    private val repository: com.naveenapps.expensemanager.core.data.repository.BudgetRepository
 ) {
 
     suspend operator fun invoke(budgetId: String?): Resource<Budget> {

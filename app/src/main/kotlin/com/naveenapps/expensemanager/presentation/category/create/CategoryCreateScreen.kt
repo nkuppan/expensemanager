@@ -118,7 +118,7 @@ fun CategoryCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 navController = navController,
-                title = stringResource(id = R.string.category),
+                title = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.category),
                 actionId = categoryId
             ) {
                 showDeleteDialog = true

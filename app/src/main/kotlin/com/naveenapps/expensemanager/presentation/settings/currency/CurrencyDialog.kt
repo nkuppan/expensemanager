@@ -31,7 +31,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
-import com.naveenapps.expensemanager.data.repository.availableCurrencies
 import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.ui.utils.AppPreviewsLightAndDarkMode
 
@@ -171,11 +170,11 @@ fun CurrencyDialogViewPreview() {
         CurrencyDialogViewContent(
             onCurrencySelection = {},
             selectedCurrency = Currency(
-                R.string.dollar_type,
-                R.string.dollar_name,
-                R.drawable.currency_dollar
+                com.naveenapps.expensemanager.core.data.R.string.dollar_type,
+                com.naveenapps.expensemanager.core.data.R.string.dollar_name,
+                com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
             ),
-            currencies = availableCurrencies,
+            currencies = com.naveenapps.expensemanager.core.data.repository.availableCurrencies,
             onCurrencyPositionTypeChange = {
 
             },

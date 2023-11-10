@@ -5,11 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
+import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.domain.repository.AccountRepository
-import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -27,7 +26,7 @@ class AccountRepositoryImplTest : com.naveenapps.expensemanager.common.testing.B
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountRepository: com.naveenapps.expensemanager.core.data.repository.AccountRepository
 
     override fun onCreate() {
         super.onCreate()
@@ -39,14 +38,15 @@ class AccountRepositoryImplTest : com.naveenapps.expensemanager.common.testing.B
 
         accountDao = database.accountDao()
 
-        accountRepository = AccountRepositoryImpl(
-            accountDao,
-            AppCoroutineDispatchers(
-                testCoroutineDispatcher.dispatcher,
-                testCoroutineDispatcher.dispatcher,
-                testCoroutineDispatcher.dispatcher
+        accountRepository =
+            com.naveenapps.expensemanager.core.data.repository.AccountRepositoryImpl(
+                accountDao,
+                AppCoroutineDispatchers(
+                    testCoroutineDispatcher.dispatcher,
+                    testCoroutineDispatcher.dispatcher,
+                    testCoroutineDispatcher.dispatcher
+                )
             )
-        )
     }
 
     override fun onDestroy() {

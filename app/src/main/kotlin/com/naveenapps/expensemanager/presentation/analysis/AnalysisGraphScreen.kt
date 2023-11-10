@@ -118,7 +118,7 @@ fun TransactionAverageItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            DashboardWidgetTitle(title = stringResource(id = R.string.average))
+            DashboardWidgetTitle(title = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.average))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -130,9 +130,9 @@ fun TransactionAverageItem(
                         .weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.day))
-                    Text(text = stringResource(id = R.string.week))
-                    Text(text = stringResource(id = R.string.month))
+                    Text(text = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.day))
+                    Text(text = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.week))
+                    Text(text = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.month))
                 }
                 AverageAmountItems(
                     averageData = averageData.incomeAverageData,

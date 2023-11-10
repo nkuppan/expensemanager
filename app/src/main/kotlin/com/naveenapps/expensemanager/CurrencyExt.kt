@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager
 
+import com.naveenapps.expensemanager.core.data.R
 import com.naveenapps.expensemanager.core.model.Currency
 
 

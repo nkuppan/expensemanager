@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.presentation.settings.currency
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetAllCurrencyUseCase
@@ -26,9 +25,9 @@ class CurrencyViewModel @Inject constructor(
 
     private val _currentCurrency: MutableStateFlow<Currency> = MutableStateFlow(
         Currency(
-            R.string.dollar_type,
-            R.string.dollar_name,
-            R.drawable.currency_dollar
+            com.naveenapps.expensemanager.core.data.R.string.dollar_type,
+            com.naveenapps.expensemanager.core.data.R.string.dollar_name,
+            com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
         )
     )
     val currentCurrency = _currentCurrency.asStateFlow()

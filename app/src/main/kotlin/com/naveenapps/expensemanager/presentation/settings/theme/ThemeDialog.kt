@@ -131,12 +131,27 @@ fun ThemeDialogViewPreview() {
     ExpenseManagerTheme {
         ThemeDialogViewContent(
             onConfirm = {},
-            selectedTheme = Theme(AppCompatDelegate.MODE_NIGHT_NO, R.string.light),
+            selectedTheme = Theme(
+                AppCompatDelegate.MODE_NIGHT_NO,
+                com.naveenapps.expensemanager.core.data.R.string.light
+            ),
             themes = listOf(
-                Theme(AppCompatDelegate.MODE_NIGHT_NO, R.string.light),
-                Theme(AppCompatDelegate.MODE_NIGHT_YES, R.string.dark),
-                Theme(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY, R.string.set_by_battery_saver),
-                Theme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM, R.string.system_default)
+                Theme(
+                    AppCompatDelegate.MODE_NIGHT_NO,
+                    com.naveenapps.expensemanager.core.data.R.string.light
+                ),
+                Theme(
+                    AppCompatDelegate.MODE_NIGHT_YES,
+                    com.naveenapps.expensemanager.core.data.R.string.dark
+                ),
+                Theme(
+                    AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY,
+                    com.naveenapps.expensemanager.core.data.R.string.set_by_battery_saver
+                ),
+                Theme(
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+                    com.naveenapps.expensemanager.core.data.R.string.system_default
+                )
             )
         )
     }

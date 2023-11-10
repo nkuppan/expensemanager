@@ -5,7 +5,6 @@ import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.isExpense
-import com.naveenapps.expensemanager.domain.repository.BudgetRepository
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.ui.utils.UiText
 import com.naveenapps.expensemanager.ui.utils.getCurrency
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class GetBudgetsUseCase @Inject constructor(
-    private val repository: BudgetRepository,
+    private val repository: com.naveenapps.expensemanager.core.data.repository.BudgetRepository,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase,
 ) {

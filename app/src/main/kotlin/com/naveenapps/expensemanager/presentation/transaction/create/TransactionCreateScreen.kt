@@ -51,13 +51,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.data.utils.toCompleteDate
-import com.naveenapps.expensemanager.data.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.presentation.account.list.AccountItem
 import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.selection.AccountSelectionScreen
@@ -386,7 +386,7 @@ private fun TransactionCreateScreen(
                 }
             },
             label = {
-                Text(text = stringResource(id = R.string.amount))
+                Text(text = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.amount))
             },
             onValueChange = {
                 amountChange?.invoke(it)
@@ -437,7 +437,7 @@ private fun TransactionCreateScreen(
                 .fillMaxWidth(),
             text = stringResource(
                 id = if (selectedTransactionType == TransactionType.TRANSFER) {
-                    R.string.from_account
+                    com.naveenapps.expensemanager.core.data.R.string.from_account
                 } else {
                     R.string.select_account
                 }
@@ -467,7 +467,7 @@ private fun TransactionCreateScreen(
                 modifier = Modifier
                     .then(ItemSpecModifier)
                     .fillMaxWidth(),
-                text = stringResource(id = R.string.to_account),
+                text = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.to_account),
                 fontWeight = FontWeight.SemiBold,
                 fontStyle = FontStyle.Normal,
                 color = colorResource(id = R.color.blue_500)
@@ -551,7 +551,7 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 private fun TransactionCreateStatePreview() {
     ExpenseManagerTheme {
         TransactionCreateScreen(
-            currency = R.drawable.currency_dollar,
+            currency = com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar,
             selectedCategory = Category(
                 id = "1",
                 name = "Shopping",

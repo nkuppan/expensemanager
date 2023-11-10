@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.naveenapps.expensemanager.core.data"
+    namespace = "com.naveenapps.expensemanager.core.model"
 }
 
 dependencies {

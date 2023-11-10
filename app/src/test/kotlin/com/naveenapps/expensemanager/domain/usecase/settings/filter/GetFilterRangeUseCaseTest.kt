@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.filter
 
-import com.naveenapps.expensemanager.domain.repository.DateRangeFilterRepository
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeByTypeUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import kotlinx.coroutines.test.runTest
@@ -14,7 +13,8 @@ class GetFilterRangeUseCaseTest {
 
     @Before
     fun init() {
-        val dateRangeFilterRepository = mock<DateRangeFilterRepository>()
+        val dateRangeFilterRepository =
+            mock<com.naveenapps.expensemanager.core.data.repository.DateRangeFilterRepository>()
         getGetFilterRangeUseCase = GetDateRangeUseCase(
             GetDateRangeByTypeUseCase(dateRangeFilterRepository),
             dateRangeFilterRepository

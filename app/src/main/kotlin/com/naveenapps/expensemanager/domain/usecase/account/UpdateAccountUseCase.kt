@@ -2,11 +2,10 @@ package com.naveenapps.expensemanager.domain.usecase.account
 
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.domain.repository.AccountRepository
 import javax.inject.Inject
 
 class UpdateAccountUseCase @Inject constructor(
-    private val repository: AccountRepository,
+    private val repository: com.naveenapps.expensemanager.core.data.repository.AccountRepository,
     private val checkAccountValidationUseCase: CheckAccountValidationUseCase
 ) {
 

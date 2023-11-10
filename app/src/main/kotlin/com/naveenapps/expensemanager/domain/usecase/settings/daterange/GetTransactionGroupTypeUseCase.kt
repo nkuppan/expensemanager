@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.domain.usecase.settings.daterange
 
+import com.naveenapps.expensemanager.core.data.repository.DateRangeFilterRepository
 import com.naveenapps.expensemanager.core.model.DateRangeType
-import com.naveenapps.expensemanager.domain.repository.DateRangeFilterRepository
-import com.naveenapps.expensemanager.domain.usecase.transaction.GroupType
+import com.naveenapps.expensemanager.core.model.GroupType
 import javax.inject.Inject
 
 class GetTransactionGroupTypeUseCase @Inject constructor(

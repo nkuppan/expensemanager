@@ -331,7 +331,7 @@ private fun AccountCreateStatePreview() {
             onAccountTypeChange = {
 
             },
-            currency = R.drawable.currency_dollar
+            currency = com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
         )
     }
 }

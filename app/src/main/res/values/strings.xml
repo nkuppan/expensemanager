@@ -9,7 +9,6 @@
 
     <string name="app_name">Expense Manager</string>
 
-    <string name="amount">Amount</string>
 
     <string name="available_balance">Available balance</string>
 
@@ -27,14 +26,6 @@
 
     <string name="title_accounts">Accounts</string>
     <string name="select">Select</string>
-    <string name="category">Category</string>
-
-    <string name="today">Today</string>
-    <string name="this_week">This Week</string>
-    <string name="this_month">This Month</string>
-    <string name="this_year">This Year</string>
-    <string name="all_time">All time</string>
-    <string name="custom">Custom</string>
 
     <string name="title_home">Home</string>
     <string name="view_all">View all</string>
@@ -58,9 +49,6 @@
 
     <string name="export">Export</string>
     <string name="export_message">Export your data and analyse in your preferred format</string>
-
-    <string name="add_transaction">Add transaction</string>
-    <string name="notification_title">Don\'t forget to record your expenses</string>
 
     <string name="currency">Currency</string>
     <string name="selected_daily_reminder_time">We will remind you to add your expense at every on time</string>
@@ -98,42 +86,6 @@
     <string name="delete">Delete</string>
     <string name="select_account">Select Account</string>
 
-
-    <string name="dollar_type">$</string>
-    <string name="dollar_name">Dollar</string>
-
-    <string name="pound_type">£</string>
-    <string name="pound_name">Pound</string>
-
-    <string name="euro_type">€</string>
-    <string name="euro_name">Euro</string>
-
-    <string name="yen_type">¥</string>
-    <string name="yen_name">Yen</string>
-
-    <string name="yuan_type">¥</string>
-    <string name="yuan_name">Yuan</string>
-
-    <string name="swiss_franc_type">₣</string>
-    <string name="swiss_franc_name">Swiss Franc</string>
-
-    <string name="lira_type">₺</string>
-    <string name="lira_name">Lira</string>
-
-    <string name="ruble_type">₽</string>
-    <string name="ruble_name">Ruble</string>
-
-    <string name="rupee_type">₹</string>
-    <string name="rupee_name">Rupee</string>
-
-    <string name="default_currency_type">@string/dollar_type</string>
-    <string name="default_currency_name">@string/dollar_name</string>
-
-    <string name="light">Light</string>
-    <string name="dark">Dark</string>
-    <string name="set_by_battery_saver">Set by battery saver</string>
-    <string name="system_default">System default</string>
-
     <string name="category_create_success">Category created/modified successfully</string>
     <string name="choose_color">Choose color</string>
     <string name="choose_icon">Choose Icon</string>
@@ -148,8 +100,6 @@
     <string name="transfer">Transfer</string>
     <string name="select_category">Select Category</string>
     <string name="optional_details">Optional details</string>
-    <string name="from_account">From Account</string>
-    <string name="to_account">To Account</string>
     <string name="select_different_account">Select different account. From and To account shouldn\'t be the same.</string>
     <string name="number_one">1</string>
     <string name="number_two">2</string>
@@ -195,7 +145,7 @@
     <string name="csv">CSV</string>
     <string name="pdf">PDF</string>
     <string name="select_range">Select Range</string>
-    <string name="time">Time</string>
+
     <string name="export_error_message">Unknown error happened while exporting the file</string>
     <string name="export_success_message">File exported successfully</string>
     <string name="share">Share</string>
@@ -203,8 +153,5 @@
     <string name="guest">Guest</string>
     <string name="balance">Balance</string>
     <string name="export_disabled_message"><b>Note:</b> We are yet to support the PDF export feature. We will add them as soon as possible.</string>
-    <string name="average">Average</string>
-    <string name="day">Day</string>
-    <string name="week">Week</string>
-    <string name="month">Month</string>
+    <string name="add_transaction">Add Transaction</string>
 </resources>

@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.presentation.settings.theme
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.theme.GetThemesUseCase
@@ -25,7 +24,12 @@ class ThemeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _currentTheme =
-        MutableStateFlow(Theme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM, R.string.system_default))
+        MutableStateFlow(
+            Theme(
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+                com.naveenapps.expensemanager.core.data.R.string.system_default
+            )
+        )
     val currentTheme = _currentTheme.asStateFlow()
 
     private val _themes = MutableStateFlow<List<Theme>>(emptyList())

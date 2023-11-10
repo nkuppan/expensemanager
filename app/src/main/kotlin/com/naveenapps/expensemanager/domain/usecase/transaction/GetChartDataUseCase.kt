@@ -1,17 +1,18 @@
 package com.naveenapps.expensemanager.domain.usecase.transaction
 
+import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
-import com.naveenapps.expensemanager.data.utils.toCompleteDate
-import com.naveenapps.expensemanager.data.utils.toMonthAndYear
-import com.naveenapps.expensemanager.data.utils.toYear
 import com.naveenapps.expensemanager.domain.model.TransactionUiItem
 import com.naveenapps.expensemanager.domain.model.toTransactionUIModel
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetTransactionGroupTypeUseCase
 import com.naveenapps.expensemanager.ui.utils.UiText
-import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.entry.FloatEntry
@@ -136,9 +137,3 @@ data class AnalysisChartData(
     val dates: List<String>,
     val title: UiText? = null,
 )
-
-enum class GroupType {
-    YEAR,
-    MONTH,
-    DATE
-}

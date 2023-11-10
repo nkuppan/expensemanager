@@ -42,9 +42,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.data.utils.toMonth
-import com.naveenapps.expensemanager.data.utils.toMonthAndYear
-import com.naveenapps.expensemanager.data.utils.toYearInt
+import com.naveenapps.expensemanager.core.common.utils.toMonth
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.presentation.budget.create.BudgetCreateSheetSelection.*
 import com.naveenapps.expensemanager.presentation.category.selection.MultipleCategoriesSelectionScreen
@@ -385,7 +385,7 @@ private fun BudgetCreateScreen(
             title = stringResource(id = R.string.select_account),
             icon = painterResource(id = R.drawable.savings),
             selectedCount = accountCount?.asString(context)
-                ?: stringResource(id = R.string.all_time)
+                ?: stringResource(id = com.naveenapps.expensemanager.core.data.R.string.all_time)
         )
 
         SelectedItemView(
@@ -398,7 +398,7 @@ private fun BudgetCreateScreen(
             title = stringResource(id = R.string.select_category),
             icon = painterResource(id = R.drawable.ic_filter_list),
             selectedCount = categoriesCount?.asString(context)
-                ?: stringResource(id = R.string.all_time)
+                ?: stringResource(id = com.naveenapps.expensemanager.core.data.R.string.all_time)
         )
 
         Divider()
@@ -453,7 +453,7 @@ fun SelectedItemView(
 private fun BudgetCreateStatePreview() {
     ExpenseManagerTheme {
         BudgetCreateScreen(
-            currency = R.drawable.currency_dollar
+            currency = com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
         )
     }
 }

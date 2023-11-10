@@ -2,11 +2,10 @@ package com.naveenapps.expensemanager.domain.usecase.category
 
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.domain.repository.CategoryRepository
 import javax.inject.Inject
 
 class GetCategoryByNameUseCase @Inject constructor(
-    private val repository: CategoryRepository
+    private val repository: com.naveenapps.expensemanager.core.data.repository.CategoryRepository
 ) {
 
     suspend operator fun invoke(categoryName: String?): Resource<List<Category>> {

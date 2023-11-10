@@ -4,17 +4,14 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
-import com.naveenapps.expensemanager.domain.repository.AccountRepository
-import com.naveenapps.expensemanager.domain.repository.CategoryRepository
-import com.naveenapps.expensemanager.domain.repository.TransactionRepository
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeByTypeUseCase
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 class GetExportTransactionsUseCase @Inject constructor(
-    private val accountRepository: AccountRepository,
-    private val categoryRepository: CategoryRepository,
-    private val transactionRepository: TransactionRepository,
+    private val accountRepository: com.naveenapps.expensemanager.core.data.repository.AccountRepository,
+    private val categoryRepository: com.naveenapps.expensemanager.core.data.repository.CategoryRepository,
+    private val transactionRepository: com.naveenapps.expensemanager.core.data.repository.TransactionRepository,
     private val getDateRangeByTypeUseCase: GetDateRangeByTypeUseCase,
 ) {
     suspend operator fun invoke(

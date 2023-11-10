@@ -3,13 +3,12 @@ package com.naveenapps.expensemanager.domain.usecase.settings.export
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.domain.repository.ExportRepository
 import com.naveenapps.expensemanager.domain.usecase.transaction.GetExportTransactionsUseCase
 import com.naveenapps.expensemanager.presentation.account.list.AccountUiModel
 import javax.inject.Inject
 
 class ExportFileUseCase @Inject constructor(
-    private val exportRepository: ExportRepository,
+    private val exportRepository: com.naveenapps.expensemanager.core.data.repository.ExportRepository,
     private val getExportTransactionsUseCase: GetExportTransactionsUseCase
 ) {
 

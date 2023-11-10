@@ -68,7 +68,7 @@ private fun CategoryListScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.category),
+                title = stringResource(com.naveenapps.expensemanager.core.data.R.string.category),
                 disableBackIcon = true
             )
         },

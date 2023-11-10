@@ -194,7 +194,7 @@ private fun SettingsScreenContent(
             description = if (theme != null)
                 (stringResource(id = theme.titleResId))
             else
-                stringResource(id = R.string.system_default),
+                stringResource(id = com.naveenapps.expensemanager.core.data.R.string.system_default),
             icon = R.drawable.ic_palette
         )
         SettingsItem(
@@ -206,7 +206,8 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.currency),
             description = stringResource(id = R.string.select_currency),
-            icon = currency?.icon ?: R.drawable.currency_dollar
+            icon = currency?.icon
+                ?: com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
         )
         SettingsItem(
             modifier = Modifier
@@ -375,7 +376,7 @@ fun SettingsScreenItemPreview() {
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.theme),
-            description = stringResource(id = R.string.system_default),
+            description = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.system_default),
             icon = R.drawable.ic_palette
         )
     }

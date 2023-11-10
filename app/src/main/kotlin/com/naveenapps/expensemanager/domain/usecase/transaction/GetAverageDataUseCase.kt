@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.domain.usecase.transaction
 
+import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
@@ -8,7 +9,6 @@ import com.naveenapps.expensemanager.domain.model.WholeAverageData
 import com.naveenapps.expensemanager.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.ui.utils.getCurrency
-import com.naveenapps.expensemanager.utils.AppCoroutineDispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn

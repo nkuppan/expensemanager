@@ -1,22 +1,19 @@
 package com.naveenapps.expensemanager.domain.usecase.budget
 
+import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
-import com.naveenapps.expensemanager.data.utils.fromMonthAndYear
-import com.naveenapps.expensemanager.data.utils.toMonthAndYear
-import com.naveenapps.expensemanager.domain.repository.AccountRepository
-import com.naveenapps.expensemanager.domain.repository.CategoryRepository
-import com.naveenapps.expensemanager.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
 import org.joda.time.DateTime
 import javax.inject.Inject
 
 class GetBudgetTransactionsUseCase @Inject constructor(
-    private val categoryRepository: CategoryRepository,
-    private val accountRepository: AccountRepository,
-    private val transactionRepository: TransactionRepository,
+    private val categoryRepository: com.naveenapps.expensemanager.core.data.repository.CategoryRepository,
+    private val accountRepository: com.naveenapps.expensemanager.core.data.repository.AccountRepository,
+    private val transactionRepository: com.naveenapps.expensemanager.core.data.repository.TransactionRepository,
 ) {
     suspend operator fun invoke(budget: Budget): Resource<List<Transaction>> {
 

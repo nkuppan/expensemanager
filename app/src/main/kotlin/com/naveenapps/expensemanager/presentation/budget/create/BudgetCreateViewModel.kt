@@ -4,11 +4,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.data.utils.fromMonthAndYear
-import com.naveenapps.expensemanager.data.utils.toMonthAndYear
 import com.naveenapps.expensemanager.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.domain.usecase.budget.DeleteBudgetUseCase
 import com.naveenapps.expensemanager.domain.usecase.budget.FindBudgetByIdUseCase
@@ -70,11 +70,19 @@ class BudgetCreateViewModel @Inject constructor(
     private val _date = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
-    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
+    private val _accountCount = MutableStateFlow<UiText>(
+        UiText.StringResource(
+            com.naveenapps.expensemanager.core.data.R.string.all_time
+        )
+    )
     val accountCount = _accountCount.asStateFlow()
 
     private val _categoriesCount =
-        MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
+        MutableStateFlow<UiText>(
+            UiText.StringResource(
+                com.naveenapps.expensemanager.core.data.R.string.all_time
+            )
+        )
     val categoriesCount = _categoriesCount.asStateFlow()
 
     private var selectedAccounts = emptyList<AccountUiModel>()
@@ -229,7 +237,7 @@ class BudgetCreateViewModel @Inject constructor(
         this.selectedAccounts = selectedAccounts
         this.isAllAccountsSelected = isAllSelected
         _accountCount.value = if (isAllSelected) {
-            UiText.StringResource(R.string.all_time)
+            UiText.StringResource(com.naveenapps.expensemanager.core.data.R.string.all_time)
         } else {
             UiText.DynamicString(selectedAccounts.size.toString())
         }
@@ -239,7 +247,7 @@ class BudgetCreateViewModel @Inject constructor(
         this.selectedCategories = selectedCategories
         this.isAllCategoriesSelected = isAllSelected
         _categoriesCount.value = if (isAllSelected) {
-            UiText.StringResource(R.string.all_time)
+            UiText.StringResource(com.naveenapps.expensemanager.core.data.R.string.all_time)
         } else {
             UiText.DynamicString(selectedCategories.size.toString())
         }

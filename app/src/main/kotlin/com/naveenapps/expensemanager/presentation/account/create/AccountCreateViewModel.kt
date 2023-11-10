@@ -83,9 +83,9 @@ class AccountCreateViewModel @Inject constructor(
     private var account: Account? = null
 
     private var currency: Currency = Currency(
-        R.string.dollar_type,
-        R.string.dollar_name,
-        R.drawable.currency_dollar
+        com.naveenapps.expensemanager.core.data.R.string.dollar_type,
+        com.naveenapps.expensemanager.core.data.R.string.dollar_name,
+        com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
     )
 
     init {

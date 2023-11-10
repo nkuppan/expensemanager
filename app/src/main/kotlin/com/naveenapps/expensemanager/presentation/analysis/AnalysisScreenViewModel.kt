@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.presentation.analysis
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.domain.model.AverageData
 import com.naveenapps.expensemanager.domain.model.UiState
@@ -28,9 +27,9 @@ class AnalysisScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val currency = Currency(
-        R.string.dollar_type,
-        R.string.dollar_name,
-        R.drawable.currency_dollar
+        com.naveenapps.expensemanager.core.data.R.string.dollar_type,
+        com.naveenapps.expensemanager.core.data.R.string.dollar_name,
+        com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
     )
 
     private val _amountUiState = MutableStateFlow(AmountUiState())
