@@ -10,24 +10,26 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Theme
-import com.naveenapps.expensemanager.presentation.home.TempMainPageView
+import com.naveenapps.expensemanager.feature.theme.ThemeViewModel
+import com.naveenapps.expensemanager.presentation.home.HomePageNavHostContainer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 internal class HomeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
 
-            val themeViewModel: com.naveenapps.expensemanager.feature.theme.ThemeViewModel =
-                hiltViewModel()
+            val themeViewModel: ThemeViewModel = hiltViewModel()
             val currentTheme by themeViewModel.currentTheme.collectAsState()
 
             val isDarkTheme = shouldUseDarkTheme(theme = currentTheme)
@@ -43,7 +45,7 @@ internal class HomeActivity : ComponentActivity() {
             }
 
             ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
-                TempMainPageView()
+                HomePageNavHostContainer()
             }
         }
     }

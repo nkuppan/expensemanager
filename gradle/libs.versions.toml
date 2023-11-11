@@ -21,6 +21,7 @@ androidxMetrics = "1.0.0-alpha04"
 androidxNavigation = "2.7.5"
 androidxNavigationSafeArgs = "2.5.0"
 androidxProfileinstaller = "1.3.1"
+androidxSplashScreen = "1.0.1"
 androidxStartup = "1.1.1"
 androidxTestArchCore = "2.2.0"
 androidxTestCore = "1.6.0-alpha02"
@@ -114,6 +115,7 @@ androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
 androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
 androidx-profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "androidxProfileinstaller" }
+androidx-splash-screen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidxSplashScreen" }
 androidx-test-core-arch = { group = "androidx.arch.core", name = "core-testing", version.ref = "androidxTestArchCore" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxEspresso" }

@@ -62,12 +62,9 @@ android {
 
 dependencies {
     implementation(project(":core:common"))
-    implementation(project(":core:database"))
-    implementation(project(":core:datastore"))
-    implementation(project(":core:designsystem"))
     implementation(project(":core:model"))
+    implementation(project(":core:designsystem"))
     implementation(project(":core:domain"))
-    implementation(project(":core:data"))
 
     implementation(project(":feature:account"))
     implementation(project(":feature:analysis"))
@@ -75,13 +72,13 @@ dependencies {
     implementation(project(":feature:category"))
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:transaction"))
+    implementation(project(":feature:onboarding"))
 
     implementation(project(":feature:settings"))
-    implementation(project(":feature:export"))
-    implementation(project(":feature:datefilter"))
-    implementation(project(":feature:reminder"))
-    implementation(project(":feature:currency"))
     implementation(project(":feature:theme"))
+    implementation(project(":feature:export"))
+
+    implementation(libs.androidx.splash.screen)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
@@ -93,7 +90,6 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.work.ktx)
-    implementation(libs.opencsv)
 
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))

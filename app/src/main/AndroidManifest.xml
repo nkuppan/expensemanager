@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ExpenseManager"
+        android:theme="@style/ExpenseManager.Theme.Splash.Final"
         tools:targetApi="s">
 
         <profileable

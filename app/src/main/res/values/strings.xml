@@ -5,7 +5,6 @@
 
     <!-- Failure message strings -->
 
-    <string name="title_accounts">Accounts</string>
     <string name="select">Select</string>
 
     <string name="title_home">Home</string>
@@ -18,15 +17,11 @@
     <string name="title_graph">Graph</string>
 
 
-    <string name="backup_file_message">Backup file completed</string>
-
     <string name="currency">Currency</string>
 
     <string name="choose_color">Choose color</string>
     <string name="choose_icon">Choose Icon</string>
 
-
-    <string name="month_analysis">Month Analysis</string>
 
     <string name="categories">Categories</string>
     <string name="total">Total</string>
