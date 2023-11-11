@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">Choose Currency</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="prefix_amount">Prefix ($500)</string>
+    <string name="suffix_amount">Suffix (500$)</string>
+
+</resources>

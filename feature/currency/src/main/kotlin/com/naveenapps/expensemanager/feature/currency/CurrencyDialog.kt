@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.settings.currency
+package com.naveenapps.expensemanager.feature.currency
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,7 +22,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -28,8 +29,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.core.data.repository.availableCurrencies
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
@@ -115,7 +114,9 @@ fun CurrencyDialogViewContent(
                                     Modifier
                                         .padding(4.dp)
                                         .background(
-                                            color = colorResource(id = R.color.green_500).copy(alpha = .1f),
+                                            color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500).copy(
+                                                alpha = .1f
+                                            ),
                                             shape = RoundedCornerShape(size = 12.dp)
                                         )
                                 } else {
@@ -132,7 +133,7 @@ fun CurrencyDialogViewContent(
                         if (isSelectedCurrency) {
                             Icon(
                                 modifier = Modifier.align(Alignment.CenterVertically),
-                                painter = painterResource(id = R.drawable.ic_done),
+                                imageVector = Icons.Default.Done,
                                 contentDescription = null
                             )
                         }
@@ -174,7 +175,7 @@ fun CurrencyDialogViewPreview() {
                 com.naveenapps.expensemanager.core.common.R.string.dollar_name,
                 com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
             ),
-            currencies = availableCurrencies,
+            currencies = emptyList(),
             onCurrencyPositionTypeChange = {
 
             },

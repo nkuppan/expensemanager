@@ -12,5 +12,4 @@ android {
 dependencies {
     implementation(project(":feature:account"))
     implementation(project(":feature:datefilter"))
-    implementation(libs.kotlinx.coroutines.android)
 }

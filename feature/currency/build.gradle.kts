@@ -8,7 +8,3 @@ plugins {
 android {
     namespace = "com.naveenapps.expensemanager.feature.currency"
 }
-
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-}

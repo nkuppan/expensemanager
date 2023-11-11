@@ -45,8 +45,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
+import com.naveenapps.expensemanager.feature.currency.CurrencyDialogView
 import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
-import com.naveenapps.expensemanager.presentation.settings.currency.CurrencyDialogView
 import com.naveenapps.expensemanager.presentation.settings.theme.ThemeDialogView
 import com.naveenapps.expensemanager.presentation.settings.time.TimePickerView
 import kotlinx.coroutines.launch

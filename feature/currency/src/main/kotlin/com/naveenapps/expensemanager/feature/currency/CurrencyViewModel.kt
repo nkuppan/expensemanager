@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.settings.currency
+package com.naveenapps.expensemanager.feature.currency
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

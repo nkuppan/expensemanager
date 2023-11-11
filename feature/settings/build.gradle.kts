@@ -8,7 +8,3 @@ plugins {
 android {
     namespace = "com.naveenapps.expensemanager.feature.settings"
 }
-
-dependencies {
-    implementation(libs.kotlinx.coroutines.android)
-}
