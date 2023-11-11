@@ -170,9 +170,9 @@ fun CurrencyDialogViewPreview() {
         CurrencyDialogViewContent(
             onCurrencySelection = {},
             selectedCurrency = Currency(
-                com.naveenapps.expensemanager.core.data.R.string.dollar_type,
-                com.naveenapps.expensemanager.core.data.R.string.dollar_name,
-                com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
+                com.naveenapps.expensemanager.core.common.R.string.dollar_type,
+                com.naveenapps.expensemanager.core.common.R.string.dollar_name,
+                com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
             ),
             currencies = availableCurrencies,
             onCurrencyPositionTypeChange = {

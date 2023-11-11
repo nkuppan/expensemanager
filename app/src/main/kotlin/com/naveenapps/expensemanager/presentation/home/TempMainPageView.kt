@@ -19,8 +19,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.presentation.account.create.AccountCreateScreen
-import com.naveenapps.expensemanager.presentation.account.list.AccountListScreen
 import com.naveenapps.expensemanager.presentation.analysis.AnalysisScreen
 import com.naveenapps.expensemanager.presentation.budget.create.BudgetCreateScreen
 import com.naveenapps.expensemanager.presentation.budget.list.BudgetListScreen
@@ -76,7 +74,7 @@ fun TempMainPageView() {
             )
         }
         composable("account") {
-            AccountListScreen(navController)
+            com.naveenapps.expensemanager.feature.account.list.AccountListScreen(navController)
         }
         composable(
             route = "account/create?accountId={accountId}",
@@ -87,7 +85,7 @@ fun TempMainPageView() {
                 }
             )
         ) { backStackEntry ->
-            AccountCreateScreen(
+            com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen(
                 navController,
                 backStackEntry.arguments?.getString("accountId")
             )

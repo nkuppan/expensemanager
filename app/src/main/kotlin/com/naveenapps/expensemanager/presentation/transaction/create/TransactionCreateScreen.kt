@@ -68,8 +68,6 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.presentation.account.list.AccountItem
-import com.naveenapps.expensemanager.presentation.account.selection.AccountSelectionScreen
 import com.naveenapps.expensemanager.presentation.transaction.numberpad.NumberPadDialogView
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -239,7 +237,7 @@ private fun TransactionCreateBottomSheetContent(
         val accounts by viewModel.accounts.collectAsState()
         val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
         val selectedToAccount by viewModel.selectedToAccount.collectAsState()
-        AccountSelectionScreen(
+        com.naveenapps.expensemanager.feature.account.selection.AccountSelectionScreen(
             accounts = accounts,
             selectedAccount = if (sheetSelection == 2) {
                 selectedFromAccount
@@ -448,7 +446,7 @@ private fun TransactionCreateScreen(
             color = colorResource(id = R.color.blue_500)
         )
 
-        AccountItem(
+        com.naveenapps.expensemanager.feature.account.list.AccountItem(
             name = selectedFromAccount.name,
             icon = selectedFromAccount.icon,
             iconBackgroundColor = selectedFromAccount.iconBackgroundColor,
@@ -474,7 +472,7 @@ private fun TransactionCreateScreen(
                 color = colorResource(id = R.color.blue_500)
             )
 
-            AccountItem(
+            com.naveenapps.expensemanager.feature.account.list.AccountItem(
                 name = selectedToAccount.name,
                 icon = selectedToAccount.icon,
                 iconBackgroundColor = selectedToAccount.iconBackgroundColor,
@@ -552,7 +550,7 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 private fun TransactionCreateStatePreview() {
     ExpenseManagerTheme {
         TransactionCreateScreen(
-            currency = com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar,
+            currency = com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar,
             selectedCategory = Category(
                 id = "1",
                 name = "Shopping",

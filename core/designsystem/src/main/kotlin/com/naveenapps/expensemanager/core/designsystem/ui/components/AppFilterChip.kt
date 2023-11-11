@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -15,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 
 
@@ -26,7 +25,7 @@ fun RowScope.AppFilterChip(
     filterName: String,
     isSelected: Boolean,
     modifier: Modifier = Modifier,
-    @DrawableRes filterIcon: Int? = null,
+    filterIcon: ImageVector? = null,
     @ColorRes filterSelectedColor: Int? = null,
     centerAlign: Boolean = false,
     onClick: () -> Unit = {},
@@ -64,7 +63,7 @@ fun RowScope.AppFilterChip(
         leadingIcon = {
             if (filterIcon != null) {
                 Icon(
-                    painter = painterResource(id = filterIcon),
+                    imageVector = filterIcon,
                     contentDescription = ""
                 )
             }

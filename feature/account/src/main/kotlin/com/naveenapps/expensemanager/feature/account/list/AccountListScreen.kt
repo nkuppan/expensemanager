@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.account.list
+package com.naveenapps.expensemanager.feature.account.list
 
 import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
@@ -57,7 +56,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.presentation.dashboard.AMOUNT_VALUE
+import com.naveenapps.expensemanager.feature.account.R
 
 
 @Composable
@@ -201,9 +200,9 @@ fun AccountItem(
                 text = amount,
                 style = MaterialTheme.typography.titleMedium,
                 color = if (true)
-                    colorResource(id = R.color.red_500)
+                    colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
                 else
-                    colorResource(id = R.color.green_500)
+                    colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
             )
         }
         if (endIcon != null) {
@@ -307,7 +306,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         name = "Cash",
         icon = "account_balance_wallet",
         iconBackgroundColor = "#000000",
-        amountTextColor = R.color.green_500,
+        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         amount = Amount(100.0, "$100.00")
     ),
     AccountUiModel(
@@ -315,7 +314,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         name = "Bank Account - xxxx",
         icon = "account_balance",
         iconBackgroundColor = "#000000",
-        amountTextColor = R.color.green_500,
+        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         amount = Amount(100.0, "$100.00")
     ),
     AccountUiModel(
@@ -323,7 +322,7 @@ val ACCOUNT_DUMMY_DATA = listOf(
         name = "Credit Card - xxxx",
         icon = "credit_card",
         iconBackgroundColor = "#000000",
-        amountTextColor = R.color.green_500,
+        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         amount = Amount(100.0, "$100.00")
     ),
 )
@@ -338,9 +337,9 @@ private fun DashBoardAccountItemPreview() {
                 .padding(16.dp),
             name = "Utilities is having a lengthy one",
             icon = "ic_calendar",
-            amount = AMOUNT_VALUE,
-            amountTextColor = colorResource(id = R.color.green_500),
-            backgroundColor = colorResource(id = R.color.black_100),
+            amount = "100.00$",
+            amountTextColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
+            backgroundColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100),
         )
     }
 }
@@ -356,8 +355,7 @@ private fun AccountItemPreview() {
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
-            amount = "$100.00",
-            endIcon = R.drawable.ic_arrow_right
+            amount = "$100.00"
         )
     }
 }

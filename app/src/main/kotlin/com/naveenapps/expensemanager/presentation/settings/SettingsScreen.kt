@@ -209,7 +209,7 @@ private fun SettingsScreenContent(
             title = stringResource(id = R.string.currency),
             description = stringResource(id = R.string.select_currency),
             icon = currency?.icon
-                ?: com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
+                ?: com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
         )
         SettingsItem(
             modifier = Modifier

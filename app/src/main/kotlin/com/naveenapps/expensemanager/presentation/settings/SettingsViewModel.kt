@@ -21,9 +21,9 @@ class SettingsViewModel @Inject constructor(
 
     private val _currency: MutableStateFlow<Currency> = MutableStateFlow(
         Currency(
-            com.naveenapps.expensemanager.core.data.R.string.default_currency_type,
-            com.naveenapps.expensemanager.core.data.R.string.default_currency_name,
-            com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
+            com.naveenapps.expensemanager.core.common.R.string.default_currency_type,
+            com.naveenapps.expensemanager.core.common.R.string.default_currency_name,
+            com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
         )
     )
     val currency = _currency.asStateFlow()

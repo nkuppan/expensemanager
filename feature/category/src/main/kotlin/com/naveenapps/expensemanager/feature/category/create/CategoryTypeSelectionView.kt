@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +37,7 @@ fun CategoryTypeSelectionView(
             modifier = Modifier.align(Alignment.CenterVertically),
             filterName = stringResource(id = R.string.income),
             isSelected = selectedCategoryType.isIncome(),
-            filterIcon = android.R.drawable.arrow_down_float,
+            filterIcon = Icons.Default.ArrowDownward,
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
             onClick = {
                 onCategoryTypeChange.invoke(CategoryType.INCOME)
@@ -44,7 +47,7 @@ fun CategoryTypeSelectionView(
             modifier = Modifier.align(Alignment.CenterVertically),
             filterName = stringResource(id = R.string.spending),
             isSelected = selectedCategoryType.isExpense(),
-            filterIcon = android.R.drawable.arrow_up_float,
+            filterIcon = Icons.Default.ArrowUpward,
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
             onClick = {
                 onCategoryTypeChange.invoke(CategoryType.EXPENSE)

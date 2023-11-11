@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.getCurrencyIcon
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
@@ -16,7 +17,6 @@ import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.getCurrencyIcon
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,7 +96,7 @@ class BudgetCreateViewModel @Inject constructor(
         readBudgetInfo(savedStateHandle.get<String>(BUDGET_ID))
 
         getCurrencyUseCase.invoke().onEach {
-            currencyIcon.value = it.getCurrencyIcon()
+            currencyIcon.value = it.type.getCurrencyIcon()
         }.launchIn(viewModelScope)
     }
 

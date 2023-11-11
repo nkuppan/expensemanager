@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.account.create
+package com.naveenapps.expensemanager.feature.account.create
 
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -32,13 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
@@ -50,6 +50,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.feature.account.R
 import kotlinx.coroutines.launch
 
 
@@ -134,7 +135,7 @@ fun AccountCreateScreen(
         floatingActionButton = {
             FloatingActionButton(onClick = viewModel::saveOrUpdateAccount) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_done),
+                    imageVector = Icons.Default.Done,
                     contentDescription = ""
                 )
             }
@@ -236,7 +237,7 @@ private fun AccountCreateScreen(
     creditLimitErrorMessage: UiText? = null,
     onCreditLimitChange: ((String) -> Unit)? = null,
     availableCreditLimit: Amount? = null,
-    @ColorRes availableCreditLimitColor: Int = R.color.green_500,
+    @ColorRes availableCreditLimitColor: Int = com.naveenapps.expensemanager.core.common.R.color.green_500,
 ) {
     Column(modifier = modifier) {
 
@@ -329,7 +330,6 @@ private fun AccountCreateStatePreview() {
             onAccountTypeChange = {
 
             },
-            currency = com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
         )
     }
 }

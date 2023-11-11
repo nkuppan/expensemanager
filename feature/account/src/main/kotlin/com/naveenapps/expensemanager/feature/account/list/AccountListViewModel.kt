@@ -1,15 +1,15 @@
-package com.naveenapps.expensemanager.presentation.account.list
+package com.naveenapps.expensemanager.feature.account.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.presentation.transaction.list.getAmountTextColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

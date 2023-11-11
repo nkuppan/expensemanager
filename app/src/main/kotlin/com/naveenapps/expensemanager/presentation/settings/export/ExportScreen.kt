@@ -54,7 +54,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.extensions.shareThisFi
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.ExportFileType
-import com.naveenapps.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.presentation.budget.create.SelectedItemView
 import com.naveenapps.expensemanager.presentation.settings.datefilter.DateFilterSelectionView
 import kotlinx.coroutines.launch
@@ -188,7 +187,7 @@ private fun ExportScreenScaffoldView(
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
-            MultipleAccountSelectionScreen { items, selected ->
+            com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen { items, selected ->
                 setAccounts.invoke(items, selected)
                 scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {

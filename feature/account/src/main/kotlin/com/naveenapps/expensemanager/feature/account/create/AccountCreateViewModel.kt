@@ -1,9 +1,9 @@
-package com.naveenapps.expensemanager.presentation.account.create
+package com.naveenapps.expensemanager.feature.account.create
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.getCurrencyIcon
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
@@ -16,7 +16,7 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.getCurrencyIcon
+import com.naveenapps.expensemanager.feature.account.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,15 +79,16 @@ class AccountCreateViewModel @Inject constructor(
     var availableCreditLimit = MutableStateFlow<Amount?>(null)
         private set
 
-    var availableCreditLimitColor = MutableStateFlow(R.color.green_500)
+    var availableCreditLimitColor =
+        MutableStateFlow(com.naveenapps.expensemanager.core.common.R.color.green_500)
         private set
 
     private var account: Account? = null
 
     private var currency: Currency = Currency(
-        com.naveenapps.expensemanager.core.data.R.string.dollar_type,
-        com.naveenapps.expensemanager.core.data.R.string.dollar_name,
-        com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
+        com.naveenapps.expensemanager.core.common.R.string.dollar_type,
+        com.naveenapps.expensemanager.core.common.R.string.dollar_name,
+        com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
     )
 
     init {
@@ -95,7 +96,7 @@ class AccountCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
-            currencyIcon.value = it.getCurrencyIcon()
+            currencyIcon.value = it.type.getCurrencyIcon()
             updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
     }
@@ -138,9 +139,9 @@ class AccountCreateViewModel @Inject constructor(
         )
 
         availableCreditLimitColor.value = if (totalAmount < 0) {
-            R.color.red_500
+            com.naveenapps.expensemanager.core.common.R.color.red_500
         } else {
-            R.color.green_500
+            com.naveenapps.expensemanager.core.common.R.color.green_500
         }
     }
 

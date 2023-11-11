@@ -2,9 +2,6 @@
 
     <string name="app_name">Expense Manager</string>
 
-
-    <string name="available_balance">Available balance</string>
-
     <string name="filter">Filter</string>
 
 
@@ -13,8 +10,6 @@
 
     <string name="amount_error_message">Please enter a valid amount</string>
     <string name="amount_should_greater_than_zero">Amount should be greater than zero</string>
-
-    <string name="account_create_error">Please enter valid values</string>
 
     <string name="title_accounts">Accounts</string>
     <string name="select">Select</string>
@@ -67,22 +62,10 @@
 
     <string name="transaction">Transaction</string>
 
-
-    <string name="account_delete_error_message">Unable to delete this account</string>
-    <string name="account_name">Account Name</string>
-    <string name="bank_account">Bank account</string>
-    <string name="no_account_available">No account available</string>
-    <string name="select_account">Select Account</string>
-
     <string name="delete">Delete</string>
     <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="choose_color">Choose color</string>
     <string name="choose_icon">Choose Icon</string>
-    <string name="credit">Credit</string>
-    <string name="account_name_error">Name shouldn\'t be null</string>
-    <string name="account_create_success">Account created/updated successfully</string>
-    <string name="current_balance">Current Balance</string>
-    <string name="current_balance_error">Current balance shouldn\'t be empty</string>
     <string name="transaction_create_success">Transaction created/updated successfully</string>
     <string name="select_date">Select Date</string>
     <string name="transfer">Transfer</string>
@@ -107,7 +90,6 @@
     <string name="about_the_app_information">About app information</string>
     <string name="rate_us_message">It will help us to grow better</string>
     <string name="month_analysis">Month Analysis</string>
-    <string name="credit_limit">Credit Limit</string>
     <string name="select_time">Select Time</string>
     <string name="prefix_amount">Prefix ($500)</string>
     <string name="suffix_amount">Suffix (500$)</string>
@@ -129,10 +111,10 @@
     <string name="transaction_summary">Summary</string>
     <string name="clear_all">Clear All</string>
     <string name="category_selection_message">Should select at least one category to proceed</string>
-    <string name="account_selection_message">Should select at least one account to proceed</string>
     <string name="csv">CSV</string>
     <string name="pdf">PDF</string>
     <string name="select_range">Select Range</string>
+    <string name="select_account">Select Account</string>
 
     <string name="export_error_message">Unknown error happened while exporting the file</string>
     <string name="export_success_message">File exported successfully</string>

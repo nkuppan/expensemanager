@@ -54,8 +54,6 @@ import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
-import com.naveenapps.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
-import com.naveenapps.expensemanager.presentation.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.presentation.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionItem
 import kotlin.random.Random
@@ -200,7 +198,7 @@ private fun DashboardScreenContent(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(accounts) {
-                        DashBoardAccountItem(
+                        com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem(
                             modifier = Modifier.wrapContentWidth(),
                             name = it.name,
                             icon = it.icon,
@@ -358,7 +356,7 @@ fun IncomeExpenseBalanceViewPreview() {
             navController = rememberNavController(),
             amountUiState = AmountUiState(),
             modifier = Modifier.fillMaxSize(),
-            accounts = ACCOUNT_DUMMY_DATA,
+            accounts = com.naveenapps.expensemanager.feature.account.list.ACCOUNT_DUMMY_DATA,
             categoryTransaction = CategoryTransactionUiModel(
                 pieChartData = listOf(
                     getDummyPieChartData("", 25.0f),

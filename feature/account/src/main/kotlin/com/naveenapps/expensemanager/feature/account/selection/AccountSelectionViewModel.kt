@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.account.selection
+package com.naveenapps.expensemanager.feature.account.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,7 +6,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseC
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
-import com.naveenapps.expensemanager.presentation.account.list.toAccountUiModel
+import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

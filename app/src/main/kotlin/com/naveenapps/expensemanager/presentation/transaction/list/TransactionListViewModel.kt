@@ -2,8 +2,8 @@ package com.naveenapps.expensemanager.presentation.transaction.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -62,10 +62,4 @@ class TransactionListViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-}
-
-fun Double.getAmountTextColor() = if (this < 0) {
-    R.color.red_500
-} else {
-    R.color.green_500
 }

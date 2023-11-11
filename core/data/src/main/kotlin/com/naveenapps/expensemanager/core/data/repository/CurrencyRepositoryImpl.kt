@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import android.content.Context
+import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.data.R
 import com.naveenapps.expensemanager.core.data.utils.getCurrency
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount

@@ -57,7 +57,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigati
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
-import com.naveenapps.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.presentation.budget.create.BudgetCreateSheetSelection.*
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -259,7 +258,7 @@ private fun BudgetCreateBottomSheetContent(
         }
 
         ACCOUNT_SELECTION -> {
-            MultipleAccountSelectionScreen { items, selected ->
+            com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen { items, selected ->
                 viewModel.setAccounts(items, selected)
                 hideBottomSheet.invoke()
             }
@@ -453,7 +452,7 @@ fun SelectedItemView(
 private fun BudgetCreateStatePreview() {
     ExpenseManagerTheme {
         BudgetCreateScreen(
-            currency = com.naveenapps.expensemanager.core.data.R.drawable.currency_dollar
+            currency = com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
         )
     }
 }

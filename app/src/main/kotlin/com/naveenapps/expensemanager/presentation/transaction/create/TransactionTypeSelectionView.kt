@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Transform
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +38,7 @@ fun TransactionTypeSelectionView(
             modifier = Modifier.align(Alignment.CenterVertically),
             filterName = stringResource(id = R.string.income),
             isSelected = selectedTransactionType.isIncome(),
-            filterIcon = R.drawable.ic_arrow_downward,
+            filterIcon = Icons.Default.ArrowDownward,
             filterSelectedColor = R.color.green_500,
             onClick = {
                 onTransactionTypeChange.invoke(TransactionType.INCOME)
@@ -44,7 +48,7 @@ fun TransactionTypeSelectionView(
             modifier = Modifier.align(Alignment.CenterVertically),
             filterName = stringResource(id = R.string.spending),
             isSelected = selectedTransactionType.isExpense(),
-            filterIcon = R.drawable.ic_arrow_upward,
+            filterIcon = Icons.Default.ArrowUpward,
             filterSelectedColor = R.color.red_500,
             onClick = {
                 onTransactionTypeChange.invoke(TransactionType.EXPENSE)
@@ -54,7 +58,7 @@ fun TransactionTypeSelectionView(
             modifier = Modifier.align(Alignment.CenterVertically),
             filterName = stringResource(id = R.string.transfer),
             isSelected = selectedTransactionType.isTransfer(),
-            filterIcon = R.drawable.ic_transfer,
+            filterIcon = Icons.Default.Transform,
             filterSelectedColor = R.color.blue_500,
             onClick = {
                 onTransactionTypeChange.invoke(TransactionType.TRANSFER)

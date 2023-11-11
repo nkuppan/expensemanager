@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":core:data"))
 
     implementation(project(":feature:category"))
+    implementation(project(":feature:account"))
 
     implementation(libs.colorpicker)
 

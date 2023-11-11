@@ -1,11 +1,10 @@
-package com.naveenapps.expensemanager
+package com.naveenapps.expensemanager.core.common.utils
 
-import com.naveenapps.expensemanager.core.data.R
-import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.common.R
 
 
-fun Currency.getCurrencyIcon(): Int {
-    return when (type) {
+fun Int.getCurrencyIcon(): Int {
+    return when (this) {
         R.string.dollar_type -> R.drawable.currency_dollar
         R.string.euro_type -> R.drawable.currency_euro
         R.string.pound_type -> R.drawable.currency_pound
