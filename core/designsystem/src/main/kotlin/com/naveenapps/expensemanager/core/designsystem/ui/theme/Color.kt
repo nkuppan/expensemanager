@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.theme
+package com.naveenapps.expensemanager.core.designsystem.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.components
+package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -18,7 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import com.naveenapps.expensemanager.ui.utils.UiText
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 
 
 @Composable

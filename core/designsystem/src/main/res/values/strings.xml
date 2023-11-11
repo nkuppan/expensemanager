@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_web_browser">Choose browser</string>
+    <string name="select">Select</string>
+    <string name="page_name" translatable="false">Page Name</string>
+</resources>

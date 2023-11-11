@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
 @Composable
 fun AnalysisScreen(navController: NavController) {

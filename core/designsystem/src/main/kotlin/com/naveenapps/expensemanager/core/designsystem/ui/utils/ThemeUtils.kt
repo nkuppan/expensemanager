@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.utils
+package com.naveenapps.expensemanager.core.designsystem.ui.utils
 
 import android.graphics.Color
 import androidx.annotation.ColorInt

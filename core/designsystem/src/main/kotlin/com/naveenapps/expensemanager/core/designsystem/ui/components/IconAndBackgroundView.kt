@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.components
+package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -16,11 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.ui.extensions.getDrawable
-import com.naveenapps.expensemanager.ui.extensions.toColor
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.IconSpecModifier
-import com.naveenapps.expensemanager.ui.utils.SmallIconSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.SmallIconSpecModifier
 
 
 @Composable

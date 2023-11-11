@@ -10,11 +10,8 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.presentation.transaction.list.getAmountTextColor
-import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -27,9 +24,6 @@ class AccountListViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
 ) : ViewModel() {
-
-    private val _errorMessage = MutableSharedFlow<UiText>()
-    val errorMessage = _errorMessage.asSharedFlow()
 
     private val _accounts = MutableStateFlow<UiState<List<AccountUiModel>>>(UiState.Loading)
     val accounts = _accounts.asStateFlow()

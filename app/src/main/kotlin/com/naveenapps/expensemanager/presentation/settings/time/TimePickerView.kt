@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.ui.components.AppTimePickerDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 
 @Composable
 fun TimePickerView(
@@ -15,9 +16,15 @@ fun TimePickerView(
     val reminderTimeState by viewModel.currentReminderTime.collectAsState()
 
     AppTimePickerDialog(
-        reminderTimeState = reminderTimeState,
+        reminderTimeState = Triple(
+            reminderTimeState.hour,
+            reminderTimeState.minute,
+            reminderTimeState.is24Hour,
+        ),
         onTimeSelected = {
-            viewModel.setReminderTimeState(it)
+            viewModel.setReminderTimeState(
+                ReminderTimeState(it.first, it.second, it.third)
+            )
             complete.invoke()
         }
     ) {

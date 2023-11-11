@@ -1,5 +1,7 @@
 package com.naveenapps.expensemanager.presentation.settings
 
+import android.app.Activity
+import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
@@ -35,18 +37,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openEmailToOption
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.presentation.settings.currency.CurrencyDialogView
 import com.naveenapps.expensemanager.presentation.settings.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.presentation.settings.theme.ThemeDialogView
 import com.naveenapps.expensemanager.presentation.settings.time.TimePickerView
-import com.naveenapps.expensemanager.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.ui.extensions.launchReviewWorkflow
-import com.naveenapps.expensemanager.ui.extensions.openEmailToOption
-import com.naveenapps.expensemanager.ui.extensions.openWebPage
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import kotlinx.coroutines.launch
 
 
@@ -388,5 +390,25 @@ fun SettingsScreenItemPreview() {
 fun SettingsScreenPreview() {
     ExpenseManagerTheme {
         SettingsScreenScaffoldView(rememberNavController())
+    }
+}
+
+
+fun launchReviewWorkflow(context: Context) {
+    val manager = ReviewManagerFactory.create(context)
+    val request = manager.requestReviewFlow()
+    request.addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            // We got the ReviewInfo object
+            val reviewInfo = task.result
+            reviewInfo?.let {
+                val flow = manager.launchReviewFlow(context as Activity, reviewInfo)
+                flow.addOnCompleteListener { _ ->
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+                    // matter the result, we continue our app flow.
+                }
+            }
+        }
     }
 }

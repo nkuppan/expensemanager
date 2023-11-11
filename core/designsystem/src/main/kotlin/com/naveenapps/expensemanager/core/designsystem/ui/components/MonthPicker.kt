@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.components
+package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -38,8 +38,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
 @Composable
 fun MonthPicker(

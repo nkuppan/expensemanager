@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.components
+package com.naveenapps.expensemanager.presentation.dashboard
 
 import android.widget.LinearLayout
 import androidx.compose.animation.Crossfade

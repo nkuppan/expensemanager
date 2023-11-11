@@ -7,11 +7,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCu
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.list.toAccountUiModel
-import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
@@ -24,9 +21,6 @@ class AccountSelectionViewModel @Inject constructor(
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getAccountsUseCase: GetAccountsUseCase,
 ) : ViewModel() {
-
-    private val _errorMessage = MutableSharedFlow<UiText>()
-    val errorMessage = _errorMessage.asSharedFlow()
 
     private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
     val accounts = _accounts.asStateFlow()

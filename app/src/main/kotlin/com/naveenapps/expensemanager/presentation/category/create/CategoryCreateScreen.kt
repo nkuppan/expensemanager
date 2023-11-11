@@ -35,14 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.presentation.selection.ColorSelectionScreen
 import com.naveenapps.expensemanager.presentation.selection.IconAndColorComponent
 import com.naveenapps.expensemanager.presentation.selection.IconSelectionScreen
-import com.naveenapps.expensemanager.ui.components.AppDialog
-import com.naveenapps.expensemanager.ui.components.TopNavigationBarWithDeleteAction
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.UiText
 import kotlinx.coroutines.launch
 
 

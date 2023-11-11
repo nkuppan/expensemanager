@@ -1,14 +1,12 @@
-package com.naveenapps.expensemanager.ui.extensions
+package com.naveenapps.expensemanager.core.designsystem.ui.extensions
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
-import com.google.android.play.core.review.ReviewManagerFactory
-import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.R
 
 
 @SuppressLint("DiscouragedApi")
@@ -19,7 +17,7 @@ fun Context.getDrawable(iconName: String): Int {
         )
 
         if (resources > 0) resources else null
-    }.getOrNull() ?: R.drawable.ic_calendar
+    }.getOrNull() ?: androidx.core.R.drawable.ic_call_answer
 }
 
 fun openWebPage(context: Context, webpage: String) {
@@ -40,25 +38,6 @@ fun openEmailToOption(context: Context, emailId: String) {
         context.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.
-    }
-}
-
-fun launchReviewWorkflow(context: Context) {
-    val manager = ReviewManagerFactory.create(context)
-    val request = manager.requestReviewFlow()
-    request.addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-            // We got the ReviewInfo object
-            val reviewInfo = task.result
-            reviewInfo?.let {
-                val flow = manager.launchReviewFlow(context as Activity, reviewInfo)
-                flow.addOnCompleteListener { _ ->
-                    // The flow has finished. The API does not indicate whether the user
-                    // reviewed or not, or even whether the review dialog was shown. Thus, no
-                    // matter the result, we continue our app flow.
-                }
-            }
-        }
     }
 }
 

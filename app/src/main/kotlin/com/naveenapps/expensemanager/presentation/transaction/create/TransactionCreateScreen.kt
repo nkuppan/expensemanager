@@ -53,6 +53,14 @@ import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -65,14 +73,6 @@ import com.naveenapps.expensemanager.presentation.account.selection.AccountSelec
 import com.naveenapps.expensemanager.presentation.category.list.CategoryItem
 import com.naveenapps.expensemanager.presentation.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.presentation.transaction.numberpad.NumberPadDialogView
-import com.naveenapps.expensemanager.ui.components.AppDatePickerDialog
-import com.naveenapps.expensemanager.ui.components.AppDialog
-import com.naveenapps.expensemanager.ui.components.AppTimePickerDialog
-import com.naveenapps.expensemanager.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.ui.components.TopNavigationBarWithDeleteAction
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.ui.utils.UiText
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -306,10 +306,12 @@ private fun TransactionCreateScreen(
     }
 
     if (showTimePicker) {
+        val reminder = (selectedDate ?: Date()).toTime()
         AppTimePickerDialog(
-            reminderTimeState = (selectedDate ?: Date()).toTime(),
+            reminderTimeState = Triple(reminder.hour, reminder.minute, reminder.is24Hour),
             onTimeSelected = {
-                onDateChange?.invoke((selectedDate ?: Date()).toTime(it))
+                val reminderTimeState = ReminderTimeState(it.first, it.second, it.third)
+                onDateChange?.invoke((selectedDate ?: Date()).toTime(reminderTimeState))
                 showTimePicker = false
             },
         ) {

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.theme
+package com.naveenapps.expensemanager.core.designsystem.ui.theme
 
 
 import androidx.compose.material3.Typography
@@ -7,7 +7,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.R
 
 val Roboto = FontFamily(
     Font(resId = R.font.roboto_regular),

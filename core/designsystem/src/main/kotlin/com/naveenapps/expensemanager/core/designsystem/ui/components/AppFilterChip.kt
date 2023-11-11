@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.components
+package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes

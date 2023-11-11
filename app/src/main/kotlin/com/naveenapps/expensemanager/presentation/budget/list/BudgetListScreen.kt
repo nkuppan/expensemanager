@@ -48,12 +48,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.ui.utils.ItemSpecModifier
 
 
 @Composable
@@ -234,7 +234,7 @@ fun BudgetItem(
 
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "$transactionAmount of $amount",
+                text = "${transactionAmount?.amountString} of ${amount?.amountString}",
                 style = MaterialTheme.typography.labelSmall
             )
         }

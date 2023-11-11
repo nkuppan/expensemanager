@@ -16,4 +16,7 @@ dependencies {
     implementation(":core:designsystem")
 
     implementation(libs.kotlinx.coroutines.android)
+
+    testImplementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
 }

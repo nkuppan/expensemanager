@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.utils
+package com.naveenapps.expensemanager.core.designsystem.ui.utils
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

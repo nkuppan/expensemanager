@@ -1,16 +1,17 @@
-package com.naveenapps.expensemanager.ui.components
+package com.naveenapps.expensemanager.core.designsystem.ui.components
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import com.naveenapps.expensemanager.R
 
 @Composable
 fun NavigationButton(
     navController: NavController,
-    navigationIcon: Int = R.drawable.ic_arrow_back,
+    navigationIcon: ImageVector = Icons.Default.ArrowBack,
     navigationContentDescription: String = ""
 ) {
     IconButton(
@@ -19,7 +20,7 @@ fun NavigationButton(
         }
     ) {
         Icon(
-            painter = painterResource(id = navigationIcon),
+            imageVector = navigationIcon,
             contentDescription = navigationContentDescription
         )
     }

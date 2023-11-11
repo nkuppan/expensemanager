@@ -22,15 +22,12 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.presentation.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.presentation.home.HomeScreenBottomBarItems
-import com.naveenapps.expensemanager.ui.utils.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.receiveAsFlow
 import javax.inject.Inject
 
 
@@ -47,9 +44,6 @@ class DashboardViewModel @Inject constructor(
 
     var homeScreenBottomBarItems by mutableStateOf(HomeScreenBottomBarItems.Home)
         private set
-
-    private val _errorMessage = Channel<UiText>()
-    val errorMessage = _errorMessage.receiveAsFlow()
 
     private val _amountUiState = MutableStateFlow(AmountUiState())
     val amountUiState = _amountUiState.asStateFlow()

@@ -20,10 +20,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.ui.components.RoundIconView
-import com.naveenapps.expensemanager.ui.extensions.getDrawable
-import com.naveenapps.expensemanager.ui.extensions.toColor
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.RoundIconView
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
 
 @Composable

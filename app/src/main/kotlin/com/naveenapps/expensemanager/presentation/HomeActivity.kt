@@ -13,10 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.presentation.home.TempMainPageView
 import com.naveenapps.expensemanager.presentation.settings.theme.ThemeViewModel
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

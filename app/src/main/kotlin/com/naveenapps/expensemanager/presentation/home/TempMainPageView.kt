@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.presentation.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.presentation.account.list.AccountListScreen
 import com.naveenapps.expensemanager.presentation.analysis.AnalysisScreen
@@ -30,7 +31,6 @@ import com.naveenapps.expensemanager.presentation.settings.SettingsScreen
 import com.naveenapps.expensemanager.presentation.settings.export.ExportScreen
 import com.naveenapps.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionListScreen
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
 
 @Composable
 fun TempMainPageView() {

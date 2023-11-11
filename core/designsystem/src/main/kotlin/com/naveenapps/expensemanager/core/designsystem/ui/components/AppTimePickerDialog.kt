@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui.components
+package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,22 +19,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.expensemanager.R
-import com.naveenapps.expensemanager.core.model.ReminderTimeState
-import com.naveenapps.expensemanager.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTimePickerDialog(
-    reminderTimeState: ReminderTimeState,
-    onTimeSelected: (ReminderTimeState) -> Unit,
+    reminderTimeState: Triple<Int, Int, Boolean>,
+    onTimeSelected: (Triple<Int, Int, Boolean>) -> Unit,
     onDismiss: () -> Unit,
 ) {
 
     val timePickerState = rememberTimePickerState(
-        initialHour = reminderTimeState.hour,
-        initialMinute = reminderTimeState.minute,
-        is24Hour = reminderTimeState.is24Hour
+        initialHour = reminderTimeState.first,
+        initialMinute = reminderTimeState.second,
+        is24Hour = reminderTimeState.third
     )
 
     Dialog(
@@ -65,7 +64,7 @@ fun AppTimePickerDialog(
                     }
                     TextButton(onClick = {
                         onTimeSelected.invoke(
-                            ReminderTimeState(
+                            Triple(
                                 timePickerState.hour,
                                 timePickerState.minute,
                                 timePickerState.is24hour,
@@ -86,7 +85,7 @@ fun AppTimePickerDialog(
 fun AppTimePickerDialogPreview() {
     ExpenseManagerTheme {
         AppTimePickerDialog(
-            reminderTimeState = ReminderTimeState(10, 0, false),
+            reminderTimeState = Triple(10, 0, false),
             onTimeSelected = {},
         ) {}
     }
