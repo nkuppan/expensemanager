@@ -38,45 +38,45 @@ class GetAverageDataUseCase @Inject constructor(
             val calendar: Calendar = Calendar.getInstance()
             calendar.timeInMillis = ranges[0]
 
-            val weeksPerMonth = when (dateRangeModel.type) {
+            val weeksPerMonth: Double = when (dateRangeModel.type) {
                 DateRangeType.TODAY,
                 DateRangeType.THIS_WEEK,
                 DateRangeType.THIS_MONTH -> {
-                    1 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
+                    1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
                 }
 
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
                 DateRangeType.THIS_YEAR -> {
-                    1 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
+                    1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
                 }
             }
 
-            val daysPerMonth = when (dateRangeModel.type) {
+            val daysPerMonth: Double = when (dateRangeModel.type) {
                 DateRangeType.TODAY,
                 DateRangeType.THIS_WEEK,
                 DateRangeType.THIS_MONTH -> {
-                    1 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                    1.0 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
                 }
 
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
                 DateRangeType.THIS_YEAR -> {
-                    1 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
+                    1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
                 }
             }
 
-            val monthsPerYear = when (dateRangeModel.type) {
+            val monthsPerYear: Double = when (dateRangeModel.type) {
                 DateRangeType.TODAY,
                 DateRangeType.THIS_WEEK,
                 DateRangeType.THIS_MONTH -> {
-                    1 / 1
+                    1.0 / 1.0
                 }
 
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
                 DateRangeType.THIS_YEAR -> {
-                    1 / calendar.getActualMaximum(Calendar.MONTH) + 1
+                    1.0 / calendar.getActualMaximum(Calendar.MONTH) + 1
                 }
             }
 
