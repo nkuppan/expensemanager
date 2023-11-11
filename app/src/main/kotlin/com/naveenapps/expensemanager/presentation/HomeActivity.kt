@@ -16,7 +16,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.presentation.home.TempMainPageView
-import com.naveenapps.expensemanager.presentation.settings.theme.ThemeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,7 +26,8 @@ internal class HomeActivity : ComponentActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
 
-            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val themeViewModel: com.naveenapps.expensemanager.feature.theme.ThemeViewModel =
+                hiltViewModel()
             val currentTheme by themeViewModel.currentTheme.collectAsState()
 
             val isDarkTheme = shouldUseDarkTheme(theme = currentTheme)

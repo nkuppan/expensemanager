@@ -47,8 +47,7 @@ import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.feature.currency.CurrencyDialogView
 import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
-import com.naveenapps.expensemanager.presentation.settings.theme.ThemeDialogView
-import com.naveenapps.expensemanager.presentation.settings.time.TimePickerView
+import com.naveenapps.expensemanager.feature.reminder.ReminderTimePickerView
 import kotlinx.coroutines.launch
 
 
@@ -74,7 +73,7 @@ private fun SettingsScreenScaffoldView(
 
     var showThemeSelection by remember { mutableStateOf(false) }
     if (showThemeSelection) {
-        ThemeDialogView {
+        com.naveenapps.expensemanager.feature.theme.ThemeDialogView {
             showThemeSelection = false
         }
     }
@@ -88,7 +87,7 @@ private fun SettingsScreenScaffoldView(
 
     var showTimePickerSelection by remember { mutableStateOf(false) }
     if (showTimePickerSelection) {
-        TimePickerView {
+        ReminderTimePickerView {
             showTimePickerSelection = false
         }
     }

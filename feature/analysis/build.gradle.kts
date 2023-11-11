@@ -8,3 +8,14 @@ plugins {
 android {
     namespace = "com.naveenapps.expensemanager.feature.analysis"
 }
+
+dependencies {
+    implementation(project(":feature:datefilter"))
+
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m2)
+    implementation(libs.vico.compose.m3)
+    implementation(libs.vico.core)
+    implementation(libs.vico.views)
+    implementation(libs.joda.time)
+}

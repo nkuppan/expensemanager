@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme

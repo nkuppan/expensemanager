@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -55,6 +56,7 @@ import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
+import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionItem
 import kotlin.random.Random
 
@@ -306,30 +308,6 @@ private fun DashboardScreenContent(
         }
         item {
             Spacer(modifier = Modifier.padding(24.dp))
-        }
-    }
-}
-
-@Composable
-fun DashboardWidgetTitle(
-    title: String, modifier:
-    Modifier = Modifier,
-    onViewAllClick: (() -> Unit)? = null
-) {
-    Box(
-        modifier = modifier
-    ) {
-        Text(
-            text = title, style = MaterialTheme.typography.headlineSmall
-        )
-        if (onViewAllClick != null) {
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .clickable { onViewAllClick.invoke() },
-                text = stringResource(id = R.string.view_all).uppercase(),
-                style = MaterialTheme.typography.labelMedium
-            )
         }
     }
 }

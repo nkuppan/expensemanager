@@ -69,15 +69,18 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
 
-    implementation(project(":feature:category"))
     implementation(project(":feature:account"))
+    implementation(project(":feature:analysis"))
     implementation(project(":feature:budget"))
+    implementation(project(":feature:category"))
+    implementation(project(":feature:dashboard"))
 
     implementation(project(":feature:settings"))
     implementation(project(":feature:export"))
     implementation(project(":feature:datefilter"))
     implementation(project(":feature:reminder"))
     implementation(project(":feature:currency"))
+    implementation(project(":feature:theme"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)

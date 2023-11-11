@@ -55,7 +55,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.TransactionUiState
-import com.naveenapps.expensemanager.presentation.dashboard.FilterView
+import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import java.util.Date
 
 

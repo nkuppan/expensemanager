@@ -7,15 +7,20 @@ import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.getCurrencyIcon
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
+import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.FindBudgetByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.UpdateBudgetUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.category.FindCategoryByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.feature.budget.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,6 +40,8 @@ class BudgetCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
     private val findBudgetByIdUseCase: FindBudgetByIdUseCase,
+    private val findAccountByIdUseCase: FindAccountByIdUseCase,
+    private val findCategoryByIdUseCase: FindCategoryByIdUseCase,
     private val addBudgetUseCase: AddBudgetUseCase,
     private val updateBudgetUseCase: UpdateBudgetUseCase,
     private val deleteBudgetUseCase: DeleteBudgetUseCase
@@ -83,16 +90,18 @@ class BudgetCreateViewModel @Inject constructor(
     private var isAllCategoriesSelected = true
 
     private var budget: Budget? = null
+    private var currency: Currency? = null
 
     init {
         readBudgetInfo(savedStateHandle.get<String>(BUDGET_ID))
 
         getCurrencyUseCase.invoke().onEach {
+            currency = it
             currencyIcon.value = it.type.getCurrencyIcon()
         }.launchIn(viewModelScope)
     }
 
-    private fun updateBudgetInfo(budget: Budget?) {
+    private suspend fun updateBudgetInfo(budget: Budget?) {
 
         this.budget = budget
 
@@ -102,6 +111,33 @@ class BudgetCreateViewModel @Inject constructor(
             colorValue.value = budgetItem.iconBackgroundColor
             icon.value = budgetItem.iconName
             budgetItem.selectedMonth.fromMonthAndYear()?.let { setDate(it) }
+
+            val accounts = budgetItem.accounts.map {
+                return@map when (val response = findAccountByIdUseCase.invoke(it)) {
+                    is Resource.Error -> null
+                    is Resource.Success -> {
+                        val data = response.data
+                        data.toAccountUiModel(
+                            Amount(data.amount, currency = currency)
+                        )
+                    }
+                }
+            }.filterNotNull()
+
+            if (accounts.isNotEmpty()) {
+                setAccounts(accounts, budgetItem.isAllAccountsSelected)
+            }
+
+            val categories = budgetItem.categories.map {
+                return@map when (val response = findCategoryByIdUseCase.invoke(it)) {
+                    is Resource.Error -> null
+                    is Resource.Success -> response.data
+                }
+            }.filterNotNull()
+
+            if (categories.isNotEmpty()) {
+                setCategories(categories, budgetItem.isAllAccountsSelected)
+            }
         }
     }
 
