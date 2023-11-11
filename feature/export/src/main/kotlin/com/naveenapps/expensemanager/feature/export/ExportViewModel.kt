@@ -1,9 +1,8 @@
-package com.naveenapps.expensemanager.presentation.settings.export
+package com.naveenapps.expensemanager.feature.export
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.export.ExportFileUseCase
@@ -39,11 +38,7 @@ class ExportViewModel @Inject constructor(
     private val _exportFileType = MutableStateFlow(ExportFileType.CSV)
     val exportFileType = _exportFileType.asStateFlow()
 
-    private val _accountCount = MutableStateFlow<UiText>(
-        UiText.StringResource(
-            com.naveenapps.expensemanager.core.data.R.string.all_time
-        )
-    )
+    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
     val accountCount = _accountCount.asStateFlow()
 
     private var selectedDateRangeType = DateRangeType.TODAY
@@ -65,7 +60,7 @@ class ExportViewModel @Inject constructor(
         this.selectedAccounts = selectedAccounts
         this.isAllAccountsSelected = isAllSelected
         _accountCount.value = if (isAllSelected) {
-            UiText.StringResource(com.naveenapps.expensemanager.core.data.R.string.all_time)
+            UiText.StringResource(R.string.all_time)
         } else {
             UiText.DynamicString(selectedAccounts.size.toString())
         }

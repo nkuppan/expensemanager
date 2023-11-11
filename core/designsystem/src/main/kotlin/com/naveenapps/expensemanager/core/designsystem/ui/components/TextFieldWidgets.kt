@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -27,7 +28,7 @@ fun ClickableTextField(
     value: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    leadingIcon: Int? = null
+    leadingIcon: ImageVector? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()
@@ -49,7 +50,7 @@ fun ClickableTextField(
         leadingIcon = if (leadingIcon != null) {
             {
                 Icon(
-                    painter = painterResource(id = leadingIcon),
+                    imageVector = leadingIcon,
                     contentDescription = ""
                 )
             }

@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.presentation.budget.create
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -20,7 +21,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -30,9 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -48,6 +46,7 @@ import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
+import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
@@ -332,7 +331,7 @@ private fun BudgetCreateScreen(
                 .fillMaxWidth(),
             value = selectedDate?.toMonthAndYear() ?: "",
             label = R.string.select_date,
-            leadingIcon = R.drawable.ic_calendar,
+            leadingIcon = Icons.Default.EditCalendar,
             onClick = {
                 focusManager.clearFocus(force = true)
                 showDatePicker = true
@@ -406,43 +405,6 @@ private fun BudgetCreateScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
-        )
-    }
-}
-
-@Composable
-fun SelectedItemView(
-    title: String,
-    selectedCount: String,
-    icon: Painter,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        modifier = modifier
-    ) {
-        Icon(
-            painter = icon,
-            contentDescription = null
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
-                .weight(1f)
-                .align(Alignment.CenterVertically),
-            text = title,
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = selectedCount,
-        )
-
-        Icon(
-            painter = painterResource(id = R.drawable.ic_arrow_right),
-            contentDescription = null
         )
     }
 }

@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.presentation.settings.datefilter.DateFilterSelectionView
+import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

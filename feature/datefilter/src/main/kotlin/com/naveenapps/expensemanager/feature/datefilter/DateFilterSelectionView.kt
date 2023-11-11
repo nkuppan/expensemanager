@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.settings.datefilter
+package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -25,11 +28,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
@@ -136,7 +137,9 @@ private fun FilterTypesAndView(
                                 Modifier
                                     .padding(4.dp)
                                     .background(
-                                        color = colorResource(id = R.color.green_500).copy(alpha = .1f),
+                                        color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500).copy(
+                                            alpha = .1f
+                                        ),
                                         shape = RoundedCornerShape(size = 12.dp)
                                     )
                             } else {
@@ -165,7 +168,7 @@ private fun FilterTypesAndView(
                     if (isSelected) {
                         Icon(
                             modifier = Modifier.align(Alignment.CenterVertically),
-                            painter = painterResource(id = R.drawable.ic_done),
+                            imageVector = Icons.Default.Done,
                             contentDescription = null
                         )
                     }
@@ -188,7 +191,7 @@ private fun FilterTypesAndView(
                                     .padding(end = 8.dp),
                                 value = fromDate.toCompleteDate(),
                                 label = R.string.from_date,
-                                leadingIcon = R.drawable.ic_calendar,
+                                leadingIcon = Icons.Default.EditCalendar,
                                 onClick = {
                                     focusManager.clearFocus()
                                     onDateSelection.invoke(DateTypeSelection.FROM_DATE)
@@ -200,7 +203,7 @@ private fun FilterTypesAndView(
                                     .padding(start = 8.dp),
                                 value = toDate.toCompleteDate(),
                                 label = R.string.to_date,
-                                leadingIcon = R.drawable.ic_calendar,
+                                leadingIcon = Icons.Default.EditCalendar,
                                 onClick = {
                                     focusManager.clearFocus()
                                     onDateSelection.invoke(DateTypeSelection.TO_DATE)

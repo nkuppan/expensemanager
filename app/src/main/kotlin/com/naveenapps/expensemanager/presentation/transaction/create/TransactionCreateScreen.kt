@@ -15,6 +15,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -338,7 +341,7 @@ private fun TransactionCreateScreen(
                     .padding(end = 8.dp),
                 value = selectedDate?.toCompleteDate() ?: "",
                 label = R.string.select_date,
-                leadingIcon = R.drawable.ic_calendar,
+                leadingIcon = Icons.Default.EditCalendar,
                 onClick = {
                     focusManager.clearFocus(force = true)
                     showDatePicker = true
@@ -350,7 +353,7 @@ private fun TransactionCreateScreen(
                     .padding(start = 8.dp),
                 value = selectedDate?.toTimeAndMinutes() ?: "",
                 label = R.string.select_time,
-                leadingIcon = R.drawable.ic_time,
+                leadingIcon = Icons.Default.AccessTime,
                 onClick = {
                     focusManager.clearFocus(force = true)
                     showTimePicker = true

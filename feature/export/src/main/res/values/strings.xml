@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">Unknown error happened while exporting the file</string>
+    <string name="export_success_message">File exported successfully</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">Share</string>
+    <string name="export">Export</string>
+    <string name="select_range">Select Range</string>
+    <string name="select_account">Select Account</string>
+    <string name="export_disabled_message"><b>Note:</b> We are yet to support the PDF export feature. We will add them as soon as possible.</string>
+    <string name="all_time">All Time</string>
+</resources>

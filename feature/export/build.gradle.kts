@@ -1,5 +1,5 @@
 plugins {
-    id("naveenapps.plugin.android.library")
+    id("naveenapps.plugin.android.feature")
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
@@ -10,13 +10,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:data"))
-    implementation(project(":core:model"))
-    implementation(project(":core:designsystem"))
-
+    implementation(project(":feature:account"))
+    implementation(project(":feature:datefilter"))
     implementation(libs.kotlinx.coroutines.android)
-
-    testImplementation(project(":core:testing"))
-    androidTestImplementation(project(":core:testing"))
 }

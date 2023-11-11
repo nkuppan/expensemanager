@@ -19,11 +19,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
+import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.presentation.analysis.AnalysisScreen
 import com.naveenapps.expensemanager.presentation.budget.create.BudgetCreateScreen
 import com.naveenapps.expensemanager.presentation.budget.list.BudgetListScreen
 import com.naveenapps.expensemanager.presentation.settings.SettingsScreen
-import com.naveenapps.expensemanager.presentation.settings.export.ExportScreen
 import com.naveenapps.expensemanager.presentation.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionListScreen
 
@@ -117,9 +118,7 @@ fun TempMainPageView() {
             ExportScreen(navController)
         }
         composable("category_group") {
-            com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen(
-                navController
-            )
+            CategoryTransactionTabScreen(navController)
         }
         composable("new_home") {
             HomeScreen(navController)

@@ -72,7 +72,11 @@ dependencies {
     implementation(project(":feature:category"))
     implementation(project(":feature:account"))
 
-    implementation(libs.colorpicker)
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:export"))
+    implementation(project(":feature:datefilter"))
+    implementation(project(":feature:reminder"))
+    implementation(project(":feature:currency"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)

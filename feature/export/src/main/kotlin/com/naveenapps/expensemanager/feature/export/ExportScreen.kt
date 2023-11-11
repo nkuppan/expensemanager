@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.settings.export
+package com.naveenapps.expensemanager.feature.export
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EditCalendar
+import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -46,16 +49,16 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.shareThisFile
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.ExportFileType
-import com.naveenapps.expensemanager.presentation.budget.create.SelectedItemView
-import com.naveenapps.expensemanager.presentation.settings.datefilter.DateFilterSelectionView
+import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
+import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -187,7 +190,7 @@ private fun ExportScreenScaffoldView(
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
-            com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen { items, selected ->
+            MultipleAccountSelectionScreen { items, selected ->
                 setAccounts.invoke(items, selected)
                 scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
@@ -213,7 +216,7 @@ private fun ExportScreenScaffoldView(
             ) {
                 Row {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_export),
+                        imageVector = Icons.Default.Upload,
                         contentDescription = null
                     )
                     Text(
@@ -298,7 +301,7 @@ private fun ExportScreenContent(
             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             value = selectedDate ?: "",
             label = R.string.select_range,
-            leadingIcon = R.drawable.ic_calendar,
+            leadingIcon = Icons.Default.EditCalendar,
             onClick = {
                 focusManager.clearFocus(force = true)
                 showBottomSheet = true

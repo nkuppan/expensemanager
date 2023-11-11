@@ -42,7 +42,6 @@
     <string name="choose_currency">Choose Currency</string>
 
     <string name="choose_web_browser">Choose web browser</string>
-    <string name="date_filter">Filter By Date</string>
 
 
     <string name="unable_to_add_transaction">Unable to add transaction</string>
@@ -105,25 +104,17 @@
 
     <string name="categories">Categories</string>
     <string name="filter_message">Can select the date filter to view expenses</string>
-    <string name="from_date">From date</string>
-    <string name="to_date">To date</string>
     <string name="total">Total</string>
     <string name="transaction_summary">Summary</string>
     <string name="clear_all">Clear All</string>
     <string name="category_selection_message">Should select at least one category to proceed</string>
-    <string name="csv">CSV</string>
-    <string name="pdf">PDF</string>
-    <string name="select_range">Select Range</string>
-    <string name="select_account">Select Account</string>
-
-    <string name="export_error_message">Unknown error happened while exporting the file</string>
-    <string name="export_success_message">File exported successfully</string>
     <string name="share">Share</string>
     <string name="hello">Hello!</string>
     <string name="guest">Guest</string>
     <string name="balance">Balance</string>
-    <string name="export_disabled_message"><b>Note:</b> We are yet to support the PDF export feature. We will add them as soon as possible.</string>
+
     <string name="add_transaction">Add Transaction</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="select_account">Select Account</string>
 </resources>

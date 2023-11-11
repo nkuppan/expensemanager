@@ -39,6 +39,11 @@ gradlePlugin {
             implementationClass =
                 "com.naveenapps.expensemanager.buildsrc.plugins.AndroidAppBasicConfigPlugin"
         }
+        create("AndroidFeatureModuleConfigPlugin") {
+            id = "naveenapps.plugin.android.feature"
+            implementationClass =
+                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidFeatureModuleConfigPlugin"
+        }
         create("KotlinBasicConfigPlugin") {
             id = "naveenapps.plugin.kotlin.basic"
             implementationClass =
