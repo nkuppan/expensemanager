@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.budget.list
+package com.naveenapps.expensemanager.feature.budget.list
 
 import android.annotation.SuppressLint
 import androidx.annotation.ColorRes
@@ -47,7 +47,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -56,6 +55,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.feature.budget.R
 
 
 @Composable
@@ -318,7 +318,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        progressBarColor = R.color.orange_500,
+        progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
         percent = 0.9f
     ),
     BudgetUiModel(
@@ -328,7 +328,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        progressBarColor = R.color.orange_500,
+        progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
         percent = 0.9f
     ),
     BudgetUiModel(
@@ -338,7 +338,7 @@ val DUMMY_DATA = listOf(
         iconBackgroundColor = "#000000",
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        progressBarColor = R.color.orange_500,
+        progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
         percent = 0.9f
     ),
 )
@@ -354,7 +354,7 @@ private fun BudgetItemPreview() {
             amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             modifier = ItemSpecModifier,
-            progressBarColor = R.color.orange_500,
+            progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
             percentage = 78.8f
         )
     }
@@ -366,12 +366,16 @@ private fun DashboardBudgetItemPreview() {
     ExpenseManagerTheme {
         DashBoardBudgetItem(
             name = "This Month Budget",
-            progressBarColor = R.color.orange_500,
+            progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
             amount = "$100.00",
             transactionAmount = "$78.00",
             modifier = ItemSpecModifier,
             percentage = 78.8f,
-            backgroundColor = colorResource(id = R.color.blue_500).copy(alpha = .1f)
+            backgroundColor = colorResource(
+                id = com.naveenapps.expensemanager.core.common.R.color.blue_500
+            ).copy(
+                alpha = .1f
+            )
         )
     }
 }

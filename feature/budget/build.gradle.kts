@@ -8,3 +8,8 @@ plugins {
 android {
     namespace = "com.naveenapps.expensemanager.feature.budget"
 }
+
+dependencies {
+    implementation(project(":feature:category"))
+    implementation(project(":feature:account"))
+}

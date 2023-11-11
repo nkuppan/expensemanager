@@ -71,6 +71,7 @@ dependencies {
 
     implementation(project(":feature:category"))
     implementation(project(":feature:account"))
+    implementation(project(":feature:budget"))
 
     implementation(project(":feature:settings"))
     implementation(project(":feature:export"))

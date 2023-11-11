@@ -65,9 +65,7 @@
     <string name="choose_color">Choose color</string>
     <string name="choose_icon">Choose Icon</string>
     <string name="transaction_create_success">Transaction created/updated successfully</string>
-    <string name="select_date">Select Date</string>
     <string name="transfer">Transfer</string>
-    <string name="select_category">Select Category</string>
     <string name="optional_details">Optional details</string>
     <string name="select_different_account">Select different account. From and To account shouldn\'t be the same.</string>
     <string name="number_one">1</string>
@@ -89,15 +87,6 @@
     <string name="rate_us_message">It will help us to grow better</string>
     <string name="month_analysis">Month Analysis</string>
     <string name="select_time">Select Time</string>
-    <string name="budgets">Budgets</string>
-    <string name="no_budget_available">No budgets available</string>
-    <string name="budget_name">Budget Name</string>
-    <string name="budget_delete_error_message">Budget update failed</string>
-    <string name="budget_name_error">Name shouldn\'t be empty</string>
-    <string name="budget_create_error">Unable to create/update the budget</string>
-    <string name="budget_create_success">Budget created/updated successfully</string>
-    <string name="budget_amount">Budget Amount</string>
-    <string name="budget_amount_error">Budget amount shouldn\'t be empty or zero</string>
 
     <string name="categories">Categories</string>
     <string name="filter_message">Can select the date filter to view expenses</string>
@@ -114,4 +103,6 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="select_account">Select Account</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_category">Select Category</string>
 </resources>

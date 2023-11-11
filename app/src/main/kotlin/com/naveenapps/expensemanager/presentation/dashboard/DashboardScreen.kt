@@ -54,7 +54,7 @@ import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
-import com.naveenapps.expensemanager.presentation.budget.list.DashBoardBudgetItem
+import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionItem
 import kotlin.random.Random
 
@@ -226,7 +226,7 @@ private fun DashboardScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                title = stringResource(id = R.string.budgets),
+                title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
                 onViewAllClick = {
                     navController.navigate("budget")
                 }
@@ -259,7 +259,7 @@ private fun DashboardScreenContent(
             }
         } else {
             item {
-                DashboardEmptyView(stringResource(id = R.string.no_budget_available))
+                DashboardEmptyView(stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available))
             }
         }
         item {

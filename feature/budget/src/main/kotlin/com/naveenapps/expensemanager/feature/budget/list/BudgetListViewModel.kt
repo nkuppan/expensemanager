@@ -1,12 +1,10 @@
-package com.naveenapps.expensemanager.presentation.budget.list
+package com.naveenapps.expensemanager.feature.budget.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
-import com.naveenapps.expensemanager.core.model.Transaction
-import com.naveenapps.expensemanager.core.model.TransactionType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,20 +30,3 @@ class BudgetListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 }
-
-fun List<Transaction>.toTransactionSum() =
-    this.sumOf {
-        when (it.type) {
-            TransactionType.INCOME -> {
-                it.amount.amount
-            }
-
-            TransactionType.EXPENSE -> {
-                it.amount.amount * -1
-            }
-
-            TransactionType.TRANSFER -> {
-                0.0
-            }
-        }
-    }

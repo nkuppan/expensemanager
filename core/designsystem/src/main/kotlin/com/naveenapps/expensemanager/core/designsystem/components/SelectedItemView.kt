@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
 
@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.dp
 fun SelectedItemView(
     title: String,
     selectedCount: String,
-    icon: Painter,
+    icon: ImageVector,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
     ) {
         Icon(
-            painter = icon,
+            imageVector = icon,
             contentDescription = null
         )
 

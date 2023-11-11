@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -40,7 +41,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -317,7 +317,7 @@ private fun ExportScreenContent(
                 .padding(16.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
-            icon = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.savings),
+            icon = Icons.Default.AccountBalance,
             selectedCount = accountCount.asString(context)
         )
         if (exportFileType == ExportFileType.PDF) {

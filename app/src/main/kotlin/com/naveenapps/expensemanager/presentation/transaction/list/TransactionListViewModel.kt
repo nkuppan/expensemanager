@@ -8,9 +8,10 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiState
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
-import com.naveenapps.expensemanager.presentation.budget.list.toTransactionSum
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -63,3 +64,21 @@ class TransactionListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 }
+
+
+fun List<Transaction>.toTransactionSum() =
+    this.sumOf {
+        when (it.type) {
+            TransactionType.INCOME -> {
+                it.amount.amount
+            }
+
+            TransactionType.EXPENSE -> {
+                it.amount.amount * -1
+            }
+
+            TransactionType.TRANSFER -> {
+                0.0
+            }
+        }
+    }

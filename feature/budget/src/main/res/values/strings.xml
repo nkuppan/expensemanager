@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">Budgets</string>
+    <string name="no_budget_available">No budgets available</string>
+    <string name="budget_name">Budget Name</string>
+    <string name="budget_delete_error_message">Budget update failed</string>
+    <string name="budget_name_error">Name shouldn\'t be empty</string>
+    <string name="budget_create_error">Unable to create/update the budget</string>
+    <string name="budget_create_success">Budget created/updated successfully</string>
+    <string name="budget_amount">Budget Amount</string>
+    <string name="budget_amount_error">Budget amount shouldn\'t be empty or zero</string>
+
+    <string name="select_date">Select Date</string>
+    <string name="select_account">Select Account</string>
+    <string name="clear_all">Clear All</string>
+    <string name="select">Select</string>
+    <string name="select_category">Select Category</string>
+
+    <string name="delete">Delete</string>
+    <string name="delete_item_message">Do you really want to delete this item?</string>
+    <string name="cancel">Cancel</string>
+    <string name="all_time">All Time</string>
+</resources>
