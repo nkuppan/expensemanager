@@ -74,6 +74,7 @@ dependencies {
     implementation(project(":feature:budget"))
     implementation(project(":feature:category"))
     implementation(project(":feature:dashboard"))
+    implementation(project(":feature:transaction"))
 
     implementation(project(":feature:settings"))
     implementation(project(":feature:export"))
@@ -87,54 +88,12 @@ dependencies {
     implementation(libs.androidx.navigation)
     implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.profileinstaller)
-
-    implementation(libs.androidx.compose.activity)
-    implementation(libs.androidx.compose.animation)
-    implementation(libs.androidx.compose.foundation)
-    implementation(libs.androidx.compose.foundation.layout)
-    implementation(libs.androidx.compose.material.iconsExtended)
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.runtime)
-    implementation(libs.androidx.compose.runtime.livedata)
-    implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.compose.ui.util)
-    implementation(libs.androidx.metrics)
-    implementation(libs.androidx.tracing.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.accompanist.permissions)
-    implementation(libs.accompanist.systemUIController)
-
-    debugImplementation(libs.androidx.compose.ui.tooling)
-
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.browser)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.coil.kt)
-    implementation(libs.coil.kt.compose)
-    implementation(libs.kotlinx.datetime)
-
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.dataStore.core)
     implementation(libs.androidx.dataStore.preference)
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.work.ktx)
-    implementation(libs.google.android.play.review)
-    implementation(libs.app.update.ktx)
     implementation(libs.opencsv)
-
-    implementation(libs.jxl)
-
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
-
-    implementation(libs.vico.compose)
-    implementation(libs.vico.compose.m2)
-    implementation(libs.vico.compose.m3)
-    implementation(libs.vico.core)
-    implementation(libs.vico.views)
-    implementation(libs.joda.time)
 
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))

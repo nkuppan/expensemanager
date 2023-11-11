@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.feature.category.list
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -19,6 +18,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
@@ -31,8 +31,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -161,7 +161,7 @@ fun CategoryItem(
     icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
-    @DrawableRes endIcon: Int? = null
+    endIcon: ImageVector? = null
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
@@ -180,7 +180,7 @@ fun CategoryItem(
         if (endIcon != null) {
             Icon(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                painter = painterResource(id = endIcon),
+                imageVector = endIcon,
                 contentDescription = null,
             )
         }
@@ -252,7 +252,7 @@ private fun CategoryItemPreview() {
                 name = "Utilities",
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
-                endIcon = android.R.drawable.arrow_down_float,
+                endIcon = Icons.Default.KeyboardArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100))

@@ -7,7 +7,7 @@
     <string name="account_name_error">Name shouldn\'t be null</string>
     <string name="account_delete_error_message">Unable to delete this account</string>
     <string name="account_name">Account Name</string>
-    <string name="account">Account</string>
+    <string name="accounts">Accounts</string>
     <string name="available_balance">Available balance</string>
     <string name="credit_limit">Credit Limit</string>
     <string name="current_balance">Current Balance</string>

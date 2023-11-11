@@ -2,93 +2,33 @@
 
     <string name="app_name">Expense Manager</string>
 
-    <string name="filter">Filter</string>
-
 
     <!-- Failure message strings -->
-
-
-    <string name="amount_error_message">Please enter a valid amount</string>
-    <string name="amount_should_greater_than_zero">Amount should be greater than zero</string>
 
     <string name="title_accounts">Accounts</string>
     <string name="select">Select</string>
 
     <string name="title_home">Home</string>
     <string name="view_all">View all</string>
-    <string name="account">Account</string>
+    <string name="accounts">Account</string>
 
     <string name="category_name">Category Name</string>
-    <string name="spending">Spending</string>
-    <string name="income">Income</string>
 
 
     <string name="title_graph">Graph</string>
 
 
-    <string name="theme">Theme</string>
-    <string name="settings">Settings</string>
-
     <string name="backup_file_message">Backup file completed</string>
 
-    <string name="export">Export</string>
-    <string name="export_message">Export your data and analyse in your preferred format</string>
-
     <string name="currency">Currency</string>
-    <string name="selected_daily_reminder_time">We will remind you to add your expense at every on time</string>
-    <string name="rate_us">Rate Us</string>
-    <string name="developed_by">Developed by Naveen Kumar Kuppan</string>
 
-    <string name="choose_web_browser">Choose web browser</string>
-
-
-    <string name="unable_to_add_transaction">Unable to add transaction</string>
-    <string name="unable_to_find_transaction">Unable to find transaction</string>
-    <string name="transaction_delete_error_message">Unable to delete this transaction</string>
-
-    <string name="no_transactions_available">No transactions available</string>
-    <string name="date">Date</string>
-    <string name="notes">Notes</string>
-
-    <string name="divide">/</string>
-    <string name="multiply">*</string>
-    <string name="minus">-</string>
-    <string name="dot">.</string>
-    <string name="zero">0</string>
-    <string name="plus">+</string>
-
-    <string name="transaction">Transaction</string>
-
-    <string name="delete">Delete</string>
-    <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="choose_color">Choose color</string>
     <string name="choose_icon">Choose Icon</string>
-    <string name="transaction_create_success">Transaction created/updated successfully</string>
-    <string name="transfer">Transfer</string>
-    <string name="optional_details">Optional details</string>
-    <string name="select_different_account">Select different account. From and To account shouldn\'t be the same.</string>
-    <string name="number_one">1</string>
-    <string name="number_two">2</string>
-    <string name="number_three">3</string>
-    <string name="number_four">4</string>
-    <string name="number_five">5</string>
-    <string name="number_six">6</string>
-    <string name="number_seven">7</string>
-    <string name="number_eight">8</string>
-    <string name="number_nine">9</string>
-    <string name="double_zero">00</string>
-    <string name="clear">Clear</string>
-    <string name="analysis">Analysis</string>
-    <string name="select_currency">Select currency</string>
-    <string name="notification">Notification</string>
-    <string name="info">Info</string>
-    <string name="about_the_app_information">About app information</string>
-    <string name="rate_us_message">It will help us to grow better</string>
+
+
     <string name="month_analysis">Month Analysis</string>
-    <string name="select_time">Select Time</string>
 
     <string name="categories">Categories</string>
-    <string name="filter_message">Can select the date filter to view expenses</string>
     <string name="total">Total</string>
     <string name="transaction_summary">Summary</string>
     <string name="clear_all">Clear All</string>
@@ -101,7 +41,7 @@
     <string name="add_transaction">Add Transaction</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    <string name="select_account">Select Account</string>
-    <string name="select_date">Select Date</string>
-    <string name="select_category">Select Category</string>
+    <string name="settings">Settings</string>
+    <string name="analysis">Analysis</string>
+    <string name="transaction">Transaction</string>
 </resources>

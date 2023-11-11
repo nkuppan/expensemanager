@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.feature.account.list
 
 import android.annotation.SuppressLint
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -83,7 +83,7 @@ private fun AccountListScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(R.string.account)
+                title = stringResource(R.string.accounts)
             )
         },
         floatingActionButton = {
@@ -176,7 +176,7 @@ fun AccountItem(
     iconBackgroundColor: String,
     amount: String?,
     modifier: Modifier = Modifier,
-    @DrawableRes endIcon: Int? = null
+    endIcon: ImageVector? = null
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
@@ -210,7 +210,7 @@ fun AccountItem(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(start = 8.dp),
-                painter = painterResource(id = endIcon),
+                imageVector = endIcon,
                 contentDescription = null,
             )
         }

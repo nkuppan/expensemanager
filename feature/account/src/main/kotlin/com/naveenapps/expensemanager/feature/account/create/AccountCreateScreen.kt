@@ -126,7 +126,7 @@ fun AccountCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 navController = navController,
-                title = stringResource(id = R.string.account),
+                title = stringResource(id = R.string.accounts),
                 actionId = accountId
             ) {
                 showDeleteDialog = true

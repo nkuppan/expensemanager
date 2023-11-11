@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">Unable to add transaction</string>
+    <string name="unable_to_find_transaction">Unable to find transaction</string>
+    <string name="transaction_delete_error_message">Unable to delete this transaction</string>
+
+    <string name="no_transactions_available">No transactions available</string>
+    <string name="date">Date</string>
+    <string name="notes">Notes</string>
+    <string name="spending">Spending</string>
+    <string name="income">Income</string>
+    <string name="transfer">Transfer</string>
+
+    <string name="select_different_account">Select different account. From and To account shouldn\'t be the same.</string>
+    <string name="amount_error_message">Please enter a valid amount</string>
+    <string name="amount_should_greater_than_zero">Amount should be greater than zero</string>
+    <string name="transaction_create_success">Transaction created/updated successfully</string>
+    <string name="optional_details">Optional details</string>
+    <string name="select_account">Select Account</string>
+    <string name="select_category">Select Category</string>
+    <string name="select_date">Select Date</string>
+    <string name="select_time">Select Time</string>
+
+    <string name="transaction">Transaction</string>
+    <string name="clear">Clear</string>
+    <string name="delete">Delete</string>
+    <string name="delete_item_message">Do you really want to delete this item?</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="amount">Amount</string>
+    <string name="from_account">From Account</string>
+    <string name="to_account">To Account</string>
+</resources>

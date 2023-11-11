@@ -24,9 +24,7 @@ import com.naveenapps.expensemanager.feature.budget.create.BudgetCreateScreen
 import com.naveenapps.expensemanager.feature.budget.list.BudgetListScreen
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
-import com.naveenapps.expensemanager.presentation.settings.SettingsScreen
-import com.naveenapps.expensemanager.presentation.transaction.create.TransactionCreateScreen
-import com.naveenapps.expensemanager.presentation.transaction.list.TransactionListScreen
+import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 
 @Composable
 fun TempMainPageView() {
@@ -58,7 +56,9 @@ fun TempMainPageView() {
             )
         }
         composable("transaction") {
-            TransactionListScreen(navController)
+            com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen(
+                navController
+            )
         }
         composable(
             route = "transaction/create?transactionId={transactionId}",
@@ -69,7 +69,7 @@ fun TempMainPageView() {
                 }
             )
         ) { backStackEntry ->
-            TransactionCreateScreen(
+            com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen(
                 navController,
                 backStackEntry.arguments?.getString("transactionId")
             )

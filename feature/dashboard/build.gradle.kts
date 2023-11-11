@@ -6,5 +6,13 @@ plugins {
 }
 
 android {
-    namespace = "com.naveenapps.expensemanager.feature.transaction"
+    namespace = "com.naveenapps.expensemanager.feature.dashboard"
+}
+
+dependencies {
+    implementation(project(":feature:account"))
+    implementation(project(":feature:budget"))
+    implementation(project(":feature:category"))
+    implementation(project(":feature:datefilter"))
+    implementation(project(":feature:transaction"))
 }

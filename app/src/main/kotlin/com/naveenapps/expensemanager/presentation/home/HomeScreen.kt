@@ -14,14 +14,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.feature.analysis.AnalysisScreen
-import com.naveenapps.expensemanager.presentation.dashboard.DashboardScreen
-import com.naveenapps.expensemanager.presentation.dashboard.DashboardViewModel
-import com.naveenapps.expensemanager.presentation.transaction.list.TransactionListScreen
+import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
 
     Scaffold(
@@ -58,7 +56,9 @@ fun HomeScreen(
                 }
 
                 HomeScreenBottomBarItems.Transaction -> {
-                    TransactionListScreen(navController = navController)
+                    com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen(
+                        navController = navController
+                    )
                 }
 
                 HomeScreenBottomBarItems.Category -> {
