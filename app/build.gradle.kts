@@ -69,6 +69,8 @@ dependencies {
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
 
+    implementation(project(":feature:category"))
+
     implementation(libs.colorpicker)
 
     implementation(libs.androidx.appcompat)
@@ -112,7 +114,6 @@ dependencies {
     implementation(libs.app.update.ktx)
     implementation(libs.opencsv)
 
-    implementation(libs.mpcharts)
     implementation(libs.jxl)
 
     implementation(libs.room.runtime)

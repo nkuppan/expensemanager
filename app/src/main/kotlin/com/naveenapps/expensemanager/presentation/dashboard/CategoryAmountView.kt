@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
+import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
-import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionSmallItem
-import com.naveenapps.expensemanager.presentation.category.transaction.getRandomCategoryTransactionData
 
 
 @Composable
@@ -32,7 +32,13 @@ fun CategoryAmountView(
         Row(modifier = Modifier.padding(top = 16.dp)) {
             PieChartView(
                 totalAmountText = categoryTransactionUiModel.totalAmount.amountString ?: "",
-                chartData = categoryTransactionUiModel.pieChartData,
+                chartData = categoryTransactionUiModel.pieChartData.map {
+                    PieChartUiData(
+                        it.name,
+                        it.value,
+                        it.color
+                    )
+                },
                 hideValues = true,
                 chartHeight = 300,
                 chartWidth = 300
@@ -47,7 +53,7 @@ fun CategoryAmountView(
                 repeat(categoryTransactionUiModel.categoryTransactions.size) {
                     if (it < 4) {
                         val item = categoryTransactionUiModel.categoryTransactions[it]
-                        CategoryTransactionSmallItem(
+                        com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionSmallItem(
                             name = item.category.name,
                             icon = item.category.iconName,
                             iconBackgroundColor = item.category.iconBackgroundColor,
@@ -69,7 +75,7 @@ fun CategoryAmountViewPreview() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                categoryTransactionUiModel = getRandomCategoryTransactionData()
+                categoryTransactionUiModel = com.naveenapps.expensemanager.feature.category.transaction.getRandomCategoryTransactionData()
             )
         }
     }

@@ -1,6 +1,7 @@
-package com.naveenapps.expensemanager.presentation.dashboard
+package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import android.widget.LinearLayout
+import androidx.annotation.ColorInt
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
@@ -14,13 +15,18 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.naveenapps.expensemanager.core.model.PieChartData
 
+
+data class PieChartUiData(
+    var name: String,
+    var value: Float,
+    @ColorInt var color: Int,
+)
 
 @Composable
 fun PieChartView(
     totalAmountText: String,
-    chartData: List<PieChartData>,
+    chartData: List<PieChartUiData>,
     modifier: Modifier = Modifier,
     chartHeight: Int = 600,
     hideValues: Boolean = false,
@@ -85,7 +91,7 @@ fun PieChartView(
 
 fun updatePieChartWithData(
     chart: PieChart,
-    data: List<PieChartData>,
+    data: List<PieChartUiData>,
     hideValues: Boolean
 ) {
     val entries = mutableListOf<PieEntry>()

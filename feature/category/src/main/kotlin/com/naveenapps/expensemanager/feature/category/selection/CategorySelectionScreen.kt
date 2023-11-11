@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.category.selection
+package com.naveenapps.expensemanager.feature.category.selection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,12 +13,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.presentation.category.list.CategoryItem
-import com.naveenapps.expensemanager.presentation.category.list.getRandomCategoryData
-import com.naveenapps.expensemanager.presentation.selection.SelectionTitle
+import com.naveenapps.expensemanager.feature.category.R
+import com.naveenapps.expensemanager.feature.category.list.CategoryItem
+import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
 
 @Composable
 fun CategorySelectionScreen(
@@ -43,7 +43,9 @@ fun CategorySelectionScreen(
                             Modifier
                                 .padding(4.dp)
                                 .background(
-                                    color = colorResource(id = R.color.green_500).copy(alpha = .1f),
+                                    color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500).copy(
+                                        alpha = .1f
+                                    ),
                                     shape = RoundedCornerShape(size = 12.dp)
                                 )
                         } else {
@@ -58,7 +60,8 @@ fun CategorySelectionScreen(
                     icon = category.iconName,
                     iconBackgroundColor = category.iconBackgroundColor,
                     endIcon = if (isSelected) {
-                        R.drawable.ic_done
+                        //TODO
+                        android.R.drawable.stat_sys_upload_done
                     } else {
                         null
                     }

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.category.create
+package com.naveenapps.expensemanager.feature.category.create
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -28,21 +30,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
+import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
+import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.presentation.selection.ColorSelectionScreen
-import com.naveenapps.expensemanager.presentation.selection.IconAndColorComponent
-import com.naveenapps.expensemanager.presentation.selection.IconSelectionScreen
+import com.naveenapps.expensemanager.feature.category.R
 import kotlinx.coroutines.launch
 
 
@@ -118,7 +119,7 @@ fun CategoryCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 navController = navController,
-                title = stringResource(id = com.naveenapps.expensemanager.core.data.R.string.category),
+                title = stringResource(id = R.string.category),
                 actionId = categoryId
             ) {
                 showDeleteDialog = true
@@ -127,7 +128,7 @@ fun CategoryCreateScreen(
         floatingActionButton = {
             FloatingActionButton(onClick = viewModel::saveOrUpdateCategory) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_done),
+                    imageVector = Icons.Default.Done,
                     contentDescription = ""
                 )
             }

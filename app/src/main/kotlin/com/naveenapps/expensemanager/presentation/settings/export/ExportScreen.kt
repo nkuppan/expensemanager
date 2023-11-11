@@ -315,7 +315,7 @@ private fun ExportScreenContent(
                 .padding(16.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
-            icon = painterResource(id = R.drawable.savings),
+            icon = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.savings),
             selectedCount = accountCount.asString(context)
         )
         if (exportFileType == ExportFileType.PDF) {

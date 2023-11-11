@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="categories">Categories</string>
+    <string name="income">Income</string>
+    <string name="spending">Spending</string>
+    <string name="no_category_available">No category available</string>
+    <string name="no_transactions_available">No transactions available</string>
+    <string name="category_selection_message">Should select at least one category to proceed</string>
+    <string name="select_account">Select Account</string>
+    <string name="clear_all">Clear All</string>
+    <string name="select">Select</string>
+    <string name="select_category">Select Category</string>
 
+    <string name="delete">Delete</string>
+    <string name="delete_item_message">Do you really want to delete this item?</string>
+    <string name="cancel">Cancel</string>
+    <string name="category">Category</string>
+    <string name="category_name">Category Name</string>
+
+    <string name="category_create_error">Unknown error occurred while inserting category</string>
+    <string name="category_name_error">Name shouldn\'t be null</string>
+    <string name="category_create_success">Category created/modified successfully</string>
+    <string name="category_delete_error_message">Unable to delete this category</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.category.transaction
+package com.naveenapps.expensemanager.feature.category.transaction
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -37,7 +39,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -45,9 +46,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
+import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SmallIconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
@@ -58,9 +61,8 @@ import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
-import com.naveenapps.expensemanager.presentation.budget.list.toPercentString
-import com.naveenapps.expensemanager.presentation.category.list.getCategoryData
-import com.naveenapps.expensemanager.presentation.dashboard.PieChartView
+import com.naveenapps.expensemanager.feature.category.R
+import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import kotlin.random.Random
 
 @SuppressLint("ComposableDestinationInComposeScope")
@@ -88,7 +90,7 @@ fun CategoryTransactionTabScreen(
                 navController.navigate("transaction/create")
             }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_add),
+                    imageVector = Icons.Default.Add,
                     contentDescription = ""
                 )
             }
@@ -158,7 +160,7 @@ fun CategoryTransactionListScreen(
                 navController.navigate("transaction/create")
             }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_add),
+                    imageVector = Icons.Default.Add,
                     contentDescription = ""
                 )
             }
@@ -193,7 +195,7 @@ private fun CategoryTransactionListScreenContent(
                     modifier = Modifier
                         .wrapContentSize()
                         .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_account_available),
+                    text = stringResource(id = R.string.no_transactions_available),
                     textAlign = TextAlign.Center
                 )
             }
@@ -212,7 +214,13 @@ private fun CategoryTransactionListScreenContent(
                     item {
                         PieChartView(
                             uiState.data.totalAmount.amountString ?: "",
-                            uiState.data.pieChartData,
+                            uiState.data.pieChartData.map {
+                                PieChartUiData(
+                                    it.name,
+                                    it.value,
+                                    it.color
+                                )
+                            },
                             chartHeight = 600,
                             hideValues = uiState.data.hideValues,
                             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.selection
+package com.naveenapps.expensemanager.core.designsystem.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -19,7 +19,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.designsystem.ui.components.RoundIconView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
@@ -40,7 +39,7 @@ fun IconAndColorComponent(
     Row(modifier = modifier) {
 
         val containerColor = selectedColor.toColor()
-        val contentColor = colorResource(id = R.color.white)
+        val contentColor = colorResource(id = android.R.color.white)
 
         RoundIconView(
             modifier = Modifier

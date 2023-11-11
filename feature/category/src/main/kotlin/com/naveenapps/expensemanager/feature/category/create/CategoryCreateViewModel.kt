@@ -1,9 +1,8 @@
-package com.naveenapps.expensemanager.presentation.category.create
+package com.naveenapps.expensemanager.feature.category.create
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.DeleteCategoryUseCase
@@ -12,6 +11,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.category.UpdateCategory
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.feature.category.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

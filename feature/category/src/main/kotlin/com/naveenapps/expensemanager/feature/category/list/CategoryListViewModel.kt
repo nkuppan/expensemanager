@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.category.list
+package com.naveenapps.expensemanager.feature.category.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

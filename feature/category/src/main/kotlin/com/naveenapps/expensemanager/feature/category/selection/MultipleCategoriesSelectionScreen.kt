@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.category.selection
+package com.naveenapps.expensemanager.feature.category.selection
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
@@ -23,13 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.presentation.category.list.CategoryCheckedItem
-import com.naveenapps.expensemanager.presentation.category.list.getRandomCategoryData
-import com.naveenapps.expensemanager.presentation.selection.SelectionTitle
-
+import com.naveenapps.expensemanager.feature.category.R
+import com.naveenapps.expensemanager.feature.category.list.CategoryCheckedItem
+import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
 
 @Composable
 fun MultipleCategoriesSelectionScreen(

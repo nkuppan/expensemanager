@@ -11,7 +11,6 @@
     <!-- Failure message strings -->
 
 
-    <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="amount_error_message">Please enter a valid amount</string>
     <string name="amount_should_greater_than_zero">Amount should be greater than zero</string>
 
@@ -24,12 +23,9 @@
     <string name="view_all">View all</string>
     <string name="account">Account</string>
 
-    <string name="no_category_available">No category available</string>
-    <string name="category_delete_error_message">Unable to delete this category</string>
     <string name="category_name">Category Name</string>
     <string name="spending">Spending</string>
     <string name="income">Income</string>
-    <string name="category_create_error">Unknown error occurred while inserting category</string>
 
 
     <string name="title_graph">Graph</string>
@@ -76,13 +72,12 @@
     <string name="account_name">Account Name</string>
     <string name="bank_account">Bank account</string>
     <string name="no_account_available">No account available</string>
-    <string name="delete">Delete</string>
     <string name="select_account">Select Account</string>
 
-    <string name="category_create_success">Category created/modified successfully</string>
+    <string name="delete">Delete</string>
+    <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="choose_color">Choose color</string>
     <string name="choose_icon">Choose Icon</string>
-    <string name="category_name_error">Name shouldn\'t be null</string>
     <string name="credit">Credit</string>
     <string name="account_name_error">Name shouldn\'t be null</string>
     <string name="account_create_success">Account created/updated successfully</string>

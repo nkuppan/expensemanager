@@ -24,9 +24,6 @@ import com.naveenapps.expensemanager.presentation.account.list.AccountListScreen
 import com.naveenapps.expensemanager.presentation.analysis.AnalysisScreen
 import com.naveenapps.expensemanager.presentation.budget.create.BudgetCreateScreen
 import com.naveenapps.expensemanager.presentation.budget.list.BudgetListScreen
-import com.naveenapps.expensemanager.presentation.category.create.CategoryCreateScreen
-import com.naveenapps.expensemanager.presentation.category.list.CategoryListScreen
-import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.presentation.settings.SettingsScreen
 import com.naveenapps.expensemanager.presentation.settings.export.ExportScreen
 import com.naveenapps.expensemanager.presentation.transaction.create.TransactionCreateScreen
@@ -45,7 +42,7 @@ fun TempMainPageView() {
             TempHomePageScreen(navController)
         }
         composable("category") {
-            CategoryListScreen(navController)
+            com.naveenapps.expensemanager.feature.category.list.CategoryListScreen(navController)
         }
         composable(
             route = "category/create?categoryId={categoryId}",
@@ -56,7 +53,7 @@ fun TempMainPageView() {
                 }
             )
         ) { backStackEntry ->
-            CategoryCreateScreen(
+            com.naveenapps.expensemanager.feature.category.create.CategoryCreateScreen(
                 navController,
                 backStackEntry.arguments?.getString("categoryId")
             )
@@ -122,7 +119,9 @@ fun TempMainPageView() {
             ExportScreen(navController)
         }
         composable("category_group") {
-            CategoryTransactionTabScreen(navController)
+            com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen(
+                navController
+            )
         }
         composable("new_home") {
             HomeScreen(navController)

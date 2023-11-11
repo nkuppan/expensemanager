@@ -57,7 +57,6 @@ import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
 import com.naveenapps.expensemanager.presentation.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.presentation.budget.list.DashBoardBudgetItem
-import com.naveenapps.expensemanager.presentation.category.list.getCategoryData
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionItem
 import kotlin.random.Random
 
@@ -372,7 +371,9 @@ fun IncomeExpenseBalanceViewPreview() {
                     repeat(15) {
                         add(
                             CategoryTransaction(
-                                category = getCategoryData(it),
+                                category = com.naveenapps.expensemanager.feature.category.list.getCategoryData(
+                                    it
+                                ),
                                 amount = Amount(0.0, "100.00$"),
                                 percent = Random(100).nextFloat(),
                                 transaction = emptyList()

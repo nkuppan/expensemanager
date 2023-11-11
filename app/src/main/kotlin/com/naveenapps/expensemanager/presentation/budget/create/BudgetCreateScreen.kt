@@ -45,6 +45,9 @@ import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
+import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
+import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
+import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
@@ -53,12 +56,9 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextF
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
+import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
 import com.naveenapps.expensemanager.presentation.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.presentation.budget.create.BudgetCreateSheetSelection.*
-import com.naveenapps.expensemanager.presentation.category.selection.MultipleCategoriesSelectionScreen
-import com.naveenapps.expensemanager.presentation.selection.ColorSelectionScreen
-import com.naveenapps.expensemanager.presentation.selection.IconAndColorComponent
-import com.naveenapps.expensemanager.presentation.selection.IconSelectionScreen
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -383,7 +383,7 @@ private fun BudgetCreateScreen(
                 .padding(16.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
-            icon = painterResource(id = R.drawable.savings),
+            icon = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.savings),
             selectedCount = accountCount?.asString(context)
                 ?: stringResource(id = com.naveenapps.expensemanager.core.data.R.string.all_time)
         )

@@ -20,9 +20,21 @@ dependencies {
     api(libs.androidx.compose.runtime.livedata)
     api(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.ui.util)
+    api(libs.androidx.metrics)
+    api(libs.androidx.tracing.ktx)
     api(libs.androidx.hilt.navigation.compose)
+    api(libs.accompanist.permissions)
+    api(libs.accompanist.systemUIController)
 
     debugApi(libs.androidx.compose.ui.tooling)
 
-    implementation(libs.androidx.core.ktx)
+    api(libs.androidx.core.ktx)
+
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m2)
+    implementation(libs.vico.compose.m3)
+    implementation(libs.vico.core)
+    implementation(libs.vico.views)
+
+    implementation(libs.mpcharts)
 }

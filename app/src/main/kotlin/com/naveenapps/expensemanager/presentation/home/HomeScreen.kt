@@ -14,7 +14,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.presentation.analysis.AnalysisScreen
-import com.naveenapps.expensemanager.presentation.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.presentation.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.presentation.dashboard.DashboardViewModel
 import com.naveenapps.expensemanager.presentation.transaction.list.TransactionListScreen
@@ -63,7 +62,9 @@ fun HomeScreen(
                 }
 
                 HomeScreenBottomBarItems.Category -> {
-                    CategoryTransactionTabScreen(navController = navController)
+                    com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen(
+                        navController = navController
+                    )
                 }
             }
         }

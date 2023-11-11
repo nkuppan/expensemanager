@@ -39,6 +39,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
+import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
+import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
@@ -47,9 +50,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.presentation.selection.ColorSelectionScreen
-import com.naveenapps.expensemanager.presentation.selection.IconAndColorComponent
-import com.naveenapps.expensemanager.presentation.selection.IconSelectionScreen
 import kotlinx.coroutines.launch
 
 

@@ -14,12 +14,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.presentation.account.list.ACCOUNT_DUMMY_DATA
 import com.naveenapps.expensemanager.presentation.account.list.AccountItem
-import com.naveenapps.expensemanager.presentation.selection.SelectionTitle
 
 @Composable
 fun AccountSelectionScreen(

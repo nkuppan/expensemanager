@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.category.list
+package com.naveenapps.expensemanager.feature.category.list
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
@@ -38,7 +40,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.naveenapps.expensemanager.R
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
@@ -46,6 +47,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.feature.category.R
 import java.util.Date
 
 
@@ -67,7 +69,7 @@ private fun CategoryListScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 navController = navController,
-                title = stringResource(com.naveenapps.expensemanager.core.data.R.string.category),
+                title = stringResource(R.string.category),
                 disableBackIcon = true
             )
         },
@@ -78,7 +80,7 @@ private fun CategoryListScreenScaffoldView(
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_add),
+                    imageVector = Icons.Default.Add,
                     contentDescription = ""
                 )
             }
@@ -250,10 +252,10 @@ private fun CategoryItemPreview() {
                 name = "Utilities",
                 icon = "ic_calendar",
                 iconBackgroundColor = "#000000",
-                endIcon = R.drawable.ic_arrow_right,
+                endIcon = android.R.drawable.arrow_down_float,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = colorResource(id = R.color.black_100))
+                    .background(color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100))
                     .then(ItemSpecModifier)
             )
         }

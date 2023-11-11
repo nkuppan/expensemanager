@@ -10,10 +10,10 @@ android {
 }
 
 dependencies {
-    implementation(":core:common")
-    implementation(":core:data")
-    implementation(":core:model")
-    implementation(":core:designsystem")
+    implementation(project(":core:common"))
+    implementation(project(":core:data"))
+    implementation(project(":core:model"))
+    implementation(project(":core:designsystem"))
 
     implementation(libs.kotlinx.coroutines.android)
 

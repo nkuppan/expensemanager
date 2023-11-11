@@ -5,4 +5,6 @@
     <string name="choose_web_browser">Choose browser</string>
     <string name="select">Select</string>
     <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Choose Icon</string>
+    <string name="choose_color">Choose Color</string>
 </resources>

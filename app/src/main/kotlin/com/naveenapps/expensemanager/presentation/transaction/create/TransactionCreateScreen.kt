@@ -70,8 +70,6 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.presentation.account.list.AccountItem
 import com.naveenapps.expensemanager.presentation.account.selection.AccountSelectionScreen
-import com.naveenapps.expensemanager.presentation.category.list.CategoryItem
-import com.naveenapps.expensemanager.presentation.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.presentation.transaction.numberpad.NumberPadDialogView
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -230,7 +228,7 @@ private fun TransactionCreateBottomSheetContent(
     if (sheetSelection == 1) {
         val categories by viewModel.categories.collectAsState()
         val selectedCategory by viewModel.selectedCategory.collectAsState()
-        CategorySelectionScreen(
+        com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen(
             categories = categories,
             selectedCategory = selectedCategory,
         ) { category ->
@@ -419,7 +417,7 @@ private fun TransactionCreateScreen(
                 fontStyle = FontStyle.Normal,
                 color = colorResource(id = R.color.blue_500)
             )
-            CategoryItem(
+            com.naveenapps.expensemanager.feature.category.list.CategoryItem(
                 name = selectedCategory.name,
                 icon = selectedCategory.iconName,
                 iconBackgroundColor = selectedCategory.iconBackgroundColor,
