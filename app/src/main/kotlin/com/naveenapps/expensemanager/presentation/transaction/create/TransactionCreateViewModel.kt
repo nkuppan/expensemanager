@@ -157,7 +157,7 @@ class TransactionCreateViewModel @Inject constructor(
                     val transaction = response.data
                     val currency = selectedCurrency
                     currency ?: return@launch
-                    setAmount(transaction.amount.toString())
+                    setAmount(transaction.amount.amount.toString())
                     setDate(transaction.createdOn)
                     setNotes(transaction.notes)
                     setCategorySelection(transaction.category)
