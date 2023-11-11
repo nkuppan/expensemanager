@@ -9,5 +9,10 @@ data class Currency(
 
 enum class CurrencySymbolPosition {
     PREFIX,
-    SUFFIX
+    SUFFIX;
+}
+
+
+fun CurrencySymbolPosition.isPrefix(): Boolean {
+    return this == CurrencySymbolPosition.PREFIX
 }

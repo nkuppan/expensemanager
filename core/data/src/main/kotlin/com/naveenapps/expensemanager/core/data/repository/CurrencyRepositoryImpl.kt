@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
+import com.naveenapps.expensemanager.core.model.isPrefix
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -100,7 +101,7 @@ class CurrencyRepositoryImpl @Inject constructor(
         val currencies = getAllCurrency()
 
         return dataStore.getCurrencySymbol(defaultCurrency.type).combine(
-            dataStore.getCurrencySymbolPosition(CurrencySymbolPosition.PREFIX.ordinal)
+            dataStore.getCurrencySymbolPosition(CurrencySymbolPosition.SUFFIX.ordinal)
         ) { symbol, position ->
 
             val selectedCurrency = currencies.find { currency ->
@@ -116,13 +117,14 @@ class CurrencyRepositoryImpl @Inject constructor(
     }
 
     override fun getFormattedCurrency(amount: Amount): Amount {
+        val currency = amount.currency ?: dollar
         return amount.copy(
             amountString = getCurrency(
                 context = context,
-                currency = amount.currency ?: dollar,
+                currency = currency,
                 amount = amount.amount
             ).let {
-                return@let if (it.contains(MINUS_SYMBOL)) {
+                return@let if (currency.position.isPrefix() && it.contains(MINUS_SYMBOL)) {
                     "${MINUS_SYMBOL}${it.replace(MINUS_SYMBOL, "")}"
                 } else {
                     it
