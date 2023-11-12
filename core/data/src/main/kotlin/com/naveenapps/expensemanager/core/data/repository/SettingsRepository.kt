@@ -29,4 +29,8 @@ interface SettingsRepository {
     fun isPreloaded(): Flow<Boolean>
 
     suspend fun setPreloaded(preloaded: Boolean): Resource<Boolean>
+
+    fun isOnboardingCompleted(): Flow<Boolean>
+
+    suspend fun setOnboardingCompleted(isOnboardingCompleted: Boolean): Resource<Boolean>
 }

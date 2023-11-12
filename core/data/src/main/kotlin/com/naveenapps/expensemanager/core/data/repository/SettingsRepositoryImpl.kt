@@ -70,4 +70,14 @@ class SettingsRepositoryImpl @Inject constructor(
             dataStore.setPreloaded(preloaded)
             return@withContext Resource.Success(true)
         }
+
+    override fun isOnboardingCompleted(): Flow<Boolean> {
+        return dataStore.isOnboardingCompleted()
+    }
+
+    override suspend fun setOnboardingCompleted(isOnboardingCompleted: Boolean): Resource<Boolean> =
+        withContext(dispatcher.io) {
+            dataStore.setOnboardingCompleted(isOnboardingCompleted)
+            return@withContext Resource.Success(true)
+        }
 }

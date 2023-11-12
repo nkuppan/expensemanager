@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.home
+package com.naveenapps.expensemanager.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -28,6 +28,7 @@ import com.naveenapps.expensemanager.feature.category.list.CategoryListScreen
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
+import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
@@ -40,8 +41,11 @@ fun HomePageNavHostContainer() {
 
     NavHost(
         navController = navController,
-        startDestination = "home"
+        startDestination = "onboarding"
     ) {
+        composable("onboarding") {
+            OnboardingScreen(navController)
+        }
         composable("home") {
             HomeScreen(navController)
         }

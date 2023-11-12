@@ -94,8 +94,18 @@ class SettingsDataStore @Inject constructor(
         preferences[KEY_IS_PRELOAD] ?: false
     }
 
+    suspend fun setOnboardingCompleted(onboardingCompleted: Boolean) =
+        dataStore.edit { preferences ->
+            preferences[KEY_IS_ON_BOARDING_COMPLETED] = onboardingCompleted
+        }
+
+    fun isOnboardingCompleted(): Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[KEY_IS_ON_BOARDING_COMPLETED] ?: false
+    }
+
     companion object {
         private val KEY_IS_PRELOAD = booleanPreferencesKey("is_preloaded")
+        private val KEY_IS_ON_BOARDING_COMPLETED = booleanPreferencesKey("is_on_boarding_completed")
 
         private val KEY_REMINDER = booleanPreferencesKey("reminder")
         private val KEY_FILTER_ENABLED = booleanPreferencesKey("filter_enabled")

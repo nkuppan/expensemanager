@@ -4,8 +4,8 @@ import com.naveenapps.expensemanager.core.data.repository.SettingsRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
-class GetPreloadStatusUseCase @Inject constructor(private val repository: SettingsRepository) {
+class GetOnboardingStatusUseCase @Inject constructor(private val repository: SettingsRepository) {
     suspend operator fun invoke(): Boolean {
-        return repository.isPreloaded().first()
+        return repository.isOnboardingCompleted().first()
     }
 }

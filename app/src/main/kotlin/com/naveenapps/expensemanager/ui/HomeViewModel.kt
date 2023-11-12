@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation.home
+package com.naveenapps.expensemanager.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

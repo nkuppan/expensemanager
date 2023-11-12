@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.presentation
+package com.naveenapps.expensemanager.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,7 +17,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.feature.theme.ThemeViewModel
-import com.naveenapps.expensemanager.presentation.home.HomePageNavHostContainer
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
