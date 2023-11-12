@@ -16,6 +16,8 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,14 +39,12 @@ class AccountCreateViewModel @Inject constructor(
     private val findAccountByIdUseCase: FindAccountByIdUseCase,
     private val addAccountUseCase: AddAccountUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase,
-    private val deleteAccountUseCase: DeleteAccountUseCase
+    private val deleteAccountUseCase: DeleteAccountUseCase,
+    private val composeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _errorMessage = MutableSharedFlow<UiText>()
-    val errorMessage = _errorMessage.asSharedFlow()
-
-    private val _accountUpdated = MutableSharedFlow<Boolean>()
-    val accountUpdated = _accountUpdated.asSharedFlow()
+    private val _message = MutableSharedFlow<UiText>()
+    val message = _message.asSharedFlow()
 
     var accountType = MutableStateFlow(AccountType.REGULAR)
         private set
@@ -92,7 +92,7 @@ class AccountCreateViewModel @Inject constructor(
     )
 
     init {
-        readAccountInfo(savedStateHandle.get<String>(CATEGORY_ID))
+        readAccountInfo(savedStateHandle.get<String>(ExpenseManagerScreens.AccountCreate.KEY_ACCOUNT_ID))
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
@@ -163,13 +163,16 @@ class AccountCreateViewModel @Inject constructor(
             account?.let { account ->
                 when (deleteAccountUseCase.invoke(account)) {
                     is Resource.Error -> {
-                        _errorMessage.emit(
+                        _message.emit(
                             UiText.StringResource(R.string.account_delete_error_message)
                         )
                     }
 
                     is Resource.Success -> {
-                        _accountUpdated.emit(true)
+                        _message.emit(
+                            UiText.StringResource(R.string.account_delete_success_message)
+                        )
+                        composeNavigator.popBackStack()
                     }
                 }
             }
@@ -225,14 +228,19 @@ class AccountCreateViewModel @Inject constructor(
             }
             when (response) {
                 is Resource.Error -> {
-                    _errorMessage.emit(UiText.StringResource(R.string.account_create_error))
+                    _message.emit(UiText.StringResource(R.string.account_create_error))
                 }
 
                 is Resource.Success -> {
-                    _accountUpdated.emit(true)
+                    _message.emit(UiText.StringResource(R.string.account_create_success))
+                    composeNavigator.popBackStack()
                 }
             }
         }
+    }
+
+    fun closePage() {
+        composeNavigator.popBackStack()
     }
 
     fun setColorValue(colorValue: Int) {
@@ -283,6 +291,5 @@ class AccountCreateViewModel @Inject constructor(
     companion object {
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "account_balance"
-        private const val CATEGORY_ID = "accountId"
     }
 }

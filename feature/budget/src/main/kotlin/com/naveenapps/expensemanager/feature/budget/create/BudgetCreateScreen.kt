@@ -40,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
@@ -75,7 +74,7 @@ enum class BudgetCreateSheetSelection {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
+fun BudgetCreateScreen() {
 
     val context = LocalContext.current
 
@@ -102,16 +101,6 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
             positiveButtonText = stringResource(id = R.string.delete),
             negativeButtonText = stringResource(id = R.string.cancel)
         )
-    }
-
-    val budgetCreated by viewModel.budgetUpdated.collectAsState(false)
-    if (budgetCreated) {
-        LaunchedEffect(key1 = "completed", block = {
-            navController.popBackStack()
-            snackbarHostState.showSnackbar(
-                message = context.getString(R.string.budget_create_success)
-            )
-        })
     }
 
     val errorMessage by viewModel.errorMessage.collectAsState(null)
@@ -150,11 +139,14 @@ fun BudgetCreateScreen(navController: NavController, budgetId: String?) {
         },
         topBar = {
             TopNavigationBarWithDeleteAction(
-                navController = navController,
                 title = stringResource(id = R.string.budgets),
-                actionId = budgetId
+                actionId = null
             ) {
-                showDeleteDialog = true
+                if (it == 1) {
+                    viewModel.closePage()
+                } else {
+                    showDeleteDialog = true
+                }
             }
         },
         floatingActionButton = {

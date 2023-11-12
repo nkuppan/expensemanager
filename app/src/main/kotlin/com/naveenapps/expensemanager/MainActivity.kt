@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.ui
+package com.naveenapps.expensemanager
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,13 +14,18 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Theme
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.feature.theme.ThemeViewModel
+import com.naveenapps.expensemanager.ui.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 internal class HomeActivity : ComponentActivity() {
+
+    @Inject
+    internal lateinit var appComposeNavigator: AppComposeNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -43,9 +48,7 @@ internal class HomeActivity : ComponentActivity() {
                 )
             }
 
-            ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
-                HomePageNavHostContainer()
-            }
+            MainScreen(appComposeNavigator, isDarkTheme)
         }
     }
 }
@@ -55,7 +58,7 @@ internal class HomeActivity : ComponentActivity() {
  * current system context.
  */
 @Composable
-private fun shouldUseDarkTheme(theme: Theme): Boolean = when (theme.mode) {
+fun shouldUseDarkTheme(theme: Theme): Boolean = when (theme.mode) {
     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> isSystemInDarkTheme()
     AppCompatDelegate.MODE_NIGHT_NO -> false
     AppCompatDelegate.MODE_NIGHT_YES -> true
@@ -63,5 +66,3 @@ private fun shouldUseDarkTheme(theme: Theme): Boolean = when (theme.mode) {
         isSystemInDarkTheme()
     }
 }
-
-

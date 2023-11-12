@@ -16,8 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
@@ -25,14 +23,14 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavigationBar(
-    navController: NavController,
+    onClick: () -> Unit,
     title: String?,
     disableBackIcon: Boolean = false
 ) {
     TopAppBar(
         navigationIcon = {
             if (disableBackIcon.not()) {
-                NavigationButton(navController)
+                NavigationButton(onClick)
             }
         },
         title = {
@@ -50,14 +48,15 @@ fun TopNavigationBar(
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun TopNavigationBarWithDeleteAction(
-    navController: NavController,
     title: String,
     actionId: String?,
-    onClick: () -> Unit,
+    onClick: (Int) -> Unit,
 ) {
     TopAppBar(navigationIcon = {
         NavigationButton(
-            navController,
+            onClick = {
+                onClick.invoke(1)
+            },
             navigationIcon = Icons.Default.Close
         )
     }, title = {
@@ -69,7 +68,9 @@ fun TopNavigationBarWithDeleteAction(
                 text = title
             )
             if (actionId?.isNotBlank() == true) {
-                IconButton(onClick = onClick) {
+                IconButton(onClick = {
+                    onClick.invoke(2)
+                }) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = ""
@@ -86,27 +87,25 @@ private fun TopNavigationBarWithDeleteAction() {
     ExpenseManagerTheme {
         Column {
             TopNavigationBar(
-                navController = rememberNavController(),
+                onClick = {},
                 title = null,
             )
             TopNavigationBar(
-                navController = rememberNavController(),
+                onClick = {},
                 title = stringResource(id = R.string.page_name),
                 disableBackIcon = true
             )
             TopNavigationBar(
-                navController = rememberNavController(),
+                onClick = {},
                 title = stringResource(id = R.string.page_name),
             )
             TopNavigationBarWithDeleteAction(
-                navController = rememberNavController(),
                 title = stringResource(id = R.string.page_name),
                 actionId = null
             ) {
 
             }
             TopNavigationBarWithDeleteAction(
-                navController = rememberNavController(),
                 title = stringResource(id = R.string.page_name),
                 actionId = "null"
             ) {

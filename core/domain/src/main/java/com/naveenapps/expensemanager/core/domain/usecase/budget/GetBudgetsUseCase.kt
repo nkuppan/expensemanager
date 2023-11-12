@@ -4,6 +4,7 @@ import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.data.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 class GetBudgetsUseCase @Inject constructor(
     private val repository: BudgetRepository,
+    private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase,
@@ -21,8 +23,9 @@ class GetBudgetsUseCase @Inject constructor(
     operator fun invoke(): Flow<List<BudgetUiModel>> {
         return combine(
             getCurrencyUseCase.invoke(),
+            getTransactionWithFilterUseCase.invoke(),
             repository.getBudgets()
-        ) { currency, budgets ->
+        ) { currency, _, budgets ->
             budgets.map {
                 val transactionAmount =
                     when (val response = getBudgetTransactionsUseCase(it)) {

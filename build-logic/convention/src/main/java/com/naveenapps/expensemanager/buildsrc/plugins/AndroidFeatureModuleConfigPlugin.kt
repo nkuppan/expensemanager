@@ -31,6 +31,7 @@ class AndroidFeatureModuleConfigPlugin : Plugin<Project> {
                 add("implementation", project(":core:model"))
                 add("implementation", project(":core:domain"))
                 add("implementation", project(":core:designsystem"))
+                add("implementation", project(":core:navigation"))
 
                 libs.findLibrary("kotlinx.coroutines.android").getOrNull()?.let {
                     add("implementation", it)

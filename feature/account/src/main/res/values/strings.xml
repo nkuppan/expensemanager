@@ -20,4 +20,5 @@
     <string name="account_selection_message">Should select at least one account to proceed</string>
     <string name="clear_all">Clear All</string>
     <string name="select">Select</string>
+    <string name="account_delete_success_message">Account deleted successfully</string>
 </resources>

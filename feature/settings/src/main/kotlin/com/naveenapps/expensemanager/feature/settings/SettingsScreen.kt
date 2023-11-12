@@ -35,8 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openEmailToOption
@@ -51,19 +49,16 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun SettingsScreen(
-    navController: NavController
-) {
+fun SettingsScreen() {
     val viewModel: SettingsViewModel = hiltViewModel()
     val currency by viewModel.currency.collectAsState()
     val theme by viewModel.theme.collectAsState()
-    SettingsScreenScaffoldView(navController, currency, theme)
+    SettingsScreenScaffoldView(currency, theme)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsScreenScaffoldView(
-    navController: NavController,
     currency: Currency? = null,
     theme: Theme? = null,
 ) {
@@ -111,7 +106,7 @@ private fun SettingsScreenScaffoldView(
     Scaffold(
         topBar = {
             TopNavigationBar(
-                navController = navController,
+                onClick = {},
                 title = stringResource(R.string.settings)
             )
         }
@@ -144,7 +139,7 @@ private fun SettingsScreenScaffoldView(
                 }
 
                 SettingOption.EXPORT -> {
-                    navController.navigate("export")
+                    //navController.navigate("export")
                 }
 
                 SettingOption.INFO -> {
@@ -387,7 +382,7 @@ fun SettingsScreenItemPreview() {
 @Composable
 fun SettingsScreenPreview() {
     ExpenseManagerTheme {
-        SettingsScreenScaffoldView(rememberNavController())
+        SettingsScreenScaffoldView()
     }
 }
 

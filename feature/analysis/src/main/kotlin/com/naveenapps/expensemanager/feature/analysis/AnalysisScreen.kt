@@ -8,25 +8,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
 @Composable
-fun AnalysisScreen(navController: NavController) {
-    AnalysisScreenScaffoldView(navController = navController)
+fun AnalysisScreen() {
+    AnalysisScreenScaffoldView()
 }
 
 
 @Composable
-private fun AnalysisScreenScaffoldView(
-    navController: NavController
-) {
+private fun AnalysisScreenScaffoldView() {
     Scaffold(
         topBar = {
             TopNavigationBar(
-                navController = navController,
+                onClick = {},
                 title = stringResource(R.string.analysis),
                 disableBackIcon = true
             )
@@ -35,20 +31,14 @@ private fun AnalysisScreenScaffoldView(
         AnalysisScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize(),
-            navController = navController
+                .fillMaxSize()
         )
     }
 }
 
 @Composable
-private fun AnalysisScreenContent(
-    navController: NavController,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-    ) {
+private fun AnalysisScreenContent(modifier: Modifier = Modifier) {
+    Column(modifier = modifier) {
         AnalysisGraphScreen()
     }
 }
@@ -57,6 +47,6 @@ private fun AnalysisScreenContent(
 @Composable
 fun AnalysisScreenPreview() {
     ExpenseManagerTheme {
-        AnalysisScreen(rememberNavController())
+        AnalysisScreen()
     }
 }

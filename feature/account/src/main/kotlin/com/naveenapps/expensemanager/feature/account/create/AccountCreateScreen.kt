@@ -38,7 +38,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
@@ -56,10 +55,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun AccountCreateScreen(
-    navController: NavController,
-    accountId: String?,
-) {
+fun AccountCreateScreen() {
 
     val context = LocalContext.current
 
@@ -88,10 +84,9 @@ fun AccountCreateScreen(
         )
     }
 
-    val accountCreated by viewModel.accountUpdated.collectAsState(false)
-    if (accountCreated) {
+    val accountCreated by viewModel.message.collectAsState(null)
+    if (accountCreated != null) {
         LaunchedEffect(key1 = "completed", block = {
-            navController.popBackStack()
             snackbarHostState.showSnackbar(
                 message = context.getString(R.string.account_create_success)
             )
@@ -125,11 +120,14 @@ fun AccountCreateScreen(
         },
         topBar = {
             TopNavigationBarWithDeleteAction(
-                navController = navController,
                 title = stringResource(id = R.string.accounts),
-                actionId = accountId
+                actionId = null
             ) {
-                showDeleteDialog = true
+                if (it == 1) {
+                    viewModel.closePage()
+                } else {
+                    showDeleteDialog = true
+                }
             }
         },
         floatingActionButton = {

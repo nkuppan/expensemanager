@@ -6,6 +6,8 @@ import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryTransactionListViewModel @Inject constructor(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
+    private val appComposeNavigator: AppComposeNavigator
 ) : ViewModel() {
     private val _categoryTransaction = MutableStateFlow<UiState<CategoryTransactionUiModel>>(
         UiState.Loading
@@ -44,5 +47,15 @@ class CategoryTransactionListViewModel @Inject constructor(
 
     fun setCategoryType(categoryType: CategoryType) {
         this._categoryType.value = categoryType
+    }
+
+    fun openCreatePage() {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.TransactionCreate.createRoute("")
+        )
+    }
+
+    fun closePage() {
+        appComposeNavigator.popBackStack()
     }
 }

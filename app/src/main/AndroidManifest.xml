@@ -34,7 +34,7 @@
             android:value="false" />
 
         <activity
-            android:name=".ui.HomeActivity"
+            android:name=".HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

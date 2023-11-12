@@ -2,19 +2,15 @@ package com.naveenapps.expensemanager.feature.onboarding
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
@@ -32,14 +28,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -49,10 +44,7 @@ import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.currency.CurrencyDialogView
 
 @Composable
-fun OnboardingScreen(
-    navController: NavController,
-    viewModel: OnboardingViewModel = hiltViewModel()
-) {
+fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
 
     val currency by viewModel.currency.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
@@ -69,26 +61,18 @@ fun OnboardingScreen(
             modifier = Modifier.padding(it),
             currency = currency,
             accounts = accounts,
-        ) { actionType ->
+        ) { actionType, id ->
             when (actionType) {
                 1 -> {
                     showCurrencySelection = true
                 }
 
                 2 -> {
-                    navController.navigate("account/create")
+                    viewModel.openAccountCreateScreen(id)
                 }
 
                 3 -> {
-                    navController.navigate("account/create")
-                }
-
-                4 -> {
-                    navController.navigate("home") {
-                        popUpTo("onboarding") {
-                            inclusive = true
-                        }
-                    }
+                    viewModel.openHome()
                 }
             }
         }
@@ -100,101 +84,62 @@ private fun OnboardingContentView(
     currency: Currency,
     accounts: List<AccountUiModel>,
     modifier: Modifier = Modifier,
-    onSelection: (Int) -> Unit
+    onSelection: (Int, String?) -> Unit
 ) {
     Column(modifier = modifier) {
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .padding(16.dp)
         ) {
-            item {
-                Box(
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Image(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(225.dp)
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(128.dp)
-                            .align(Alignment.BottomCenter),
-                        painter = painterResource(id = com.naveenapps.expensemanager.core.common.R.drawable.expenses),
-                        contentDescription = null
-                    )
-                }
-            }
-            item {
-                Text(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth(),
-                    text = stringResource(id = R.string.welcome_message),
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center
+                        .padding(64.dp)
+                        .size(128.dp)
+                        .align(Alignment.BottomCenter),
+                    painter = painterResource(id = com.naveenapps.expensemanager.core.common.R.drawable.expenses),
+                    contentDescription = null
                 )
             }
+            Text(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.welcome_message),
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center
+            )
+            DashboardWidgetTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+                title = stringResource(id = R.string.select_currency),
+            )
 
-            item {
-                Text(
-                    modifier = Modifier
-                        .padding(top = 32.dp),
-                    text = stringResource(id = R.string.select_currency),
-                    style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Center
-                )
-
-                CurrencyItem(
-                    modifier = Modifier
-                        .clickable {
-                            onSelection.invoke(1)
-                        }
-                        .padding(top = 8.dp, bottom = 8.dp)
-                        .fillMaxWidth()
-                        .background(
-                            colorResource(
-                                id = com.naveenapps.expensemanager.core.common.R.color.black_100
-                            ).copy(
-                                alpha = 0.10f
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    title = stringResource(id = R.string.currency),
-                    description = stringResource(id = currency.name),
-                    icon = currency.icon
-                )
-            }
-
-            item {
-                Row {
-                    Text(
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .weight(1f),
-                        text = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-
-                    Text(
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .align(Alignment.CenterVertically)
-                            .clickable {
-                                onSelection.invoke(2)
-                            },
-                        text = stringResource(id = R.string.add_new).uppercase(),
-                        style = MaterialTheme.typography.labelMedium,
-                        textAlign = TextAlign.Center
-                    )
-                }
-            }
-
-            items(
-                accounts,
-                key = {
-                    it.id
-                }
-            ) { account ->
+            CurrencyItem(
+                modifier = Modifier
+                    .clickable {
+                        onSelection.invoke(1, null)
+                    }
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.currency),
+                description = stringResource(id = currency.name),
+                icon = currency.icon
+            )
+            DashboardWidgetTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
+                onViewAllClick = {
+                    onSelection.invoke(2, null)
+                },
+            )
+            accounts.forEach { account ->
                 AccountItem(
                     name = account.name,
                     icon = account.icon,
@@ -203,18 +148,9 @@ private fun OnboardingContentView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            onSelection.invoke(3)
+                            onSelection.invoke(2, account.id)
                         }
-                        .padding(top = 16.dp)
-                        .background(
-                            colorResource(
-                                id = com.naveenapps.expensemanager.core.common.R.color.black_100
-                            ).copy(
-                                alpha = 0.10f
-                            ),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .padding(vertical = 8.dp, horizontal = 16.dp),
+                        .padding(16.dp),
                 )
             }
         }
@@ -229,7 +165,7 @@ private fun OnboardingContentView(
                     .padding(16.dp)
                     .fillMaxWidth(),
                 onClick = {
-                    onSelection.invoke(4)
+                    onSelection.invoke(3, null)
                 },
                 shape = RoundedCornerShape(8.dp)
             ) {
@@ -295,7 +231,7 @@ fun OnboardingScreenPreview() {
                         amount = Amount(0.0, "$ 0.00"),
                     )
                 )
-            ) {
+            ) { type, id ->
 
             }
         }

@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.GetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,7 +25,9 @@ class OnboardingViewModel @Inject constructor(
     getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
     getAccountsUseCase: GetAccountsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
+    private val setOnboardingStatusUseCase: SetOnboardingStatusUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    private val composeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
@@ -38,6 +43,12 @@ class OnboardingViewModel @Inject constructor(
     val currency = _currency.asStateFlow()
 
     init {
+        viewModelScope.launch {
+            if (getOnboardingStatusUseCase.invoke()) {
+                openHome()
+            }
+        }
+
         combine(
             getCurrencyUseCase.invoke(),
             getAccountsUseCase.invoke()
@@ -49,12 +60,20 @@ class OnboardingViewModel @Inject constructor(
                 )
             }
         }.launchIn(viewModelScope)
+    }
 
+    fun openHome() {
         viewModelScope.launch {
-            val status = getOnboardingStatusUseCase.invoke()
-            if (status) {
-
-            }
+            setOnboardingStatusUseCase.invoke(true)
+            composeNavigator.navigateAndClearBackStack(ExpenseManagerScreens.Home.route)
         }
+    }
+
+    fun openAccountCreateScreen(accountId: String?) {
+        composeNavigator.navigate(
+            ExpenseManagerScreens.AccountCreate.createRoute(
+                accountId ?: ""
+            )
+        )
     }
 }

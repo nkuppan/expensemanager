@@ -10,12 +10,13 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,19 +24,17 @@ class AccountListViewModel @Inject constructor(
     getAccountsUseCase: GetAccountsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _accounts = MutableStateFlow<UiState<List<AccountUiModel>>>(UiState.Loading)
     val accounts = _accounts.asStateFlow()
 
     init {
-
-        getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
-            currency to accounts
-        }.map { currencyAndAccountPair ->
-
-            val (currency, accounts) = currencyAndAccountPair
-
+        combine(
+            getCurrencyUseCase.invoke(),
+            getAccountsUseCase.invoke()
+        ) { currency, accounts ->
             _accounts.value = if (accounts.isEmpty()) {
                 UiState.Empty
             } else {
@@ -51,6 +50,16 @@ class AccountListViewModel @Inject constructor(
                 )
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun openCreateScreen(accountId: String?) {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: "")
+        )
+    }
+
+    fun closePage() {
+        appComposeNavigator.popBackStack()
     }
 }
 

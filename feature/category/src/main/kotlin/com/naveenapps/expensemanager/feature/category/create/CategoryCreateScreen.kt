@@ -34,7 +34,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
@@ -49,10 +48,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CategoryCreateScreen(
-    navController: NavController,
-    categoryId: String?,
-) {
+fun CategoryCreateScreen() {
 
     val context = LocalContext.current
 
@@ -81,13 +77,10 @@ fun CategoryCreateScreen(
         )
     }
 
-    val categoryCreated by viewModel.categoryUpdated.collectAsState(false)
-    if (categoryCreated) {
+    val message by viewModel.message.collectAsState(null)
+    if (message != null) {
         LaunchedEffect(key1 = "completed", block = {
-            navController.popBackStack()
-            snackbarHostState.showSnackbar(
-                message = context.getString(R.string.category_create_success)
-            )
+            snackbarHostState.showSnackbar(message = message?.asString(context) ?: "")
         })
     }
 
@@ -118,11 +111,14 @@ fun CategoryCreateScreen(
         },
         topBar = {
             TopNavigationBarWithDeleteAction(
-                navController = navController,
                 title = stringResource(id = R.string.category),
-                actionId = categoryId
+                actionId = null
             ) {
-                showDeleteDialog = true
+                if (it == 1) {
+                    viewModel.closePage()
+                } else {
+                    showDeleteDialog = true
+                }
             }
         },
         floatingActionButton = {

@@ -44,7 +44,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -82,7 +81,7 @@ private fun createFile(fileType: ExportFileType): Intent? {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ExportScreen(navController: NavController) {
+fun ExportScreen() {
 
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -146,7 +145,6 @@ fun ExportScreen(navController: NavController) {
     }
 
     ExportScreenScaffoldView(
-        navController = navController,
         selectedDateRange = selectedDateRange,
         exportFileType = exportFileType,
         accountCount = accountCount,
@@ -168,7 +166,6 @@ fun ExportScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenScaffoldView(
-    navController: NavController,
     selectedDateRange: String?,
     exportFileType: ExportFileType,
     accountCount: UiText,
@@ -207,7 +204,7 @@ private fun ExportScreenScaffoldView(
         },
         topBar = {
             TopNavigationBar(
-                navController = navController, title = null
+                onClick = {}, title = null
             )
         },
         floatingActionButton = {

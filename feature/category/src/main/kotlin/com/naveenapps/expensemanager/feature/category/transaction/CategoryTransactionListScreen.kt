@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.feature.category.transaction
 
-import android.annotation.SuppressLint
 import android.graphics.Color
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,10 +44,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
@@ -65,29 +64,45 @@ import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import kotlin.random.Random
 
-@SuppressLint("ComposableDestinationInComposeScope")
+
+data class CategoryTransactionTabs(
+    val categoryType: CategoryType,
+    @StringRes val name: Int
+)
+
+val TABS = listOf(
+    CategoryTransactionTabs(
+        CategoryType.EXPENSE,
+        R.string.spending
+    ),
+    CategoryTransactionTabs(
+        CategoryType.INCOME,
+        R.string.income
+    )
+)
+
+
 @Composable
 fun CategoryTransactionTabScreen(
-    navController: NavController
+    viewModel: CategoryTransactionListViewModel = hiltViewModel()
 ) {
+    var tabIndex by remember { mutableIntStateOf(0) }
 
-    val titles = listOf(
-        stringResource(id = R.string.income).uppercase(),
-        stringResource(id = R.string.spending).uppercase(),
-    )
-    var tabIndex by remember { mutableIntStateOf(CategoryType.INCOME.ordinal) }
+    val uiState by viewModel.categoryTransaction.collectAsState()
 
     Scaffold(
         topBar = {
             TopNavigationBar(
-                navController = navController,
+                onClick = {
+                    viewModel.closePage()
+                },
                 title = stringResource(R.string.categories),
                 disableBackIcon = true
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("transaction/create")
+                viewModel.openCreatePage()
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -104,41 +119,30 @@ fun CategoryTransactionTabScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             TabRow(selectedTabIndex = tabIndex) {
-                titles.forEachIndexed { index, title ->
+                TABS.forEachIndexed { index, tab ->
                     Tab(
-                        text = { Text(title) },
+                        text = { Text(stringResource(id = tab.name)) },
                         selected = tabIndex == index,
                         onClick = { tabIndex = index }
                     )
                 }
             }
-            CategoryTransactionScreen(
-                navController,
-                CategoryType.values()[tabIndex]
+
+            viewModel.setCategoryType(TABS[tabIndex].categoryType)
+
+            CategoryTransactionListScreenContent(
+                modifier = Modifier.fillMaxSize(),
+                uiState = uiState,
+                onItemClick = {
+                    viewModel.openCreatePage()
+                }
             )
         }
     }
 }
 
 @Composable
-private fun CategoryTransactionScreen(
-    navController: NavController,
-    categoryType: CategoryType
-) {
-    val viewModel: CategoryTransactionListViewModel = hiltViewModel()
-    val uiState by viewModel.categoryTransaction.collectAsState()
-    viewModel.setCategoryType(categoryType)
-    CategoryTransactionListScreenContent(
-        modifier = Modifier.fillMaxSize(),
-        uiState = uiState
-    ) { _ ->
-        navController.navigate("transaction/create")
-    }
-}
-
-@Composable
 fun CategoryTransactionListScreen(
-    navController: NavController,
     uiState: UiState<CategoryTransactionUiModel>
 ) {
 
@@ -150,14 +154,14 @@ fun CategoryTransactionListScreen(
         },
         topBar = {
             TopNavigationBar(
-                navController = navController,
+                onClick = {},
                 title = stringResource(R.string.categories),
                 disableBackIcon = true
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("transaction/create")
+                //navController.navigate("transaction/create")
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -173,7 +177,7 @@ fun CategoryTransactionListScreen(
                 .fillMaxSize(),
             uiState = uiState
         ) { _ ->
-            navController.navigate("transaction/create")
+            //navController.navigate("transaction/create")
         }
     }
 }
@@ -382,7 +386,7 @@ fun CategoryTransactionSmallItem(
 }
 
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionSmallItemPreview() {
     ExpenseManagerTheme {
@@ -421,7 +425,6 @@ private fun CategoryTransactionItemPreview() {
 private fun CategoryTransactionListItemLoadingStatePreview() {
     ExpenseManagerTheme {
         CategoryTransactionListScreen(
-            rememberNavController(),
             uiState = UiState.Loading,
         )
     }
@@ -432,29 +435,25 @@ private fun CategoryTransactionListItemLoadingStatePreview() {
 private fun CategoryTransactionListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         CategoryTransactionListScreen(
-            rememberNavController(),
             uiState = UiState.Empty,
         )
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         CategoryTransactionListScreen(
-            rememberNavController(),
             uiState = UiState.Success(getRandomCategoryTransactionData()),
         )
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionTabScreenPreview() {
     ExpenseManagerTheme {
-        CategoryTransactionTabScreen(
-            rememberNavController()
-        )
+        CategoryTransactionTabScreen()
     }
 }

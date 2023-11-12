@@ -12,6 +12,8 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiState
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +25,8 @@ import javax.inject.Inject
 class TransactionListViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
-    getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase
+    getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
+    private val appComposeNavigator: AppComposeNavigator
 ) : ViewModel() {
 
     private val _transactions = MutableStateFlow<UiState<List<TransactionUiState>>>(
@@ -62,6 +65,16 @@ class TransactionListViewModel @Inject constructor(
                 )
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun openCreateScreen(transactionId: String?) {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: "")
+        )
+    }
+
+    fun closePage() {
+        appComposeNavigator.popBackStack()
     }
 }
 

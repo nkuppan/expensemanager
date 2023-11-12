@@ -20,6 +20,8 @@ import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.feature.budget.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,14 +46,12 @@ class BudgetCreateViewModel @Inject constructor(
     private val findCategoryByIdUseCase: FindCategoryByIdUseCase,
     private val addBudgetUseCase: AddBudgetUseCase,
     private val updateBudgetUseCase: UpdateBudgetUseCase,
-    private val deleteBudgetUseCase: DeleteBudgetUseCase
+    private val deleteBudgetUseCase: DeleteBudgetUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _errorMessage = MutableSharedFlow<UiText>()
     val errorMessage = _errorMessage.asSharedFlow()
-
-    private val _budgetUpdated = MutableSharedFlow<Boolean>()
-    val budgetUpdated = _budgetUpdated.asSharedFlow()
 
     var name = MutableStateFlow("")
         private set
@@ -93,7 +93,7 @@ class BudgetCreateViewModel @Inject constructor(
     private var currency: Currency? = null
 
     init {
-        readBudgetInfo(savedStateHandle.get<String>(BUDGET_ID))
+        readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerScreens.BudgetCreate.KEY_BUDGET_ID))
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
@@ -164,7 +164,7 @@ class BudgetCreateViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        _budgetUpdated.emit(true)
+                        closePage()
                     }
                 }
             }
@@ -224,7 +224,7 @@ class BudgetCreateViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    _budgetUpdated.emit(true)
+                    closePage()
                 }
             }
         }
@@ -281,9 +281,12 @@ class BudgetCreateViewModel @Inject constructor(
         }
     }
 
+    fun closePage() {
+        appComposeNavigator.popBackStack()
+    }
+
     companion object {
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "account_balance"
-        private const val BUDGET_ID = "budgetId"
     }
 }

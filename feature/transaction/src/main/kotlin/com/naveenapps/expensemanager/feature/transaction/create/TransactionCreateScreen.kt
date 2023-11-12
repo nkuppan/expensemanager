@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -55,7 +56,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
@@ -84,10 +84,7 @@ import java.util.Date
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun TransactionCreateScreen(
-    navController: NavController,
-    transactionId: String?,
-) {
+fun TransactionCreateScreen() {
 
     val context = LocalContext.current
 
@@ -135,7 +132,6 @@ fun TransactionCreateScreen(
     val transactionCreated by viewModel.transactionCreated.collectAsState(false)
     if (transactionCreated) {
         LaunchedEffect(key1 = "completed", block = {
-            navController.popBackStack()
             snackbarHostState.showSnackbar(
                 message = context.getString(R.string.transaction_create_success)
             )
@@ -166,11 +162,14 @@ fun TransactionCreateScreen(
         },
         topBar = {
             TopNavigationBarWithDeleteAction(
-                navController = navController,
                 title = stringResource(id = R.string.transaction),
-                actionId = transactionId
+                actionId = null
             ) {
-                showDeleteDialog = true
+                if (it == 1) {
+                    viewModel.closePage()
+                } else {
+                    showDeleteDialog = true
+                }
             }
         },
         floatingActionButton = {
@@ -387,7 +386,7 @@ private fun TransactionCreateScreen(
                     },
                 ) {
                     Icon(
-                        imageVector = Icons.Default.EditCalendar,
+                        imageVector = Icons.Default.Calculate,
                         contentDescription = ""
                     )
                 }

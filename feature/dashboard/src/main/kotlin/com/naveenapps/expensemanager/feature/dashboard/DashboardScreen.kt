@@ -1,26 +1,20 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,141 +22,70 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
-import com.naveenapps.expensemanager.core.model.AccountUiModel
-import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.core.model.AmountUiState
-import com.naveenapps.expensemanager.core.model.CategoryTransaction
-import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
-import com.naveenapps.expensemanager.core.model.TransactionUiItem
-import com.naveenapps.expensemanager.core.model.getDummyPieChartData
-import com.naveenapps.expensemanager.feature.account.list.ACCOUNT_DUMMY_DATA
+import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
-import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
-import kotlin.random.Random
-
-
-@Composable
-fun DashboardScreen(navController: NavController) {
-    DashboardScreenScaffoldView(navController = navController)
-}
+import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun DashboardScreenScaffoldView(
-    navController: NavController
+fun DashboardScreen(
+    viewModel: DashboardViewModel = hiltViewModel()
 ) {
-    val viewModel: DashboardViewModel = hiltViewModel()
 
-    val amountUiState by viewModel.amountUiState.collectAsState()
-
-    val accounts by viewModel.accounts.collectAsState()
-    val transactions by viewModel.transactions.collectAsState()
-    val budgets by viewModel.budgets.collectAsState()
-    val categoryTransaction by viewModel.categoryTransaction.collectAsState()
-
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
-    Scaffold(modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection), topBar = {
-        DashboardTopAppbar(navController)
-    }) { innerPadding ->
+    Scaffold(
+        topBar = {
+            TopAppBar(title = {
+                Text(
+                    text = stringResource(id = R.string.home),
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }, actions = {
+                IconButton(onClick = viewModel::openSettings) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = stringResource(id = R.string.settings)
+                    )
+                }
+            })
+        }
+    ) { innerPadding ->
         innerPadding.calculateTopPadding()
         DashboardScreenContent(
-            navController = navController,
-            amountUiState = amountUiState,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            accounts = accounts,
-            transactions = transactions,
-            budgets = budgets,
-            categoryTransaction = categoryTransaction
+            viewModel = viewModel
         )
     }
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun DashboardTopAppbar(navController: NavController) {
-    TopAppBar(title = {
-        Row {
-            Image(
-                modifier = Modifier
-                    .clickable(onClick = {
-
-                    })
-                    .size(32.dp)
-                    .border(
-                        1.5.dp, MaterialTheme.colorScheme.primary, CircleShape
-                    )
-                    .border(3.dp, MaterialTheme.colorScheme.surface, CircleShape)
-                    .clip(CircleShape)
-                    .align(Alignment.CenterVertically),
-                imageVector = Icons.Default.SupervisedUserCircle,
-                contentScale = ContentScale.Crop,
-                contentDescription = null,
-            )
-            Row(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(start = 8.dp),
-            ) {
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = stringResource(R.string.hello),
-                    style = MaterialTheme.typography.titleSmall
-                )
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = stringResource(id = R.string.guest),
-                    style = MaterialTheme.typography.titleLarge
-                )
-            }
-        }
-    }, actions = {
-        IconButton(onClick = {
-            navController.navigate("settings")
-        }) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(id = R.string.settings)
-            )
-        }
-    })
-}
-
-@Composable
 private fun DashboardScreenContent(
-    navController: NavController,
-    amountUiState: AmountUiState,
+    viewModel: DashboardViewModel,
     modifier: Modifier = Modifier,
-    accounts: List<AccountUiModel> = emptyList(),
-    transactions: List<TransactionUiItem> = emptyList(),
-    budgets: List<BudgetUiModel> = emptyList(),
-    categoryTransaction: CategoryTransactionUiModel,
 ) {
+    val amountUiState by viewModel.amountUiState.collectAsState()
+    val accounts by viewModel.accounts.collectAsState()
+    val transactions by viewModel.transactions.collectAsState()
+    val budgets by viewModel.budgets.collectAsState()
+    val categoryTransaction by viewModel.categoryTransaction.collectAsState()
+
     LazyColumn(
         modifier = modifier
     ) {
@@ -188,7 +111,7 @@ private fun DashboardScreenContent(
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
                 onViewAllClick = {
-                    navController.navigate("account")
+                    viewModel.openAccountList()
                 },
             )
         }
@@ -202,8 +125,12 @@ private fun DashboardScreenContent(
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(accounts) {
-                        com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem(
-                            modifier = Modifier.wrapContentWidth(),
+                        DashBoardAccountItem(
+                            modifier = Modifier
+                                .wrapContentWidth()
+                                .clickable {
+                                    viewModel.openAccountCreate(it.id)
+                                },
                             name = it.name,
                             icon = it.icon,
                             amount = it.amount.amountString ?: "",
@@ -232,7 +159,7 @@ private fun DashboardScreenContent(
                     .padding(16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
                 onViewAllClick = {
-                    navController.navigate("budget")
+                    viewModel.openBudgetList()
                 }
             )
         }
@@ -248,7 +175,7 @@ private fun DashboardScreenContent(
                         DashBoardBudgetItem(
                             modifier = Modifier
                                 .clickable {
-                                    navController.navigate("budget/create?budgetId=${budget.id}")
+                                    viewModel.openBudgetCreate(budget.id)
                                 },
                             name = budget.name,
                             backgroundColor = budget.iconBackgroundColor.toColor()
@@ -273,7 +200,7 @@ private fun DashboardScreenContent(
                     .padding(16.dp),
                 title = stringResource(id = R.string.transaction),
                 onViewAllClick = {
-                    navController.navigate("transaction")
+                    viewModel.openTransactionList()
                 }
             )
         }
@@ -281,11 +208,11 @@ private fun DashboardScreenContent(
             items(transactions, key = {
                 it.id
             }) { transaction ->
-                com.naveenapps.expensemanager.feature.transaction.list.TransactionItem(
+                TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navController.navigate("transaction/create?transactionId=${transaction.id}")
+                            viewModel.openTransactionCreate(transaction.id)
                         }
                         .then(ItemSpecModifier),
                     categoryName = transaction.categoryName,
@@ -332,8 +259,7 @@ fun DashboardEmptyView(emptyViewMessage: String) {
 @Composable
 fun IncomeExpenseBalanceViewPreview() {
     ExpenseManagerTheme {
-        DashboardScreenContent(
-            navController = rememberNavController(),
+        /*DashboardScreenContent(
             amountUiState = AmountUiState(),
             modifier = Modifier.fillMaxSize(),
             accounts = ACCOUNT_DUMMY_DATA,
@@ -360,6 +286,6 @@ fun IncomeExpenseBalanceViewPreview() {
                     }
                 }.take(5)
             )
-        )
+        )*/
     }
 }

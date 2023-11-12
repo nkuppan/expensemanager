@@ -45,8 +45,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -60,18 +58,10 @@ import com.naveenapps.expensemanager.feature.budget.R
 
 @Composable
 fun BudgetListScreen(
-    navController: NavController
+    viewModel: BudgetListViewModel = hiltViewModel()
 ) {
-    val viewModel: BudgetListViewModel = hiltViewModel()
-    val budgetUiState by viewModel.budgets.collectAsState()
-    BudgetListScreenScaffoldView(navController, budgetUiState)
-}
 
-@Composable
-private fun BudgetListScreenScaffoldView(
-    navController: NavController,
-    budgetUiState: UiState<List<BudgetUiModel>>
-) {
+    val budgetUiState by viewModel.budgets.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -81,13 +71,15 @@ private fun BudgetListScreenScaffoldView(
         },
         topBar = {
             TopNavigationBar(
-                navController = navController,
+                onClick = {
+                    viewModel.closePage()
+                },
                 title = stringResource(R.string.budgets)
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("budget/create")
+                viewModel.openCreateScreen(null)
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -103,7 +95,7 @@ private fun BudgetListScreenScaffoldView(
                 .fillMaxSize(),
             budgetUiState = budgetUiState
         ) { budget ->
-            navController.navigate("budget/create?budgetId=${budget.id}")
+            viewModel.openCreateScreen(budget.id)
         }
     }
 }
@@ -384,8 +376,7 @@ private fun DashboardBudgetItemPreview() {
 @Composable
 private fun BudgetListItemLoadingStatePreview() {
     ExpenseManagerTheme {
-        BudgetListScreenScaffoldView(
-            rememberNavController(),
+        BudgetListScreenContent(
             budgetUiState = UiState.Loading,
         )
     }
@@ -395,8 +386,7 @@ private fun BudgetListItemLoadingStatePreview() {
 @Composable
 private fun BudgetListItemEmptyStatePreview() {
     ExpenseManagerTheme {
-        BudgetListScreenScaffoldView(
-            rememberNavController(),
+        BudgetListScreenContent(
             budgetUiState = UiState.Empty,
         )
     }
@@ -406,8 +396,7 @@ private fun BudgetListItemEmptyStatePreview() {
 @Composable
 private fun BudgetListItemSuccessStatePreview() {
     ExpenseManagerTheme {
-        BudgetListScreenScaffoldView(
-            rememberNavController(),
+        BudgetListScreenContent(
             budgetUiState = UiState.Success(
                 DUMMY_DATA
             ),

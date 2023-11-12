@@ -22,6 +22,8 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.feature.transaction.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,6 +52,7 @@ class TransactionCreateViewModel @Inject constructor(
     private val addTransactionUseCase: AddTransactionUseCase,
     private val updateTransactionUseCase: UpdateTransactionUseCase,
     private val deleteTransactionUseCase: DeleteTransactionUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _message = MutableSharedFlow<UiText>()
@@ -145,7 +148,11 @@ class TransactionCreateViewModel @Inject constructor(
 
         }.launchIn(viewModelScope)
 
-        readInfo(savedStateHandle.get<String>("transactionId"))
+        readInfo(
+            savedStateHandle.get<String>(
+                ExpenseManagerScreens.TransactionCreate.KEY_TRANSACTION_ID
+            )
+        )
     }
 
     private fun readInfo(transactionId: String?) {
@@ -243,6 +250,7 @@ class TransactionCreateViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _transactionUpdated.emit(true)
+                    closePage()
                 }
             }
         }
@@ -302,10 +310,15 @@ class TransactionCreateViewModel @Inject constructor(
 
                     is Resource.Success -> {
                         _transactionUpdated.emit(true)
+                        closePage()
                     }
                 }
             }
         }
+    }
+
+    fun closePage() {
+        appComposeNavigator.popBackStack()
     }
 
     companion object {

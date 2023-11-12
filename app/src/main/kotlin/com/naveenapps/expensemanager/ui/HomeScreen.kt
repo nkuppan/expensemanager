@@ -12,12 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavType
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
 import com.naveenapps.expensemanager.feature.analysis.AnalysisScreen
@@ -35,110 +34,75 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScr
 
 
 @Composable
-fun HomePageNavHostContainer() {
-
-    val navController = rememberNavController()
-
+fun HomePageNavHostContainer(navHostController: NavHostController) {
     NavHost(
-        navController = navController,
-        startDestination = "onboarding"
+        navController = navHostController,
+        startDestination = ExpenseManagerScreens.Onboarding.name
     ) {
-        composable("onboarding") {
-            OnboardingScreen(navController)
-        }
-        composable("home") {
-            HomeScreen(navController)
-        }
-        composable("category") {
-            CategoryListScreen(navController)
-        }
-        composable(
-            route = "category/create?categoryId={categoryId}",
-            arguments = listOf(
-                navArgument("categoryId") {
-                    defaultValue = ""
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            CategoryCreateScreen(
-                navController,
-                backStackEntry.arguments?.getString("categoryId")
-            )
-        }
-        composable("transaction") {
-            TransactionListScreen(
-                navController
-            )
-        }
-        composable(
-            route = "transaction/create?transactionId={transactionId}",
-            arguments = listOf(
-                navArgument("transactionId") {
-                    defaultValue = ""
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            TransactionCreateScreen(
-                navController,
-                backStackEntry.arguments?.getString("transactionId")
-            )
-        }
-        composable("account") {
-            AccountListScreen(navController)
-        }
-        composable(
-            route = "account/create?accountId={accountId}",
-            arguments = listOf(
-                navArgument("accountId") {
-                    defaultValue = ""
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            AccountCreateScreen(
-                navController,
-                backStackEntry.arguments?.getString("accountId")
-            )
-        }
-        composable("budget") {
-            BudgetListScreen(navController)
-        }
-        composable(
-            route = "budget/create?budgetId={budgetId}",
-            arguments = listOf(
-                navArgument("budgetId") {
-                    defaultValue = ""
-                    type = NavType.StringType
-                }
-            )
-        ) { backStackEntry ->
-            BudgetCreateScreen(
-                navController,
-                backStackEntry.arguments?.getString("budgetId")
-            )
-        }
-        composable("analysis") {
-            AnalysisScreen(navController)
-        }
-        composable("settings") {
-            SettingsScreen(navController)
-        }
-        composable("export") {
-            ExportScreen(navController)
-        }
-        composable("category_group") {
-            CategoryTransactionTabScreen(navController)
-        }
+        this.expenseManagerNavigation()
+    }
+}
+
+fun NavGraphBuilder.expenseManagerNavigation() {
+
+    composable(route = ExpenseManagerScreens.Onboarding.route) {
+        OnboardingScreen()
+    }
+    composable(ExpenseManagerScreens.Home.route) {
+        HomeScreen()
+    }
+    composable(ExpenseManagerScreens.CategoryList.route) {
+        CategoryListScreen()
+    }
+    composable(
+        route = ExpenseManagerScreens.CategoryCreate.name,
+        arguments = ExpenseManagerScreens.CategoryCreate.navArguments
+    ) { backStackEntry ->
+        CategoryCreateScreen()
+    }
+    composable(ExpenseManagerScreens.TransactionList.route) {
+        TransactionListScreen()
+    }
+    composable(
+        route = ExpenseManagerScreens.TransactionCreate.name,
+        arguments = ExpenseManagerScreens.TransactionCreate.navArguments
+    ) { backStackEntry ->
+        TransactionCreateScreen()
+    }
+    composable(ExpenseManagerScreens.AccountList.route) {
+        AccountListScreen()
+    }
+    composable(
+        route = ExpenseManagerScreens.AccountCreate.name,
+        arguments = ExpenseManagerScreens.AccountCreate.navArguments
+    ) { backStackEntry ->
+        AccountCreateScreen()
+    }
+    composable(ExpenseManagerScreens.BudgetList.route) {
+        BudgetListScreen()
+    }
+    composable(
+        route = ExpenseManagerScreens.BudgetCreate.name,
+        arguments = ExpenseManagerScreens.BudgetCreate.navArguments
+    ) { backStackEntry ->
+        BudgetCreateScreen()
+    }
+    composable(ExpenseManagerScreens.AnalysisScreen.route) {
+        AnalysisScreen()
+    }
+    composable(ExpenseManagerScreens.Settings.route) {
+        SettingsScreen()
+    }
+    composable(ExpenseManagerScreens.ExportScreen.route) {
+        ExportScreen()
+    }
+    composable(ExpenseManagerScreens.CategoryTransaction.route) {
+        CategoryTransactionTabScreen()
     }
 }
 
 @Composable
-fun HomeScreen(
-    navController: NavController,
-    viewModel: HomeViewModel = hiltViewModel()
-) {
+fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
 
     Scaffold(
         bottomBar = {
@@ -166,19 +130,19 @@ fun HomeScreen(
         ) {
             when (viewModel.homeScreenBottomBarItems) {
                 HomeScreenBottomBarItems.Home -> {
-                    DashboardScreen(navController)
+                    DashboardScreen()
                 }
 
                 HomeScreenBottomBarItems.Analysis -> {
-                    AnalysisScreen(navController)
+                    AnalysisScreen()
                 }
 
                 HomeScreenBottomBarItems.Transaction -> {
-                    TransactionListScreen(navController)
+                    TransactionListScreen()
                 }
 
                 HomeScreenBottomBarItems.Category -> {
-                    CategoryTransactionTabScreen(navController)
+                    CategoryTransactionTabScreen()
                 }
             }
         }

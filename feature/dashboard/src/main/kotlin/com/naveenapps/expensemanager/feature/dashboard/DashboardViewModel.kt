@@ -17,6 +17,8 @@ import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -36,6 +38,7 @@ class DashboardViewModel @Inject constructor(
     getAccountsUseCase: GetAccountsUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     getBudgetsUseCase: GetBudgetsUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _amountUiState = MutableStateFlow(AmountUiState())
@@ -104,6 +107,40 @@ class DashboardViewModel @Inject constructor(
         getBudgetsUseCase.invoke().onEach {
             _budgets.value = it
         }.launchIn(viewModelScope)
+    }
+
+    fun openSettings() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.Settings.route)
+    }
+
+    fun openAccountList() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.AccountList.route)
+    }
+
+    fun openAccountCreate(accountId: String?) {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: "")
+        )
+    }
+
+    fun openBudgetList() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.BudgetList.route)
+    }
+
+    fun openBudgetCreate(budgetId: String?) {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.BudgetCreate.createRoute(budgetId ?: "")
+        )
+    }
+
+    fun openTransactionList() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.TransactionList.route)
+    }
+
+    fun openTransactionCreate(transactionId: String?) {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: "")
+        )
     }
 
     companion object {

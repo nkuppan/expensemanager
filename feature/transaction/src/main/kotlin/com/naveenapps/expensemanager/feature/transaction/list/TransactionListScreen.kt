@@ -37,7 +37,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
@@ -60,22 +59,23 @@ import java.util.Date
 
 
 @Composable
-fun TransactionListScreen(
-    navController: NavController
-) {
+fun TransactionListScreen() {
+
     val viewModel: TransactionListViewModel = hiltViewModel()
     val transactionUiState by viewModel.transactions.collectAsState()
     Scaffold(
         topBar = {
             TopNavigationBar(
-                navController = navController,
+                onClick = {
+                    viewModel.closePage()
+                },
                 title = stringResource(R.string.transaction),
                 disableBackIcon = true
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("transaction/create")
+                viewModel.openCreateScreen(null)
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -90,7 +90,7 @@ fun TransactionListScreen(
                 .padding(top = innerPadding.calculateTopPadding()),
             transactionUiState = transactionUiState
         ) { transaction ->
-            navController.navigate("transaction/create?transactionId=${transaction.id}")
+            viewModel.openCreateScreen(transaction.id)
         }
     }
 }

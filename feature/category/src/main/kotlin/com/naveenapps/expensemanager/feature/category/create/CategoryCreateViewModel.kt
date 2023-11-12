@@ -11,6 +11,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.category.UpdateCategory
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.category.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,14 +30,12 @@ class CategoryCreateViewModel @Inject constructor(
     private val findCategoryByIdUseCase: FindCategoryByIdUseCase,
     private val addCategoryUseCase: AddCategoryUseCase,
     private val updateCategoryUseCase: UpdateCategoryUseCase,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _errorMessage = MutableSharedFlow<UiText>()
-    val errorMessage = _errorMessage.asSharedFlow()
-
-    private val _categoryUpdated = MutableSharedFlow<Boolean>()
-    val categoryUpdated = _categoryUpdated.asSharedFlow()
+    private val _message = MutableSharedFlow<UiText>()
+    val message = _message.asSharedFlow()
 
     var categoryType = MutableStateFlow(CategoryType.EXPENSE)
         private set
@@ -55,7 +55,11 @@ class CategoryCreateViewModel @Inject constructor(
     private var category: Category? = null
 
     init {
-        readCategoryInfo(savedStateHandle.get<String>(CATEGORY_ID))
+        readCategoryInfo(
+            savedStateHandle.get<String>(
+                ExpenseManagerScreens.CategoryCreate.KEY_CATEGORY_ID
+            )
+        )
     }
 
     private fun updateCategoryInfo(category: Category?) {
@@ -87,13 +91,13 @@ class CategoryCreateViewModel @Inject constructor(
             category?.let { category ->
                 when (deleteCategoryUseCase.invoke(category)) {
                     is Resource.Error -> {
-                        _errorMessage.emit(
+                        _message.emit(
                             UiText.StringResource(R.string.category_delete_error_message)
                         )
                     }
 
                     is Resource.Success -> {
-                        _categoryUpdated.emit(true)
+                        closePage()
                     }
                 }
             }
@@ -128,11 +132,11 @@ class CategoryCreateViewModel @Inject constructor(
             }
             when (response) {
                 is Resource.Error -> {
-                    _errorMessage.emit(UiText.StringResource(R.string.category_create_error))
+                    _message.emit(UiText.StringResource(R.string.category_create_error))
                 }
 
                 is Resource.Success -> {
-                    _categoryUpdated.emit(true)
+                    closePage()
                 }
             }
         }
@@ -159,9 +163,12 @@ class CategoryCreateViewModel @Inject constructor(
         }
     }
 
+    fun closePage() {
+        appComposeNavigator.popBackStack()
+    }
+
     companion object {
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "ic_calendar"
-        private const val CATEGORY_ID = "categoryId"
     }
 }

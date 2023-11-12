@@ -38,8 +38,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
@@ -52,23 +50,16 @@ import java.util.Date
 
 
 @Composable
-fun CategoryListScreen(
-    navController: NavController
-) {
-    val viewModel: CategoryListViewModel = hiltViewModel()
-    val categoryUiState by viewModel.categories.collectAsState()
-    CategoryListScreenScaffoldView(navController, categoryUiState)
-}
+fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
 
-@Composable
-private fun CategoryListScreenScaffoldView(
-    navController: NavController,
-    categoryUiState: UiState<List<Category>>
-) {
+    val categoryUiState by viewModel.categories.collectAsState()
+
     Scaffold(
         topBar = {
             TopNavigationBar(
-                navController = navController,
+                onClick = {
+                    viewModel.closePage()
+                },
                 title = stringResource(R.string.category),
                 disableBackIcon = true
             )
@@ -76,7 +67,7 @@ private fun CategoryListScreenScaffoldView(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("category/create")
+                    viewModel.openCreateScreen(null)
                 }
             ) {
                 Icon(
@@ -92,7 +83,7 @@ private fun CategoryListScreenScaffoldView(
                 .fillMaxSize(),
             categoryUiState = categoryUiState
         ) { categoryId ->
-            navController.navigate("category/create?categoryId=${categoryId}")
+            viewModel.openCreateScreen(categoryId)
         }
     }
 }
@@ -266,10 +257,7 @@ private fun CategoryItemPreview() {
 @Composable
 private fun CategoryListItemLoadingStatePreview() {
     ExpenseManagerTheme {
-        CategoryListScreenScaffoldView(
-            rememberNavController(),
-            categoryUiState = UiState.Loading,
-        )
+        CategoryListScreenContent(categoryUiState = UiState.Loading)
     }
 }
 
@@ -277,10 +265,7 @@ private fun CategoryListItemLoadingStatePreview() {
 @Composable
 private fun CategoryListItemEmptyStatePreview() {
     ExpenseManagerTheme {
-        CategoryListScreenScaffoldView(
-            rememberNavController(),
-            categoryUiState = UiState.Empty,
-        )
+        CategoryListScreenContent(categoryUiState = UiState.Empty)
     }
 }
 
@@ -289,8 +274,7 @@ private fun CategoryListItemEmptyStatePreview() {
 @Composable
 private fun CategoryListItemSuccessStatePreview() {
     ExpenseManagerTheme {
-        CategoryListScreenScaffoldView(
-            rememberNavController(),
+        CategoryListScreenContent(
             categoryUiState = UiState.Success(getRandomCategoryData()),
         )
     }

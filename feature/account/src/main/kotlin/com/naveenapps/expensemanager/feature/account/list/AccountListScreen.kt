@@ -46,8 +46,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
@@ -61,18 +59,9 @@ import com.naveenapps.expensemanager.feature.account.R
 
 @Composable
 fun AccountListScreen(
-    navController: NavController
+    viewModel: AccountListViewModel = hiltViewModel()
 ) {
-    val viewModel: AccountListViewModel = hiltViewModel()
     val accountUiState by viewModel.accounts.collectAsState()
-    AccountListScreenScaffoldView(navController, accountUiState)
-}
-
-@Composable
-private fun AccountListScreenScaffoldView(
-    navController: NavController,
-    accountUiState: UiState<List<AccountUiModel>>
-) {
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -82,13 +71,15 @@ private fun AccountListScreenScaffoldView(
         },
         topBar = {
             TopNavigationBar(
-                navController = navController,
-                title = stringResource(R.string.accounts)
+                title = stringResource(R.string.accounts),
+                onClick = {
+                    viewModel.closePage()
+                }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("account/create")
+                viewModel.openCreateScreen(null)
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -104,7 +95,7 @@ private fun AccountListScreenScaffoldView(
                 .fillMaxSize(),
             accountUiState = accountUiState
         ) { account ->
-            navController.navigate("account/create?accountId=${account.id}")
+            viewModel.openCreateScreen(account.id)
         }
     }
 }
@@ -380,10 +371,7 @@ private fun AccountCheckedItemPreview() {
 @Composable
 private fun AccountListItemLoadingStatePreview() {
     ExpenseManagerTheme {
-        AccountListScreenScaffoldView(
-            rememberNavController(),
-            accountUiState = UiState.Loading,
-        )
+        AccountListScreenContent(accountUiState = UiState.Loading)
     }
 }
 
@@ -391,10 +379,7 @@ private fun AccountListItemLoadingStatePreview() {
 @Composable
 private fun AccountListItemEmptyStatePreview() {
     ExpenseManagerTheme {
-        AccountListScreenScaffoldView(
-            rememberNavController(),
-            accountUiState = UiState.Empty,
-        )
+        AccountListScreenContent(accountUiState = UiState.Empty)
     }
 }
 
@@ -402,8 +387,7 @@ private fun AccountListItemEmptyStatePreview() {
 @Composable
 private fun AccountListItemSuccessStatePreview() {
     ExpenseManagerTheme {
-        AccountListScreenScaffoldView(
-            rememberNavController(),
+        AccountListScreenContent(
             accountUiState = UiState.Success(
                 ACCOUNT_DUMMY_DATA
             ),

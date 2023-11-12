@@ -6,19 +6,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavController
 
 @Composable
 fun NavigationButton(
-    navController: NavController,
+    onClick: () -> Unit,
     navigationIcon: ImageVector = Icons.Default.ArrowBack,
     navigationContentDescription: String = ""
 ) {
-    IconButton(
-        onClick = {
-            navController.popBackStack()
-        }
-    ) {
+    IconButton(onClick = onClick) {
         Icon(
             imageVector = navigationIcon,
             contentDescription = navigationContentDescription
