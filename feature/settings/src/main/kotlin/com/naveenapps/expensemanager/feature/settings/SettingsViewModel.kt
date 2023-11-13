@@ -6,6 +6,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCu
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +19,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _currency: MutableStateFlow<Currency> = MutableStateFlow(
@@ -39,5 +42,13 @@ class SettingsViewModel @Inject constructor(
         getCurrentThemeUseCase.invoke().onEach {
             _theme.value = it
         }.launchIn(viewModelScope)
+    }
+
+    fun openExportScreen() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.ExportScreen.route)
+    }
+
+    fun openReminderScreen() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.ReminderScreen.route)
     }
 }

@@ -205,9 +205,7 @@ private fun DashboardScreenContent(
             )
         }
         if (transactions.isNotEmpty()) {
-            items(transactions, key = {
-                it.id
-            }) { transaction ->
+            items(transactions) { transaction ->
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth()

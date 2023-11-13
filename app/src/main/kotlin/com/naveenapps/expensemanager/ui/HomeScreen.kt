@@ -34,10 +34,13 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScr
 
 
 @Composable
-fun HomePageNavHostContainer(navHostController: NavHostController) {
+fun HomePageNavHostContainer(
+    navHostController: NavHostController,
+    landingScreen: String,
+) {
     NavHost(
         navController = navHostController,
-        startDestination = ExpenseManagerScreens.Onboarding.name
+        startDestination = landingScreen
     ) {
         this.expenseManagerNavigation()
     }

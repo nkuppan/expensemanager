@@ -44,7 +44,7 @@ import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.feature.currency.CurrencyDialogView
 import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
-import com.naveenapps.expensemanager.feature.reminder.ReminderTimePickerView
+import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
 import kotlinx.coroutines.launch
 
 
@@ -53,7 +53,19 @@ fun SettingsScreen() {
     val viewModel: SettingsViewModel = hiltViewModel()
     val currency by viewModel.currency.collectAsState()
     val theme by viewModel.theme.collectAsState()
-    SettingsScreenScaffoldView(currency, theme)
+    SettingsScreenScaffoldView(currency, theme) {
+        when (it) {
+            SettingOption.EXPORT -> {
+                viewModel.openExportScreen()
+            }
+
+            SettingOption.REMINDER -> {
+                viewModel.openReminderScreen()
+            }
+
+            else -> Unit
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,13 +73,14 @@ fun SettingsScreen() {
 private fun SettingsScreenScaffoldView(
     currency: Currency? = null,
     theme: Theme? = null,
+    settingOptionSelected: ((SettingOption) -> Unit)? = null
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     var showThemeSelection by remember { mutableStateOf(false) }
     if (showThemeSelection) {
-        com.naveenapps.expensemanager.feature.theme.ThemeDialogView {
+        ThemeDialogView {
             showThemeSelection = false
         }
     }
@@ -76,13 +89,6 @@ private fun SettingsScreenScaffoldView(
     if (showCurrencySelection) {
         CurrencyDialogView {
             showCurrencySelection = false
-        }
-    }
-
-    var showTimePickerSelection by remember { mutableStateOf(false) }
-    if (showTimePickerSelection) {
-        ReminderTimePickerView {
-            showTimePickerSelection = false
         }
     }
 
@@ -127,8 +133,8 @@ private fun SettingsScreenScaffoldView(
                     showCurrencySelection = true
                 }
 
-                SettingOption.NOTIFICATION -> {
-                    showTimePickerSelection = true
+                SettingOption.REMINDER -> {
+                    settingOptionSelected?.invoke(it)
                 }
 
                 SettingOption.FILTER -> {
@@ -139,7 +145,7 @@ private fun SettingsScreenScaffoldView(
                 }
 
                 SettingOption.EXPORT -> {
-                    //navController.navigate("export")
+                    settingOptionSelected?.invoke(it)
                 }
 
                 SettingOption.INFO -> {
@@ -207,7 +213,7 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.NOTIFICATION)
+                    settingOptionSelected?.invoke(SettingOption.REMINDER)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -350,7 +356,7 @@ private fun SettingsItem(
 private enum class SettingOption {
     THEME,
     CURRENCY,
-    NOTIFICATION,
+    REMINDER,
     FILTER,
     EXPORT,
     INFO,

@@ -9,7 +9,8 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 @Composable
 fun MainScreen(
     composeNavigator: AppComposeNavigator,
-    isDarkTheme: Boolean
+    isDarkTheme: Boolean,
+    landingScreen: String,
 ) {
     ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
         val navHostController = rememberNavController()
@@ -18,6 +19,6 @@ fun MainScreen(
             composeNavigator.handleNavigationCommands(navHostController)
         }
 
-        HomePageNavHostContainer(navHostController)
+        HomePageNavHostContainer(navHostController, landingScreen)
     }
 }
