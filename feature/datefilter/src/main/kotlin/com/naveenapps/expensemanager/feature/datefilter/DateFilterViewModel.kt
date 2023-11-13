@@ -44,10 +44,8 @@ class DateFilterViewModel @Inject constructor(
         getDateRangeUseCase.invoke().onEach {
             updateFilterType(it.type)
             updateDateRanges()
-            if (it.type == DateRangeType.CUSTOM) {
-                _fromDate.value = it.dateRanges[0].toCompleteDate()
-                _toDate.value = it.dateRanges[1].toCompleteDate()
-            }
+            _fromDate.value = it.dateRanges[0].toCompleteDate()
+            _toDate.value = it.dateRanges[1].toCompleteDate()
         }.launchIn(viewModelScope)
 
         updateDateRanges()
@@ -66,7 +64,6 @@ class DateFilterViewModel @Inject constructor(
 
     private fun updateFilterType(dateRangeType: DateRangeType) {
         _dateRangeType.value = dateRangeType
-        _showCustomRangeSelection.value = dateRangeType == DateRangeType.CUSTOM
         _showCustomRangeSelection.value = dateRangeType == DateRangeType.CUSTOM
     }
 

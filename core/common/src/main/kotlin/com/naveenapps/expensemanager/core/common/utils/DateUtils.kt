@@ -55,7 +55,7 @@ fun Date.toDateAndMonth(): String {
 }
 
 fun Date.toCompleteDate(): String {
-    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
+    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(this)
 }
 
 fun String.fromCompleteDate(): Date {
@@ -65,7 +65,7 @@ fun String.fromCompleteDate(): Date {
 }
 
 fun Date.toMonthAndYear(): String {
-    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).format(this)
+    return SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(this)
 }
 
 fun String.fromMonthAndYear(): Date? {

@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,34 +40,67 @@ fun FilterView(modifier: Modifier = Modifier) {
     val viewModel: FilterViewModel = hiltViewModel()
 
     val date by viewModel.date.collectAsState()
+    val showForward by viewModel.showForward.collectAsState()
+    val showBackward by viewModel.showBackward.collectAsState()
 
-    var showBottomSheet by remember { mutableStateOf(false) }
+    var showDateFilter by remember { mutableStateOf(false) }
+    var showAllFilter by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    if (showBottomSheet) {
+    if (showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
-                showBottomSheet = false
+                showDateFilter = false
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
             DateFilterSelectionView {
-                showBottomSheet = false
+                showDateFilter = false
             }
         }
     }
 
-    FilterContentView(modifier, date) {
-        showBottomSheet = true
+    if (showAllFilter) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                showAllFilter = false
+            },
+            sheetState = bottomSheetState,
+            windowInsets = WindowInsets(0.dp)
+        ) {
+            DateFilterSelectionView {
+                showAllFilter = false
+            }
+        }
     }
+
+    FilterContentView(
+        modifier = modifier,
+        showForward = showForward,
+        showBackward = showBackward,
+        date = date,
+        showBottomSheet = {
+            showDateFilter = true
+        },
+        onForwardClick = viewModel::moveDateRangeForward,
+        onBackwardClick = viewModel::moveDateRangeBackward,
+        onFilterClick = {
+            showAllFilter = true
+        }
+    )
 }
 
 @Composable
 private fun FilterContentView(
-    modifier: Modifier,
+    showBackward: Boolean,
+    showForward: Boolean,
     date: String,
-    showBottomSheet: () -> Unit
+    showBottomSheet: () -> Unit,
+    onForwardClick: () -> Unit,
+    onBackwardClick: () -> Unit,
+    onFilterClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Row(
@@ -95,19 +129,25 @@ private fun FilterContentView(
                 style = MaterialTheme.typography.bodyMedium
             )
         }
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(
+            onClick = onBackwardClick,
+            enabled = showBackward
+        ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowLeft,
                 contentDescription = null
             )
         }
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(
+            onClick = onForwardClick,
+            enabled = showForward
+        ) {
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = null
             )
         }
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = onFilterClick) {
             Icon(
                 imageVector = Icons.Default.FilterList,
                 contentDescription = null
@@ -120,8 +160,27 @@ private fun FilterContentView(
 @Composable
 fun FilterViewPreview() {
     ExpenseManagerTheme {
-        FilterContentView(modifier = Modifier.fillMaxWidth(), date = "This Month (11/2023)") {
-
+        Column {
+            FilterContentView(
+                false,
+                false,
+                date = "This Month (11/2023)",
+                {},
+                onForwardClick = {},
+                onBackwardClick = {},
+                onFilterClick = {},
+                modifier = Modifier.fillMaxWidth()
+            )
+            FilterContentView(
+                true,
+                true,
+                date = "This Month (11/2023)",
+                {},
+                onForwardClick = {},
+                onBackwardClick = {},
+                onFilterClick = {},
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

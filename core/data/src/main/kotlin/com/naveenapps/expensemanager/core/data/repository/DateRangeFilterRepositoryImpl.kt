@@ -2,6 +2,10 @@ package com.naveenapps.expensemanager.core.data.repository
 
 import android.content.Context
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.getThisMonthRange
+import com.naveenapps.expensemanager.core.common.utils.getThisWeekRange
+import com.naveenapps.expensemanager.core.common.utils.getThisYearRange
+import com.naveenapps.expensemanager.core.common.utils.getTodayRange
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDateAndMonth
@@ -90,10 +94,10 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
 
     private suspend fun getDateRangeValues(dateRangeType: DateRangeType): List<Long> {
         return when (dateRangeType) {
-            DateRangeType.TODAY -> com.naveenapps.expensemanager.core.common.utils.getTodayRange()
-            DateRangeType.THIS_WEEK -> com.naveenapps.expensemanager.core.common.utils.getThisWeekRange()
-            DateRangeType.THIS_MONTH -> com.naveenapps.expensemanager.core.common.utils.getThisMonthRange()
-            DateRangeType.THIS_YEAR -> com.naveenapps.expensemanager.core.common.utils.getThisYearRange()
+            DateRangeType.TODAY -> getTodayRange()
+            DateRangeType.THIS_WEEK -> getThisWeekRange()
+            DateRangeType.THIS_MONTH -> getThisMonthRange()
+            DateRangeType.THIS_YEAR -> getThisYearRange()
             DateRangeType.ALL -> listOf(0, Long.MAX_VALUE)
             DateRangeType.CUSTOM -> getDateRange()
         }
