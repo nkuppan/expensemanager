@@ -20,7 +20,8 @@ import com.naveenapps.expensemanager.core.model.Resource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import org.joda.time.DateTime
 import java.util.Date
@@ -36,12 +37,13 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         return Resource.Success(
             buildList {
                 DateRangeType.values().forEach {
+                    val dateRanges = getCurrentDateRanges(it)
                     add(
                         DateRangeModel(
                             name = getDateRangeFilterRangeName(it),
-                            description = getFilterDateValue(it),
+                            description = getDateRangeName(dateRanges, it),
                             type = it,
-                            dateRanges = getAllDateRanges(it)
+                            dateRanges = dateRanges
                         )
                     )
                 }
@@ -51,6 +53,18 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
 
     override fun getDateRangeFilterType(): Flow<DateRangeType> {
         return dataStore.getFilterType()
+    }
+
+    override fun getDateRangeTimeFrame(): Flow<List<Long>?> {
+        return combine(
+            dataStore.getDateRangeStartDate(),
+            dataStore.getDateRangeEndDate()
+        ) { startDate, endDate ->
+            if (startDate != null && endDate != null)
+                listOf(startDate, endDate)
+            else
+                null
+        }
     }
 
     override suspend fun getDateRangeFilterRangeName(dateRangeType: DateRangeType): String {
@@ -69,12 +83,8 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
             name = getDateRangeFilterRangeName(dateRangeType),
             description = getFilterDateValue(dateRangeType),
             type = dateRangeType,
-            dateRanges = getAllDateRanges(dateRangeType)
+            dateRanges = getOriginalDateRangeValues(dateRangeType)
         )
-    }
-
-    override suspend fun getAllDateRanges(dateRangeType: DateRangeType): List<Long> {
-        return getDateRangeValues(dateRangeType)
     }
 
     override suspend fun setDateRangeFilterType(dateRangeType: DateRangeType): Resource<Boolean> =
@@ -92,28 +102,44 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         }
 
 
-    private suspend fun getDateRangeValues(dateRangeType: DateRangeType): List<Long> {
+    private suspend fun getOriginalDateRangeValues(dateRangeType: DateRangeType): List<Long> {
+
+        val dateRanges = getDateRange()
+
+        if (dateRanges != null) {
+            return dateRanges
+        }
+
+        return getCurrentDateRanges(dateRangeType)
+    }
+
+    private fun getCurrentDateRanges(dateRangeType: DateRangeType): List<Long> {
         return when (dateRangeType) {
             DateRangeType.TODAY -> getTodayRange()
             DateRangeType.THIS_WEEK -> getThisWeekRange()
             DateRangeType.THIS_MONTH -> getThisMonthRange()
             DateRangeType.THIS_YEAR -> getThisYearRange()
             DateRangeType.ALL -> listOf(0, Long.MAX_VALUE)
-            DateRangeType.CUSTOM -> getDateRange()
+            DateRangeType.CUSTOM -> listOf(Date().time, Date().time)
         }
     }
 
-    private suspend fun getDateRange(): List<Long> {
-        val defaultTime = Date().time
-        return listOf(
-            dataStore.getDateRangeStartDate().first() ?: defaultTime,
-            dataStore.getDateRangeEndDate().first() ?: defaultTime,
-        )
+    private suspend fun getDateRange(): List<Long>? {
+        val startTime = dataStore.getDateRangeStartDate().firstOrNull() ?: return null
+        val endTime = dataStore.getDateRangeEndDate().firstOrNull() ?: return null
+        return listOf(startTime, endTime)
     }
 
     private suspend fun getFilterDateValue(dateRangeType: DateRangeType): String {
 
-        val dateRanges = getDateRangeValues(dateRangeType)
+        val dateRanges = getOriginalDateRangeValues(dateRangeType)
+        return getDateRangeName(dateRanges, dateRangeType)
+    }
+
+    private fun getDateRangeName(
+        dateRanges: List<Long>,
+        dateRangeType: DateRangeType
+    ): String {
         val fromDate = dateRanges[0].toCompleteDate()
         val toDate = dateRanges[1].toCompleteDate()
 
@@ -147,7 +173,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         dateRangeType: DateRangeType
     ): GroupType = withContext(Dispatchers.IO) {
 
-        val dateRanges = getDateRangeValues(dateRangeType)
+        val dateRanges = getOriginalDateRangeValues(dateRangeType)
         val fromDate = dateRanges[0]
         val fromDateTime = DateTime(fromDate)
         val toDate = dateRanges[1]

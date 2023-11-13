@@ -12,33 +12,10 @@ class MoveDateRangeBackwardUseCase @Inject constructor(
 
     suspend operator fun invoke(type: DateRangeType): Resource<Boolean> {
         val dateRangeModel = dateRangeFilterRepository.getDateRangeFilterTypeString(type)
-        val startTime = DateTime(dateRangeModel.dateRanges[0])
-        val endTime = DateTime(dateRangeModel.dateRanges[1])
-
-        when (type) {
-            DateRangeType.TODAY -> {
-                startTime.minusDays(1)
-                endTime.minusDays(1)
-            }
-
-            DateRangeType.THIS_WEEK -> {
-                startTime.minusWeeks(1)
-                endTime.minusWeeks(1)
-            }
-
-            DateRangeType.THIS_MONTH -> {
-                startTime.minusMonths(1)
-                endTime.minusMonths(1)
-            }
-
-            DateRangeType.THIS_YEAR -> {
-                startTime.minusYears(1)
-                endTime.minusYears(1)
-            }
-
-            else -> Unit
-        }
-
+        var startTime = DateTime(dateRangeModel.dateRanges[0])
+        var endTime = DateTime(dateRangeModel.dateRanges[1])
+        startTime = startTime.minusRespectiveFrame(type)
+        endTime = endTime.minusRespectiveFrame(type)
         dateRangeFilterRepository.setDateRanges(
             listOf(startTime.toDate(), endTime.toDate())
         )

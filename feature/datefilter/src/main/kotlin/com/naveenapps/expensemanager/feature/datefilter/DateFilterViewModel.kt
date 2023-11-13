@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetAllDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.SaveDateRangeUseCase
@@ -44,8 +43,6 @@ class DateFilterViewModel @Inject constructor(
         getDateRangeUseCase.invoke().onEach {
             updateFilterType(it.type)
             updateDateRanges()
-            _fromDate.value = it.dateRanges[0].toCompleteDate()
-            _toDate.value = it.dateRanges[1].toCompleteDate()
         }.launchIn(viewModelScope)
 
         updateDateRanges()
@@ -77,13 +74,26 @@ class DateFilterViewModel @Inject constructor(
     fun save() {
         viewModelScope.launch {
             val selectedFilter = _dateRangeType.value
-            saveDateRangeUseCase.invoke(
-                selectedFilter,
-                listOf(
-                    _fromDate.value,
-                    _toDate.value,
+
+            val customRanges =
+                if (selectedFilter == DateRangeType.CUSTOM) {
+                    listOf(_fromDate.value, _toDate.value)
+                } else {
+                    _dateRangeFilterTypes.value.filter {
+                        it.type == selectedFilter
+                    }.let {
+                        it.firstOrNull()?.dateRanges?.map {
+                            Date(it)
+                        }
+                    }
+                }
+
+            if (customRanges != null) {
+                saveDateRangeUseCase.invoke(
+                    selectedFilter,
+                    customRanges
                 )
-            )
+            }
         }
     }
 

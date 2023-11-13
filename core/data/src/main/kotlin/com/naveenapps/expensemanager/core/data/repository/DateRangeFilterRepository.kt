@@ -13,13 +13,13 @@ interface DateRangeFilterRepository {
 
     fun getDateRangeFilterType(): Flow<DateRangeType>
 
+    fun getDateRangeTimeFrame(): Flow<List<Long>?>
+
     suspend fun setDateRangeFilterType(dateRangeType: DateRangeType): Resource<Boolean>
 
     suspend fun getDateRangeFilterRangeName(dateRangeType: DateRangeType): String
 
     suspend fun getDateRangeFilterTypeString(dateRangeType: DateRangeType): DateRangeModel
-
-    suspend fun getAllDateRanges(dateRangeType: DateRangeType): List<Long>
 
     suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean>
 
