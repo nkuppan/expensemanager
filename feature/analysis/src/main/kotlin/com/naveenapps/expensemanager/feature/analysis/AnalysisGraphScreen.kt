@@ -24,8 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.components.AMOUNT_VALUE
+import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
@@ -48,6 +52,7 @@ fun AnalysisGraphScreen() {
     val graphData by viewModel.graphItems.collectAsState()
     val averageData by viewModel.averageData.collectAsState()
     val amountUiState by viewModel.amountUiState.collectAsState()
+    val transactionPeriod by viewModel.transactionPeriod.collectAsState()
 
     when (val response = graphData) {
         UiState.Empty -> {
@@ -77,13 +82,13 @@ fun AnalysisGraphScreen() {
                 }
 
                 item {
-                    /*IncomeExpenseBalanceView(
+                    IncomeExpenseBalanceView(
                         amountUiState = amountUiState,
-                        showBalance = true,
+                        transactionPeriod = transactionPeriod,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                    )*/
+                    )
                 }
 
                 item {
@@ -94,8 +99,26 @@ fun AnalysisGraphScreen() {
                 }
             }
         }
+
+        else -> {}
     }
 }
+
+@Composable
+fun IncomeExpenseBalanceView(
+    amountUiState: AmountUiState,
+    transactionPeriod: String,
+    modifier: Modifier = Modifier,
+) {
+    AmountInfoWidget(
+        expenseAmount = amountUiState.expense,
+        incomeAmount = amountUiState.income,
+        balanceAmount = amountUiState.balance,
+        transactionPeriod = transactionPeriod,
+        modifier = modifier
+    )
+}
+
 
 @Composable
 fun TransactionAverageItem(
@@ -286,7 +309,7 @@ fun ChartScreenPreview() {
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionAverageItemPreview() {
     ExpenseManagerTheme {
@@ -303,6 +326,19 @@ fun TransactionAverageItemPreview() {
                     "10.0$",
                 )
             ),
+        )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+fun AmountSummaryPreview() {
+    ExpenseManagerTheme {
+        AmountInfoWidget(
+            expenseAmount = AMOUNT_VALUE,
+            incomeAmount = AMOUNT_VALUE,
+            balanceAmount = AMOUNT_VALUE,
+            transactionPeriod = "This Month(Oct 2023)",
         )
     }
 }

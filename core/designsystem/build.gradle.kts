@@ -10,6 +10,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:common"))
+
     api(libs.androidx.compose.activity)
     api(libs.androidx.compose.animation)
     api(libs.androidx.compose.foundation)

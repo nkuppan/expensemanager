@@ -30,6 +30,9 @@ class AnalysisScreenViewModel @Inject constructor(
     private val _amountUiState = MutableStateFlow(AmountUiState())
     val amountUiState = _amountUiState.asStateFlow()
 
+    private val _transactionPeriod = MutableStateFlow("")
+    val transactionPeriod = _transactionPeriod.asStateFlow()
+
     private val _graphItems = MutableStateFlow<UiState<AnalysisUiData>>(UiState.Loading)
     val graphItems = _graphItems.asStateFlow()
 

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.dashboard
+package com.naveenapps.expensemanager.core.designsystem.components
 
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
@@ -26,41 +26,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
-import com.naveenapps.expensemanager.core.model.AmountUiState
-
-@Composable
-fun IncomeExpenseBalanceView(
-    amountUiState: AmountUiState,
-    modifier: Modifier = Modifier,
-    showBalance: Boolean = false,
-) {
-    NewAmountInfoWidget(
-        modifier = modifier,
-        expenseAmount = amountUiState.expense,
-        incomeAmount = amountUiState.income,
-        balanceAmount = amountUiState.balance,
-        showBalance = showBalance
-    )
-}
 
 @Composable
 fun ColorIconAmountView(
     @ColorRes color: Int?,
     icon: ImageVector?,
-    amount: UiText,
+    amount: String,
     modifier: Modifier = Modifier,
     title: String
 ) {
-
-    val context = LocalContext.current
-
     Row(modifier = modifier) {
         if (icon != null && color != null) {
             Icon(
@@ -98,7 +79,8 @@ fun ColorIconAmountView(
                 .wrapContentSize()
                 .padding(start = 8.dp)
                 .align(Alignment.CenterVertically),
-            text = amount.asString(context),
+            text = amount,
+            fontWeight = FontWeight.Bold,
             style = MaterialTheme.typography.bodyMedium,
             color = if (color != null) {
                 colorResource(id = color)
@@ -111,23 +93,25 @@ fun ColorIconAmountView(
 
 @Composable
 fun AmountInfoWidget(
-    modifier: Modifier,
-    expenseAmount: UiText,
-    incomeAmount: UiText,
-    balanceAmount: UiText,
-    transactionPeriod: UiText,
+    expenseAmount: String,
+    incomeAmount: String,
+    balanceAmount: String,
+    transactionPeriod: String,
+    modifier: Modifier = Modifier,
 ) {
 
-    val context = LocalContext.current
-
-    AppCardView(modifier = modifier) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        tonalElevation = 1.dp
+    ) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             WidgetHeader(
                 title = stringResource(id = R.string.transaction_summary),
-                subTitle = transactionPeriod.asString(context)
+                subTitle = transactionPeriod
             )
 
             ColorIconAmountView(
@@ -190,107 +174,15 @@ fun WidgetHeader(
     }
 }
 
-
-@Composable
-fun NewAmountInfoWidget(
-    modifier: Modifier,
-    expenseAmount: String,
-    incomeAmount: String,
-    balanceAmount: String,
-    showBalance: Boolean = false
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        NewColorIconAmountView(
-            amount = incomeAmount,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            title = stringResource(id = R.string.income),
-            colorResource = com.naveenapps.expensemanager.core.common.R.color.green_500
-        )
-        NewColorIconAmountView(
-            amount = expenseAmount,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
-            title = stringResource(id = R.string.spending),
-            colorResource = com.naveenapps.expensemanager.core.common.R.color.red_500
-        )
-        if (showBalance) {
-            NewColorIconAmountView(
-                amount = balanceAmount,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                title = stringResource(id = R.string.balance),
-                colorResource = com.naveenapps.expensemanager.core.common.R.color.black_100
-            )
-        }
-    }
-}
-
-@Composable
-fun NewColorIconAmountView(
-    amount: String,
-    title: String,
-    @ColorRes colorResource: Int,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        modifier = modifier,
-        color = colorResource(id = colorResource).copy(alpha = .1f),
-        shape = RoundedCornerShape(8.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-            )
-            Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(top = 4.dp),
-                text = amount,
-                style = MaterialTheme.typography.headlineSmall,
-            )
-        }
-    }
-}
-
-const val AMOUNT_VALUE = "100000.0$"
-
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
     ExpenseManagerTheme {
         AmountInfoWidget(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            expenseAmount = UiText.DynamicString(AMOUNT_VALUE),
-            incomeAmount = UiText.DynamicString(AMOUNT_VALUE),
-            balanceAmount = UiText.DynamicString("0.00 $"),
-            transactionPeriod = UiText.DynamicString("This Month(Oct 2023)"),
-        )
-    }
-}
-
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-@Composable
-private fun NewAmountViewPreview() {
-    ExpenseManagerTheme {
-        NewAmountInfoWidget(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
             expenseAmount = AMOUNT_VALUE,
             incomeAmount = AMOUNT_VALUE,
-            balanceAmount = "0.00 $",
+            balanceAmount = AMOUNT_VALUE,
+            transactionPeriod = "This Month(Oct 2023)",
         )
     }
 }

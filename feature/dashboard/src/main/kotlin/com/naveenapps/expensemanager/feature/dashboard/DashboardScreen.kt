@@ -32,10 +32,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.designsystem.components.AmountStatusView
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
@@ -237,6 +239,21 @@ private fun DashboardScreenContent(
             Spacer(modifier = Modifier.padding(24.dp))
         }
     }
+}
+
+@Composable
+fun IncomeExpenseBalanceView(
+    amountUiState: AmountUiState,
+    modifier: Modifier = Modifier,
+    showBalance: Boolean = false,
+) {
+    AmountStatusView(
+        modifier = modifier,
+        expenseAmount = amountUiState.expense,
+        incomeAmount = amountUiState.income,
+        balanceAmount = amountUiState.balance,
+        showBalance = showBalance
+    )
 }
 
 @Composable
