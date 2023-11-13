@@ -55,6 +55,10 @@ fun SettingsScreen() {
     val theme by viewModel.theme.collectAsState()
     SettingsScreenScaffoldView(currency, theme) {
         when (it) {
+            SettingOption.BACK -> {
+                viewModel.closePage()
+            }
+
             SettingOption.EXPORT -> {
                 viewModel.openExportScreen()
             }
@@ -112,7 +116,9 @@ private fun SettingsScreenScaffoldView(
     Scaffold(
         topBar = {
             TopNavigationBar(
-                onClick = {},
+                onClick = {
+                    settingOptionSelected?.invoke(SettingOption.BACK)
+                },
                 title = stringResource(R.string.settings)
             )
         }
@@ -171,6 +177,8 @@ private fun SettingsScreenScaffoldView(
                 SettingOption.MAIL -> {
                     openEmailToOption(context, "naveenkumarn2@gmail.com")
                 }
+
+                else -> Unit
             }
         }
     }
@@ -354,6 +362,7 @@ private fun SettingsItem(
 }
 
 private enum class SettingOption {
+    BACK,
     THEME,
     CURRENCY,
     REMINDER,

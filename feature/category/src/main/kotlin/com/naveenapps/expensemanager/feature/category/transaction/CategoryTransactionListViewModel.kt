@@ -26,8 +26,7 @@ class CategoryTransactionListViewModel @Inject constructor(
     )
     val categoryTransaction = _categoryTransaction.asStateFlow()
 
-    private val _categoryType = MutableStateFlow(CategoryType.EXPENSE)
-    val categoryType = _categoryType.asStateFlow()
+    private val categoryType = MutableStateFlow(CategoryType.EXPENSE)
 
     init {
         categoryType.flatMapMerge {
@@ -46,7 +45,7 @@ class CategoryTransactionListViewModel @Inject constructor(
     }
 
     fun setCategoryType(categoryType: CategoryType) {
-        this._categoryType.value = categoryType
+        this.categoryType.value = categoryType
     }
 
     fun openCreatePage() {

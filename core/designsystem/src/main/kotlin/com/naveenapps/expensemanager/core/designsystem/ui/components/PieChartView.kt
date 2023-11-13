@@ -100,7 +100,7 @@ fun updatePieChartWithData(
     for (i in data.indices) {
         val item = data[i]
         entries.add(
-            PieEntry(item.value)
+            PieEntry(item.value, "", item.name)
         )
         colors.add(item.color)
     }
@@ -125,7 +125,7 @@ fun updatePieChartWithData(
         pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
         pieDataSet.valueFormatter = object : ValueFormatter() {
             override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
-                return data.find { it.value == pieEntry?.value }?.name ?: ""
+                return pieEntry?.data?.toString() ?: ""
             }
         }
     } else {

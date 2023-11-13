@@ -51,4 +51,8 @@ class SettingsViewModel @Inject constructor(
     fun openReminderScreen() {
         appComposeNavigator.navigate(ExpenseManagerScreens.ReminderScreen.route)
     }
+
+    fun closePage() {
+        appComposeNavigator.popBackStack()
+    }
 }
