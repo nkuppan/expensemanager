@@ -51,7 +51,10 @@ class BudgetCreateViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _errorMessage = MutableSharedFlow<UiText>()
-    val errorMessage = _errorMessage.asSharedFlow()
+    val message = _errorMessage.asSharedFlow()
+
+    private val _showDelete = MutableStateFlow(false)
+    val showDelete = _showDelete.asStateFlow()
 
     var name = MutableStateFlow("")
         private set
@@ -138,6 +141,8 @@ class BudgetCreateViewModel @Inject constructor(
             if (categories.isNotEmpty()) {
                 setCategories(categories, budgetItem.isAllAccountsSelected)
             }
+
+            _showDelete.value = true
         }
     }
 

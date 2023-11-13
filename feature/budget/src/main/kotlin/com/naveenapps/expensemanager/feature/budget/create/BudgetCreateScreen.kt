@@ -103,7 +103,9 @@ fun BudgetCreateScreen() {
         )
     }
 
-    val errorMessage by viewModel.errorMessage.collectAsState(null)
+    val showDelete by viewModel.showDelete.collectAsState()
+
+    val errorMessage by viewModel.message.collectAsState(null)
     if (errorMessage != null) {
         LaunchedEffect(key1 = "errorMessage", block = {
             snackbarHostState.showSnackbar(
@@ -140,7 +142,7 @@ fun BudgetCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.budgets),
-                actionId = null
+                showDelete = showDelete
             ) {
                 if (it == 1) {
                     viewModel.closePage()

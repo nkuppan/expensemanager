@@ -129,12 +129,12 @@ fun TransactionCreateScreen() {
         )
     }
 
-    val transactionCreated by viewModel.transactionCreated.collectAsState(false)
-    if (transactionCreated) {
+    val showDelete by viewModel.showDelete.collectAsState()
+
+    val message by viewModel.message.collectAsState(null)
+    if (message != null) {
         LaunchedEffect(key1 = "completed", block = {
-            snackbarHostState.showSnackbar(
-                message = context.getString(R.string.transaction_create_success)
-            )
+            snackbarHostState.showSnackbar(message = message?.asString(context) ?: "")
         })
     }
 
@@ -163,7 +163,7 @@ fun TransactionCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.transaction),
-                actionId = null
+                showDelete = showDelete
             ) {
                 if (it == 1) {
                     viewModel.closePage()
@@ -281,9 +281,7 @@ private fun TransactionCreateScreen(
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
-    var showDatePicker by remember {
-        mutableStateOf(false)
-    }
+    var showDatePicker by remember { mutableStateOf(false) }
 
     if (showDatePicker) {
         AppDatePickerDialog(
@@ -304,9 +302,7 @@ private fun TransactionCreateScreen(
             },
         )
     }
-    var showTimePicker by remember {
-        mutableStateOf(false)
-    }
+    var showTimePicker by remember { mutableStateOf(false) }
 
     if (showTimePicker) {
         val reminder = (selectedDate ?: Date()).toTime()

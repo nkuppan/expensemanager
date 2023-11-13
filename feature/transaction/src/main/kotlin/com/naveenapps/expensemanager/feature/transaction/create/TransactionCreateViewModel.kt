@@ -58,8 +58,8 @@ class TransactionCreateViewModel @Inject constructor(
     private val _message = MutableSharedFlow<UiText>()
     val message = _message.asSharedFlow()
 
-    private val _transactionUpdated = MutableSharedFlow<Boolean>()
-    val transactionCreated = _transactionUpdated.asSharedFlow()
+    private val _showDelete = MutableStateFlow(false)
+    val showDelete = _showDelete.asStateFlow()
 
     private val _amount: MutableStateFlow<String> = MutableStateFlow("0.0")
     val amount = _amount.asStateFlow()
@@ -191,6 +191,7 @@ class TransactionCreateViewModel @Inject constructor(
                     }
                     setTransactionType(transaction.type)
                     this@TransactionCreateViewModel.transaction = transaction
+                    _showDelete.value = true
                 }
             }
         }
@@ -249,7 +250,6 @@ class TransactionCreateViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    _transactionUpdated.emit(true)
                     closePage()
                 }
             }
@@ -309,7 +309,6 @@ class TransactionCreateViewModel @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        _transactionUpdated.emit(true)
                         closePage()
                     }
                 }

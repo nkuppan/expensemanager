@@ -18,6 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
@@ -36,6 +37,9 @@ class CategoryCreateViewModel @Inject constructor(
 
     private val _message = MutableSharedFlow<UiText>()
     val message = _message.asSharedFlow()
+
+    private val _showDelete = MutableStateFlow(false)
+    val showDelete = _showDelete.asStateFlow()
 
     var categoryType = MutableStateFlow(CategoryType.EXPENSE)
         private set
@@ -71,6 +75,7 @@ class CategoryCreateViewModel @Inject constructor(
             categoryType.value = categoryItem.type
             colorValue.value = categoryItem.iconBackgroundColor
             icon.value = categoryItem.iconName
+            _showDelete.value = true
         }
     }
 

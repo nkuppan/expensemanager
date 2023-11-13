@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class ExportViewModel @Inject constructor(
     getDateRangeUseCase: GetDateRangeUseCase,
     private val exportFileUseCase: ExportFileUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _error = MutableSharedFlow<UiText?>()
@@ -90,6 +92,10 @@ class ExportViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun closePage() {
+        appComposeNavigator.popBackStack()
     }
 }
 

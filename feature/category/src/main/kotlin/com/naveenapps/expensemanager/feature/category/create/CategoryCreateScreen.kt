@@ -77,6 +77,8 @@ fun CategoryCreateScreen() {
         )
     }
 
+    val showDelete by viewModel.showDelete.collectAsState(null)
+
     val message by viewModel.message.collectAsState(null)
     if (message != null) {
         LaunchedEffect(key1 = "completed", block = {
@@ -112,7 +114,7 @@ fun CategoryCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.category),
-                actionId = null
+                showDelete = showDelete
             ) {
                 if (it == 1) {
                     viewModel.closePage()

@@ -4,7 +4,6 @@ plugins {
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
     id("androidx.navigation.safeargs")
-    id("kotlin-parcelize")
 }
 
 android {

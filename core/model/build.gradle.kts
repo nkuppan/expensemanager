@@ -1,7 +1,6 @@
 plugins {
     id("naveenapps.plugin.android.library")
     id("naveenapps.plugin.kotlin.basic")
-    id("kotlin-parcelize")
 }
 
 android {

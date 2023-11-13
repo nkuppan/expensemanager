@@ -84,6 +84,8 @@ fun AccountCreateScreen() {
         )
     }
 
+    val showDelete by viewModel.showDelete.collectAsState(null)
+
     val accountCreated by viewModel.message.collectAsState(null)
     if (accountCreated != null) {
         LaunchedEffect(key1 = "completed", block = {
@@ -121,7 +123,7 @@ fun AccountCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.accounts),
-                actionId = null
+                showDelete = showDelete
             ) {
                 if (it == 1) {
                     viewModel.closePage()

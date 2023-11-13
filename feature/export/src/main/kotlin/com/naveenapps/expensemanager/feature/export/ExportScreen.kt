@@ -54,7 +54,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTe
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.shareThisFile
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
-import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
@@ -79,7 +78,7 @@ private fun createFile(fileType: ExportFileType): Intent? {
 }
 
 
-@OptIn(ExperimentalPermissionsApi::class)
+@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ExportScreen() {
 
@@ -144,36 +143,6 @@ fun ExportScreen() {
         })
     }
 
-    ExportScreenScaffoldView(
-        selectedDateRange = selectedDateRange,
-        exportFileType = exportFileType,
-        accountCount = accountCount,
-        onExportFileTypeChange = viewModel::setExportFileType,
-        onExport = {
-            if (exportFileType != ExportFileType.PDF) {
-                createFile(fileType = exportFileType)?.let {
-                    fileCreatorIntent.launch(it)
-                } ?: run {
-                    viewModel.export(null)
-                }
-            }
-        },
-        setAccounts = viewModel::setAccounts,
-        snackbarHostState = snackbarHostState,
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun ExportScreenScaffoldView(
-    selectedDateRange: String?,
-    exportFileType: ExportFileType,
-    accountCount: UiText,
-    onExportFileTypeChange: (ExportFileType) -> Unit,
-    onExport: () -> Unit,
-    setAccounts: (List<AccountUiModel>, Boolean) -> Unit,
-    snackbarHostState: SnackbarHostState,
-) {
     val scope = rememberCoroutineScope()
 
     var showBottomSheet by remember { mutableStateOf(false) }
@@ -188,7 +157,7 @@ private fun ExportScreenScaffoldView(
             windowInsets = WindowInsets(0.dp)
         ) {
             MultipleAccountSelectionScreen { items, selected ->
-                setAccounts.invoke(items, selected)
+                viewModel.setAccounts(items, selected)
                 scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
                     if (!bottomSheetState.isVisible) {
                         showBottomSheet = false
@@ -204,12 +173,20 @@ private fun ExportScreenScaffoldView(
         },
         topBar = {
             TopNavigationBar(
-                onClick = {}, title = null
+                onClick = viewModel::closePage, title = null
             )
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = onExport,
+                onClick = {
+                    if (exportFileType != ExportFileType.PDF) {
+                        createFile(fileType = exportFileType)?.let {
+                            fileCreatorIntent.launch(it)
+                        } ?: run {
+                            viewModel.export(null)
+                        }
+                    }
+                },
             ) {
                 Row {
                     Icon(
@@ -233,7 +210,7 @@ private fun ExportScreenScaffoldView(
             selectedDateRange,
             exportFileType,
             accountCount,
-            onExportFileTypeChange,
+            viewModel::setExportFileType,
             openAccountSelection = {
                 scope.launch {
                     if (bottomSheetState.isVisible) {

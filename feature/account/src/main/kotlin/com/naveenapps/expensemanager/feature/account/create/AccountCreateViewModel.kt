@@ -23,6 +23,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -45,6 +46,9 @@ class AccountCreateViewModel @Inject constructor(
 
     private val _message = MutableSharedFlow<UiText>()
     val message = _message.asSharedFlow()
+
+    private val _showDelete = MutableStateFlow(false)
+    val showDelete = _showDelete.asStateFlow()
 
     var accountType = MutableStateFlow(AccountType.REGULAR)
         private set
@@ -113,6 +117,7 @@ class AccountCreateViewModel @Inject constructor(
             colorValue.value = accountItem.iconBackgroundColor
             icon.value = accountItem.iconName
             updateAccountValue(accountItem)
+            _showDelete.value = true
         }
     }
 

@@ -49,7 +49,7 @@ fun TopNavigationBar(
 @OptIn(ExperimentalMaterial3Api::class)
 fun TopNavigationBarWithDeleteAction(
     title: String,
-    actionId: String?,
+    showDelete: Boolean?,
     onClick: (Int) -> Unit,
 ) {
     TopAppBar(navigationIcon = {
@@ -67,7 +67,7 @@ fun TopNavigationBarWithDeleteAction(
                     .align(Alignment.CenterVertically),
                 text = title
             )
-            if (actionId?.isNotBlank() == true) {
+            if (showDelete == true) {
                 IconButton(onClick = {
                     onClick.invoke(2)
                 }) {
@@ -101,13 +101,13 @@ private fun TopNavigationBarWithDeleteAction() {
             )
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
-                actionId = null
+                showDelete = null
             ) {
 
             }
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
-                actionId = "null"
+                showDelete = true
             ) {
 
             }
