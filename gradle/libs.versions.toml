@@ -189,6 +189,7 @@ kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-pl
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 work-testing = { group = "androidx.work", name = "work-testing", version = "2.8.1" }
 app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version = "2.1.0" }
+androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version = "1.1.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

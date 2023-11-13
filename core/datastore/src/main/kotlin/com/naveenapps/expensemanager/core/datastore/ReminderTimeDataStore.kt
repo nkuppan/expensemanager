@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.datastore
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
@@ -26,7 +27,16 @@ class ReminderTimeDataStore(private val dataStore: DataStore<Preferences>) {
             )
         }
 
+    suspend fun setReminder(reminder: Boolean) = dataStore.edit { preferences ->
+        preferences[KEY_REMINDER] = reminder
+    }
+
+    fun isReminderOn(): Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[KEY_REMINDER] ?: true
+    }
+
     companion object {
         private val KEY_REMINDER_TIME_STATE = stringPreferencesKey("reminder_time")
+        private val KEY_REMINDER = booleanPreferencesKey("reminder")
     }
 }

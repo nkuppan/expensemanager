@@ -21,4 +21,6 @@ dependencies {
 
     implementation(libs.androidx.dataStore.core)
     implementation(libs.androidx.dataStore.preference)
+    implementation(libs.androidx.hilt.common)
+    implementation(libs.hilt.ext.work)
 }

@@ -1,19 +1,24 @@
 package com.naveenapps.expensemanager.core.notification
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -24,12 +29,11 @@ import kotlin.math.abs
 
 @Singleton
 class NotificationScheduler @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val reminderTimeRepository: ReminderTimeRepository
 ) {
 
-    suspend fun setReminder(context: Context) {
-
-        WorkManager.getInstance(context).cancelAllWork()
+    suspend fun setReminder() {
 
         val calendar = getTimeInMillis()
         val timeDelay = abs(Date().time - calendar.timeInMillis)
@@ -43,7 +47,7 @@ class NotificationScheduler @Inject constructor(
         WorkManager.getInstance(context).enqueue(request)
     }
 
-    fun cancelReminder(context: Context) {
+    fun cancelReminder() {
         WorkManager.getInstance(context).cancelAllWork()
     }
 
@@ -69,13 +73,19 @@ class NotificationScheduler @Inject constructor(
     }
 
     fun showNotification(
-        context: Context,
         destinationClass: String,
         title: String,
         content: String
     ) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS,
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
 
-        createChannelIfRequired(context)
+        createChannelIfRequired()
 
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
@@ -96,7 +106,8 @@ class NotificationScheduler @Inject constructor(
 
         val notification = builder.setContentTitle(title)
             .setContentText(content).setAutoCancel(true)
-            .setSound(alarmSound).setSmallIcon(R.drawable.account_balance_wallet)
+            .setSound(alarmSound)
+            .setSmallIcon(R.drawable.account_balance_wallet)
             .setContentIntent(pendingIntent).build()
 
         val notificationManager: NotificationManager =
@@ -109,35 +120,37 @@ class NotificationScheduler @Inject constructor(
         )
     }
 
-    private fun createChannelIfRequired(aContext: Context) {
+    private fun createChannelIfRequired() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel(
-                aContext,
                 NotificationChannelId.CHANNEL_GENERAL,
-                NotificationChannelId.CHANNEL_GENERAL
+                NotificationChannelId.CHANNEL_GENERAL,
+                "Used for reminders",
             )
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(
-        context: Context,
         channelId: String,
-        channelName: String
-    ): String {
+        channelName: String,
+        channelDescription: String,
+    ) {
 
-        val notificationChannel = NotificationChannel(
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+
+        val channel = NotificationChannel(
             channelId,
             channelName,
-            NotificationManager.IMPORTANCE_HIGH
-        )
+            NotificationManager.IMPORTANCE_DEFAULT,
+        ).apply {
+            description = channelDescription
+            lightColor = Color.BLUE
+        }
 
-        notificationChannel.lightColor = Color.BLUE
-        notificationChannel.lockscreenVisibility = NotificationCompat.VISIBILITY_PRIVATE
-        val service = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        service.createNotificationChannel(notificationChannel)
-
-        return channelId
+        NotificationManagerCompat
+            .from(context)
+            .createNotificationChannel(channel)
     }
 }
 
@@ -146,5 +159,5 @@ object NotificationId {
 }
 
 object NotificationChannelId {
-    const val CHANNEL_GENERAL = "general"
+    const val CHANNEL_GENERAL = "General"
 }

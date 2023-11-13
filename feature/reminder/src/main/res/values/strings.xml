@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Reminder</string>
+    <string name="reminder_notification">Reminder Notification</string>
+    <string name="reminder_notification_message">Notification time to remind you to add your expenses</string>
+    <string name="notification_time">Reminder Notification Time</string>
+</resources>

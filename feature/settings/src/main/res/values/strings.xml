@@ -4,7 +4,7 @@
     <string name="theme">Theme</string>
     <string name="analysis">Analysis</string>
     <string name="select_currency">Select currency</string>
-    <string name="notification">Notification</string>
+    <string name="reminder_notification">Notification</string>
     <string name="info">Info</string>
     <string name="about_the_app_information">About app information</string>
     <string name="rate_us_message">It will help us to grow better</string>

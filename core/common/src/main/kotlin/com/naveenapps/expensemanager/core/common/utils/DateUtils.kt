@@ -95,3 +95,13 @@ fun Date.toMonthYear(): String {
 fun Date.toDay(): String {
     return SimpleDateFormat("EEEE", Locale.getDefault()).format(this)
 }
+
+fun String.fromTimeAndHour(): Date {
+    return kotlin.runCatching {
+        SimpleDateFormat("HH:mm", Locale.getDefault()).parse(this)
+    }.getOrNull() ?: Date()
+}
+
+fun Date.toTimeAndMinutesWithAMPM(): String {
+    return SimpleDateFormat("hh:mm a", Locale.getDefault()).format(this)
+}

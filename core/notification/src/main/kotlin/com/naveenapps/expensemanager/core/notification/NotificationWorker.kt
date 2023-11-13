@@ -1,32 +1,29 @@
 package com.naveenapps.expensemanager.core.notification
 
 import android.content.Context
-import androidx.work.Worker
+import androidx.hilt.work.HiltWorker
+import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 
-class NotificationWorker(private val context: Context, workerParams: WorkerParameters) :
-    Worker(context, workerParams) {
+@HiltWorker
+class NotificationWorker @AssistedInject constructor(
+    @Assisted private val context: Context,
+    @Assisted workerParams: WorkerParameters,
+    private val notificationScheduler: NotificationScheduler
+) : CoroutineWorker(context, workerParams) {
 
-    @Inject
-    lateinit var notificationScheduler: NotificationScheduler
 
-    override fun doWork(): Result {
+    override suspend fun doWork(): Result {
 
         notificationScheduler.showNotification(
-            context,
             DESTINATION_CLASS,
             context.getString(R.string.notification_description),
             context.getString(R.string.notification_title)
         )
 
-        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            notificationScheduler.setReminder(context)
-        }
+        notificationScheduler.setReminder()
 
         return Result.success()
     }

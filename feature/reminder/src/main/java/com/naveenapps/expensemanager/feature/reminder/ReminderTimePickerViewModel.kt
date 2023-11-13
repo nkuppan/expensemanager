@@ -2,8 +2,8 @@ package com.naveenapps.expensemanager.feature.reminder
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.settings.time.GetReminderTimeUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.time.SaveReminderTimeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.GetReminderTimeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.SaveReminderTimeUseCase
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -41,16 +41,6 @@ class SettingsRepositoryImpl @Inject constructor(
             return@withContext Resource.Success(true)
         }
 
-    override fun isReminderOn(): Flow<Boolean> {
-        return dataStore.isReminderOn()
-    }
-
-    override suspend fun setReminderOn(reminder: Boolean): Resource<Boolean> =
-        withContext(dispatcher.io) {
-            dataStore.setReminder(reminder)
-            return@withContext Resource.Success(true)
-        }
-
     override fun isFilterEnabled(): Flow<Boolean> {
         return dataStore.isFilterEnabled()
     }

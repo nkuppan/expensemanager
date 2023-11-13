@@ -8,3 +8,6 @@ plugins {
 android {
     namespace = "com.naveenapps.expensemanager.feature.reminder"
 }
+dependencies {
+    implementation(project(mapOf("path" to ":core:notification")))
+}

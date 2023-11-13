@@ -70,6 +70,11 @@
             <meta-data
                 android:name="com.naveenapps.expensemanager.initializer.ThemeInitializer"
                 android:value="androidx.startup" />
+
+            <meta-data
+                android:name="androidx.work.WorkManagerInitializer"
+                android:value="androidx.startup"
+                tools:node="remove" />
         </provider>
     </application>
 

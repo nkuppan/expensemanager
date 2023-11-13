@@ -77,6 +77,7 @@ dependencies {
     implementation(project(":feature:settings"))
     implementation(project(":feature:theme"))
     implementation(project(":feature:export"))
+    implementation(project(":feature:reminder"))
 
     implementation(libs.androidx.splash.screen)
 
@@ -90,6 +91,7 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.work.ktx)
+    implementation(libs.hilt.ext.work)
 
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))

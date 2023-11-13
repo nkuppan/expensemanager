@@ -225,7 +225,7 @@ private fun SettingsScreenContent(
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
-            title = stringResource(id = R.string.notification),
+            title = stringResource(id = R.string.reminder_notification),
             description = stringResource(id = R.string.selected_daily_reminder_time),
             icon = R.drawable.ic_edit_notifications
         )

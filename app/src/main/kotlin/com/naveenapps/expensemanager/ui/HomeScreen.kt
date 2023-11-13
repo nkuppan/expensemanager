@@ -28,6 +28,7 @@ import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransa
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
+import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
@@ -98,6 +99,9 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(ExpenseManagerScreens.ExportScreen.route) {
         ExportScreen()
+    }
+    composable(ExpenseManagerScreens.ReminderScreen.route) {
+        ReminderScreen()
     }
     composable(ExpenseManagerScreens.CategoryTransaction.route) {
         CategoryTransactionTabScreen()
