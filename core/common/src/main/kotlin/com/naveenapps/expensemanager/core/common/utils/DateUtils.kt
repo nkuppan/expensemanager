@@ -69,7 +69,7 @@ fun Date.toMonthAndYear(): String {
 }
 
 fun String.fromMonthAndYear(): Date? {
-    return SimpleDateFormat("MM/yyyy", Locale.getDefault()).parse(this)
+    return SimpleDateFormat("MMMM yyyy", Locale.getDefault()).parse(this)
 }
 
 fun Date.toMonth(): Int {
