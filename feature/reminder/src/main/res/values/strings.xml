@@ -4,4 +4,6 @@
     <string name="reminder_notification">Reminder Notification</string>
     <string name="reminder_notification_message">Notification time to remind you to add your expenses</string>
     <string name="notification_time">Reminder Notification Time</string>
+    <string name="notification_permission_message">The notification permission is important for this app. Please grant the permission.</string>
+    <string name="permission_disabled">Notification permission is disabled</string>
 </resources>
