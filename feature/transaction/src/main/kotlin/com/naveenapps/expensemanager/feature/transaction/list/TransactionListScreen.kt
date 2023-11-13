@@ -104,32 +104,35 @@ private fun TransactionListScreen(
 
     val scrollState = rememberLazyListState()
 
-    Box(modifier = modifier) {
+    Column(modifier = modifier) {
+
+        FilterView(modifier = Modifier.fillMaxWidth())
 
         when (transactionUiState) {
             UiState.Empty -> {
-                Text(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_transactions_available),
-                    textAlign = TextAlign.Center
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .align(Alignment.Center),
+                        text = stringResource(id = R.string.no_transactions_available),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
 
             UiState.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .align(Alignment.Center)
-                )
+                Box(modifier = Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .align(Alignment.Center)
+                    )
+                }
             }
 
             is UiState.Success -> {
                 LazyColumn(state = scrollState) {
-                    item {
-                        FilterView(modifier = Modifier.fillMaxWidth())
-                    }
                     items(transactionUiState.data) {
                         TransactionGroupItem(
                             it, onItemClick
@@ -403,7 +406,7 @@ fun TransactionListItemLoadingStatePreview() {
 fun TransactionListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
-            transactionUiState = UiState.Empty,
+            transactionUiState = UiState.Success(emptyList()),
             modifier = Modifier.fillMaxSize()
         )
     }

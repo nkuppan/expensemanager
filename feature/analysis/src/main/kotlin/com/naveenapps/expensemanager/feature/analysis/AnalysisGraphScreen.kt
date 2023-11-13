@@ -32,7 +32,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.WholeAverageData
-import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
@@ -67,13 +66,6 @@ fun AnalysisGraphScreen() {
             val newGraphData = response.data
 
             LazyColumn {
-                item {
-                    FilterView(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 6.dp)
-                    )
-                }
                 item {
                     ChartScreen(
                         modifier = Modifier.padding(start = 16.dp, end = 16.dp),

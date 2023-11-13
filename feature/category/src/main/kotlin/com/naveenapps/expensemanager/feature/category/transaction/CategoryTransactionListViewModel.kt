@@ -11,7 +11,7 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class CategoryTransactionListViewModel @Inject constructor(
     private val categoryType = MutableStateFlow(CategoryType.EXPENSE)
 
     init {
-        categoryType.flatMapMerge {
+        categoryType.flatMapLatest {
             getTransactionGroupByCategoryUseCase.invoke(it)
         }.onEach { model ->
             _categoryTransaction.value = UiState.Success(
@@ -44,8 +44,12 @@ class CategoryTransactionListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setCategoryType(categoryType: CategoryType) {
-        this.categoryType.value = categoryType
+    fun switchCategory() {
+        this.categoryType.value = if (categoryType.value == CategoryType.EXPENSE) {
+            CategoryType.INCOME
+        } else {
+            CategoryType.EXPENSE
+        }
     }
 
     fun openCreatePage() {
