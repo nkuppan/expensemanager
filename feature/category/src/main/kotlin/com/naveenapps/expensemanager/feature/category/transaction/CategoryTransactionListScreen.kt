@@ -19,13 +19,17 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,7 +49,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBack
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SmallIconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -58,6 +61,7 @@ import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import kotlin.random.Random
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryTransactionTabScreen(
     viewModel: CategoryTransactionListViewModel = hiltViewModel()
@@ -66,12 +70,21 @@ fun CategoryTransactionTabScreen(
 
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = {
-                    viewModel.closePage()
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(R.string.categories),
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 },
-                title = stringResource(R.string.categories),
-                disableBackIcon = true
+                actions = {
+                    IconButton(onClick = viewModel::openCategoryList) {
+                        Icon(
+                            imageVector = Icons.Outlined.Edit,
+                            contentDescription = stringResource(id = R.string.edit)
+                        )
+                    }
+                }
             )
         },
         floatingActionButton = {

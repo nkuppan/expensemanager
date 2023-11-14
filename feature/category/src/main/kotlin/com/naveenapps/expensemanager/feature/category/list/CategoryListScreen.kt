@@ -61,7 +61,7 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
                     viewModel.closePage()
                 },
                 title = stringResource(R.string.category),
-                disableBackIcon = true
+                disableBackIcon = false
             )
         },
         floatingActionButton = {

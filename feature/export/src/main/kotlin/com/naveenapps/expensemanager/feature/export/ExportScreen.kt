@@ -15,9 +15,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Upload
+import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -291,7 +291,7 @@ private fun ExportScreenContent(
                 .padding(16.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
-            icon = Icons.Default.AccountBalance,
+            icon = Icons.Outlined.AccountBalance,
             selectedCount = accountCount.asString(context)
         )
         if (exportFileType == ExportFileType.PDF) {

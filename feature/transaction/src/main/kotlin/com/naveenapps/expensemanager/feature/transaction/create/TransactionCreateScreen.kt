@@ -16,12 +16,12 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notes
+import androidx.compose.material.icons.outlined.AccessTime
+import androidx.compose.material.icons.outlined.Calculate
+import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -341,7 +341,7 @@ private fun TransactionCreateScreen(
                     .padding(end = 8.dp),
                 value = selectedDate?.toCompleteDate() ?: "",
                 label = R.string.select_date,
-                leadingIcon = Icons.Default.EditCalendar,
+                leadingIcon = Icons.Outlined.EditCalendar,
                 onClick = {
                     focusManager.clearFocus(force = true)
                     showDatePicker = true
@@ -353,7 +353,7 @@ private fun TransactionCreateScreen(
                     .padding(start = 8.dp),
                 value = selectedDate?.toTimeAndMinutes() ?: "",
                 label = R.string.select_time,
-                leadingIcon = Icons.Default.AccessTime,
+                leadingIcon = Icons.Outlined.AccessTime,
                 onClick = {
                     focusManager.clearFocus(force = true)
                     showTimePicker = true
@@ -382,7 +382,7 @@ private fun TransactionCreateScreen(
                     },
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Calculate,
+                        imageVector = Icons.Outlined.Calculate,
                         contentDescription = ""
                     )
                 }

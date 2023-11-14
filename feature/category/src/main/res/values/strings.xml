@@ -21,4 +21,5 @@
     <string name="category_name_error">Name shouldn\'t be null</string>
     <string name="category_create_success">Category created/modified successfully</string>
     <string name="category_delete_error_message">Unable to delete this category</string>
+    <string name="edit">Edit</string>
 </resources>

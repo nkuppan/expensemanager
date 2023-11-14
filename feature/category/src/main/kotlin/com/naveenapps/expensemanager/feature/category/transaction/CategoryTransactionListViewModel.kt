@@ -61,4 +61,8 @@ class CategoryTransactionListViewModel @Inject constructor(
     fun closePage() {
         appComposeNavigator.popBackStack()
     }
+
+    fun openCategoryList() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryList.route)
+    }
 }
