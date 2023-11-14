@@ -104,10 +104,14 @@ class GetChartDataUseCase @Inject constructor(
 
             return@combine AnalysisData(
                 transaction,
-                AnalysisChartData(
-                    listOf(expenses, incomes),
-                    dates
-                )
+                if (transactionGroupByDate.isEmpty()) {
+                    null
+                } else {
+                    AnalysisChartData(
+                        listOf(expenses, incomes),
+                        dates
+                    )
+                }
             )
         }.flowOn(dispatcher.computation)
     }

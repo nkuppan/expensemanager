@@ -1,9 +1,11 @@
 package com.naveenapps.expensemanager.feature.analysis
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -66,11 +68,28 @@ fun AnalysisGraphScreen() {
             val newGraphData = response.data
 
             LazyColumn {
-                item {
-                    ChartScreen(
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                        chart = newGraphData.chartData
-                    )
+                if (newGraphData.chartData != null) {
+                    item {
+                        ChartScreen(
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                            chart = newGraphData.chartData
+                        )
+                    }
+                }
+                if (newGraphData.chartData == null) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .padding(start = 16.dp, end = 16.dp)
+                                .fillMaxWidth()
+                                .height(200.dp),
+                        ) {
+                            Text(
+                                modifier = Modifier.align(Alignment.Center),
+                                text = stringResource(id = R.string.no_chart_available)
+                            )
+                        }
+                    }
                 }
 
                 item {
