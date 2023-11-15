@@ -35,7 +35,9 @@ fun TransactionTypeSelectionView(
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         AppFilterChip(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .weight(1f),
             filterName = stringResource(id = R.string.income),
             isSelected = selectedTransactionType.isIncome(),
             filterIcon = Icons.Default.ArrowDownward,
@@ -45,7 +47,9 @@ fun TransactionTypeSelectionView(
             }
         )
         AppFilterChip(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .weight(1f),
             filterName = stringResource(id = R.string.spending),
             isSelected = selectedTransactionType.isExpense(),
             filterIcon = Icons.Default.ArrowUpward,
@@ -55,7 +59,9 @@ fun TransactionTypeSelectionView(
             }
         )
         AppFilterChip(
-            modifier = Modifier.align(Alignment.CenterVertically),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .weight(1f),
             filterName = stringResource(id = R.string.transfer),
             isSelected = selectedTransactionType.isTransfer(),
             filterIcon = Icons.Default.Transform,

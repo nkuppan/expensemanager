@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.GetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
@@ -26,6 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -38,8 +41,13 @@ class DashboardViewModel @Inject constructor(
     getAccountsUseCase: GetAccountsUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     getBudgetsUseCase: GetBudgetsUseCase,
+    private val getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
+    private val setOnboardingStatusUseCase: SetOnboardingStatusUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
+
+    private val _showToolTip = MutableStateFlow(false)
+    val showToolTip = _showToolTip.asStateFlow()
 
     private val _amountUiState = MutableStateFlow(AmountUiState())
     val amountUiState = _amountUiState.asStateFlow()
@@ -107,6 +115,21 @@ class DashboardViewModel @Inject constructor(
         getBudgetsUseCase.invoke().onEach {
             _budgets.value = it
         }.launchIn(viewModelScope)
+
+        loadTooltipState()
+    }
+
+    private fun loadTooltipState() {
+        viewModelScope.launch {
+            _showToolTip.value = getOnboardingStatusUseCase.invoke().not()
+        }
+    }
+
+    fun closeToolTip() {
+        viewModelScope.launch {
+            setOnboardingStatusUseCase.invoke(true)
+            loadTooltipState()
+        }
     }
 
     fun openSettings() {

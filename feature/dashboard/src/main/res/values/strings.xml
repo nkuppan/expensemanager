@@ -12,4 +12,7 @@
     <string name="transaction">Transaction</string>
     <string name="no_transactions_available">No transactions available</string>
     <string name="home">Home</string>
+    <string name="transaction_create_message">"Add your expenses, incomes and transfers here. "</string>
+    <string name="help"><![CDATA[Help & info]]></string>
+    <string name="ok">OK</string>
 </resources>

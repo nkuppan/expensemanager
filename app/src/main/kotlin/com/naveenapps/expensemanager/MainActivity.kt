@@ -72,11 +72,12 @@ internal class HomeActivity : ComponentActivity() {
                 MainScreen(
                     appComposeNavigator,
                     isDarkTheme,
-                    if (onBoardingStatus == true) {
+                    ExpenseManagerScreens.Home.name
+                    /*if (onBoardingStatus == true) {
                         ExpenseManagerScreens.Home.name
                     } else {
                         ExpenseManagerScreens.Onboarding.name
-                    }
+                    }*/
                 )
             }
         }
