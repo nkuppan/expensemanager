@@ -11,13 +11,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.ACCOUNT_DUMMY_DATA
@@ -46,11 +46,7 @@ fun AccountSelectionScreen(
                             Modifier
                                 .padding(4.dp)
                                 .background(
-                                    color = colorResource(
-                                        id = com.naveenapps.expensemanager.core.common.R.color.green_500
-                                    ).copy(
-                                        alpha = .1f
-                                    ),
+                                    color = getSelectedBGColor(),
                                     shape = RoundedCornerShape(size = 12.dp)
                                 )
                         } else {

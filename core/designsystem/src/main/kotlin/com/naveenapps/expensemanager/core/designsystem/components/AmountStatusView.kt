@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.designsystem.components
 
-import androidx.annotation.ColorRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,13 +12,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getBalanceBGColor
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseBGColor
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 
 
 @Composable
@@ -36,31 +38,31 @@ fun AmountStatusView(
     ) {
         NewColorIconAmountView(
             amount = incomeAmount,
+            title = stringResource(id = R.string.income),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            title = stringResource(id = R.string.income),
-            colorResource = com.naveenapps.expensemanager.core.common.R.color.green_500,
-            showBalance = showBalance
+            showBalance = showBalance,
+            color = getIncomeBGColor()
         )
         NewColorIconAmountView(
             amount = expenseAmount,
+            title = stringResource(id = R.string.spending),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            title = stringResource(id = R.string.spending),
-            colorResource = com.naveenapps.expensemanager.core.common.R.color.red_500,
-            showBalance = showBalance
+            showBalance = showBalance,
+            color = getExpenseBGColor()
         )
         if (showBalance) {
             NewColorIconAmountView(
                 amount = balanceAmount,
+                title = stringResource(id = R.string.balance),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                title = stringResource(id = R.string.balance),
-                colorResource = com.naveenapps.expensemanager.core.common.R.color.black_100,
-                showBalance = showBalance
+                showBalance = showBalance,
+                color = getBalanceBGColor()
             )
         }
     }
@@ -70,13 +72,13 @@ fun AmountStatusView(
 fun NewColorIconAmountView(
     amount: String,
     title: String,
-    @ColorRes colorResource: Int,
     modifier: Modifier = Modifier,
-    showBalance: Boolean = false
+    showBalance: Boolean = false,
+    color: Color
 ) {
     Surface(
         modifier = modifier,
-        color = colorResource(id = colorResource).copy(alpha = .1f),
+        color = color,
         shape = RoundedCornerShape(8.dp)
     ) {
         Column(

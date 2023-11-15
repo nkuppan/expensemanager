@@ -51,6 +51,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBack
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.feature.budget.R
@@ -363,11 +364,7 @@ private fun DashboardBudgetItemPreview() {
             transactionAmount = "$78.00",
             modifier = ItemSpecModifier,
             percentage = 78.8f,
-            backgroundColor = colorResource(
-                id = com.naveenapps.expensemanager.core.common.R.color.blue_500
-            ).copy(
-                alpha = .1f
-            )
+            backgroundColor = getIncomeBGColor()
         )
     }
 }

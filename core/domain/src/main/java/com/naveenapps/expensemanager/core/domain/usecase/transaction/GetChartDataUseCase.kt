@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -143,7 +143,7 @@ class GetChartDataUseCase @Inject constructor(
         }
 
         GroupType.DATE -> {
-            transactionDate.toCompleteDate()
+            transactionDate.toCompleteDateWithDate()
         }
     }
 }

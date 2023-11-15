@@ -48,7 +48,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
@@ -228,7 +228,7 @@ fun ExportScreen() {
 @Composable
 private fun ExportScreenContent(
     modifier: Modifier = Modifier,
-    selectedDate: String? = Date().toCompleteDate(),
+    selectedDate: String? = Date().toCompleteDateWithDate(),
     exportFileType: ExportFileType,
     accountCount: UiText,
     onExportFileTypeChange: (ExportFileType) -> Unit,

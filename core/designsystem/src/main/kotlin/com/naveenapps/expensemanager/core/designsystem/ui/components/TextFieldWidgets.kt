@@ -29,6 +29,7 @@ fun ClickableTextField(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()
@@ -60,7 +61,8 @@ fun ClickableTextField(
         label = {
             Text(text = stringResource(id = label))
         },
-        onValueChange = {}
+        onValueChange = {},
+        keyboardOptions = keyboardOptions
     )
 }
 

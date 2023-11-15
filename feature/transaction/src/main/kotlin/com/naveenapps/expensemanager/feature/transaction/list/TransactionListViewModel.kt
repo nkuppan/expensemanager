@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -45,7 +45,7 @@ class TransactionListViewModel @Inject constructor(
             } else {
                 UiState.Success(
                     transactions.groupBy {
-                        it.createdOn.toCompleteDate()
+                        it.createdOn.toCompleteDateWithDate()
                     }.map {
                         val totalAmount = it.value.toTransactionSum()
                         TransactionUiState(

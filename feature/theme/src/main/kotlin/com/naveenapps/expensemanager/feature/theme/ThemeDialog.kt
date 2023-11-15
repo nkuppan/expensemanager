@@ -20,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +29,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 import com.naveenapps.expensemanager.core.model.Theme
 
 
@@ -97,9 +97,7 @@ fun ThemeDialogViewContent(
                                     Modifier
                                         .padding(4.dp)
                                         .background(
-                                            color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500).copy(
-                                                alpha = .1f
-                                            ),
+                                            color = getIncomeBGColor(),
                                             shape = RoundedCornerShape(size = 12.dp)
                                         )
                                 } else {

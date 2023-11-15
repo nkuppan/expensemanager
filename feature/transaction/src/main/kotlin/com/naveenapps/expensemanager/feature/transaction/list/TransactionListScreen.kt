@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
@@ -429,7 +429,7 @@ private fun getTransactionItem() = TransactionUiItem(
     fromAccountName = "DB Bank xxxx",
     fromAccountIcon = "account_balance",
     fromAccountColor = "#000000",
-    date = Date().toCompleteDate()
+    date = Date().toCompleteDateWithDate()
 )
 
 private fun getTransactionUiState() = TransactionUiState(

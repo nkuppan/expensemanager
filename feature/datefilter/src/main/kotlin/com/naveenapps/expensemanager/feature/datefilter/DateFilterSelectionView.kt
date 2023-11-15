@@ -27,13 +27,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import java.util.Date
@@ -137,9 +137,7 @@ private fun FilterTypesAndView(
                                 Modifier
                                     .padding(4.dp)
                                     .background(
-                                        color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500).copy(
-                                            alpha = .1f
-                                        ),
+                                        color = getSelectedBGColor(),
                                         shape = RoundedCornerShape(size = 12.dp)
                                     )
                             } else {
@@ -189,7 +187,7 @@ private fun FilterTypesAndView(
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(end = 8.dp),
-                                value = fromDate.toCompleteDate(),
+                                value = fromDate.toCompleteDateWithDate(),
                                 label = R.string.from_date,
                                 leadingIcon = Icons.Default.EditCalendar,
                                 onClick = {
@@ -201,7 +199,7 @@ private fun FilterTypesAndView(
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(start = 8.dp),
-                                value = toDate.toCompleteDate(),
+                                value = toDate.toCompleteDateWithDate(),
                                 label = R.string.to_date,
                                 leadingIcon = Icons.Default.EditCalendar,
                                 onClick = {

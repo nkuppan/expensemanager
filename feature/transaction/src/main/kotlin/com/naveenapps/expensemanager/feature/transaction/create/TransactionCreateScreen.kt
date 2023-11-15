@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -26,7 +24,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -56,7 +53,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
@@ -287,11 +284,7 @@ private fun TransactionCreateScreen(
         AppDatePickerDialog(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
-                ),
+                .padding(16.dp),
             selectedDate = selectedDate ?: Date(),
             onDateSelected = {
                 onDateChange?.invoke(it)
@@ -339,7 +332,7 @@ private fun TransactionCreateScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 8.dp),
-                value = selectedDate?.toCompleteDate() ?: "",
+                value = selectedDate?.toCompleteDateWithDate() ?: "",
                 label = R.string.select_date,
                 leadingIcon = Icons.Outlined.EditCalendar,
                 onClick = {

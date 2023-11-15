@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 
 
 data class TransactionUiState(
@@ -38,7 +38,7 @@ fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
         this.type,
         this.category.iconBackgroundColor,
         this.category.iconName,
-        date = this.createdOn.toCompleteDate(),
+        date = this.createdOn.toCompleteDateWithDate(),
         fromAccountName = this.fromAccount.name,
         fromAccountIcon = this.fromAccount.iconName,
         fromAccountColor = this.fromAccount.iconBackgroundColor,
