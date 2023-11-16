@@ -21,4 +21,5 @@ android {
 dependencies {
     implementation(project(":core:model"))
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.joda.time)
 }
