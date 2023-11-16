@@ -12,12 +12,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -101,9 +100,6 @@ private fun TransactionListScreen(
     modifier: Modifier = Modifier,
     onItemClick: ((TransactionUiItem) -> Unit)? = null
 ) {
-
-    val scrollState = rememberLazyListState()
-
     Column(modifier = modifier) {
 
         FilterView(modifier = Modifier.fillMaxWidth())
@@ -132,7 +128,7 @@ private fun TransactionListScreen(
             }
 
             is UiState.Success -> {
-                LazyColumn(state = scrollState) {
+                LazyColumn {
                     items(transactionUiState.data) {
                         TransactionGroupItem(
                             it, onItemClick
@@ -180,7 +176,7 @@ fun TransactionGroupItem(
             )
         }
         if (isLastItem.not()) {
-            Divider(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
         }
     }
 }

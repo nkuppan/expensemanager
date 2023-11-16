@@ -14,9 +14,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.EditCalendar
@@ -312,8 +312,7 @@ private fun TransactionCreateScreen(
     }
 
     Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
+        modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         TransactionTypeSelectionView(
             modifier = Modifier
@@ -415,7 +414,7 @@ private fun TransactionCreateScreen(
                 name = selectedCategory.name,
                 icon = selectedCategory.iconName,
                 iconBackgroundColor = selectedCategory.iconBackgroundColor,
-                endIcon = Icons.Default.KeyboardArrowRight,
+                endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
@@ -446,7 +445,7 @@ private fun TransactionCreateScreen(
             name = selectedFromAccount.name,
             icon = selectedFromAccount.icon,
             iconBackgroundColor = selectedFromAccount.iconBackgroundColor,
-            endIcon = Icons.Default.KeyboardArrowRight,
+            endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             amount = selectedFromAccount.amount.amountString,
             modifier = Modifier
                 .fillMaxWidth()
@@ -472,7 +471,7 @@ private fun TransactionCreateScreen(
                 name = selectedToAccount.name,
                 icon = selectedToAccount.icon,
                 iconBackgroundColor = selectedToAccount.iconBackgroundColor,
-                endIcon = Icons.Default.KeyboardArrowRight,
+                endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 amount = selectedToAccount.amount.amountString,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -493,7 +492,7 @@ private fun TransactionCreateScreen(
             leadingIcon =
             {
                 Icon(
-                    imageVector = Icons.Default.Notes,
+                    imageVector = Icons.AutoMirrored.Filled.Notes,
                     contentDescription = ""
                 )
             },

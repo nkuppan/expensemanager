@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -106,9 +105,6 @@ private fun AccountListScreenContent(
     modifier: Modifier = Modifier,
     onItemClick: ((AccountUiModel) -> Unit)? = null
 ) {
-
-    val scrollState = rememberLazyListState()
-
     Box(modifier = modifier) {
 
         when (accountUiState) {
@@ -132,7 +128,7 @@ private fun AccountListScreenContent(
 
             is UiState.Success -> {
 
-                LazyColumn(state = scrollState) {
+                LazyColumn {
                     items(accountUiState.data) { account ->
                         AccountItem(
                             modifier = Modifier
