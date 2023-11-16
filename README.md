@@ -1,7 +1,7 @@
 Expense Manager Android App [Work in progress 🚧]
 ==================
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
-![Workflow](https://github.com/nkuppan/expensemanager/actions/workflows/android.yml/badge.svg)
+[![Build](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml/badge.svg)](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml)
 
 ![Expense Manager Android](docs/images/splash.png)
 
