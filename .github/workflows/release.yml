@@ -3,7 +3,7 @@ name: GitHub Release with APKs
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   build:

@@ -35,16 +35,13 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build all build type and flavor permutations
-        run: ./gradlew assemble
+        run: ./gradlew assembleDebug
 
       - name: Upload build outputs (APKs)
         uses: actions/upload-artifact@v3
         with:
           name: APKs
           path: '**/build/outputs/apk/**/*.apk'
-
-      - name: Run local tests
-        run: ./gradlew testDemoDebug testProdDebug :lint:test
 
   test:
     runs-on: ubuntu-latest
