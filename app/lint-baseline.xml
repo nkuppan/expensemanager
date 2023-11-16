@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues name="AGP (7.3.0-rc01)" by="lint 7.3.0-rc01" client="gradle" dependencies="false" format="6"
+    type="baseline" variant="fatal" version="7.3.0-rc01">
+
+    <issue errorLine1="        path=&quot;.&quot; />" errorLine2="              ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="15" file="src/main/res/xml/backup_rules.xml" line="8" />
+    </issue>
+
+    <issue errorLine1="        path=&quot;.&quot; />" errorLine2="              ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="15" file="src/main/res/xml/backup_rules.xml" line="11" />
+    </issue>
+
+    <issue errorLine1="        path=&quot;.&quot; />" errorLine2="              ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="15" file="src/main/res/xml/backup_rules.xml" line="14" />
+    </issue>
+
+    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="9" />
+    </issue>
+
+    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="12" />
+    </issue>
+
+    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="15" />
+    </issue>
+
+    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="23" />
+    </issue>
+
+    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="26" />
+    </issue>
+
+    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
+        id="FullBackupContent" message="`.` is not in an included path">
+        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="29" />
+    </issue>
+
+</issues>

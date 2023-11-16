@@ -10,8 +10,8 @@
         android:shortcutShortLabel="@string/add_transaction">
         <intent
             android:action="add_transaction"
-            android:targetClass="com.nkuppan.expensemanager.presentation.HomeActivity"
-            android:targetPackage="com.nkuppan.expensemanager" />
+            android:targetClass="com.naveenapps.expensemanager.HomeActivity"
+            android:targetPackage="com.naveenapps.expensemanager" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
@@ -25,8 +25,8 @@
 
         <intent
             android:action="graph"
-            android:targetClass="com.nkuppan.expensemanager.presentation.HomeActivity"
-            android:targetPackage="com.nkuppan.expensemanager" />
+            android:targetClass="com.naveenapps.expensemanager.HomeActivity"
+            android:targetPackage="com.naveenapps.expensemanager" />
 
         <categories android:name="android.shortcut.conversation" />
 

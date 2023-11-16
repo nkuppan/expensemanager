@@ -1,23 +1,21 @@
-import com.nkuppan.expensemanager.buildsrc.Versions
-import com.nkuppan.expensemanager.buildsrc.Libs
-
 plugins {
     id("com.android.test")
     id("org.jetbrains.kotlin.android")
 }
 
 android {
-    namespace = "com.nkuppan.expensemanager.benchmark"
-    compileSdk = Versions.compileSdk
+    namespace = "com.naveenapps.expensemanager.benchmark"
+
+    compileSdk = 34
 
     defaultConfig {
-        minSdk = Versions.macroBenchmarkMinSdk
-        targetSdk = Versions.targetSdk
+        minSdk = 23
+        targetSdk = 34
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     buildTypes {
@@ -54,11 +52,10 @@ android {
 }
 
 dependencies {
-    implementation(Libs.AndroidX.Test.JUnit.ktx)
-    implementation(Libs.AndroidX.Test.Espresso.core)
-    implementation(Libs.AndroidX.Test.UiAutomator.uiautomator)
-    implementation(Libs.AndroidX.Benchmark.macroBenchmark)
-    implementation(Libs.AndroidX.BaselineProfile.profileInstaller)
+    implementation(libs.androidx.test.ext)
+    implementation(libs.androidx.test.espresso.core)
+    implementation(libs.androidx.benchmark.macro)
+    implementation(libs.androidx.profileinstaller)
 }
 
 androidComponents {

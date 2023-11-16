@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Settings</string>
+    <string name="theme">Theme</string>
+    <string name="analysis">Analysis</string>
+    <string name="select_currency">Select currency</string>
+    <string name="reminder_notification">Notification</string>
+    <string name="info">Info</string>
+    <string name="about_the_app_information">About app information</string>
+    <string name="rate_us_message">It will help us to grow better</string>
+    <string name="currency">Currency</string>
+    <string name="selected_daily_reminder_time">We will remind you to add your expense at every on time</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="choose_web_browser">Choose web browser</string>
+
+    <string name="export">Export</string>
+    <string name="export_message">Export your data and analyse in your preferred format</string>
+
+    <string name="filter">Filter</string>
+    <string name="filter_message">Can select the date filter to view expenses</string>
+
+    <string name="developed_by">Developed by Naveen Kumar Kuppan</string>
+    <string name="system_default">System Default</string>
+</resources>

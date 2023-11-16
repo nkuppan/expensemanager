@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="choose_web_browser">Choose browser</string>
+    <string name="select">Select</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Choose Icon</string>
+    <string name="choose_color">Choose Color</string>
+    <string name="view_all">View All</string>
+    <string name="income">Income</string>
+    <string name="spending">Spending</string>
+    <string name="balance">Balance</string>
+    <string name="transaction_summary">Summary</string>
+    <string name="total">Total</string>
+</resources>

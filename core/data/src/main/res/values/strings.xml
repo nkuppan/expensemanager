@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Today</string>
+    <string name="this_week">This Week</string>
+    <string name="this_month">This Month</string>
+    <string name="this_year">This Year</string>
+    <string name="all_time">All time</string>
+    <string name="custom">Custom</string>
+
+    <string name="amount">Amount</string>
+    <string name="category">Category</string>
+    <string name="date">Date</string>
+    <string name="notes">Notes</string>
+    <string name="average">Average</string>
+    <string name="day">Day</string>
+    <string name="week">Week</string>
+    <string name="time">Time</string>
+    <string name="month">Month</string>
+    <string name="from_account">From Account</string>
+    <string name="to_account">To Account</string>
+
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="set_by_battery_saver">Set by battery saver</string>
+    <string name="system_default">System default</string>
+</resources>

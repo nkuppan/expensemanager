@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nkuppan.expensemanager.macrobenchmark">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <queries>
-        <package android:name="com.nkuppan.expensemanager" />
+        <package android:name="com.naveenapps.expensemanager" />
     </queries>
 </manifest>

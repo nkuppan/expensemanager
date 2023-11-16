@@ -1,32 +1,18 @@
-import com.nkuppan.expensemanager.buildsrc.Libs
-import com.nkuppan.expensemanager.buildsrc.Versions
-
 plugins {
-    id("com.android.application")
+    id("naveenapps.plugin.android.app")
+    id("naveenapps.plugin.kotlin.basic")
+    id("naveenapps.plugin.compose")
+    id("naveenapps.plugin.hilt")
     id("androidx.navigation.safeargs")
-    id("dagger.hilt.android.plugin")
-    id("com.google.android.gms.oss-licenses-plugin")
-    id("nkuppan.plugin.kotlin.basic")
 }
 
 android {
-    compileSdk = Versions.compileSdk
+
+    namespace = "com.naveenapps.expensemanager"
 
     defaultConfig {
-
-        applicationId = "com.nkuppan.expensemanager"
-
-        minSdk = Versions.minSdk
-        targetSdk = Versions.targetSdk
-
-        versionCode = Versions.versionCode
-        versionName = Versions.versionName
-
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-
-        testInstrumentationRunner = "com.nkuppan.expensemanager.utils.HiltTestRunner"
+        applicationId = "com.naveenapps.expensemanager"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -46,51 +32,67 @@ android {
             )
         }
     }
+
     lint {
         baseline = file("lint-baseline.xml")
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
+
     buildFeatures {
-        viewBinding = true
+        compose = true
         dataBinding = true
+        viewBinding = true
     }
+
     testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
-    packagingOptions {
-        resources {
-            excludes.add("**/attach_hotspot_windows.dll")
-            excludes.add("META-INF/licenses/**")
-            excludes.add("META-INF/AL2.0")
-            excludes.add("META-INF/LGPL2.1")
+        managedDevices {
+            devices {
+                maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel2api30").apply {
+                    // Use device profiles you typically see in Android Studio.
+                    device = "Pixel 2"
+                    // Use only API levels 27 and higher.
+                    apiLevel = 30
+                    // To include Google services, use "google".
+                    systemImageSource = "aosp"
+                }
+            }
         }
     }
 }
 
 dependencies {
-    implementation(project(":core-ui"))
-    implementation(project(":data"))
-    implementation(project(":feature-dashboard"))
+    implementation(project(":core:common"))
+    implementation(project(":core:model"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:domain"))
+    implementation(project(":core:navigation"))
 
-    implementation(Libs.playCoreUpdate)
-    implementation(Libs.playCoreUpdateKtx)
+    implementation(project(":feature:account"))
+    implementation(project(":feature:analysis"))
+    implementation(project(":feature:budget"))
+    implementation(project(":feature:category"))
+    implementation(project(":feature:dashboard"))
+    implementation(project(":feature:transaction"))
+    implementation(project(":feature:onboarding"))
 
-    implementation(Libs.Google.Hilt.android)
-    kapt(Libs.Google.Hilt.hiltCompiler)
+    implementation(project(":feature:settings"))
+    implementation(project(":feature:theme"))
+    implementation(project(":feature:export"))
+    implementation(project(":feature:reminder"))
 
-    implementation(platform(Libs.Firebase.bom))
-    implementation(Libs.Firebase.crashlytics)
-    implementation(Libs.Firebase.analytics)
+    implementation(libs.androidx.splash.screen)
 
-    implementation(Libs.AndroidX.BaselineProfile.profileInstaller)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.navigation)
+    implementation(libs.androidx.navigation.ui)
+    implementation(libs.androidx.profileinstaller)
+    implementation(libs.androidx.dataStore.core)
+    implementation(libs.androidx.dataStore.preference)
 
-    //Android Testing Related Library
-    kaptAndroidTest(Libs.Google.Hilt.hiltCompiler)
-    androidTestImplementation(project(":core-testing"))
-    testImplementation(project(":core-testing"))
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.work.ktx)
+    implementation(libs.hilt.ext.work)
+
+    testImplementation(project(":core:testing"))
+    androidTestImplementation(project(":core:testing"))
 }
