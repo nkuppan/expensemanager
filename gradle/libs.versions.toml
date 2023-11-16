@@ -36,7 +36,6 @@ coil = "2.4.0"
 firebaseBom = "32.5.0"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
-gmsPlugin = "4.3.14"
 googleOss = "17.0.1"
 jodaTime = "2.12.5"
 opencsv = "4.6"
@@ -71,6 +70,8 @@ jxl = "2.6.12"
 truth = "1.1.4"
 vico = "1.11.1"
 org-jetbrains-kotlin-android = "1.9.0"
+play-publish = "3.8.5"
+google-services = "4.4.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -199,7 +200,6 @@ android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 android-navigation-safe = { id = "androidx.navigation.safeargs", version.ref = "androidxNavigationSafeArgs" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }
-gms = { id = "com.google.gms.google-services", version.ref = "gmsPlugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -210,5 +210,7 @@ secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugi
 oss-license = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicense" }
 benchmark = { id = "androidx.benchmark", version.ref = "benchmark" }
 org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+play-publish = { id = "com.github.triplet.play", version.ref = "play-publish" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
 

@@ -4,6 +4,9 @@ plugins {
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
     id("androidx.navigation.safeargs")
+    id("com.github.triplet.play")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -39,8 +42,6 @@ android {
 
     buildFeatures {
         compose = true
-        dataBinding = true
-        viewBinding = true
     }
 
     testOptions {
@@ -56,6 +57,10 @@ android {
                 }
             }
         }
+    }
+
+    play {
+        serviceAccountCredentials.set(file("../keys/play_publish.json"))
     }
 }
 
@@ -78,6 +83,11 @@ dependencies {
     implementation(project(":feature:theme"))
     implementation(project(":feature:export"))
     implementation(project(":feature:reminder"))
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    //implementation(libs.firebase.performance)
 
     implementation(libs.androidx.splash.screen)
 

@@ -1,45 +1,26 @@
 {
   "project_info": {
-    "project_number": "166992984781",
-    "firebase_url": "https://expense-manager-ancient.firebaseio.com",
-    "project_id": "expense-manager-ancient",
-    "storage_bucket": "expense-manager-ancient.appspot.com"
+    "project_number": "440806922710",
+    "project_id": "expense-manager-naveen-apps",
+    "storage_bucket": "expense-manager-naveen-apps.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:166992984781:android:edab93a38de4052c",
+        "mobilesdk_app_id": "1:440806922710:android:38b2094ed3cb3c226dec77",
         "android_client_info": {
           "package_name": "com.naveenapps.expensemanager"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "166992984781-clur9ipqs19s747o1h7ipanujotg4htg.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.naveenapps.expensemanager",
-            "certificate_hash": "23dee6c8b2433cbb9a4a52e31af72e89f7b1fba5"
-          }
-        },
-        {
-          "client_id": "166992984781-qbeqq505amiq0ehu0jo7ul4klvl1ul8r.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCdq0se7TsEm13VbFc1DYA71M7ELl2Z5Ic"
+          "current_key": "AIzaSyBQwjhw3F-yRAtEfQdZrnLcPvRx4IQaY4c"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "166992984781-qbeqq505amiq0ehu0jo7ul4klvl1ul8r.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
