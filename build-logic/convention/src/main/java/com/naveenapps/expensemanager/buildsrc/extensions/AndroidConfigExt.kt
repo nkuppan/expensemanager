@@ -14,7 +14,7 @@ const val MIN_SDK = 21
 const val VERSION_CODE = 1
 const val VERSION_NAME = "1.0.0"
 
-const val BENCHMARK_RUNNER = "androidx.benchmark.junit4.AndroidBenchmarkRunner"
+const val BENCHMARK_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
 
 fun LibraryExtension.configureAndroid() {
 

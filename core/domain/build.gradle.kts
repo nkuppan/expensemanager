@@ -17,4 +17,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.joda.time)
+
+    androidTestImplementation(project(":core:testing"))
+    testImplementation(project(":core:testing"))
 }

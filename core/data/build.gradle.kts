@@ -2,6 +2,7 @@ plugins {
     id("naveenapps.plugin.android.library")
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.hilt")
+    id("naveenapps.plugin.room")
 }
 
 android {
@@ -25,4 +26,7 @@ dependencies {
 
     implementation(libs.androidx.dataStore.core)
     implementation(libs.androidx.dataStore.preference)
+
+    androidTestImplementation(project(":core:testing"))
+    testImplementation(project(":core:testing"))
 }
