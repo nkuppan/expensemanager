@@ -15,10 +15,10 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,8 +31,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -145,7 +143,7 @@ private fun NumberPadScreenView(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Default.Backspace,
+                    imageVector = Icons.AutoMirrored.Filled.Backspace,
                     contentDescription = null
                 )
             }
@@ -311,15 +309,13 @@ fun RowScope.NumberPadActionText(
     Box(
         modifier = modifier
             .weight(1f)
-            .height(72.dp),
+            .height(96.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = text,
             textAlign = TextAlign.Center,
-            fontSize = 20.sp,
-            fontStyle = FontStyle.Normal,
-            fontWeight = FontWeight.W500
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
