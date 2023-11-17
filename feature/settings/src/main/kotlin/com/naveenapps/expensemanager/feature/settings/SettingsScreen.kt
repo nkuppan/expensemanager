@@ -153,9 +153,9 @@ private fun SettingsScreenScaffoldView(
                 SettingOption.EXPORT -> {
                     settingOptionSelected?.invoke(it)
                 }
-
+                //TODO Want them to replace them with remote config
                 SettingOption.INFO -> {
-                    openWebPage(context, "http://naveenapps.com/")
+                    openWebPage(context, "https://expensemanager.naveenapps.com/")
                 }
 
                 SettingOption.RATE_US -> {
