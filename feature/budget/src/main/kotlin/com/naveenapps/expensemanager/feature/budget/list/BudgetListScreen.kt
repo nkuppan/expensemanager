@@ -210,13 +210,13 @@ fun BudgetItem(
             }
             Row(modifier = Modifier.padding(top = 4.dp)) {
                 LinearProgressIndicator(
+                    progress = { percentage / 100 },
                     modifier = Modifier
                         .weight(1f)
                         .height(8.dp)
                         .align(Alignment.CenterVertically),
-                    progress = percentage / 100,
                     color = colorResource(id = progressBarColor),
-                    strokeCap = StrokeCap.Round
+                    strokeCap = StrokeCap.Round,
                 )
                 Text(
                     modifier = Modifier
@@ -277,13 +277,13 @@ fun DashBoardBudgetItem(
             }
             Row(modifier = Modifier.padding(top = 4.dp)) {
                 LinearProgressIndicator(
+                    progress = { percentage / 100 },
                     modifier = Modifier
                         .weight(1f)
                         .height(8.dp)
                         .align(Alignment.CenterVertically),
-                    progress = percentage / 100,
                     color = colorResource(id = progressBarColor),
-                    strokeCap = StrokeCap.Round
+                    strokeCap = StrokeCap.Round,
                 )
                 Text(
                     modifier = Modifier

@@ -14,9 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Edit
@@ -101,6 +100,7 @@ fun CategoryTransactionTabScreen(
         Column(
             modifier = Modifier
                 .padding(innerPadding)
+                .verticalScroll(state = rememberScrollState())
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -131,86 +131,82 @@ private fun CategoryTransactionListScreenContent(
     changeChart: (() -> Unit)? = null,
     onItemClick: ((CategoryTransaction) -> Unit)? = null
 ) {
-
-    val scrollState = rememberLazyListState()
-
-    Box(modifier = modifier) {
+    Column(modifier = modifier) {
 
         when (uiState) {
             UiState.Empty -> {
-                Text(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_transactions_available),
-                    textAlign = TextAlign.Center
-                )
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .align(Alignment.Center),
+                        text = stringResource(id = R.string.no_transactions_available),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
 
             UiState.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .align(Alignment.Center)
-                )
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(72.dp)
+                            .align(Alignment.Center)
+                    )
+                }
             }
 
             is UiState.Success -> {
 
                 val indicationSource = remember { MutableInteractionSource() }
 
-                LazyColumn(state = scrollState) {
-                    item {
-                        PieChartView(
-                            uiState.data.totalAmount.amountString ?: "",
-                            uiState.data.pieChartData.map {
-                                PieChartUiData(
-                                    it.name,
-                                    it.value,
-                                    it.color
-                                )
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    PieChartView(
+                        uiState.data.totalAmount.amountString ?: "",
+                        uiState.data.pieChartData.map {
+                            PieChartUiData(
+                                it.name,
+                                it.value,
+                                it.color
+                            )
+                        },
+                        chartHeight = 600,
+                        hideValues = uiState.data.hideValues,
+                        modifier = Modifier
+                            .padding(top = 16.dp, bottom = 16.dp)
+                            .clickable(indicationSource, null) {
+                                changeChart?.invoke()
                             },
-                            chartHeight = 600,
-                            hideValues = uiState.data.hideValues,
+                    )
+                    if (uiState.data.categoryTransactions.isEmpty()) {
+                        Text(
+                            text = stringResource(id = R.string.no_transactions_available),
                             modifier = Modifier
-                                .padding(top = 16.dp, bottom = 16.dp)
-                                .clickable(indicationSource, null) {
-                                    changeChart?.invoke()
-                                },
+                                .fillMaxSize()
+                                .padding(36.dp),
+                            textAlign = TextAlign.Center
                         )
-                    }
-                    items(uiState.data.categoryTransactions) { categoryTransaction ->
-                        CategoryTransactionItem(
-                            modifier = Modifier
-                                .clickable {
-                                    onItemClick?.invoke(categoryTransaction)
-                                }
-                                .then(ItemSpecModifier),
-                            name = categoryTransaction.category.name,
-                            icon = categoryTransaction.category.iconName,
-                            iconBackgroundColor = categoryTransaction.category.iconBackgroundColor,
-                            amount = categoryTransaction.amount.amountString ?: "",
-                            percentage = categoryTransaction.percent
-                        )
-                    }
-                    item {
-                        if (uiState.data.categoryTransactions.isEmpty()) {
-                            Text(
-                                text = stringResource(id = R.string.no_transactions_available),
+                    } else {
+                        uiState.data.categoryTransactions.forEach { categoryTransaction ->
+                            CategoryTransactionItem(
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(36.dp),
-                                textAlign = TextAlign.Center
+                                    .clickable {
+                                        onItemClick?.invoke(categoryTransaction)
+                                    }
+                                    .then(ItemSpecModifier),
+                                name = categoryTransaction.category.name,
+                                icon = categoryTransaction.category.iconName,
+                                iconBackgroundColor = categoryTransaction.category.iconBackgroundColor,
+                                amount = categoryTransaction.amount.amountString ?: "",
+                                percentage = categoryTransaction.percent
                             )
                         }
                     }
-                    item {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(36.dp)
-                        )
-                    }
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(36.dp)
+                    )
                 }
             }
         }
@@ -255,13 +251,13 @@ fun CategoryTransactionItem(
             }
             Row {
                 LinearProgressIndicator(
+                    progress = { percentage / 100 },
                     modifier = Modifier
                         .weight(1f)
                         .height(8.dp)
                         .align(Alignment.CenterVertically),
-                    progress = percentage / 100,
                     color = iconBackgroundColor.toColor(),
-                    strokeCap = StrokeCap.Round
+                    strokeCap = StrokeCap.Round,
                 )
                 Text(
                     modifier = Modifier

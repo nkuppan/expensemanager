@@ -265,7 +265,8 @@ class TransactionCreateViewModel @Inject constructor(
             return
         }
 
-        if (amount.toDouble() <= 0.0) {
+        val amountValue = amount.toDoubleOrNull()
+        if (amountValue == null || amountValue <= 0.0) {
             _amountErrorMessage.value =
                 UiText.StringResource(R.string.amount_should_greater_than_zero)
             return
