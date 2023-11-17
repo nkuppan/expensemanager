@@ -11,23 +11,31 @@ Expense Manager
 [![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
 [![Build](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml/badge.svg)](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml)
 
-**Expense Manager** is a Work In-progress Android app. Which is used to manage your finances. It's fully offline based application.
+This is the repository for the [Expense Manager](https://expensemanager.naveenapps.com/) app. It is
+a **work in progress** 🚧.
+
+**Expense Manager** is a fully functional Android app built entirely with Kotlin and Jetpack
+Compose. It
+follows Android design and development best practices and is intended to be a useful reference
+for developers. As a running app, it's intended to help developers keep up-to-date with the world
+of Android development by providing regular news updates.
 
 **Features**
+
 * Users can create a multiple accounts to group their transactions under the specific accounts
 * Wants to create a budgets for your month and more customisable options are available for budgets
 * Analyse and know the trends of your transactions on a day, week and monthly wise.
 * Interactive category grouping pie chart to understand where you mostly spending your money.
 * Multiple currency switching in UI(Currency conversion is yet to support)
+* Export your transactions into csv format(pdf will be added soon)
 
+|                    Home Screen                    |                  Analysis Screen                  |                Transaction Screen                 |               Category Chart Screen               |
+|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
+| <img src="docs/images/image1.png" width="250px"/> | <img src="docs/images/image2.png" width="250px"/> | <img src="docs/images/image3.png" width="250px"/> | <img src="docs/images/image4.png" width="250px"/> |
 
-|                 Home Screen                 |              Analysis Screen               |             Transaction Screen              |            Category Chart Screen               |
-|:-------------------------------------------:|:------------------------------------------:|:-------------------------------------------:|:-------------------------------------------:|
-|   <img src="docs/images/image1.png" width="250px"/>    | <img src="docs/images/image2.png" width="250px"/> | <img src="docs/images/image3.png" width="250px"/> | <img src="docs/images/image4.png" width="250px"/> |
-
-|                  Transaction Create                   |             Account Create             |                 Budget Create                  |                 Dark Theme                  |
-|:-------------------------------------------:|:------------------------------------------:|:-------------------------------------------:|:-------------------------------------------:|
-| <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/>  |    <img src="docs/images/image7.png" width="250px"/>    |    <img src="docs/images/image8.png" width="250px"/>    | 
+|                Transaction Create                 |                  Account Create                   |                   Budget Create                   |                    Dark Theme                     |
+|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
+| <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> | 
 
 
 ## Android development
@@ -48,18 +56,5 @@ Please feel free to file an issue for errors, suggestions or feature requests. P
 
 # License
 
-```xml
-Copyright 2023 Naveen Kumar Kuppan
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
+**Expense Manager** is distributed under the terms of the Apache License (Version 2.0). See the
+[license](LICENSE) for more information.
