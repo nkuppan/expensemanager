@@ -13,11 +13,8 @@ interface CategoryDao : BaseDao<CategoryEntity> {
     fun getCategories(): Flow<List<CategoryEntity>?>
 
     @Query("SELECT * FROM category ORDER BY created_on DESC")
-    fun getAllValues(): List<CategoryEntity>?
+    suspend fun getAllValues(): List<CategoryEntity>?
 
     @Query("SELECT * FROM category WHERE id = :aModelId")
-    fun findById(aModelId: String): CategoryEntity?
-
-    @Query("SELECT COUNT(*) FROM category")
-    fun getCount(): Long
+    suspend fun findById(aModelId: String): CategoryEntity?
 }

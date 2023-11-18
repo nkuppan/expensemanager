@@ -78,7 +78,7 @@ class BudgetRepositoryImpl @Inject constructor(
         withContext(dispatchers.io) {
             return@withContext try {
                 val response = budgetDao.delete(budget.toEntityModel())
-                Resource.Success(response != -1)
+                Resource.Success(response > 0)
             } catch (exception: Exception) {
                 Resource.Error(exception)
             }

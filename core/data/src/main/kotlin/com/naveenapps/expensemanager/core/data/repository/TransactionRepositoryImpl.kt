@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.data.repository
 
-import android.content.Context
 import android.util.Log
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.mappers.toDomainModel
@@ -15,14 +14,12 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.isTransfer
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class TransactionRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
     private val transactionDao: TransactionDao,
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,
@@ -149,7 +146,7 @@ class TransactionRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun convertTransactionCategoryRelation(relation: TransactionEntity): Transaction {
+    private suspend fun convertTransactionCategoryRelation(relation: TransactionEntity): Transaction {
         val transaction = relation.toDomainModel()
         categoryDao.findById(transaction.categoryId)?.let {
             transaction.category = it.toDomainModel()

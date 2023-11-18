@@ -61,7 +61,7 @@ class AccountRepositoryImpl @Inject constructor(
         withContext(dispatchers.io) {
             return@withContext try {
                 val response = accountDao.delete(account.toEntityModel())
-                Resource.Success(response != -1)
+                Resource.Success(response > 0)
             } catch (exception: Exception) {
                 Resource.Error(exception)
             }

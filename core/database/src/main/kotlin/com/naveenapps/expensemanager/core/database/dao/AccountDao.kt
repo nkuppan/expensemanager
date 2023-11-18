@@ -12,12 +12,6 @@ interface AccountDao : BaseDao<AccountEntity> {
     @Query("SELECT * FROM account ORDER BY created_on DESC")
     fun getAccounts(): Flow<List<AccountEntity>?>
 
-    @Query("SELECT * FROM account ORDER BY created_on DESC")
-    fun getAllValues(): List<AccountEntity>?
-
     @Query("SELECT * FROM account WHERE id = :id")
-    fun findById(id: String): AccountEntity?
-
-    @Query("SELECT COUNT(*) FROM account")
-    fun getCount(): Long
+    suspend fun findById(id: String): AccountEntity?
 }

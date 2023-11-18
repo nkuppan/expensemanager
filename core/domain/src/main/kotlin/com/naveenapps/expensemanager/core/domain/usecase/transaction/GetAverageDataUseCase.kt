@@ -38,74 +38,65 @@ class GetAverageDataUseCase @Inject constructor(
             val calendar: Calendar = Calendar.getInstance()
             calendar.timeInMillis = ranges[0]
 
-            val weeksPerMonth: Double = when (dateRangeModel.type) {
-                DateRangeType.TODAY,
-                DateRangeType.THIS_WEEK,
+            val weeksMultiplier: Double
+            val daysMultiplier: Double
+            val monthMultiplier: Double
+
+
+            when (dateRangeModel.type) {
+                DateRangeType.TODAY -> {
+                    daysMultiplier = 1.0
+                    weeksMultiplier = calendar.getActualMaximum(Calendar.DAY_OF_WEEK).toDouble()
+                    monthMultiplier = calendar.getActualMaximum(Calendar.DAY_OF_MONTH).toDouble()
+                }
+
+                DateRangeType.THIS_WEEK -> {
+                    daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_WEEK)
+                    weeksMultiplier = 1.0
+                    monthMultiplier = calendar.getActualMaximum(Calendar.WEEK_OF_MONTH).toDouble()
+                }
+
                 DateRangeType.THIS_MONTH -> {
-                    1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
+                    daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+                    weeksMultiplier = 1.0  / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
+                    monthMultiplier = 1.0
                 }
 
+                DateRangeType.THIS_YEAR,
                 DateRangeType.CUSTOM,
-                DateRangeType.ALL,
-                DateRangeType.THIS_YEAR -> {
-                    1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
-                }
-            }
-
-            val daysPerMonth: Double = when (dateRangeModel.type) {
-                DateRangeType.TODAY,
-                DateRangeType.THIS_WEEK,
-                DateRangeType.THIS_MONTH -> {
-                    1.0 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                }
-
-                DateRangeType.CUSTOM,
-                DateRangeType.ALL,
-                DateRangeType.THIS_YEAR -> {
-                    1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
-                }
-            }
-
-            val monthsPerYear: Double = when (dateRangeModel.type) {
-                DateRangeType.TODAY,
-                DateRangeType.THIS_WEEK,
-                DateRangeType.THIS_MONTH -> {
-                    1.0 / 1.0
-                }
-
-                DateRangeType.CUSTOM,
-                DateRangeType.ALL,
-                DateRangeType.THIS_YEAR -> {
-                    1.0 / calendar.getActualMaximum(Calendar.MONTH) + 1
+                DateRangeType.ALL -> {
+                    daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
+                    weeksMultiplier = 1.0  / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
+                    monthMultiplier = 1.0 / 12
                 }
             }
 
             WholeAverageData(
                 expenseAverageData = AverageData(
                     perDay = getFormattedAmountUseCase.invoke(
-                        (expenseAmount * daysPerMonth),
+                        (expenseAmount * daysMultiplier),
                         currency
                     ).amountString.orEmpty(),
                     perWeek = getFormattedAmountUseCase.invoke(
-                        (expenseAmount * weeksPerMonth),
+                        (expenseAmount * weeksMultiplier),
                         currency
                     ).amountString.orEmpty(),
                     perMonth = getFormattedAmountUseCase.invoke(
-                        (expenseAmount * monthsPerYear),
+                        (expenseAmount * monthMultiplier),
                         currency
                     ).amountString.orEmpty(),
                 ),
                 incomeAverageData = AverageData(
                     perDay = getFormattedAmountUseCase.invoke(
-                        (incomeAmount * daysPerMonth),
+                        (incomeAmount * daysMultiplier),
                         currency
                     ).amountString.orEmpty(),
                     perWeek = getFormattedAmountUseCase.invoke(
-                        (incomeAmount * weeksPerMonth),
+                        (incomeAmount * weeksMultiplier),
                         currency
                     ).amountString.orEmpty(),
                     perMonth = getFormattedAmountUseCase.invoke(
-                        (incomeAmount * monthsPerYear),
+                        (incomeAmount * monthMultiplier),
                         currency
                     ).amountString.orEmpty(),
                 )

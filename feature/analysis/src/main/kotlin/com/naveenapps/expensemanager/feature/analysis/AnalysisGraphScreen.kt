@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -146,7 +147,7 @@ fun TransactionAverageItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            DashboardWidgetTitle(title = stringResource(id = R.string.average))
+            DashboardWidgetTitle(title = stringResource(id = R.string.average_and_projected))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -158,17 +159,33 @@ fun TransactionAverageItem(
                         .weight(1f),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(text = stringResource(id = R.string.day))
-                    Text(text = stringResource(id = R.string.week))
-                    Text(text = stringResource(id = R.string.month))
+                    Text(
+                        text = stringResource(id = R.string.day),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Normal
+                    )
+                    Text(
+                        text = stringResource(id = R.string.week),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Normal
+                    )
+                    Text(
+                        text = stringResource(id = R.string.month),
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Normal
+                    )
                 }
                 AverageAmountItems(
                     averageData = averageData.incomeAverageData,
-                    textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
+                    textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
+                    modifier = Modifier.align(Alignment.CenterVertically)
                 )
                 AverageAmountItems(
                     averageData = averageData.expenseAverageData,
-                    textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
+                    textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500),
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.CenterVertically)
                 )
             }
         }
@@ -178,10 +195,11 @@ fun TransactionAverageItem(
 @Composable
 private fun AverageAmountItems(
     averageData: AverageData,
+    modifier: Modifier = Modifier,
     textColor: Color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
 ) {
     Column(
-        modifier = Modifier.wrapContentSize(),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(
