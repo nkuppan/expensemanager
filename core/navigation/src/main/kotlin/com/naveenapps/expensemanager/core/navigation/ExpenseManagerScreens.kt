@@ -15,7 +15,7 @@ sealed class ExpenseManagerScreens(
     data object AccountList : ExpenseManagerScreens(route = "account")
     data object CategoryList : ExpenseManagerScreens(route = "category")
     data object BudgetList : ExpenseManagerScreens(route = "budget")
-    data object TransactionList : ExpenseManagerScreens(route = "budget")
+    data object TransactionList : ExpenseManagerScreens(route = "transaction")
     data object Settings : ExpenseManagerScreens(route = "settings")
     data object CategoryTransaction : ExpenseManagerScreens(route = "categoryTransaction")
     data object AnalysisScreen : ExpenseManagerScreens(route = "analysis")
@@ -52,6 +52,20 @@ sealed class ExpenseManagerScreens(
 
     data object BudgetCreate : ExpenseManagerScreens(
         route = "budget/create?budgetId={budgetId}",
+        navArguments = listOf(
+            navArgument("budgetId") {
+                type = NavType.StringType
+                nullable = true
+            }
+        )
+    ) {
+        const val KEY_BUDGET_ID = "budgetId"
+
+        fun createRoute(budgetId: String) = name.replace("{${navArguments[0].name}}", budgetId)
+    }
+
+    data object BudgetDetails : ExpenseManagerScreens(
+        route = "budget/details?budgetId={budgetId}",
         navArguments = listOf(
             navArgument("budgetId") {
                 type = NavType.StringType

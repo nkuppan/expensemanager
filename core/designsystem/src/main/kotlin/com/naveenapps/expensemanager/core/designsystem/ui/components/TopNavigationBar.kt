@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.designsystem.ui.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,6 +15,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.naveenapps.expensemanager.core.designsystem.R
@@ -25,12 +27,13 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 fun TopNavigationBar(
     onClick: () -> Unit,
     title: String?,
-    disableBackIcon: Boolean = false
+    disableBackIcon: Boolean = false,
+    navigationIcon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
 ) {
     TopAppBar(
         navigationIcon = {
             if (disableBackIcon.not()) {
-                NavigationButton(onClick)
+                NavigationButton(onClick, navigationIcon)
             }
         },
         title = {

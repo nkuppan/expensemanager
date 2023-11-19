@@ -8,7 +8,9 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransact
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -27,21 +29,28 @@ class GetBudgetsUseCase @Inject constructor(
             repository.getBudgets()
         ) { currency, _, budgets ->
             budgets.map {
-                val transactionAmount =
-                    when (val response = getBudgetTransactionsUseCase(it)) {
-                        is Resource.Error -> {
-                            0.0
-                        }
+                val transactions = when (val response = getBudgetTransactionsUseCase(it)) {
+                    is Resource.Error -> {
+                        null
+                    }
 
-                        is Resource.Success -> {
-                            response.data.filter { it.type.isExpense() }.sumOf { it.amount.amount }
+                    is Resource.Success -> {
+                        response.data.filter {
+                            it.type.isExpense()
                         }
                     }
+                }
+                val transactionAmount = transactions?.sumOf { it.amount.amount } ?: 0.0
                 val percent = (transactionAmount / it.amount).toFloat() * 100
                 it.toBudgetUiModel(
                     budgetAmount = getFormattedAmountUseCase(it.amount, currency),
                     transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
-                    percent
+                    percent,
+                    transactions?.map {
+                        it.toTransactionUIModel(
+                            getFormattedAmountUseCase(it.amount.amount, currency)
+                        )
+                    }
                 )
             }
         }
@@ -53,6 +62,7 @@ fun Budget.toBudgetUiModel(
     budgetAmount: Amount,
     transactionAmount: Amount,
     percent: Float,
+    transactions: List<TransactionUiItem>? = null
 ) = BudgetUiModel(
     id = this.id,
     name = this.name,
@@ -67,7 +77,8 @@ fun Budget.toBudgetUiModel(
     },
     amount = budgetAmount,
     transactionAmount = transactionAmount,
-    percent = percent
+    percent = percent,
+    transactions = transactions
 )
 
 
@@ -80,4 +91,5 @@ data class BudgetUiModel(
     val amount: Amount,
     val transactionAmount: Amount,
     val percent: Float,
+    val transactions: List<TransactionUiItem>? = null
 )

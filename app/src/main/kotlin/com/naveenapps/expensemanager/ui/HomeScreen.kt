@@ -21,6 +21,7 @@ import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
 import com.naveenapps.expensemanager.feature.analysis.AnalysisScreen
 import com.naveenapps.expensemanager.feature.budget.create.BudgetCreateScreen
+import com.naveenapps.expensemanager.feature.budget.details.BudgetDetailScreen
 import com.naveenapps.expensemanager.feature.budget.list.BudgetListScreen
 import com.naveenapps.expensemanager.feature.category.create.CategoryCreateScreen
 import com.naveenapps.expensemanager.feature.category.list.CategoryListScreen
@@ -61,7 +62,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.CategoryCreate.name,
         arguments = ExpenseManagerScreens.CategoryCreate.navArguments
-    ) { backStackEntry ->
+    ) { 
         CategoryCreateScreen()
     }
     composable(ExpenseManagerScreens.TransactionList.route) {
@@ -70,7 +71,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.TransactionCreate.name,
         arguments = ExpenseManagerScreens.TransactionCreate.navArguments
-    ) { backStackEntry ->
+    ) { 
         TransactionCreateScreen()
     }
     composable(ExpenseManagerScreens.AccountList.route) {
@@ -79,7 +80,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.AccountCreate.name,
         arguments = ExpenseManagerScreens.AccountCreate.navArguments
-    ) { backStackEntry ->
+    ) { 
         AccountCreateScreen()
     }
     composable(ExpenseManagerScreens.BudgetList.route) {
@@ -88,8 +89,14 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.BudgetCreate.name,
         arguments = ExpenseManagerScreens.BudgetCreate.navArguments
-    ) { backStackEntry ->
+    ) { 
         BudgetCreateScreen()
+    }
+    composable(
+        route = ExpenseManagerScreens.BudgetDetails.name,
+        arguments = ExpenseManagerScreens.BudgetDetails.navArguments
+    ) { 
+        BudgetDetailScreen()
     }
     composable(ExpenseManagerScreens.AnalysisScreen.route) {
         AnalysisScreen()

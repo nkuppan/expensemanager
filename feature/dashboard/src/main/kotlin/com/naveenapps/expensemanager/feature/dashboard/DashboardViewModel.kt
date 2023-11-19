@@ -152,7 +152,7 @@ class DashboardViewModel @Inject constructor(
 
     fun openBudgetCreate(budgetId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetCreate.createRoute(budgetId ?: "")
+            ExpenseManagerScreens.BudgetDetails.createRoute(budgetId ?: "")
         )
     }
 
