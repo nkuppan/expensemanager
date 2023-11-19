@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetDetailUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,6 +21,7 @@ import javax.inject.Inject
 class BudgetDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getBudgetDetailUseCase: GetBudgetDetailUseCase,
+    getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val appComposeNavigator: AppComposeNavigator
 ) : ViewModel() {
 
@@ -26,6 +30,10 @@ class BudgetDetailViewModel @Inject constructor(
 
     init {
         loadBudget(savedStateHandle.get<String>(ExpenseManagerScreens.BudgetDetails.KEY_BUDGET_ID))
+
+        getTransactionWithFilterUseCase.invoke().onEach {
+            loadBudget(savedStateHandle.get<String>(ExpenseManagerScreens.BudgetDetails.KEY_BUDGET_ID))
+        }.launchIn(viewModelScope)
     }
 
     private fun loadBudget(budgetId: String?) {
