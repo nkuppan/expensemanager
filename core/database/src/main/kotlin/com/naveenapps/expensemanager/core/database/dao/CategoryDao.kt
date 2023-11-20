@@ -12,6 +12,9 @@ interface CategoryDao : BaseDao<CategoryEntity> {
     @Query("SELECT * FROM category ORDER BY created_on DESC")
     fun getCategories(): Flow<List<CategoryEntity>?>
 
+    @Query("SELECT * FROM category WHERE id = :aModelId")
+    fun findByIdFlow(aModelId: String): Flow<CategoryEntity?>
+
     @Query("SELECT * FROM category ORDER BY created_on DESC")
     suspend fun getAllValues(): List<CategoryEntity>?
 

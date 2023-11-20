@@ -24,6 +24,7 @@ import com.naveenapps.expensemanager.feature.budget.create.BudgetCreateScreen
 import com.naveenapps.expensemanager.feature.budget.details.BudgetDetailScreen
 import com.naveenapps.expensemanager.feature.budget.list.BudgetListScreen
 import com.naveenapps.expensemanager.feature.category.create.CategoryCreateScreen
+import com.naveenapps.expensemanager.feature.category.details.CategoryDetailScreen
 import com.naveenapps.expensemanager.feature.category.list.CategoryListScreen
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
@@ -64,6 +65,12 @@ fun NavGraphBuilder.expenseManagerNavigation() {
         arguments = ExpenseManagerScreens.CategoryCreate.navArguments
     ) { 
         CategoryCreateScreen()
+    }
+    composable(
+        route = ExpenseManagerScreens.CategoryDetails.name,
+        arguments = ExpenseManagerScreens.CategoryDetails.navArguments
+    ) {
+        CategoryDetailScreen()
     }
     composable(ExpenseManagerScreens.TransactionList.route) {
         TransactionListScreen()

@@ -11,6 +11,8 @@ interface CategoryRepository {
 
     fun getCategories(): Flow<List<Category>>
 
+    fun findCategoryFlow(categoryId: String): Flow<Category?>
+
     suspend fun getAllCategory(): Resource<List<Category>>
 
     suspend fun findCategory(categoryId: String): Resource<Category>

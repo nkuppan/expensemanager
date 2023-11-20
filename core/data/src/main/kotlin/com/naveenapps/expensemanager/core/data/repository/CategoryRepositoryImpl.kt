@@ -22,6 +22,12 @@ class CategoryRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun findCategoryFlow(categoryId: String): Flow<Category?> {
+        return categoryDao.findByIdFlow(categoryId).map {
+            it?.toDomainModel()
+        }
+    }
+
     override suspend fun getAllCategory(): Resource<List<Category>> = withContext(dispatchers.io) {
         return@withContext try {
             val category = categoryDao.getAllValues()

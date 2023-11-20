@@ -88,7 +88,7 @@ fun CategoryTransactionTabScreen(
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                viewModel.openCreatePage()
+                viewModel.openTransactionCreatePage()
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -114,7 +114,7 @@ fun CategoryTransactionTabScreen(
                 modifier = Modifier.fillMaxSize(),
                 uiState = uiState,
                 onItemClick = {
-                    viewModel.openCreatePage()
+                    viewModel.openCategoryDetailsPage(it)
                 },
                 changeChart = {
                     viewModel.switchCategory()

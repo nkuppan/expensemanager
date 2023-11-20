@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
+import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -52,9 +53,15 @@ class CategoryTransactionListViewModel @Inject constructor(
         }
     }
 
-    fun openCreatePage() {
+    fun openTransactionCreatePage() {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.TransactionCreate.createRoute("")
+        )
+    }
+
+    fun openCategoryDetailsPage(categoryTransaction: CategoryTransaction) {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.CategoryDetails.createRoute(categoryTransaction.category.id)
         )
     }
 
