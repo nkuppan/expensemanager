@@ -21,6 +21,9 @@ interface BudgetDao : BaseDao<BudgetEntity> {
     fun getBudgets(): Flow<List<BudgetEntity>?>
 
     @Query("SELECT * FROM budget WHERE id = :id")
+    fun findByIdFlow(id: String): Flow<BudgetEntity?>
+
+    @Query("SELECT * FROM budget WHERE id = :id")
     suspend fun findById(id: String): BudgetEntity?
 
     @Query("SELECT * FROM budget_category_relation WHERE budget_id=:budgetId ORDER BY created_on DESC")

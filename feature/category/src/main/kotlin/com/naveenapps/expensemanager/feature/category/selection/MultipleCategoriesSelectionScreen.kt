@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -32,12 +33,22 @@ import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
 
 @Composable
 fun MultipleCategoriesSelectionScreen(
+    viewModel: CategorySelectionViewModel = hiltViewModel(),
+    selectedCategories: List<Category> = emptyList(),
     onItemSelection: ((List<Category>, Boolean) -> Unit)? = null
 ) {
 
-    val context = LocalContext.current
+    viewModel.selectAllThisCategory(selectedCategories)
 
-    val viewModel: CategorySelectionViewModel = hiltViewModel()
+    CategorySelectionView(viewModel, onItemSelection)
+}
+
+@Composable
+private fun CategorySelectionView(
+    viewModel: CategorySelectionViewModel,
+    onItemSelection: ((List<Category>, Boolean) -> Unit)?
+) {
+    val context = LocalContext.current
     val categories by viewModel.categories.collectAsState()
     val selectedCategories by viewModel.selectedCategories.collectAsState()
 
@@ -60,7 +71,7 @@ fun MultipleCategoriesSelectionScreen(
             }
         },
         onClearChanges = viewModel::clearChanges,
-        onItemSelection = viewModel::selectThisAccount
+        onItemSelection = viewModel::selectThisCategory
     )
 }
 
@@ -99,7 +110,7 @@ fun MultipleCategoriesSelectionScreen(
         }
         item {
             Column {
-                Divider(modifier = Modifier.padding(top = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
@@ -115,7 +126,7 @@ fun MultipleCategoriesSelectionScreen(
                         Text(text = stringResource(id = R.string.select).uppercase())
                     }
                 }
-                Spacer(modifier = Modifier.padding(16.dp))
+                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }

@@ -24,10 +24,11 @@ class CategorySelectionViewModel @Inject constructor(
     val selectedCategories = _selectedCategory.asStateFlow()
 
     init {
-
         getCategoriesUseCase.invoke().map { categories ->
             _categories.value = categories
-            _selectedCategory.value = categories
+            if (_selectedCategory.value.isEmpty()) {
+                _selectedCategory.value = categories
+            }
         }.launchIn(viewModelScope)
     }
 
@@ -35,7 +36,7 @@ class CategorySelectionViewModel @Inject constructor(
         _selectedCategory.value = emptyList()
     }
 
-    fun selectThisAccount(category: Category, selected: Boolean) {
+    fun selectThisCategory(category: Category, selected: Boolean) {
         viewModelScope.launch {
             val selectedCategories = _selectedCategory.value.toMutableList()
 
@@ -49,6 +50,34 @@ class CategorySelectionViewModel @Inject constructor(
                 }
             } else {
                 if (selected) {
+                    selectedCategories.add(category)
+                }
+            }
+
+            _selectedCategory.value = selectedCategories
+        }
+    }
+
+    fun selectAllThisCategory(categories: List<Category>) {
+
+        if (categories.isEmpty()) {
+            return
+        }
+
+        viewModelScope.launch {
+
+            clearChanges()
+
+            val selectedCategories = _selectedCategory.value.toMutableList()
+
+            repeat(categories.size) {
+                val category = categories[it]
+
+                val selectedCategory = selectedCategories.firstOrNull {
+                    category.id == it.id
+                }
+
+                if (selectedCategory == null) {
                     selectedCategories.add(category)
                 }
             }

@@ -8,6 +8,8 @@ interface BudgetRepository {
 
     fun getBudgets(): Flow<List<Budget>>
 
+    fun findBudgetByIdFlow(budgetId: String): Flow<Budget?>
+
     suspend fun findBudgetById(budgetId: String): Resource<Budget>
 
     suspend fun addBudget(budget: Budget): Resource<Boolean>

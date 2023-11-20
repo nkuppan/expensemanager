@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -33,12 +33,23 @@ import com.naveenapps.expensemanager.feature.account.list.AccountCheckedItem
 
 @Composable
 fun MultipleAccountSelectionScreen(
+    viewModel: AccountSelectionViewModel = hiltViewModel(),
+    selectedAccounts: List<AccountUiModel> = emptyList(),
     onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)? = null
 ) {
 
-    val context = LocalContext.current
 
-    val viewModel: AccountSelectionViewModel = hiltViewModel()
+    viewModel.selectAllThisAccount(selectedAccounts)
+
+    AccountSelectionView(viewModel, onItemSelection)
+}
+
+@Composable
+private fun AccountSelectionView(
+    viewModel: AccountSelectionViewModel,
+    onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)?
+) {
+    val context = LocalContext.current
     val accounts by viewModel.accounts.collectAsState()
     val selectedAccounts by viewModel.selectedAccounts.collectAsState()
 
@@ -61,7 +72,7 @@ fun MultipleAccountSelectionScreen(
             }
         },
         onClearChanges = viewModel::clearChanges,
-        onItemSelection = viewModel::selectThisAccount
+        onItemSelection = viewModel::selectAllThisAccount
     )
 }
 
@@ -100,7 +111,7 @@ fun MultipleAccountSelectionScreen(
         }
         item {
             Column {
-                Divider(modifier = Modifier.padding(top = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)

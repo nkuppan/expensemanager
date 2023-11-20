@@ -29,7 +29,6 @@ class AccountSelectionViewModel @Inject constructor(
     val selectedAccounts = _selectedAccounts.asStateFlow()
 
     init {
-
         combine(
             getCurrencyUseCase.invoke(),
             getAccountsUseCase.invoke()
@@ -43,14 +42,18 @@ class AccountSelectionViewModel @Inject constructor(
                     )
                 )
             }
-            _selectedAccounts.value = accounts.map {
-                it.toAccountUiModel(
-                    getFormattedAmountUseCase.invoke(
-                        it.amount,
-                        currency
+
+            _selectedAccounts.value.ifEmpty {
+                accounts.map {
+                    it.toAccountUiModel(
+                        getFormattedAmountUseCase.invoke(
+                            it.amount,
+                            currency
+                        )
                     )
-                )
+                }
             }
+
         }.launchIn(viewModelScope)
     }
 
@@ -58,7 +61,7 @@ class AccountSelectionViewModel @Inject constructor(
         _selectedAccounts.value = emptyList()
     }
 
-    fun selectThisAccount(account: AccountUiModel, selected: Boolean) {
+    fun selectAllThisAccount(account: AccountUiModel, selected: Boolean) {
         viewModelScope.launch {
             val selectedAccounts = _selectedAccounts.value.toMutableList()
 
@@ -72,6 +75,34 @@ class AccountSelectionViewModel @Inject constructor(
                 }
             } else {
                 if (selected) {
+                    selectedAccounts.add(account)
+                }
+            }
+
+            _selectedAccounts.value = selectedAccounts
+        }
+    }
+
+    fun selectAllThisAccount(accounts: List<AccountUiModel>) {
+
+        if (accounts.isEmpty()) {
+            return
+        }
+
+        viewModelScope.launch {
+
+            clearChanges()
+
+            val selectedAccounts = _selectedAccounts.value.toMutableList()
+
+            repeat(accounts.size) {
+                val account = accounts[it]
+
+                val selectedAccount = selectedAccounts.firstOrNull {
+                    account.id == it.id
+                }
+
+                if (selectedAccount == null) {
                     selectedAccounts.add(account)
                 }
             }

@@ -4,6 +4,7 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.BudgetDao
+import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
 import kotlinx.coroutines.flow.Flow
@@ -29,19 +30,20 @@ class BudgetRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun findBudgetByIdFlow(budgetId: String): Flow<Budget?> {
+        return budgetDao.findByIdFlow(budgetId).map {
+            it?.let {
+                convertBudgetModel(it)
+            }
+        }
+    }
+
     override suspend fun findBudgetById(budgetId: String): Resource<Budget> =
         withContext(dispatchers.io) {
             return@withContext try {
                 val budget = budgetDao.findById(budgetId)
                 if (budget != null) {
-                    val accounts = budgetDao.getBudgetAccounts(budget.id)
-                    val categories = budgetDao.getBudgetCategories(budget.id)
-                    Resource.Success(
-                        budget.toDomainModel(
-                            accounts = accounts?.map { it.accountId } ?: emptyList(),
-                            categories = categories?.map { it.categoryId } ?: emptyList()
-                        )
-                    )
+                    Resource.Success(convertBudgetModel(budget))
                 } else {
                     Resource.Error(KotlinNullPointerException())
                 }
@@ -49,6 +51,15 @@ class BudgetRepositoryImpl @Inject constructor(
                 Resource.Error(e)
             }
         }
+
+    private suspend fun convertBudgetModel(budget: BudgetEntity): Budget {
+        val accounts = budgetDao.getBudgetAccounts(budget.id)
+        val categories = budgetDao.getBudgetCategories(budget.id)
+        return budget.toDomainModel(
+            accounts = accounts?.map { it.accountId } ?: emptyList(),
+            categories = categories?.map { it.categoryId } ?: emptyList()
+        )
+    }
 
     override suspend fun addBudget(budget: Budget): Resource<Boolean> =
         withContext(dispatchers.io) {

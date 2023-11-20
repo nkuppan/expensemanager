@@ -290,6 +290,14 @@ class BudgetCreateViewModel @Inject constructor(
         appComposeNavigator.popBackStack()
     }
 
+    fun getSelectedAccounts(): List<AccountUiModel> {
+        return this.selectedAccounts
+    }
+
+    fun getSelectedCategories(): List<Category> {
+        return this.selectedCategories
+    }
+
     companion object {
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "account_balance"
