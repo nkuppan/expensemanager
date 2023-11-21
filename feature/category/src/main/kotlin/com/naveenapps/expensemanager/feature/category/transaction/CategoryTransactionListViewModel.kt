@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransact
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,7 +28,8 @@ class CategoryTransactionListViewModel @Inject constructor(
     )
     val categoryTransaction = _categoryTransaction.asStateFlow()
 
-    private val categoryType = MutableStateFlow(CategoryType.EXPENSE)
+    private val _categoryType = MutableStateFlow(CategoryType.EXPENSE)
+    val categoryType = _categoryType.asStateFlow()
 
     init {
         categoryType.flatMapLatest {
@@ -46,7 +48,7 @@ class CategoryTransactionListViewModel @Inject constructor(
     }
 
     fun switchCategory() {
-        this.categoryType.value = if (categoryType.value == CategoryType.EXPENSE) {
+        this._categoryType.value = if (_categoryType.value.isExpense()) {
             CategoryType.INCOME
         } else {
             CategoryType.EXPENSE

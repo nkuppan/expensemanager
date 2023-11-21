@@ -54,7 +54,9 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
+import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
@@ -66,6 +68,7 @@ fun CategoryTransactionTabScreen(
     viewModel: CategoryTransactionListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.categoryTransaction.collectAsState()
+    val categoryType by viewModel.categoryType.collectAsState()
 
     Scaffold(
         topBar = {
@@ -113,6 +116,7 @@ fun CategoryTransactionTabScreen(
             CategoryTransactionListScreenContent(
                 modifier = Modifier.fillMaxSize(),
                 uiState = uiState,
+                categoryType = categoryType,
                 onItemClick = {
                     viewModel.openCategoryDetailsPage(it)
                 },
@@ -127,6 +131,7 @@ fun CategoryTransactionTabScreen(
 @Composable
 private fun CategoryTransactionListScreenContent(
     uiState: UiState<CategoryTransactionUiModel>,
+    categoryType: CategoryType,
     modifier: Modifier = Modifier,
     changeChart: (() -> Unit)? = null,
     onItemClick: ((CategoryTransaction) -> Unit)? = null
@@ -162,7 +167,11 @@ private fun CategoryTransactionListScreenContent(
 
                 Column(modifier = Modifier.fillMaxWidth()) {
                     PieChartView(
-                        uiState.data.totalAmount.amountString ?: "",
+                        if (categoryType.isExpense()) {
+                            stringResource(id = R.string.spending)
+                        } else {
+                            stringResource(id = R.string.income)
+                        } + "\n" + uiState.data.totalAmount.amountString,
                         uiState.data.pieChartData.map {
                             PieChartUiData(
                                 it.name,

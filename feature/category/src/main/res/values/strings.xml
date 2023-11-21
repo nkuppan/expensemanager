@@ -2,7 +2,7 @@
 <resources>
     <string name="categories">Categories</string>
     <string name="income">Income</string>
-    <string name="spending">Spending</string>
+    <string name="spending">Expense</string>
     <string name="no_category_available">No category available</string>
     <string name="no_transactions_available">No transactions available</string>
     <string name="category_selection_message">Should select at least one category to proceed</string>
