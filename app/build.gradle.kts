@@ -21,6 +21,7 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
         }
         create("macrobenchmark") {
             signingConfig = signingConfigs.getByName("debug")

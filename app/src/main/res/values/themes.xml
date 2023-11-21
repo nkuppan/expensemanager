@@ -9,6 +9,7 @@
     </style>
 
     <style name="ExpenseManager.Theme.Splash.Final" parent="ExpenseManager.Theme.Splash">
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
         <item name="postSplashScreenTheme">@style/ExpenseManager.Theme</item>
     </style>
 
