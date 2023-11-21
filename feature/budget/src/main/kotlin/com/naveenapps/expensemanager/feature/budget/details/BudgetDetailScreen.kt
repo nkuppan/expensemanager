@@ -48,6 +48,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetDetailScreen(
     viewModel: BudgetDetailViewModel = hiltViewModel()
@@ -143,18 +144,18 @@ fun BudgetDetailScreen(
                                 }
                                 .then(ItemSpecModifier),
                             categoryName = item.categoryName,
-                            categoryColor = item.categoryBackgroundColor,
-                            categoryIcon = item.categoryIcon,
+                            categoryColor = item.categoryIcon.backgroundColor,
+                            categoryIcon = item.categoryIcon.name,
                             amount = item.amount,
                             date = item.date,
                             notes = item.notes,
                             transactionType = item.transactionType,
                             fromAccountName = item.fromAccountName,
-                            fromAccountIcon = item.fromAccountIcon,
-                            fromAccountColor = item.fromAccountColor,
+                            fromAccountIcon = item.fromAccountIcon.name,
+                            fromAccountColor = item.fromAccountIcon.backgroundColor,
                             toAccountName = item.toAccountName,
-                            toAccountIcon = item.toAccountIcon,
-                            toAccountColor = item.toAccountColor,
+                            toAccountIcon = item.toAccountIcon?.name,
+                            toAccountColor = item.toAccountIcon?.backgroundColor,
                         )
                     }
                     Spacer(

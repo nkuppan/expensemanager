@@ -113,6 +113,6 @@ fun CategoryTransaction.toChartModel(): PieChartData {
     return PieChartData(
         name = this.category.name,
         value = this.percent,
-        color = this.category.iconBackgroundColor.toColorInt(),
+        color = this.category.storedIcon.backgroundColor.toColorInt(),
     )
 }

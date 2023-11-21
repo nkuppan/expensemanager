@@ -66,8 +66,7 @@ class AccountListViewModel @Inject constructor(
 fun Account.toAccountUiModel(amount: Amount) = AccountUiModel(
     id = this.id,
     name = this.name,
-    icon = this.iconName,
-    iconBackgroundColor = this.iconBackgroundColor,
+    storedIcon = this.storedIcon,
     amount = amount,
     type = this.type,
     amountTextColor = this.amount.getAmountTextColor()

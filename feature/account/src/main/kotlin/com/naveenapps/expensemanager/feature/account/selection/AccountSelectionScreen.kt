@@ -62,8 +62,8 @@ fun AccountSelectionScreen(
                             onItemSelection?.invoke(account)
                         },
                     name = account.name,
-                    icon = account.icon,
-                    iconBackgroundColor = account.iconBackgroundColor,
+                    icon = account.storedIcon.name,
+                    iconBackgroundColor = account.storedIcon.backgroundColor,
                     amount = account.amount.amountString,
                     endIcon = if (isSelected) {
                         Icons.Default.Done

@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.model
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 
 
-data class TransactionUiState(
+data class TransactionGroup(
     val date: String,
     val amountTextColor: Int,
     val totalAmount: Amount,
@@ -17,15 +17,12 @@ data class TransactionUiItem(
     val notes: String?,
     val categoryName: String,
     val transactionType: TransactionType,
-    val categoryBackgroundColor: String,
-    val categoryIcon: String,
+    val categoryIcon: StoredIcon,
     val date: String,
     val fromAccountName: String,
-    val fromAccountIcon: String,
-    val fromAccountColor: String,
+    val fromAccountIcon: StoredIcon,
     val toAccountName: String? = null,
-    val toAccountIcon: String? = null,
-    val toAccountColor: String? = null,
+    val toAccountIcon: StoredIcon? = null,
 )
 
 
@@ -36,14 +33,11 @@ fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
         this.notes,
         this.category.name,
         this.type,
-        this.category.iconBackgroundColor,
-        this.category.iconName,
+        categoryIcon = this.category.storedIcon,
         date = this.createdOn.toCompleteDateWithDate(),
         fromAccountName = this.fromAccount.name,
-        fromAccountIcon = this.fromAccount.iconName,
-        fromAccountColor = this.fromAccount.iconBackgroundColor,
+        fromAccountIcon = this.fromAccount.storedIcon,
         toAccountName = this.toAccount?.name,
-        toAccountIcon = this.toAccount?.iconName,
-        toAccountColor = this.toAccount?.iconBackgroundColor,
+        toAccountIcon = this.toAccount?.storedIcon,
     )
 }

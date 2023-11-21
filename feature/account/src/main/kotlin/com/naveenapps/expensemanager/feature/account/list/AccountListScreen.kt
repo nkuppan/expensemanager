@@ -53,6 +53,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.account.R
 
 
@@ -137,8 +138,8 @@ private fun AccountListScreenContent(
                                 }
                                 .then(ItemSpecModifier),
                             name = account.name,
-                            icon = account.icon,
-                            iconBackgroundColor = account.iconBackgroundColor,
+                            icon = account.storedIcon.name,
+                            iconBackgroundColor = account.storedIcon.backgroundColor,
                             amount = account.amount.amountString
                         )
                     }
@@ -291,24 +292,30 @@ val ACCOUNT_DUMMY_DATA = listOf(
     AccountUiModel(
         id = "1",
         name = "Cash",
-        icon = "account_balance_wallet",
-        iconBackgroundColor = "#000000",
+        storedIcon = StoredIcon(
+            name = "account_balance_wallet",
+            backgroundColor = "#000000"
+        ),
         amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         amount = Amount(100.0, "$100.00")
     ),
     AccountUiModel(
         id = "2",
         name = "Bank Account - xxxx",
-        icon = "account_balance",
-        iconBackgroundColor = "#000000",
+        storedIcon = StoredIcon(
+            name = "account_balance",
+            backgroundColor = "#000000"
+        ),
         amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         amount = Amount(100.0, "$100.00")
     ),
     AccountUiModel(
         id = "3",
         name = "Credit Card - xxxx",
-        icon = "credit_card",
-        iconBackgroundColor = "#000000",
+        storedIcon = StoredIcon(
+            name = "credit_card",
+            backgroundColor = "#000000"
+        ),
         amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         amount = Amount(100.0, "$100.00")
     ),

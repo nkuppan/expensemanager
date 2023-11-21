@@ -51,9 +51,10 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
-import com.naveenapps.expensemanager.core.model.TransactionUiState
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.R
 import java.util.Date
@@ -89,7 +90,7 @@ fun TransactionListScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            transactionUiState = transactionUiState
+            transactionGroup = transactionUiState
         ) { transaction ->
             viewModel.openCreateScreen(transaction.id)
         }
@@ -98,7 +99,7 @@ fun TransactionListScreen() {
 
 @Composable
 private fun TransactionListScreen(
-    transactionUiState: UiState<List<TransactionUiState>>,
+    transactionGroup: UiState<List<TransactionGroup>>,
     modifier: Modifier = Modifier,
     onItemClick: ((TransactionUiItem) -> Unit)? = null
 ) {
@@ -106,7 +107,7 @@ private fun TransactionListScreen(
 
         FilterView(modifier = Modifier.fillMaxWidth())
 
-        when (transactionUiState) {
+        when (transactionGroup) {
             UiState.Empty -> {
                 Box(modifier = Modifier.fillMaxSize()) {
                     Text(
@@ -131,7 +132,7 @@ private fun TransactionListScreen(
 
             is UiState.Success -> {
                 LazyColumn {
-                    items(transactionUiState.data) {
+                    items(transactionGroup.data) {
                         TransactionGroupItem(
                             it, onItemClick
                         )
@@ -147,17 +148,17 @@ private fun TransactionListScreen(
 
 @Composable
 fun TransactionGroupItem(
-    transactionUiState: TransactionUiState,
+    transactionGroup: TransactionGroup,
     onItemClick: ((TransactionUiItem) -> Unit)?,
     isLastItem: Boolean = false
 ) {
     Column {
         TransactionHeaderItem(
-            transactionUiState.date,
-            transactionUiState.amountTextColor,
-            transactionUiState.totalAmount
+            transactionGroup.date,
+            transactionGroup.amountTextColor,
+            transactionGroup.totalAmount
         )
-        transactionUiState.transactions.forEach {
+        transactionGroup.transactions.forEach {
             TransactionItem(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -166,18 +167,18 @@ fun TransactionGroupItem(
                     }
                     .then(ItemSpecModifier),
                 categoryName = it.categoryName,
-                categoryColor = it.categoryBackgroundColor,
-                categoryIcon = it.categoryIcon,
+                categoryColor = it.categoryIcon.backgroundColor,
+                categoryIcon = it.categoryIcon.name,
                 amount = it.amount,
                 date = it.date,
                 notes = it.notes,
                 transactionType = it.transactionType,
                 fromAccountName = it.fromAccountName,
-                fromAccountIcon = it.fromAccountIcon,
-                fromAccountColor = it.fromAccountColor,
+                fromAccountIcon = it.fromAccountIcon.name,
+                fromAccountColor = it.fromAccountIcon.backgroundColor,
                 toAccountName = it.toAccountName,
-                toAccountIcon = it.toAccountIcon,
-                toAccountColor = it.toAccountColor,
+                toAccountIcon = it.toAccountIcon?.name,
+                toAccountColor = it.toAccountIcon?.backgroundColor,
             )
         }
         if (isLastItem.not()) {
@@ -396,7 +397,7 @@ fun TransactionItemPreview() {
 fun TransactionListItemLoadingStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
-            transactionUiState = UiState.Loading,
+            transactionGroup = UiState.Loading,
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -407,7 +408,7 @@ fun TransactionListItemLoadingStatePreview() {
 fun TransactionListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
-            transactionUiState = UiState.Success(emptyList()),
+            transactionGroup = UiState.Success(emptyList()),
             modifier = Modifier.fillMaxSize()
         )
     }
@@ -425,15 +426,19 @@ private fun getTransactionItem() = TransactionUiItem(
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     categoryName = "Clothing",
     transactionType = TransactionType.EXPENSE,
-    categoryBackgroundColor = "#000000",
-    categoryIcon = "car_rental",
+    categoryIcon = StoredIcon(
+        name = "ic_calendar",
+        backgroundColor = "#000000"
+    ),
     fromAccountName = "DB Bank xxxx",
-    fromAccountIcon = "account_balance",
-    fromAccountColor = "#000000",
+    fromAccountIcon = StoredIcon(
+        name = "account_balance",
+        backgroundColor = "#000000"
+    ),
     date = Date().toCompleteDateWithDate()
 )
 
-private fun getTransactionUiState() = TransactionUiState(
+private fun getTransactionUiState() = TransactionGroup(
     date = "12/10/2023",
     amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
     totalAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
@@ -449,7 +454,7 @@ private fun getTransactionUiState() = TransactionUiState(
 fun TransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
-            transactionUiState = UiState.Success(
+            transactionGroup = UiState.Success(
                 DUMMY_DATA
             ),
             modifier = Modifier.fillMaxSize()

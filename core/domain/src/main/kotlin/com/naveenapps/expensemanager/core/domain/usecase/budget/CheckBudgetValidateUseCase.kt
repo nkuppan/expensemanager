@@ -12,11 +12,11 @@ class CheckBudgetValidateUseCase @Inject constructor() {
             return Resource.Error(Exception("Please specify the budget id"))
         }
 
-        if (budget.iconBackgroundColor.isBlank()) {
+        if (budget.storedIcon.backgroundColor.isBlank()) {
             return Resource.Error(Exception("Background color is not available"))
         }
 
-        if (!budget.iconBackgroundColor.startsWith("#")) {
+        if (!budget.storedIcon.backgroundColor.startsWith("#")) {
             return Resource.Error(Exception("Background color is not valid"))
         }
 

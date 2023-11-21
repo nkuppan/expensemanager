@@ -50,6 +50,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
 import java.util.Date
 
@@ -167,8 +168,8 @@ private fun CategoryListScreenContent(
                     items.forEach { category ->
                         CategoryItem(
                             name = category.name,
-                            icon = category.iconName,
-                            iconBackgroundColor = category.iconBackgroundColor,
+                            icon = category.storedIcon.name,
+                            iconBackgroundColor = category.storedIcon.backgroundColor,
                             modifier = Modifier
                                 .clickable {
                                     onItemClick?.invoke(category.id)
@@ -259,8 +260,10 @@ fun getCategoryData(index: Int): Category {
         id = "$index",
         name = "Category $index",
         type = CategoryType.EXPENSE,
-        iconName = "ic_calendar",
-        iconBackgroundColor = "#000000",
+        storedIcon = StoredIcon(
+            "ic_calendar",
+            "#000000"
+        ),
         createdOn = Date(),
         updatedOn = Date()
     )

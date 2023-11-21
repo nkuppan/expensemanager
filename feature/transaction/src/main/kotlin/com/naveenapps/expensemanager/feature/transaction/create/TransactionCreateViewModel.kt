@@ -18,6 +18,7 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isExpense
@@ -326,8 +327,10 @@ class TransactionCreateViewModel @Inject constructor(
             id = "1",
             name = "Shopping",
             type = CategoryType.EXPENSE,
-            iconName = "ic_calendar",
-            iconBackgroundColor = "#000000",
+            storedIcon = StoredIcon(
+                name = "ic_calendar",
+                backgroundColor = "#000000"
+            ),
             createdOn = Date(),
             updatedOn = Date()
         )
@@ -335,8 +338,10 @@ class TransactionCreateViewModel @Inject constructor(
         private val defaultAccount = AccountUiModel(
             id = "1",
             name = "Shopping",
-            icon = "ic_calendar",
-            iconBackgroundColor = "#000000",
+            storedIcon = StoredIcon(
+                name = "ic_calendar",
+                backgroundColor = "#000000"
+            ),
             amount = Amount(0.0, "$ 0.00"),
             amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500
         )

@@ -195,8 +195,8 @@ private fun CategoryTransactionListScreenContent(
                                     }
                                     .then(ItemSpecModifier),
                                 name = categoryTransaction.category.name,
-                                icon = categoryTransaction.category.iconName,
-                                iconBackgroundColor = categoryTransaction.category.iconBackgroundColor,
+                                icon = categoryTransaction.category.storedIcon.name,
+                                iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
                                 amount = categoryTransaction.amount.amountString ?: "",
                                 percentage = categoryTransaction.percent
                             )

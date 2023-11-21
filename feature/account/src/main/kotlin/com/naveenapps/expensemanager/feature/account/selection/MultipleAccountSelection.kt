@@ -101,8 +101,8 @@ fun MultipleAccountSelectionScreen(
                     }
                     .padding(start = 16.dp, end = 16.dp),
                 name = account.name,
-                icon = account.icon,
-                iconBackgroundColor = account.iconBackgroundColor,
+                icon = account.storedIcon.name,
+                iconBackgroundColor = account.storedIcon.backgroundColor,
                 isSelected = isSelected,
                 onCheckedChange = {
                     onItemSelection?.invoke(account, it)

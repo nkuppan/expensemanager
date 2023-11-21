@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.category.UpdateCategory
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.category.R
@@ -73,8 +74,8 @@ class CategoryCreateViewModel @Inject constructor(
         this.category?.let { categoryItem ->
             name.value = categoryItem.name
             categoryType.value = categoryItem.type
-            colorValue.value = categoryItem.iconBackgroundColor
-            icon.value = categoryItem.iconName
+            colorValue.value = categoryItem.storedIcon.backgroundColor
+            icon.value = categoryItem.storedIcon.name
             _showDelete.value = true
         }
     }
@@ -123,8 +124,10 @@ class CategoryCreateViewModel @Inject constructor(
             id = category?.id ?: UUID.randomUUID().toString(),
             name = name,
             type = categoryType.value,
-            iconBackgroundColor = color,
-            iconName = icon.value,
+            storedIcon = StoredIcon(
+                name = icon.value,
+                backgroundColor = color,
+            ),
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time
         )

@@ -9,8 +9,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCu
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.core.model.TransactionUiState
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -29,7 +29,7 @@ class TransactionListViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator
 ) : ViewModel() {
 
-    private val _transactions = MutableStateFlow<UiState<List<TransactionUiState>>>(
+    private val _transactions = MutableStateFlow<UiState<List<TransactionGroup>>>(
         UiState.Loading
     )
     val transactions = _transactions.asStateFlow()
@@ -48,7 +48,7 @@ class TransactionListViewModel @Inject constructor(
                         it.createdOn.toCompleteDateWithDate()
                     }.map {
                         val totalAmount = it.value.toTransactionSum()
-                        TransactionUiState(
+                        TransactionGroup(
                             date = it.key,
                             amountTextColor = totalAmount.getAmountTextColor(),
                             totalAmount = getFormattedAmountUseCase.invoke(totalAmount, currency),

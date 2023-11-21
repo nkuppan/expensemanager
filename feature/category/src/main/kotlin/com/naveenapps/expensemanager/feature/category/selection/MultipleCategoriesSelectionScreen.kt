@@ -100,8 +100,8 @@ fun MultipleCategoriesSelectionScreen(
                     }
                     .padding(start = 16.dp, end = 16.dp),
                 name = account.name,
-                icon = account.iconName,
-                iconBackgroundColor = account.iconBackgroundColor,
+                icon = account.storedIcon.name,
+                iconBackgroundColor = account.storedIcon.name,
                 isSelected = isSelected,
                 onCheckedChange = {
                     onItemSelection?.invoke(account, it)

@@ -2,14 +2,15 @@ package com.naveenapps.expensemanager.core.data.mappers
 
 import com.naveenapps.expensemanager.core.database.entity.CategoryEntity
 import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.StoredIcon
 
 fun Category.toEntityModel(): CategoryEntity {
     return CategoryEntity(
         id = id,
         name = name,
         type = type,
-        iconName = iconName,
-        iconBackgroundColor = iconBackgroundColor,
+        iconName = storedIcon.name,
+        iconBackgroundColor = storedIcon.backgroundColor,
         createdOn = createdOn,
         updatedOn = updatedOn,
     )
@@ -20,8 +21,10 @@ fun CategoryEntity.toDomainModel(): Category {
         id = id,
         name = name,
         type = type,
-        iconName = iconName,
-        iconBackgroundColor = iconBackgroundColor,
+        storedIcon = StoredIcon(
+            name = iconName,
+            backgroundColor = iconBackgroundColor,
+        ),
         createdOn = createdOn,
         updatedOn = updatedOn,
     )

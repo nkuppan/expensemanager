@@ -66,8 +66,8 @@ fun Budget.toBudgetUiModel(
 ) = BudgetUiModel(
     id = this.id,
     name = this.name,
-    icon = this.iconName,
-    iconBackgroundColor = this.iconBackgroundColor,
+    icon = this.storedIcon.name,
+    iconBackgroundColor = this.storedIcon.backgroundColor,
     progressBarColor = when {
         percent < 0f -> R.color.green_500
         percent in 0f..35f -> R.color.green_500

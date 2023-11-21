@@ -16,6 +16,7 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.R
@@ -114,8 +115,8 @@ class AccountCreateViewModel @Inject constructor(
             currentBalance.value = accountItem.amount.toString()
             creditLimit.value = accountItem.creditLimit.toString()
             accountType.value = accountItem.type
-            colorValue.value = accountItem.iconBackgroundColor
-            icon.value = accountItem.iconName
+            colorValue.value = accountItem.storedIcon.backgroundColor
+            icon.value = accountItem.storedIcon.name
             updateAccountValue(accountItem)
             _showDelete.value = true
         }
@@ -213,8 +214,10 @@ class AccountCreateViewModel @Inject constructor(
             id = account?.id ?: UUID.randomUUID().toString(),
             name = name,
             type = accountType,
-            iconBackgroundColor = color,
-            iconName = icon.value,
+            storedIcon = StoredIcon(
+                name = icon.value,
+                backgroundColor = color,
+            ),
             amount = currentBalance.toDoubleOrNull() ?: 0.0,
             creditLimit = if (accountType == AccountType.CREDIT) {
                 creditLimit.toDoubleOrNull() ?: 0.0

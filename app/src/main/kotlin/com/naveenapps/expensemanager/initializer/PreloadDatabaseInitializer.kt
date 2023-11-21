@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,8 +23,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "1",
         name = "Clothing",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#F44336",
-        iconName = "apparel",
+        storedIcon = StoredIcon(
+            name = "apparel",
+            backgroundColor = "#F44336",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -31,8 +34,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "2",
         name = "Entertainment",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#E91E63",
-        iconName = "sports_esports",
+        storedIcon = StoredIcon(
+            name = "sports_esports",
+            backgroundColor = "#E91E63",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -40,8 +45,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "3",
         name = "Food",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#9C27B0",
-        iconName = "restaurant",
+        storedIcon = StoredIcon(
+            name = "restaurant",
+            backgroundColor = "#9C27B0",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -49,8 +56,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "4",
         name = "Health",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#673AB7",
-        iconName = "home_health",
+        storedIcon = StoredIcon(
+            name = "home_health",
+            backgroundColor = "#673AB7",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -58,8 +67,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "5",
         name = "Leisure",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#3F51B5",
-        iconName = "flights_and_hotels",
+        storedIcon = StoredIcon(
+            name = "flights_and_hotels",
+            backgroundColor = "#3F51B5",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -67,8 +78,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "6",
         name = "Shopping",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#2196F3",
-        iconName = "shopping_cart",
+        storedIcon = StoredIcon(
+            name = "shopping_cart",
+            backgroundColor = "#2196F3",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -76,8 +89,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "7",
         name = "Transportation",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#03A9F4",
-        iconName = "travel",
+        storedIcon = StoredIcon(
+            name = "travel",
+            backgroundColor = "#03A9F4",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -85,8 +100,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "8",
         name = "Utilities",
         type = CategoryType.EXPENSE,
-        iconBackgroundColor = "#00BCD4",
-        iconName = "other_admission",
+        storedIcon = StoredIcon(
+            name = "other_admission",
+            backgroundColor = "#00BCD4",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -94,8 +111,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "9",
         name = "Savings",
         type = CategoryType.INCOME,
-        iconBackgroundColor = "#4CAF50",
-        iconName = "savings",
+        storedIcon = StoredIcon(
+            name = "savings",
+            backgroundColor = "#4CAF50",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -103,8 +122,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "10",
         name = "Bank",
         type = CategoryType.INCOME,
-        iconBackgroundColor = "#8BC34A",
-        iconName = "account_balance",
+        storedIcon = StoredIcon(
+            name = "account_balance",
+            backgroundColor = "#8BC34A",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -112,8 +133,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "11",
         name = "Credit Card",
         type = CategoryType.INCOME,
-        iconBackgroundColor = "#CDDC39",
-        iconName = "credit_card",
+        storedIcon = StoredIcon(
+            name = "credit_card",
+            backgroundColor = "#CDDC39",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
@@ -121,8 +144,10 @@ val BASE_CATEGORY_LIST = listOf(
         id = "12",
         name = "Gift",
         type = CategoryType.INCOME,
-        iconBackgroundColor = "#FFEB3B",
-        iconName = "featured_seasonal_and_gifts",
+        storedIcon = StoredIcon(
+            name = "featured_seasonal_and_gifts",
+            backgroundColor = "#FFEB3B",
+        ),
         createdOn = Date(),
         updatedOn = Date(),
     )
@@ -133,8 +158,10 @@ val BASE_ACCOUNT_LIST = listOf(
         "1",
         "Cash",
         AccountType.REGULAR,
-        "#4CAF50",
-        "savings",
+        storedIcon = StoredIcon(
+            name = "savings",
+            backgroundColor = "#4CAF50",
+        ),
         Calendar.getInstance().time,
         Calendar.getInstance().time,
     ),
@@ -142,8 +169,10 @@ val BASE_ACCOUNT_LIST = listOf(
         "2",
         "Card-xxx",
         AccountType.CREDIT,
-        "#4CAF50",
-        "credit_card",
+        storedIcon = StoredIcon(
+            name = "credit_card",
+            backgroundColor = "#4CAF50",
+        ),
         Calendar.getInstance().time,
         Calendar.getInstance().time,
     ),
@@ -151,8 +180,10 @@ val BASE_ACCOUNT_LIST = listOf(
         "3",
         "Bank Account",
         AccountType.REGULAR,
-        "#4CAF50",
-        "account_balance",
+        storedIcon = StoredIcon(
+            name = "account_balance",
+            backgroundColor = "#4CAF50",
+        ),
         Calendar.getInstance().time,
         Calendar.getInstance().time,
     )

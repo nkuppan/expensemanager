@@ -97,8 +97,8 @@ fun CategoryDetailScreen(
                         CategoryTransactionItem(
                             modifier = Modifier.padding(16.dp),
                             name = categoryTransaction.category.name,
-                            icon = categoryTransaction.category.iconName,
-                            iconBackgroundColor = categoryTransaction.category.iconBackgroundColor,
+                            icon = categoryTransaction.category.storedIcon.name,
+                            iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
                             amount = categoryTransaction.amount.amountString ?: "",
                             percentage = categoryTransaction.percent
                         )
@@ -138,8 +138,8 @@ fun CategoryDetailScreen(
                         TransactionItem(
                             categoryName = item.categoryName,
                             fromAccountName = item.fromAccountName,
-                            fromAccountIcon = item.fromAccountIcon,
-                            fromAccountColor = item.fromAccountColor,
+                            fromAccountIcon = item.fromAccountIcon.name,
+                            fromAccountColor = item.fromAccountIcon.backgroundColor,
                             amount = item.amount,
                             date = item.date,
                             notes = item.notes,
@@ -150,8 +150,8 @@ fun CategoryDetailScreen(
                                 }
                                 .then(ItemSpecModifier),
                             toAccountName = item.toAccountName,
-                            toAccountIcon = item.toAccountIcon,
-                            toAccountColor = item.toAccountColor,
+                            toAccountIcon = item.toAccountIcon?.name,
+                            toAccountColor = item.toAccountIcon?.backgroundColor,
                             transactionType = item.transactionType,
                         )
                     }

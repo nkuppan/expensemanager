@@ -195,10 +195,10 @@ private fun DashboardScreenContent(
                                     viewModel.openAccountCreate(it.id)
                                 },
                             name = it.name,
-                            icon = it.icon,
+                            icon = it.storedIcon.name,
                             amount = it.amount.amountString ?: "",
                             amountTextColor = colorResource(id = it.amountTextColor),
-                            backgroundColor = it.iconBackgroundColor.toColor().copy(alpha = .1f),
+                            backgroundColor = it.storedIcon.backgroundColor.toColor().copy(alpha = .1f),
                         )
                     }
                 }
@@ -277,18 +277,18 @@ private fun DashboardScreenContent(
                         }
                         .then(ItemSpecModifier),
                     categoryName = transaction.categoryName,
-                    categoryColor = transaction.categoryBackgroundColor,
-                    categoryIcon = transaction.categoryIcon,
+                    categoryColor = transaction.categoryIcon.backgroundColor,
+                    categoryIcon = transaction.categoryIcon.name,
                     amount = transaction.amount,
                     date = transaction.date,
                     notes = transaction.notes,
                     transactionType = transaction.transactionType,
                     fromAccountName = transaction.fromAccountName,
-                    fromAccountIcon = transaction.fromAccountIcon,
-                    fromAccountColor = transaction.fromAccountColor,
+                    fromAccountIcon = transaction.fromAccountIcon.name,
+                    fromAccountColor = transaction.fromAccountIcon.backgroundColor,
                     toAccountName = transaction.toAccountName,
-                    toAccountIcon = transaction.toAccountIcon,
-                    toAccountColor = transaction.toAccountColor,
+                    toAccountIcon = transaction.toAccountIcon?.name,
+                    toAccountColor = transaction.toAccountIcon?.backgroundColor,
                 )
             }
         } else {

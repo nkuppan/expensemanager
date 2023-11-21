@@ -57,8 +57,8 @@ fun CategorySelectionScreen(
                 CategoryItem(
                     modifier = Modifier,
                     name = category.name,
-                    icon = category.iconName,
-                    iconBackgroundColor = category.iconBackgroundColor,
+                    icon = category.storedIcon.name,
+                    iconBackgroundColor = category.storedIcon.backgroundColor,
                     endIcon = if (isSelected) {
                         Icons.Default.Done
                     } else {

@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowRight
+import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +40,7 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.currency.CurrencyDialogView
 
@@ -142,8 +143,8 @@ private fun OnboardingContentView(
             accounts.forEach { account ->
                 AccountItem(
                     name = account.name,
-                    icon = account.icon,
-                    iconBackgroundColor = account.iconBackgroundColor,
+                    icon = account.storedIcon.name,
+                    iconBackgroundColor = account.storedIcon.backgroundColor,
                     amount = account.amount.amountString,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -201,7 +202,7 @@ private fun CurrencyItem(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(end = 16.dp),
-            imageVector = Icons.Default.ArrowRight,
+            imageVector = Icons.AutoMirrored.Filled.ArrowRight,
             contentDescription = null
         )
     }
@@ -225,8 +226,10 @@ fun OnboardingScreenPreview() {
                         id = "1",
                         name = "Shopping",
                         type = AccountType.REGULAR,
-                        icon = "currency_dollar",
-                        iconBackgroundColor = "#000000",
+                        storedIcon = StoredIcon(
+                            name = "currency_dollar",
+                            backgroundColor = "#000000"
+                        ),
                         amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                         amount = Amount(0.0, "$ 0.00"),
                     )

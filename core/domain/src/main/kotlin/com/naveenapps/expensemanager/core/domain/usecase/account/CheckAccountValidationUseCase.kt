@@ -12,11 +12,11 @@ class CheckAccountValidationUseCase @Inject constructor() {
             return Resource.Error(Exception("ID shouldn't be blank"))
         }
 
-        if (account.iconBackgroundColor.isBlank()) {
+        if (account.storedIcon.backgroundColor.isBlank()) {
             return Resource.Error(Exception("Background color shouldn't be blank"))
         }
 
-        if (!account.iconBackgroundColor.startsWith("#")) {
+        if (!account.storedIcon.backgroundColor.startsWith("#")) {
             return Resource.Error(Exception("Background color is not valid"))
         }
 

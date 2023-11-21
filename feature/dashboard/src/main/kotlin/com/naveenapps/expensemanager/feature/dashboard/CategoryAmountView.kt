@@ -56,8 +56,8 @@ fun CategoryAmountView(
                         val item = categoryTransactionUiModel.categoryTransactions[it]
                         com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionSmallItem(
                             name = item.category.name,
-                            icon = item.category.iconName,
-                            iconBackgroundColor = item.category.iconBackgroundColor,
+                            icon = item.category.storedIcon.name,
+                            iconBackgroundColor = item.category.storedIcon.backgroundColor,
                             amount = item.amount.amountString ?: ""
                         )
                     }

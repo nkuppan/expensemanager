@@ -2,13 +2,14 @@ package com.naveenapps.expensemanager.core.data.mappers
 
 import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import com.naveenapps.expensemanager.core.model.Budget
+import com.naveenapps.expensemanager.core.model.StoredIcon
 
 fun Budget.toEntityModel(): BudgetEntity {
     return BudgetEntity(
         id = id,
         name = name,
-        iconBackgroundColor = iconBackgroundColor,
-        iconName = iconName,
+        iconBackgroundColor = storedIcon.backgroundColor,
+        iconName = storedIcon.name,
         amount = amount,
         selectedMonth = selectedMonth,
         isAllCategoriesSelected = isAllCategoriesSelected,
@@ -22,8 +23,10 @@ fun BudgetEntity.toDomainModel(categories: List<String>, accounts: List<String>)
     return Budget(
         id = id,
         name = name,
-        iconBackgroundColor = iconBackgroundColor,
-        iconName = iconName,
+        storedIcon = StoredIcon(
+            name = iconName,
+            backgroundColor = iconBackgroundColor,
+        ),
         amount = amount,
         selectedMonth = selectedMonth,
         categories = categories,

@@ -69,6 +69,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.category.list.CategoryItem
@@ -412,8 +413,8 @@ private fun TransactionCreateScreen(
             )
             CategoryItem(
                 name = selectedCategory.name,
-                icon = selectedCategory.iconName,
-                iconBackgroundColor = selectedCategory.iconBackgroundColor,
+                icon = selectedCategory.storedIcon.name,
+                iconBackgroundColor = selectedCategory.storedIcon.backgroundColor,
                 endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -443,8 +444,8 @@ private fun TransactionCreateScreen(
 
         AccountItem(
             name = selectedFromAccount.name,
-            icon = selectedFromAccount.icon,
-            iconBackgroundColor = selectedFromAccount.iconBackgroundColor,
+            icon = selectedFromAccount.storedIcon.name,
+            iconBackgroundColor = selectedFromAccount.storedIcon.backgroundColor,
             endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             amount = selectedFromAccount.amount.amountString,
             modifier = Modifier
@@ -469,8 +470,8 @@ private fun TransactionCreateScreen(
 
             AccountItem(
                 name = selectedToAccount.name,
-                icon = selectedToAccount.icon,
-                iconBackgroundColor = selectedToAccount.iconBackgroundColor,
+                icon = selectedToAccount.storedIcon.name,
+                iconBackgroundColor = selectedToAccount.storedIcon.backgroundColor,
                 endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 amount = selectedToAccount.amount.amountString,
                 modifier = Modifier
@@ -550,8 +551,10 @@ private fun TransactionCreateStatePreview() {
                 id = "1",
                 name = "Shopping",
                 type = CategoryType.EXPENSE,
-                iconName = "ic_calendar",
-                iconBackgroundColor = "#000000",
+                StoredIcon(
+                    name = "ic_calendar",
+                    backgroundColor = "#000000"
+                ),
                 createdOn = Date(),
                 updatedOn = Date()
             ),
@@ -559,8 +562,10 @@ private fun TransactionCreateStatePreview() {
                 id = "1",
                 name = "Shopping",
                 type = AccountType.REGULAR,
-                icon = "ic_calendar",
-                iconBackgroundColor = "#000000",
+                storedIcon = StoredIcon(
+                    name = "ic_calendar",
+                    backgroundColor = "#000000"
+                ),
                 amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
                 amount = Amount(0.0, "$ 0.00"),
             ),
@@ -568,8 +573,10 @@ private fun TransactionCreateStatePreview() {
                 id = "1",
                 name = "Shopping",
                 type = AccountType.REGULAR,
-                icon = "ic_calendar",
-                iconBackgroundColor = "#000000",
+                storedIcon = StoredIcon(
+                    name = "ic_calendar",
+                    backgroundColor = "#000000"
+                ),
                 amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = Amount(0.0, "$ 0.00"),
             )

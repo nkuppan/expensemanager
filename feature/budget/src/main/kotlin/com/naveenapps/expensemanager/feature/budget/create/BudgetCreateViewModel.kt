@@ -20,6 +20,7 @@ import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
@@ -111,8 +112,8 @@ class BudgetCreateViewModel @Inject constructor(
         this.budget?.let { budgetItem ->
             name.value = budgetItem.name
             amount.value = budgetItem.amount.toString()
-            colorValue.value = budgetItem.iconBackgroundColor
-            icon.value = budgetItem.iconName
+            colorValue.value = budgetItem.storedIcon.backgroundColor
+            icon.value = budgetItem.storedIcon.name
             budgetItem.selectedMonth.fromMonthAndYear()?.let { setDate(it) }
 
             val accounts = budgetItem.accounts.map {
@@ -205,8 +206,10 @@ class BudgetCreateViewModel @Inject constructor(
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
             name = name,
-            iconBackgroundColor = color,
-            iconName = icon.value,
+            storedIcon = StoredIcon(
+                name = icon.value,
+                backgroundColor = color,
+            ),
             amount = amount,
             selectedMonth = date.toMonthAndYear(),
             categories = categories,
