@@ -2,6 +2,8 @@ package com.naveenapps.expensemanager.core.designsystem.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -74,7 +76,11 @@ fun IconSelectionScreen(onIconPicked: ((Int) -> Unit)? = null) {
         item(span = {
             GridItemSpan(4)
         }) {
-            SelectionTitle(stringResource(id = R.string.choose_icon))
+            SelectionTitle(
+                stringResource(id = R.string.choose_icon), Modifier.Companion
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+            )
         }
         items(iconSelectionList) { icon ->
             Box(

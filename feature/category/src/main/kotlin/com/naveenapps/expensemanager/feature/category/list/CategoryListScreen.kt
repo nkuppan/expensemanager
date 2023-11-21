@@ -261,7 +261,7 @@ fun getCategoryData(index: Int): Category {
         name = "Category $index",
         type = CategoryType.EXPENSE,
         storedIcon = StoredIcon(
-            "ic_calendar",
+            "account_balance",
             "#000000"
         ),
         createdOn = Date(),

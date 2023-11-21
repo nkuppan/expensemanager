@@ -89,22 +89,26 @@ fun MultipleCategoriesSelectionScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            SelectionTitle(stringResource(id = R.string.select_account))
+            SelectionTitle(
+                stringResource(id = R.string.select_account), Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+            )
         }
-        items(categories) { account ->
-            val isSelected = selectedCategories.fastAny { it.id == account.id }
+        items(categories) { category ->
+            val isSelected = selectedCategories.fastAny { it.id == category.id }
             CategoryCheckedItem(
                 modifier = Modifier
                     .clickable {
-                        onItemSelection?.invoke(account, isSelected.not())
+                        onItemSelection?.invoke(category, isSelected.not())
                     }
                     .padding(start = 16.dp, end = 16.dp),
-                name = account.name,
-                icon = account.storedIcon.name,
-                iconBackgroundColor = account.storedIcon.name,
+                name = category.name,
+                icon = category.storedIcon.name,
+                iconBackgroundColor = category.storedIcon.backgroundColor,
                 isSelected = isSelected,
                 onCheckedChange = {
-                    onItemSelection?.invoke(account, it)
+                    onItemSelection?.invoke(category, it)
                 }
             )
         }
@@ -126,8 +130,10 @@ fun MultipleCategoriesSelectionScreen(
                         Text(text = stringResource(id = R.string.select).uppercase())
                     }
                 }
-                Spacer(modifier = Modifier.height(32.dp))
             }
+        }
+        item {
+            Spacer(modifier = Modifier.height(48.dp))
         }
     }
 }

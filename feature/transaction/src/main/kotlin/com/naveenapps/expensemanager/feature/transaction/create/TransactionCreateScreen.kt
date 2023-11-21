@@ -72,7 +72,9 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
+import com.naveenapps.expensemanager.feature.account.selection.AccountSelectionScreen
 import com.naveenapps.expensemanager.feature.category.list.CategoryItem
+import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
 import kotlinx.coroutines.launch
@@ -231,7 +233,7 @@ private fun TransactionCreateBottomSheetContent(
     if (sheetSelection == 1) {
         val categories by viewModel.categories.collectAsState()
         val selectedCategory by viewModel.selectedCategory.collectAsState()
-        com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen(
+        CategorySelectionScreen(
             categories = categories,
             selectedCategory = selectedCategory,
         ) { category ->
@@ -242,7 +244,7 @@ private fun TransactionCreateBottomSheetContent(
         val accounts by viewModel.accounts.collectAsState()
         val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
         val selectedToAccount by viewModel.selectedToAccount.collectAsState()
-        com.naveenapps.expensemanager.feature.account.selection.AccountSelectionScreen(
+        AccountSelectionScreen(
             accounts = accounts,
             selectedAccount = if (sheetSelection == 2) {
                 selectedFromAccount

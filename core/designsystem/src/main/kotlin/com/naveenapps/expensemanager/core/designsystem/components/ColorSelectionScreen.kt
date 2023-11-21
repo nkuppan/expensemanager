@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -114,7 +115,11 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
         item(span = {
             GridItemSpan(4)
         }) {
-            SelectionTitle(stringResource(id = R.string.choose_color))
+            SelectionTitle(
+                stringResource(id = R.string.choose_color), Modifier.Companion
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+            )
         }
         items(colors) { color ->
             val parsedColor = color.toColorInt()

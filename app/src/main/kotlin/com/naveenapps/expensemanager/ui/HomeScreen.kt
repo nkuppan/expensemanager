@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.ui
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -9,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,6 +18,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
@@ -63,7 +66,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.CategoryCreate.name,
         arguments = ExpenseManagerScreens.CategoryCreate.navArguments
-    ) { 
+    ) {
         CategoryCreateScreen()
     }
     composable(
@@ -78,7 +81,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.TransactionCreate.name,
         arguments = ExpenseManagerScreens.TransactionCreate.navArguments
-    ) { 
+    ) {
         TransactionCreateScreen()
     }
     composable(ExpenseManagerScreens.AccountList.route) {
@@ -87,7 +90,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.AccountCreate.name,
         arguments = ExpenseManagerScreens.AccountCreate.navArguments
-    ) { 
+    ) {
         AccountCreateScreen()
     }
     composable(ExpenseManagerScreens.BudgetList.route) {
@@ -96,13 +99,13 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(
         route = ExpenseManagerScreens.BudgetCreate.name,
         arguments = ExpenseManagerScreens.BudgetCreate.navArguments
-    ) { 
+    ) {
         BudgetCreateScreen()
     }
     composable(
         route = ExpenseManagerScreens.BudgetDetails.name,
         arguments = ExpenseManagerScreens.BudgetDetails.navArguments
-    ) { 
+    ) {
         BudgetDetailScreen()
     }
     composable(ExpenseManagerScreens.AnalysisScreen.route) {
@@ -124,6 +127,16 @@ fun NavGraphBuilder.expenseManagerNavigation() {
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
+
+    val context = LocalContext.current
+
+    BackHandler {
+        if (viewModel.homeScreenBottomBarItems != HomeScreenBottomBarItems.Home) {
+            viewModel.setUISystem(HomeScreenBottomBarItems.Home)
+        } else {
+            (context as? Activity)?.finish()
+        }
+    }
 
     Scaffold(
         bottomBar = {

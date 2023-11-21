@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -90,7 +91,11 @@ fun MultipleAccountSelectionScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            SelectionTitle(stringResource(id = R.string.select_account))
+            SelectionTitle(
+                stringResource(id = R.string.select_account), Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+            )
         }
         items(accounts) { account ->
             val isSelected = selectedAccounts.fastAny { it.id == account.id }
@@ -127,8 +132,10 @@ fun MultipleAccountSelectionScreen(
                         Text(text = stringResource(id = R.string.select).uppercase())
                     }
                 }
-                Spacer(modifier = Modifier.padding(16.dp))
             }
+        }
+        item {
+            Spacer(modifier = Modifier.height(48.dp))
         }
     }
 }
