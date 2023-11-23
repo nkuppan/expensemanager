@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.domain.usecase.category
 
-import com.naveenapps.expensemanager.core.data.repository.CategoryRepository
+import com.naveenapps.expensemanager.core.domain.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 import javax.inject.Inject

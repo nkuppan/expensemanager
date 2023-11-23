@@ -24,7 +24,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,
     private val dispatchers: AppCoroutineDispatchers
-) : TransactionRepository {
+) : com.naveenapps.expensemanager.core.domain.repository.TransactionRepository {
 
     override fun getAllTransaction(): Flow<List<Transaction>?> =
         transactionDao.getAllTransaction().map {

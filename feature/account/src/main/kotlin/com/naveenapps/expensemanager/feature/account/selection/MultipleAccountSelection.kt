@@ -28,8 +28,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTi
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
-import com.naveenapps.expensemanager.feature.account.list.ACCOUNT_DUMMY_DATA
 import com.naveenapps.expensemanager.feature.account.list.AccountCheckedItem
+import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 
 
 @Composable
@@ -145,9 +145,10 @@ fun MultipleAccountSelectionScreen(
 @Composable
 private fun MultipleAccountSelectionScreenPreview() {
     ExpenseManagerTheme {
+        val accounts = getRandomAccountUiModel(10)
         MultipleAccountSelectionScreen(
-            accounts = ACCOUNT_DUMMY_DATA,
-            selectedAccounts = ACCOUNT_DUMMY_DATA,
+            accounts = accounts,
+            selectedAccounts = accounts,
             onApplyChanges = {},
             onClearChanges = {},
             onItemSelection = null

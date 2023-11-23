@@ -27,7 +27,7 @@ import javax.inject.Inject
 class ExportRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatchers: AppCoroutineDispatchers
-) : ExportRepository {
+) : com.naveenapps.expensemanager.core.domain.repository.ExportRepository {
     override suspend fun createCsvFile(
         uri: String?,
         transactions: List<Transaction>

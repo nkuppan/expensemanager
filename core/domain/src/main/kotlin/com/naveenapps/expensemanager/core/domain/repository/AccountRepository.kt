@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.core.data.repository
+package com.naveenapps.expensemanager.core.domain.repository
 
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource

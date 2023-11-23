@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.domain.usecase.account
 
-import com.naveenapps.expensemanager.core.data.repository.AccountRepository
+import com.naveenapps.expensemanager.core.domain.repository.AccountRepository
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
 import javax.inject.Inject

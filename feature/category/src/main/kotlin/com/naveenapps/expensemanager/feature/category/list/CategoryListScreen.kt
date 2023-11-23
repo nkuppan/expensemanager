@@ -56,6 +56,7 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
 import java.util.Date
+import java.util.Random
 
 
 enum class CategoryTabItems(
@@ -261,11 +262,14 @@ fun CategoryCheckedItem(
     }
 }
 
-fun getCategoryData(index: Int): Category {
+fun getCategoryData(
+    index: Int,
+    categoryType: CategoryType
+): Category {
     return Category(
         id = "$index",
         name = "Category $index",
-        type = CategoryType.EXPENSE,
+        type = categoryType,
         storedIcon = StoredIcon(
             "account_balance",
             "#000000"
@@ -275,10 +279,22 @@ fun getCategoryData(index: Int): Category {
     )
 }
 
-fun getRandomCategoryData(): List<Category> {
+fun getRandomCategoryData(totalCount: Int = 10): List<Category> {
     return buildList {
-        repeat(15) {
-            add(getCategoryData(it))
+        val random = Random()
+
+        repeat(totalCount) {
+            val isEven = random.nextInt() % 2 == 0
+            add(
+                getCategoryData(
+                    it,
+                    if (isEven) {
+                        CategoryType.EXPENSE
+                    } else {
+                        CategoryType.INCOME
+                    }
+                )
+            )
         }
     }
 }

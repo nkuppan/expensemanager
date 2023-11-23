@@ -29,7 +29,7 @@ class CategoryRepositoryImplTest : BaseCoroutineTest() {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var categoryRepository: CategoryRepository
+    private lateinit var categoryRepository: com.naveenapps.expensemanager.core.domain.repository.CategoryRepository
 
     override fun onCreate() {
         super.onCreate()

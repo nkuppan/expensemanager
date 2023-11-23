@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.domain.usecase.settings.reminder
 
-import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepository
+import com.naveenapps.expensemanager.core.domain.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.Resource
 import javax.inject.Inject

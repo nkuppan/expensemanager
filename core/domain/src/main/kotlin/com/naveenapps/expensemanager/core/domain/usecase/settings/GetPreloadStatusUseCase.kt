@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.domain.usecase.settings
 
-import com.naveenapps.expensemanager.core.data.repository.SettingsRepository
+import com.naveenapps.expensemanager.core.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 

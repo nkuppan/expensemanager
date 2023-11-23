@@ -296,7 +296,7 @@ fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
             repeat(15) {
                 add(
                     CategoryTransaction(
-                        category = getCategoryData(it),
+                        category = getCategoryData(it, CategoryType.EXPENSE),
                         amount = Amount(300.0, "300.00$"),
                         percent = Random(100).nextFloat(),
                         transaction = emptyList()

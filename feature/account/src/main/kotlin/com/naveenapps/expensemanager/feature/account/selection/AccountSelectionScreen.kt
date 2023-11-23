@@ -21,8 +21,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
-import com.naveenapps.expensemanager.feature.account.list.ACCOUNT_DUMMY_DATA
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
+import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 
 @Composable
 fun AccountSelectionScreen(
@@ -84,9 +84,10 @@ fun AccountSelectionScreen(
 @Composable
 private fun AccountSelectionScreenPreview() {
     ExpenseManagerTheme {
+        val accounts = getRandomAccountUiModel(10)
         AccountSelectionScreen(
-            accounts = ACCOUNT_DUMMY_DATA,
-            selectedAccount = ACCOUNT_DUMMY_DATA.firstOrNull()
+            accounts = accounts,
+            selectedAccount = accounts.firstOrNull()
         )
     }
 }

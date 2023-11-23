@@ -51,10 +51,14 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigati
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.account.R
+import java.util.Date
+import java.util.Random
 
 
 @Composable
@@ -288,38 +292,50 @@ fun DashBoardAccountItem(
     }
 }
 
-val ACCOUNT_DUMMY_DATA = listOf(
-    AccountUiModel(
-        id = "1",
-        name = "Cash",
-        storedIcon = StoredIcon(
-            name = "account_balance_wallet",
-            backgroundColor = "#000000"
-        ),
-        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-        amount = Amount(100.0, "$100.00")
-    ),
-    AccountUiModel(
-        id = "2",
-        name = "Bank Account - xxxx",
-        storedIcon = StoredIcon(
-            name = "account_balance",
-            backgroundColor = "#000000"
-        ),
-        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-        amount = Amount(100.0, "$100.00")
-    ),
-    AccountUiModel(
-        id = "3",
-        name = "Credit Card - xxxx",
+
+fun getAccountData(
+    index: Int,
+    accountType: AccountType,
+    amount: Double
+): Account {
+    return Account(
+        id = "$index",
+        name = "Account $index",
+        type = accountType,
         storedIcon = StoredIcon(
             name = "credit_card",
             backgroundColor = "#000000"
         ),
-        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-        amount = Amount(100.0, "$100.00")
-    ),
-)
+        amount = amount,
+        createdOn = Date(),
+        updatedOn = Date()
+    )
+}
+
+fun getRandomAccountData(totalCount: Int = 10): List<Account> {
+    return buildList {
+        val random = Random()
+
+        repeat(totalCount) {
+            val isEven = random.nextInt() % 2 == 0
+            add(
+                getAccountData(
+                    it,
+                    if (isEven) {
+                        AccountType.CREDIT
+                    } else {
+                        AccountType.REGULAR
+                    },
+                    amount = 100.0
+                )
+            )
+        }
+    }
+}
+
+fun getRandomAccountUiModel(count: Int) = getRandomAccountData(count).map {
+    it.toAccountUiModel(Amount(it.amount, "${it.amount}$"))
+}
 
 @Preview
 @Composable
@@ -392,7 +408,7 @@ private fun AccountListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         AccountListScreenContent(
             accountUiState = UiState.Success(
-                ACCOUNT_DUMMY_DATA
+                getRandomAccountUiModel(10)
             ),
         )
     }

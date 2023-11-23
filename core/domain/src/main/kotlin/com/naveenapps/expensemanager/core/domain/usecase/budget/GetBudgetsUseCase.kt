@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
 import com.naveenapps.expensemanager.core.common.R
-import com.naveenapps.expensemanager.core.data.repository.BudgetRepository
+import com.naveenapps.expensemanager.core.domain.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase

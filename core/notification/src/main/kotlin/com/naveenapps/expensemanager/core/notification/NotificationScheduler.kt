@@ -17,7 +17,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepository
+import com.naveenapps.expensemanager.core.domain.repository.ReminderTimeRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import java.util.*
@@ -34,6 +34,8 @@ class NotificationScheduler @Inject constructor(
 ) {
 
     suspend fun setReminder() {
+
+        cancelReminder()
 
         val calendar = getTimeInMillis()
         val timeDelay = abs(Date().time - calendar.timeInMillis)

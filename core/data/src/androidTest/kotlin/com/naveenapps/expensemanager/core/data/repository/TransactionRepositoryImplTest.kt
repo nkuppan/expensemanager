@@ -35,7 +35,7 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var transactionRepository: TransactionRepository
+    private lateinit var transactionRepository: com.naveenapps.expensemanager.core.domain.repository.TransactionRepository
 
     override fun onCreate() {
         super.onCreate()

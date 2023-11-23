@@ -29,7 +29,7 @@ class AccountRepositoryImplTest : BaseCoroutineTest() {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountRepository: com.naveenapps.expensemanager.core.domain.repository.AccountRepository
 
     override fun onCreate() {
         super.onCreate()

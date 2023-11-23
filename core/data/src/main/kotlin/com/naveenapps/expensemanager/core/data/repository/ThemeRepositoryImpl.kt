@@ -19,7 +19,7 @@ val defaultTheme = Theme(
 class ThemeRepositoryImpl @Inject constructor(
     private val dataStore: com.naveenapps.expensemanager.core.datastore.ThemeDataStore,
     private val dispatchers: AppCoroutineDispatchers
-) : ThemeRepository {
+) : com.naveenapps.expensemanager.core.domain.repository.ThemeRepository {
 
     private fun getDefaultTheme(): Theme {
         return defaultTheme

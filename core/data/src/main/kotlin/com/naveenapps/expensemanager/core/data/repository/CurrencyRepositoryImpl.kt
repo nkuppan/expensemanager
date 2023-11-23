@@ -80,7 +80,7 @@ class CurrencyRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dataStore: CurrencyDataStore,
     private val dispatchers: AppCoroutineDispatchers
-) : CurrencyRepository {
+) : com.naveenapps.expensemanager.core.domain.repository.CurrencyRepository {
 
     private fun getDefaultCurrency(): Currency {
         return Currency(
