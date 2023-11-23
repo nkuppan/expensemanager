@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -134,8 +136,8 @@ fun BudgetDetailScreen(
                     textAlign = TextAlign.Center
                 )
             } else {
-                Column(modifier = Modifier.padding(top = 16.dp)) {
-                    transactions.forEach { item ->
+                LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
+                    items(transactions) { item ->
                         TransactionItem(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -158,11 +160,13 @@ fun BudgetDetailScreen(
                             toAccountColor = item.toAccountIcon?.backgroundColor,
                         )
                     }
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(36.dp)
-                    )
+                    item {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(36.dp)
+                        )
+                    }
                 }
             }
         }

@@ -86,26 +86,8 @@ fun CategoryCreateScreen() {
         })
     }
 
-    var showBottomSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                showBottomSheet = false
-            },
-            sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
-        ) {
-
-            CategoryCreateBottomSheetContent(
-                sheetSelection,
-                viewModel,
-            ) {
-                showBottomSheet = false
-            }
-        }
-    }
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
         snackbarHost = {
@@ -133,6 +115,27 @@ fun CategoryCreateScreen() {
         }
     ) { innerPadding ->
 
+        if (showBottomSheet) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    showBottomSheet = false
+                },
+                sheetState = bottomSheetState,
+                windowInsets = WindowInsets(0.dp)
+            ) {
+                CategoryCreateBottomSheetContent(
+                    sheetSelection,
+                    viewModel,
+                ) {
+                    scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+                        if (!bottomSheetState.isVisible) {
+                            showBottomSheet = false
+                        }
+                    }
+                }
+            }
+        }
+
         val name by viewModel.name.collectAsState()
         val nameErrorMessage by viewModel.nameErrorMessage.collectAsState()
         val colorValue by viewModel.colorValue.collectAsState()
@@ -159,6 +162,7 @@ fun CategoryCreateScreen() {
                         sheetSelection = 2
                     }
                     showBottomSheet = true
+                    bottomSheetState.show()
                 }
             },
             openIconPicker = {
@@ -167,6 +171,7 @@ fun CategoryCreateScreen() {
                         sheetSelection = 1
                     }
                     showBottomSheet = true
+                    bottomSheetState.show()
                 }
             }
         )

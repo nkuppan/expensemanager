@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -102,13 +104,19 @@ private fun SettingsScreenScaffoldView(
     if (showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
-                showDateFilter = false
+                scope.launch {
+                    showDateFilter = false
+                    bottomSheetState.hide()
+                }
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
             DateFilterSelectionView {
-                showDateFilter = false
+                scope.launch {
+                    showDateFilter = false
+                    bottomSheetState.hide()
+                }
             }
         }
     }
@@ -126,6 +134,7 @@ private fun SettingsScreenScaffoldView(
         SettingsScreenContent(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(rememberScrollState())
                 .padding(innerPadding),
             currency = currency,
             theme = theme,

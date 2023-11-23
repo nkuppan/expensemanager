@@ -101,7 +101,10 @@ fun AccountCreateScreen() {
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
-                showBottomSheet = false
+                scope.launch {
+                    showBottomSheet = false
+                    bottomSheetState.hide()
+                }
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
@@ -111,7 +114,10 @@ fun AccountCreateScreen() {
                 sheetSelection,
                 viewModel,
             ) {
-                showBottomSheet = false
+                scope.launch {
+                    showBottomSheet = false
+                    bottomSheetState.hide()
+                }
             }
         }
     }

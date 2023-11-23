@@ -32,7 +32,7 @@ fun TransactionTypeSelectionView(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         AppFilterChip(
             modifier = Modifier

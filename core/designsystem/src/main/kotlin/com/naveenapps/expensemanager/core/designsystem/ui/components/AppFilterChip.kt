@@ -4,7 +4,6 @@ import androidx.annotation.ColorRes
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -17,10 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun RowScope.AppFilterChip(
     filterName: String,
     isSelected: Boolean,
@@ -56,6 +55,8 @@ fun RowScope.AppFilterChip(
                             Modifier.wrapContentWidth()
                         }
                     ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 text = filterName,
                 textAlign = TextAlign.Center
             )

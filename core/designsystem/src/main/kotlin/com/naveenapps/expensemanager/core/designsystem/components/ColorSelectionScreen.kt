@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -109,6 +110,9 @@ private val colors = listOf(
 @Composable
 fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
     LazyVerticalGrid(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
         columns = GridCells.Adaptive(minSize = 96.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {

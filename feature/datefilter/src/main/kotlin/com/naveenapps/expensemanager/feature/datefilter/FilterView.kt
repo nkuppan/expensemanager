@@ -53,16 +53,19 @@ fun FilterView(modifier: Modifier = Modifier) {
     if (showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
-                showDateFilter = false
+                scope.launch {
+                    showDateFilter = false
+                    bottomSheetState.hide()
+                }
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
             DateFilterSelectionView {
                 scope.launch {
+                    showDateFilter = false
                     bottomSheetState.hide()
                 }
-                showDateFilter = false
             }
         }
     }
@@ -70,16 +73,19 @@ fun FilterView(modifier: Modifier = Modifier) {
     if (showAllFilter) {
         ModalBottomSheet(
             onDismissRequest = {
-                showAllFilter = false
+                scope.launch {
+                    showAllFilter = false
+                    bottomSheetState.hide()
+                }
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
             DateFilterSelectionView {
                 scope.launch {
+                    showAllFilter = false
                     bottomSheetState.hide()
                 }
-                showAllFilter = false
             }
         }
     }

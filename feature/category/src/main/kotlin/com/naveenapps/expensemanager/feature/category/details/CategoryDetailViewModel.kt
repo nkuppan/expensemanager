@@ -72,7 +72,11 @@ class CategoryDetailViewModel @Inject constructor(
                         transaction = filterTransaction
                     )
                     _categoryTransactions.value = categoryTransaction
+                } else {
+                    _category.value = null
+                    _categoryTransactions.value = emptyList()
                 }
+
             }.launchIn(viewModelScope)
         }
     }

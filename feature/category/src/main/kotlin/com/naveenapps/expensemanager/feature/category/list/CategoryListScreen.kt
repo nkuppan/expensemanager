@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
@@ -166,8 +168,8 @@ private fun CategoryListScreenContent(
             is UiState.Success -> {
                 val items = categoryUiState.data
 
-                Column {
-                    items.forEach { category ->
+                LazyColumn {
+                    items(items) { category ->
                         CategoryItem(
                             name = category.name,
                             icon = category.storedIcon.name,
@@ -179,11 +181,13 @@ private fun CategoryListScreenContent(
                                 .then(ItemSpecModifier),
                         )
                     }
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(64.dp)
-                    )
+                    item {
+                        Spacer(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(64.dp)
+                        )
+                    }
                 }
             }
         }

@@ -141,7 +141,10 @@ fun TransactionCreateScreen() {
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
-                showBottomSheet = false
+                scope.launch {
+                    showBottomSheet = false
+                    bottomSheetState.hide()
+                }
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
@@ -151,7 +154,10 @@ fun TransactionCreateScreen() {
                 sheetSelection,
                 viewModel,
             ) {
-                showBottomSheet = false
+                scope.launch {
+                    showBottomSheet = false
+                    bottomSheetState.hide()
+                }
             }
         }
     }

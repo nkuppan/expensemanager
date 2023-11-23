@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.category.transaction
 import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,8 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Edit
@@ -100,19 +99,11 @@ fun CategoryTransactionTabScreen(
             }
         }
     ) { innerPadding ->
-        Column(
+        Box(
             modifier = Modifier
                 .padding(innerPadding)
-                .verticalScroll(state = rememberScrollState())
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
         ) {
-            FilterView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 6.dp)
-            )
             CategoryTransactionListScreenContent(
                 modifier = Modifier.fillMaxSize(),
                 uiState = uiState,
@@ -136,43 +127,50 @@ private fun CategoryTransactionListScreenContent(
     changeChart: (() -> Unit)? = null,
     onItemClick: ((CategoryTransaction) -> Unit)? = null
 ) {
-    Column(modifier = modifier) {
 
-        when (uiState) {
-            UiState.Empty -> {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Text(
+    when (uiState) {
+        UiState.Empty -> {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .align(Alignment.Center),
+                    text = stringResource(id = R.string.no_transactions_available),
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+
+        UiState.Loading -> {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(72.dp)
+                        .align(Alignment.Center)
+                )
+            }
+        }
+
+        is UiState.Success -> {
+
+            val indicationSource = remember { MutableInteractionSource() }
+
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                item {
+                    FilterView(
                         modifier = Modifier
-                            .wrapContentSize()
-                            .align(Alignment.Center),
-                        text = stringResource(id = R.string.no_transactions_available),
-                        textAlign = TextAlign.Center
+                            .fillMaxWidth()
+                            .padding(end = 6.dp)
                     )
                 }
-            }
-
-            UiState.Loading -> {
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .align(Alignment.Center)
-                    )
-                }
-            }
-
-            is UiState.Success -> {
-
-                val indicationSource = remember { MutableInteractionSource() }
-
-                Column(modifier = Modifier.fillMaxWidth()) {
+                item {
                     PieChartView(
                         if (categoryType.isExpense()) {
                             stringResource(id = R.string.spending)
                         } else {
                             stringResource(id = R.string.income)
                         } + "\n" + uiState.data.totalAmount.amountString,
-                        uiState.data.pieChartData.map {
+                        chartData = uiState.data.pieChartData.map {
                             PieChartUiData(
                                 it.name,
                                 it.value,
@@ -187,7 +185,10 @@ private fun CategoryTransactionListScreenContent(
                                 changeChart?.invoke()
                             },
                     )
-                    if (uiState.data.categoryTransactions.isEmpty()) {
+                }
+
+                if (uiState.data.categoryTransactions.isEmpty()) {
+                    item {
                         Text(
                             text = stringResource(id = R.string.no_transactions_available),
                             modifier = Modifier
@@ -195,22 +196,24 @@ private fun CategoryTransactionListScreenContent(
                                 .padding(36.dp),
                             textAlign = TextAlign.Center
                         )
-                    } else {
-                        uiState.data.categoryTransactions.forEach { categoryTransaction ->
-                            CategoryTransactionItem(
-                                modifier = Modifier
-                                    .clickable {
-                                        onItemClick?.invoke(categoryTransaction)
-                                    }
-                                    .then(ItemSpecModifier),
-                                name = categoryTransaction.category.name,
-                                icon = categoryTransaction.category.storedIcon.name,
-                                iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
-                                amount = categoryTransaction.amount.amountString ?: "",
-                                percentage = categoryTransaction.percent
-                            )
-                        }
                     }
+                } else {
+                    items(uiState.data.categoryTransactions) { categoryTransaction ->
+                        CategoryTransactionItem(
+                            modifier = Modifier
+                                .clickable {
+                                    onItemClick?.invoke(categoryTransaction)
+                                }
+                                .then(ItemSpecModifier),
+                            name = categoryTransaction.category.name,
+                            icon = categoryTransaction.category.storedIcon.name,
+                            iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
+                            amount = categoryTransaction.amount.amountString ?: "",
+                            percentage = categoryTransaction.percent
+                        )
+                    }
+                }
+                item {
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()

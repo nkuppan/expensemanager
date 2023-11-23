@@ -120,7 +120,10 @@ fun BudgetCreateScreen() {
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = {
-                showBottomSheet = false
+                scope.launch {
+                    showBottomSheet = false
+                    bottomSheetState.hide()
+                }
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
@@ -129,7 +132,10 @@ fun BudgetCreateScreen() {
                 sheetSelection,
                 viewModel
             ) {
-                showBottomSheet = false
+                scope.launch {
+                    showBottomSheet = false
+                    bottomSheetState.hide()
+                }
             }
         }
     }
