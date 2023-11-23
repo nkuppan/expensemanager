@@ -9,6 +9,7 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
+import com.naveenapps.expensemanager.core.domain.repository.AccountRepository
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
@@ -29,7 +30,7 @@ class AccountRepositoryImplTest : BaseCoroutineTest() {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var accountRepository: com.naveenapps.expensemanager.core.domain.repository.AccountRepository
+    private lateinit var accountRepository: AccountRepository
 
     override fun onCreate() {
         super.onCreate()

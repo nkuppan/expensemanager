@@ -9,6 +9,7 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
+import com.naveenapps.expensemanager.core.domain.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
@@ -29,7 +30,7 @@ class CategoryRepositoryImplTest : BaseCoroutineTest() {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var categoryRepository: com.naveenapps.expensemanager.core.domain.repository.CategoryRepository
+    private lateinit var categoryRepository: CategoryRepository
 
     override fun onCreate() {
         super.onCreate()

@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
+import com.naveenapps.expensemanager.core.domain.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -35,7 +36,7 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var transactionRepository: com.naveenapps.expensemanager.core.domain.repository.TransactionRepository
+    private lateinit var transactionRepository: TransactionRepository
 
     override fun onCreate() {
         super.onCreate()
