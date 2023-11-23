@@ -105,16 +105,14 @@ fun CategoryTransactionTabScreen(
                 .fillMaxSize()
         ) {
             CategoryTransactionListScreenContent(
-                modifier = Modifier.fillMaxSize(),
                 uiState = uiState,
                 categoryType = categoryType,
-                onItemClick = {
-                    viewModel.openCategoryDetailsPage(it)
-                },
                 changeChart = {
                     viewModel.switchCategory()
                 }
-            )
+            ) {
+                viewModel.openCategoryDetailsPage(it)
+            }
         }
     }
 }
@@ -123,7 +121,6 @@ fun CategoryTransactionTabScreen(
 private fun CategoryTransactionListScreenContent(
     uiState: UiState<CategoryTransactionUiModel>,
     categoryType: CategoryType,
-    modifier: Modifier = Modifier,
     changeChart: (() -> Unit)? = null,
     onItemClick: ((CategoryTransaction) -> Unit)? = null
 ) {
@@ -263,7 +260,7 @@ fun CategoryTransactionItem(
             }
             Row {
                 LinearProgressIndicator(
-                    progress = { percentage / 100 },
+                    progress = percentage / 100,
                     modifier = Modifier
                         .weight(1f)
                         .height(8.dp)

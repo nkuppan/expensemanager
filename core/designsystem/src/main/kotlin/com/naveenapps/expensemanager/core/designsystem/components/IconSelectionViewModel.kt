@@ -58,10 +58,6 @@ private val iconSelectionList = listOf(
 @HiltViewModel
 class IconSelectionViewModel @Inject constructor() : ViewModel() {
 
-    private val _icons = MutableStateFlow<List<Int>>(emptyList())
+    private val _icons = MutableStateFlow(iconSelectionList)
     val icons = _icons.asStateFlow()
-
-    init {
-        _icons.value = iconSelectionList
-    }
 }

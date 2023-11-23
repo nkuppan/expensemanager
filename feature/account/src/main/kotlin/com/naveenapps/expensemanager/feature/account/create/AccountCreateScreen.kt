@@ -5,31 +5,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -38,9 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
-import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
@@ -50,22 +42,17 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.feature.account.R
-import kotlinx.coroutines.launch
 
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun AccountCreateScreen() {
 
     val context = LocalContext.current
-
-    val scope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
     val viewModel: AccountCreateViewModel = hiltViewModel()
 
-    var sheetSelection by remember { mutableIntStateOf(1) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
@@ -93,33 +80,6 @@ fun AccountCreateScreen() {
                 message = context.getString(R.string.account_create_success)
             )
         })
-    }
-
-    var showBottomSheet by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                scope.launch {
-                    showBottomSheet = false
-                    bottomSheetState.hide()
-                }
-            },
-            sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
-        ) {
-
-            AccountCreateBottomSheetContent(
-                sheetSelection,
-                viewModel,
-            ) {
-                scope.launch {
-                    showBottomSheet = false
-                    bottomSheetState.hide()
-                }
-            }
-        }
     }
 
     Scaffold(
@@ -181,44 +141,9 @@ fun AccountCreateScreen() {
             onCreditLimitChange = viewModel::setCreditLimitChange,
             availableCreditLimit = availableCreditLimit,
             availableCreditLimitColor = availableCreditLimitColor,
-            openColorPicker = {
-                scope.launch {
-                    if (sheetSelection != 2) {
-                        sheetSelection = 2
-                    }
-                    showBottomSheet = true
-                }
-            },
-            openIconPicker = {
-                scope.launch {
-                    if (sheetSelection != 1) {
-                        sheetSelection = 1
-                    }
-                    showBottomSheet = true
-                }
-            }
+            openColorPicker = viewModel::setColorValue,
+            openIconPicker = viewModel::setIcon
         )
-    }
-}
-
-@Composable
-private fun AccountCreateBottomSheetContent(
-    sheetSelection: Int,
-    viewModel: AccountCreateViewModel,
-    hideBottomSheet: () -> Unit
-) {
-    val context = LocalContext.current
-
-    if (sheetSelection == 1) {
-        IconSelectionScreen {
-            viewModel.setIcon(context.resources.getResourceName(it))
-            hideBottomSheet.invoke()
-        }
-    } else {
-        ColorSelectionScreen {
-            viewModel.setColorValue(it)
-            hideBottomSheet.invoke()
-        }
     }
 }
 
@@ -235,8 +160,8 @@ private fun AccountCreateScreen(
     currency: Int? = null,
     selectedColor: String = "#000000",
     selectedIcon: String = "account_balance",
-    openIconPicker: (() -> Unit)? = null,
-    openColorPicker: (() -> Unit)? = null,
+    openIconPicker: ((String) -> Unit)? = null,
+    openColorPicker: ((Int) -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null,
     onCurrentBalanceChange: ((String) -> Unit)? = null,
     creditLimit: String = "",
@@ -271,8 +196,8 @@ private fun AccountCreateScreen(
                 .fillMaxWidth(),
             selectedColor = selectedColor,
             selectedIcon = selectedIcon,
-            openColorPicker = openColorPicker,
-            openIconPicker = openIconPicker
+            onColorSelection = openColorPicker,
+            onIconSelection = openIconPicker
         )
 
         DecimalTextField(

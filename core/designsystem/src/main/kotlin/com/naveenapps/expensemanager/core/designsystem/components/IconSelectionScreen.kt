@@ -1,80 +1,51 @@
 package com.naveenapps.expensemanager.core.designsystem.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ColorIconSpecModifier
 
-//TODO Modify this with categories and icons in future
-private val iconSelectionList = listOf(
-    R.drawable.account_balance,
-    R.drawable.account_balance_wallet,
-    R.drawable.agriculture,
-    R.drawable.apartment,
-    R.drawable.car_rental,
-    R.drawable.car_repair,
-    R.drawable.credit_card,
-    R.drawable.devices,
-    R.drawable.dinner_dining,
-    R.drawable.directions_bike,
-    R.drawable.directions_boat,
-    R.drawable.directions_bus,
-    R.drawable.directions_car,
-    R.drawable.diversity,
-    R.drawable.electric_rickshaw,
-    R.drawable.electric_scooter,
-    R.drawable.emoji_food_beverage,
-    R.drawable.fitness_center,
-    R.drawable.flight,
-    R.drawable.fluid_med,
-    R.drawable.hiking,
-    R.drawable.home_health,
-    R.drawable.interactive_space,
-    R.drawable.kayaking,
-    R.drawable.laptop_chromebook,
-    R.drawable.liquor,
-    R.drawable.local_shipping,
-    R.drawable.lunch_dining,
-    R.drawable.medication,
-    R.drawable.medication_liquid,
-    R.drawable.payments,
-    R.drawable.pool,
-    R.drawable.qr_code,
-    R.drawable.redeem,
-    R.drawable.savings,
-    R.drawable.shopping_cart,
-    R.drawable.snowmobile,
-    R.drawable.sports_soccer,
-    R.drawable.sports_tennis,
-    R.drawable.store,
-    R.drawable.train,
-    R.drawable.travel,
-    R.drawable.wallet
-)
 
 @Composable
-fun IconSelectionScreen(onIconPicked: ((Int) -> Unit)? = null) {
+fun IconSelectionScreen(
+    viewModel: IconSelectionViewModel = hiltViewModel(),
+    onIconPicked: ((Int) -> Unit)? = null
+) {
+    val columns = GridCells.Adaptive(minSize = 48.dp)
+
+    val icons by viewModel.icons.collectAsState()
+
     LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 96.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        columns = columns,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item(span = {
-            GridItemSpan(4)
+            GridItemSpan(this.maxCurrentLineSpan)
         }) {
             SelectionTitle(
                 stringResource(id = R.string.choose_icon), Modifier.Companion
@@ -82,12 +53,14 @@ fun IconSelectionScreen(onIconPicked: ((Int) -> Unit)? = null) {
                     .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
             )
         }
-        items(iconSelectionList) { icon ->
+        items(icons) { icon ->
             Box(
                 modifier = ColorIconSpecModifier
+                    .aspectRatio(1f)
                     .clickable {
                         onIconPicked?.invoke(icon)
-                    }
+                    },
+                contentAlignment = Alignment.Center
             ) {
                 Icon(
                     painter = painterResource(id = icon),

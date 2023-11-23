@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -116,7 +116,7 @@ fun MultipleAccountSelectionScreen(
         }
         item {
             Column {
-                HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
+                Divider(modifier = Modifier.padding(top = 8.dp))
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)

@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
+import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -202,7 +202,7 @@ private fun CurrencyItem(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(end = 16.dp),
-            imageVector = Icons.AutoMirrored.Filled.ArrowRight,
+            imageVector = Icons.Filled.ArrowRight,
             contentDescription = null
         )
     }

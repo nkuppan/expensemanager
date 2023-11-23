@@ -1,31 +1,25 @@
 package com.naveenapps.expensemanager.feature.category.create
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -34,31 +28,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
-import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.feature.category.R
-import kotlinx.coroutines.launch
 
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun CategoryCreateScreen() {
 
     val context = LocalContext.current
-
-    val scope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
     val viewModel: CategoryCreateViewModel = hiltViewModel()
 
-    var sheetSelection by remember { mutableIntStateOf(1) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
@@ -86,9 +73,6 @@ fun CategoryCreateScreen() {
         })
     }
 
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var showBottomSheet by remember { mutableStateOf(false) }
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -115,33 +99,11 @@ fun CategoryCreateScreen() {
         }
     ) { innerPadding ->
 
-        if (showBottomSheet) {
-            ModalBottomSheet(
-                onDismissRequest = {
-                    showBottomSheet = false
-                },
-                sheetState = bottomSheetState,
-                windowInsets = WindowInsets(0.dp)
-            ) {
-                CategoryCreateBottomSheetContent(
-                    sheetSelection,
-                    viewModel,
-                ) {
-                    scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                        if (!bottomSheetState.isVisible) {
-                            showBottomSheet = false
-                        }
-                    }
-                }
-            }
-        }
-
         val name by viewModel.name.collectAsState()
         val nameErrorMessage by viewModel.nameErrorMessage.collectAsState()
         val colorValue by viewModel.colorValue.collectAsState()
         val iconValue by viewModel.icon.collectAsState()
         val selectedCategoryType by viewModel.categoryType.collectAsState()
-
 
         CategoryCreateScreen(
             modifier = Modifier
@@ -153,49 +115,10 @@ fun CategoryCreateScreen() {
             nameErrorMessage = nameErrorMessage,
             selectedCategoryType = selectedCategoryType,
             onCategoryTypeChange = viewModel::setCategoryType,
-            onNameChange = {
-                viewModel.setNameChange(it)
-            },
-            openColorPicker = {
-                scope.launch {
-                    if (sheetSelection != 2) {
-                        sheetSelection = 2
-                    }
-                    showBottomSheet = true
-                    bottomSheetState.show()
-                }
-            },
-            openIconPicker = {
-                scope.launch {
-                    if (sheetSelection != 1) {
-                        sheetSelection = 1
-                    }
-                    showBottomSheet = true
-                    bottomSheetState.show()
-                }
-            }
+            onNameChange = viewModel::setNameChange,
+            onColorSelection = viewModel::setColorValue,
+            onIconSelection = viewModel::setIcon
         )
-    }
-}
-
-@Composable
-private fun CategoryCreateBottomSheetContent(
-    sheetSelection: Int,
-    viewModel: CategoryCreateViewModel,
-    hideBottomSheet: () -> Unit
-) {
-    val context = LocalContext.current
-
-    if (sheetSelection == 1) {
-        IconSelectionScreen {
-            viewModel.setIcon(context.resources.getResourceName(it))
-            hideBottomSheet.invoke()
-        }
-    } else {
-        ColorSelectionScreen {
-            viewModel.setColorValue(it)
-            hideBottomSheet.invoke()
-        }
     }
 }
 
@@ -209,8 +132,8 @@ private fun CategoryCreateScreen(
     nameErrorMessage: UiText? = null,
     selectedColor: String = "#000000",
     selectedIcon: String = "ic_calendar",
-    openIconPicker: (() -> Unit)? = null,
-    openColorPicker: (() -> Unit)? = null,
+    onIconSelection: ((String) -> Unit)? = null,
+    onColorSelection: ((Int) -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null
 ) {
 
@@ -259,8 +182,8 @@ private fun CategoryCreateScreen(
                 .fillMaxWidth(),
             selectedColor = selectedColor,
             selectedIcon = selectedIcon,
-            openColorPicker = openColorPicker,
-            openIconPicker = openIconPicker
+            onColorSelection = onColorSelection,
+            onIconSelection = onIconSelection
         )
     }
 }

@@ -21,17 +21,16 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RichTooltip
+import androidx.compose.material3.RichTooltipBox
+import androidx.compose.material3.RichTooltipState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TooltipBox
-import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,7 +58,7 @@ fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
-    val myTooltipState = rememberTooltipState(isPersistent = true)
+    val myTooltipState = remember { RichTooltipState() }
 
     val showToolTip by viewModel.showToolTip.collectAsState()
 
@@ -86,38 +85,33 @@ fun DashboardScreen(
             })
         },
         floatingActionButton = {
-            TooltipBox(
-                positionProvider = TooltipDefaults.rememberPlainTooltipPositionProvider(16.dp),
-                tooltip = {
-                    RichTooltip(
-                        title = {
-                            Text(
-                                text = stringResource(id = R.string.help),
-                                style = MaterialTheme.typography.titleMedium
-                            )
-                        },
-                        action = {
-                            Box(modifier = Modifier.fillMaxWidth()) {
-                                Text(
-                                    modifier = Modifier
-                                        .clickable {
-                                            scope.launch {
-                                                viewModel.closeToolTip()
-                                                myTooltipState.dismiss()
-                                            }
-                                        }
-                                        .align(Alignment.BottomEnd)
-                                        .padding(end = 16.dp),
-                                    text = stringResource(id = R.string.ok)
-                                )
-                            }
-                        },
-                        text = {
-                            Text(stringResource(id = R.string.transaction_create_message))
-                        }
+            RichTooltipBox(
+                tooltipState = myTooltipState,
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.help),
+                        style = MaterialTheme.typography.titleMedium
                     )
                 },
-                state = myTooltipState,
+                action = {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        Text(
+                            modifier = Modifier
+                                .clickable {
+                                    scope.launch {
+                                        viewModel.closeToolTip()
+                                        myTooltipState.dismiss()
+                                    }
+                                }
+                                .align(Alignment.BottomEnd)
+                                .padding(end = 16.dp),
+                            text = stringResource(id = R.string.ok)
+                        )
+                    }
+                },
+                text = {
+                    Text(stringResource(id = R.string.transaction_create_message))
+                }
             ) {
                 FloatingActionButton(onClick = { viewModel.openTransactionCreate(null) }) {
                     Icon(

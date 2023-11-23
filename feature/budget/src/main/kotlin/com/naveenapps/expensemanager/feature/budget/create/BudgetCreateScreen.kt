@@ -15,9 +15,9 @@ import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -43,9 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
-import com.naveenapps.expensemanager.core.designsystem.components.ColorSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
-import com.naveenapps.expensemanager.core.designsystem.components.IconSelectionScreen
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
@@ -66,8 +64,6 @@ import java.util.Locale
 
 
 enum class BudgetCreateSheetSelection {
-    ICON_SELECTION,
-    COLOR_SELECTION,
     ACCOUNT_SELECTION,
     CATEGORY_SELECTION
 }
@@ -84,7 +80,7 @@ fun BudgetCreateScreen() {
 
     val viewModel: BudgetCreateViewModel = hiltViewModel()
 
-    var sheetSelection by remember { mutableStateOf(COLOR_SELECTION) }
+    var sheetSelection by remember { mutableStateOf(CATEGORY_SELECTION) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
@@ -196,24 +192,8 @@ fun BudgetCreateScreen() {
             onNameChange = viewModel::setNameChange,
             onAmountChange = viewModel::setAmountChange,
             onDateChange = viewModel::setDate,
-            openColorPicker = {
-                scope.launch {
-                    val oldSelection = sheetSelection
-                    if (oldSelection != COLOR_SELECTION) {
-                        sheetSelection = COLOR_SELECTION
-                    }
-                    showBottomSheet = true
-                }
-            },
-            openIconPicker = {
-                scope.launch {
-                    val oldSelection = sheetSelection
-                    if (oldSelection != ICON_SELECTION) {
-                        sheetSelection = ICON_SELECTION
-                    }
-                    showBottomSheet = true
-                }
-            },
+            openColorPicker = viewModel::setColorValue,
+            openIconPicker = viewModel::setIcon,
             openAccountSelection = {
                 scope.launch {
                     val oldSelection = sheetSelection
@@ -242,23 +222,7 @@ private fun BudgetCreateBottomSheetContent(
     viewModel: BudgetCreateViewModel,
     hideBottomSheet: () -> Unit
 ) {
-    val context = LocalContext.current
-
     when (sheetSelection) {
-        ICON_SELECTION -> {
-            IconSelectionScreen {
-                viewModel.setIcon(context.resources.getResourceName(it))
-                hideBottomSheet.invoke()
-            }
-        }
-
-        COLOR_SELECTION -> {
-            ColorSelectionScreen {
-                viewModel.setColorValue(it)
-                hideBottomSheet.invoke()
-            }
-        }
-
         ACCOUNT_SELECTION -> {
             MultipleAccountSelectionScreen(
                 selectedAccounts = viewModel.getSelectedAccounts()
@@ -293,8 +257,8 @@ private fun BudgetCreateScreen(
     selectedDate: Date? = null,
     categoriesCount: UiText? = null,
     accountCount: UiText? = null,
-    openIconPicker: (() -> Unit)? = null,
-    openColorPicker: (() -> Unit)? = null,
+    openIconPicker: ((String) -> Unit)? = null,
+    openColorPicker: ((Int) -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null,
     onAmountChange: ((String) -> Unit)? = null,
     onDateChange: ((Date) -> Unit)? = null,
@@ -361,8 +325,8 @@ private fun BudgetCreateScreen(
                 .fillMaxWidth(),
             selectedColor = selectedColor,
             selectedIcon = selectedIcon,
-            openColorPicker = openColorPicker,
-            openIconPicker = openIconPicker
+            onColorSelection = openColorPicker,
+            onIconSelection = openIconPicker
         )
 
         DecimalTextField(
@@ -376,7 +340,7 @@ private fun BudgetCreateScreen(
             label = R.string.budget_amount,
         )
 
-        HorizontalDivider(
+        Divider(
             modifier = Modifier.padding(top = 16.dp)
         )
 
@@ -406,7 +370,7 @@ private fun BudgetCreateScreen(
                 ?: stringResource(id = R.string.all_time)
         )
 
-        HorizontalDivider()
+        Divider()
 
         Spacer(
             modifier = Modifier

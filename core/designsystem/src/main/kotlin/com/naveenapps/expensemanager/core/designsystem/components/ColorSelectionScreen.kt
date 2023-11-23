@@ -109,15 +109,16 @@ private val colors = listOf(
 
 @Composable
 fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
+    val columns = GridCells.Adaptive(minSize = 48.dp)
     LazyVerticalGrid(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        columns = GridCells.Adaptive(minSize = 96.dp),
+        columns = columns,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item(span = {
-            GridItemSpan(4)
+            GridItemSpan(this.maxCurrentLineSpan)
         }) {
             SelectionTitle(
                 stringResource(id = R.string.choose_color), Modifier.Companion
@@ -135,7 +136,7 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
             ) {
                 Canvas(
                     modifier = Modifier
-                        .padding(12.dp)
+                        .padding(8.dp)
                         .fillMaxSize()
                         .align(Alignment.Center),
                     onDraw = {

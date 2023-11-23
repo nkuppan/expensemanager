@@ -13,14 +13,13 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -124,12 +123,6 @@ private fun NumberPadScreenView(
                 )
             }
 
-            VerticalDivider(
-                modifier = Modifier
-                    .padding(start = 8.dp, end = 8.dp, top = 12.dp, bottom = 12.dp)
-                    .height(60.dp)
-            )
-
             IconButton(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -139,7 +132,7 @@ private fun NumberPadScreenView(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Backspace,
+                    imageVector = Icons.Filled.Backspace,
                     contentDescription = null
                 )
             }
