@@ -18,20 +18,23 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
-import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
@@ -43,6 +46,14 @@ fun FilterTypeSelection(
     applyChanges: () -> Unit,
     viewModel: FilterTypeSelectionViewModel = hiltViewModel()
 ) {
+
+    val saved by viewModel.saved.collectAsState(false)
+
+    if (saved) {
+        LaunchedEffect(key1 = "saved") {
+            applyChanges.invoke()
+        }
+    }
 
     val transactionTypes by viewModel.transactionTypes.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
@@ -65,7 +76,6 @@ fun FilterTypeSelection(
         onCategorySelection = viewModel::setCategory,
         applyChanges = {
             viewModel.saveChanges()
-            applyChanges.invoke()
         }
     )
 }
@@ -202,7 +212,7 @@ fun FilterChipView(
     FilterChip(
         onClick = onSelection,
         label = {
-            Text(label, style = MaterialTheme.typography.bodyMedium)
+            Text(label, style = MaterialTheme.typography.bodySmall)
         },
         selected = selected,
         leadingIcon = if (selected) {
@@ -227,18 +237,19 @@ fun InputChipView(
     iconName: String? = null,
     onSelection: (() -> Unit) = { }
 ) {
+    val context = LocalContext.current
     InputChip(
         onClick = onSelection,
         label = {
-            Text(label, style = MaterialTheme.typography.bodyMedium)
+            Text(label, style = MaterialTheme.typography.bodySmall)
         },
         selected = selected,
         avatar = if (iconName != null) {
             {
                 Icon(
-                    imageVector = Icons.Default.Close,
+                    painter = painterResource(id = context.getDrawable(iconName)),
                     contentDescription = "Localized description",
-                    modifier = Modifier.size(InputChipDefaults.AvatarSize)
+                    modifier = Modifier.size(FilterChipDefaults.IconSize)
                 )
             }
         } else {
@@ -248,7 +259,7 @@ fun InputChipView(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = "Localized description",
-                modifier = Modifier.size(InputChipDefaults.AvatarSize)
+                modifier = Modifier.size(FilterChipDefaults.IconSize)
             )
         }
     )

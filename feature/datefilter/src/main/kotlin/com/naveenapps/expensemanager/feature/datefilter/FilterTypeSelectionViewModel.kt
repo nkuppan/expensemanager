@@ -17,7 +17,9 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -35,6 +37,9 @@ class FilterTypeSelectionViewModel @Inject constructor(
     private val updateSelectedCategoryUseCase: UpdateSelectedCategoryUseCase,
     private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase
 ) : ViewModel() {
+
+    private val _saved = MutableSharedFlow<Boolean>()
+    val saved = _saved.asSharedFlow()
 
     private val _transactionTypes = MutableStateFlow(TransactionType.values().toList())
     val transactionTypes = _transactionTypes.asStateFlow()
@@ -94,9 +99,15 @@ class FilterTypeSelectionViewModel @Inject constructor(
 
     fun saveChanges() {
         viewModelScope.launch {
-            updateSelectedTransactionTypesUseCase(_selectedTransactionTypes.value)
-            updateSelectedAccountUseCase(_selectedAccounts.value.map { it.id })
-            updateSelectedCategoryUseCase(_selectedCategories.value.map { it.id })
+            val transactionTypes = _selectedTransactionTypes.value
+            val selectedAccount = _selectedAccounts.value.map { it.id }
+            val selectedCategories = _selectedCategories.value.map { it.id }
+
+            updateSelectedTransactionTypesUseCase(transactionTypes)
+            updateSelectedAccountUseCase(selectedAccount)
+            updateSelectedCategoryUseCase(selectedCategories)
+
+            _saved.emit(true)
         }
     }
 }

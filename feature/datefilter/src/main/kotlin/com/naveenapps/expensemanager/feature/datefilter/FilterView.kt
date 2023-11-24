@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -117,6 +118,7 @@ fun FilterView(modifier: Modifier = Modifier) {
             }
         )
         TypeFilter(
+            modifier = Modifier.padding(horizontal = 16.dp),
             selectedTransactionTypes = selectedTransactionTypes,
             selectedAccounts = selectedAccounts,
             selectedCategories = selectedCategories,
@@ -200,11 +202,13 @@ fun TypeFilter(
     onTransactionTypeSelection: (TransactionType) -> Unit,
     onAccountSelection: (AccountUiModel) -> Unit,
     onCategorySelection: (Category) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifi
+        modifier = modifier
             .fillMaxWidth()
-            .horizontalScroll(rememberScrollState())
+            .horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         selectedTransactionTypes.forEach { type ->
             InputChipView(
