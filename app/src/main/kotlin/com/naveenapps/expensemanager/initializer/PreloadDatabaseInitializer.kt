@@ -109,7 +109,7 @@ val BASE_CATEGORY_LIST = listOf(
     ),
     Category(
         id = "9",
-        name = "Savings",
+        name = "Salary",
         type = CategoryType.INCOME,
         storedIcon = StoredIcon(
             name = "savings",
@@ -120,33 +120,22 @@ val BASE_CATEGORY_LIST = listOf(
     ),
     Category(
         id = "10",
-        name = "Bank",
+        name = "Gift",
         type = CategoryType.INCOME,
         storedIcon = StoredIcon(
-            name = "account_balance",
-            backgroundColor = "#8BC34A",
+            name = "featured_seasonal_and_gifts",
+            backgroundColor = "#E65100",
         ),
         createdOn = Date(),
         updatedOn = Date(),
     ),
     Category(
         id = "11",
-        name = "Credit Card",
+        name = "Coupons",
         type = CategoryType.INCOME,
         storedIcon = StoredIcon(
-            name = "credit_card",
-            backgroundColor = "#CDDC39",
-        ),
-        createdOn = Date(),
-        updatedOn = Date(),
-    ),
-    Category(
-        id = "12",
-        name = "Gift",
-        type = CategoryType.INCOME,
-        storedIcon = StoredIcon(
-            name = "featured_seasonal_and_gifts",
-            backgroundColor = "#FFEB3B",
+            name = "redeem",
+            backgroundColor = "#3E2723",
         ),
         createdOn = Date(),
         updatedOn = Date(),

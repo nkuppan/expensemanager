@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -174,7 +173,7 @@ fun AccountFilter(
     ) {
         accounts.forEach { account ->
             val isSelected = selectedAccounts.fastAny { it.id == account.id }
-            FilterChipView(isSelected, account.name) {
+            FilterChipView(isSelected, account.name, iconName = account.storedIcon.name) {
                 onSelection.invoke(account)
             }
         }
@@ -195,7 +194,7 @@ fun CategoryFilter(
     ) {
         categories.forEach { category ->
             val isSelected = selectedCategories.fastAny { it.id == category.id }
-            FilterChipView(isSelected, category.name) {
+            FilterChipView(isSelected, category.name, iconName = category.storedIcon.name) {
                 onSelection.invoke(category)
             }
         }
@@ -207,25 +206,27 @@ fun CategoryFilter(
 fun FilterChipView(
     selected: Boolean,
     label: String,
-    onSelection: () -> Unit
+    iconName: String? = null,
+    onSelection: (() -> Unit) = { }
 ) {
+    val context = LocalContext.current
     FilterChip(
         onClick = onSelection,
         label = {
             Text(label, style = MaterialTheme.typography.bodySmall)
         },
         selected = selected,
-        leadingIcon = if (selected) {
+        leadingIcon = if (iconName != null) {
             {
                 Icon(
-                    imageVector = Icons.Filled.Done,
-                    contentDescription = "Selected",
+                    painter = painterResource(id = context.getDrawable(iconName)),
+                    contentDescription = "Localized description",
                     modifier = Modifier.size(FilterChipDefaults.IconSize)
                 )
             }
         } else {
             null
-        },
+        }
     )
 }
 
