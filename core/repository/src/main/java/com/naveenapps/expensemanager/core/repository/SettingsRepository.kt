@@ -1,14 +1,14 @@
 package com.naveenapps.expensemanager.core.repository
 
-import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
 
-    fun getCategoryTypes(): Flow<List<CategoryType>?>
+    fun getTransactionTypes(): Flow<List<TransactionType>?>
 
-    suspend fun setCategoryTypes(categoryTypes: List<CategoryType>?): Resource<Boolean>
+    suspend fun setTransactionTypes(transactionTypes: List<TransactionType>?): Resource<Boolean>
 
     fun getAccounts(): Flow<List<String>?>
 

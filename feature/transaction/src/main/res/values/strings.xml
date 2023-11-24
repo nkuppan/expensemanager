@@ -25,7 +25,7 @@
     <string name="no_transactions_available">No transactions available</string>
     <string name="date">Date</string>
     <string name="notes">Notes</string>
-    <string name="spending">Expense</string>
+    <string name="expense">Expense</string>
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>
 

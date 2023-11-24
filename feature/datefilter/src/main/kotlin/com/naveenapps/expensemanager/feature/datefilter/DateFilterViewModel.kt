@@ -2,9 +2,9 @@ package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetAllDateRangeUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.SaveDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetAllDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.SaveDateRangeUseCase
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource

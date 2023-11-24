@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.transaction
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.WholeAverageData

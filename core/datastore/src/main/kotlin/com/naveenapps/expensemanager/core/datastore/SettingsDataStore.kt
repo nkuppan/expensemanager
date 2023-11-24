@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
-import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -17,14 +17,14 @@ class SettingsDataStore @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ) {
 
-    suspend fun setCategoryTypes(categoryTypes: List<CategoryType>?) =
+    suspend fun setTransactionType(transactionTypes: List<TransactionType>?) =
         dataStore.edit { preferences ->
-            preferences[KEY_CATEGORY_TYPES] =
-                categoryTypes?.map { it.ordinal.toString() }?.toSet() ?: emptySet()
+            preferences[KEY_TRANSACTION_TYPES] =
+                transactionTypes?.map { it.ordinal.toString() }?.toSet() ?: emptySet()
         }
 
-    fun getCategoryTypes(): Flow<List<CategoryType>?> = dataStore.data.map { preferences ->
-        preferences[KEY_CATEGORY_TYPES]?.toList()?.map { CategoryType.values()[it.toInt()] }
+    fun getTransactionType(): Flow<List<TransactionType>?> = dataStore.data.map { preferences ->
+        preferences[KEY_TRANSACTION_TYPES]?.toList()?.map { TransactionType.values()[it.toInt()] }
             ?: emptyList()
     }
 
@@ -105,6 +105,6 @@ class SettingsDataStore @Inject constructor(
         private val KEY_DATE_RANGE_END_TIME_TYPE = longPreferencesKey("date_range_end_date")
         private val KEY_SELECTED_ACCOUNTS = stringSetPreferencesKey("selected_accounts")
         private val KEY_SELECTED_CATEGORIES = stringSetPreferencesKey("selected_categories")
-        private val KEY_CATEGORY_TYPES = stringSetPreferencesKey("category_types")
+        private val KEY_TRANSACTION_TYPES = stringSetPreferencesKey("transaction_types")
     }
 }

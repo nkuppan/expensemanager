@@ -2,11 +2,11 @@ package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.GetOnboardingStatusUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.SetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
@@ -18,10 +18,10 @@ import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,7 +38,7 @@ class DashboardViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getAmountStateUseCase: GetAmountStateUseCase,
-    getAccountsUseCase: GetAccountsUseCase,
+    getAllAccountsUseCase: GetAllAccountsUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     getBudgetsUseCase: GetBudgetsUseCase,
     private val getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
@@ -93,7 +93,7 @@ class DashboardViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke()
         ) { currency, accounts ->
             _accounts.value = accounts.map {
                 it.toAccountUiModel(

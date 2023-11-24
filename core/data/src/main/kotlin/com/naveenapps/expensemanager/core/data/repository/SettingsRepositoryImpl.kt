@@ -1,23 +1,24 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
-    private val dataStore: com.naveenapps.expensemanager.core.datastore.SettingsDataStore,
+    private val dataStore: SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers
 ) : com.naveenapps.expensemanager.core.repository.SettingsRepository {
-    override fun getCategoryTypes(): Flow<List<CategoryType>?> {
-        return dataStore.getCategoryTypes()
+    override fun getTransactionTypes(): Flow<List<TransactionType>?> {
+        return dataStore.getTransactionType()
     }
 
-    override suspend fun setCategoryTypes(categoryTypes: List<CategoryType>?): Resource<Boolean> =
+    override suspend fun setTransactionTypes(transactionTypes: List<TransactionType>?): Resource<Boolean> =
         withContext(dispatcher.io) {
-            dataStore.setCategoryTypes(categoryTypes)
+            dataStore.setTransactionType(transactionTypes)
             return@withContext Resource.Success(true)
         }
 

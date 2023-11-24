@@ -56,6 +56,7 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import java.util.Date
 import java.util.Random

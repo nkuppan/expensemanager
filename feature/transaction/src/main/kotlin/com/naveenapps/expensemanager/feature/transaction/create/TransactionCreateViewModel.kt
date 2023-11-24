@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
-import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -23,9 +23,9 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.feature.transaction.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -46,7 +46,7 @@ import javax.inject.Inject
 class TransactionCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
-    getAccountsUseCase: GetAccountsUseCase,
+    getAllAccountsUseCase: GetAllAccountsUseCase,
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val findTransactionByIdUseCase: FindTransactionByIdUseCase,
@@ -108,7 +108,7 @@ class TransactionCreateViewModel @Inject constructor(
             selectedCurrency = it
         }.launchIn(viewModelScope)
 
-        getCurrencyUseCase.invoke().combine(getAccountsUseCase.invoke()) { currency, accounts ->
+        getCurrencyUseCase.invoke().combine(getAllAccountsUseCase.invoke()) { currency, accounts ->
             currency to accounts
         }.map { currencyAndAccountPair ->
 

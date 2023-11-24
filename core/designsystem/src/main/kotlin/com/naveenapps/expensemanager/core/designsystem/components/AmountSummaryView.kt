@@ -120,7 +120,7 @@ fun AmountInfoWidget(
                 amount = expenseAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.spending)
+                title = stringResource(id = R.string.expense)
             )
             ColorIconAmountView(
                 color = com.naveenapps.expensemanager.core.common.R.color.green_500,

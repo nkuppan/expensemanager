@@ -2,11 +2,11 @@ package com.naveenapps.expensemanager.feature.account.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
-import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class AccountSelectionViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
-    getAccountsUseCase: GetAccountsUseCase,
+    getAllAccountsUseCase: GetAllAccountsUseCase,
 ) : ViewModel() {
 
     private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
@@ -31,7 +31,7 @@ class AccountSelectionViewModel @Inject constructor(
     init {
         combine(
             getCurrencyUseCase.invoke(),
-            getAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke()
         ) { currency, accounts ->
 
             _accounts.value = accounts.map {
@@ -95,8 +95,8 @@ class AccountSelectionViewModel @Inject constructor(
 
             val selectedAccounts = _selectedAccounts.value.toMutableList()
 
-            repeat(accounts.size) {
-                val account = accounts[it]
+            repeat(accounts.size) { index ->
+                val account = accounts[index]
 
                 val selectedAccount = selectedAccounts.firstOrNull {
                     account.id == it.id

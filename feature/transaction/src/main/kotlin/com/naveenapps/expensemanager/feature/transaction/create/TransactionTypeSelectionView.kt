@@ -50,7 +50,7 @@ fun TransactionTypeSelectionView(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.spending),
+            filterName = stringResource(id = R.string.expense),
             isSelected = selectedTransactionType.isExpense(),
             filterIcon = Icons.Default.ArrowUpward,
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.red_500,

@@ -5,4 +5,8 @@
     <string name="to_date">To date</string>
     <string name="cancel">Cancel</string>
     <string name="select">Select</string>
+    <string name="transaction_type">Transaction Type</string>
+    <string name="accounts">Accounts</string>
+    <string name="categories">Categories</string>
+    <string name="apply">Apply</string>
 </resources>

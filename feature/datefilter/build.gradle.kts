@@ -8,3 +8,7 @@ plugins {
 android {
     namespace = "com.naveenapps.expensemanager.feature.datefilter"
 }
+
+dependencies {
+
+}

@@ -47,7 +47,7 @@ fun AmountStatusView(
         )
         NewColorIconAmountView(
             amount = expenseAmount,
-            title = stringResource(id = R.string.spending),
+            title = stringResource(id = R.string.expense),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),

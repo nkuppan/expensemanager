@@ -9,7 +9,7 @@
     <string name="choose_color">Choose Color</string>
     <string name="view_all">View All</string>
     <string name="income">Income</string>
-    <string name="spending">Expense</string>
+    <string name="expense">Expense</string>
     <string name="balance">Balance</string>
     <string name="transaction_summary">Summary</string>
     <string name="total">Total</string>

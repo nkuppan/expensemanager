@@ -163,7 +163,7 @@ private fun CategoryTransactionListScreenContent(
                 item {
                     PieChartView(
                         if (categoryType.isExpense()) {
-                            stringResource(id = R.string.spending)
+                            stringResource(id = R.string.expense)
                         } else {
                             stringResource(id = R.string.income)
                         } + "\n" + uiState.data.totalAmount.amountString,

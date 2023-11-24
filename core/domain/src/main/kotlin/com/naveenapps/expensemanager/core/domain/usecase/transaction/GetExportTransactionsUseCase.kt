@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeByTypeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeByTypeUseCase
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource

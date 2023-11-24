@@ -6,8 +6,8 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetTransactionGroupTypeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetTransactionGroupTypeUseCase
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem

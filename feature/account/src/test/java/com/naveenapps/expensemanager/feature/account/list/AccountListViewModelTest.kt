@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.feature.account.list
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.Account
@@ -34,7 +34,7 @@ class AccountListViewModelTest : BaseCoroutineTest() {
 
     private val getCurrencyUseCase = GetCurrencyUseCase(currencyRepository)
     private val getFormattedAmountUseCase = GetFormattedAmountUseCase(currencyRepository)
-    private val getAccountsUseCase = GetAccountsUseCase(accountRepository)
+    private val getAllAccountsUseCase = GetAllAccountsUseCase(accountRepository)
 
     private val appComposeNavigator: AppComposeNavigator = mock()
 
@@ -53,7 +53,7 @@ class AccountListViewModelTest : BaseCoroutineTest() {
         whenever(accountRepository.getAccounts()).thenReturn(accountFlow)
 
         accountListViewModel = AccountListViewModel(
-            getAccountsUseCase,
+            getAllAccountsUseCase,
             getCurrencyUseCase,
             getFormattedAmountUseCase,
             appComposeNavigator

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="transaction_summary">Transaction Summary</string>
-    <string name="spending">Expense</string>
+    <string name="expense">Expense</string>
     <string name="income">Income</string>
     <string name="total">Total</string>
     <string name="balance">Balance</string>

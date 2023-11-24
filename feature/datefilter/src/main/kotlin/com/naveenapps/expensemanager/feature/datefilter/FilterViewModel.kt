@@ -2,9 +2,9 @@ package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.MoveDateRangeBackwardUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.MoveDateRangeForwardUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.MoveDateRangeBackwardUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.MoveDateRangeForwardUseCase
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

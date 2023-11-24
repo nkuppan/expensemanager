@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.core.domain.usecase.settings.daterange
+package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange
 
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource

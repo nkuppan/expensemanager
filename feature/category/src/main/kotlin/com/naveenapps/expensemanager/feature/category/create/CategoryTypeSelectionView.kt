@@ -45,7 +45,7 @@ fun CategoryTypeSelectionView(
         )
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
-            filterName = stringResource(id = R.string.spending),
+            filterName = stringResource(id = R.string.expense),
             isSelected = selectedCategoryType.isExpense(),
             filterIcon = Icons.Default.ArrowUpward,
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.red_500,

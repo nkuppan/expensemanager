@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.core.domain.usecase.settings.account
+package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account
 
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.SettingsRepository

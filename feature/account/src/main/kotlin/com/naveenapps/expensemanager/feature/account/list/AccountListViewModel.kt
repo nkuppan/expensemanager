@@ -3,13 +3,11 @@ package com.naveenapps.expensemanager.feature.account.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
-import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountUiModel
-import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountListViewModel @Inject constructor(
-    getAccountsUseCase: GetAccountsUseCase,
+    getAllAccountsUseCase: GetAllAccountsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val appComposeNavigator: AppComposeNavigator,
@@ -33,7 +31,7 @@ class AccountListViewModel @Inject constructor(
     init {
         combine(
             getCurrencyUseCase.invoke(),
-            getAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke()
         ) { currency, accounts ->
             _accounts.value = if (accounts.isEmpty()) {
                 UiState.Empty
@@ -62,12 +60,3 @@ class AccountListViewModel @Inject constructor(
         appComposeNavigator.popBackStack()
     }
 }
-
-fun Account.toAccountUiModel(amount: Amount) = AccountUiModel(
-    id = this.id,
-    name = this.name,
-    storedIcon = this.storedIcon,
-    amount = amount,
-    type = this.type,
-    amountTextColor = this.amount.getAmountTextColor()
-)

@@ -64,7 +64,7 @@ enum class CategoryTabItems(
     val categoryType: CategoryType,
     val index: Int
 ) {
-    Expense(R.string.spending, CategoryType.EXPENSE, 0),
+    Expense(R.string.expense, CategoryType.EXPENSE, 0),
     Income(R.string.income, CategoryType.INCOME, 1),
 }
 

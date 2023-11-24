@@ -45,16 +45,16 @@ fun FilterView(modifier: Modifier = Modifier) {
     val showForward by viewModel.showForward.collectAsState()
     val showBackward by viewModel.showBackward.collectAsState()
 
-    var showDateFilter by remember { mutableStateOf(false) }
+    var showDateDateFilter by remember { mutableStateOf(false) }
     var showAllFilter by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    if (showDateFilter) {
+    if (showDateDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
                 scope.launch {
-                    showDateFilter = false
+                    showDateDateFilter = false
                     bottomSheetState.hide()
                 }
             },
@@ -63,7 +63,7 @@ fun FilterView(modifier: Modifier = Modifier) {
         ) {
             DateFilterSelectionView {
                 scope.launch {
-                    showDateFilter = false
+                    showDateDateFilter = false
                     bottomSheetState.hide()
                 }
             }
@@ -81,12 +81,7 @@ fun FilterView(modifier: Modifier = Modifier) {
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
-            DateFilterSelectionView {
-                scope.launch {
-                    showAllFilter = false
-                    bottomSheetState.hide()
-                }
-            }
+            FilterTypeSelection(applyChanges = {})
         }
     }
 
@@ -96,7 +91,7 @@ fun FilterView(modifier: Modifier = Modifier) {
         showBackward = showBackward,
         date = date,
         showBottomSheet = {
-            showDateFilter = true
+            showDateDateFilter = true
         },
         onForwardClick = viewModel::moveDateRangeForward,
         onBackwardClick = viewModel::moveDateRangeBackward,

@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.export.ExportFileUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.DateRangeType

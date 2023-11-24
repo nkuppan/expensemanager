@@ -1,34 +1,36 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
-import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
+import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class GetTransactionWithFilterUseCase @Inject constructor(
-    private val settingsRepository: com.naveenapps.expensemanager.core.repository.SettingsRepository,
+    private val settingsRepository: SettingsRepository,
     private val getDateRangeUseCase: GetDateRangeUseCase,
-    private val transactionRepository: com.naveenapps.expensemanager.core.repository.TransactionRepository
+    private val transactionRepository: TransactionRepository
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
     fun invoke(): Flow<List<Transaction>?> {
         return combine(
             settingsRepository.isFilterEnabled(),
-            settingsRepository.getCategoryTypes(),
+            settingsRepository.getTransactionTypes(),
             settingsRepository.getCategories(),
             settingsRepository.getAccounts(),
             getDateRangeUseCase.invoke()
-        ) { isFilterEnabled, categoryTypes, categories, accounts, dateRangeModel ->
+        ) { isFilterEnabled, transactionTypes, categories, accounts, dateRangeModel ->
             FilterValue(
                 isFilterEnabled,
                 dateRangeModel.type,
                 dateRangeModel.dateRanges,
                 accounts,
                 categories,
-                categoryTypes
+                transactionTypes
             )
         }.flatMapLatest {
             val accounts = it.accounts
@@ -62,5 +64,5 @@ data class FilterValue(
     val filterRange: List<Long>,
     val accounts: List<String>? = null,
     val categories: List<String>? = null,
-    val categoryTypes: List<CategoryType>? = null,
+    val categoryTypes: List<TransactionType>? = null,
 )

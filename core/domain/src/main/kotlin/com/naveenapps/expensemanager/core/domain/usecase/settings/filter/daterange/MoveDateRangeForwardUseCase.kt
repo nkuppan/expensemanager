@@ -1,12 +1,13 @@
-package com.naveenapps.expensemanager.core.domain.usecase.settings.daterange
+package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange
 
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import org.joda.time.DateTime
 import javax.inject.Inject
 
 class MoveDateRangeForwardUseCase @Inject constructor(
-    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
+    private val dateRangeFilterRepository: DateRangeFilterRepository
 ) {
 
     suspend operator fun invoke(type: DateRangeType): Resource<Boolean> {

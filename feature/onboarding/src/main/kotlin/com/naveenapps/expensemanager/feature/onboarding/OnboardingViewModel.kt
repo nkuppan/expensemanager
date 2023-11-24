@@ -2,16 +2,16 @@ package com.naveenapps.expensemanager.feature.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountsUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.GetOnboardingStatusUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.SetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
-    getAccountsUseCase: GetAccountsUseCase,
+    getAllAccountsUseCase: GetAllAccountsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     private val setOnboardingStatusUseCase: SetOnboardingStatusUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
@@ -51,7 +51,7 @@ class OnboardingViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke()
         ) { currency, accounts ->
             _currency.value = currency
             _accounts.value = accounts.map { account ->

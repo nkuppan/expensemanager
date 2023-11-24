@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.core.domain.usecase.settings
+package com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding
 
 import javax.inject.Inject
 

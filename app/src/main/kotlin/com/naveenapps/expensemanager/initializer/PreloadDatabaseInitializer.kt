@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.startup.Initializer
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.GetPreloadStatusUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.SetPreloadStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetPreloadStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetPreloadStatusUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category

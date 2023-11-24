@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.settings.GetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.feature.theme.R

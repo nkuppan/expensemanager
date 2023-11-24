@@ -21,9 +21,9 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.feature.account.list.toAccountUiModel
 import com.naveenapps.expensemanager.feature.budget.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
