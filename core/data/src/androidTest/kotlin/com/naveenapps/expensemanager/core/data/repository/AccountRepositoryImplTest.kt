@@ -9,7 +9,7 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
-import com.naveenapps.expensemanager.core.domain.repository.AccountRepository
+import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest

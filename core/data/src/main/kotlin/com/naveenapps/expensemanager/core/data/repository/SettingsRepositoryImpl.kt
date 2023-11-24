@@ -10,7 +10,7 @@ import javax.inject.Inject
 class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: com.naveenapps.expensemanager.core.datastore.SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.domain.repository.SettingsRepository {
+) : com.naveenapps.expensemanager.core.repository.SettingsRepository {
     override fun getCategoryTypes(): Flow<List<CategoryType>?> {
         return dataStore.getCategoryTypes()
     }

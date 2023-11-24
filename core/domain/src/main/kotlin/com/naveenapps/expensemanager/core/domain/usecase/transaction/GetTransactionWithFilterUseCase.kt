@@ -1,7 +1,5 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.core.domain.repository.SettingsRepository
-import com.naveenapps.expensemanager.core.domain.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.domain.usecase.settings.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DateRangeType
@@ -11,9 +9,9 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class GetTransactionWithFilterUseCase @Inject constructor(
-    private val settingsRepository: SettingsRepository,
+    private val settingsRepository: com.naveenapps.expensemanager.core.repository.SettingsRepository,
     private val getDateRangeUseCase: GetDateRangeUseCase,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: com.naveenapps.expensemanager.core.repository.TransactionRepository
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
     fun invoke(): Flow<List<Transaction>?> {

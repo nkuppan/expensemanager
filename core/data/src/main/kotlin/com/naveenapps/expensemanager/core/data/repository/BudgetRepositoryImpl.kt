@@ -15,7 +15,7 @@ import javax.inject.Inject
 class BudgetRepositoryImpl @Inject constructor(
     private val budgetDao: BudgetDao,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.domain.repository.BudgetRepository {
+) : com.naveenapps.expensemanager.core.repository.BudgetRepository {
 
     override fun getBudgets(): Flow<List<Budget>> {
         return budgetDao.getBudgets().map { budgets ->

@@ -31,7 +31,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dataStore: SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.domain.repository.DateRangeFilterRepository {
+) : com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository {
 
     override suspend fun getAllDateRanges(): Resource<List<DateRangeModel>> {
         return Resource.Success(

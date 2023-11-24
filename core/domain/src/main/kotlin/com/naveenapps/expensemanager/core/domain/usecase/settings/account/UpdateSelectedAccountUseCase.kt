@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.settings.account
 
-import com.naveenapps.expensemanager.core.domain.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import javax.inject.Inject
 
 class UpdateSelectedAccountUseCase @Inject constructor(

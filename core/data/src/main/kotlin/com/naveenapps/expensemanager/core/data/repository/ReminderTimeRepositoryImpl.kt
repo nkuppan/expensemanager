@@ -13,7 +13,7 @@ private const val DEFAULT_REMINDER_TIMER = "10:00:false"
 class ReminderTimeRepositoryImpl @Inject constructor(
     private val dataStore: ReminderTimeDataStore,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.domain.repository.ReminderTimeRepository {
+) : com.naveenapps.expensemanager.core.repository.ReminderTimeRepository {
 
     override suspend fun saveReminderTime(reminderTime: ReminderTimeState): Boolean =
         withContext(dispatchers.io) {

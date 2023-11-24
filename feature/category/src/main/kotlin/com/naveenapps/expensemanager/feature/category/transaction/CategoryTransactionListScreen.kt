@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.category.transaction
 
-import android.graphics.Color
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -39,6 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
@@ -171,7 +171,7 @@ private fun CategoryTransactionListScreenContent(
                             PieChartUiData(
                                 it.name,
                                 it.value,
-                                it.color
+                                it.color.toColorInt()
                             )
                         },
                         chartHeight = 600,
@@ -282,10 +282,10 @@ fun CategoryTransactionItem(
 
 
 val getPieChartData = listOf(
-    PieChartData("Chrome", 34.68f, Color.parseColor("#43A546")),
-    PieChartData("Firefox", 16.60F, Color.parseColor("#F44336")),
-    PieChartData("Safari", 16.15F, Color.parseColor("#166EF7")),
-    PieChartData("Internet Explorer", 15.62F, Color.parseColor("#121212")),
+    PieChartData("Chrome", 34.68f, "#43A546"),
+    PieChartData("Firefox", 16.60F, "#F44336"),
+    PieChartData("Safari", 16.15F, "#166EF7"),
+    PieChartData("Internet Explorer", 15.62F, "#121212"),
 )
 
 fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {

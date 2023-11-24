@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class CategoryRepositoryImpl @Inject constructor(
     private val categoryDao: CategoryDao,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.domain.repository.CategoryRepository {
+) : CategoryRepository {
 
     override fun getCategories(): Flow<List<Category>> {
         return categoryDao.getCategories().map { categories ->

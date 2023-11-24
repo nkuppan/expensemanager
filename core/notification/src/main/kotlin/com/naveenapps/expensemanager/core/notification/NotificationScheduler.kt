@@ -17,7 +17,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.naveenapps.expensemanager.core.domain.repository.ReminderTimeRepository
+import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import java.util.*

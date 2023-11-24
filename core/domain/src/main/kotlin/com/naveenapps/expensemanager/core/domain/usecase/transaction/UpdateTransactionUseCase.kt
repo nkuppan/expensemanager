@@ -1,12 +1,11 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.core.domain.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import javax.inject.Inject
 
 class UpdateTransactionUseCase @Inject constructor(
-    private val repository: TransactionRepository
+    private val repository: com.naveenapps.expensemanager.core.repository.TransactionRepository
 ) {
 
     suspend operator fun invoke(transaction: Transaction): Resource<Boolean> {

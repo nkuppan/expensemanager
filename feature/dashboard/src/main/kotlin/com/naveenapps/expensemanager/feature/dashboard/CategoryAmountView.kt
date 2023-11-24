@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.toColorInt
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
@@ -37,7 +38,7 @@ fun CategoryAmountView(
                     PieChartUiData(
                         it.name,
                         it.value,
-                        it.color
+                        it.color.toColorInt()
                     )
                 },
                 hideValues = true,

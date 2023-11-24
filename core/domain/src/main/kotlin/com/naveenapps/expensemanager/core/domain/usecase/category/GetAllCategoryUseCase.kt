@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.category
 
-import com.naveenapps.expensemanager.core.domain.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

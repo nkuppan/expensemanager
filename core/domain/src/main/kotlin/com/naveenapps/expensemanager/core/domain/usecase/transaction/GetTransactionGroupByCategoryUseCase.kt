@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
-import androidx.core.graphics.toColorInt
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -113,6 +112,6 @@ fun CategoryTransaction.toChartModel(): PieChartData {
     return PieChartData(
         name = this.category.name,
         value = this.percent,
-        color = this.category.storedIcon.backgroundColor.toColorInt(),
+        color = this.category.storedIcon.backgroundColor
     )
 }

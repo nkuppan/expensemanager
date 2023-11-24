@@ -1,12 +1,11 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
-import com.naveenapps.expensemanager.core.domain.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
 import javax.inject.Inject
 
 class DeleteBudgetUseCase @Inject constructor(
-    private val repository: BudgetRepository,
+    private val repository: com.naveenapps.expensemanager.core.repository.BudgetRepository,
     private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase
 ) {
 

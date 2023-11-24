@@ -3,13 +3,13 @@ package com.naveenapps.expensemanager.feature.category.list
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.core.domain.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest

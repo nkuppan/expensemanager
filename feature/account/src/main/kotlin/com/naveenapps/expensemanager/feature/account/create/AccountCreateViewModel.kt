@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUs
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.UpdateAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -37,6 +38,7 @@ import javax.inject.Inject
 class AccountCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
+    getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val findAccountByIdUseCase: FindAccountByIdUseCase,
     private val addAccountUseCase: AddAccountUseCase,
@@ -90,11 +92,7 @@ class AccountCreateViewModel @Inject constructor(
 
     private var account: Account? = null
 
-    private var currency: Currency = Currency(
-        com.naveenapps.expensemanager.core.common.R.string.dollar_type,
-        com.naveenapps.expensemanager.core.common.R.string.dollar_name,
-        com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
-    )
+    private var currency: Currency = getDefaultCurrencyUseCase.invoke()
 
     init {
         readAccountInfo(savedStateHandle.get<String>(ExpenseManagerScreens.AccountCreate.KEY_ACCOUNT_ID))

@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
 import com.naveenapps.expensemanager.core.model.isPrefix
+import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -80,14 +81,10 @@ class CurrencyRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dataStore: CurrencyDataStore,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.domain.repository.CurrencyRepository {
+) : CurrencyRepository {
 
-    private fun getDefaultCurrency(): Currency {
-        return Currency(
-            R.string.default_currency_type,
-            R.string.default_currency_name,
-            R.drawable.currency_dollar
-        )
+    override fun getDefaultCurrency(): Currency {
+        return dollar
     }
 
     override suspend fun saveCurrency(currency: Currency): Boolean = withContext(dispatchers.io) {

@@ -12,9 +12,9 @@ android {
 dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
+    implementation(project(":core:repository"))
     implementation(project(":core:datastore"))
     implementation(project(":core:database"))
-    implementation(project(":core:domain"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
