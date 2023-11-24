@@ -14,6 +14,7 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.isTransfer
+import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -24,7 +25,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.repository.TransactionRepository {
+) : TransactionRepository {
 
     override fun getAllTransaction(): Flow<List<Transaction>?> =
         transactionDao.getAllTransaction().map {
@@ -162,27 +163,15 @@ class TransactionRepositoryImpl @Inject constructor(
         return transaction
     }
 
-    override fun getTransactionAmount(
-        accounts: List<String>,
-        categories: List<String>,
-        categoryType: List<Int>,
-        startDate: Long,
-        endDate: Long
-    ): Flow<Double?> {
-        return transactionDao.getTransactionTotalAmount(
-            accounts, categories, categoryType, startDate, endDate
-        )
-    }
-
     override fun getFilteredTransaction(
         accounts: List<String>,
         categories: List<String>,
-        categoryType: List<Int>,
+        transactionType: List<Int>,
         startDate: Long,
         endDate: Long
     ): Flow<List<Transaction>?> {
         return transactionDao.getFilteredTransaction(
-            accounts, categories, categoryType, startDate, endDate
+            accounts, categories, transactionType, startDate, endDate
         ).map {
             Log.i("TAG", "getTransactionByAccountIdAndDateFilter: ${it?.size}")
             convertTransactionAndCategory(it)

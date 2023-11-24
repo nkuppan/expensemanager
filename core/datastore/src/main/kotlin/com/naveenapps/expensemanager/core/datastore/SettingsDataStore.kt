@@ -70,14 +70,6 @@ class SettingsDataStore @Inject constructor(
         preferences[KEY_DATE_RANGE_END_TIME_TYPE]
     }
 
-    suspend fun setFilterEnabled(enableFilter: Boolean) = dataStore.edit { preferences ->
-        preferences[KEY_FILTER_ENABLED] = enableFilter
-    }
-
-    fun isFilterEnabled(): Flow<Boolean> = dataStore.data.map { preferences ->
-        preferences[KEY_FILTER_ENABLED] ?: false
-    }
-
     suspend fun setPreloaded(preload: Boolean) = dataStore.edit { preferences ->
         preferences[KEY_IS_PRELOAD] = preload
     }
@@ -99,7 +91,6 @@ class SettingsDataStore @Inject constructor(
         private val KEY_IS_PRELOAD = booleanPreferencesKey("is_preloaded")
         private val KEY_IS_ON_BOARDING_COMPLETED = booleanPreferencesKey("is_on_boarding_completed")
 
-        private val KEY_FILTER_ENABLED = booleanPreferencesKey("filter_enabled")
         private val KEY_DATE_FILTER_TYPE = intPreferencesKey("date_filter_type")
         private val KEY_DATE_RANGE_START_TIME_TYPE = longPreferencesKey("date_range_start_date")
         private val KEY_DATE_RANGE_END_TIME_TYPE = longPreferencesKey("date_range_end_date")

@@ -11,14 +11,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -115,7 +118,7 @@ private fun FilterSelectionView(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Button(
+            TextButton(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 onClick = applyChanges
             ) {
@@ -191,8 +194,8 @@ fun CategoryFilter(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun FilterChipView(
-    isExpenseSelected: Boolean,
+fun FilterChipView(
+    selected: Boolean,
     label: String,
     onSelection: () -> Unit
 ) {
@@ -201,8 +204,8 @@ private fun FilterChipView(
         label = {
             Text(label, style = MaterialTheme.typography.bodyMedium)
         },
-        selected = isExpenseSelected,
-        leadingIcon = if (isExpenseSelected) {
+        selected = selected,
+        leadingIcon = if (selected) {
             {
                 Icon(
                     imageVector = Icons.Filled.Done,
@@ -213,6 +216,41 @@ private fun FilterChipView(
         } else {
             null
         },
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun InputChipView(
+    label: String,
+    selected: Boolean,
+    iconName: String? = null,
+    onSelection: (() -> Unit) = { }
+) {
+    InputChip(
+        onClick = onSelection,
+        label = {
+            Text(label, style = MaterialTheme.typography.bodyMedium)
+        },
+        selected = selected,
+        avatar = if (iconName != null) {
+            {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Localized description",
+                    modifier = Modifier.size(InputChipDefaults.AvatarSize)
+                )
+            }
+        } else {
+            null
+        },
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Localized description",
+                modifier = Modifier.size(InputChipDefaults.AvatarSize)
+            )
+        }
     )
 }
 

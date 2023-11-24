@@ -31,18 +31,10 @@ interface TransactionRepository {
         endDate: Long
     ): Flow<List<Transaction>>
 
-    fun getTransactionAmount(
-        accounts: List<String>,
-        categories: List<String>,
-        categoryType: List<Int>,
-        startDate: Long,
-        endDate: Long
-    ): Flow<Double?>
-
     fun getFilteredTransaction(
         accounts: List<String>,
         categories: List<String>,
-        categoryType: List<Int>,
+        transactionType: List<Int>,
         startDate: Long,
         endDate: Long
     ): Flow<List<Transaction>?>

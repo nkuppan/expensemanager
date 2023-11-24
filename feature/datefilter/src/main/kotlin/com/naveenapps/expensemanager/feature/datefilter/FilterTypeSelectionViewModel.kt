@@ -5,7 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account.GetSelectedAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.account.UpdateSelectedAccountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.category.GetSelectedCategoriesUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.category.UpdateSelectedCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.transactiontype.GetSelectedTransactionTypesUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.transactiontype.UpdateSelectedTransactionTypesUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
@@ -21,8 +26,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FilterTypeSelectionViewModel @Inject constructor(
+    getSelectedTransactionTypesUseCase: GetSelectedTransactionTypesUseCase,
+    getSelectedAccountUseCase: GetSelectedAccountUseCase,
+    getSelectedCategoriesUseCase: GetSelectedCategoriesUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,
     getAllCategoryUseCase: GetAllCategoryUseCase,
+    private val updateSelectedTransactionTypesUseCase: UpdateSelectedTransactionTypesUseCase,
+    private val updateSelectedCategoryUseCase: UpdateSelectedCategoryUseCase,
     private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase
 ) : ViewModel() {
 
@@ -45,6 +55,20 @@ class FilterTypeSelectionViewModel @Inject constructor(
     val selectedCategories = _selectedCategories.asStateFlow()
 
     init {
+        getSelectedTransactionTypesUseCase.invoke().onEach {
+            _selectedTransactionTypes.value = it
+        }.launchIn(viewModelScope)
+
+        getSelectedAccountUseCase.invoke().onEach {
+            _selectedAccounts.value = it?.map { account ->
+                account.toAccountUiModel(Amount(amount = account.amount))
+            } ?: emptyList()
+        }.launchIn(viewModelScope)
+
+        getSelectedCategoriesUseCase.invoke().onEach {
+            _selectedCategories.value = it
+        }.launchIn(viewModelScope)
+
         getAllCategoryUseCase.invoke().onEach {
             _categories.value = it
         }.launchIn(viewModelScope)
@@ -70,45 +94,41 @@ class FilterTypeSelectionViewModel @Inject constructor(
 
     fun saveChanges() {
         viewModelScope.launch {
-            val selectedAccounts = _selectedAccounts.value
-            if (selectedAccounts.isNotEmpty()) {
-                updateSelectedAccountUseCase.invoke(selectedAccounts.map { it.id })
-            }
-            val selectedCategories = _selectedCategories.value
-            if (selectedCategories.isNotEmpty()) {
-                updateSelectedAccountUseCase.invoke(selectedCategories.map { it.id })
-            }
+            updateSelectedTransactionTypesUseCase(_selectedTransactionTypes.value)
+            updateSelectedAccountUseCase(_selectedAccounts.value.map { it.id })
+            updateSelectedCategoryUseCase(_selectedCategories.value.map { it.id })
         }
     }
+}
 
 
-    private fun List<TransactionType>.addOrRemove(type: TransactionType): List<TransactionType> {
-        val finalList = toMutableList()
-        if (finalList.fastAny { it == type }) {
-            finalList.remove(type)
-        } else {
-            finalList.add(type)
-        }
-        return finalList
+
+fun List<TransactionType>.addOrRemove(type: TransactionType): List<TransactionType> {
+    val finalList = toMutableList()
+    if (finalList.fastAny { it == type }) {
+        finalList.remove(type)
+    } else {
+        finalList.add(type)
     }
+    return finalList
+}
 
-    private fun List<AccountUiModel>.addOrRemove(account: AccountUiModel): List<AccountUiModel> {
-        val finalList = toMutableList()
-        if (finalList.fastAny { it.id == account.id }) {
-            finalList.remove(account)
-        } else {
-            finalList.add(account)
-        }
-        return finalList
+fun List<AccountUiModel>.addOrRemove(account: AccountUiModel): List<AccountUiModel> {
+    val finalList = toMutableList()
+    if (finalList.fastAny { it.id == account.id }) {
+        finalList.remove(account)
+    } else {
+        finalList.add(account)
     }
+    return finalList
+}
 
-    private fun List<Category>.addOrRemove(category: Category): List<Category> {
-        val finalList = toMutableList()
-        if (finalList.fastAny { it.id == category.id }) {
-            finalList.remove(category)
-        } else {
-            finalList.add(category)
-        }
-        return finalList
+fun List<Category>.addOrRemove(category: Category): List<Category> {
+    val finalList = toMutableList()
+    if (finalList.fastAny { it.id == category.id }) {
+        finalList.remove(category)
+    } else {
+        finalList.add(category)
     }
+    return finalList
 }

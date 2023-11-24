@@ -4,6 +4,7 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -11,7 +12,7 @@ import javax.inject.Inject
 class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: SettingsDataStore,
     private val dispatcher: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.repository.SettingsRepository {
+) : SettingsRepository {
     override fun getTransactionTypes(): Flow<List<TransactionType>?> {
         return dataStore.getTransactionType()
     }
@@ -39,16 +40,6 @@ class SettingsRepositoryImpl @Inject constructor(
     override suspend fun setCategories(categories: List<String>?): Resource<Boolean> =
         withContext(dispatcher.io) {
             dataStore.setCategories(categories)
-            return@withContext Resource.Success(true)
-        }
-
-    override fun isFilterEnabled(): Flow<Boolean> {
-        return dataStore.isFilterEnabled()
-    }
-
-    override suspend fun setFilterEnabled(filterEnable: Boolean): Resource<Boolean> =
-        withContext(dispatcher.io) {
-            dataStore.setFilterEnabled(filterEnable)
             return@withContext Resource.Success(true)
         }
 

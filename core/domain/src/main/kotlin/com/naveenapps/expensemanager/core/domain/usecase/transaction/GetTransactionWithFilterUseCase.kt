@@ -18,14 +18,15 @@ class GetTransactionWithFilterUseCase @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     fun invoke(): Flow<List<Transaction>?> {
         return combine(
-            settingsRepository.isFilterEnabled(),
             settingsRepository.getTransactionTypes(),
             settingsRepository.getCategories(),
             settingsRepository.getAccounts(),
             getDateRangeUseCase.invoke()
-        ) { isFilterEnabled, transactionTypes, categories, accounts, dateRangeModel ->
+        ) { transactionTypes, categories, accounts, dateRangeModel ->
             FilterValue(
-                isFilterEnabled,
+                isFilterEnabled = accounts?.isNotEmpty() == true ||
+                        categories?.isNotEmpty() == true ||
+                        transactionTypes?.isNotEmpty() == true,
                 dateRangeModel.type,
                 dateRangeModel.dateRanges,
                 accounts,

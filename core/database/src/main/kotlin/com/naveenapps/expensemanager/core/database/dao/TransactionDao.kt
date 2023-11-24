@@ -63,24 +63,6 @@ interface TransactionDao : BaseDao<TransactionEntity> {
 
     @Query(
         """
-        SELECT SUM(`transaction`.amount) FROM `transaction`
-        WHERE `transaction`.from_account_id IN(:accounts) 
-        OR `transaction`.id IN(:categories)
-        OR `transaction`.type IN(:transactionTypes)
-        AND `transaction`.created_on BETWEEN :fromDate AND :toDate
-        ORDER BY `transaction`.created_on DESC
-        """
-    )
-    fun getTransactionTotalAmount(
-        accounts: List<String>,
-        categories: List<String>,
-        transactionTypes: List<Int>,
-        fromDate: Long,
-        toDate: Long
-    ): Flow<Double?>
-
-    @Query(
-        """
         SELECT * FROM `transaction`
         WHERE `transaction`.from_account_id IN(:accounts) 
         AND `transaction`.category_id IN(:categories)

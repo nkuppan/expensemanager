@@ -35,7 +35,7 @@ class GetExportTransactionsUseCase @Inject constructor(
         val transaction = transactionRepository.getFilteredTransaction(
             accounts = accounts,
             categories = categories,
-            categoryType = CategoryType.values().map { it.ordinal }.toList(),
+            transactionType = CategoryType.values().map { it.ordinal }.toList(),
             startDate = dateRanges.dateRanges[0],
             endDate = dateRanges.dateRanges[1],
         ).firstOrNull()

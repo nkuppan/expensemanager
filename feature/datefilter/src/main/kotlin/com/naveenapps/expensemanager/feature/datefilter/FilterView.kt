@@ -1,12 +1,14 @@
 package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterList
@@ -33,6 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,6 +49,10 @@ fun FilterView(modifier: Modifier = Modifier) {
     val date by viewModel.date.collectAsState()
     val showForward by viewModel.showForward.collectAsState()
     val showBackward by viewModel.showBackward.collectAsState()
+
+    val selectedTransactionTypes by viewModel.selectedTransactionTypes.collectAsState()
+    val selectedAccounts by viewModel.selectedAccounts.collectAsState()
+    val selectedCategories by viewModel.selectedCategories.collectAsState()
 
     var showDateDateFilter by remember { mutableStateOf(false) }
     var showAllFilter by remember { mutableStateOf(false) }
@@ -81,24 +90,41 @@ fun FilterView(modifier: Modifier = Modifier) {
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp)
         ) {
-            FilterTypeSelection(applyChanges = {})
+            FilterTypeSelection(
+                applyChanges = {
+                    scope.launch {
+                        showAllFilter = false
+                        bottomSheetState.hide()
+                    }
+                }
+            )
         }
     }
 
-    FilterContentView(
-        modifier = modifier,
-        showForward = showForward,
-        showBackward = showBackward,
-        date = date,
-        showBottomSheet = {
-            showDateDateFilter = true
-        },
-        onForwardClick = viewModel::moveDateRangeForward,
-        onBackwardClick = viewModel::moveDateRangeBackward,
-        onFilterClick = {
-            showAllFilter = true
-        }
-    )
+    Column(modifier = modifier) {
+        FilterContentView(
+            modifier = modifier,
+            showForward = showForward,
+            showBackward = showBackward,
+            date = date,
+            showBottomSheet = {
+                showDateDateFilter = true
+            },
+            onForwardClick = viewModel::moveDateRangeForward,
+            onBackwardClick = viewModel::moveDateRangeBackward,
+            onFilterClick = {
+                showAllFilter = true
+            }
+        )
+        TypeFilter(
+            selectedTransactionTypes = selectedTransactionTypes,
+            selectedAccounts = selectedAccounts,
+            selectedCategories = selectedCategories,
+            onTransactionTypeSelection = viewModel::removeTransaction,
+            onAccountSelection = viewModel::removeAccount,
+            onCategorySelection = viewModel::removeCategory,
+        )
+    }
 }
 
 @Composable
@@ -112,7 +138,7 @@ private fun FilterContentView(
     onFilterClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier) {
+    Row(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .weight(1f)
@@ -165,6 +191,45 @@ private fun FilterContentView(
         }
     }
 }
+
+@Composable
+fun TypeFilter(
+    selectedTransactionTypes: List<TransactionType>,
+    selectedAccounts: List<AccountUiModel>,
+    selectedCategories: List<Category>,
+    onTransactionTypeSelection: (TransactionType) -> Unit,
+    onAccountSelection: (AccountUiModel) -> Unit,
+    onCategorySelection: (Category) -> Unit,
+) {
+    Row(
+        modifier = modifi
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
+    ) {
+        selectedTransactionTypes.forEach { type ->
+            InputChipView(
+                label = type.toString(),
+                selected = true,
+            )
+            {
+                onTransactionTypeSelection.invoke(type)
+            }
+        }
+        selectedAccounts.forEach { account ->
+            InputChipView(account.name, true, iconName = account.storedIcon.name)
+            {
+                onAccountSelection.invoke(account)
+            }
+        }
+        selectedCategories.forEach { category ->
+            InputChipView(category.name, true, iconName = category.storedIcon.name)
+            {
+                onCategorySelection.invoke(category)
+            }
+        }
+    }
+}
+
 
 @Preview
 @Composable
