@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.data.repository
 
-import android.util.Log
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
@@ -97,32 +96,6 @@ class TransactionRepositoryImpl @Inject constructor(
             }
         }
 
-
-    override fun getTransactionsByAccountId(
-        accounts: List<String>
-    ): Flow<List<Transaction>?> =
-        transactionDao.getTransactionsByAccounts(accounts).map { transaction ->
-            transaction?.map { it.toDomainModel() }
-        }
-
-    override fun getTransactionByAccountIdAndDateFilter(
-        accounts: List<String>,
-        startDate: Long,
-        endDate: Long
-    ): Flow<List<Transaction>> =
-        transactionDao.getTransactionsByAccountIdAndDateFilter(accounts, startDate, endDate).map {
-            Log.i("TAG", "getTransactionByAccountIdAndDateFilter: ${it?.size}")
-            convertTransactionAndCategory(it)
-        }
-
-    override fun getTransactionByDateFilter(
-        startDate: Long,
-        endDate: Long
-    ): Flow<List<Transaction>> =
-        transactionDao.getTransactionsByDateFilter(startDate, endDate).map {
-            convertTransactionAndCategory(it)
-        }
-
     private fun convertTransactionAndCategory(
         transactionWithCategory: List<TransactionRelation>?
     ): MutableList<Transaction> {
@@ -163,6 +136,18 @@ class TransactionRepositoryImpl @Inject constructor(
         return transaction
     }
 
+    override fun getAllFilteredTransaction(
+        accounts: List<String>,
+        categories: List<String>,
+        transactionType: List<Int>,
+    ): Flow<List<Transaction>?> {
+        return transactionDao.getAllFilteredTransaction(
+            accounts, categories, transactionType
+        ).map {
+            convertTransactionAndCategory(it)
+        }
+    }
+
     override fun getFilteredTransaction(
         accounts: List<String>,
         categories: List<String>,
@@ -173,7 +158,6 @@ class TransactionRepositoryImpl @Inject constructor(
         return transactionDao.getFilteredTransaction(
             accounts, categories, transactionType, startDate, endDate
         ).map {
-            Log.i("TAG", "getTransactionByAccountIdAndDateFilter: ${it?.size}")
             convertTransactionAndCategory(it)
         }
     }

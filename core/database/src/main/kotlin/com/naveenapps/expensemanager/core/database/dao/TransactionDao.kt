@@ -18,47 +18,22 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Query("SELECT * from `transaction` WHERE id=:id")
     fun findById(id: String): TransactionEntity?
 
-    @Query(
-        """
-        SELECT * from `transaction` 
-        WHERE from_account_id IN(:accounts) 
-        ORDER BY `transaction`.created_on DESC
-        """
-    )
-    fun getTransactionsByAccounts(
-        accounts: List<String>
-    ): Flow<List<TransactionEntity>?>
-
-    @Transaction
     @Query("SELECT * FROM `transaction`")
     fun getAllTransaction(): Flow<List<TransactionRelation>?>
 
-    @Transaction
-    @Query(
-        """
-        SELECT * FROM `transaction`
-        WHERE created_on BETWEEN :fromDate AND :toDate
-        ORDER BY created_on DESC
-        """
-    )
-    fun getTransactionsByDateFilter(
-        fromDate: Long,
-        toDate: Long
-    ): Flow<List<TransactionRelation>?>
-
-    @Transaction
     @Query(
         """
         SELECT * FROM `transaction`
         WHERE `transaction`.from_account_id IN(:accounts) 
-        AND `transaction`.created_on BETWEEN :fromDate AND :toDate
+        AND `transaction`.category_id IN(:categories)
+        AND `transaction`.type IN(:transactionTypes)
         ORDER BY `transaction`.created_on DESC
         """
     )
-    fun getTransactionsByAccountIdAndDateFilter(
+    fun getAllFilteredTransaction(
         accounts: List<String>,
-        fromDate: Long,
-        toDate: Long
+        categories: List<String>,
+        transactionTypes: List<Int>,
     ): Flow<List<TransactionRelation>?>
 
     @Query(

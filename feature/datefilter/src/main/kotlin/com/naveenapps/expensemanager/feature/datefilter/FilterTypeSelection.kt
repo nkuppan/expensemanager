@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
@@ -151,7 +152,7 @@ fun TransactionTypeFilter(
     ) {
         transactionTypes.forEach { type ->
             val isSelected = selectedTransactionType.fastAny { it == type }
-            FilterChipView(isSelected, type.toString())
+            FilterChipView(isSelected, type.toCapitalize())
             {
                 onSelection.invoke(type)
             }

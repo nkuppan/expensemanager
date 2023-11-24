@@ -35,6 +35,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
@@ -212,7 +213,7 @@ fun TypeFilter(
     ) {
         selectedTransactionTypes.forEach { type ->
             InputChipView(
-                label = type.toString(),
+                label = type.toCapitalize(),
                 selected = true,
             )
             {
