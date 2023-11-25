@@ -131,7 +131,6 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
     }
 
     private suspend fun getFilterDateValue(dateRangeType: DateRangeType): String {
-
         val dateRanges = getOriginalDateRangeValues(dateRangeType)
         return getDateRangeName(dateRanges, dateRangeType)
     }

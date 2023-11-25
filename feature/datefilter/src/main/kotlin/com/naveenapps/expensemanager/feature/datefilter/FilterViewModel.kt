@@ -76,7 +76,11 @@ class FilterViewModel @Inject constructor(
         getDateRangeUseCase.invoke().onEach {
             dateRangeType = it.type
 
-            _date.value = it.description
+            _date.value = if (it.type == DateRangeType.ALL) {
+                it.name
+            } else {
+                it.description
+            }
 
             when (it.type) {
                 DateRangeType.TODAY,
