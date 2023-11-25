@@ -73,6 +73,7 @@ fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
     extension.apply {
         buildFeatures {
             compose = true
+            buildConfig = true
         }
 
         composeOptions {

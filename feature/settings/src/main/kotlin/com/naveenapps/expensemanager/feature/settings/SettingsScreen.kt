@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getAppVersionName
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openEmailToOption
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
@@ -291,6 +292,8 @@ private fun SettingsScreenContent(
 private fun DeveloperInfoView(
     settingOptionSelected: ((SettingOption) -> Unit)? = null
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -341,6 +344,16 @@ private fun DeveloperInfoView(
                 )
             }
         }
+        Text(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.CenterHorizontally)
+                .padding(top = 16.dp),
+            text = stringResource(
+                id = R.string.app_version,
+                context.getAppVersionName()
+            )
+        )
     }
 }
 

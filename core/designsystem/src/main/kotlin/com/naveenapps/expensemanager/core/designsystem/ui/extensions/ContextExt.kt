@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.core.net.toUri
 import com.naveenapps.expensemanager.core.designsystem.R
@@ -17,7 +19,7 @@ fun Context.getDrawable(iconName: String): Int {
         )
 
         if (resources > 0) resources else null
-    }.getOrNull() ?: androidx.core.R.drawable.ic_call_answer
+    }.getOrNull() ?: R.drawable.account_balance
 }
 
 fun openWebPage(context: Context, webpage: String) {
@@ -49,4 +51,15 @@ fun Context.shareThisFile(fileUri: String) {
         flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
     }
     startActivity(Intent.createChooser(shareIntent, null))
+}
+
+
+fun Context.getAppVersionName(): String {
+    return try {
+        val pInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
+        pInfo.versionName
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+        ""
+    }
 }

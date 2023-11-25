@@ -41,10 +41,6 @@ android {
         baseline = file("lint-baseline.xml")
     }
 
-    buildFeatures {
-        compose = true
-    }
-
     testOptions {
         managedDevices {
             devices {

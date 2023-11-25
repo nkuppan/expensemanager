@@ -6,6 +6,10 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.buildSpannedString
@@ -32,6 +36,9 @@ fun PieChartView(
     hideValues: Boolean = false,
     chartWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT
 ) {
+
+    var isAnimated by remember { mutableStateOf(false) }
+
     val colorCode = MaterialTheme.colorScheme.onBackground.hashCode()
     val holeColor = MaterialTheme.colorScheme.background.hashCode()
 
@@ -59,7 +66,7 @@ fun PieChartView(
                     this.isHighlightPerTapEnabled = false
                     this.isDragDecelerationEnabled = false
                     this.isDrawHoleEnabled = true
-                    this.holeRadius = 75f
+                    this.holeRadius = 80f
                     this.setHoleColor(holeColor)
                     this.setTouchEnabled(false)
                     this.setUsePercentValues(true)
@@ -77,7 +84,13 @@ fun PieChartView(
 
                     // on below line we are enabling legend.
                     this.legend.isEnabled = false
-                    this.animateY(1000, Easing.EaseInOutQuad)
+
+                    if (isAnimated.not()) {
+                        isAnimated = true
+                        this.animateY(1000, Easing.EaseInOutQuad)
+                    } else {
+                        this.animateY(0, Easing.EaseInOutQuad)
+                    }
                 }
             },
             update = {
