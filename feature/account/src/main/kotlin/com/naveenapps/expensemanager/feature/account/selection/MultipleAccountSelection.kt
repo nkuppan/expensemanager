@@ -38,8 +38,6 @@ fun MultipleAccountSelectionScreen(
     selectedAccounts: List<AccountUiModel> = emptyList(),
     onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)? = null
 ) {
-
-
     viewModel.selectAllThisAccount(selectedAccounts)
 
     AccountSelectionView(viewModel, onItemSelection)
@@ -73,7 +71,7 @@ private fun AccountSelectionView(
             }
         },
         onClearChanges = viewModel::clearChanges,
-        onItemSelection = viewModel::selectAllThisAccount
+        onItemSelection = viewModel::selectThisAccount
     )
 }
 

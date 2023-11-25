@@ -44,7 +44,7 @@ class AccountSelectionViewModel @Inject constructor(
             }
 
             _selectedAccounts.value.ifEmpty {
-                accounts.map {
+                _selectedAccounts.value = accounts.map {
                     it.toAccountUiModel(
                         getFormattedAmountUseCase.invoke(
                             it.amount,
@@ -61,7 +61,7 @@ class AccountSelectionViewModel @Inject constructor(
         _selectedAccounts.value = emptyList()
     }
 
-    fun selectAllThisAccount(account: AccountUiModel, selected: Boolean) {
+    fun selectThisAccount(account: AccountUiModel, selected: Boolean) {
         viewModelScope.launch {
             val selectedAccounts = _selectedAccounts.value.toMutableList()
 

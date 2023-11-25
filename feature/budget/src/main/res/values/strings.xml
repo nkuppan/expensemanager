@@ -20,4 +20,5 @@
     <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="cancel">Cancel</string>
     <string name="all_time">All Time</string>
+    <string name="all">All</string>
 </resources>

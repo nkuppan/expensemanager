@@ -81,11 +81,11 @@ class BudgetCreateViewModel @Inject constructor(
     private val _date = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
-    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
+    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
     val accountCount = _accountCount.asStateFlow()
 
     private val _categoriesCount =
-        MutableStateFlow<UiText>(UiText.StringResource(R.string.all_time))
+        MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
     val categoriesCount = _categoriesCount.asStateFlow()
 
     private var selectedAccounts = emptyList<AccountUiModel>()
