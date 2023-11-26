@@ -135,7 +135,7 @@ fun AccountCreateScreen() {
             creditLimitErrorMessage = creditLimitErrorMessage,
             selectedAccountType = selectedAccountType,
             onAccountTypeChange = viewModel::setAccountType,
-            currency = currencyIcon,
+            currencyIcon = currencyIcon,
             onNameChange = viewModel::setNameChange,
             onCurrentBalanceChange = viewModel::setCurrentBalanceChange,
             onCreditLimitChange = viewModel::setCreditLimitChange,
@@ -157,7 +157,7 @@ private fun AccountCreateScreen(
     nameErrorMessage: UiText? = null,
     currentBalance: String = "",
     currentBalanceErrorMessage: UiText? = null,
-    currency: Int? = null,
+    currencyIcon: String? = null,
     selectedColor: String = "#000000",
     selectedIcon: String = "account_balance",
     openIconPicker: ((String) -> Unit)? = null,
@@ -207,7 +207,7 @@ private fun AccountCreateScreen(
             value = currentBalance,
             errorMessage = currentBalanceErrorMessage,
             onValueChange = onCurrentBalanceChange,
-            leadingIcon = currency,
+            leadingIconText = currencyIcon,
             label = R.string.current_balance,
         )
 
@@ -219,7 +219,7 @@ private fun AccountCreateScreen(
                 value = creditLimit,
                 errorMessage = creditLimitErrorMessage,
                 onValueChange = onCreditLimitChange,
-                leadingIcon = currency,
+                leadingIconText = currencyIcon,
                 label = R.string.credit_limit,
             )
         }

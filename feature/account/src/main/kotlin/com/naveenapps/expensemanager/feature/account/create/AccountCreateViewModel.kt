@@ -73,7 +73,7 @@ class AccountCreateViewModel @Inject constructor(
     var creditLimitErrorMessage = MutableStateFlow<UiText?>(null)
         private set
 
-    var currencyIcon = MutableStateFlow<Int?>(null)
+    var currencyIcon = MutableStateFlow<String?>(null)
         private set
 
     var colorValue = MutableStateFlow(DEFAULT_COLOR)
@@ -98,6 +98,7 @@ class AccountCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
+            currencyIcon.value = it.symbol
             updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
     }

@@ -186,7 +186,7 @@ fun BudgetCreateScreen() {
             amount = amount,
             amountErrorMessage = amountErrorMessage,
             selectedDate = selectedDate,
-            currency = currencyIcon,
+            currencyIcon = currencyIcon,
             accountCount = accountCount,
             categoriesCount = categoriesCount,
             onNameChange = viewModel::setNameChange,
@@ -251,7 +251,7 @@ private fun BudgetCreateScreen(
     nameErrorMessage: UiText? = null,
     amount: String = "",
     amountErrorMessage: UiText? = null,
-    currency: Int? = null,
+    currencyIcon: String? = null,
     selectedColor: String = "#000000",
     selectedIcon: String = "savings",
     selectedDate: Date? = null,
@@ -336,7 +336,7 @@ private fun BudgetCreateScreen(
             value = amount,
             errorMessage = amountErrorMessage,
             onValueChange = onAmountChange,
-            leadingIcon = currency,
+            leadingIconText = currencyIcon,
             label = R.string.budget_amount,
         )
 
@@ -384,6 +384,6 @@ private fun BudgetCreateScreen(
 @Composable
 private fun BudgetCreateStatePreview() {
     ExpenseManagerTheme {
-        BudgetCreateScreen(currency = -1)
+        BudgetCreateScreen(currencyIcon = "$")
     }
 }

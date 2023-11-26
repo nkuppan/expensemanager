@@ -69,7 +69,7 @@ class TransactionCreateViewModel @Inject constructor(
     private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
-    private val _currencyIcon = MutableStateFlow<Int?>(null)
+    private val _currencyIcon = MutableStateFlow<String?>(null)
     val currencyIcon = _currencyIcon.asStateFlow()
 
     private val _notes = MutableStateFlow("")
@@ -106,6 +106,7 @@ class TransactionCreateViewModel @Inject constructor(
             getAllAccountsUseCase.invoke()
         ) { currency, accounts ->
             selectedCurrency = currency
+            _currencyIcon.value = currency.symbol
             val mappedAccounts = if (accounts.isEmpty()) {
                 emptyList()
             } else {

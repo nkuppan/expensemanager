@@ -24,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -45,7 +46,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -191,7 +191,7 @@ fun TransactionCreateScreen() {
         val amount by viewModel.amount.collectAsState()
         val amountErrorMessage by viewModel.amountErrorMessage.collectAsState()
 
-        val currency by viewModel.currencyIcon.collectAsState()
+        val currencyIcon by viewModel.currencyIcon.collectAsState()
         val selectedDate by viewModel.date.collectAsState()
         val selectedTransactionType by viewModel.selectedTransactionType.collectAsState()
         val notes by viewModel.notes.collectAsState()
@@ -207,7 +207,7 @@ fun TransactionCreateScreen() {
             selectedCategory = category,
             selectedFromAccount = selectedFromAccount,
             selectedToAccount = selectedToAccount,
-            currency = currency,
+            currencyIcon = currencyIcon,
             amount = amount,
             amountErrorMessage = amountErrorMessage,
             amountChange = viewModel::setAmount,
@@ -271,7 +271,7 @@ private fun TransactionCreateScreen(
     amount: String = "",
     amountErrorMessage: UiText? = null,
     amountChange: ((String) -> Unit)? = null,
-    currency: Int? = null,
+    currencyIcon: String? = null,
     selectedDate: Date? = null,
     onDateChange: ((Date) -> Unit)? = null,
     selectedTransactionType: TransactionType = TransactionType.EXPENSE,
@@ -368,9 +368,12 @@ private fun TransactionCreateScreen(
                 .fillMaxWidth(),
             value = amount,
             singleLine = true,
-            leadingIcon = if (currency != null) {
+            leadingIcon = if (currencyIcon != null) {
                 {
-                    Icon(painter = painterResource(id = currency), contentDescription = "")
+                    Text(
+                        currencyIcon,
+                        style = MaterialTheme.typography.titleLarge
+                    )
                 }
             } else {
                 null
@@ -554,7 +557,7 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 private fun TransactionCreateStatePreview() {
     ExpenseManagerTheme {
         TransactionCreateScreen(
-            currency = -1,
+            currencyIcon = "$",
             selectedCategory = Category(
                 id = "1",
                 name = "Shopping",

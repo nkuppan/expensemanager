@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -104,7 +104,7 @@ fun DecimalTextField(
     value: String,
     errorMessage: UiText?,
     onValueChange: ((String) -> Unit)?,
-    leadingIcon: Int?,
+    leadingIconText: String?,
     label: Int,
     modifier: Modifier = Modifier
 ) {
@@ -116,9 +116,12 @@ fun DecimalTextField(
         modifier = modifier,
         value = value,
         singleLine = true,
-        leadingIcon = if (leadingIcon != null) {
+        leadingIcon = if (leadingIconText != null) {
             {
-                Icon(painter = painterResource(id = leadingIcon), contentDescription = "")
+                Text(
+                    text = leadingIconText,
+                    style = MaterialTheme.typography.titleLarge
+                )
             }
         } else {
             null

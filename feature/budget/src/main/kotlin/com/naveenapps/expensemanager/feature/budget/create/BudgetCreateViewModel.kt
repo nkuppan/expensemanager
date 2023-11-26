@@ -68,7 +68,7 @@ class BudgetCreateViewModel @Inject constructor(
     var amountErrorMessage = MutableStateFlow<UiText?>(null)
         private set
 
-    var currencyIcon = MutableStateFlow<Int?>(null)
+    var currencyIcon = MutableStateFlow<String?>(null)
         private set
 
     var colorValue = MutableStateFlow(DEFAULT_COLOR)
@@ -100,6 +100,7 @@ class BudgetCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
+            currencyIcon.value = it.symbol
         }.launchIn(viewModelScope)
     }
 
