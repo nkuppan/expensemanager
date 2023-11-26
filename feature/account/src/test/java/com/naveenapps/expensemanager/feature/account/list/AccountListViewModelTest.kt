@@ -43,7 +43,7 @@ class AccountListViewModelTest : BaseCoroutineTest() {
     private val accountFlow = MutableStateFlow<List<Account>>(emptyList())
     private val currencyFlow = MutableStateFlow(
         Currency(
-            1, 1, 1, CurrencySymbolPosition.PREFIX
+            1, 1, CurrencySymbolPosition.PREFIX
         )
     )
 
@@ -120,7 +120,7 @@ class AccountListViewModelTest : BaseCoroutineTest() {
             val accounts = (state as UiState.Success).data
             Truth.assertThat(accounts).isNotEmpty()
             Truth.assertThat(accounts.size).isEqualTo(totalCount)
-            
+
             val actualCreditAccounts = accounts.count { it.type.isCredit() }
             Truth.assertThat(actualCreditAccounts).isEqualTo(expectedCreditAccountCount)
 
