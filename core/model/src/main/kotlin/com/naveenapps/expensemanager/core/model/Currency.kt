@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.core.model
 data class Currency(
     val symbol: Int,
     val name: Int,
-    val symbolIcon: Int,
     val position: CurrencySymbolPosition = CurrencySymbolPosition.PREFIX
 )
 

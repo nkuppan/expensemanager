@@ -129,7 +129,6 @@ private fun OnboardingContentView(
                     .fillMaxWidth(),
                 title = stringResource(id = R.string.currency),
                 description = stringResource(id = currency.name),
-                icon = currency.symbolIcon
             )
             DashboardWidgetTitle(
                 modifier = Modifier
@@ -181,17 +180,19 @@ private fun OnboardingContentView(
 private fun CurrencyItem(
     title: String,
     description: String,
-    @DrawableRes icon: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @DrawableRes icon: Int? = null
 ) {
     Row(modifier = modifier) {
-        Icon(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp),
-            painter = painterResource(id = icon),
-            contentDescription = null
-        )
+        if (icon != null) {
+            Icon(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(16.dp),
+                painter = painterResource(id = icon),
+                contentDescription = null
+            )
+        }
         Text(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
@@ -216,7 +217,7 @@ fun OnboardingScreenPreview() {
             OnboardingContentView(
                 modifier = Modifier
                     .fillMaxSize(),
-                currency = Currency(1, 1, 1),
+                currency = Currency(1, 1),
                 accounts = listOf(
                     AccountUiModel(
                         id = "1",

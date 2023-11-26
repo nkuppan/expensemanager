@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.account.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.getCurrencyIcon
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
@@ -99,7 +98,6 @@ class AccountCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
-            currencyIcon.value = it.symbol.getCurrencyIcon()
             updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
     }

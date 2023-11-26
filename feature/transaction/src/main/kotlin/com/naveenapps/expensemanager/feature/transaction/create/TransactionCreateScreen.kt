@@ -554,7 +554,7 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 private fun TransactionCreateStatePreview() {
     ExpenseManagerTheme {
         TransactionCreateScreen(
-            currency = com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar,
+            currency = -1,
             selectedCategory = Category(
                 id = "1",
                 name = "Shopping",

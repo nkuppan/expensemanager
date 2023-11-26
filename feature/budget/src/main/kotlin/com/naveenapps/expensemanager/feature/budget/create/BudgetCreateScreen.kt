@@ -384,8 +384,6 @@ private fun BudgetCreateScreen(
 @Composable
 private fun BudgetCreateStatePreview() {
     ExpenseManagerTheme {
-        BudgetCreateScreen(
-            currency = com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
-        )
+        BudgetCreateScreen(currency = -1)
     }
 }

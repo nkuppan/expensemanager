@@ -169,11 +169,7 @@ fun CurrencyDialogViewPreview() {
     ExpenseManagerTheme {
         CurrencyDialogViewContent(
             onCurrencySelection = {},
-            selectedCurrency = Currency(
-                1,
-                1,
-                1
-            ),
+            selectedCurrency = Currency(1, 1,),
             currencies = emptyList(),
             onCurrencyPositionTypeChange = {
 
