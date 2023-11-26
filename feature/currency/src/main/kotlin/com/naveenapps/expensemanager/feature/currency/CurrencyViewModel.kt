@@ -2,12 +2,13 @@ package com.naveenapps.expensemanager.feature.currency
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetAllCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,41 +22,56 @@ import javax.inject.Inject
 class CurrencyViewModel @Inject constructor(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
-    getAllCurrencyUseCase: GetAllCurrencyUseCase,
     private val saveCurrencyUseCase: SaveCurrencyUseCase,
+    private val appComposeNavigator: AppComposeNavigator
 ) : ViewModel() {
 
     private val _currentCurrency = MutableStateFlow(getDefaultCurrencyUseCase())
     val currentCurrency = _currentCurrency.asStateFlow()
 
-    private val _currencies = MutableStateFlow<List<Currency>>(emptyList())
-    val currencies = _currencies.asStateFlow()
-
     init {
         getCurrencyUseCase.invoke().onEach {
             _currentCurrency.value = it
         }.launchIn(viewModelScope)
-
-        _currencies.value = getAllCurrencyUseCase.invoke()
     }
 
     fun selectThisCurrency(currency: Currency?) {
         currency ?: return
         viewModelScope.launch {
-            _currentCurrency.value = currency
-        }
-    }
-
-    fun saveSelectedCurrency() {
-        val currency = _currentCurrency.value
-        viewModelScope.launch {
-            saveCurrencyUseCase.invoke(currency)
+            _currentCurrency.value = _currentCurrency.value.copy(
+                name = currency.name,
+                symbol = currency.symbol,
+            )
+            saveSelectedCurrency()
         }
     }
 
     fun setCurrencyPositionType(textPosition: TextPosition) {
-        _currentCurrency.value = _currentCurrency.value.copy(
-            position = textPosition
-        )
+        viewModelScope.launch {
+            _currentCurrency.value = _currentCurrency.value.copy(
+                position = textPosition
+            )
+            saveSelectedCurrency()
+        }
+    }
+
+    fun setTextFormatChange(textFormat: TextFormat) {
+        viewModelScope.launch {
+            _currentCurrency.value = _currentCurrency.value.copy(
+                format = textFormat
+            )
+            saveSelectedCurrency()
+        }
+    }
+
+    private fun saveSelectedCurrency() {
+        viewModelScope.launch {
+            val currency = _currentCurrency.value
+            saveCurrencyUseCase.invoke(currency)
+        }
+    }
+
+    fun closePage() {
+        appComposeNavigator.popBackStack()
     }
 }

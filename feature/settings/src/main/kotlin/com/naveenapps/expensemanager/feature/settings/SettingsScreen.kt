@@ -45,7 +45,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
-import com.naveenapps.expensemanager.feature.currency.CurrencyDialogView
 import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
 import kotlinx.coroutines.launch
@@ -60,6 +59,10 @@ fun SettingsScreen() {
         when (it) {
             SettingOption.BACK -> {
                 viewModel.closePage()
+            }
+
+            SettingOption.CURRENCY -> {
+                viewModel.openCurrencyCustomiseScreen()
             }
 
             SettingOption.EXPORT -> {
@@ -78,7 +81,7 @@ fun SettingsScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsScreenScaffoldView(
-    currency: Currency? = null,
+    currency: Currency,
     theme: Theme? = null,
     settingOptionSelected: ((SettingOption) -> Unit)? = null
 ) {
@@ -89,13 +92,6 @@ private fun SettingsScreenScaffoldView(
     if (showThemeSelection) {
         ThemeDialogView {
             showThemeSelection = false
-        }
-    }
-
-    var showCurrencySelection by remember { mutableStateOf(false) }
-    if (showCurrencySelection) {
-        CurrencyDialogView {
-            showCurrencySelection = false
         }
     }
 
@@ -137,7 +133,7 @@ private fun SettingsScreenScaffoldView(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding),
-            currency = currency,
+            selectedCurrency = currency,
             theme = theme,
         ) {
             when (it) {
@@ -146,7 +142,7 @@ private fun SettingsScreenScaffoldView(
                 }
 
                 SettingOption.CURRENCY -> {
-                    showCurrencySelection = true
+                    settingOptionSelected?.invoke(it)
                 }
 
                 SettingOption.REMINDER -> {
@@ -197,7 +193,7 @@ private fun SettingsScreenScaffoldView(
 @Composable
 private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
-    currency: Currency? = null,
+    selectedCurrency: Currency,
     theme: Theme? = null,
     settingOptionSelected: ((SettingOption) -> Unit)? = null
 ) {
@@ -224,8 +220,8 @@ private fun SettingsScreenContent(
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.currency),
-            description = stringResource(id = R.string.select_currency),
-            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.account_balance
+            description = "${selectedCurrency.name}(${selectedCurrency.symbol})",
+            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.payments
         )
         SettingsItem(
             modifier = Modifier
@@ -418,7 +414,9 @@ fun SettingsScreenItemPreview() {
 @Composable
 fun SettingsScreenPreview() {
     ExpenseManagerTheme {
-        SettingsScreenScaffoldView()
+        SettingsScreenScaffoldView(
+            currency = Currency("$", "US Dollar")
+        )
     }
 }
 

@@ -1,14 +1,20 @@
 package com.naveenapps.expensemanager.core.model
 
 data class Currency(
-    val symbol: Int,
-    val name: Int,
-    val position: TextPosition = TextPosition.PREFIX
+    val symbol: String,
+    val name: String,
+    val position: TextPosition = TextPosition.PREFIX,
+    val format: TextFormat = TextFormat.NONE,
 )
 
 enum class TextPosition {
     PREFIX,
     SUFFIX;
+}
+
+enum class TextFormat {
+    NONE,
+    NUMBER_FORMAT,
 }
 
 

@@ -34,8 +34,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -103,16 +101,11 @@ class TransactionCreateViewModel @Inject constructor(
 
         setDate(Date())
 
-        getCurrencyUseCase.invoke().onEach {
-            selectedCurrency = it
-        }.launchIn(viewModelScope)
-
-        getCurrencyUseCase.invoke().combine(getAllAccountsUseCase.invoke()) { currency, accounts ->
-            currency to accounts
-        }.map { currencyAndAccountPair ->
-
-            val (currency, accounts) = currencyAndAccountPair
-
+        combine(
+            getCurrencyUseCase.invoke(),
+            getAllAccountsUseCase.invoke()
+        ) { currency, accounts ->
+            selectedCurrency = currency
             val mappedAccounts = if (accounts.isEmpty()) {
                 emptyList()
             } else {
@@ -130,12 +123,10 @@ class TransactionCreateViewModel @Inject constructor(
             _selectedToAccount.value = mappedAccounts.firstOrNull() ?: defaultAccount
         }.launchIn(viewModelScope)
 
-        selectedTransactionType.combine(getAllCategoryUseCase.invoke()) { transactionType, categories ->
-            transactionType to categories
-        }.onEach { pair ->
-
-            val (transactionType, categories) = pair
-
+        combine(
+            selectedTransactionType,
+            getAllCategoryUseCase.invoke()
+        ) { transactionType, categories ->
             val filteredCategories = categories.filter { category ->
                 if (transactionType.isIncome()) {
                     category.type.isIncome()

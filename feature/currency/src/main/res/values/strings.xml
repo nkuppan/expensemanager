@@ -5,5 +5,11 @@
     <string name="ok">OK</string>
     <string name="prefix_amount">Prefix ($500)</string>
     <string name="suffix_amount">Suffix (500$)</string>
+    <string name="currency">Currency</string>
+    <string name="select_currency">Select Currency</string>
+    <string name="currency_position">Currency Position</string>
+    <string name="currency_format">Currency Format</string>
+    <string name="none">None(1234.23)</string>
+    <string name="number_format">Format(1,23,423.13)</string>
 
 </resources>

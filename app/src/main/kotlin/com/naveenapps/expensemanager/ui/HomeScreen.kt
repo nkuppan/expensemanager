@@ -30,6 +30,7 @@ import com.naveenapps.expensemanager.feature.category.create.CategoryCreateScree
 import com.naveenapps.expensemanager.feature.category.details.CategoryDetailScreen
 import com.naveenapps.expensemanager.feature.category.list.CategoryListScreen
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
+import com.naveenapps.expensemanager.feature.currency.CurrencyCustomiseScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
@@ -119,6 +120,9 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(ExpenseManagerScreens.ReminderScreen.route) {
         ReminderScreen()
+    }
+    composable(ExpenseManagerScreens.CurrencyCustomiseScreen.route) {
+        CurrencyCustomiseScreen()
     }
     composable(ExpenseManagerScreens.CategoryTransaction.route) {
         CategoryTransactionTabScreen()

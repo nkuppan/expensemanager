@@ -13,13 +13,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
 
 
 @Composable
 fun TextFormatSelectionView(
-    selectedCurrencyPositionType: TextPosition,
-    onCurrencyPositionTypeChange: ((TextPosition) -> Unit),
+    textFormat: TextFormat,
+    onTextFormatChange: ((TextFormat) -> Unit),
     modifier: Modifier = Modifier
 ) {
 
@@ -31,20 +32,20 @@ fun TextFormatSelectionView(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.prefix_amount),
-            isSelected = selectedCurrencyPositionType == TextPosition.PREFIX,
+            filterName = stringResource(id = R.string.none),
+            isSelected = textFormat == TextFormat.NONE,
             onClick = {
-                onCurrencyPositionTypeChange.invoke(TextPosition.PREFIX)
+                onTextFormatChange.invoke(TextFormat.NONE)
             }
         )
         AppFilterChip(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.suffix_amount),
-            isSelected = selectedCurrencyPositionType == TextPosition.SUFFIX,
+            filterName = stringResource(id = R.string.number_format),
+            isSelected = textFormat == TextFormat.NUMBER_FORMAT,
             onClick = {
-                onCurrencyPositionTypeChange.invoke(TextPosition.SUFFIX)
+                onTextFormatChange.invoke(TextFormat.NUMBER_FORMAT)
             }
         )
     }

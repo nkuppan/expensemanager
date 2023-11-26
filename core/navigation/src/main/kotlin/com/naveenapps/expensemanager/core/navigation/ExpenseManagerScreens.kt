@@ -21,6 +21,7 @@ sealed class ExpenseManagerScreens(
     data object AnalysisScreen : ExpenseManagerScreens(route = "analysis")
     data object ExportScreen : ExpenseManagerScreens(route = "export")
     data object ReminderScreen : ExpenseManagerScreens(route = "reminder")
+    data object CurrencyCustomiseScreen : ExpenseManagerScreens(route = "currency_customise")
 
     data object AccountCreate : ExpenseManagerScreens(
         route = "account/create?accountId={accountId}",

@@ -23,9 +23,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -42,20 +39,12 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
-import com.naveenapps.expensemanager.feature.currency.CurrencyDialogView
 
 @Composable
 fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
 
     val currency by viewModel.currency.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
-
-    var showCurrencySelection by remember { mutableStateOf(false) }
-    if (showCurrencySelection) {
-        CurrencyDialogView {
-            showCurrencySelection = false
-        }
-    }
 
     Scaffold {
         OnboardingContentView(
@@ -65,7 +54,7 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
         ) { actionType, id ->
             when (actionType) {
                 1 -> {
-                    showCurrencySelection = true
+                    
                 }
 
                 2 -> {
@@ -128,7 +117,7 @@ private fun OnboardingContentView(
                     }
                     .fillMaxWidth(),
                 title = stringResource(id = R.string.currency),
-                description = stringResource(id = currency.name),
+                description = currency.name,
             )
             DashboardWidgetTitle(
                 modifier = Modifier
@@ -217,7 +206,7 @@ fun OnboardingScreenPreview() {
             OnboardingContentView(
                 modifier = Modifier
                     .fillMaxSize(),
-                currency = Currency(1, 1),
+                currency = Currency("1", "1"),
                 accounts = listOf(
                     AccountUiModel(
                         id = "1",

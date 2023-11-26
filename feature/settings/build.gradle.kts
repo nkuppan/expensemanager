@@ -13,7 +13,6 @@ dependencies {
     implementation(project(":feature:export"))
     implementation(project(":feature:datefilter"))
     implementation(project(":feature:reminder"))
-    implementation(project(":feature:currency"))
     implementation(project(":feature:theme"))
 
     implementation(libs.google.android.play.review)

@@ -1,36 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="prefix_amount_string">%s%.1f</string>
-    <string name="suffix_amount_string">%.1f%s</string>
+    <string name="amount_string">%s%s</string>
     <string name="balance_amount_string">%s</string>
 
-    <string name="dollar_type">$</string>
-    <string name="dollar_name">Dollar</string>
-
-    <string name="pound_type">£</string>
-    <string name="pound_name">Pound</string>
-
-    <string name="euro_type">€</string>
-    <string name="euro_name">Euro</string>
-
-    <string name="yen_type">¥</string>
-    <string name="yen_name">Yen</string>
-
-    <string name="yuan_type">¥</string>
-    <string name="yuan_name">Yuan</string>
-
-    <string name="swiss_franc_type">₣</string>
-    <string name="swiss_franc_name">Swiss Franc</string>
-
-    <string name="lira_type">₺</string>
-    <string name="lira_name">Lira</string>
-
-    <string name="ruble_type">₽</string>
-    <string name="ruble_name">Ruble</string>
-
-    <string name="rupee_type">₹</string>
-    <string name="rupee_name">Rupee</string>
-
-    <string name="default_currency_type">@string/dollar_type</string>
-    <string name="default_currency_name">@string/dollar_name</string>
+    <string name="default_currency_type">$</string>
+    <string name="default_currency_name">US Dollar</string>
 </resources>

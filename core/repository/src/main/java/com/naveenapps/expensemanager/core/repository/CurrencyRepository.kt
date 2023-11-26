@@ -12,7 +12,5 @@ interface CurrencyRepository {
 
     fun getSelectedCurrency(): Flow<Currency>
 
-    fun getAllCurrency(): List<Currency>
-
     fun getFormattedCurrency(amount: Amount): Amount
 }

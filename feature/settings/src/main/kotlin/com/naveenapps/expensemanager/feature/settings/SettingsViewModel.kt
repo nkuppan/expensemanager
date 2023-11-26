@@ -39,6 +39,10 @@ class SettingsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun openCurrencyCustomiseScreen() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.CurrencyCustomiseScreen.route)
+    }
+
     fun openExportScreen() {
         appComposeNavigator.navigate(ExpenseManagerScreens.ExportScreen.route)
     }

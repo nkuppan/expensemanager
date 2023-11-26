@@ -81,6 +81,7 @@ dependencies {
     implementation(project(":feature:theme"))
     implementation(project(":feature:export"))
     implementation(project(":feature:reminder"))
+    implementation(project(":feature:currency"))
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
