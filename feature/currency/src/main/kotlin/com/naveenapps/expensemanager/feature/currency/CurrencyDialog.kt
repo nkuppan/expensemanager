@@ -32,7 +32,7 @@ import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMo
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
+import com.naveenapps.expensemanager.core.model.TextPosition
 
 
 @Composable
@@ -63,7 +63,7 @@ fun CurrencyDialogViewContent(
     currencies: List<Currency>,
     selectedCurrency: Currency,
     onCurrencySelection: (Currency?) -> Unit,
-    onCurrencyPositionTypeChange: ((CurrencySymbolPosition) -> Unit),
+    onCurrencyPositionTypeChange: ((TextPosition) -> Unit),
     onDismiss: () -> Unit,
     onSave: () -> Unit,
 ) {

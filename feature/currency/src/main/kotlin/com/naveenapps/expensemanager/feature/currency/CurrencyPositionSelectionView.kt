@@ -13,13 +13,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
+import com.naveenapps.expensemanager.core.model.TextPosition
 
 
 @Composable
 fun CurrencyPositionTypeSelectionView(
-    selectedCurrencyPositionType: CurrencySymbolPosition,
-    onCurrencyPositionTypeChange: ((CurrencySymbolPosition) -> Unit),
+    selectedCurrencyPositionType: TextPosition,
+    onCurrencyPositionTypeChange: ((TextPosition) -> Unit),
     modifier: Modifier = Modifier
 ) {
 
@@ -32,9 +32,9 @@ fun CurrencyPositionTypeSelectionView(
                 .align(Alignment.CenterVertically)
                 .weight(1f),
             filterName = stringResource(id = R.string.prefix_amount),
-            isSelected = selectedCurrencyPositionType == CurrencySymbolPosition.PREFIX,
+            isSelected = selectedCurrencyPositionType == TextPosition.PREFIX,
             onClick = {
-                onCurrencyPositionTypeChange.invoke(CurrencySymbolPosition.PREFIX)
+                onCurrencyPositionTypeChange.invoke(TextPosition.PREFIX)
             }
         )
         AppFilterChip(
@@ -42,9 +42,9 @@ fun CurrencyPositionTypeSelectionView(
                 .align(Alignment.CenterVertically)
                 .weight(1f),
             filterName = stringResource(id = R.string.suffix_amount),
-            isSelected = selectedCurrencyPositionType == CurrencySymbolPosition.SUFFIX,
+            isSelected = selectedCurrencyPositionType == TextPosition.SUFFIX,
             onClick = {
-                onCurrencyPositionTypeChange.invoke(CurrencySymbolPosition.SUFFIX)
+                onCurrencyPositionTypeChange.invoke(TextPosition.SUFFIX)
             }
         )
     }
@@ -59,14 +59,14 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                 modifier = Modifier
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
-                selectedCurrencyPositionType = CurrencySymbolPosition.PREFIX,
+                selectedCurrencyPositionType = TextPosition.PREFIX,
                 onCurrencyPositionTypeChange = {}
             )
             CurrencyPositionTypeSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                selectedCurrencyPositionType = CurrencySymbolPosition.SUFFIX,
+                selectedCurrencyPositionType = TextPosition.SUFFIX,
                 onCurrencyPositionTypeChange = {}
             )
         }

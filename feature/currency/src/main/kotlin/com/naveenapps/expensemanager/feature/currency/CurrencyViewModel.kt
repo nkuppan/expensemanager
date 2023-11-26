@@ -7,7 +7,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCu
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
+import com.naveenapps.expensemanager.core.model.TextPosition
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,9 +53,9 @@ class CurrencyViewModel @Inject constructor(
         }
     }
 
-    fun setCurrencyPositionType(currencySymbolPosition: CurrencySymbolPosition) {
+    fun setCurrencyPositionType(textPosition: TextPosition) {
         _currentCurrency.value = _currentCurrency.value.copy(
-            position = currencySymbolPosition
+            position = textPosition
         )
     }
 }

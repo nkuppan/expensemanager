@@ -7,7 +7,7 @@ import com.naveenapps.expensemanager.core.data.utils.getCurrency
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.CurrencySymbolPosition
+import com.naveenapps.expensemanager.core.model.TextPosition
 import com.naveenapps.expensemanager.core.model.isPrefix
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -90,14 +90,14 @@ class CurrencyRepositoryImpl @Inject constructor(
 
         return combine(
             dataStore.getCurrencySymbol(context.getString(defaultCurrency.symbol)),
-            dataStore.getCurrencySymbolPosition(CurrencySymbolPosition.SUFFIX.ordinal)
+            dataStore.getCurrencySymbolPosition(TextPosition.SUFFIX.ordinal)
         ) { symbol, position ->
 
             val selectedCurrency = currencies.find { currency ->
                 context.getString(currency.symbol) == symbol
             } ?: defaultCurrency
 
-            selectedCurrency.copy(position = CurrencySymbolPosition.values()[position])
+            selectedCurrency.copy(position = TextPosition.values()[position])
         }
     }
 
