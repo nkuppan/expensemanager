@@ -101,7 +101,7 @@ class BudgetCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
-            currencyIcon.value = it.type.getCurrencyIcon()
+            currencyIcon.value = it.symbol.getCurrencyIcon()
         }.launchIn(viewModelScope)
     }
 

@@ -88,7 +88,7 @@ class CurrencyRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveCurrency(currency: Currency): Boolean = withContext(dispatchers.io) {
-        dataStore.setCurrencySymbol(currency.type)
+        dataStore.setCurrencySymbol(context.getString(currency.symbol))
         dataStore.setCurrencySymbolPosition(currency.position.ordinal)
         true
     }
@@ -97,12 +97,13 @@ class CurrencyRepositoryImpl @Inject constructor(
         val defaultCurrency = getDefaultCurrency()
         val currencies = getAllCurrency()
 
-        return dataStore.getCurrencySymbol(defaultCurrency.type).combine(
+        return combine(
+            dataStore.getCurrencySymbol(context.getString(defaultCurrency.symbol)),
             dataStore.getCurrencySymbolPosition(CurrencySymbolPosition.SUFFIX.ordinal)
         ) { symbol, position ->
 
             val selectedCurrency = currencies.find { currency ->
-                currency.type == symbol
+                context.getString(currency.symbol) == symbol
             } ?: defaultCurrency
 
             selectedCurrency.copy(position = CurrencySymbolPosition.values()[position])

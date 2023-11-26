@@ -129,7 +129,7 @@ private fun OnboardingContentView(
                     .fillMaxWidth(),
                 title = stringResource(id = R.string.currency),
                 description = stringResource(id = currency.name),
-                icon = currency.icon
+                icon = currency.symbolIcon
             )
             DashboardWidgetTitle(
                 modifier = Modifier
@@ -216,11 +216,7 @@ fun OnboardingScreenPreview() {
             OnboardingContentView(
                 modifier = Modifier
                     .fillMaxSize(),
-                currency = Currency(
-                    com.naveenapps.expensemanager.core.common.R.string.dollar_type,
-                    com.naveenapps.expensemanager.core.common.R.string.dollar_name,
-                    com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
-                ),
+                currency = Currency(1, 1, 1),
                 accounts = listOf(
                     AccountUiModel(
                         id = "1",

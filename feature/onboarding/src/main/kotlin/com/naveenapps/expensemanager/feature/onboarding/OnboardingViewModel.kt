@@ -3,12 +3,12 @@ package com.naveenapps.expensemanager.feature.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
-import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -24,6 +24,7 @@ import javax.inject.Inject
 class OnboardingViewModel @Inject constructor(
     getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,
+    getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     private val setOnboardingStatusUseCase: SetOnboardingStatusUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
@@ -33,13 +34,7 @@ class OnboardingViewModel @Inject constructor(
     private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
     val accounts = _accounts.asStateFlow()
 
-    private val _currency = MutableStateFlow(
-        Currency(
-            com.naveenapps.expensemanager.core.common.R.string.dollar_type,
-            com.naveenapps.expensemanager.core.common.R.string.dollar_name,
-            com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
-        )
-    )
+    private val _currency = MutableStateFlow(getDefaultCurrencyUseCase())
     val currency = _currency.asStateFlow()
 
     init {

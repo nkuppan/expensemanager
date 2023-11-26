@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.core.model
 
 data class Currency(
-    val type: Int,
+    val symbol: Int,
     val name: Int,
-    val icon: Int,
+    val symbolIcon: Int,
     val position: CurrencySymbolPosition = CurrencySymbolPosition.PREFIX
 )
 

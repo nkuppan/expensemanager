@@ -14,7 +14,7 @@ fun getCurrency(
         CurrencySymbolPosition.PREFIX -> {
             context.getString(
                 R.string.prefix_amount_string,
-                context.getString(currency.type),
+                context.getString(currency.symbol),
                 amount
             )
         }
@@ -23,7 +23,7 @@ fun getCurrency(
             context.getString(
                 R.string.suffix_amount_string,
                 amount,
-                context.getString(currency.type)
+                context.getString(currency.symbol)
             )
         }
     }

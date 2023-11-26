@@ -225,7 +225,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.currency),
             description = stringResource(id = R.string.select_currency),
-            icon = currency?.icon
+            icon = currency?.symbolIcon
                 ?: com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
         )
         SettingsItem(

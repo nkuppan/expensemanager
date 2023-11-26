@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.Currency
@@ -102,7 +103,7 @@ fun CurrencyDialogViewContent(
                     )
                 }
                 items(currencies) { currency ->
-                    val isSelectedCurrency = selectedCurrency.type == currency.type
+                    val isSelectedCurrency = selectedCurrency.symbol == currency.symbol
                     Row(
                         modifier = Modifier
                             .clickable {
@@ -126,7 +127,7 @@ fun CurrencyDialogViewContent(
                     ) {
                         Text(
                             modifier = Modifier.weight(1f),
-                            text = "${stringResource(id = currency.name)} (${stringResource(id = currency.type)})"
+                            text = "${stringResource(id = currency.name)} (${stringResource(id = currency.symbol)})"
                         )
                         if (isSelectedCurrency) {
                             Icon(
@@ -162,16 +163,16 @@ fun CurrencyDialogViewContent(
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 fun CurrencyDialogViewPreview() {
     ExpenseManagerTheme {
         CurrencyDialogViewContent(
             onCurrencySelection = {},
             selectedCurrency = Currency(
-                com.naveenapps.expensemanager.core.common.R.string.dollar_type,
-                com.naveenapps.expensemanager.core.common.R.string.dollar_name,
-                com.naveenapps.expensemanager.core.common.R.drawable.currency_dollar
+                1,
+                1,
+                1
             ),
             currencies = emptyList(),
             onCurrencyPositionTypeChange = {

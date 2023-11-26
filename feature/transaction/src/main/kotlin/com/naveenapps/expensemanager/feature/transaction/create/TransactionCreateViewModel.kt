@@ -104,7 +104,7 @@ class TransactionCreateViewModel @Inject constructor(
         setDate(Date())
 
         getCurrencyUseCase.invoke().onEach {
-            _currencyIcon.value = it.icon
+            _currencyIcon.value = it.symbolIcon
             selectedCurrency = it
         }.launchIn(viewModelScope)
 

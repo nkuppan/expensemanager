@@ -99,7 +99,7 @@ class AccountCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
-            currencyIcon.value = it.type.getCurrencyIcon()
+            currencyIcon.value = it.symbol.getCurrencyIcon()
             updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
     }
