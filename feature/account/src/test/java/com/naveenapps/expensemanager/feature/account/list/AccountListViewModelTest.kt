@@ -9,7 +9,6 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.TextPosition
 import com.naveenapps.expensemanager.core.model.isCredit
 import com.naveenapps.expensemanager.core.model.isRegular
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -41,11 +40,7 @@ class AccountListViewModelTest : BaseCoroutineTest() {
     private lateinit var accountListViewModel: AccountListViewModel
 
     private val accountFlow = MutableStateFlow<List<Account>>(emptyList())
-    private val currencyFlow = MutableStateFlow(
-        Currency(
-            1, 1, TextPosition.PREFIX
-        )
-    )
+    private val currencyFlow = MutableStateFlow(Currency("1", "1"))
 
     override fun onCreate() {
         whenever(currencyRepository.getSelectedCurrency()).thenReturn(currencyFlow)
