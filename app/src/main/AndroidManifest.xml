@@ -68,7 +68,7 @@
                 android:value="androidx.startup" />
 
             <meta-data
-                android:name="com.naveenapps.expensemanager.initializer.ThemeInitializer"
+                android:name="com.naveenapps.expensemanager.initializer.AppInitializer"
                 android:value="androidx.startup" />
 
             <meta-data

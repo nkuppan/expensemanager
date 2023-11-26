@@ -21,7 +21,7 @@ interface InitializerEntryPoint {
         }
     }
 
-    fun inject(initializer: ThemeInitializer)
+    fun inject(initializer: AppInitializer)
 
     fun inject(initializer: PreloadDatabaseInitializer)
 }

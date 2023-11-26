@@ -13,6 +13,7 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -196,7 +197,7 @@ class PreloadDatabaseInitializer : Initializer<Unit> {
 
         InitializerEntryPoint.resolve(context).inject(this)
 
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
 
             val isPreloaded = getPreloadStatusUseCase.invoke()
 

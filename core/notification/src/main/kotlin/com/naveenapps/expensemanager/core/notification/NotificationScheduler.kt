@@ -11,15 +11,16 @@ import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
+import androidx.core.content.ContextCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -32,6 +33,15 @@ class NotificationScheduler @Inject constructor(
     @ApplicationContext private val context: Context,
     private val reminderTimeRepository: ReminderTimeRepository
 ) {
+
+    suspend fun checkAndRestartReminder() {
+
+        if (canWeShowNotification().not()) {
+            return
+        }
+
+        setReminder()
+    }
 
     suspend fun setReminder() {
 
@@ -74,16 +84,13 @@ class NotificationScheduler @Inject constructor(
         return setCalendar
     }
 
-    fun showNotification(
+    suspend fun showNotification(
         destinationClass: String,
         title: String,
         content: String
     ) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS,
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
+
+        if (canWeShowNotification().not()) {
             return
         }
 
@@ -120,6 +127,27 @@ class NotificationScheduler @Inject constructor(
             NotificationId.DAILY_REMINDER_REQUEST_CODE,
             notification
         )
+    }
+
+    private suspend fun canWeShowNotification(): Boolean {
+
+        val isReminderOn = reminderTimeRepository.isReminderOn().firstOrNull() ?: false
+
+        if (isReminderOn.not()) {
+            return false
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                return false
+            }
+        }
+
+        return true
     }
 
     private fun createChannelIfRequired() {

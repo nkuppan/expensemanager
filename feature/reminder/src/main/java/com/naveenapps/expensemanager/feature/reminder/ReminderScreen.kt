@@ -58,13 +58,15 @@ fun ReminderScreen(
             } else {
                 LaunchedEffect(key1 = "permission") {
                     notificationPermission.launchPermissionRequest()
-                    if (showMessageLayout == 0) {
-                        showMessageLayout = 1
+                    showMessageLayout = if (showMessageLayout == 0) {
+                        1
                     } else {
-                        showMessageLayout = 3
+                        3
                     }
                 }
             }
+        } else {
+            viewModel.saveReminderStatus(true)
         }
         notificationPermission
     } else {
