@@ -1,13 +1,16 @@
 package com.naveenapps.expensemanager.feature.analysis
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageDataUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDataUseCase
 import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.AverageData
+import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
@@ -22,10 +25,20 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AnalysisScreenViewModel @Inject constructor(
+    getCurrentThemeUseCase: GetCurrentThemeUseCase,
     getChartDataUseCase: GetChartDataUseCase,
     getAverageDataUseCase: GetAverageDataUseCase,
     getAmountStateUseCase: GetAmountStateUseCase,
 ) : ViewModel() {
+
+
+    private val _currentTheme = MutableStateFlow(
+        Theme(
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
+            R.string.analysis
+        )
+    )
+    val currentTheme = _currentTheme.asStateFlow()
 
     private val _amountUiState = MutableStateFlow(AmountUiState())
     val amountUiState = _amountUiState.asStateFlow()
@@ -82,6 +95,10 @@ class AnalysisScreenViewModel @Inject constructor(
 
         getAmountStateUseCase.invoke().onEach { response ->
             _amountUiState.value = response
+        }.launchIn(viewModelScope)
+
+        getCurrentThemeUseCase.invoke().onEach {
+            _currentTheme.value = it
         }.launchIn(viewModelScope)
     }
 }

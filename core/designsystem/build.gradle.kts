@@ -12,6 +12,8 @@ android {
 dependencies {
     implementation(project(":core:common"))
 
+    api(libs.androidx.appcompat)
+
     api(libs.androidx.compose.activity)
     api(libs.androidx.compose.animation)
     api(libs.androidx.compose.foundation)
@@ -33,10 +35,8 @@ dependencies {
     api(libs.androidx.core.ktx)
 
     implementation(libs.vico.compose)
-    implementation(libs.vico.compose.m2)
     implementation(libs.vico.compose.m3)
     implementation(libs.vico.core)
-    implementation(libs.vico.views)
 
     implementation(libs.mpcharts)
 }

@@ -32,6 +32,7 @@ import com.naveenapps.expensemanager.core.designsystem.components.AMOUNT_VALUE
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.WholeAverageData
@@ -42,6 +43,7 @@ import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
 import com.patrykandpatrick.vico.compose.chart.line.lineSpec
 import com.patrykandpatrick.vico.compose.component.shape.shader.verticalGradient
+import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisItemPlacer
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
@@ -55,6 +57,9 @@ fun AnalysisGraphScreen() {
     val averageData by viewModel.averageData.collectAsState()
     val amountUiState by viewModel.amountUiState.collectAsState()
     val transactionPeriod by viewModel.transactionPeriod.collectAsState()
+
+    val currentTheme by viewModel.currentTheme.collectAsState()
+    val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
     when (val response = graphData) {
         UiState.Empty -> {
@@ -73,7 +78,8 @@ fun AnalysisGraphScreen() {
                     item {
                         ChartScreen(
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                            chart = newGraphData.chartData
+                            chart = newGraphData.chartData,
+                            isDarkTheme = isDarkTheme
                         )
                     }
                 }
@@ -229,6 +235,7 @@ private fun AverageAmountItems(
 @Composable
 fun ChartScreen(
     chart: AnalysisUiChartData?,
+    isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
 ) {
 
@@ -239,52 +246,53 @@ fun ChartScreen(
         colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
 
     val marker = rememberMarker()
-
-    Chart(
-        modifier = modifier,
-        chart = lineChart(
-            lines = listOf(
-                lineSpec(
-                    lineColor = expenseColor,
-                    lineBackgroundShader = verticalGradient(
-                        arrayOf(
-                            expenseColor.copy(0.5f),
-                            expenseColor.copy(alpha = 0f)
+    ProvideChartStyle(rememberChartStyle(chartColors, isDarkTheme)) {
+        Chart(
+            modifier = modifier,
+            chart = lineChart(
+                lines = listOf(
+                    lineSpec(
+                        lineColor = expenseColor,
+                        lineBackgroundShader = verticalGradient(
+                            arrayOf(
+                                expenseColor.copy(0.5f),
+                                expenseColor.copy(alpha = 0f)
+                            ),
                         ),
                     ),
+                    lineSpec(
+                        lineColor = incomeColor,
+                        lineBackgroundShader = verticalGradient(
+                            arrayOf(
+                                incomeColor.copy(0.5f),
+                                incomeColor.copy(alpha = 0f)
+                            ),
+                        ),
+                    )
                 ),
-                lineSpec(
-                    lineColor = incomeColor,
-                    lineBackgroundShader = verticalGradient(
-                        arrayOf(
-                            incomeColor.copy(0.5f),
-                            incomeColor.copy(alpha = 0f)
-                        ),
-                    ),
-                )
             ),
-        ),
-        startAxis = rememberStartAxis(
-            itemPlacer = AxisItemPlacer.Vertical.default(6),
-            label = axisLabelComponent(),
-            valueFormatter = { value, _ ->
-                String.format("%.1f", value)
-            }
-        ),
-        bottomAxis = rememberBottomAxis(
-            itemPlacer = AxisItemPlacer.Horizontal.default(5),
-            label = axisLabelComponent(),
-            valueFormatter = { value, _ ->
-                if (chart.dates.isNotEmpty()) {
-                    chart.dates[value.toInt()]
-                } else {
-                    ""
+            startAxis = rememberStartAxis(
+                itemPlacer = AxisItemPlacer.Vertical.default(6),
+                label = axisLabelComponent(),
+                valueFormatter = { value, _ ->
+                    String.format("%.1f", value)
                 }
-            }
-        ),
-        model = chart.chartData,
-        marker = marker,
-    )
+            ),
+            bottomAxis = rememberBottomAxis(
+                itemPlacer = AxisItemPlacer.Horizontal.default(5),
+                label = axisLabelComponent(),
+                valueFormatter = { value, _ ->
+                    if (chart.dates.isNotEmpty()) {
+                        chart.dates[value.toInt()]
+                    } else {
+                        ""
+                    }
+                }
+            ),
+            model = chart.chartData,
+            marker = marker,
+        )
+    }
 }
 
 @Preview
@@ -292,7 +300,8 @@ fun ChartScreen(
 fun ChartScreenPreview() {
     ExpenseManagerTheme {
         ChartScreen(
-            AnalysisUiChartData(
+            isDarkTheme = true,
+            chart = AnalysisUiChartData(
                 chartData = entryModelOf(
                     listOf(
                         entryOf(0, 1),
