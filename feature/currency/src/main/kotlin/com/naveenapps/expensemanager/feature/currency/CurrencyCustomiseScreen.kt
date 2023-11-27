@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.nkuppan.countrycompose.presentation.currency.CountryCurrencySelectionDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
@@ -41,9 +42,11 @@ fun CurrencyCustomiseScreen(
 ) {
     var showCurrencyPage by remember { mutableStateOf(false) }
     val selectedCurrency by viewModel.currentCurrency.collectAsState()
+    val theme by viewModel.theme.collectAsState()
 
     if (showCurrencyPage) {
         CountryCurrencySelectionDialog(
+            isDarkTheme = shouldUseDarkTheme(theme = theme.mode),
             onDismissRequest = {
                 showCurrencyPage = false
             }

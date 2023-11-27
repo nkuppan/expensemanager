@@ -10,5 +10,5 @@ android {
 }
 
 dependencies {
-    implementation("com.github.nkuppan.country:countrycompose:1.1.0")
+    implementation(libs.country.compose)
 }

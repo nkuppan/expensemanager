@@ -21,7 +21,7 @@ class CurrencyDataStore(private val dataStore: DataStore<Preferences>) {
                 preferences[KEY_CURRENCY_TEXT_FORMAT] ?: defaultCurrency.format.ordinal
             Currency(
                 name = preferences[KEY_CURRENCY_NAME] ?: defaultCurrency.name,
-                symbol = preferences[KEY_CURRENCY_SYMBOL] ?: defaultCurrency.name,
+                symbol = preferences[KEY_CURRENCY_SYMBOL] ?: defaultCurrency.symbol,
                 position = TextPosition.values()[position],
                 format = TextFormat.values()[format],
             )
