@@ -198,7 +198,9 @@ class TransactionCreateViewModel @Inject constructor(
             return
         }
 
-        if (amount.toDouble() <= 0.0) {
+        val amountValue = amount.toDoubleOrNull()
+
+        if (amountValue == null || amountValue <= 0.0) {
             _amountErrorMessage.value =
                 UiText.StringResource(R.string.amount_should_greater_than_zero)
             return
@@ -223,7 +225,7 @@ class TransactionCreateViewModel @Inject constructor(
                 null
             },
             type = selectedTransactionType.value,
-            amount = Amount(amount.toDouble()),
+            amount = Amount(amountValue),
             imagePath = "",
             createdOn = date.value,
             updatedOn = Calendar.getInstance().time

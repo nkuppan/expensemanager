@@ -54,4 +54,8 @@ class SettingsViewModel @Inject constructor(
     fun closePage() {
         appComposeNavigator.popBackStack()
     }
+
+    fun openAboutUs() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.AboutUsScreen.route)
+    }
 }

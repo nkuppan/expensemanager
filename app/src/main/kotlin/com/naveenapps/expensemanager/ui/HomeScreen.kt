@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.feature.about.AboutScreen
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
 import com.naveenapps.expensemanager.feature.analysis.AnalysisScreen
@@ -126,6 +127,9 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(ExpenseManagerScreens.CategoryTransaction.route) {
         CategoryTransactionTabScreen()
+    }
+    composable(ExpenseManagerScreens.AboutUsScreen.route) {
+        AboutScreen()
     }
 }
 

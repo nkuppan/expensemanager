@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":feature:datefilter"))
     implementation(project(":feature:reminder"))
     implementation(project(":feature:theme"))
+    implementation(project(":feature:about"))
 
     implementation(libs.google.android.play.review)
     implementation(libs.app.update.ktx)

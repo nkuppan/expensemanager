@@ -16,7 +16,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -39,9 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getAppVersionName
-import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openEmailToOption
-import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
@@ -71,6 +67,10 @@ fun SettingsScreen() {
 
             SettingOption.REMINDER -> {
                 viewModel.openReminderScreen()
+            }
+
+            SettingOption.ABOUT_US -> {
+                viewModel.openAboutUs()
             }
 
             else -> Unit
@@ -141,14 +141,6 @@ private fun SettingsScreenScaffoldView(
                     showThemeSelection = true
                 }
 
-                SettingOption.CURRENCY -> {
-                    settingOptionSelected?.invoke(it)
-                }
-
-                SettingOption.REMINDER -> {
-                    settingOptionSelected?.invoke(it)
-                }
-
                 SettingOption.FILTER -> {
                     scope.launch {
                         bottomSheetState.show()
@@ -156,35 +148,13 @@ private fun SettingsScreenScaffoldView(
                     }
                 }
 
-                SettingOption.EXPORT -> {
-                    settingOptionSelected?.invoke(it)
-                }
-                //TODO Want to replace them with remote config
-                SettingOption.INFO -> {
-                    openWebPage(context, "https://expensemanager.naveenapps.com/")
-                }
-
                 SettingOption.RATE_US -> {
                     launchReviewWorkflow(context)
                 }
 
-                SettingOption.GITHUB -> {
-                    openWebPage(context, "https://www.github.com/nkuppan")
+                else -> {
+                    settingOptionSelected?.invoke(it)
                 }
-
-                SettingOption.TWITTER -> {
-                    openWebPage(context, "https://www.twitter.com/naveenkumarn27")
-                }
-
-                SettingOption.INSTAGRAM -> {
-                    openWebPage(context, "https://www.instagram.com/naveenkumar_kup")
-                }
-
-                SettingOption.MAIL -> {
-                    openEmailToOption(context, "naveenkumarn2@gmail.com")
-                }
-
-                else -> Unit
             }
         }
     }
@@ -259,11 +229,11 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.INFO)
+                    settingOptionSelected?.invoke(SettingOption.ABOUT_US)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
-            title = stringResource(id = R.string.info),
+            title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
             description = stringResource(id = R.string.about_the_app_information),
             icon = R.drawable.ic_info
         )
@@ -277,77 +247,6 @@ private fun SettingsScreenContent(
             title = stringResource(id = R.string.rate_us),
             description = stringResource(id = R.string.rate_us_message),
             icon = R.drawable.ic_rate
-        )
-
-        DeveloperInfoView(settingOptionSelected)
-    }
-}
-
-@Composable
-private fun DeveloperInfoView(
-    settingOptionSelected: ((SettingOption) -> Unit)? = null
-) {
-    val context = LocalContext.current
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Text(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.developed_by)
-        )
-        Row(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp)
-        ) {
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(SettingOption.GITHUB)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_github),
-                    contentDescription = ""
-                )
-            }
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(SettingOption.TWITTER)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_twitter),
-                    contentDescription = ""
-                )
-            }
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(SettingOption.INSTAGRAM)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_instagram),
-                    contentDescription = ""
-                )
-            }
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(SettingOption.MAIL)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_mail),
-                    contentDescription = ""
-                )
-            }
-        }
-        Text(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
-            text = stringResource(
-                id = R.string.app_version,
-                context.getAppVersionName()
-            )
         )
     }
 }
@@ -385,12 +284,8 @@ private enum class SettingOption {
     REMINDER,
     FILTER,
     EXPORT,
-    INFO,
+    ABOUT_US,
     RATE_US,
-    GITHUB,
-    TWITTER,
-    INSTAGRAM,
-    MAIL
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

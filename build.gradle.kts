@@ -1,4 +1,12 @@
 // Lists all plugins used throughout the project without applying them.
+buildscript {
+    repositories {
+        google()
+    }
+    dependencies {
+        classpath(libs.google.oss.licenses.plugin)
+    }
+}
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false

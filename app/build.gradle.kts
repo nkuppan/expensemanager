@@ -7,6 +7,7 @@ plugins {
     id("com.github.triplet.play")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -83,6 +84,7 @@ dependencies {
     implementation(project(":feature:export"))
     implementation(project(":feature:reminder"))
     implementation(project(":feature:currency"))
+    implementation(project(":feature:about"))
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
@@ -102,6 +104,8 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.work.ktx)
     implementation(libs.hilt.ext.work)
+
+    implementation(libs.google.oss.licenses)
 
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))
