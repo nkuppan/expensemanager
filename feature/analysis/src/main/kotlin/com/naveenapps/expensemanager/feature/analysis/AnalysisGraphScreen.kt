@@ -27,11 +27,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.UiState
+import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AMOUNT_VALUE
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.AverageData
@@ -241,11 +244,11 @@ fun ChartScreen(
 
     chart ?: return
 
-    val expenseColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
-    val incomeColor =
-        colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
+    val expenseColor = getExpenseColor()
+    val incomeColor = getIncomeColor()
 
     val marker = rememberMarker()
+
     ProvideChartStyle(rememberChartStyle(chartColors, isDarkTheme)) {
         Chart(
             modifier = modifier,
@@ -275,7 +278,7 @@ fun ChartScreen(
                 itemPlacer = AxisItemPlacer.Vertical.default(6),
                 label = axisLabelComponent(),
                 valueFormatter = { value, _ ->
-                    String.format("%.1f", value)
+                    getCompactNumber(value)
                 }
             ),
             bottomAxis = rememberBottomAxis(
