@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-internal class HomeActivity : ComponentActivity() {
+internal class MainActivity : ComponentActivity() {
 
     @Inject
     internal lateinit var appComposeNavigator: AppComposeNavigator
