@@ -1,8 +1,10 @@
 package com.naveenapps.expensemanager.feature.settings
 
-import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -36,7 +38,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.play.core.review.ReviewManagerFactory
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
@@ -317,20 +318,10 @@ fun SettingsScreenPreview() {
 
 
 fun launchReviewWorkflow(context: Context) {
-    val manager = ReviewManagerFactory.create(context)
-    val request = manager.requestReviewFlow()
-    request.addOnCompleteListener { task ->
-        if (task.isSuccessful) {
-            // We got the ReviewInfo object
-            val reviewInfo = task.result
-            reviewInfo?.let {
-                val flow = manager.launchReviewFlow(context as Activity, reviewInfo)
-                flow.addOnCompleteListener { _ ->
-                    // The flow has finished. The API does not indicate whether the user
-                    // reviewed or not, or even whether the review dialog was shown. Thus, no
-                    // matter the result, we continue our app flow.
-                }
-            }
-        }
+    val packageName = context.packageName
+    try {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+    } catch (e: ActivityNotFoundException) {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
     }
 }
