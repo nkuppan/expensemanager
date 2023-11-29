@@ -5,6 +5,7 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import java.util.Date
@@ -13,8 +14,10 @@ val FAKE_CATEGORY = Category(
     id = "1",
     name = "Test",
     type = CategoryType.EXPENSE,
-    iconName = "#FFFFFF",
-    iconBackgroundColor = "#FFFFFF",
+    storedIcon = StoredIcon(
+        name = "#FFFFFF",
+        backgroundColor = "#FFFFFF"
+    ),
     createdOn = Date(),
     updatedOn = Date()
 )
@@ -23,8 +26,10 @@ val FAKE_SECOND_CATEGORY = Category(
     id = "2",
     name = "Test",
     type = CategoryType.EXPENSE,
-    iconName = "#FFFFFF",
-    iconBackgroundColor = "#FFFFFF",
+    storedIcon = StoredIcon(
+        name = "#FFFFFF",
+        backgroundColor = "#FFFFFF"
+    ),
     createdOn = Date(),
     updatedOn = Date()
 )
@@ -33,8 +38,10 @@ val FAKE_FAVORITE_CATEGORY = Category(
     id = "1",
     name = "Test",
     type = CategoryType.EXPENSE,
-    iconName = "#FFFFFF",
-    iconBackgroundColor = "#FFFFFF",
+    storedIcon = StoredIcon(
+        name = "#FFFFFF",
+        backgroundColor = "#FFFFFF"
+    ),
     createdOn = Date(),
     updatedOn = Date()
 )
@@ -43,8 +50,10 @@ val FAKE_ACCOUNT = Account(
     id = "1",
     name = "Test",
     type = AccountType.REGULAR,
-    iconName = "",
-    iconBackgroundColor = "#FFFFFF",
+    storedIcon = StoredIcon(
+        name = "#FFFFFF",
+        backgroundColor = "#FFFFFF"
+    ),
     createdOn = Date(),
     updatedOn = Date()
 )
@@ -53,8 +62,10 @@ val FAKE_SECOND_ACCOUNT = Account(
     id = "2",
     name = "Test",
     type = AccountType.REGULAR,
-    iconName = "",
-    iconBackgroundColor = "#FFFFFF",
+    storedIcon = StoredIcon(
+        name = "#FFFFFF",
+        backgroundColor = "#FFFFFF"
+    ),
     createdOn = Date(),
     updatedOn = Date()
 )

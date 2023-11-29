@@ -12,6 +12,10 @@ class CheckAccountValidationUseCase @Inject constructor() {
             return Resource.Error(Exception("ID shouldn't be blank"))
         }
 
+        if (account.storedIcon.name.isBlank()) {
+            return Resource.Error(Exception("Icon name shouldn't be blank"))
+        }
+
         if (account.storedIcon.backgroundColor.isBlank()) {
             return Resource.Error(Exception("Background color shouldn't be blank"))
         }
