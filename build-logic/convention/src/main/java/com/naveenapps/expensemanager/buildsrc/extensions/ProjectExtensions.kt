@@ -19,11 +19,12 @@ val Project.libs
 
 
 private val coverageExclusions = listOf(
-    // Android
     "**/R.class",
-    "**/R\$*.class",
+    "**/R$*.class",
     "**/BuildConfig.*",
-    "**/Manifest*.*"
+    "**/Manifest*.*",
+    "**/*Test*.*",
+    "android/**/*.*"
 )
 
 private fun String.capitalize() = replaceFirstChar {

@@ -67,6 +67,10 @@ jobs:
         if: always()
         run: ./gradlew testDebugUnitTest
 
+      - name: Running Test coverage
+        if: always()
+        run: ./gradlew jacocoTestDebugUnitTestReport
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
