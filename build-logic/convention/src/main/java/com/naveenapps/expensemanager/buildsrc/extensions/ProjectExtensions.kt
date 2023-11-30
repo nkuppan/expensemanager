@@ -42,10 +42,12 @@ internal fun Project.configureJacoco(
 
     androidComponentsExtension.onVariants { variant ->
         val testTaskName = "test${variant.name.capitalize()}UnitTest"
+        val coverageTestTaskName = "create${variant.name.capitalize()}CoverageReport"
         val buildDir = layout.buildDirectory.get().asFile
         val reportTask =
             tasks.register("jacoco${testTaskName.capitalize()}Report", JacocoReport::class) {
                 dependsOn(testTaskName)
+                dependsOn(coverageTestTaskName)
 
                 reports {
                     xml.required.set(true)
@@ -64,7 +66,10 @@ internal fun Project.configureJacoco(
                         "$projectDir/src/main/kotlin"
                     )
                 )
-                executionData.setFrom(file("$buildDir/jacoco/$testTaskName.exec"))
+                executionData.setFrom(
+                    file("$buildDir/jacoco/$testTaskName.exec"),
+                    file("$buildDir/outputs/code-coverage/connected/*coverage.ec"),
+                )
             }
 
         jacocoTestReport.dependsOn(reportTask)

@@ -68,6 +68,17 @@ fun ApplicationExtension.configureAndroidAppVersion() {
     }
 }
 
+fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *>) {
+    extension.apply {
+        testOptions {
+            unitTests {
+                // For Robolectric
+                isIncludeAndroidResources = true
+            }
+        }
+    }
+}
+
 fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
 
     extension.apply {

@@ -5,6 +5,7 @@ buildscript {
     }
     dependencies {
         classpath(libs.google.oss.licenses.plugin)
+        classpath("org.jacoco:org.jacoco.core:0.8.8")
     }
 }
 plugins {

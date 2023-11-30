@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.buildsrc.extensions.configureAndroidAppVers
 import com.naveenapps.expensemanager.buildsrc.extensions.configureBuildFeatures
 import com.naveenapps.expensemanager.buildsrc.extensions.configureJVM
 import com.naveenapps.expensemanager.buildsrc.extensions.configureJacoco
+import com.naveenapps.expensemanager.buildsrc.extensions.configureTestOptions
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -29,6 +30,7 @@ class AndroidAppBasicConfigPlugin : Plugin<Project> {
                 configureAndroid()
                 configureAndroidAppVersion()
                 configureBuildFeatures()
+                configureTestOptions(this)
             }
         }
     }

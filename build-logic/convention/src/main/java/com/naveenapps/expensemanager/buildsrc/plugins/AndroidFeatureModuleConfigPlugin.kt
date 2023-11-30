@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.buildsrc.extensions.configureAndroid
 import com.naveenapps.expensemanager.buildsrc.extensions.configureBuildFeatures
 import com.naveenapps.expensemanager.buildsrc.extensions.configureJVM
 import com.naveenapps.expensemanager.buildsrc.extensions.configureJacoco
+import com.naveenapps.expensemanager.buildsrc.extensions.configureTestOptions
 import com.naveenapps.expensemanager.buildsrc.extensions.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -31,6 +32,7 @@ class AndroidFeatureModuleConfigPlugin : Plugin<Project> {
                 configureAndroid()
                 configureBuildFeatures()
                 configureJacoco(extension)
+                configureTestOptions(this)
             }
 
             dependencies {
