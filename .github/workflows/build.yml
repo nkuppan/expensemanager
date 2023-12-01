@@ -71,4 +71,4 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          files: "./build/reports/jacoco/allDebugCoverage/allDebugCoverage.xml"
+          full_report: ./build/reports/jacoco/allDebugCoverage/allDebugCoverage.xml
