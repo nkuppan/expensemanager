@@ -63,12 +63,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Run local tests
-        if: always()
-        run: ./gradlew debugCoverage allDebugCoverage
+      - name: Run sub-projects coverage
+        run: ./gradlew debugCoverage
+
+      - name: Run coverage merge
+        run: ./gradlew allDebugCoverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          files: ./build/reports/jacoco/allDebugCoverage/allDebugCoverage.xml
           full_report: /home/runner/work/expensemanager/expensemanager/build/reports/jacoco/allDebugCoverage/allDebugCoverage.xml
