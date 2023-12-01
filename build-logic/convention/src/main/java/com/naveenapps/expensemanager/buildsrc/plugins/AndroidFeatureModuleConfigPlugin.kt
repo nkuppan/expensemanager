@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.buildsrc.plugins
 
-import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
 import com.naveenapps.expensemanager.buildsrc.extensions.configureAndroid
 import com.naveenapps.expensemanager.buildsrc.extensions.configureBuildFeatures
@@ -12,7 +11,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import org.gradle.kotlin.dsl.getByType
 import kotlin.jvm.optionals.getOrNull
 
 @SuppressWarnings("unused")
@@ -21,17 +19,15 @@ class AndroidFeatureModuleConfigPlugin : Plugin<Project> {
         with(target) {
 
             with(pluginManager) {
-                apply("org.gradle.jacoco")
                 apply("com.android.library")
+                apply("jacoco")
             }
-
-            val extension = extensions.getByType<LibraryAndroidComponentsExtension>()
 
             extensions.configure<LibraryExtension> {
                 configureJVM()
                 configureAndroid()
                 configureBuildFeatures()
-                configureJacoco(extension)
+                configureJacoco()
                 configureTestOptions(this)
             }
 

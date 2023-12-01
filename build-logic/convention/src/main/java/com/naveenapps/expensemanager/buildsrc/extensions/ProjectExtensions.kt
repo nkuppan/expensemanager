@@ -1,13 +1,11 @@
 package com.naveenapps.expensemanager.buildsrc.extensions
 
-import com.android.build.api.variant.AndroidComponentsExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
@@ -17,62 +15,69 @@ import java.util.Locale
 val Project.libs
     get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-
 private val coverageExclusions = listOf(
     "**/R.class",
     "**/R$*.class",
     "**/BuildConfig.*",
     "**/Manifest*.*",
     "**/*Test*.*",
-    "android/**/*.*"
+    "android/**/*.*",
+    "androidx/**/*.*",
+    "**/*\$ViewInjector*.*",
+    "**/*Dagger*.*",
+    "**/*MembersInjector*.*",
+    "**/*_Factory.*",
+    "**/*_Provide*Factory*.*",
+    "**/*_ViewBinding*.*",
+    "**/AutoValue_*.*",
+    "**/R2.class",
+    "**/R2$*.class",
+    "**/*Directions$*",
+    "**/*Directions.*",
+    "**/*Binding.*"
 )
 
 private fun String.capitalize() = replaceFirstChar {
     if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
 }
 
-internal fun Project.configureJacoco(
-    androidComponentsExtension: AndroidComponentsExtension<*, *, *>,
-) {
+internal fun Project.configureJacoco() {
+
     configure<JacocoPluginExtension> {
         toolVersion = libs.findVersion("jacoco").get().toString()
     }
 
-    val jacocoTestReport = tasks.create("jacocoTestReport")
+    tasks.create("debugCoverage", JacocoReport::class.java) {
+        dependsOn("testDebugUnitTest")
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports for the debug build."
 
-    androidComponentsExtension.onVariants { variant ->
-        val testTaskName = "test${variant.name.capitalize()}UnitTest"
-        val coverageTestTaskName = "create${variant.name.capitalize()}CoverageReport"
-        val buildDir = layout.buildDirectory.get().asFile
-        val reportTask =
-            tasks.register("jacoco${testTaskName.capitalize()}Report", JacocoReport::class) {
-                dependsOn(testTaskName)
-                dependsOn(coverageTestTaskName)
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
 
-                reports {
-                    xml.required.set(true)
-                    html.required.set(true)
-                }
+        val jClasses = "${project.buildDir}/intermediates/javac/debug/classes"
+        val kClasses = "${project.buildDir}/tmp/kotlin-classes/debug"
+        val javaClasses = fileTree(jClasses) { exclude(coverageExclusions) }
+        val kotlinClasses = fileTree(kClasses) { exclude(coverageExclusions) }
 
-                classDirectories.setFrom(
-                    fileTree("$buildDir/tmp/kotlin-classes/${variant.name}") {
-                        exclude(coverageExclusions)
-                    }
-                )
+        classDirectories.setFrom(files(javaClasses, kotlinClasses))
 
-                sourceDirectories.setFrom(
-                    files(
-                        "$projectDir/src/main/java",
-                        "$projectDir/src/main/kotlin"
-                    )
-                )
-                executionData.setFrom(
-                    file("$buildDir/jacoco/$testTaskName.exec"),
-                    file("$buildDir/outputs/code-coverage/connected/*coverage.ec"),
-                )
-            }
+        val sourceDirs = listOf(
+            "${project.projectDir}/src/main/java",
+            "${project.projectDir}/src/main/kotlin",
+            "${project.projectDir}/src/debug/java",
+            "${project.projectDir}/src/debug/kotlin"
+        )
 
-        jacocoTestReport.dependsOn(reportTask)
+        sourceDirectories.setFrom(files(sourceDirs))
+
+        executionData.setFrom(
+            files(
+                listOf("${project.buildDir}/jacoco/testDebugUnitTest.exec")
+            )
+        )
     }
 
     tasks.withType<Test>().configureEach {
