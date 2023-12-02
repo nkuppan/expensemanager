@@ -54,21 +54,21 @@ class SettingsDataStore @Inject constructor(
             ?: DateRangeType.THIS_MONTH.ordinal]
     }
 
-    suspend fun setDateRangeStartDate(startDate: Long) = dataStore.edit { preferences ->
+    suspend fun setDateRanges(startDate: Long, endDate: Long) = dataStore.edit { preferences ->
         preferences[KEY_DATE_RANGE_START_TIME_TYPE] = startDate
+        preferences[KEY_DATE_RANGE_END_TIME_TYPE] = endDate
     }
 
-    fun getDateRangeStartDate(): Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[KEY_DATE_RANGE_START_TIME_TYPE]
-    }
-
-    suspend fun setDateRangeEndDate(startDate: Long) = dataStore.edit { preferences ->
-        preferences[KEY_DATE_RANGE_END_TIME_TYPE] = startDate
-    }
-
-    fun getDateRangeEndDate(): Flow<Long?> = dataStore.data.map { preferences ->
-        preferences[KEY_DATE_RANGE_END_TIME_TYPE]
-    }
+    fun getDateRanges(): Flow<List<Long>?> =
+        dataStore.data.map { preferences ->
+            val startDate = preferences[KEY_DATE_RANGE_START_TIME_TYPE]
+            val endDate = preferences[KEY_DATE_RANGE_END_TIME_TYPE]
+            if (startDate != null && endDate != null) {
+                listOf(startDate, endDate)
+            } else {
+                null
+            }
+        }
 
     suspend fun setPreloaded(preload: Boolean) = dataStore.edit { preferences ->
         preferences[KEY_IS_PRELOAD] = preload

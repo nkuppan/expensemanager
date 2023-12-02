@@ -10,36 +10,56 @@ import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
 import org.gradle.testing.jacoco.tasks.JacocoReport
-import java.util.Locale
 
 val Project.libs
     get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
 private val coverageExclusions = listOf(
+    "**/databinding/*Binding.*",
+    "**/*DataBinding*",
     "**/R.class",
     "**/R$*.class",
     "**/BuildConfig.*",
     "**/Manifest*.*",
     "**/*Test*.*",
     "android/**/*.*",
-    "androidx/**/*.*",
+    // butterKnife
     "**/*\$ViewInjector*.*",
+    "**/*\$ViewBinder*.*",
+    "**/Lambda$*.class",
+    "**/Lambda.class",
+    "**/*Lambda.class",
+    "**/*Lambda*.class",
+    "**/*_MembersInjector.class",
+    "**/Dagger*Component*.*",
+    "**/*Module_*Factory.class",
+    "**/di/module/*",
+    "**/*_Factory*.*",
+    "**/*Module*.*",
     "**/*Dagger*.*",
+    "**/*Hilt*.*",
+    // kotlin
+    "**/*MapperImpl*.*",
+    "**/*\$ViewInjector*.*",
+    "**/*\$ViewBinder*.*",
+    "**/BuildConfig.*",
+    "**/*Component*.*",
+    "**/*BR*.*",
+    "**/Manifest*.*",
+    "**/*\$Lambda$*.*",
+    "**/*Companion*.*",
+    "**/*Module*.*",
+    "**/*Dagger*.*",
+    "**/*Hilt*.*",
+    "**/*hilt*",
     "**/*MembersInjector*.*",
-    "**/*_Factory.*",
+    "**/*_MembersInjector.class",
+    "**/*_Factory*.*",
     "**/*_Provide*Factory*.*",
-    "**/*_ViewBinding*.*",
-    "**/AutoValue_*.*",
-    "**/R2.class",
-    "**/R2$*.class",
-    "**/*Directions$*",
-    "**/*Directions.*",
-    "**/*Binding.*"
+    "**/*Extensions*.*",
+    "**/*_Impl*.*",
+    "**/*.new*",
 )
-
-private fun String.capitalize() = replaceFirstChar {
-    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-}
 
 internal fun Project.configureJacoco() {
 

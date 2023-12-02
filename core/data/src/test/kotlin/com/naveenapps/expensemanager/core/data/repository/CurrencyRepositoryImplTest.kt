@@ -14,6 +14,7 @@ import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
@@ -39,7 +40,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             }
         )
 
-    private val repository: CurrencyRepositoryImpl = CurrencyRepositoryImpl(
+    private val repository: CurrencyRepository = CurrencyRepositoryImpl(
         CurrencyDataStore(testDataStore),
         AppCoroutineDispatchers(
             testCoroutineDispatcher.dispatcher,

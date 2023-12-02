@@ -21,7 +21,7 @@ plugins {
 }
 
 android {
-    namespace = "com.google.samples.apps.nowinandroid.core.testing"
+    namespace = "com.naveenapps.expensemanager.core.testing"
 }
 
 dependencies {

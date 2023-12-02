@@ -71,7 +71,6 @@ mockito = "4.0.0"
 jxl = "2.6.12"
 truth = "1.1.4"
 vico = "1.11.1"
-org-jetbrains-kotlin-android = "1.9.10"
 play-publish = "3.8.5"
 google-services = "4.4.0"
 country-compose = "1.1.1"
@@ -208,7 +207,7 @@ roborazzi = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
 secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "secrets" }
 oss-license = { id = "com.google.android.gms.oss-licenses-plugin", version.ref = "ossLicense" }
 benchmark = { id = "androidx.benchmark", version.ref = "benchmark" }
-org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "org-jetbrains-kotlin-android" }
+org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 play-publish = { id = "com.github.triplet.play", version.ref = "play-publish" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
