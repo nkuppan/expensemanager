@@ -8,7 +8,7 @@ object AccountTypeConverter {
 
     @TypeConverter
     fun ordinalToAccountType(value: Int?): AccountType? {
-        return value?.let { AccountType.values()[value] }
+        return value?.let { AccountType.entries[value] }
     }
 
     @TypeConverter

@@ -36,7 +36,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
     override suspend fun getAllDateRanges(): Resource<List<DateRangeModel>> {
         return Resource.Success(
             buildList {
-                DateRangeType.values().forEach {
+                DateRangeType.entries.forEach {
                     val dateRanges = getCurrentDateRanges(it)
                     add(
                         DateRangeModel(

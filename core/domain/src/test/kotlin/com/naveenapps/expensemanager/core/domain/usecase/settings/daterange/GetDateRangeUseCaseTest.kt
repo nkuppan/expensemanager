@@ -11,11 +11,12 @@ import org.mockito.kotlin.mock
 
 class GetDateRangeUseCaseTest {
 
+    private val dateRangeFilterRepository = mock<DateRangeFilterRepository>()
+
     private lateinit var getGetFilterRangeUseCase: GetDateRangeUseCase
 
     @Before
     fun init() {
-        val dateRangeFilterRepository = mock<DateRangeFilterRepository>()
         getGetFilterRangeUseCase = GetDateRangeUseCase(
             GetDateRangeByTypeUseCase(dateRangeFilterRepository),
             dateRangeFilterRepository

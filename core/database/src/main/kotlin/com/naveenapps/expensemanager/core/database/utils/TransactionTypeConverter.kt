@@ -7,7 +7,7 @@ object TransactionTypeConverter {
 
     @TypeConverter
     fun ordinalToTransactionType(value: Int?): TransactionType? {
-        return value?.let { TransactionType.values()[it] }
+        return value?.let { TransactionType.entries[it] }
     }
 
     @TypeConverter

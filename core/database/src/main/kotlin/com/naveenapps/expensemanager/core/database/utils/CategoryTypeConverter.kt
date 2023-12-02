@@ -8,7 +8,7 @@ object CategoryTypeConverter {
 
     @TypeConverter
     fun ordinalToCategoryType(value: Int?): CategoryType? {
-        return value?.let { CategoryType.values()[value] }
+        return value?.let { CategoryType.entries[value] }
     }
 
     @TypeConverter

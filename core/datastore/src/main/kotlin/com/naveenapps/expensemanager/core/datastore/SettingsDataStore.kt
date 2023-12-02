@@ -24,7 +24,7 @@ class SettingsDataStore @Inject constructor(
         }
 
     fun getTransactionType(): Flow<List<TransactionType>?> = dataStore.data.map { preferences ->
-        preferences[KEY_TRANSACTION_TYPES]?.toList()?.map { TransactionType.values()[it.toInt()] }
+        preferences[KEY_TRANSACTION_TYPES]?.toList()?.map { TransactionType.entries[it.toInt()] }
             ?: emptyList()
     }
 
@@ -50,7 +50,7 @@ class SettingsDataStore @Inject constructor(
         }
 
     fun getFilterType(): Flow<DateRangeType> = dataStore.data.map { preferences ->
-        DateRangeType.values()[preferences[KEY_DATE_FILTER_TYPE]
+        DateRangeType.entries[preferences[KEY_DATE_FILTER_TYPE]
             ?: DateRangeType.THIS_MONTH.ordinal]
     }
 

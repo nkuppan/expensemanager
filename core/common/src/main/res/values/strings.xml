@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="amount_string">%s%s</string>
-    <string name="balance_amount_string">%s</string>
-
-    <string name="default_currency_type">$</string>
-    <string name="default_currency_name">US Dollar</string>
-</resources>

@@ -9,6 +9,15 @@ class SaveCurrencyUseCase @Inject constructor(
     private val repository: CurrencyRepository
 ) {
     suspend operator fun invoke(currency: Currency): Resource<Boolean> {
+
+        if (currency.symbol.isBlank()) {
+            return Resource.Error(Exception("Please provide valid currency symbol"))
+        }
+
+        if (currency.name.isBlank()) {
+            return Resource.Error(Exception("Please provide valid currency name"))
+        }
+
         return Resource.Success(repository.saveCurrency(currency))
     }
 }

@@ -41,7 +41,7 @@ class FilterTypeSelectionViewModel @Inject constructor(
     private val _saved = MutableSharedFlow<Boolean>()
     val saved = _saved.asSharedFlow()
 
-    private val _transactionTypes = MutableStateFlow(TransactionType.values().toList())
+    private val _transactionTypes = MutableStateFlow(TransactionType.entries)
     val transactionTypes = _transactionTypes.asStateFlow()
 
     private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())

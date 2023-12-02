@@ -44,7 +44,7 @@ class GetBudgetTransactionsUseCase @Inject constructor(
         val transaction = transactionRepository.getFilteredTransaction(
             accounts = accounts,
             categories = categories,
-            transactionType = CategoryType.values().map { it.ordinal }.toList(),
+            transactionType = CategoryType.entries.map { it.ordinal }.toList(),
             startDate = startDayOfMonth,
             endDate = endDayOfMonth,
         ).firstOrNull()?.filter {

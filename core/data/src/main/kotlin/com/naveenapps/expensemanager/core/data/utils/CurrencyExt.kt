@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.core.data.utils
 
 import android.content.Context
-import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFormat
@@ -9,7 +8,6 @@ import com.naveenapps.expensemanager.core.model.TextPosition
 import java.text.NumberFormat
 
 fun getCurrency(
-    context: Context,
     currency: Currency,
     amount: Double
 ): String {
@@ -23,16 +21,16 @@ fun getCurrency(
 
     return when (currency.position) {
         TextPosition.PREFIX -> {
-            context.getString(
-                R.string.amount_string,
+            String.format(
+                "%s%s",
                 currency.symbol,
                 currencyFormatted
             )
         }
 
         TextPosition.SUFFIX -> {
-            context.getString(
-                R.string.amount_string,
+            String.format(
+                "%s%s",
                 currencyFormatted,
                 currency.symbol
             )
@@ -57,16 +55,16 @@ fun getCompactCurrency(
 
     return when (currency.position) {
         TextPosition.PREFIX -> {
-            context.getString(
-                R.string.amount_string,
+            String.format(
+                "%s%s",
                 currency.symbol,
                 currencyFormatted
             )
         }
 
         TextPosition.SUFFIX -> {
-            context.getString(
-                R.string.amount_string,
+            String.format(
+                "%s%s",
                 currencyFormatted,
                 currency.symbol
             )

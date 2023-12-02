@@ -39,7 +39,7 @@ class AccountListViewModelTest : BaseCoroutineTest() {
 
     private lateinit var accountListViewModel: AccountListViewModel
 
-    private val accountFlow = MutableStateFlow<List<Account>>(emptyList())
+    private val accountFlow = MutableStateFlow(emptyList<Account>())
     private val currencyFlow = MutableStateFlow(Currency("1", "1"))
 
     override fun onCreate() {

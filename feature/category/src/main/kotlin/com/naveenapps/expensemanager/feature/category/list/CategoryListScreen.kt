@@ -103,7 +103,7 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
                 .fillMaxSize()
         ) {
             TabRow(selectedTabIndex = state.index) {
-                CategoryTabItems.values().forEach { items ->
+                CategoryTabItems.entries.forEach { items ->
                     Tab(
                         selected = state.categoryType == items.categoryType,
                         onClick = {

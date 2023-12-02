@@ -47,7 +47,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     private lateinit var accountCreateViewModel: AccountCreateViewModel
 
-    private val currencyFlow = MutableStateFlow(Currency("1", "1"))
+    private val currencyFlow = MutableStateFlow(Currency("$", "US Dollars"))
 
     override fun onCreate() {
         super.onCreate()

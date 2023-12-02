@@ -36,6 +36,7 @@ dependencies {
     api(libs.androidx.test.runner)
     api(libs.mockito)
     api(libs.truth)
+    api(libs.robolectric)
 
     debugApi(libs.androidx.compose.ui.testManifest)
 

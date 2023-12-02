@@ -149,7 +149,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     Scaffold(
         bottomBar = {
             BottomAppBar {
-                HomeScreenBottomBarItems.values().forEach { uiSystem ->
+                HomeScreenBottomBarItems.entries.forEach { uiSystem ->
                     NavigationBarItem(
                         selected = viewModel.homeScreenBottomBarItems == uiSystem,
                         onClick = { viewModel.setUISystem(uiSystem) },

@@ -1,0 +1,3 @@
+package com.naveenapps.expensemanager.feature.category.selection
+
+class CategorySelectionViewModelTest

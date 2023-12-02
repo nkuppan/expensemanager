@@ -6,7 +6,6 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.repository.AccountRepository
@@ -31,7 +30,7 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
 
     private lateinit var accountSelectionViewModel: AccountSelectionViewModel
 
-    private val accountFlow = MutableStateFlow<List<Account>>(getRandomAccountData(10))
+    private val accountFlow = MutableStateFlow(getRandomAccountData(10))
     private val currencyFlow = MutableStateFlow(Currency("1", "1"))
 
     override fun onCreate() {

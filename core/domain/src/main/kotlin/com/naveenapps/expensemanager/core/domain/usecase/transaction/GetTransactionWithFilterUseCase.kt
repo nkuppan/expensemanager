@@ -32,7 +32,7 @@ class GetTransactionWithFilterUseCase @Inject constructor(
         ) { selectedTransactionTypes, selectedCategories, selectedAccounts, dateRangeModel ->
 
             val transactionTypes: List<Int> = if (selectedTransactionTypes.isNullOrEmpty()) {
-                TransactionType.values().map { it.ordinal }
+                TransactionType.entries.map { it.ordinal }
             } else {
                 selectedTransactionTypes.map { it.ordinal }
             }
