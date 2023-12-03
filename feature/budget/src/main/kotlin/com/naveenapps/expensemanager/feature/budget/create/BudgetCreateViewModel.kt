@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
@@ -110,7 +112,7 @@ class BudgetCreateViewModel @Inject constructor(
 
         this.budget?.let { budgetItem ->
             name.value = budgetItem.name
-            amount.value = budgetItem.amount.toString()
+            amount.value = budgetItem.amount.toStringWithLocale()
             colorValue.value = budgetItem.storedIcon.backgroundColor
             icon.value = budgetItem.storedIcon.name
             budgetItem.selectedMonth.fromMonthAndYear()?.let { setDate(it) }
@@ -182,7 +184,7 @@ class BudgetCreateViewModel @Inject constructor(
         val name: String = name.value
         val color: String = colorValue.value
         val date: Date = _date.value
-        val amount: Double? = amount.value.toDoubleOrNull()
+        val amount: Double? = amount.value.toDoubleOrNullWithLocale()
 
         if (name.isBlank()) {
             nameErrorMessage.value = UiText.StringResource(R.string.budget_name_error)
@@ -256,7 +258,7 @@ class BudgetCreateViewModel @Inject constructor(
 
     fun setAmountChange(amount: String) {
         this.amount.value = amount
-        val amountValue = amount.toDoubleOrNull()
+        val amountValue = amount.toDoubleOrNullWithLocale()
         if (amountValue == null || amountValue == 0.0) {
             amountErrorMessage.value = UiText.StringResource(R.string.budget_amount_error)
         } else {

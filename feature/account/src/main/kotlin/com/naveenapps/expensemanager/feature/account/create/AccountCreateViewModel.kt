@@ -3,6 +3,8 @@ package com.naveenapps.expensemanager.feature.account.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
+import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
@@ -109,8 +111,8 @@ class AccountCreateViewModel @Inject constructor(
 
         this.account?.let { accountItem ->
             name.value = accountItem.name
-            currentBalance.value = accountItem.amount.toString()
-            creditLimit.value = accountItem.creditLimit.toString()
+            currentBalance.value = accountItem.amount.toStringWithLocale()
+            creditLimit.value = accountItem.creditLimit.toStringWithLocale()
             accountType.value = accountItem.type
             colorValue.value = accountItem.storedIcon.backgroundColor
             icon.value = accountItem.storedIcon.name
@@ -201,6 +203,11 @@ class AccountCreateViewModel @Inject constructor(
             isError = true
         }
 
+        if (currentBalance.toDoubleOrNullWithLocale() == null) {
+            currentBalanceErrorMessage.value = UiText.StringResource(R.string.current_balance_value_error)
+            isError = true
+        }
+
         if (isError) {
             return
         }
@@ -215,9 +222,9 @@ class AccountCreateViewModel @Inject constructor(
                 name = icon.value,
                 backgroundColor = color,
             ),
-            amount = currentBalance.toDoubleOrNull() ?: 0.0,
+            amount = currentBalance.toDoubleOrNullWithLocale() ?: 0.0,
             creditLimit = if (accountType == AccountType.CREDIT) {
-                creditLimit.toDoubleOrNull() ?: 0.0
+                creditLimit.toDoubleOrNullWithLocale() ?: 0.0
             } else {
                 0.0
             },
@@ -278,9 +285,15 @@ class AccountCreateViewModel @Inject constructor(
             currentBalanceErrorMessage.value = null
         }
 
+        if (currentBalance.toDoubleOrNullWithLocale() == null) {
+            currentBalanceErrorMessage.value = UiText.StringResource(R.string.current_balance_value_error)
+        } else {
+            currentBalanceErrorMessage.value = null
+        }
+
         updateAvailableCreditLimit(
-            this.creditLimit.value.toDoubleOrNull() ?: 0.0,
-            this.currentBalance.value.toDoubleOrNull() ?: 0.0,
+            this.creditLimit.value.toDoubleOrNullWithLocale() ?: 0.0,
+            this.currentBalance.value.toDoubleOrNullWithLocale() ?: 0.0,
         )
     }
 
@@ -288,8 +301,8 @@ class AccountCreateViewModel @Inject constructor(
         this.creditLimit.value = creditLimit
 
         updateAvailableCreditLimit(
-            this.creditLimit.value.toDoubleOrNull() ?: 0.0,
-            this.currentBalance.value.toDoubleOrNull() ?: 0.0,
+            this.creditLimit.value.toDoubleOrNullWithLocale() ?: 0.0,
+            this.currentBalance.value.toDoubleOrNullWithLocale() ?: 0.0,
         )
     }
 

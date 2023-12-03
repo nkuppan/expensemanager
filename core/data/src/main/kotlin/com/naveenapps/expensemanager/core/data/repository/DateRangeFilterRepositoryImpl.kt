@@ -60,8 +60,8 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
             DateRangeType.THIS_WEEK -> "This Week"
             DateRangeType.THIS_MONTH -> "This Month"
             DateRangeType.THIS_YEAR -> "This Year"
-            DateRangeType.CUSTOM -> "All time"
-            DateRangeType.ALL -> "Custom"
+            DateRangeType.CUSTOM -> "Custom"
+            DateRangeType.ALL -> "All time"
         }
     }
 

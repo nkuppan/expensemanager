@@ -1,25 +1,36 @@
 package com.naveenapps.expensemanager.core.data.utils
 
+import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
 import java.text.NumberFormat
+import java.util.Locale
 
 fun getCurrency(
     currency: Currency,
-    amount: Double
+    amount: Double,
+    locale: Locale = Locale.getDefault()
 ): String {
     val reduceDigitFormat = "%.1f"
     val currencyFormatted = when (currency.format) {
-        TextFormat.NONE -> reduceDigitFormat.format(amount)
+        TextFormat.NONE -> reduceDigitFormat.format(locale, amount)
         TextFormat.NUMBER_FORMAT -> {
-            NumberFormat.getNumberInstance().format(reduceDigitFormat.format(amount).toDouble())
+            NumberFormat.getNumberInstance(
+                locale
+            ).format(
+                reduceDigitFormat.format(
+                    locale,
+                    amount
+                ).toDoubleOrNullWithLocale()
+            )
         }
     }
 
     return when (currency.position) {
         TextPosition.PREFIX -> {
             String.format(
+                locale,
                 "%s%s",
                 currency.symbol,
                 currencyFormatted
@@ -28,6 +39,7 @@ fun getCurrency(
 
         TextPosition.SUFFIX -> {
             String.format(
+                locale,
                 "%s%s",
                 currencyFormatted,
                 currency.symbol

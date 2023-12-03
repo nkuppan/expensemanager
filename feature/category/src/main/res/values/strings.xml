@@ -22,4 +22,5 @@
     <string name="category_create_success">Category created/modified successfully</string>
     <string name="category_delete_error_message">Unable to delete this category</string>
     <string name="edit">Edit</string>
+    <string name="add_new">Add New</string>
 </resources>

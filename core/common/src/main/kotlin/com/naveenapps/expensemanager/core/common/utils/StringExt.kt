@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.common.utils
 
 import java.text.DecimalFormat
+import java.text.NumberFormat
 import java.util.Locale
 import kotlin.math.floor
 import kotlin.math.log10
@@ -35,5 +36,29 @@ fun getCompactNumber(number: Number): String {
         ) + suffix[base]
     } else {
         DecimalFormat("#,##0").format(numValue)
+    }
+}
+
+fun String?.toDoubleOrNullWithLocale(
+    locale: Locale = Locale.getDefault()
+): Double? {
+    this ?: return null
+    val format = NumberFormat.getInstance(locale)
+    return try {
+        val number: Number? = format.parse(this)
+        number?.toDouble() ?: 0.0
+    } catch (e: Exception) {
+        null
+    }
+}
+
+fun Double.toStringWithLocale(
+    locale: Locale = Locale.getDefault()
+): String {
+    val format = NumberFormat.getInstance(locale)
+    return try {
+        return format.format(this)
+    } catch (e: Exception) {
+        format.format(0.0)
     }
 }

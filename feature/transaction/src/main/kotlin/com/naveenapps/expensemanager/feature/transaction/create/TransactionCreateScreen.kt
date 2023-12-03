@@ -242,6 +242,9 @@ private fun TransactionCreateBottomSheetContent(
         CategorySelectionScreen(
             categories = categories,
             selectedCategory = selectedCategory,
+            createNewCallback = {
+                viewModel.openCategoryCreate()
+            }
         ) { category ->
             viewModel.setCategorySelection(category)
             hideBottomSheet.invoke()
@@ -257,6 +260,9 @@ private fun TransactionCreateBottomSheetContent(
             } else {
                 selectedToAccount
             },
+            createNewCallback = {
+                viewModel.openAccountCreate()
+            }
         ) { account ->
             viewModel.setAccountSelection(sheetSelection, account)
             hideBottomSheet.invoke()

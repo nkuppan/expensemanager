@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.feature.transaction.R
 
@@ -97,7 +98,7 @@ fun NumberPadScreen(
 @Composable
 private fun NumberPadScreenView(
     modifier: Modifier = Modifier,
-    value: String = "0.0",
+    value: String = 0.0.toStringWithLocale(),
     amountString: String = "",
     onChange: ((String) -> Unit),
     confirm: (() -> Unit),

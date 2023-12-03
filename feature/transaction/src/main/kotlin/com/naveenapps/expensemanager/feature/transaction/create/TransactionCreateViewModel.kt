@@ -3,6 +3,8 @@ package com.naveenapps.expensemanager.feature.transaction.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
+import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
@@ -60,7 +62,7 @@ class TransactionCreateViewModel @Inject constructor(
     private val _showDelete = MutableStateFlow(false)
     val showDelete = _showDelete.asStateFlow()
 
-    private val _amount: MutableStateFlow<String> = MutableStateFlow("0.0")
+    private val _amount: MutableStateFlow<String> = MutableStateFlow(0.0.toStringWithLocale())
     val amount = _amount.asStateFlow()
 
     private val _amountErrorMessage: MutableStateFlow<UiText?> = MutableStateFlow(null)
@@ -156,7 +158,7 @@ class TransactionCreateViewModel @Inject constructor(
                     val transaction = response.data
                     val currency = selectedCurrency
                     currency ?: return@launch
-                    setAmount(transaction.amount.amount.toString())
+                    setAmount(transaction.amount.amount.toStringWithLocale())
                     setDate(transaction.createdOn)
                     setNotes(transaction.notes)
                     setCategorySelection(transaction.category)
@@ -198,7 +200,7 @@ class TransactionCreateViewModel @Inject constructor(
             return
         }
 
-        val amountValue = amount.toDoubleOrNull()
+        val amountValue = amount.toDoubleOrNullWithLocale()
 
         if (amountValue == null || amountValue <= 0.0) {
             _amountErrorMessage.value =
@@ -259,7 +261,7 @@ class TransactionCreateViewModel @Inject constructor(
             return
         }
 
-        val amountValue = amount.toDoubleOrNull()
+        val amountValue = amount.toDoubleOrNullWithLocale()
         if (amountValue == null || amountValue <= 0.0) {
             _amountErrorMessage.value =
                 UiText.StringResource(R.string.amount_should_greater_than_zero)
@@ -313,6 +315,18 @@ class TransactionCreateViewModel @Inject constructor(
 
     fun closePage() {
         appComposeNavigator.popBackStack()
+    }
+
+    fun openCategoryCreate() {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.CategoryCreate.createRoute("")
+        )
+    }
+
+    fun openAccountCreate() {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.AccountCreate.createRoute("")
+        )
     }
 
     companion object {
