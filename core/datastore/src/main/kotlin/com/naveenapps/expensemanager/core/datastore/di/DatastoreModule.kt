@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
+import com.naveenapps.expensemanager.core.datastore.DateRangeDataStore
 import com.naveenapps.expensemanager.core.datastore.ReminderTimeDataStore
 import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
 import com.naveenapps.expensemanager.core.datastore.ThemeDataStore
@@ -45,5 +46,11 @@ object DatastoreModule {
     @Singleton
     fun provideReminderTimeDataStore(@ApplicationContext context: Context): ReminderTimeDataStore {
         return ReminderTimeDataStore(context.dataStore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDateRangeDataStore(@ApplicationContext context: Context): DateRangeDataStore {
+        return DateRangeDataStore(context.dataStore)
     }
 }

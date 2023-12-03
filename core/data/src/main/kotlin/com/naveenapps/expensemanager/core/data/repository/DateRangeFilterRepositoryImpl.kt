@@ -10,7 +10,7 @@ import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDateAndMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYear
-import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
+import com.naveenapps.expensemanager.core.datastore.DateRangeDataStore
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.GroupType
@@ -24,7 +24,7 @@ import java.util.Date
 import javax.inject.Inject
 
 class DateRangeFilterRepositoryImpl @Inject constructor(
-    private val dataStore: SettingsDataStore,
+    private val dataStore: DateRangeDataStore,
     private val dispatcher: AppCoroutineDispatchers
 ) : DateRangeFilterRepository {
 

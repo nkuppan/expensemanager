@@ -4,7 +4,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.R
+import com.naveenapps.expensemanager.core.datastore.ThemeDataStore
 import com.naveenapps.expensemanager.core.model.Theme
+import com.naveenapps.expensemanager.core.repository.ThemeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -17,9 +19,9 @@ val defaultTheme = Theme(
 )
 
 class ThemeRepositoryImpl @Inject constructor(
-    private val dataStore: com.naveenapps.expensemanager.core.datastore.ThemeDataStore,
+    private val dataStore: ThemeDataStore,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.repository.ThemeRepository {
+) : ThemeRepository {
 
     private fun getDefaultTheme(): Theme {
         return defaultTheme

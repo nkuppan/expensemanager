@@ -10,7 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
+import com.naveenapps.expensemanager.core.datastore.DateRangeDataStore
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.Resource
@@ -36,7 +36,7 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
         )
 
     private val repository: DateRangeFilterRepository = DateRangeFilterRepositoryImpl(
-        SettingsDataStore(testDataStore),
+        DateRangeDataStore(testDataStore),
         AppCoroutineDispatchers(
             testCoroutineDispatcher.dispatcher,
             testCoroutineDispatcher.dispatcher,
