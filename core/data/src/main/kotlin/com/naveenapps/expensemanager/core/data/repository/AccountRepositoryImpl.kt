@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.AccountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -14,7 +15,7 @@ import javax.inject.Inject
 class AccountRepositoryImpl @Inject constructor(
     private val accountDao: AccountDao,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.repository.AccountRepository {
+) : AccountRepository {
 
     override fun getAccounts(): Flow<List<Account>> {
         return accountDao.getAccounts().map { accounts ->

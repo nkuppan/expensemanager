@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.database.dao.BudgetDao
 import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -15,7 +16,7 @@ import javax.inject.Inject
 class BudgetRepositoryImpl @Inject constructor(
     private val budgetDao: BudgetDao,
     private val dispatchers: AppCoroutineDispatchers
-) : com.naveenapps.expensemanager.core.repository.BudgetRepository {
+) : BudgetRepository {
 
     override fun getBudgets(): Flow<List<Budget>> {
         return budgetDao.getBudgets().map { budgets ->

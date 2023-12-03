@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.data.repository.SettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ThemeRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.TransactionRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.VersionCheckerRepositoryImpl
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
@@ -20,6 +21,7 @@ import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.ThemeRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
+import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -82,4 +84,9 @@ abstract class RepositoryModule {
     abstract fun provideDateRangeFilterRepository(
         dateRangeFilterRepositoryImpl: DateRangeFilterRepositoryImpl,
     ): DateRangeFilterRepository
+
+    @Binds
+    abstract fun provideVersionCheckerRepository(
+        versionCheckerRepositoryImpl: VersionCheckerRepositoryImpl,
+    ): VersionCheckerRepository
 }
