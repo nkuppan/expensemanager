@@ -24,5 +24,6 @@
     <string name="app_version">Version: %s</string>
     <string name="advanced">Advanced</string>
     <string name="advanced_config_message">Manage advanced configurations for the app</string>
-    <string name="selected_account">Default Selected Account</string>
+    <string name="default_selected_account">Default Selected Account</string>
+    <string name="default_selected_category">Default Selected Category</string>
 </resources>

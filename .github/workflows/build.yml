@@ -69,10 +69,21 @@ jobs:
       - name: Run coverage merge
         run: ./gradlew allDebugCoverage
 
+      - name: generate report
+        uses: actions/upload-artifact@v2
+        with:
+          name: report
+          path: './reports.xml'
+
+      - name: Download Test Reports Folder
+        uses: actions/download-artifact@v2
+        with:
+          name: report
+          path: './reports.xml'
+
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./
-          files: ./reports.xml
-          full_report: ./reports.xml
+          files: './reports.xml'
+          full_report: './reports.xml'
