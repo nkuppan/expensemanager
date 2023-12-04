@@ -75,12 +75,6 @@ jobs:
           name: report
           path: './reports.xml'
 
-      - name: Download Test Reports Folder
-        uses: actions/download-artifact@v2
-        with:
-          name: report
-          path: './reports.xml'
-
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
