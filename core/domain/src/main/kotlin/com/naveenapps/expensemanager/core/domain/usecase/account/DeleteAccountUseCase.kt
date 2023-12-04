@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class DeleteAccountUseCase @Inject constructor(
     private val repository: AccountRepository,
-    private val checkAccountValidationUseCase: CheckAccountValidationUseCase
+    private val checkAccountValidationUseCase: CheckAccountValidationUseCase,
 ) {
 
     suspend operator fun invoke(account: Account): Resource<Boolean> {

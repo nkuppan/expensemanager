@@ -17,8 +17,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Divider
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -59,10 +59,8 @@ import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.R
 import java.util.Date
 
-
 @Composable
 fun TransactionListScreen() {
-
     val viewModel: TransactionListViewModel = hiltViewModel()
     val transactionUiState by viewModel.transactions.collectAsState()
     Scaffold(
@@ -72,7 +70,7 @@ fun TransactionListScreen() {
                     viewModel.closePage()
                 },
                 title = stringResource(R.string.transaction),
-                disableBackIcon = true
+                disableBackIcon = true,
             )
         },
         floatingActionButton = {
@@ -81,16 +79,16 @@ fun TransactionListScreen() {
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
         TransactionListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            transactionGroup = transactionUiState
+            transactionGroup = transactionUiState,
         ) { transaction ->
             viewModel.openCreateScreen(transaction.id)
         }
@@ -101,10 +99,9 @@ fun TransactionListScreen() {
 private fun TransactionListScreen(
     transactionGroup: UiState<List<TransactionGroup>>,
     modifier: Modifier = Modifier,
-    onItemClick: ((TransactionUiItem) -> Unit)? = null
+    onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
-
         FilterView(modifier = Modifier.fillMaxWidth())
 
         when (transactionGroup) {
@@ -115,7 +112,7 @@ private fun TransactionListScreen(
                             .wrapContentSize()
                             .align(Alignment.Center),
                         text = stringResource(id = R.string.no_transactions_available),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -125,7 +122,7 @@ private fun TransactionListScreen(
                     CircularProgressIndicator(
                         modifier = Modifier
                             .size(72.dp)
-                            .align(Alignment.Center)
+                            .align(Alignment.Center),
                     )
                 }
             }
@@ -134,7 +131,8 @@ private fun TransactionListScreen(
                 LazyColumn {
                     items(transactionGroup.data) {
                         TransactionGroupItem(
-                            it, onItemClick
+                            it,
+                            onItemClick,
                         )
                     }
                     item {
@@ -150,13 +148,13 @@ private fun TransactionListScreen(
 fun TransactionGroupItem(
     transactionGroup: TransactionGroup,
     onItemClick: ((TransactionUiItem) -> Unit)?,
-    isLastItem: Boolean = false
+    isLastItem: Boolean = false,
 ) {
     Column {
         TransactionHeaderItem(
             transactionGroup.date,
             transactionGroup.amountTextColor,
-            transactionGroup.totalAmount
+            transactionGroup.totalAmount,
         )
         transactionGroup.transactions.forEach {
             TransactionItem(
@@ -191,7 +189,7 @@ fun TransactionGroupItem(
 fun TransactionHeaderItem(
     date: String,
     textColor: Int,
-    totalAmount: Amount
+    totalAmount: Amount,
 ) {
     Row(
         modifier = Modifier
@@ -202,7 +200,7 @@ fun TransactionHeaderItem(
             modifier = Modifier.align(Alignment.CenterVertically),
             text = date.fromCompleteDate().toDate(),
             style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         Column(
             modifier = Modifier
@@ -212,11 +210,11 @@ fun TransactionHeaderItem(
         ) {
             Text(
                 text = date.fromCompleteDate().toMonthYear(),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
             )
             Text(
                 text = date.fromCompleteDate().toDay(),
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodySmall,
             )
         }
         Text(
@@ -245,7 +243,7 @@ fun TransactionItem(
     toAccountColor: String? = null,
     categoryColor: String = "#000000",
     categoryIcon: String = "ic_calendar",
-    transactionType: TransactionType = TransactionType.EXPENSE
+    transactionType: TransactionType = TransactionType.EXPENSE,
 ) {
     val isTransfer = toAccountName?.isNotBlank()
 
@@ -263,36 +261,36 @@ fun TransactionItem(
             } else {
                 categoryColor
             },
-            name = categoryName
+            name = categoryName,
         )
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             if (isTransfer == true && toAccountIcon != null && toAccountColor != null) {
                 AccountNameWithIcon(
                     fromAccountIcon,
                     fromAccountColor,
-                    fromAccountName
+                    fromAccountName,
                 )
                 AccountNameWithIcon(
                     toAccountIcon,
                     toAccountColor,
-                    toAccountName
+                    toAccountName,
                 )
             } else {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
                     text = categoryName,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
                 )
                 AccountNameWithIcon(
                     fromAccountIcon,
                     fromAccountColor,
-                    fromAccountName
+                    fromAccountName,
                 )
                 if (notes?.isNotBlank() == true) {
                     Text(
@@ -301,7 +299,7 @@ fun TransactionItem(
                         text = notes,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
             }
@@ -310,7 +308,7 @@ fun TransactionItem(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(start = 16.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             Text(
                 modifier = Modifier.align(Alignment.End),
@@ -320,12 +318,12 @@ fun TransactionItem(
                     TransactionType.EXPENSE -> colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
                     TransactionType.INCOME -> colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
                     else -> Color.Unspecified
-                }
+                },
             )
             Text(
                 modifier = Modifier.align(Alignment.End),
                 text = date,
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }
@@ -335,9 +333,8 @@ fun TransactionItem(
 private fun AccountNameWithIcon(
     fromAccountIcon: String,
     fromAccountColor: String,
-    fromAccountName: String
+    fromAccountName: String,
 ) {
-
     val context = LocalContext.current
 
     Row {
@@ -347,7 +344,7 @@ private fun AccountNameWithIcon(
                 .align(Alignment.CenterVertically),
             painter = painterResource(id = context.getDrawable(fromAccountIcon)),
             contentDescription = "",
-            tint = Color(getColorValue(fromAccountColor))
+            tint = Color(getColorValue(fromAccountColor)),
         )
         Text(
             modifier = Modifier
@@ -355,7 +352,7 @@ private fun AccountNameWithIcon(
                 .fillMaxWidth(),
             text = fromAccountName,
             color = Color(getColorValue(fromAccountColor)),
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
         )
     }
 }
@@ -387,7 +384,7 @@ fun TransactionItemPreview() {
     ExpenseManagerTheme {
         TransactionGroupItem(
             getTransactionUiState(),
-            {}
+            {},
         )
     }
 }
@@ -398,7 +395,7 @@ fun TransactionListItemLoadingStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
             transactionGroup = UiState.Loading,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
@@ -409,7 +406,7 @@ fun TransactionListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
             transactionGroup = UiState.Success(emptyList()),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
@@ -428,14 +425,14 @@ private fun getTransactionItem() = TransactionUiItem(
     transactionType = TransactionType.EXPENSE,
     categoryIcon = StoredIcon(
         name = "ic_calendar",
-        backgroundColor = "#000000"
+        backgroundColor = "#000000",
     ),
     fromAccountName = "DB Bank xxxx",
     fromAccountIcon = StoredIcon(
         name = "account_balance",
-        backgroundColor = "#000000"
+        backgroundColor = "#000000",
     ),
-    date = Date().toCompleteDateWithDate()
+    date = Date().toCompleteDateWithDate(),
 )
 
 private fun getTransactionUiState() = TransactionGroup(
@@ -446,7 +443,7 @@ private fun getTransactionUiState() = TransactionGroup(
         repeat(3) {
             add(getTransactionItem())
         }
-    }
+    },
 )
 
 @Preview
@@ -455,9 +452,9 @@ fun TransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
             transactionGroup = UiState.Success(
-                DUMMY_DATA
+                DUMMY_DATA,
             ),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }

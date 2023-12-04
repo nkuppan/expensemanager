@@ -19,17 +19,15 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.feature.account.R
 
-
 @Composable
 fun AccountTypeSelectionView(
     selectedAccountType: AccountType,
     onAccountTypeChange: ((AccountType) -> Unit),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
@@ -39,7 +37,7 @@ fun AccountTypeSelectionView(
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
             onClick = {
                 onAccountTypeChange.invoke(AccountType.REGULAR)
-            }
+            },
         )
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
@@ -49,7 +47,7 @@ fun AccountTypeSelectionView(
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
             onClick = {
                 onAccountTypeChange.invoke(AccountType.CREDIT)
-            }
+            },
         )
     }
 }
@@ -64,14 +62,14 @@ private fun AccountTypeSelectionViewPreview() {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 selectedAccountType = AccountType.REGULAR,
-                onAccountTypeChange = {}
+                onAccountTypeChange = {},
             )
             AccountTypeSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 selectedAccountType = AccountType.CREDIT,
-                onAccountTypeChange = {}
+                onAccountTypeChange = {},
             )
         }
     }

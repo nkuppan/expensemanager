@@ -20,14 +20,13 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class CurrencyViewModel @Inject constructor(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
     private val saveCurrencyUseCase: SaveCurrencyUseCase,
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _currentCurrency = MutableStateFlow(getDefaultCurrencyUseCase())
@@ -36,8 +35,8 @@ class CurrencyViewModel @Inject constructor(
     private val _theme = MutableStateFlow<Theme>(
         Theme(
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-            R.string.currency
-        )
+            R.string.currency,
+        ),
     )
     val theme = _theme.asStateFlow()
 
@@ -65,7 +64,7 @@ class CurrencyViewModel @Inject constructor(
     fun setCurrencyPositionType(textPosition: TextPosition) {
         viewModelScope.launch {
             _currentCurrency.value = _currentCurrency.value.copy(
-                position = textPosition
+                position = textPosition,
             )
             saveSelectedCurrency()
         }
@@ -74,7 +73,7 @@ class CurrencyViewModel @Inject constructor(
     fun setTextFormatChange(textFormat: TextFormat) {
         viewModelScope.launch {
             _currentCurrency.value = _currentCurrency.value.copy(
-                format = textFormat
+                format = textFormat,
             )
             saveSelectedCurrency()
         }

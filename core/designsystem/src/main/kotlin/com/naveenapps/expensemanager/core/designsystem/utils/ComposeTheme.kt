@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 
-
 /**
  * Returns `true` if dark theme should be used, as a function of the [theme] and the
  * current system context.

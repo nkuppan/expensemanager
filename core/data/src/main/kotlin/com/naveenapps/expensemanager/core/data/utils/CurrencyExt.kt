@@ -10,19 +10,19 @@ import java.util.Locale
 fun getCurrency(
     currency: Currency,
     amount: Double,
-    locale: Locale = Locale.getDefault()
+    locale: Locale = Locale.getDefault(),
 ): String {
     val reduceDigitFormat = "%.1f"
     val currencyFormatted = when (currency.format) {
         TextFormat.NONE -> reduceDigitFormat.format(locale, amount)
         TextFormat.NUMBER_FORMAT -> {
             NumberFormat.getNumberInstance(
-                locale
+                locale,
             ).format(
                 reduceDigitFormat.format(
                     locale,
-                    amount
-                ).toDoubleOrNullWithLocale()
+                    amount,
+                ).toDoubleOrNullWithLocale(),
             )
         }
     }
@@ -33,7 +33,7 @@ fun getCurrency(
                 locale,
                 "%s%s",
                 currency.symbol,
-                currencyFormatted
+                currencyFormatted,
             )
         }
 
@@ -42,7 +42,7 @@ fun getCurrency(
                 locale,
                 "%s%s",
                 currencyFormatted,
-                currency.symbol
+                currency.symbol,
             )
         }
     }

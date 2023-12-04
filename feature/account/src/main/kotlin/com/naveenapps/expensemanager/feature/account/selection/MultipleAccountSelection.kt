@@ -31,12 +31,11 @@ import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.AccountCheckedItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 
-
 @Composable
 fun MultipleAccountSelectionScreen(
     viewModel: AccountSelectionViewModel = hiltViewModel(),
     selectedAccounts: List<AccountUiModel> = emptyList(),
-    onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)? = null
+    onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)? = null,
 ) {
     viewModel.selectAllThisAccount(selectedAccounts)
 
@@ -46,7 +45,7 @@ fun MultipleAccountSelectionScreen(
 @Composable
 private fun AccountSelectionView(
     viewModel: AccountSelectionViewModel,
-    onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)?
+    onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)?,
 ) {
     val context = LocalContext.current
     val accounts by viewModel.accounts.collectAsState()
@@ -60,18 +59,18 @@ private fun AccountSelectionView(
             if (selectedAccounts.isNotEmpty()) {
                 onItemSelection?.invoke(
                     selectedAccounts,
-                    selectedAccounts.size == accounts.size
+                    selectedAccounts.size == accounts.size,
                 )
             } else {
                 Toast.makeText(
                     context,
                     context.getString(R.string.account_selection_message),
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_SHORT,
                 ).show()
             }
         },
         onClearChanges = viewModel::clearChanges,
-        onItemSelection = viewModel::selectThisAccount
+        onItemSelection = viewModel::selectThisAccount,
     )
 }
 
@@ -82,17 +81,18 @@ fun MultipleAccountSelectionScreen(
     selectedAccounts: List<AccountUiModel>,
     onApplyChanges: (() -> Unit),
     onClearChanges: (() -> Unit),
-    onItemSelection: ((AccountUiModel, Boolean) -> Unit)? = null
+    onItemSelection: ((AccountUiModel, Boolean) -> Unit)? = null,
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
             SelectionTitle(
-                stringResource(id = R.string.select_account), Modifier
+                stringResource(id = R.string.select_account),
+                Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             )
         }
         items(accounts) { account ->
@@ -109,7 +109,7 @@ fun MultipleAccountSelectionScreen(
                 isSelected = isSelected,
                 onCheckedChange = {
                     onItemSelection?.invoke(account, it)
-                }
+                },
             )
         }
         item {
@@ -118,7 +118,7 @@ fun MultipleAccountSelectionScreen(
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     TextButton(onClick = onClearChanges) {
                         Text(text = stringResource(id = R.string.clear_all).uppercase())
@@ -138,7 +138,6 @@ fun MultipleAccountSelectionScreen(
     }
 }
 
-
 @Preview
 @Composable
 private fun MultipleAccountSelectionScreenPreview() {
@@ -149,7 +148,7 @@ private fun MultipleAccountSelectionScreenPreview() {
             selectedAccounts = accounts,
             onApplyChanges = {},
             onClearChanges = {},
-            onItemSelection = null
+            onItemSelection = null,
         )
     }
 }

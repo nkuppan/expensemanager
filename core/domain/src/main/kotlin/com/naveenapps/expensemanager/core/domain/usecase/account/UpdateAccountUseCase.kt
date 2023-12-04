@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class UpdateAccountUseCase @Inject constructor(
     private val repository: com.naveenapps.expensemanager.core.repository.AccountRepository,
-    private val checkAccountValidationUseCase: CheckAccountValidationUseCase
+    private val checkAccountValidationUseCase: CheckAccountValidationUseCase,
 ) {
 
     suspend operator fun invoke(account: Account): Resource<Boolean> {

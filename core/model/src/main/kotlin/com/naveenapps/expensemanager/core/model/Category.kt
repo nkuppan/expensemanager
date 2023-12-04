@@ -8,5 +8,5 @@ data class Category(
     val type: CategoryType,
     val storedIcon: StoredIcon,
     val createdOn: Date,
-    val updatedOn: Date
+    val updatedOn: Date,
 )

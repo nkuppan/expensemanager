@@ -23,7 +23,6 @@ class SaveCurrencyUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenValidCurrencyReturnSuccess() = runTest {
-
         whenever(currencyRepository.saveCurrency(currency)).thenReturn(true)
 
         val response = saveCurrencyUseCase.invoke(currency)
@@ -35,7 +34,6 @@ class SaveCurrencyUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun currencyNameIsInvalidReturnError() = runTest {
-
         val response = saveCurrencyUseCase.invoke(currency.copy(symbol = ""))
 
         Truth.assertThat(response).isNotNull()
@@ -47,7 +45,6 @@ class SaveCurrencyUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun currencySymbolIsInvalidReturnError() = runTest {
-
         val response = saveCurrencyUseCase.invoke(currency.copy(name = ""))
 
         Truth.assertThat(response).isNotNull()

@@ -23,7 +23,6 @@ class NumberPadViewModel @Inject constructor() : ViewModel() {
     val calculatedAmountString = _calculatedAmountString.asStateFlow()
 
     private fun evaluate(str: String): Double {
-
         return object : Any() {
 
             var pos = -1
@@ -107,9 +106,7 @@ class NumberPadViewModel @Inject constructor() : ViewModel() {
     }
 
     fun appendString(character: String) {
-
         viewModelScope.launch {
-
             if (character.isEmpty()) {
                 removeLastCharacter()
                 return@launch
@@ -141,7 +138,6 @@ class NumberPadViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun calculateString(newString: String) {
-
         kotlin.runCatching {
             evaluate(newString)
         }.onSuccess {
@@ -153,7 +149,6 @@ class NumberPadViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun removeLastCharacter() {
-
         val calculatorString = _calculatedAmountString.value
 
         if (calculatorString.isBlank()) {
@@ -161,7 +156,8 @@ class NumberPadViewModel @Inject constructor() : ViewModel() {
         }
 
         val newString = String.format(
-            "%s", calculatorString.substring(0, calculatorString.length - 1)
+            "%s",
+            calculatorString.substring(0, calculatorString.length - 1),
         )
 
         calculateString(newString)

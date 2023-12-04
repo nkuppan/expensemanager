@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class DeleteBudgetUseCase @Inject constructor(
     private val repository: com.naveenapps.expensemanager.core.repository.BudgetRepository,
-    private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase
+    private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase,
 ) {
 
     suspend operator fun invoke(budget: Budget): Resource<Boolean> {

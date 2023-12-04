@@ -11,7 +11,6 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isTransfer
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
 interface TransactionDao : BaseDao<TransactionEntity> {
 
@@ -28,7 +27,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         AND `transaction`.category_id IN(:categories)
         AND `transaction`.type IN(:transactionTypes)
         ORDER BY `transaction`.created_on DESC
-        """
+        """,
     )
     fun getAllFilteredTransaction(
         accounts: List<String>,
@@ -44,14 +43,14 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         AND `transaction`.type IN(:transactionTypes)
         AND `transaction`.created_on BETWEEN :fromDate AND :toDate
         ORDER BY `transaction`.created_on DESC
-        """
+        """,
     )
     fun getFilteredTransaction(
         accounts: List<String>,
         categories: List<String>,
         transactionTypes: List<Int>,
         fromDate: Long,
-        toDate: Long
+        toDate: Long,
     ): Flow<List<TransactionRelation>?>
 
     @Update
@@ -64,7 +63,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     suspend fun insertTransaction(
         transactionEntity: TransactionEntity,
         amountToDetect: Double,
-        isTransfer: Boolean
+        isTransfer: Boolean,
     ): Long {
         val id = insert(transactionEntity)
         if (id != -1L) {
@@ -72,19 +71,19 @@ interface TransactionDao : BaseDao<TransactionEntity> {
             if (accountEntity != null) {
                 updateAccount(
                     accountEntity.copy(
-                        amount = accountEntity.amount + amountToDetect
-                    )
+                        amount = accountEntity.amount + amountToDetect,
+                    ),
                 )
             }
             if (isTransfer && transactionEntity.toAccountId?.isNotBlank() == true) {
                 val toAccountEntity = findAccountById(
-                    transactionEntity.toAccountId!!
+                    transactionEntity.toAccountId!!,
                 )
                 if (toAccountEntity != null) {
                     updateAccount(
                         toAccountEntity.copy(
-                            amount = toAccountEntity.amount + (amountToDetect * -1)
-                        )
+                            amount = toAccountEntity.amount + (amountToDetect * -1),
+                        ),
                     )
                 }
             }
@@ -93,7 +92,6 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     }
 
     suspend fun removePreviousEnteredAmount(transactionEntity: TransactionEntity) {
-
         val previousTransaction = findById(transactionEntity.id)
 
         if (previousTransaction != null) {
@@ -106,20 +104,20 @@ interface TransactionDao : BaseDao<TransactionEntity> {
             if (previousSelectedFromAccount != null) {
                 updateAccount(
                     previousSelectedFromAccount.copy(
-                        amount = previousSelectedFromAccount.amount + previousAmountToDetect
-                    )
+                        amount = previousSelectedFromAccount.amount + previousAmountToDetect,
+                    ),
                 )
             }
 
             if (previousTransaction.type.isTransfer() && previousTransaction.toAccountId?.isNotBlank() == true) {
                 val toAccountEntity = findAccountById(
-                    previousTransaction.toAccountId!!
+                    previousTransaction.toAccountId!!,
                 )
                 if (toAccountEntity != null) {
                     updateAccount(
                         toAccountEntity.copy(
-                            amount = toAccountEntity.amount + (previousAmountToDetect * -1)
-                        )
+                            amount = toAccountEntity.amount + (previousAmountToDetect * -1),
+                        ),
                     )
                 }
             }
@@ -130,28 +128,27 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     suspend fun updateTransaction(
         transactionEntity: TransactionEntity,
         amountToDetect: Double,
-        isTransfer: Boolean
+        isTransfer: Boolean,
     ) {
-
         update(transactionEntity)
 
         val accountEntity = findAccountById(transactionEntity.fromAccountId)
         if (accountEntity != null) {
             updateAccount(
                 accountEntity.copy(
-                    amount = accountEntity.amount + amountToDetect
-                )
+                    amount = accountEntity.amount + amountToDetect,
+                ),
             )
         }
         if (isTransfer && transactionEntity.toAccountId?.isNotBlank() == true) {
             val toAccountEntity = findAccountById(
-                transactionEntity.toAccountId!!
+                transactionEntity.toAccountId!!,
             )
             if (toAccountEntity != null) {
                 updateAccount(
                     toAccountEntity.copy(
-                        amount = toAccountEntity.amount + (amountToDetect * -1)
-                    )
+                        amount = toAccountEntity.amount + (amountToDetect * -1),
+                    ),
                 )
             }
         }

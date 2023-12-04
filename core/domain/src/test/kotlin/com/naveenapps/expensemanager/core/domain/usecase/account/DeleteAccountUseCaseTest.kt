@@ -15,16 +15,14 @@ import java.util.Date
 
 class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
-
     private val account = Account(
         id = "1",
         name = "Sample",
         type = AccountType.CREDIT,
         storedIcon = StoredIcon("ic_account", "#ffffff"),
         createdOn = Date(),
-        updatedOn = Date()
+        updatedOn = Date(),
     )
-
 
     private val accountRepository: AccountRepository = mock()
     private val checkAccountValidationUseCase = CheckAccountValidationUseCase()
@@ -36,13 +34,12 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
         deleteAccountUseCase = DeleteAccountUseCase(
             accountRepository,
-            checkAccountValidationUseCase
+            checkAccountValidationUseCase,
         )
     }
 
     @Test
     fun whenAccountIsValidShouldDeleteSuccessfully() = runTest {
-
         whenever(accountRepository.deleteAccount(account)).thenReturn(Resource.Success(true))
 
         val response = deleteAccountUseCase.invoke(account)

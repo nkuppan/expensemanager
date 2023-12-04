@@ -13,7 +13,7 @@ private val roundedCornerShape = RoundedCornerShape(8.dp)
 fun AppCardView(
     modifier: Modifier = Modifier,
     isPrimary: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val backgroundBubbleColor = if (isPrimary) {
         MaterialTheme.colorScheme.primary
@@ -25,6 +25,6 @@ fun AppCardView(
         modifier = modifier,
         color = backgroundBubbleColor,
         shape = roundedCornerShape,
-        content = content
+        content = content,
     )
 }

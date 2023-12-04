@@ -32,12 +32,10 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 import com.naveenapps.expensemanager.core.model.Theme
 
-
 @Composable
 fun ThemeDialogView(
-    complete: () -> Unit
+    complete: () -> Unit,
 ) {
-
     val viewModel: ThemeViewModel = hiltViewModel()
 
     val selectedTheme by viewModel.currentTheme.collectAsState()
@@ -49,7 +47,7 @@ fun ThemeDialogView(
         onConfirm = {
             viewModel.setTheme(it)
             complete.invoke()
-        }
+        },
     )
 }
 
@@ -57,22 +55,22 @@ fun ThemeDialogView(
 fun ThemeDialogViewContent(
     onConfirm: (Theme?) -> Unit,
     selectedTheme: Theme,
-    themes: List<Theme> = emptyList()
+    themes: List<Theme> = emptyList(),
 ) {
     Dialog(
         onDismissRequest = {
             onConfirm.invoke(null)
         },
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
         ),
     ) {
         Surface(
             modifier = Modifier.padding(16.dp),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         ) {
             LazyColumn(
-                modifier = Modifier.wrapContentSize()
+                modifier = Modifier.wrapContentSize(),
             ) {
                 item {
                     Text(
@@ -81,7 +79,7 @@ fun ThemeDialogViewContent(
                             .padding(16.dp),
                         text = stringResource(id = R.string.choose_theme),
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
                 items(themes) { theme ->
@@ -98,24 +96,24 @@ fun ThemeDialogViewContent(
                                         .padding(4.dp)
                                         .background(
                                             color = getIncomeBGColor(),
-                                            shape = RoundedCornerShape(size = 12.dp)
+                                            shape = RoundedCornerShape(size = 12.dp),
                                         )
                                 } else {
                                     Modifier
                                         .padding(4.dp)
-                                }
+                                },
                             )
                             .padding(12.dp),
                     ) {
                         Text(
                             modifier = Modifier.weight(1f),
-                            text = stringResource(id = theme.titleResId)
+                            text = stringResource(id = theme.titleResId),
                         )
                         if (isThemeSelected) {
                             Icon(
                                 modifier = Modifier.align(Alignment.CenterVertically),
                                 imageVector = Icons.Default.Done,
-                                contentDescription = null
+                                contentDescription = null,
                             )
                         }
                     }
@@ -133,26 +131,26 @@ fun ThemeDialogViewPreview() {
             onConfirm = {},
             selectedTheme = Theme(
                 AppCompatDelegate.MODE_NIGHT_NO,
-                R.string.choose_theme
+                R.string.choose_theme,
             ),
             themes = listOf(
                 Theme(
                     AppCompatDelegate.MODE_NIGHT_NO,
-                    R.string.choose_theme
+                    R.string.choose_theme,
                 ),
                 Theme(
                     AppCompatDelegate.MODE_NIGHT_YES,
-                    R.string.choose_theme
+                    R.string.choose_theme,
                 ),
                 Theme(
                     AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY,
-                    R.string.choose_theme
+                    R.string.choose_theme,
                 ),
                 Theme(
                     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-                    R.string.choose_theme
-                )
-            )
+                    R.string.choose_theme,
+                ),
+            ),
         )
     }
 }

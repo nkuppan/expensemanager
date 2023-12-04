@@ -35,7 +35,7 @@ class FilterViewModel @Inject constructor(
     private val moveDateRangeForwardUseCase: MoveDateRangeForwardUseCase,
     private val updateSelectedTransactionTypesUseCase: UpdateSelectedTransactionTypesUseCase,
     private val updateSelectedCategoryUseCase: UpdateSelectedCategoryUseCase,
-    private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase
+    private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase,
 ) : ViewModel() {
 
     private val _date = MutableStateFlow("")
@@ -86,13 +86,15 @@ class FilterViewModel @Inject constructor(
                 DateRangeType.TODAY,
                 DateRangeType.THIS_WEEK,
                 DateRangeType.THIS_MONTH,
-                DateRangeType.THIS_YEAR -> {
+                DateRangeType.THIS_YEAR,
+                -> {
                     _showForward.value = true
                     _showBackward.value = true
                 }
 
                 DateRangeType.ALL,
-                DateRangeType.CUSTOM -> {
+                DateRangeType.CUSTOM,
+                -> {
                     _showForward.value = false
                     _showBackward.value = false
                 }
@@ -115,7 +117,7 @@ class FilterViewModel @Inject constructor(
     fun removeTransaction(transactionType: TransactionType) {
         viewModelScope.launch {
             updateSelectedTransactionTypesUseCase.invoke(
-                _selectedTransactionTypes.value.addOrRemove(transactionType)
+                _selectedTransactionTypes.value.addOrRemove(transactionType),
             )
         }
     }
@@ -123,7 +125,7 @@ class FilterViewModel @Inject constructor(
     fun removeAccount(accountUiModel: AccountUiModel) {
         viewModelScope.launch {
             updateSelectedAccountUseCase.invoke(
-                _selectedAccounts.value.addOrRemove(accountUiModel).map { it.id }
+                _selectedAccounts.value.addOrRemove(accountUiModel).map { it.id },
             )
         }
     }
@@ -131,7 +133,7 @@ class FilterViewModel @Inject constructor(
     fun removeCategory(category: Category) {
         viewModelScope.launch {
             updateSelectedCategoryUseCase.invoke(
-                _selectedCategories.value.addOrRemove(category).map { it.id }
+                _selectedCategories.value.addOrRemove(category).map { it.id },
             )
         }
     }

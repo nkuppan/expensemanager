@@ -10,5 +10,5 @@ data class Account(
     val createdOn: Date,
     val updatedOn: Date,
     val amount: Double = 0.0,
-    val creditLimit: Double = 0.0
+    val creditLimit: Double = 0.0,
 )

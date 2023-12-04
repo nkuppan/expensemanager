@@ -27,15 +27,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.abs
 
-
 @Singleton
 class NotificationScheduler @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val reminderTimeRepository: ReminderTimeRepository
+    private val reminderTimeRepository: ReminderTimeRepository,
 ) {
 
     suspend fun checkAndRestartReminder() {
-
         if (canWeShowNotification().not()) {
             return
         }
@@ -44,7 +42,6 @@ class NotificationScheduler @Inject constructor(
     }
 
     suspend fun setReminder() {
-
         cancelReminder()
 
         val calendar = getTimeInMillis()
@@ -53,7 +50,7 @@ class NotificationScheduler @Inject constructor(
         val request = OneTimeWorkRequestBuilder<NotificationWorker>()
             .setInitialDelay(
                 timeDelay,
-                TimeUnit.MILLISECONDS
+                TimeUnit.MILLISECONDS,
             ).build()
 
         WorkManager.getInstance(context).enqueue(request)
@@ -64,7 +61,6 @@ class NotificationScheduler @Inject constructor(
     }
 
     private suspend fun getTimeInMillis(): Calendar {
-
         val reminderTimeState = reminderTimeRepository.getReminderTime().first()
 
         val hour = reminderTimeState.hour
@@ -87,9 +83,8 @@ class NotificationScheduler @Inject constructor(
     suspend fun showNotification(
         destinationClass: String,
         title: String,
-        content: String
+        content: String,
     ) {
-
         if (canWeShowNotification().not()) {
             return
         }
@@ -121,16 +116,15 @@ class NotificationScheduler @Inject constructor(
 
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE)
-                    as NotificationManager
+                as NotificationManager
 
         notificationManager.notify(
             NotificationId.DAILY_REMINDER_REQUEST_CODE,
-            notification
+            notification,
         )
     }
 
     private suspend fun canWeShowNotification(): Boolean {
-
         val isReminderOn = reminderTimeRepository.isReminderOn().firstOrNull() ?: false
 
         if (isReminderOn.not()) {
@@ -140,7 +134,7 @@ class NotificationScheduler @Inject constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(
                     context,
-                    Manifest.permission.POST_NOTIFICATIONS
+                    Manifest.permission.POST_NOTIFICATIONS,
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 return false
@@ -166,7 +160,6 @@ class NotificationScheduler @Inject constructor(
         channelName: String,
         channelDescription: String,
     ) {
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
         val channel = NotificationChannel(

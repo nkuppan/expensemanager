@@ -6,7 +6,7 @@ import androidx.navigation.navArgument
 
 sealed class ExpenseManagerScreens(
     val route: String,
-    val navArguments: List<NamedNavArgument> = emptyList()
+    val navArguments: List<NamedNavArgument> = emptyList(),
 ) {
     val name: String = route.appendArguments(navArguments)
 
@@ -30,8 +30,8 @@ sealed class ExpenseManagerScreens(
             navArgument("accountId") {
                 type = NavType.StringType
                 nullable = true
-            }
-        )
+            },
+        ),
     ) {
         const val KEY_ACCOUNT_ID = "accountId"
 
@@ -44,8 +44,8 @@ sealed class ExpenseManagerScreens(
             navArgument("categoryId") {
                 type = NavType.StringType
                 nullable = true
-            }
-        )
+            },
+        ),
     ) {
         const val KEY_CATEGORY_ID = "categoryId"
 
@@ -58,8 +58,8 @@ sealed class ExpenseManagerScreens(
             navArgument("categoryId") {
                 type = NavType.StringType
                 nullable = true
-            }
-        )
+            },
+        ),
     ) {
         const val KEY_CATEGORY_ID = "categoryId"
 
@@ -72,8 +72,8 @@ sealed class ExpenseManagerScreens(
             navArgument("budgetId") {
                 type = NavType.StringType
                 nullable = true
-            }
-        )
+            },
+        ),
     ) {
         const val KEY_BUDGET_ID = "budgetId"
 
@@ -86,8 +86,8 @@ sealed class ExpenseManagerScreens(
             navArgument("budgetId") {
                 type = NavType.StringType
                 nullable = true
-            }
-        )
+            },
+        ),
     ) {
         const val KEY_BUDGET_ID = "budgetId"
 
@@ -100,8 +100,8 @@ sealed class ExpenseManagerScreens(
             navArgument("transactionId") {
                 type = NavType.StringType
                 nullable = true
-            }
-        )
+            },
+        ),
     ) {
         const val KEY_TRANSACTION_ID = "transactionId"
 

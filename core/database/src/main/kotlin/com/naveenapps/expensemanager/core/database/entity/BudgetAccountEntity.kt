@@ -14,16 +14,16 @@ import java.util.Date
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("budget_id"),
             onUpdate = ForeignKey.NO_ACTION,
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = AccountEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("account_id"),
             onUpdate = ForeignKey.NO_ACTION,
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
         ),
-    ]
+    ],
 )
 data class BudgetAccountEntity(
     @PrimaryKey(autoGenerate = false)
@@ -36,5 +36,5 @@ data class BudgetAccountEntity(
     @ColumnInfo(name = "created_on")
     val createdOn: Date,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date
+    val updatedOn: Date,
 )

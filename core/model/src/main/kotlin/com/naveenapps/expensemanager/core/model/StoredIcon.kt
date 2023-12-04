@@ -2,5 +2,5 @@ package com.naveenapps.expensemanager.core.model
 
 data class StoredIcon(
     val name: String,
-    val backgroundColor: String
+    val backgroundColor: String,
 )

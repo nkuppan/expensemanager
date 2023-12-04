@@ -140,7 +140,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-    )
+    ),
 )
 
 val BASE_ACCOUNT_LIST = listOf(
@@ -176,7 +176,7 @@ val BASE_ACCOUNT_LIST = listOf(
         ),
         Calendar.getInstance().time,
         Calendar.getInstance().time,
-    )
+    ),
 )
 
 class PreloadDatabaseInitializer : Initializer<Unit> {
@@ -194,15 +194,12 @@ class PreloadDatabaseInitializer : Initializer<Unit> {
     lateinit var addCategoryUseCase: AddCategoryUseCase
 
     override fun create(context: Context) {
-
         InitializerEntryPoint.resolve(context).inject(this)
 
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
-
             val isPreloaded = getPreloadStatusUseCase.invoke()
 
             if (isPreloaded.not()) {
-
                 BASE_CATEGORY_LIST.forEach { value ->
                     addCategoryUseCase.invoke(value)
                 }

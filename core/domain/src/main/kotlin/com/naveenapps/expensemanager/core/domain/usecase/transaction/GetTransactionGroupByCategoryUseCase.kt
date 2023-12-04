@@ -22,7 +22,7 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
     fun invoke(categoryType: CategoryType): Flow<CategoryTransactionUiModel> {
         return combine(
             getCurrencyUseCase.invoke(),
-            getTransactionWithFilterUseCase.invoke()
+            getTransactionWithFilterUseCase.invoke(),
         ) { currency, transactions ->
 
             val maps = if (transactions?.isNotEmpty() == true) {
@@ -49,10 +49,10 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                             percent = (totalSpentAmount / totalAmount).toFloat() * 100,
                             getFormattedAmountUseCase.invoke(
                                 amount = totalSpentAmount,
-                                currency = currency
+                                currency = currency,
                             ),
-                            it.value
-                        )
+                            it.value,
+                        ),
                     )
                 }
             }.sortedByDescending { it.percent }
@@ -73,10 +73,10 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                                     percent = 0.0f,
                                     getFormattedAmountUseCase.invoke(
                                         amount = 0.0,
-                                        currency = currency
+                                        currency = currency,
                                     ),
-                                    emptyList()
-                                )
+                                    emptyList(),
+                                ),
                             )
                         }
                     }
@@ -98,20 +98,19 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                 pieChartData = pieChartData,
                 totalAmount = getFormattedAmountUseCase.invoke(
                     amount = totalAmount,
-                    currency = currency
+                    currency = currency,
                 ),
                 categoryTransactions = newCategoryTransaction,
-                hideValues = categoryTransactions.isEmpty()
+                hideValues = categoryTransactions.isEmpty(),
             )
         }
     }
 }
 
-
 fun CategoryTransaction.toChartModel(): PieChartData {
     return PieChartData(
         name = this.category.name,
         value = this.percent,
-        color = this.category.storedIcon.backgroundColor
+        color = this.category.storedIcon.backgroundColor,
     )
 }

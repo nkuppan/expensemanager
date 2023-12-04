@@ -46,12 +46,12 @@ class OnboardingViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getAllAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
             _currency.value = currency
             _accounts.value = accounts.map { account ->
                 account.toAccountUiModel(
-                    getFormattedAmountUseCase.invoke(account.amount, currency)
+                    getFormattedAmountUseCase.invoke(account.amount, currency),
                 )
             }
         }.launchIn(viewModelScope)
@@ -67,8 +67,8 @@ class OnboardingViewModel @Inject constructor(
     fun openAccountCreateScreen(accountId: String?) {
         composeNavigator.navigate(
             ExpenseManagerScreens.AccountCreate.createRoute(
-                accountId ?: ""
-            )
+                accountId ?: "",
+            ),
         )
     }
 }

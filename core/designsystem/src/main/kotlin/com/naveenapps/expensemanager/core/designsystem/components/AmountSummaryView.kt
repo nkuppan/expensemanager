@@ -40,7 +40,7 @@ fun ColorIconAmountView(
     icon: ImageVector?,
     amount: String,
     modifier: Modifier = Modifier,
-    title: String
+    title: String,
 ) {
     Row(modifier = modifier) {
         if (icon != null && color != null) {
@@ -49,14 +49,14 @@ fun ColorIconAmountView(
                     .padding(end = 8.dp)
                     .background(
                         color = colorResource(id = color),
-                        shape = CircleShape
+                        shape = CircleShape,
                     )
                     .size(16.dp)
                     .padding(2.dp)
                     .align(Alignment.CenterVertically),
                 imageVector = icon,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSecondary
+                tint = MaterialTheme.colorScheme.onSecondary,
             )
         } else {
             Spacer(
@@ -64,7 +64,7 @@ fun ColorIconAmountView(
                     .padding(end = 8.dp)
                     .size(16.dp)
                     .padding(2.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             )
         }
         Text(
@@ -86,7 +86,7 @@ fun ColorIconAmountView(
                 colorResource(id = color)
             } else {
                 Color.Unspecified
-            }
+            },
         )
     }
 }
@@ -99,11 +99,10 @@ fun AmountInfoWidget(
     transactionPeriod: String,
     modifier: Modifier = Modifier,
 ) {
-
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        tonalElevation = 1.dp
+        tonalElevation = 1.dp,
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -111,7 +110,7 @@ fun AmountInfoWidget(
         ) {
             WidgetHeader(
                 title = stringResource(id = R.string.transaction_summary),
-                subTitle = transactionPeriod
+                subTitle = transactionPeriod,
             )
 
             ColorIconAmountView(
@@ -120,7 +119,7 @@ fun AmountInfoWidget(
                 amount = expenseAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.expense)
+                title = stringResource(id = R.string.expense),
             )
             ColorIconAmountView(
                 color = com.naveenapps.expensemanager.core.common.R.color.green_500,
@@ -128,7 +127,7 @@ fun AmountInfoWidget(
                 amount = incomeAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.income)
+                title = stringResource(id = R.string.income),
             )
             Divider()
             ColorIconAmountView(
@@ -137,7 +136,7 @@ fun AmountInfoWidget(
                 amount = balanceAmount,
                 modifier = Modifier
                     .fillMaxWidth(),
-                title = stringResource(id = R.string.total)
+                title = stringResource(id = R.string.total),
             )
         }
     }
@@ -147,7 +146,7 @@ fun AmountInfoWidget(
 fun WidgetHeader(
     title: String,
     subTitle: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier) {
         Text(
@@ -162,14 +161,14 @@ fun WidgetHeader(
                 .align(Alignment.CenterVertically)
                 .padding(start = 4.dp, end = 4.dp),
             text = "-",
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterVertically),
             text = subTitle,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
     }
 }

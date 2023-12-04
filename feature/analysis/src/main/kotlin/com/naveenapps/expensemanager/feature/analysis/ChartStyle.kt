@@ -19,7 +19,7 @@ import com.patrykandpatrick.vico.core.component.shape.shader.DynamicShaders
 internal fun rememberChartStyle(
     columnChartColors: List<Color>,
     lineChartColors: List<Color>,
-    isSystemInDarkTheme: Boolean
+    isSystemInDarkTheme: Boolean,
 ): ChartStyle {
     return remember(columnChartColors, lineChartColors, isSystemInDarkTheme) {
         val defaultColors = if (isSystemInDarkTheme) DefaultColors.Dark else DefaultColors.Light
@@ -64,9 +64,9 @@ val chartColors = listOf<Color>()
 @Composable
 internal fun rememberChartStyle(
     chartColors: List<Color>,
-    isSystemInDarkTheme: Boolean
+    isSystemInDarkTheme: Boolean,
 ) = rememberChartStyle(
     columnChartColors = chartColors,
     lineChartColors = chartColors,
-    isSystemInDarkTheme
+    isSystemInDarkTheme,
 )

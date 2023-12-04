@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class ThemeViewModel @Inject constructor(
     getSelectedTheme: GetCurrentThemeUseCase,
@@ -26,8 +25,8 @@ class ThemeViewModel @Inject constructor(
     private val _currentTheme = MutableStateFlow(
         Theme(
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-            R.string.choose_theme
-        )
+            R.string.choose_theme,
+        ),
     )
     val currentTheme = _currentTheme.asStateFlow()
 

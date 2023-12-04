@@ -15,16 +15,14 @@ import java.util.Date
 
 class AddAccountUseCaseTest : BaseCoroutineTest() {
 
-
     private val account = Account(
         id = "1",
         name = "Sample",
         type = AccountType.CREDIT,
         storedIcon = StoredIcon("ic_account", "#ffffff"),
         createdOn = Date(),
-        updatedOn = Date()
+        updatedOn = Date(),
     )
-
 
     private val accountRepository: AccountRepository = mock()
     private val checkAccountValidationUseCase = CheckAccountValidationUseCase()
@@ -36,13 +34,12 @@ class AddAccountUseCaseTest : BaseCoroutineTest() {
 
         addAccountUseCase = AddAccountUseCase(
             accountRepository,
-            checkAccountValidationUseCase
+            checkAccountValidationUseCase,
         )
     }
 
     @Test
     fun whenAccountIsValidShouldAddSuccessfully() = runTest {
-
         whenever(accountRepository.addAccount(account)).thenReturn(Resource.Success(true))
 
         val response = addAccountUseCase.invoke(account)

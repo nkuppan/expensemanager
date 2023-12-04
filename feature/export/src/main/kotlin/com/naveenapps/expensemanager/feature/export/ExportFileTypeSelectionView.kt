@@ -15,17 +15,15 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterCh
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.ExportFileType
 
-
 @Composable
 fun ExportFileTypeSelectionView(
     selectedExportFileType: ExportFileType,
     onExportFileTypeChange: ((ExportFileType) -> Unit),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AppFilterChip(
             modifier = Modifier
@@ -36,7 +34,7 @@ fun ExportFileTypeSelectionView(
             isSelected = selectedExportFileType == ExportFileType.CSV,
             onClick = {
                 onExportFileTypeChange.invoke(ExportFileType.CSV)
-            }
+            },
         )
         AppFilterChip(
             modifier = Modifier
@@ -47,7 +45,7 @@ fun ExportFileTypeSelectionView(
             isSelected = selectedExportFileType == ExportFileType.PDF,
             onClick = {
                 onExportFileTypeChange.invoke(ExportFileType.PDF)
-            }
+            },
         )
     }
 }
@@ -62,14 +60,14 @@ private fun ExportFileTypeSelectionViewPreview() {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 selectedExportFileType = ExportFileType.CSV,
-                onExportFileTypeChange = {}
+                onExportFileTypeChange = {},
             )
             ExportFileTypeSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 selectedExportFileType = ExportFileType.PDF,
-                onExportFileTypeChange = {}
+                onExportFileTypeChange = {},
             )
         }
     }

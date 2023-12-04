@@ -47,9 +47,8 @@ fun MonthPicker(
     currentYear: Int,
     confirmButtonCLicked: (Int, Int) -> Unit,
     cancelClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     val months = listOf(
         "JAN",
         "FEB",
@@ -62,7 +61,7 @@ fun MonthPicker(
         "SEP",
         "OCT",
         "NOV",
-        "DEC"
+        "DEC",
     )
 
     var month by remember { mutableStateOf(months[if (currentMonth - 1 < 0) 0 else currentMonth - 1]) }
@@ -77,9 +76,8 @@ fun MonthPicker(
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-
                 Icon(
                     modifier = Modifier
                         .size(35.dp)
@@ -89,17 +87,17 @@ fun MonthPicker(
                             interactionSource = interactionSource,
                             onClick = {
                                 year--
-                            }
+                            },
                         ),
                     imageVector = Icons.Rounded.KeyboardArrowDown,
-                    contentDescription = null
+                    contentDescription = null,
                 )
 
                 Text(
                     modifier = Modifier.padding(horizontal = 20.dp),
                     text = year.toString(),
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 Icon(
@@ -111,12 +109,11 @@ fun MonthPicker(
                             interactionSource = interactionSource,
                             onClick = {
                                 year++
-                            }
+                            },
                         ),
                     imageVector = Icons.Rounded.KeyboardArrowDown,
-                    contentDescription = null
+                    contentDescription = null,
                 )
-
             }
         },
         text = {
@@ -124,9 +121,8 @@ fun MonthPicker(
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth(),
-                columns = GridCells.Adaptive(minSize = 96.dp)
+                columns = GridCells.Adaptive(minSize = 96.dp),
             ) {
-
                 items(months) {
                     Box(
                         modifier = Modifier
@@ -136,20 +132,20 @@ fun MonthPicker(
                                 interactionSource = interactionSource,
                                 onClick = {
                                     month = it
-                                }
+                                },
                             )
                             .background(
-                                color = Color.Transparent
+                                color = Color.Transparent,
                             ),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
-
                         val animatedSize by animateDpAsState(
                             targetValue = if (month == it) 60.dp else 0.dp,
                             animationSpec = tween(
                                 durationMillis = 500,
-                                easing = LinearOutSlowInEasing
-                            ), label = ""
+                                easing = LinearOutSlowInEasing,
+                            ),
+                            label = "",
                         )
 
                         Box(
@@ -157,16 +153,15 @@ fun MonthPicker(
                                 .size(animatedSize)
                                 .background(
                                     color = if (month == it) Color.Blue else Color.Transparent,
-                                    shape = CircleShape
-                                )
+                                    shape = CircleShape,
+                                ),
                         )
 
                         Text(
                             text = it,
                             color = if (month == it) Color.White else Color.Black,
-                            fontWeight = FontWeight.Medium
+                            fontWeight = FontWeight.Medium,
                         )
-
                     }
                 }
             }
@@ -176,9 +171,9 @@ fun MonthPicker(
                 onClick = {
                     confirmButtonCLicked(
                         months.indexOf(month) + 1,
-                        year
+                        year,
                     )
-                }
+                },
             ) {
                 Text(text = stringResource(id = R.string.ok).uppercase())
             }
@@ -188,12 +183,12 @@ fun MonthPicker(
                 modifier = Modifier.padding(end = 16.dp),
                 onClick = {
                     cancelClicked()
-                }
+                },
             ) {
                 Text(text = stringResource(id = R.string.cancel).uppercase())
             }
         },
-        onDismissRequest = cancelClicked
+        onDismissRequest = cancelClicked,
     )
 }
 
@@ -208,11 +203,9 @@ fun MonthPickerPreview() {
             currentMonth = 1,
             currentYear = 2023,
             confirmButtonCLicked = { month, year ->
-
             },
             cancelClicked = {
-
-            }
+            },
         )
     }
 }

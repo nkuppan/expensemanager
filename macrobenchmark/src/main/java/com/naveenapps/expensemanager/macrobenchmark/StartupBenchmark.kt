@@ -21,7 +21,6 @@ class StartupBenchmark {
     fun startupWithBaselineProfileCompilation() =
         startup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))
 
-
     private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = TARGET_PACKAGE,
         metrics = listOf(StartupTimingMetric()),
@@ -30,7 +29,7 @@ class StartupBenchmark {
         setupBlock = {
             // Press home button before each run to ensure the starting activity isn't visible.
             pressHome()
-        }
+        },
     ) {
         // starts default launch activity
         startActivityAndWait()

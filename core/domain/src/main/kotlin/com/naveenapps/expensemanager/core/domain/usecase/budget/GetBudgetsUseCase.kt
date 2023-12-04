@@ -26,7 +26,7 @@ class GetBudgetsUseCase @Inject constructor(
         return combine(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(),
-            repository.getBudgets()
+            repository.getBudgets(),
         ) { currency, _, budgets ->
             budgets.map {
                 val transactions = when (val response = getBudgetTransactionsUseCase(it)) {
@@ -48,21 +48,20 @@ class GetBudgetsUseCase @Inject constructor(
                     percent,
                     transactions?.map {
                         it.toTransactionUIModel(
-                            getFormattedAmountUseCase(it.amount.amount, currency)
+                            getFormattedAmountUseCase(it.amount.amount, currency),
                         )
-                    }
+                    },
                 )
             }
         }
     }
 }
 
-
 fun Budget.toBudgetUiModel(
     budgetAmount: Amount,
     transactionAmount: Amount,
     percent: Float,
-    transactions: List<TransactionUiItem>? = null
+    transactions: List<TransactionUiItem>? = null,
 ) = BudgetUiModel(
     id = this.id,
     name = this.name,
@@ -78,9 +77,8 @@ fun Budget.toBudgetUiModel(
     amount = budgetAmount,
     transactionAmount = transactionAmount,
     percent = percent,
-    transactions = transactions
+    transactions = transactions,
 )
-
 
 data class BudgetUiModel(
     val id: String,
@@ -91,5 +89,5 @@ data class BudgetUiModel(
     val amount: Amount,
     val transactionAmount: Amount,
     val percent: Float,
-    val transactions: List<TransactionUiItem>? = null
+    val transactions: List<TransactionUiItem>? = null,
 )

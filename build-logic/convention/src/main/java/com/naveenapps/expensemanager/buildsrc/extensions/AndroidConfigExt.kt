@@ -17,7 +17,6 @@ const val VERSION_NAME = "1.0.10"
 const val BENCHMARK_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
 
 fun LibraryExtension.configureAndroid() {
-
     namespace = "com.naveenapps.expensemanager"
 
     defaultConfig.targetSdk = TARGET_SDK
@@ -39,7 +38,6 @@ fun LibraryExtension.configureAndroid() {
 }
 
 fun ApplicationExtension.configureAndroid() {
-
     namespace = "com.naveenapps.expensemanager"
 
     defaultConfig.targetSdk = TARGET_SDK
@@ -80,7 +78,6 @@ fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *>) {
 }
 
 fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
-
     extension.apply {
         buildFeatures {
             compose = true

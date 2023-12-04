@@ -17,7 +17,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
         type = AccountType.CREDIT,
         storedIcon = StoredIcon("ic_account", "#ffffff"),
         createdOn = Date(),
-        updatedOn = Date()
+        updatedOn = Date(),
     )
 
     private var checkAccountValidationUseCase = CheckAccountValidationUseCase()
@@ -36,7 +36,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenAccountIdIsNotAvailableShouldResultError() {
         val response = checkAccountValidationUseCase.invoke(
-            account.copy(id = "")
+            account.copy(id = ""),
         )
 
         Truth.assertThat(response).isNotNull()
@@ -51,9 +51,10 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
         val response = checkAccountValidationUseCase.invoke(
             account.copy(
                 storedIcon = StoredIcon(
-                    name = "", backgroundColor = "#ffff"
-                )
-            )
+                    name = "",
+                    backgroundColor = "#ffff",
+                ),
+            ),
         )
 
         Truth.assertThat(response).isNotNull()
@@ -68,9 +69,10 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
         val response = checkAccountValidationUseCase.invoke(
             account.copy(
                 storedIcon = StoredIcon(
-                    name = "Sample", backgroundColor = ""
-                )
-            )
+                    name = "Sample",
+                    backgroundColor = "",
+                ),
+            ),
         )
 
         Truth.assertThat(response).isNotNull()
@@ -85,9 +87,10 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
         val response = checkAccountValidationUseCase.invoke(
             account.copy(
                 storedIcon = StoredIcon(
-                    name = "Sample", backgroundColor = "sample"
-                )
-            )
+                    name = "Sample",
+                    backgroundColor = "sample",
+                ),
+            ),
         )
 
         Truth.assertThat(response).isNotNull()
@@ -100,7 +103,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenAccountNameIsNotAvailableShouldResultError() {
         val response = checkAccountValidationUseCase.invoke(
-            account.copy(name = "")
+            account.copy(name = ""),
         )
 
         Truth.assertThat(response).isNotNull()

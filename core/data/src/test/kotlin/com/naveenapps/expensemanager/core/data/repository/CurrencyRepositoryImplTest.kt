@@ -27,7 +27,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     private val amount = Amount(
         amount = 100.0,
         amountString = null,
-        currency = null
+        currency = null,
     )
 
     private val testContext: Context = ApplicationProvider.getApplicationContext()
@@ -37,7 +37,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             scope = testCoroutineScope,
             produceFile = {
                 testContext.preferencesDataStoreFile("TEST_DATASTORE_NAME")
-            }
+            },
         )
 
     private val repository: CurrencyRepository = CurrencyRepositoryImpl(
@@ -45,8 +45,8 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
         AppCoroutineDispatchers(
             testCoroutineDispatcher.dispatcher,
             testCoroutineDispatcher.dispatcher,
-            testCoroutineDispatcher.dispatcher
-        )
+            testCoroutineDispatcher.dispatcher,
+        ),
     )
 
     @Test
@@ -73,7 +73,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             Truth.assertThat(currency).isEqualTo(defaultCurrency)
 
             val updatingCurrency = defaultCurrency.copy(
-                symbol = "€"
+                symbol = "€",
             )
 
             repository.saveCurrency(updatingCurrency)
@@ -107,8 +107,8 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             amount = 120.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
-                position = TextPosition.PREFIX
-            )
+                position = TextPosition.PREFIX,
+            ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
         Truth.assertThat(formattedAmount).isNotNull()
@@ -124,7 +124,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
                 symbol = "€",
                 position = TextPosition.PREFIX,
                 format = TextFormat.NUMBER_FORMAT,
-            )
+            ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
         Truth.assertThat(formattedAmount).isNotNull()
@@ -140,7 +140,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
                 symbol = "€",
                 position = TextPosition.PREFIX,
                 format = TextFormat.NUMBER_FORMAT,
-            )
+            ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
         Truth.assertThat(formattedAmount).isNotNull()
@@ -156,7 +156,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
                 symbol = "€",
                 position = TextPosition.PREFIX,
                 format = TextFormat.NUMBER_FORMAT,
-            )
+            ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
         Truth.assertThat(formattedAmount).isNotNull()
@@ -172,7 +172,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
                 symbol = "€",
                 position = TextPosition.SUFFIX,
                 format = TextFormat.NUMBER_FORMAT,
-            )
+            ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
         Truth.assertThat(formattedAmount).isNotNull()

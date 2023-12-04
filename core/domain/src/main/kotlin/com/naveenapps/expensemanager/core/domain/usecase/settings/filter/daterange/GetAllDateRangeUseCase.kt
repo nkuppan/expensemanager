@@ -5,7 +5,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 import javax.inject.Inject
 
 class GetAllDateRangeUseCase @Inject constructor(
-    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
+    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository,
 ) {
     suspend operator fun invoke(): Resource<List<DateRangeModel>> {
         return dateRangeFilterRepository.getAllDateRanges()

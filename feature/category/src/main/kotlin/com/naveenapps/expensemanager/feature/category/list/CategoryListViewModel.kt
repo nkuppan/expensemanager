@@ -29,7 +29,7 @@ class CategoryListViewModel @Inject constructor(
     init {
         combine(
             categoryType,
-            getAllCategoryUseCase.invoke()
+            getAllCategoryUseCase.invoke(),
         ) { categoryType, categories ->
             val categoryList = categories.filter { it.type == categoryType }
             if (categoryList.isEmpty()) {
@@ -42,7 +42,7 @@ class CategoryListViewModel @Inject constructor(
 
     fun openCreateScreen(categoryId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate.createRoute(categoryId ?: "")
+            ExpenseManagerScreens.CategoryCreate.createRoute(categoryId ?: ""),
         )
     }
 

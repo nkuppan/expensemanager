@@ -20,14 +20,13 @@ object DatabaseModule {
 
     private const val DATA_BASE_NAME = "expense_manager_database.db"
 
-
     @Singleton
     @Provides
     fun provideRoomDatabase(@ApplicationContext context: Context): ExpenseManagerDatabase {
         return Room.databaseBuilder(
             context,
             ExpenseManagerDatabase::class.java,
-            DATA_BASE_NAME
+            DATA_BASE_NAME,
         ).build()
     }
 

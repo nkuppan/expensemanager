@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BudgetListViewModel @Inject constructor(
     getBudgetsUseCase: GetBudgetsUseCase,
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _budgets = MutableStateFlow<UiState<List<BudgetUiModel>>>(UiState.Loading)
@@ -35,7 +35,7 @@ class BudgetListViewModel @Inject constructor(
 
     fun openCreateScreen(budgetId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetCreate.createRoute(budgetId ?: "")
+            ExpenseManagerScreens.BudgetCreate.createRoute(budgetId ?: ""),
         )
     }
 

@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopNavigationBar(
@@ -40,13 +39,12 @@ fun TopNavigationBar(
             if (title != null) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
                 )
             }
-        }
+        },
     )
 }
-
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,7 +58,7 @@ fun TopNavigationBarWithDeleteAction(
             onClick = {
                 onClick.invoke(1)
             },
-            navigationIcon = Icons.Default.Close
+            navigationIcon = Icons.Default.Close,
         )
     }, title = {
         Row {
@@ -68,7 +66,7 @@ fun TopNavigationBarWithDeleteAction(
                 modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterVertically),
-                text = title
+                text = title,
             )
             if (showDelete == true) {
                 IconButton(onClick = {
@@ -76,7 +74,7 @@ fun TopNavigationBarWithDeleteAction(
                 }) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
-                        contentDescription = ""
+                        contentDescription = "",
                     )
                 }
             }
@@ -96,7 +94,7 @@ private fun TopNavigationBarWithDeleteAction() {
             TopNavigationBar(
                 onClick = {},
                 title = stringResource(id = R.string.page_name),
-                disableBackIcon = true
+                disableBackIcon = true,
             )
             TopNavigationBar(
                 onClick = {},
@@ -104,15 +102,13 @@ private fun TopNavigationBarWithDeleteAction() {
             )
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
-                showDelete = null
+                showDelete = null,
             ) {
-
             }
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
-                showDelete = true
+                showDelete = true,
             ) {
-
             }
         }
     }

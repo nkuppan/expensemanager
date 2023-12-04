@@ -117,15 +117,16 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
             .fillMaxWidth()
             .wrapContentHeight(),
         columns = columns,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item(span = {
             GridItemSpan(this.maxLineSpan)
         }) {
             SelectionTitle(
-                stringResource(id = R.string.choose_color), Modifier.Companion
+                stringResource(id = R.string.choose_color),
+                Modifier.Companion
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             )
         }
         items(colors) { color ->
@@ -134,7 +135,7 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
                 modifier = ColorIconSpecModifier
                     .clickable {
                         onColorPicked?.invoke(parsedColor)
-                    }
+                    },
             ) {
                 Canvas(
                     modifier = Modifier
@@ -143,7 +144,7 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
                         .align(Alignment.Center),
                     onDraw = {
                         drawCircle(color = Color(parsedColor))
-                    }
+                    },
                 )
             }
         }

@@ -11,12 +11,12 @@ import dagger.hilt.components.SingletonComponent
 interface InitializerEntryPoint {
 
     companion object {
-        //a helper method to resolve the InitializerEntryPoint from the context
+        // a helper method to resolve the InitializerEntryPoint from the context
         fun resolve(context: Context): InitializerEntryPoint {
             val appContext = context.applicationContext ?: throw IllegalStateException()
             return EntryPointAccessors.fromApplication(
                 appContext,
-                InitializerEntryPoint::class.java
+                InitializerEntryPoint::class.java,
             )
         }
     }

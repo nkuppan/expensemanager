@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AboutUsViewModel @Inject constructor(
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     fun closePage() {

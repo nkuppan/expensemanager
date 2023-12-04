@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class UpdateBudgetUseCase @Inject constructor(
     private val repository: BudgetRepository,
-    private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase
+    private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase,
 ) {
 
     suspend operator fun invoke(budget: Budget): Resource<Boolean> {

@@ -35,9 +35,8 @@ import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
 fun MultipleCategoriesSelectionScreen(
     viewModel: CategorySelectionViewModel = hiltViewModel(),
     selectedCategories: List<Category> = emptyList(),
-    onItemSelection: ((List<Category>, Boolean) -> Unit)? = null
+    onItemSelection: ((List<Category>, Boolean) -> Unit)? = null,
 ) {
-
     viewModel.selectAllThisCategory(selectedCategories)
 
     CategorySelectionView(viewModel, onItemSelection)
@@ -46,7 +45,7 @@ fun MultipleCategoriesSelectionScreen(
 @Composable
 private fun CategorySelectionView(
     viewModel: CategorySelectionViewModel,
-    onItemSelection: ((List<Category>, Boolean) -> Unit)?
+    onItemSelection: ((List<Category>, Boolean) -> Unit)?,
 ) {
     val context = LocalContext.current
     val categories by viewModel.categories.collectAsState()
@@ -60,18 +59,18 @@ private fun CategorySelectionView(
             if (selectedCategories.isNotEmpty()) {
                 onItemSelection?.invoke(
                     selectedCategories,
-                    selectedCategories.size == categories.size
+                    selectedCategories.size == categories.size,
                 )
             } else {
                 Toast.makeText(
                     context,
                     context.getString(R.string.category_selection_message),
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_SHORT,
                 ).show()
             }
         },
         onClearChanges = viewModel::clearChanges,
-        onItemSelection = viewModel::selectThisCategory
+        onItemSelection = viewModel::selectThisCategory,
     )
 }
 
@@ -82,17 +81,18 @@ fun MultipleCategoriesSelectionScreen(
     selectedCategories: List<Category>,
     onApplyChanges: (() -> Unit),
     onClearChanges: (() -> Unit),
-    onItemSelection: ((Category, Boolean) -> Unit)? = null
+    onItemSelection: ((Category, Boolean) -> Unit)? = null,
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
             SelectionTitle(
-                stringResource(id = R.string.select_account), Modifier
+                stringResource(id = R.string.select_account),
+                Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             )
         }
         items(categories) { category ->
@@ -109,7 +109,7 @@ fun MultipleCategoriesSelectionScreen(
                 isSelected = isSelected,
                 onCheckedChange = {
                     onItemSelection?.invoke(category, it)
-                }
+                },
             )
         }
         item {
@@ -118,7 +118,7 @@ fun MultipleCategoriesSelectionScreen(
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     TextButton(onClick = onClearChanges) {
                         Text(text = stringResource(id = R.string.clear_all).uppercase())
@@ -138,7 +138,6 @@ fun MultipleCategoriesSelectionScreen(
     }
 }
 
-
 @Preview
 @Composable
 private fun MultipleCategoriesSelectionScreenPreview() {
@@ -148,7 +147,7 @@ private fun MultipleCategoriesSelectionScreenPreview() {
             selectedCategories = getRandomCategoryData(),
             onApplyChanges = {},
             onClearChanges = {},
-            onItemSelection = null
+            onItemSelection = null,
         )
     }
 }

@@ -13,7 +13,7 @@ private const val DEFAULT_REMINDER_TIMER = "10:00:false"
 
 class ReminderTimeRepositoryImpl @Inject constructor(
     private val dataStore: ReminderTimeDataStore,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : ReminderTimeRepository {
 
     override suspend fun saveReminderTime(reminderTime: ReminderTimeState): Boolean =
@@ -21,7 +21,6 @@ class ReminderTimeRepositoryImpl @Inject constructor(
             dataStore.setReminderTime(reminderTime)
             true
         }
-
 
     override fun getReminderTime(): Flow<ReminderTimeState> {
         return dataStore.getReminderTime(DEFAULT_REMINDER_TIMER)

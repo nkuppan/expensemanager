@@ -59,13 +59,11 @@ class CategorySelectionViewModel @Inject constructor(
     }
 
     fun selectAllThisCategory(categories: List<Category>) {
-
         if (categories.isEmpty()) {
             return
         }
 
         viewModelScope.launch {
-
             clearChanges()
 
             val selectedCategories = _selectedCategory.value.toMutableList()

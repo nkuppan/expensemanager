@@ -20,7 +20,7 @@ class GetTransactionWithFilterUseCase @Inject constructor(
     private val categoryRepository: CategoryRepository,
     private val settingsRepository: SettingsRepository,
     private val getDateRangeUseCase: GetDateRangeUseCase,
-    private val transactionRepository: TransactionRepository
+    private val transactionRepository: TransactionRepository,
 ) {
     @OptIn(ExperimentalCoroutinesApi::class)
     fun invoke(): Flow<List<Transaction>?> {
@@ -28,7 +28,7 @@ class GetTransactionWithFilterUseCase @Inject constructor(
             settingsRepository.getTransactionTypes(),
             settingsRepository.getCategories(),
             settingsRepository.getAccounts(),
-            getDateRangeUseCase.invoke()
+            getDateRangeUseCase.invoke(),
         ) { selectedTransactionTypes, selectedCategories, selectedAccounts, dateRangeModel ->
 
             val transactionTypes: List<Int> = if (selectedTransactionTypes.isNullOrEmpty()) {
@@ -54,7 +54,7 @@ class GetTransactionWithFilterUseCase @Inject constructor(
                 dateRangeModel.dateRanges,
                 accounts,
                 categories,
-                transactionTypes
+                transactionTypes,
             )
         }.flatMapLatest {
             return@flatMapLatest if (it.dateRangeType == DateRangeType.ALL) {
@@ -69,7 +69,7 @@ class GetTransactionWithFilterUseCase @Inject constructor(
                     it.categories,
                     it.transactionTypes,
                     it.filterRange[0],
-                    it.filterRange[1]
+                    it.filterRange[1],
                 )
             }
         }

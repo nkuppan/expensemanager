@@ -25,7 +25,7 @@ val ItemSpecModifier = Modifier
         start = COMMON_PADDING.dp,
         end = COMMON_PADDING.dp,
         top = (COMMON_PADDING / 1.25).dp,
-        bottom = (COMMON_PADDING / 1.25).dp
+        bottom = (COMMON_PADDING / 1.25).dp,
     )
     .wrapContentHeight()
     .fillMaxWidth()

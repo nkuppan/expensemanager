@@ -56,12 +56,10 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.feature.budget.R
 
-
 @Composable
 fun BudgetListScreen(
-    viewModel: BudgetListViewModel = hiltViewModel()
+    viewModel: BudgetListViewModel = hiltViewModel(),
 ) {
-
     val budgetUiState by viewModel.budgets.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -75,7 +73,7 @@ fun BudgetListScreen(
                 onClick = {
                     viewModel.closePage()
                 },
-                title = stringResource(R.string.budgets)
+                title = stringResource(R.string.budgets),
             )
         },
         floatingActionButton = {
@@ -84,17 +82,17 @@ fun BudgetListScreen(
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         BudgetListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            budgetUiState = budgetUiState
+            budgetUiState = budgetUiState,
         ) { budget ->
             viewModel.openCreateScreen(budget.id)
         }
@@ -105,13 +103,11 @@ fun BudgetListScreen(
 private fun BudgetListScreenContent(
     budgetUiState: UiState<List<BudgetUiModel>>,
     modifier: Modifier = Modifier,
-    onItemClick: ((BudgetUiModel) -> Unit)? = null
+    onItemClick: ((BudgetUiModel) -> Unit)? = null,
 ) {
-
     val scrollState = rememberLazyListState()
 
     Box(modifier = modifier) {
-
         when (budgetUiState) {
             UiState.Empty -> {
                 Text(
@@ -119,7 +115,7 @@ private fun BudgetListScreenContent(
                         .wrapContentSize()
                         .align(Alignment.Center),
                     text = stringResource(id = R.string.no_budget_available),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
 
@@ -127,12 +123,11 @@ private fun BudgetListScreenContent(
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(72.dp)
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
                 )
             }
 
             is UiState.Success -> {
-
                 LazyColumn(state = scrollState) {
                     items(budgetUiState.data) { budget ->
                         BudgetItem(
@@ -154,7 +149,7 @@ private fun BudgetListScreenContent(
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(36.dp)
+                                .padding(36.dp),
                         )
                     }
                 }
@@ -173,30 +168,28 @@ fun BudgetItem(
     amount: Amount?,
     transactionAmount: Amount?,
     modifier: Modifier = Modifier,
-    percentage: Float = 0.0f
+    percentage: Float = 0.0f,
 ) {
-
     Row(modifier = modifier) {
         IconAndBackgroundView(
             modifier = Modifier
                 .align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
-            name = name
+            name = name,
         )
         Column(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(start = 16.dp),
         ) {
-
             Row {
                 Text(
                     modifier = Modifier
                         .weight(1f)
                         .align(Alignment.CenterVertically),
                     text = name,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
                 )
                 if (amount != null) {
                     Text(
@@ -204,7 +197,7 @@ fun BudgetItem(
                             .padding(start = 8.dp)
                             .align(Alignment.CenterVertically),
                         text = amount.amountString ?: "",
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 }
             }
@@ -223,19 +216,18 @@ fun BudgetItem(
                         .padding(start = 8.dp)
                         .align(Alignment.CenterVertically),
                     text = percentage.toPercentString(),
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
 
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = "${transactionAmount?.amountString} of ${amount?.amountString}",
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }
 }
-
 
 @Composable
 fun DashBoardBudgetItem(
@@ -245,17 +237,17 @@ fun DashBoardBudgetItem(
     transactionAmount: String?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
-    backgroundColor: Color
+    backgroundColor: Color,
 ) {
     Surface(
         modifier = modifier,
         color = backgroundColor,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .width(260.dp)
+                .width(260.dp),
         ) {
             Row {
                 Text(
@@ -265,7 +257,7 @@ fun DashBoardBudgetItem(
                     text = name,
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     modifier = Modifier
@@ -290,14 +282,14 @@ fun DashBoardBudgetItem(
                         .padding(start = 8.dp)
                         .align(Alignment.CenterVertically),
                     text = percentage.toPercentString(),
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
 
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = "$transactionAmount of $amount",
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }
@@ -312,7 +304,7 @@ val DUMMY_DATA = listOf(
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
-        percent = 0.9f
+        percent = 0.9f,
     ),
     BudgetUiModel(
         id = "2",
@@ -322,7 +314,7 @@ val DUMMY_DATA = listOf(
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
-        percent = 0.9f
+        percent = 0.9f,
     ),
     BudgetUiModel(
         id = "3",
@@ -332,7 +324,7 @@ val DUMMY_DATA = listOf(
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
-        percent = 0.9f
+        percent = 0.9f,
     ),
 )
 
@@ -348,7 +340,7 @@ private fun BudgetItemPreview() {
             transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             modifier = ItemSpecModifier,
             progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
-            percentage = 78.8f
+            percentage = 78.8f,
         )
     }
 }
@@ -364,7 +356,7 @@ private fun DashboardBudgetItemPreview() {
             transactionAmount = "$78.00",
             modifier = ItemSpecModifier,
             percentage = 78.8f,
-            backgroundColor = getIncomeBGColor()
+            backgroundColor = getIncomeBGColor(),
         )
     }
 }
@@ -395,7 +387,7 @@ private fun BudgetListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         BudgetListScreenContent(
             budgetUiState = UiState.Success(
-                DUMMY_DATA
+                DUMMY_DATA,
             ),
         )
     }

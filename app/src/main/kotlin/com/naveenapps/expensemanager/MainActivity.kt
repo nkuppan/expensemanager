@@ -39,7 +39,7 @@ internal class MainActivity : ComponentActivity() {
     private val viewModel by viewModels<MainViewModel>()
 
     private val activityResultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartIntentSenderForResult()
+        ActivityResultContracts.StartIntentSenderForResult(),
     ) { result: ActivityResult ->
         if (result.resultCode != RESULT_OK) {
             Log.i("App", "Update flow failed! Result code: " + result.resultCode)
@@ -50,7 +50,6 @@ internal class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -63,7 +62,6 @@ internal class MainActivity : ComponentActivity() {
         }
 
         setContent {
-
             val currentTheme by viewModel.currentTheme.collectAsState()
 
             val onBoardingStatus by viewModel.onboardingStatus.collectAsState()
@@ -84,7 +82,7 @@ internal class MainActivity : ComponentActivity() {
                 MainScreen(
                     appComposeNavigator,
                     isDarkTheme,
-                    ExpenseManagerScreens.Home.name
+                    ExpenseManagerScreens.Home.name,
                     /*if (onBoardingStatus == true) {
                         ExpenseManagerScreens.Home.name
                     } else {
@@ -101,14 +99,14 @@ internal class MainActivity : ComponentActivity() {
         val appUpdateManager = AppUpdateManagerFactory.create(this)
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-                && (appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE) &&
+                (appUpdateInfo.clientVersionStalenessDays() ?: -1) >= DAYS_FOR_FLEXIBLE_UPDATE
             ) {
                 appUpdateManager.startUpdateFlowForResult(
                     appUpdateInfo,
                     activityResultLauncher,
-                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
                 )
             }
         }

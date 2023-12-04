@@ -29,11 +29,10 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTi
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ColorIconSpecModifier
 
-
 @Composable
 fun IconSelectionScreen(
     viewModel: IconSelectionViewModel = hiltViewModel(),
-    onIconPicked: ((Int) -> Unit)? = null
+    onIconPicked: ((Int) -> Unit)? = null,
 ) {
     val columns = GridCells.Adaptive(minSize = 48.dp)
 
@@ -44,15 +43,16 @@ fun IconSelectionScreen(
             .fillMaxWidth()
             .wrapContentHeight(),
         columns = columns,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item(span = {
             GridItemSpan(this.maxLineSpan)
         }) {
             SelectionTitle(
-                stringResource(id = R.string.choose_icon), Modifier.Companion
+                stringResource(id = R.string.choose_icon),
+                Modifier.Companion
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             )
         }
         items(icons) { icon ->
@@ -62,12 +62,12 @@ fun IconSelectionScreen(
                     .clickable {
                         onIconPicked?.invoke(icon)
                     },
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     painter = painterResource(id = icon),
                     modifier = Modifier.align(Alignment.Center),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }

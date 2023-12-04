@@ -13,7 +13,6 @@ import org.gradle.kotlin.dsl.configure
 class AndroidLibraryBasicConfigPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-
             with(pluginManager) {
                 apply("com.android.library")
                 apply("jacoco")

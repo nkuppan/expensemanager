@@ -5,7 +5,7 @@ import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import javax.inject.Inject
 
 class UpdateSelectedCategoryUseCase @Inject constructor(
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
 ) {
 
     suspend operator fun invoke(categories: List<String>?): Resource<Boolean> {

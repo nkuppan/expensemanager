@@ -13,11 +13,9 @@ open class BaseCoroutineTest {
 
     @Before
     open fun onCreate() {
-
     }
 
     @After
     open fun onDestroy() {
-
     }
 }

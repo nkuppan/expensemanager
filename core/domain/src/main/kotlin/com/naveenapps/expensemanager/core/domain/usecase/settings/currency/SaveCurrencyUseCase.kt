@@ -6,10 +6,9 @@ import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import javax.inject.Inject
 
 class SaveCurrencyUseCase @Inject constructor(
-    private val repository: CurrencyRepository
+    private val repository: CurrencyRepository,
 ) {
     suspend operator fun invoke(currency: Currency): Resource<Boolean> {
-
         if (currency.symbol.isBlank()) {
             return Resource.Error(Exception("Please provide valid currency symbol"))
         }

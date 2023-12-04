@@ -39,7 +39,7 @@ internal fun rememberMarker(): Marker {
         lineCount = LABEL_LINE_COUNT,
         padding = labelPadding,
         typeface = Typeface.MONOSPACE,
-        color = MaterialTheme.colorScheme.onSurface
+        color = MaterialTheme.colorScheme.onSurface,
     )
     val indicatorInnerComponent =
         shapeComponent(Shapes.pillShape, MaterialTheme.colorScheme.surface)
@@ -70,7 +70,7 @@ internal fun rememberMarker(): Marker {
                         color = entryColor
                         setShadow(
                             radius = INDICATOR_CENTER_COMPONENT_SHADOW_RADIUS,
-                            color = entryColor
+                            color = entryColor,
                         )
                     }
                 }
@@ -82,8 +82,8 @@ internal fun rememberMarker(): Marker {
                 horizontalDimensions: HorizontalDimensions,
             ) = with(context) {
                 outInsets.top = label.getHeight(context) + labelBackgroundShape.tickSizeDp.pixels +
-                        LABEL_BACKGROUND_SHADOW_RADIUS.pixels * SHADOW_RADIUS_MULTIPLIER -
-                        LABEL_BACKGROUND_SHADOW_DY.pixels
+                    LABEL_BACKGROUND_SHADOW_RADIUS.pixels * SHADOW_RADIUS_MULTIPLIER -
+                    LABEL_BACKGROUND_SHADOW_DY.pixels
             }
         }
     }

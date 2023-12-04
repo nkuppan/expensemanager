@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
@@ -65,26 +64,29 @@ class DashboardViewModel @Inject constructor(
         CategoryTransactionUiModel(
             pieChartData = listOf(),
             totalAmount = Amount(0.0),
-            categoryTransactions = emptyList()
-        )
+            categoryTransactions = emptyList(),
+        ),
     )
     val categoryTransaction = _categoryTransaction.asStateFlow()
 
     init {
         combine(
             getCurrencyUseCase.invoke(),
-            getTransactionWithFilterUseCase.invoke()
+            getTransactionWithFilterUseCase.invoke(),
         ) { currency, response ->
 
-            _transactions.value = ((response?.map {
-                it.toTransactionUIModel(
-                    getFormattedAmountUseCase.invoke(
-                        it.amount.amount,
-                        currency
-                    )
+            _transactions.value = (
+                (
+                    response?.map {
+                        it.toTransactionUIModel(
+                            getFormattedAmountUseCase.invoke(
+                                it.amount.amount,
+                                currency,
+                            ),
+                        )
+                    } ?: emptyList()
+                    ).take(MAX_TRANSACTIONS_IN_LIST)
                 )
-            } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST))
-
         }.launchIn(viewModelScope)
 
         getAmountStateUseCase.invoke().onEach {
@@ -93,14 +95,14 @@ class DashboardViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getAllAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
             _accounts.value = accounts.map {
                 it.toAccountUiModel(
                     getFormattedAmountUseCase.invoke(
                         it.amount,
-                        currency
-                    )
+                        currency,
+                    ),
                 )
             }
         }.launchIn(viewModelScope)
@@ -108,7 +110,7 @@ class DashboardViewModel @Inject constructor(
         getTransactionGroupByCategoryUseCase.invoke(CategoryType.EXPENSE).onEach {
             _categoryTransaction.value = it.copy(
                 pieChartData = it.pieChartData.take(4),
-                categoryTransactions = it.categoryTransactions.take(4)
+                categoryTransactions = it.categoryTransactions.take(4),
             )
         }.launchIn(viewModelScope)
 
@@ -142,7 +144,7 @@ class DashboardViewModel @Inject constructor(
 
     fun openAccountCreate(accountId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: "")
+            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: ""),
         )
     }
 
@@ -152,7 +154,7 @@ class DashboardViewModel @Inject constructor(
 
     fun openBudgetCreate(budgetId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetDetails.createRoute(budgetId ?: "")
+            ExpenseManagerScreens.BudgetDetails.createRoute(budgetId ?: ""),
         )
     }
 
@@ -162,7 +164,7 @@ class DashboardViewModel @Inject constructor(
 
     fun openTransactionCreate(transactionId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: "")
+            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
         )
     }
 

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class UpdateCategoryUseCase @Inject constructor(
     private val repository: CategoryRepository,
-    private val checkCategoryValidationUseCase: CheckCategoryValidationUseCase
+    private val checkCategoryValidationUseCase: CheckCategoryValidationUseCase,
 ) {
 
     suspend operator fun invoke(category: Category): Resource<Boolean> {

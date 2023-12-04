@@ -23,7 +23,7 @@ class TransactionRepositoryImpl @Inject constructor(
     private val transactionDao: TransactionDao,
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : TransactionRepository {
 
     override fun getAllTransaction(): Flow<List<Transaction>?> =
@@ -56,7 +56,7 @@ class TransactionRepositoryImpl @Inject constructor(
                     } else {
                         transaction.amount.amount * -1
                     },
-                    transaction.type.isTransfer()
+                    transaction.type.isTransfer(),
                 )
                 Resource.Success(response != -1L)
             } catch (exception: Exception) {
@@ -76,7 +76,7 @@ class TransactionRepositoryImpl @Inject constructor(
                     } else {
                         transaction.amount.amount * -1
                     },
-                    transaction.type.isTransfer()
+                    transaction.type.isTransfer(),
                 )
                 Resource.Success(true)
             } catch (exception: Exception) {
@@ -97,13 +97,11 @@ class TransactionRepositoryImpl @Inject constructor(
         }
 
     private fun convertTransactionAndCategory(
-        transactionWithCategory: List<TransactionRelation>?
+        transactionWithCategory: List<TransactionRelation>?,
     ): MutableList<Transaction> {
-
         val outputTransactions = mutableListOf<Transaction>()
 
         if (transactionWithCategory?.isNotEmpty() == true) {
-
             transactionWithCategory.forEach {
                 val transaction = convertTransactionCategoryRelation(it)
                 outputTransactions.add(transaction)
@@ -142,7 +140,9 @@ class TransactionRepositoryImpl @Inject constructor(
         transactionType: List<Int>,
     ): Flow<List<Transaction>?> {
         return transactionDao.getAllFilteredTransaction(
-            accounts, categories, transactionType
+            accounts,
+            categories,
+            transactionType,
         ).map {
             convertTransactionAndCategory(it)
         }
@@ -153,10 +153,14 @@ class TransactionRepositoryImpl @Inject constructor(
         categories: List<String>,
         transactionType: List<Int>,
         startDate: Long,
-        endDate: Long
+        endDate: Long,
     ): Flow<List<Transaction>?> {
         return transactionDao.getFilteredTransaction(
-            accounts, categories, transactionType, startDate, endDate
+            accounts,
+            categories,
+            transactionType,
+            startDate,
+            endDate,
         ).map {
             convertTransactionAndCategory(it)
         }

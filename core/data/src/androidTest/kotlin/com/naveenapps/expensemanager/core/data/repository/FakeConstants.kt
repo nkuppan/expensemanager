@@ -16,10 +16,10 @@ val FAKE_CATEGORY = Category(
     type = CategoryType.EXPENSE,
     storedIcon = StoredIcon(
         name = "#FFFFFF",
-        backgroundColor = "#FFFFFF"
+        backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )
 
 val FAKE_SECOND_CATEGORY = Category(
@@ -28,10 +28,10 @@ val FAKE_SECOND_CATEGORY = Category(
     type = CategoryType.EXPENSE,
     storedIcon = StoredIcon(
         name = "#FFFFFF",
-        backgroundColor = "#FFFFFF"
+        backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )
 
 val FAKE_FAVORITE_CATEGORY = Category(
@@ -40,10 +40,10 @@ val FAKE_FAVORITE_CATEGORY = Category(
     type = CategoryType.EXPENSE,
     storedIcon = StoredIcon(
         name = "#FFFFFF",
-        backgroundColor = "#FFFFFF"
+        backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )
 
 val FAKE_ACCOUNT = Account(
@@ -52,10 +52,10 @@ val FAKE_ACCOUNT = Account(
     type = AccountType.REGULAR,
     storedIcon = StoredIcon(
         name = "#FFFFFF",
-        backgroundColor = "#FFFFFF"
+        backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )
 
 val FAKE_SECOND_ACCOUNT = Account(
@@ -64,10 +64,10 @@ val FAKE_SECOND_ACCOUNT = Account(
     type = AccountType.REGULAR,
     storedIcon = StoredIcon(
         name = "#FFFFFF",
-        backgroundColor = "#FFFFFF"
+        backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )
 
 val FAKE_EXPENSE_TRANSACTION = Transaction(
@@ -80,7 +80,7 @@ val FAKE_EXPENSE_TRANSACTION = Transaction(
     amount = Amount(200.0),
     imagePath = "",
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )
 
 val FAKE_INCOME_TRANSACTION = Transaction(
@@ -93,7 +93,7 @@ val FAKE_INCOME_TRANSACTION = Transaction(
     amount = Amount(200.0),
     imagePath = "",
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )
 
 val FAKE_TRANSFER_TRANSACTION = Transaction(
@@ -106,5 +106,5 @@ val FAKE_TRANSFER_TRANSACTION = Transaction(
     amount = Amount(200.0),
     imagePath = "",
     createdOn = Date(),
-    updatedOn = Date()
+    updatedOn = Date(),
 )

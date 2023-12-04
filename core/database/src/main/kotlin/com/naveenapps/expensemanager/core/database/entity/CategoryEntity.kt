@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import com.naveenapps.expensemanager.core.model.CategoryType
 import java.util.Date
 
-
 @Entity(tableName = "category")
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = false)

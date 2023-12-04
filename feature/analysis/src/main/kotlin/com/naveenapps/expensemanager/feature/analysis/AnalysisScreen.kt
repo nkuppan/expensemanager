@@ -19,7 +19,6 @@ fun AnalysisScreen() {
     AnalysisScreenScaffoldView()
 }
 
-
 @Composable
 private fun AnalysisScreenScaffoldView() {
     Scaffold(
@@ -27,14 +26,14 @@ private fun AnalysisScreenScaffoldView() {
             TopNavigationBar(
                 onClick = {},
                 title = stringResource(R.string.analysis),
-                disableBackIcon = true
+                disableBackIcon = true,
             )
-        }
+        },
     ) { innerPadding ->
         AnalysisScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
         )
     }
 }
@@ -45,7 +44,7 @@ private fun AnalysisScreenContent(modifier: Modifier = Modifier) {
         FilterView(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 6.dp)
+                .padding(end = 6.dp),
         )
         AnalysisGraphScreen()
     }

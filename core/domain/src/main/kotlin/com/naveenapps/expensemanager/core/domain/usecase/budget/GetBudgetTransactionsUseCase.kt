@@ -19,7 +19,6 @@ class GetBudgetTransactionsUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository,
 ) {
     suspend operator fun invoke(budget: Budget): Resource<List<Transaction>> {
-
         val accounts: List<String> = if (budget.isAllAccountsSelected) {
             accountRepository.getAccounts().firstOrNull()?.map { it.id } ?: emptyList()
         } else {

@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetSelectedCategoriesUseCase @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val findCategoryByIdUseCase: FindCategoryByIdUseCase
+    private val findCategoryByIdUseCase: FindCategoryByIdUseCase,
 ) {
 
     operator fun invoke(): Flow<List<Category>> {

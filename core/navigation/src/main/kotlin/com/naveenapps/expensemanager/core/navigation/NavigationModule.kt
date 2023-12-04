@@ -13,6 +13,6 @@ internal abstract class NavigationModule {
     @Binds
     @Singleton
     abstract fun provideComposeNavigator(
-        expenseManagerComposeNavigator: ExpenseManagerComposeNavigator
+        expenseManagerComposeNavigator: ExpenseManagerComposeNavigator,
     ): AppComposeNavigator
 }

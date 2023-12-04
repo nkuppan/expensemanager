@@ -8,7 +8,6 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.mock
 
-
 class GetDateRangeUseCaseTest {
 
     private val dateRangeFilterRepository = mock<DateRangeFilterRepository>()
@@ -19,7 +18,7 @@ class GetDateRangeUseCaseTest {
     fun init() {
         getGetFilterRangeUseCase = GetDateRangeUseCase(
             GetDateRangeByTypeUseCase(dateRangeFilterRepository),
-            dateRangeFilterRepository
+            dateRangeFilterRepository,
         )
     }
 

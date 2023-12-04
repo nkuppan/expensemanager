@@ -6,7 +6,7 @@ import org.joda.time.DateTime
 import javax.inject.Inject
 
 class MoveDateRangeBackwardUseCase @Inject constructor(
-    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
+    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository,
 ) {
 
     suspend operator fun invoke(type: DateRangeType): Resource<Boolean> {
@@ -16,7 +16,7 @@ class MoveDateRangeBackwardUseCase @Inject constructor(
         startTime = startTime.minusRespectiveFrame(type)
         endTime = endTime.minusRespectiveFrame(type)
         dateRangeFilterRepository.setDateRanges(
-            listOf(startTime.toDate(), endTime.toDate())
+            listOf(startTime.toDate(), endTime.toDate()),
         )
         return Resource.Success(true)
     }

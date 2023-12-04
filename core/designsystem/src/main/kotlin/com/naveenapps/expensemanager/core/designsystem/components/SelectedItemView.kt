@@ -12,20 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
-
 @Composable
 fun SelectedItemView(
     title: String,
     selectedCount: String,
     icon: ImageVector,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Icon(
             imageVector = icon,
-            contentDescription = null
+            contentDescription = null,
         )
 
         Text(
@@ -45,7 +44,7 @@ fun SelectedItemView(
 
         Icon(
             imageVector = Icons.Default.KeyboardArrowRight,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetExpenseAmountUseCase @Inject constructor(
-    private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase
+    private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
 ) {
 
     operator fun invoke(): Flow<Double?> {

@@ -18,17 +18,16 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
-    getOnboardingStatusUseCase: GetOnboardingStatusUseCase
+    getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
 ) : ViewModel() {
 
     private val _currentTheme = MutableStateFlow(
         Theme(
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-            R.string.choose_theme
-        )
+            R.string.choose_theme,
+        ),
     )
     val currentTheme = _currentTheme.asStateFlow()
-
 
     private val _onboardingStatus = MutableStateFlow<Boolean?>(null)
     val onboardingStatus = _onboardingStatus.asStateFlow()

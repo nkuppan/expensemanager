@@ -51,14 +51,12 @@ class AccountListViewModelTest : BaseCoroutineTest() {
             getAllAccountsUseCase,
             getCurrencyUseCase,
             getFormattedAmountUseCase,
-            appComposeNavigator
+            appComposeNavigator,
         )
     }
 
-
     @Test
     fun accountSuccess() = runTest {
-
         val totalCount = 20
 
         accountFlow.value = getRandomAccountData(totalCount)
@@ -77,10 +75,8 @@ class AccountListViewModelTest : BaseCoroutineTest() {
         }
     }
 
-
     @Test
     fun accountEmpty() = runTest {
-
         accountFlow.value = emptyList()
 
         accountListViewModel.accounts.test {
@@ -96,7 +92,6 @@ class AccountListViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun accountSuccessAndTypeSwitch() = runTest {
-
         val totalCount = 20
 
         val randomAccountData = getRandomAccountData(totalCount)

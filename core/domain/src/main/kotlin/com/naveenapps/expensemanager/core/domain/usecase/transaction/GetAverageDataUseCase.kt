@@ -42,7 +42,6 @@ class GetAverageDataUseCase @Inject constructor(
             val daysMultiplier: Double
             val monthMultiplier: Double
 
-
             when (dateRangeModel.type) {
                 DateRangeType.TODAY -> {
                     daysMultiplier = 1.0
@@ -58,15 +57,16 @@ class GetAverageDataUseCase @Inject constructor(
 
                 DateRangeType.THIS_MONTH -> {
                     daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                    weeksMultiplier = 1.0  / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
+                    weeksMultiplier = 1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
                     monthMultiplier = 1.0
                 }
 
                 DateRangeType.THIS_YEAR,
                 DateRangeType.CUSTOM,
-                DateRangeType.ALL -> {
+                DateRangeType.ALL,
+                -> {
                     daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
-                    weeksMultiplier = 1.0  / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
+                    weeksMultiplier = 1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
                     monthMultiplier = 1.0 / 12
                 }
             }
@@ -75,31 +75,31 @@ class GetAverageDataUseCase @Inject constructor(
                 expenseAverageData = AverageData(
                     perDay = getFormattedAmountUseCase.invoke(
                         (expenseAmount * daysMultiplier),
-                        currency
+                        currency,
                     ).amountString.orEmpty(),
                     perWeek = getFormattedAmountUseCase.invoke(
                         (expenseAmount * weeksMultiplier),
-                        currency
+                        currency,
                     ).amountString.orEmpty(),
                     perMonth = getFormattedAmountUseCase.invoke(
                         (expenseAmount * monthMultiplier),
-                        currency
+                        currency,
                     ).amountString.orEmpty(),
                 ),
                 incomeAverageData = AverageData(
                     perDay = getFormattedAmountUseCase.invoke(
                         (incomeAmount * daysMultiplier),
-                        currency
+                        currency,
                     ).amountString.orEmpty(),
                     perWeek = getFormattedAmountUseCase.invoke(
                         (incomeAmount * weeksMultiplier),
-                        currency
+                        currency,
                     ).amountString.orEmpty(),
                     perMonth = getFormattedAmountUseCase.invoke(
                         (incomeAmount * monthMultiplier),
-                        currency
+                        currency,
                     ).amountString.orEmpty(),
-                )
+                ),
             )
         }.flowOn(dispatcher.computation)
     }

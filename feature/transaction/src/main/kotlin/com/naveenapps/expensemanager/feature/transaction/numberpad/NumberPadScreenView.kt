@@ -43,24 +43,23 @@ import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.feature.transaction.R
 
-
 @Composable
 fun NumberPadDialogView(
-    onConfirm: ((String?) -> Unit)
+    onConfirm: ((String?) -> Unit),
 ) {
     Dialog(
         onDismissRequest = {
             onConfirm.invoke(null)
         },
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
         ),
     ) {
         Surface(
             modifier = Modifier
                 .padding(16.dp)
                 .wrapContentSize(),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         ) {
             NumberPadScreen(onConfirm)
         }
@@ -69,9 +68,8 @@ fun NumberPadDialogView(
 
 @Composable
 fun NumberPadScreen(
-    onConfirm: ((String?) -> Unit)
+    onConfirm: ((String?) -> Unit),
 ) {
-
     val viewModel: NumberPadViewModel = hiltViewModel()
     val calculatedAmount by viewModel.calculatedAmount.collectAsState()
     val calculatedAmountString by viewModel.calculatedAmountString.collectAsState()
@@ -91,7 +89,7 @@ fun NumberPadScreen(
         },
         clear = {
             viewModel.clearAmount()
-        }
+        },
     )
 }
 
@@ -106,13 +104,12 @@ private fun NumberPadScreenView(
     clear: (() -> Unit),
 ) {
     Column(modifier) {
-
         Row {
             Column(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 16.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             ) {
                 Text(
                     modifier = Modifier
@@ -120,7 +117,7 @@ private fun NumberPadScreenView(
                         .alpha(0.7f),
                     text = amountString,
                     textAlign = TextAlign.Right,
-                    letterSpacing = 1.sp
+                    letterSpacing = 1.sp,
                 )
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -133,7 +130,7 @@ private fun NumberPadScreenView(
             VerticalDivider(
                 modifier = Modifier
                     .height(100.dp)
-                    .padding(horizontal = 12.dp, vertical = 16.dp)
+                    .padding(horizontal = 12.dp, vertical = 16.dp),
             )
 
             IconButton(
@@ -142,11 +139,11 @@ private fun NumberPadScreenView(
                     .padding(end = 16.dp),
                 onClick = {
                     onChange.invoke("")
-                }
+                },
             ) {
                 Icon(
                     imageVector = Icons.Filled.Backspace,
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         }
@@ -157,26 +154,26 @@ private fun NumberPadScreenView(
                         modifier = Modifier.clickable {
                             onChange.invoke("1")
                         },
-                        text = stringResource(id = R.string.number_one)
+                        text = stringResource(id = R.string.number_one),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("2")
                         },
-                        text = stringResource(id = R.string.number_two)
+                        text = stringResource(id = R.string.number_two),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("3")
                         },
-                        text = stringResource(id = R.string.number_three)
+                        text = stringResource(id = R.string.number_three),
                     )
                     NumberPadActionText(
                         modifier = Modifier
                             .clickable {
                                 onChange.invoke("/")
                             },
-                        text = stringResource(id = R.string.divide)
+                        text = stringResource(id = R.string.divide),
                     )
                 }
 
@@ -185,26 +182,26 @@ private fun NumberPadScreenView(
                         modifier = Modifier.clickable {
                             onChange.invoke("4")
                         },
-                        text = stringResource(id = R.string.number_four)
+                        text = stringResource(id = R.string.number_four),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("5")
                         },
-                        text = stringResource(id = R.string.number_five)
+                        text = stringResource(id = R.string.number_five),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("6")
                         },
-                        text = stringResource(id = R.string.number_six)
+                        text = stringResource(id = R.string.number_six),
                     )
                     NumberPadActionText(
                         modifier = Modifier
                             .clickable {
                                 onChange.invoke("*")
                             },
-                        text = stringResource(id = R.string.multiply)
+                        text = stringResource(id = R.string.multiply),
                     )
                 }
 
@@ -213,26 +210,26 @@ private fun NumberPadScreenView(
                         modifier = Modifier.clickable {
                             onChange.invoke("7")
                         },
-                        text = stringResource(id = R.string.number_seven)
+                        text = stringResource(id = R.string.number_seven),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("8")
                         },
-                        text = stringResource(id = R.string.number_eight)
+                        text = stringResource(id = R.string.number_eight),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("9")
                         },
-                        text = stringResource(id = R.string.number_nine)
+                        text = stringResource(id = R.string.number_nine),
                     )
                     NumberPadActionText(
                         modifier = Modifier
                             .clickable {
                                 onChange.invoke("-")
                             },
-                        text = stringResource(id = R.string.minus)
+                        text = stringResource(id = R.string.minus),
                     )
                 }
 
@@ -241,26 +238,26 @@ private fun NumberPadScreenView(
                         modifier = Modifier.clickable {
                             onChange.invoke(".")
                         },
-                        text = stringResource(id = R.string.dot)
+                        text = stringResource(id = R.string.dot),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("0")
                         },
-                        text = stringResource(id = R.string.zero)
+                        text = stringResource(id = R.string.zero),
                     )
                     NumberPadActionText(
                         modifier = Modifier.clickable {
                             onChange.invoke("00")
                         },
-                        text = stringResource(id = R.string.double_zero)
+                        text = stringResource(id = R.string.double_zero),
                     )
                     NumberPadActionText(
                         modifier = Modifier
                             .clickable {
                                 onChange.invoke("+")
                             },
-                        text = stringResource(id = R.string.plus)
+                        text = stringResource(id = R.string.plus),
                     )
                 }
             }
@@ -268,18 +265,18 @@ private fun NumberPadScreenView(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(60.dp),
         ) {
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight()
+                    .fillMaxHeight(),
             ) {
                 TextButton(
                     modifier = modifier.fillMaxHeight(),
                     onClick = {
                         clear.invoke()
-                    }
+                    },
                 ) {
                     Text(text = stringResource(id = R.string.clear).uppercase())
                 }
@@ -288,14 +285,15 @@ private fun NumberPadScreenView(
                 modifier = modifier.fillMaxHeight(),
                 onClick = {
                     cancel.invoke()
-                }) {
+                },
+            ) {
                 Text(text = stringResource(id = R.string.cancel).uppercase())
             }
             TextButton(
                 modifier = modifier.fillMaxHeight(),
                 onClick = {
                     confirm.invoke()
-                }
+                },
             ) {
                 Text(text = stringResource(id = R.string.ok).uppercase())
             }
@@ -317,25 +315,25 @@ fun VerticalDivider(
     Box(
         modifier
             .width(targetThickness)
-            .background(color = color)
+            .background(color = color),
     )
 }
 
 @Composable
 fun RowScope.NumberPadActionText(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .weight(1f)
             .height(96.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge
+            style = MaterialTheme.typography.titleLarge,
         )
     }
 }
@@ -347,7 +345,11 @@ fun NumberPadScreenPreview() {
         NumberPadScreenView(
             modifier = Modifier.wrapContentHeight(),
             value = "0",
-            amountString = "5697+2367*227", {}, {}, {}, {}
+            amountString = "5697+2367*227",
+            {},
+            {},
+            {},
+            {},
         )
     }
 }
@@ -357,7 +359,6 @@ fun NumberPadScreenPreview() {
 fun NumberPadScreenDialogPreview() {
     ExpenseManagerTheme {
         NumberPadDialogView {
-
         }
     }
 }

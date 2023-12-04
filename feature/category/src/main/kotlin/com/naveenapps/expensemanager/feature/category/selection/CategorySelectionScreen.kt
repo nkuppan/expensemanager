@@ -33,18 +33,18 @@ fun CategorySelectionScreen(
     categories: List<Category> = emptyList(),
     selectedCategory: Category? = null,
     createNewCallback: (() -> Unit)? = null,
-    onItemSelection: ((Category) -> Unit)? = null
+    onItemSelection: ((Category) -> Unit)? = null,
 ) {
     LazyColumn(modifier = modifier) {
         item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             ) {
                 SelectionTitle(
                     title = stringResource(id = R.string.select_category),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
                 Text(
                     modifier = Modifier
@@ -53,7 +53,7 @@ fun CategorySelectionScreen(
                             createNewCallback?.invoke()
                         },
                     text = stringResource(id = R.string.add_new).uppercase(),
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
         }
@@ -70,13 +70,13 @@ fun CategorySelectionScreen(
                                 .padding(4.dp)
                                 .background(
                                     color = getSelectedBGColor(),
-                                    shape = RoundedCornerShape(size = 12.dp)
+                                    shape = RoundedCornerShape(size = 12.dp),
                                 )
                         } else {
                             Modifier.padding(4.dp)
-                        }
+                        },
                     )
-                    .padding(12.dp)
+                    .padding(12.dp),
             ) {
                 CategoryItem(
                     modifier = Modifier,
@@ -92,14 +92,13 @@ fun CategorySelectionScreen(
     }
 }
 
-
 @Preview
 @Composable
 private fun CategorySelectionScreenPreview() {
     ExpenseManagerTheme {
         CategorySelectionScreen(
             categories = getRandomCategoryData(),
-            selectedCategory = getRandomCategoryData().firstOrNull()
+            selectedCategory = getRandomCategoryData().firstOrNull(),
         )
     }
 }

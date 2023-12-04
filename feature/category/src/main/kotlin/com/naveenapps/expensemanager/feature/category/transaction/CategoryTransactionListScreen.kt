@@ -64,7 +64,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryTransactionTabScreen(
-    viewModel: CategoryTransactionListViewModel = hiltViewModel()
+    viewModel: CategoryTransactionListViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.categoryTransaction.collectAsState()
     val categoryType by viewModel.categoryType.collectAsState()
@@ -75,17 +75,17 @@ fun CategoryTransactionTabScreen(
                 title = {
                     Text(
                         text = stringResource(R.string.categories),
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleLarge,
                     )
                 },
                 actions = {
                     IconButton(onClick = viewModel::openCategoryList) {
                         Icon(
                             imageVector = Icons.Outlined.Edit,
-                            contentDescription = stringResource(id = R.string.edit)
+                            contentDescription = stringResource(id = R.string.edit),
                         )
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
@@ -94,22 +94,22 @@ fun CategoryTransactionTabScreen(
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             CategoryTransactionListScreenContent(
                 uiState = uiState,
                 categoryType = categoryType,
                 changeChart = {
                     viewModel.switchCategory()
-                }
+                },
             ) {
                 viewModel.openCategoryDetailsPage(it)
             }
@@ -122,9 +122,8 @@ private fun CategoryTransactionListScreenContent(
     uiState: UiState<CategoryTransactionUiModel>,
     categoryType: CategoryType,
     changeChart: (() -> Unit)? = null,
-    onItemClick: ((CategoryTransaction) -> Unit)? = null
+    onItemClick: ((CategoryTransaction) -> Unit)? = null,
 ) {
-
     when (uiState) {
         UiState.Empty -> {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -133,7 +132,7 @@ private fun CategoryTransactionListScreenContent(
                         .wrapContentSize()
                         .align(Alignment.Center),
                     text = stringResource(id = R.string.no_transactions_available),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
         }
@@ -143,13 +142,12 @@ private fun CategoryTransactionListScreenContent(
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(72.dp)
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
                 )
             }
         }
 
         is UiState.Success -> {
-
             val indicationSource = remember { MutableInteractionSource() }
 
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
@@ -157,7 +155,7 @@ private fun CategoryTransactionListScreenContent(
                     FilterView(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(end = 6.dp)
+                            .padding(end = 6.dp),
                     )
                 }
                 item {
@@ -171,7 +169,7 @@ private fun CategoryTransactionListScreenContent(
                             PieChartUiData(
                                 it.name,
                                 it.value,
-                                it.color.toColorInt()
+                                it.color.toColorInt(),
                             )
                         },
                         chartHeight = 600,
@@ -191,7 +189,7 @@ private fun CategoryTransactionListScreenContent(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(36.dp),
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
                         )
                     }
                 } else {
@@ -206,7 +204,7 @@ private fun CategoryTransactionListScreenContent(
                             icon = categoryTransaction.category.storedIcon.name,
                             iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
                             amount = categoryTransaction.amount.amountString ?: "",
-                            percentage = categoryTransaction.percent
+                            percentage = categoryTransaction.percent,
                         )
                     }
                 }
@@ -214,7 +212,7 @@ private fun CategoryTransactionListScreenContent(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(36.dp)
+                            .padding(36.dp),
                     )
                 }
             }
@@ -236,11 +234,11 @@ fun CategoryTransactionItem(
             modifier = Modifier.align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
-            name = name
+            name = name,
         )
         Column(
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 16.dp),
         ) {
             Row {
                 Text(
@@ -273,13 +271,12 @@ fun CategoryTransactionItem(
                         .padding(start = 8.dp)
                         .align(Alignment.CenterVertically),
                     text = percentage.toPercentString(),
-                    style = MaterialTheme.typography.labelSmall
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
         }
     }
 }
-
 
 val getPieChartData = listOf(
     PieChartData("Chrome", 34.68f, "#43A546"),
@@ -299,11 +296,11 @@ fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
                         category = getCategoryData(it, CategoryType.EXPENSE),
                         amount = Amount(300.0, "300.00$"),
                         percent = Random(100).nextFloat(),
-                        transaction = emptyList()
-                    )
+                        transaction = emptyList(),
+                    ),
                 )
             }
-        }
+        },
     )
 }
 
@@ -321,7 +318,7 @@ fun CategoryTransactionSmallItem(
             iconBackgroundColor = iconBackgroundColor,
             modifier = Modifier.align(Alignment.CenterVertically),
             name = name,
-            iconSize = 12.dp
+            iconSize = 12.dp,
         )
         Text(
             modifier = Modifier
@@ -329,16 +326,15 @@ fun CategoryTransactionSmallItem(
                 .align(Alignment.CenterVertically)
                 .padding(start = 16.dp, end = 16.dp),
             text = name,
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
         Text(
             modifier = Modifier.align(Alignment.CenterVertically),
             text = amount,
-            style = MaterialTheme.typography.labelSmall
+            style = MaterialTheme.typography.labelSmall,
         )
     }
 }
-
 
 @AppPreviewsLightAndDarkMode
 @Composable
@@ -356,7 +352,6 @@ private fun CategoryTransactionSmallItemPreview() {
     }
 }
 
-
 @Preview
 @Composable
 private fun CategoryTransactionItemPreview() {
@@ -369,7 +364,7 @@ private fun CategoryTransactionItemPreview() {
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
-            percentage = 0.5f
+            percentage = 0.5f,
         )
     }
 }

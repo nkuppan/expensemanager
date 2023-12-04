@@ -77,11 +77,9 @@ private fun createFile(fileType: ExportFileType): Intent? {
     }
 }
 
-
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ExportScreen() {
-
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -91,7 +89,7 @@ fun ExportScreen() {
         val permissionResult = writePermission.status
         if (permissionResult.isGranted.not()) {
             if (permissionResult.shouldShowRationale) {
-                //TODO Show Alert to Grant Permission
+                // TODO Show Alert to Grant Permission
             } else {
                 writePermission.launchPermissionRequest()
             }
@@ -107,7 +105,7 @@ fun ExportScreen() {
     val error by viewModel.error.collectAsState(null)
 
     val fileCreatorIntent = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
+        contract = ActivityResultContracts.StartActivityForResult(),
     ) {
         if (it.resultCode != RESULT_OK) {
             return@rememberLauncherForActivityResult
@@ -123,7 +121,7 @@ fun ExportScreen() {
             snackbarHostState.showSnackbar(
                 message = success?.message?.asString(context) ?: "",
                 actionLabel = context.getString(R.string.share),
-                withDismissAction = true
+                withDismissAction = true,
             ).run {
                 when (this) {
                     SnackbarResult.Dismissed -> Unit
@@ -157,7 +155,7 @@ fun ExportScreen() {
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
             MultipleAccountSelectionScreen { items, selected ->
                 viewModel.setAccounts(items, selected)
@@ -176,7 +174,8 @@ fun ExportScreen() {
         },
         topBar = {
             TopNavigationBar(
-                onClick = viewModel::closePage, title = null
+                onClick = viewModel::closePage,
+                title = null,
             )
         },
         floatingActionButton = {
@@ -194,17 +193,17 @@ fun ExportScreen() {
                 Row {
                     Icon(
                         imageVector = Icons.Default.Upload,
-                        contentDescription = null
+                        contentDescription = null,
                     )
                     Text(
                         modifier = Modifier
                             .padding(start = 8.dp, end = 8.dp)
                             .align(Alignment.CenterVertically),
-                        text = stringResource(id = R.string.export).uppercase()
+                        text = stringResource(id = R.string.export).uppercase(),
                     )
                 }
             }
-        }
+        },
     ) { innerPadding ->
         ExportScreenContent(
             modifier = Modifier
@@ -222,7 +221,7 @@ fun ExportScreen() {
                         showBottomSheet = true
                     }
                 }
-            }
+            },
         )
     }
 }
@@ -235,9 +234,8 @@ private fun ExportScreenContent(
     exportFileType: ExportFileType,
     accountCount: UiText,
     onExportFileTypeChange: (ExportFileType) -> Unit,
-    openAccountSelection: () -> Unit
+    openAccountSelection: () -> Unit,
 ) {
-
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
@@ -250,7 +248,7 @@ private fun ExportScreenContent(
                 showBottomSheet = false
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
             DateFilterSelectionView {
                 showBottomSheet = false
@@ -262,7 +260,7 @@ private fun ExportScreenContent(
         Text(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp),
             text = stringResource(id = R.string.export),
-            style = MaterialTheme.typography.displaySmall
+            style = MaterialTheme.typography.displaySmall,
         )
 
         ExportFileTypeSelectionView(
@@ -270,19 +268,21 @@ private fun ExportScreenContent(
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             selectedExportFileType = exportFileType,
-            onExportFileTypeChange = onExportFileTypeChange
+            onExportFileTypeChange = onExportFileTypeChange,
         )
 
-        ClickableTextField(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+        ClickableTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
             value = selectedDate ?: "",
             label = R.string.select_range,
             leadingIcon = Icons.Default.EditCalendar,
             onClick = {
                 focusManager.clearFocus(force = true)
                 showBottomSheet = true
-            })
+            },
+        )
 
         Spacer(modifier = Modifier.padding(8.dp))
 
@@ -295,14 +295,14 @@ private fun ExportScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
             icon = Icons.Outlined.AccountBalance,
-            selectedCount = accountCount.asString(context)
+            selectedCount = accountCount.asString(context),
         )
         if (exportFileType == ExportFileType.PDF) {
             Text(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                text = stringResource(id = R.string.export_disabled_message)
+                text = stringResource(id = R.string.export_disabled_message),
             )
         }
     }

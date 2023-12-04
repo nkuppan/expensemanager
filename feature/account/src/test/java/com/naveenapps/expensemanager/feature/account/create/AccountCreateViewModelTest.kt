@@ -69,7 +69,6 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIconSetItShouldReflect() = runTest {
-
         val iconName = "icon_name"
 
         accountCreateViewModel.icon.test {
@@ -84,13 +83,11 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             Truth.assertThat(secondIconName).isNotNull()
             Truth.assertThat(secondIconName).isNotEmpty()
             Truth.assertThat(secondIconName).isEqualTo(iconName)
-
         }
     }
 
     @Test
     fun whenAccountColorSetItShouldReflect() = runTest {
-
         val selectedColor = "#000064"
         val colorValue = 100
 
@@ -111,7 +108,6 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenChangingAccountTypeItShouldReflect() = runTest {
-
         accountCreateViewModel.accountType.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()
@@ -127,7 +123,6 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenChangingNameItShouldReflect() = runTest {
-
         accountCreateViewModel.name.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isEmpty()
@@ -144,7 +139,6 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenChangingEmptyNameItShouldReflectInErrorMessage() = runTest {
-
         accountCreateViewModel.nameErrorMessage.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNull()
@@ -162,7 +156,6 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenChangingValidNameItShouldReflectInErrorMessage() = runTest {
-
         accountCreateViewModel.nameErrorMessage.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNull()

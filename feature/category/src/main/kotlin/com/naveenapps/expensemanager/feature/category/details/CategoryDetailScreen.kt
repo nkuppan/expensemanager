@@ -53,9 +53,8 @@ import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransa
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDetailScreen(
-    viewModel: CategoryDetailViewModel = hiltViewModel()
+    viewModel: CategoryDetailViewModel = hiltViewModel(),
 ) {
-
     val category by viewModel.category.collectAsState()
     val categoryTransactions by viewModel.categoryTransactions.collectAsState()
 
@@ -74,11 +73,10 @@ fun CategoryDetailScreen(
                                 onClick = {
                                     viewModel.closePage()
                                 },
-                                Icons.Default.Close
+                                Icons.Default.Close,
                             )
                         },
                         title = {
-
                         },
                         actions = {
                             category?.let {
@@ -87,11 +85,11 @@ fun CategoryDetailScreen(
                                 }) {
                                     Icon(
                                         imageVector = Icons.Outlined.Edit,
-                                        contentDescription = ""
+                                        contentDescription = "",
                                     )
                                 }
                             }
-                        }
+                        },
                     )
                     category?.let { categoryTransaction ->
                         CategoryTransactionItem(
@@ -100,7 +98,7 @@ fun CategoryDetailScreen(
                             icon = categoryTransaction.category.storedIcon.name,
                             iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
                             amount = categoryTransaction.amount.amountString ?: "",
-                            percentage = categoryTransaction.percent
+                            percentage = categoryTransaction.percent,
                         )
                     }
                 }
@@ -112,10 +110,10 @@ fun CategoryDetailScreen(
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         Box(
@@ -123,14 +121,13 @@ fun CategoryDetailScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
         ) {
-
             if (categoryTransactions.isEmpty()) {
                 Text(
                     modifier = Modifier
                         .wrapContentSize()
                         .align(Alignment.Center),
                     text = stringResource(id = R.string.no_transactions_available),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             } else {
                 Column(modifier = Modifier.padding(top = 16.dp)) {
@@ -158,14 +155,13 @@ fun CategoryDetailScreen(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(36.dp)
+                            .padding(36.dp),
                     )
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun TransactionItem(
@@ -180,7 +176,7 @@ fun TransactionItem(
     toAccountName: String? = null,
     toAccountIcon: String? = null,
     toAccountColor: String? = null,
-    transactionType: TransactionType = TransactionType.EXPENSE
+    transactionType: TransactionType = TransactionType.EXPENSE,
 ) {
     val isTransfer = toAccountName?.isNotBlank()
 
@@ -188,36 +184,36 @@ fun TransactionItem(
         Box(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .then(IconSpecModifier)
+                .then(IconSpecModifier),
         )
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             if (isTransfer == true && toAccountIcon != null && toAccountColor != null) {
                 AccountNameWithIcon(
                     fromAccountIcon,
                     fromAccountColor,
-                    fromAccountName
+                    fromAccountName,
                 )
                 AccountNameWithIcon(
                     toAccountIcon,
                     toAccountColor,
-                    toAccountName
+                    toAccountName,
                 )
             } else {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
                     text = categoryName,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
                 )
                 AccountNameWithIcon(
                     fromAccountIcon,
                     fromAccountColor,
-                    fromAccountName
+                    fromAccountName,
                 )
                 if (notes?.isNotBlank() == true) {
                     Text(
@@ -226,7 +222,7 @@ fun TransactionItem(
                         text = notes,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
                     )
                 }
             }
@@ -235,7 +231,7 @@ fun TransactionItem(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(start = 16.dp)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             Text(
                 modifier = Modifier.align(Alignment.End),
@@ -245,25 +241,23 @@ fun TransactionItem(
                     TransactionType.EXPENSE -> colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
                     TransactionType.INCOME -> colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
                     else -> Color.Unspecified
-                }
+                },
             )
             Text(
                 modifier = Modifier.align(Alignment.End),
                 text = date,
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }
 }
 
-
 @Composable
 private fun AccountNameWithIcon(
     fromAccountIcon: String,
     fromAccountColor: String,
-    fromAccountName: String
+    fromAccountName: String,
 ) {
-
     val context = LocalContext.current
 
     Row {
@@ -273,7 +267,7 @@ private fun AccountNameWithIcon(
                 .align(Alignment.CenterVertically),
             painter = painterResource(id = context.getDrawable(fromAccountIcon)),
             contentDescription = "",
-            tint = Color(getColorValue(fromAccountColor))
+            tint = Color(getColorValue(fromAccountColor)),
         )
         Text(
             modifier = Modifier
@@ -281,7 +275,7 @@ private fun AccountNameWithIcon(
                 .fillMaxWidth(),
             text = fromAccountName,
             color = Color(getColorValue(fromAccountColor)),
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
         )
     }
 }

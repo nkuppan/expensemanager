@@ -75,7 +75,7 @@ class ExportViewModel @Inject constructor(
                 uri?.toString(),
                 selectedDateRangeType,
                 selectedAccounts,
-                isAllAccountsSelected
+                isAllAccountsSelected,
             )
             when (response) {
                 is Resource.Error -> {
@@ -86,8 +86,8 @@ class ExportViewModel @Inject constructor(
                     _success.emit(
                         ExportData(
                             message = UiText.StringResource(R.string.export_success_message),
-                            fileUri = response.data ?: ""
-                        )
+                            fileUri = response.data ?: "",
+                        ),
                     )
                 }
             }
@@ -101,5 +101,5 @@ class ExportViewModel @Inject constructor(
 
 data class ExportData(
     val message: UiText,
-    val fileUri: String
+    val fileUri: String,
 )

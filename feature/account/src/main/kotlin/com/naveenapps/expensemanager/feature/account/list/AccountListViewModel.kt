@@ -31,7 +31,7 @@ class AccountListViewModel @Inject constructor(
     init {
         combine(
             getCurrencyUseCase.invoke(),
-            getAllAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
             _accounts.value = if (accounts.isEmpty()) {
                 UiState.Empty
@@ -41,10 +41,10 @@ class AccountListViewModel @Inject constructor(
                         it.toAccountUiModel(
                             getFormattedAmountUseCase.invoke(
                                 it.amount,
-                                currency
-                            )
+                                currency,
+                            ),
                         )
-                    }
+                    },
                 )
             }
         }.launchIn(viewModelScope)
@@ -52,7 +52,7 @@ class AccountListViewModel @Inject constructor(
 
     fun openCreateScreen(accountId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: "")
+            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: ""),
         )
     }
 

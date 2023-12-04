@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class DateRangeFilterRepositoryImpl @Inject constructor(
     private val dataStore: DateRangeDataStore,
-    private val dispatcher: AppCoroutineDispatchers
+    private val dispatcher: AppCoroutineDispatchers,
 ) : DateRangeFilterRepository {
 
     override suspend fun getAllDateRanges(): Resource<List<DateRangeModel>> {
@@ -38,11 +38,11 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
                             name = getDateRangeFilterRangeName(it),
                             description = getDateRangeName(dateRanges, it),
                             type = it,
-                            dateRanges = dateRanges
-                        )
+                            dateRanges = dateRanges,
+                        ),
                     )
                 }
-            }
+            },
         )
     }
 
@@ -70,7 +70,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
             name = getDateRangeFilterRangeName(dateRangeType),
             description = getFilterDateValue(dateRangeType),
             type = dateRangeType,
-            dateRanges = getOriginalDateRangeValues(dateRangeType)
+            dateRanges = getOriginalDateRangeValues(dateRangeType),
         )
     }
 
@@ -81,15 +81,12 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         }
 
     override suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean> =
-        withContext(dispatcher.io)
-        {
-            dataStore.setDateRanges(dateRanges[0].time,dateRanges[1].time)
+        withContext(dispatcher.io) {
+            dataStore.setDateRanges(dateRanges[0].time, dateRanges[1].time)
             return@withContext Resource.Success(true)
         }
 
-
     private suspend fun getOriginalDateRangeValues(dateRangeType: DateRangeType): List<Long> {
-
         val dateRanges = getDateRange()
 
         if (dateRanges != null) {
@@ -121,7 +118,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
 
     private fun getDateRangeName(
         dateRanges: List<Long>,
-        dateRangeType: DateRangeType
+        dateRangeType: DateRangeType,
     ): String {
         val fromDate = dateRanges[0].toCompleteDate()
         val toDate = dateRanges[1].toCompleteDate()
@@ -132,7 +129,8 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
             DateRangeType.THIS_YEAR -> fromDate.toYear()
             DateRangeType.ALL -> ""
             DateRangeType.THIS_WEEK,
-            DateRangeType.CUSTOM -> getFormattedDateRangeString(fromDate, toDate)
+            DateRangeType.CUSTOM,
+            -> getFormattedDateRangeString(fromDate, toDate)
         }
     }
 
@@ -151,11 +149,9 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         }
     }
 
-
     override suspend fun getTransactionGroupType(
-        dateRangeType: DateRangeType
+        dateRangeType: DateRangeType,
     ): GroupType = withContext(dispatcher.computation) {
-
         val dateRanges = getOriginalDateRangeValues(dateRangeType)
         val fromDate = dateRanges[0]
         val fromDateTime = DateTime(fromDate)
@@ -180,12 +176,14 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
 
             DateRangeType.THIS_MONTH,
             DateRangeType.THIS_WEEK,
-            DateRangeType.TODAY -> {
+            DateRangeType.TODAY,
+            -> {
                 GroupType.DATE
             }
 
             DateRangeType.ALL,
-            DateRangeType.CUSTOM -> {
+            DateRangeType.CUSTOM,
+            -> {
                 if (isCrossingYears) {
                     GroupType.YEAR
                 } else if (isCrossingMonths) {

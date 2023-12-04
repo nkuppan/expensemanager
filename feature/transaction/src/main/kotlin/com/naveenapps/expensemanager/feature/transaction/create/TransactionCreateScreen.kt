@@ -81,11 +81,9 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
-
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 fun TransactionCreateScreen() {
-
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
@@ -112,7 +110,7 @@ fun TransactionCreateScreen() {
             dialogTitle = stringResource(id = R.string.delete),
             dialogText = stringResource(id = R.string.delete_item_message),
             positiveButtonText = stringResource(id = R.string.delete),
-            negativeButtonText = stringResource(id = R.string.cancel)
+            negativeButtonText = stringResource(id = R.string.cancel),
         )
     }
 
@@ -125,7 +123,7 @@ fun TransactionCreateScreen() {
                     viewModel.setAmount(amount)
                     showBottomSheet = false
                 }
-            }
+            },
         )
     }
 
@@ -147,9 +145,8 @@ fun TransactionCreateScreen() {
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
-
             TransactionCreateBottomSheetContent(
                 sheetSelection,
                 viewModel,
@@ -169,7 +166,7 @@ fun TransactionCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.transaction),
-                showDelete = showDelete
+                showDelete = showDelete,
             ) {
                 if (it == 1) {
                     viewModel.closePage()
@@ -182,10 +179,10 @@ fun TransactionCreateScreen() {
             FloatingActionButton(onClick = viewModel::doSave) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         val amount by viewModel.amount.collectAsState()
@@ -224,17 +221,16 @@ fun TransactionCreateScreen() {
                     sheetSelection = type
                     showBottomSheet = true
                 }
-            }
+            },
         )
     }
 }
-
 
 @Composable
 private fun TransactionCreateBottomSheetContent(
     sheetSelection: Int,
     viewModel: TransactionCreateViewModel,
-    hideBottomSheet: () -> Unit
+    hideBottomSheet: () -> Unit,
 ) {
     if (sheetSelection == 1) {
         val categories by viewModel.categories.collectAsState()
@@ -244,7 +240,7 @@ private fun TransactionCreateBottomSheetContent(
             selectedCategory = selectedCategory,
             createNewCallback = {
                 viewModel.openCategoryCreate()
-            }
+            },
         ) { category ->
             viewModel.setCategorySelection(category)
             hideBottomSheet.invoke()
@@ -262,14 +258,13 @@ private fun TransactionCreateBottomSheetContent(
             },
             createNewCallback = {
                 viewModel.openAccountCreate()
-            }
+            },
         ) { account ->
             viewModel.setAccountSelection(sheetSelection, account)
             hideBottomSheet.invoke()
         }
     }
 }
-
 
 @Composable
 private fun TransactionCreateScreen(
@@ -289,7 +284,6 @@ private fun TransactionCreateScreen(
     onNotesChange: ((String) -> Unit)? = null,
     openSelection: ((Int) -> Unit)? = null,
 ) {
-
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
@@ -327,7 +321,7 @@ private fun TransactionCreateScreen(
     }
 
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState())
+        modifier = modifier.verticalScroll(rememberScrollState()),
     ) {
         TransactionTypeSelectionView(
             modifier = Modifier
@@ -335,12 +329,12 @@ private fun TransactionCreateScreen(
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .align(Alignment.CenterHorizontally),
             selectedTransactionType = selectedTransactionType,
-            onTransactionTypeChange = onTransactionTypeChange ?: {}
+            onTransactionTypeChange = onTransactionTypeChange ?: {},
         )
         Row(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             ClickableTextField(
                 modifier = Modifier
@@ -352,7 +346,7 @@ private fun TransactionCreateScreen(
                 onClick = {
                     focusManager.clearFocus(force = true)
                     showDatePicker = true
-                }
+                },
             )
             ClickableTextField(
                 modifier = Modifier
@@ -364,7 +358,7 @@ private fun TransactionCreateScreen(
                 onClick = {
                     focusManager.clearFocus(force = true)
                     showTimePicker = true
-                }
+                },
             )
         }
 
@@ -378,7 +372,7 @@ private fun TransactionCreateScreen(
                 {
                     Text(
                         currencyIcon,
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleLarge,
                     )
                 }
             } else {
@@ -393,7 +387,7 @@ private fun TransactionCreateScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Calculate,
-                        contentDescription = ""
+                        contentDescription = "",
                     )
                 }
             },
@@ -404,19 +398,19 @@ private fun TransactionCreateScreen(
                 amountChange?.invoke(it)
             },
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal
+                keyboardType = KeyboardType.Decimal,
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus(force = true)
-                }
+                },
             ),
             isError = amountErrorMessage != null,
             supportingText = if (amountErrorMessage != null) {
                 { Text(text = amountErrorMessage.asString(context)) }
             } else {
                 null
-            }
+            },
         )
         if (selectedTransactionType != TransactionType.TRANSFER) {
             Text(
@@ -426,7 +420,7 @@ private fun TransactionCreateScreen(
                 text = stringResource(id = R.string.select_category),
                 fontWeight = FontWeight.SemiBold,
                 fontStyle = FontStyle.Normal,
-                color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500)
+                color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500),
             )
             CategoryItem(
                 name = selectedCategory.name,
@@ -439,7 +433,7 @@ private fun TransactionCreateScreen(
                         focusManager.clearFocus(force = true)
                         openSelection?.invoke(1)
                     }
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
+                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
             )
         }
 
@@ -452,11 +446,11 @@ private fun TransactionCreateScreen(
                     R.string.from_account
                 } else {
                     R.string.select_account
-                }
+                },
             ),
             fontWeight = FontWeight.SemiBold,
             fontStyle = FontStyle.Normal,
-            color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500)
+            color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500),
         )
 
         AccountItem(
@@ -471,10 +465,9 @@ private fun TransactionCreateScreen(
                     focusManager.clearFocus(force = true)
                     openSelection?.invoke(2)
                 }
-                .then(ItemSpecModifier)
+                .then(ItemSpecModifier),
         )
         if (selectedTransactionType == TransactionType.TRANSFER) {
-
             Text(
                 modifier = Modifier
                     .then(ItemSpecModifier)
@@ -482,7 +475,7 @@ private fun TransactionCreateScreen(
                 text = stringResource(id = R.string.to_account),
                 fontWeight = FontWeight.SemiBold,
                 fontStyle = FontStyle.Normal,
-                color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500)
+                color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500),
             )
 
             AccountItem(
@@ -511,7 +504,7 @@ private fun TransactionCreateScreen(
             {
                 Icon(
                     imageVector = Icons.Filled.Notes,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             },
             label = {
@@ -523,16 +516,16 @@ private fun TransactionCreateScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus(force = true)
-                }
+                },
             ),
             supportingText = {
                 Text(text = stringResource(id = R.string.optional_details))
-            }
+            },
         )
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(36.dp)
+                .padding(36.dp),
         )
     }
 }
@@ -546,7 +539,7 @@ fun Date.toTime(): ReminderTimeState {
     return ReminderTimeState(
         hour = hours,
         minute = minutes,
-        is24Hour = false
+        is24Hour = false,
     )
 }
 
@@ -570,10 +563,10 @@ private fun TransactionCreateStatePreview() {
                 type = CategoryType.EXPENSE,
                 StoredIcon(
                     name = "ic_calendar",
-                    backgroundColor = "#000000"
+                    backgroundColor = "#000000",
                 ),
                 createdOn = Date(),
-                updatedOn = Date()
+                updatedOn = Date(),
             ),
             selectedFromAccount = AccountUiModel(
                 id = "1",
@@ -581,7 +574,7 @@ private fun TransactionCreateStatePreview() {
                 type = AccountType.REGULAR,
                 storedIcon = StoredIcon(
                     name = "ic_calendar",
-                    backgroundColor = "#000000"
+                    backgroundColor = "#000000",
                 ),
                 amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
                 amount = Amount(0.0, "$ 0.00"),
@@ -592,11 +585,11 @@ private fun TransactionCreateStatePreview() {
                 type = AccountType.REGULAR,
                 storedIcon = StoredIcon(
                     name = "ic_calendar",
-                    backgroundColor = "#000000"
+                    backgroundColor = "#000000",
                 ),
                 amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = Amount(0.0, "$ 0.00"),
-            )
+            ),
         )
     }
 }

@@ -17,8 +17,8 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
                 route,
                 navOptions {
                     popUpTo(0)
-                }
-            )
+                },
+            ),
         )
     }
 
@@ -33,14 +33,14 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
     override fun <T> navigateBackWithResult(
         key: String,
         result: T,
-        route: String?
+        route: String?,
     ) {
         navigationCommands.tryEmit(
             ComposeNavigationCommand.NavigateUpWithResult(
                 key = key,
                 result = result,
-                route = route
-            )
+                route = route,
+            ),
         )
     }
 }

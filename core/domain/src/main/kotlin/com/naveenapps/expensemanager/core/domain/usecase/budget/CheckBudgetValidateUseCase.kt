@@ -7,7 +7,6 @@ import javax.inject.Inject
 class CheckBudgetValidateUseCase @Inject constructor() {
 
     operator fun invoke(budget: Budget): Resource<Boolean> {
-
         if (budget.id.isBlank()) {
             return Resource.Error(Exception("Please specify the budget id"))
         }

@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class SettingsRepositoryImpl @Inject constructor(
     private val dataStore: SettingsDataStore,
-    private val dispatcher: AppCoroutineDispatchers
+    private val dispatcher: AppCoroutineDispatchers,
 ) : SettingsRepository {
     override fun getTransactionTypes(): Flow<List<TransactionType>?> {
         return dataStore.getTransactionType()

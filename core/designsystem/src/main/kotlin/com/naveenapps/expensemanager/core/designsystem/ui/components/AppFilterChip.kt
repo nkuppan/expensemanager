@@ -19,7 +19,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RowScope.AppFilterChip(
@@ -55,26 +54,26 @@ fun RowScope.AppFilterChip(
                             Modifier.fillMaxWidth()
                         } else {
                             Modifier.wrapContentWidth()
-                        }
+                        },
                     ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 text = filterName,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
         },
         leadingIcon = {
             if (filterIcon != null) {
                 Icon(
                     imageVector = filterIcon,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
         },
         colors = FilterChipDefaults.filterChipColors(
             selectedLabelColor = labelColor,
             selectedContainerColor = selectedContainerColor,
-            selectedLeadingIconColor = labelColor
-        )
+            selectedLeadingIconColor = labelColor,
+        ),
     )
 }

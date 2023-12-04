@@ -23,16 +23,15 @@ import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.isTransfer
 import com.naveenapps.expensemanager.feature.transaction.R
 
-
 @Composable
 fun TransactionTypeSelectionView(
     selectedTransactionType: TransactionType,
     onTransactionTypeChange: ((TransactionType) -> Unit),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         AppFilterChip(
             modifier = Modifier
@@ -44,7 +43,7 @@ fun TransactionTypeSelectionView(
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
             onClick = {
                 onTransactionTypeChange.invoke(TransactionType.INCOME)
-            }
+            },
         )
         AppFilterChip(
             modifier = Modifier
@@ -56,7 +55,7 @@ fun TransactionTypeSelectionView(
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
             onClick = {
                 onTransactionTypeChange.invoke(TransactionType.EXPENSE)
-            }
+            },
         )
         AppFilterChip(
             modifier = Modifier
@@ -68,7 +67,7 @@ fun TransactionTypeSelectionView(
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.blue_500,
             onClick = {
                 onTransactionTypeChange.invoke(TransactionType.TRANSFER)
-            }
+            },
         )
     }
 }
@@ -83,21 +82,21 @@ private fun TransactionTypeSelectionViewPreview() {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 selectedTransactionType = TransactionType.INCOME,
-                onTransactionTypeChange = {}
+                onTransactionTypeChange = {},
             )
             TransactionTypeSelectionView(
                 modifier = Modifier
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 selectedTransactionType = TransactionType.EXPENSE,
-                onTransactionTypeChange = {}
+                onTransactionTypeChange = {},
             )
             TransactionTypeSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 selectedTransactionType = TransactionType.TRANSFER,
-                onTransactionTypeChange = {}
+                onTransactionTypeChange = {},
             )
         }
     }

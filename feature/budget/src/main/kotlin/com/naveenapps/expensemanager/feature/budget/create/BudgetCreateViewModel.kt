@@ -107,7 +107,6 @@ class BudgetCreateViewModel @Inject constructor(
     }
 
     private suspend fun updateBudgetInfo(budget: Budget?) {
-
         this.budget = budget
 
         this.budget?.let { budgetItem ->
@@ -123,7 +122,7 @@ class BudgetCreateViewModel @Inject constructor(
                     is Resource.Success -> {
                         val data = response.data
                         data.toAccountUiModel(
-                            Amount(data.amount, currency = currency)
+                            Amount(data.amount, currency = currency),
                         )
                     }
                 }
@@ -166,7 +165,7 @@ class BudgetCreateViewModel @Inject constructor(
                 when (deleteBudgetUseCase.invoke(budget)) {
                     is Resource.Error -> {
                         _errorMessage.emit(
-                            UiText.StringResource(R.string.budget_delete_error_message)
+                            UiText.StringResource(R.string.budget_delete_error_message),
                         )
                     }
 
@@ -178,9 +177,7 @@ class BudgetCreateViewModel @Inject constructor(
         }
     }
 
-
     fun saveOrUpdateBudget() {
-
         val name: String = name.value
         val color: String = colorValue.value
         val date: Date = _date.value
@@ -218,7 +215,7 @@ class BudgetCreateViewModel @Inject constructor(
             isAllCategoriesSelected = isAllCategoriesSelected,
             isAllAccountsSelected = isAllAccountsSelected,
             createdOn = Calendar.getInstance().time,
-            updatedOn = Calendar.getInstance().time
+            updatedOn = Calendar.getInstance().time,
         )
 
         viewModelScope.launch {

@@ -8,13 +8,13 @@ import javax.inject.Inject
 
 class GetDateRangeUseCase @Inject constructor(
     private val getDateRangeByTypeUseCase: GetDateRangeByTypeUseCase,
-    private val dateRangeFilterRepository: DateRangeFilterRepository
+    private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
     operator fun invoke(): Flow<DateRangeModel> {
         return combine(
             dateRangeFilterRepository.getDateRangeFilterType(),
-            dateRangeFilterRepository.getDateRangeTimeFrame()
+            dateRangeFilterRepository.getDateRangeTimeFrame(),
         ) { type, _ ->
             getDateRangeByTypeUseCase.invoke(type)
         }

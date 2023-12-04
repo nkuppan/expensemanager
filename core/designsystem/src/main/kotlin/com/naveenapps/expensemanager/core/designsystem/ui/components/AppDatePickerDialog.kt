@@ -31,13 +31,14 @@ fun AppDatePickerDialog(
         modifier = modifier,
         onDismissRequest = onDismiss,
         confirmButton = {
-            Button(onClick = {
-                val currentDate = datePickerState.selectedDateMillis?.let {
-                    Date(it)
-                } ?: selectedDate
-                onDateSelected(currentDate)
-                onDismiss()
-            }
+            Button(
+                onClick = {
+                    val currentDate = datePickerState.selectedDateMillis?.let {
+                        Date(it)
+                    } ?: selectedDate
+                    onDateSelected(currentDate)
+                    onDismiss()
+                },
 
             ) {
                 Text(text = stringResource(id = R.string.ok))
@@ -47,12 +48,11 @@ fun AppDatePickerDialog(
             Button(onClick = onDismiss) {
                 Text(text = stringResource(id = R.string.cancel))
             }
-        }
+        },
     ) {
         DatePicker(state = datePickerState)
     }
 }
-
 
 @Composable
 @Preview

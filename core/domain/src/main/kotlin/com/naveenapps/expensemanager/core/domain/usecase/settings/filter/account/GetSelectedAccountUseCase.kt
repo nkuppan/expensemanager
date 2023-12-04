@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetSelectedAccountUseCase @Inject constructor(
     private val settingsRepository: SettingsRepository,
-    private val findAccountByIdUseCase: FindAccountByIdUseCase
+    private val findAccountByIdUseCase: FindAccountByIdUseCase,
 ) {
 
     operator fun invoke(): Flow<List<Account>?> {

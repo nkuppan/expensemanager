@@ -12,7 +12,7 @@ class SaveDateRangeUseCase @Inject constructor(
 
     suspend operator fun invoke(
         dateRangeType: DateRangeType,
-        customRanges: List<Date>
+        customRanges: List<Date>,
     ): Resource<Boolean> {
         return when (val response = setDateRangesUseCase.invoke(customRanges)) {
             is Resource.Error -> {

@@ -7,7 +7,6 @@ import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
 val JAVA_VERSION = JavaVersion.VERSION_17
 
 fun CommonExtension<*, *, *, *, *>.configureJVM() {
@@ -18,9 +17,7 @@ fun CommonExtension<*, *, *, *, *>.configureJVM() {
 }
 
 fun Project.configureKotlinJVM() {
-
     tasks.withType<KotlinCompile>().configureEach {
-
         kotlinOptions {
             jvmTarget = JAVA_VERSION.toString()
 
@@ -33,7 +30,7 @@ fun Project.configureKotlinJVM() {
                 "-opt-in=kotlinx.coroutines.FlowPreview",
                 "-opt-in=kotlin.Experimental",
                 // Enable experimental kotlinx serialization APIs
-                "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
+                "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
             )
         }
     }

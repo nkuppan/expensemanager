@@ -15,12 +15,10 @@ interface ThemeRepository {
      */
     suspend fun applyTheme()
 
-
     /**
      * Reading the selected theme
      */
     fun getSelectedTheme(): Flow<Theme>
-
 
     /**
      * Reading the list of theme available in the data store

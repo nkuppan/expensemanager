@@ -27,6 +27,6 @@ interface TransactionRepository {
         categories: List<String>,
         transactionType: List<Int>,
         startDate: Long,
-        endDate: Long
+        endDate: Long,
     ): Flow<List<Transaction>?>
 }

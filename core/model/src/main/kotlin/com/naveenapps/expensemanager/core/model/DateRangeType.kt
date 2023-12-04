@@ -6,5 +6,5 @@ enum class DateRangeType {
     THIS_MONTH,
     THIS_YEAR,
     ALL,
-    CUSTOM
+    CUSTOM,
 }

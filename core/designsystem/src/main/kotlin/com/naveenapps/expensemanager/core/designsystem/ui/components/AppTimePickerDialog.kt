@@ -29,11 +29,10 @@ fun AppTimePickerDialog(
     onTimeSelected: (Triple<Int, Int, Boolean>) -> Unit,
     onDismiss: () -> Unit,
 ) {
-
     val timePickerState = rememberTimePickerState(
         initialHour = reminderTimeState.first,
         initialMinute = reminderTimeState.second,
-        is24Hour = reminderTimeState.third
+        is24Hour = reminderTimeState.third,
     )
 
     Dialog(
@@ -41,12 +40,12 @@ fun AppTimePickerDialog(
             onDismiss.invoke()
         },
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
         ),
     ) {
         Surface(
             modifier = Modifier.padding(16.dp),
-            shape = RoundedCornerShape(8.dp)
+            shape = RoundedCornerShape(8.dp),
         ) {
             Column(modifier = Modifier.wrapContentSize()) {
                 TimePicker(
@@ -55,7 +54,7 @@ fun AppTimePickerDialog(
                 )
 
                 Row(
-                    modifier = Modifier.align(Alignment.End)
+                    modifier = Modifier.align(Alignment.End),
                 ) {
                     TextButton(onClick = {
                         onDismiss.invoke()
@@ -68,7 +67,7 @@ fun AppTimePickerDialog(
                                 timePickerState.hour,
                                 timePickerState.minute,
                                 timePickerState.is24hour,
-                            )
+                            ),
                         )
                     }) {
                         Text(text = stringResource(id = R.string.select).uppercase())
@@ -78,7 +77,6 @@ fun AppTimePickerDialog(
         }
     }
 }
-
 
 @Composable
 @Preview

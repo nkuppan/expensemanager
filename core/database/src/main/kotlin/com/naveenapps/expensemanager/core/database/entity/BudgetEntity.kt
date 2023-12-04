@@ -5,7 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-
 @Entity(tableName = "budget")
 data class BudgetEntity(
     @PrimaryKey(autoGenerate = false)
@@ -31,5 +30,5 @@ data class BudgetEntity(
     @ColumnInfo(name = "created_on")
     val createdOn: Date,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date
+    val updatedOn: Date,
 )

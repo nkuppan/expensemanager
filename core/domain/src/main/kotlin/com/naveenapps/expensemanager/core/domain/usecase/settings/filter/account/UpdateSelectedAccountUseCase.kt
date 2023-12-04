@@ -5,7 +5,7 @@ import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import javax.inject.Inject
 
 class UpdateSelectedAccountUseCase @Inject constructor(
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
 ) {
 
     suspend operator fun invoke(accountId: List<String>?): Resource<Boolean> {

@@ -11,12 +11,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 fun NavigationButton(
     onClick: () -> Unit,
     navigationIcon: ImageVector = Icons.Filled.ArrowBack,
-    navigationContentDescription: String = ""
+    navigationContentDescription: String = "",
 ) {
     IconButton(onClick = onClick) {
         Icon(
             imageVector = navigationIcon,
-            contentDescription = navigationContentDescription
+            contentDescription = navigationContentDescription,
         )
     }
 }

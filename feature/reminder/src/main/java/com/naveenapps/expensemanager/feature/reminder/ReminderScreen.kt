@@ -43,12 +43,11 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ReminderScreen(
-    viewModel: ReminderViewModel = hiltViewModel()
+    viewModel: ReminderViewModel = hiltViewModel(),
 ) {
     var showMessageLayout by remember { mutableIntStateOf(0) }
 
     val notificationPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
         val notificationPermission =
             rememberPermissionState(android.Manifest.permission.POST_NOTIFICATIONS)
         val permissionResult = notificationPermission.status
@@ -73,7 +72,6 @@ fun ReminderScreen(
         null
     }
 
-
     var showTimePicker by remember { mutableStateOf(false) }
     if (showTimePicker) {
         ReminderTimePickerView {
@@ -91,13 +89,14 @@ fun ReminderScreen(
         TopNavigationBar(
             onClick = {
                 viewModel.closePage()
-            }, title = stringResource(R.string.reminder)
+            },
+            title = stringResource(R.string.reminder),
         )
     }) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(innerPadding)
+                .padding(innerPadding),
         ) {
             if (notificationPermission == null || notificationPermission.status.isGranted) {
                 SwitchSettingsItem(
@@ -113,24 +112,26 @@ fun ReminderScreen(
                     checked = reminderStatus,
                     checkChange = {
                         viewModel.saveReminderStatus(it)
-                    }
+                    },
                 )
-                SettingsItem(modifier = Modifier
-                    .clickable {
-                        if (reminderStatus)
-                            showTimePicker = true
-                    }
-                    .padding(top = 8.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
+                SettingsItem(
+                    modifier = Modifier
+                        .clickable {
+                            if (reminderStatus) {
+                                showTimePicker = true
+                            }
+                        }
+                        .padding(top = 8.dp, bottom = 8.dp)
+                        .fillMaxWidth(),
                     title = stringResource(id = R.string.notification_time),
                     description = reminderTime,
-                    icon = Icons.Default.AccessTime
+                    icon = Icons.Default.AccessTime,
                 )
             } else {
                 Column(
                     modifier = Modifier
                         .padding(16.dp)
-                        .align(Alignment.CenterHorizontally)
+                        .align(Alignment.CenterHorizontally),
                 ) {
                     val shouldShowRationale = notificationPermission.status.shouldShowRationale
                     val textToShow = if (shouldShowRationale) {
@@ -145,7 +146,8 @@ fun ReminderScreen(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                         onClick = {
                             notificationPermission.launchPermissionRequest()
-                        }) {
+                        },
+                    ) {
                         Text("Request permission")
                     }
                 }
@@ -154,10 +156,12 @@ fun ReminderScreen(
     }
 }
 
-
 @Composable
 private fun SettingsItem(
-    title: String, description: String, icon: ImageVector, modifier: Modifier = Modifier
+    title: String,
+    description: String,
+    icon: ImageVector,
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
         Icon(
@@ -165,12 +169,12 @@ private fun SettingsItem(
                 .wrapContentSize()
                 .padding(16.dp),
             imageVector = icon,
-            contentDescription = null
+            contentDescription = null,
         )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             Text(text = title)
             Text(text = description, style = MaterialTheme.typography.labelMedium)
@@ -185,7 +189,7 @@ private fun SwitchSettingsItem(
     checked: Boolean,
     icon: ImageVector,
     checkChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
         Icon(
@@ -193,13 +197,13 @@ private fun SwitchSettingsItem(
                 .wrapContentSize()
                 .padding(16.dp),
             imageVector = icon,
-            contentDescription = null
+            contentDescription = null,
         )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             Text(text = title)
             Text(text = description, style = MaterialTheme.typography.labelMedium)
@@ -210,11 +214,10 @@ private fun SwitchSettingsItem(
                 .padding(end = 16.dp)
                 .align(Alignment.CenterVertically),
             checked = checked,
-            onCheckedChange = checkChange
+            onCheckedChange = checkChange,
         )
     }
 }
-
 
 @Preview
 @Composable

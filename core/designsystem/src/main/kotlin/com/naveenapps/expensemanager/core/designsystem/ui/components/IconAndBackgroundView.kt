@@ -22,20 +22,19 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.SmallIconSpecModifier
 
-
 @Composable
 fun IconAndBackgroundView(
     icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
-    name: String? = null
+    name: String? = null,
 ) {
     IconView(
         modifier.then(IconSpecModifier),
         iconBackgroundColor,
         icon,
         name,
-        18.dp
+        18.dp,
     )
 }
 
@@ -45,7 +44,7 @@ fun SmallIconAndBackgroundView(
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
     name: String? = null,
-    iconSize: Dp = 12.dp
+    iconSize: Dp = 12.dp,
 ) {
     IconView(
         modifier.then(SmallIconSpecModifier),
@@ -62,7 +61,7 @@ private fun IconView(
     iconBackgroundColor: String,
     icon: String,
     name: String?,
-    iconSize: Dp = 18.dp
+    iconSize: Dp = 18.dp,
 ) {
     val context = LocalContext.current
 
@@ -71,7 +70,7 @@ private fun IconView(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
-            iconBackgroundColor = iconBackgroundColor
+            iconBackgroundColor = iconBackgroundColor,
         )
         Image(
             modifier = Modifier
@@ -79,7 +78,7 @@ private fun IconView(
                 .align(Alignment.Center),
             painter = painterResource(id = context.getDrawable(icon)),
             colorFilter = ColorFilter.tint(color = Color.White),
-            contentDescription = name
+            contentDescription = name,
         )
     }
 }
@@ -87,7 +86,7 @@ private fun IconView(
 @Composable
 fun RoundIconView(
     iconBackgroundColor: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
         Canvas(
@@ -96,7 +95,7 @@ fun RoundIconView(
                 .align(Alignment.Center),
             onDraw = {
                 drawCircle(color = iconBackgroundColor.toColor())
-            }
+            },
         )
     }
 }

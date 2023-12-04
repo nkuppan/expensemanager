@@ -9,14 +9,13 @@ data class Currency(
 
 enum class TextPosition {
     PREFIX,
-    SUFFIX;
+    SUFFIX,
 }
 
 enum class TextFormat {
     NONE,
     NUMBER_FORMAT,
 }
-
 
 fun TextPosition.isPrefix(): Boolean {
     return this == TextPosition.PREFIX

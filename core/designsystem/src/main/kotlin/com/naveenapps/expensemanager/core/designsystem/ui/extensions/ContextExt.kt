@@ -10,12 +10,13 @@ import android.net.Uri
 import androidx.core.net.toUri
 import com.naveenapps.expensemanager.core.designsystem.R
 
-
 @SuppressLint("DiscouragedApi")
 fun Context.getDrawable(iconName: String): Int {
     return runCatching {
         val resources = this.resources.getIdentifier(
-            iconName, "drawable", this.packageName
+            iconName,
+            "drawable",
+            this.packageName,
         )
 
         if (resources > 0) resources else null
@@ -52,7 +53,6 @@ fun Context.shareThisFile(fileUri: String) {
     }
     startActivity(Intent.createChooser(shareIntent, null))
 }
-
 
 fun Context.getAppVersionName(): String {
     return try {

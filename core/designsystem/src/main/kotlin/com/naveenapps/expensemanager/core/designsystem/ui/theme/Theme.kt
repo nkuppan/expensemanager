@@ -7,7 +7,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-
 private val darkColors = darkColorScheme(
     primary = Blue80,
     onPrimary = Blue20,
@@ -34,7 +33,7 @@ private val darkColors = darkColorScheme(
     inverseOnSurface = Grey20,
     surfaceVariant = BlueGrey30,
     onSurfaceVariant = BlueGrey80,
-    outline = BlueGrey60
+    outline = BlueGrey60,
 )
 
 private val lightColors = lightColorScheme(
@@ -63,13 +62,13 @@ private val lightColors = lightColorScheme(
     inverseOnSurface = Grey95,
     surfaceVariant = BlueGrey90,
     onSurfaceVariant = BlueGrey30,
-    outline = BlueGrey50
+    outline = BlueGrey50,
 )
 
 @Composable
 fun ExpenseManagerTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val myColorScheme = when {
         isDarkTheme -> darkColors

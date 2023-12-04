@@ -25,7 +25,6 @@ import java.util.Calendar
 import java.util.UUID
 import javax.inject.Inject
 
-
 @HiltViewModel
 class CategoryCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -62,13 +61,12 @@ class CategoryCreateViewModel @Inject constructor(
     init {
         readCategoryInfo(
             savedStateHandle.get<String>(
-                ExpenseManagerScreens.CategoryCreate.KEY_CATEGORY_ID
-            )
+                ExpenseManagerScreens.CategoryCreate.KEY_CATEGORY_ID,
+            ),
         )
     }
 
     private fun updateCategoryInfo(category: Category?) {
-
         this.category = category
 
         this.category?.let { categoryItem ->
@@ -98,7 +96,7 @@ class CategoryCreateViewModel @Inject constructor(
                 when (deleteCategoryUseCase.invoke(category)) {
                     is Resource.Error -> {
                         _message.emit(
-                            UiText.StringResource(R.string.category_delete_error_message)
+                            UiText.StringResource(R.string.category_delete_error_message),
                         )
                     }
 
@@ -111,7 +109,6 @@ class CategoryCreateViewModel @Inject constructor(
     }
 
     fun saveOrUpdateCategory() {
-
         val name: String = name.value
         val color: String = colorValue.value
 
@@ -129,7 +126,7 @@ class CategoryCreateViewModel @Inject constructor(
                 backgroundColor = color,
             ),
             createdOn = Calendar.getInstance().time,
-            updatedOn = Calendar.getInstance().time
+            updatedOn = Calendar.getInstance().time,
         )
 
         viewModelScope.launch {

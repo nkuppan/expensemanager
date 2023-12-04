@@ -22,7 +22,7 @@ class GetBudgetDetailUseCase @Inject constructor(
     operator fun invoke(budgetId: String): Flow<BudgetUiModel?> {
         return combine(
             repository.findBudgetByIdFlow(budgetId),
-            getTransactionWithFilterUseCase.invoke()
+            getTransactionWithFilterUseCase.invoke(),
         ) { budget, transactions ->
             budget?.let {
                 val currency = getCurrencyUseCase.invoke().first()
@@ -45,9 +45,9 @@ class GetBudgetDetailUseCase @Inject constructor(
                     percent,
                     budgetTransactions?.map {
                         it.toTransactionUIModel(
-                            getFormattedAmountUseCase(it.amount.amount, currency)
+                            getFormattedAmountUseCase(it.amount.amount, currency),
                         )
-                    }
+                    },
                 )
             }
         }

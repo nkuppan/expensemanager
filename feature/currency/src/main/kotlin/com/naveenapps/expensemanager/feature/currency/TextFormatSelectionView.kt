@@ -16,17 +16,15 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
 
-
 @Composable
 fun TextFormatSelectionView(
     textFormat: TextFormat,
     onTextFormatChange: ((TextFormat) -> Unit),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AppFilterChip(
             modifier = Modifier
@@ -36,7 +34,7 @@ fun TextFormatSelectionView(
             isSelected = textFormat == TextFormat.NONE,
             onClick = {
                 onTextFormatChange.invoke(TextFormat.NONE)
-            }
+            },
         )
         AppFilterChip(
             modifier = Modifier
@@ -46,7 +44,7 @@ fun TextFormatSelectionView(
             isSelected = textFormat == TextFormat.NUMBER_FORMAT,
             onClick = {
                 onTextFormatChange.invoke(TextFormat.NUMBER_FORMAT)
-            }
+            },
         )
     }
 }
@@ -61,14 +59,14 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 selectedCurrencyPositionType = TextPosition.PREFIX,
-                onCurrencyPositionTypeChange = {}
+                onCurrencyPositionTypeChange = {},
             )
             TextFormatSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 selectedCurrencyPositionType = TextPosition.SUFFIX,
-                onCurrencyPositionTypeChange = {}
+                onCurrencyPositionTypeChange = {},
             )
         }
     }

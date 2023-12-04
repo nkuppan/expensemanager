@@ -53,9 +53,8 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetDetailScreen(
-    viewModel: BudgetDetailViewModel = hiltViewModel()
+    viewModel: BudgetDetailViewModel = hiltViewModel(),
 ) {
-
     val budget by viewModel.budget.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -73,11 +72,10 @@ fun BudgetDetailScreen(
                                 onClick = {
                                     viewModel.closePage()
                                 },
-                                Icons.Default.Close
+                                Icons.Default.Close,
                             )
                         },
                         title = {
-
                         },
                         actions = {
                             budget?.let {
@@ -86,11 +84,11 @@ fun BudgetDetailScreen(
                                 }) {
                                     Icon(
                                         imageVector = Icons.Outlined.Edit,
-                                        contentDescription = ""
+                                        contentDescription = "",
                                     )
                                 }
                             }
-                        }
+                        },
                     )
                     budget?.let {
                         BudgetHeaderItem(
@@ -113,10 +111,10 @@ fun BudgetDetailScreen(
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         Box(
@@ -124,16 +122,14 @@ fun BudgetDetailScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
         ) {
-
             val transactions = budget?.transactions
             if (transactions.isNullOrEmpty()) {
-
                 Text(
                     modifier = Modifier
                         .wrapContentSize()
                         .align(Alignment.Center),
                     text = stringResource(id = R.string.no_budget_available),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             } else {
                 LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
@@ -164,7 +160,7 @@ fun BudgetDetailScreen(
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(36.dp)
+                                .padding(36.dp),
                         )
                     }
                 }
@@ -191,7 +187,7 @@ fun BudgetHeaderItem(
                 text = name,
                 maxLines = 1,
                 style = MaterialTheme.typography.titleMedium,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 modifier = Modifier
@@ -216,14 +212,14 @@ fun BudgetHeaderItem(
                     .padding(start = 8.dp)
                     .align(Alignment.CenterVertically),
                 text = percentage.toPercentString(),
-                style = MaterialTheme.typography.labelSmall
+                style = MaterialTheme.typography.labelSmall,
             )
         }
 
         Text(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             text = "$transactionAmount of $amount",
-            style = MaterialTheme.typography.labelSmall
+            style = MaterialTheme.typography.labelSmall,
         )
     }
 }

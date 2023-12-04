@@ -62,7 +62,6 @@ private val coverageExclusions = listOf(
 )
 
 internal fun Project.configureJacoco() {
-
     configure<JacocoPluginExtension> {
         toolVersion = libs.findVersion("jacoco").get().toString()
     }
@@ -88,15 +87,15 @@ internal fun Project.configureJacoco() {
             "${project.projectDir}/src/main/java",
             "${project.projectDir}/src/main/kotlin",
             "${project.projectDir}/src/debug/java",
-            "${project.projectDir}/src/debug/kotlin"
+            "${project.projectDir}/src/debug/kotlin",
         )
 
         sourceDirectories.setFrom(files(sourceDirs))
 
         executionData.setFrom(
             files(
-                listOf("${project.buildDir}/jacoco/testDebugUnitTest.exec")
-            )
+                listOf("${project.buildDir}/jacoco/testDebugUnitTest.exec"),
+            ),
         )
     }
 

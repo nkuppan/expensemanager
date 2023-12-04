@@ -105,7 +105,7 @@ class TransactionCreateViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getAllAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
             selectedCurrency = currency
             _currencyIcon.value = currency.symbol
@@ -116,8 +116,8 @@ class TransactionCreateViewModel @Inject constructor(
                     it.toAccountUiModel(
                         getFormattedAmountUseCase.invoke(
                             it.amount,
-                            currency
-                        )
+                            currency,
+                        ),
                     )
                 }
             }
@@ -128,7 +128,7 @@ class TransactionCreateViewModel @Inject constructor(
 
         combine(
             selectedTransactionType,
-            getAllCategoryUseCase.invoke()
+            getAllCategoryUseCase.invoke(),
         ) { transactionType, categories ->
             val filteredCategories = categories.filter { category ->
                 if (transactionType.isIncome()) {
@@ -139,13 +139,12 @@ class TransactionCreateViewModel @Inject constructor(
             }
             _categories.value = filteredCategories
             _selectedCategory.value = filteredCategories.firstOrNull() ?: defaultCategory
-
         }.launchIn(viewModelScope)
 
         readInfo(
             savedStateHandle.get<String>(
-                ExpenseManagerScreens.TransactionCreate.KEY_TRANSACTION_ID
-            )
+                ExpenseManagerScreens.TransactionCreate.KEY_TRANSACTION_ID,
+            ),
         )
     }
 
@@ -167,9 +166,9 @@ class TransactionCreateViewModel @Inject constructor(
                         transaction.fromAccount.toAccountUiModel(
                             getFormattedAmountUseCase.invoke(
                                 transaction.fromAccount.amount,
-                                currency
-                            )
-                        )
+                                currency,
+                            ),
+                        ),
                     )
                     val toAccount = transaction.toAccount
                     if (toAccount != null) {
@@ -178,9 +177,9 @@ class TransactionCreateViewModel @Inject constructor(
                             toAccount.toAccountUiModel(
                                 getFormattedAmountUseCase.invoke(
                                     toAccount.amount,
-                                    currency
-                                )
-                            )
+                                    currency,
+                                ),
+                            ),
                         )
                     }
                     setTransactionType(transaction.type)
@@ -192,7 +191,6 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun doSave() {
-
         val amount = this.amount.value
 
         if (amount.isBlank()) {
@@ -230,11 +228,10 @@ class TransactionCreateViewModel @Inject constructor(
             amount = Amount(amountValue),
             imagePath = "",
             createdOn = date.value,
-            updatedOn = Calendar.getInstance().time
+            updatedOn = Calendar.getInstance().time,
         )
 
         viewModelScope.launch {
-
             val response = if (this@TransactionCreateViewModel.transaction != null) {
                 updateTransactionUseCase.invoke(transaction)
             } else {
@@ -253,7 +250,6 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun setAmount(amount: String) {
-
         _amount.value = amount
 
         if (amount.isBlank()) {
@@ -301,7 +297,7 @@ class TransactionCreateViewModel @Inject constructor(
                 when (deleteTransactionUseCase.invoke(it)) {
                     is Resource.Error -> {
                         _message.emit(
-                            UiText.StringResource(R.string.transaction_delete_error_message)
+                            UiText.StringResource(R.string.transaction_delete_error_message),
                         )
                     }
 
@@ -319,13 +315,13 @@ class TransactionCreateViewModel @Inject constructor(
 
     fun openCategoryCreate() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate.createRoute("")
+            ExpenseManagerScreens.CategoryCreate.createRoute(""),
         )
     }
 
     fun openAccountCreate() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute("")
+            ExpenseManagerScreens.AccountCreate.createRoute(""),
         )
     }
 
@@ -336,10 +332,10 @@ class TransactionCreateViewModel @Inject constructor(
             type = CategoryType.EXPENSE,
             storedIcon = StoredIcon(
                 name = "ic_calendar",
-                backgroundColor = "#000000"
+                backgroundColor = "#000000",
             ),
             createdOn = Date(),
-            updatedOn = Date()
+            updatedOn = Date(),
         )
 
         private val defaultAccount = AccountUiModel(
@@ -347,10 +343,10 @@ class TransactionCreateViewModel @Inject constructor(
             name = "Shopping",
             storedIcon = StoredIcon(
                 name = "ic_calendar",
-                backgroundColor = "#000000"
+                backgroundColor = "#000000",
             ),
             amount = Amount(0.0, "$ 0.00"),
-            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500
+            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         )
     }
 }

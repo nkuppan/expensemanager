@@ -32,7 +32,7 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
             scope = testCoroutineScope,
             produceFile = {
                 testContext.preferencesDataStoreFile("TEST_DATASTORE_NAME")
-            }
+            },
         )
 
     private val repository: DateRangeFilterRepository = DateRangeFilterRepositoryImpl(
@@ -40,8 +40,8 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
         AppCoroutineDispatchers(
             testCoroutineDispatcher.dispatcher,
             testCoroutineDispatcher.dispatcher,
-            testCoroutineDispatcher.dispatcher
-        )
+            testCoroutineDispatcher.dispatcher,
+        ),
     )
 
     @Test
@@ -102,7 +102,6 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun getDateRangeGroupShouldReturnTheType() = runTest {
-
         val todayType = repository.getTransactionGroupType(DateRangeType.TODAY)
         Truth.assertThat(todayType).isEqualTo(GroupType.DATE)
 

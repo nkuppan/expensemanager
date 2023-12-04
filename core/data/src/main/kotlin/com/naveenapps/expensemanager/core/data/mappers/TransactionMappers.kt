@@ -30,6 +30,6 @@ fun TransactionEntity.toDomainModel(): Transaction {
         amount = Amount(amount),
         imagePath = imagePath,
         createdOn = createdOn,
-        updatedOn = updatedOn
+        updatedOn = updatedOn,
     )
 }

@@ -38,16 +38,13 @@ import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import java.util.Date
 
-
 enum class DateTypeSelection {
     FROM_DATE,
-    TO_DATE
+    TO_DATE,
 }
-
 
 @Composable
 fun DateFilterSelectionView(complete: () -> Unit) {
-
     val viewModel: DateFilterViewModel = hiltViewModel()
     val selectedFilterType by viewModel.dateRangeFilterType.collectAsState()
     val showCustomRangeSelection by viewModel.showCustomRangeSelection.collectAsState()
@@ -91,7 +88,7 @@ fun DateFilterSelectionView(complete: () -> Unit) {
         showCustomRangeSelection,
         fromDate,
         toDate,
-        complete
+        complete,
     ) {
         dateTypeSelection = it
         showDatePicker = true
@@ -112,16 +109,16 @@ private fun FilterTypesAndView(
     val focusManager = LocalFocusManager.current
     Surface(
         modifier = Modifier.padding(16.dp),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     ) {
         LazyColumn(
-            modifier = Modifier.wrapContentSize()
+            modifier = Modifier.wrapContentSize(),
         ) {
             item {
                 Text(
                     modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 8.dp),
                     text = stringResource(id = R.string.date_filter).uppercase(),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
             items(filterTypes) { filter ->
@@ -138,28 +135,28 @@ private fun FilterTypesAndView(
                                     .padding(4.dp)
                                     .background(
                                         color = getSelectedBGColor(),
-                                        shape = RoundedCornerShape(size = 12.dp)
+                                        shape = RoundedCornerShape(size = 12.dp),
                                     )
                             } else {
                                 Modifier
                                     .padding(4.dp)
-                            }
+                            },
                         )
                         .padding(8.dp),
                 ) {
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .align(Alignment.CenterVertically)
+                            .align(Alignment.CenterVertically),
                     ) {
                         Text(
                             text = filter.name,
-                            style = MaterialTheme.typography.bodyLarge
+                            style = MaterialTheme.typography.bodyLarge,
                         )
                         if (filter.description.isNotBlank()) {
                             Text(
                                 text = filter.description,
-                                style = MaterialTheme.typography.bodyMedium
+                                style = MaterialTheme.typography.bodyMedium,
                             )
                         }
                     }
@@ -167,7 +164,7 @@ private fun FilterTypesAndView(
                         Icon(
                             modifier = Modifier.align(Alignment.CenterVertically),
                             imageVector = Icons.Default.Done,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
                 }
@@ -176,12 +173,12 @@ private fun FilterTypesAndView(
                 if (showCustomRangeSelection) {
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     ) {
                         Row(
                             modifier = Modifier
                                 .padding(top = 8.dp, start = 16.dp, bottom = 8.dp, end = 16.dp)
-                                .fillMaxWidth()
+                                .fillMaxWidth(),
                         ) {
                             ClickableTextField(
                                 modifier = Modifier
@@ -193,7 +190,7 @@ private fun FilterTypesAndView(
                                 onClick = {
                                     focusManager.clearFocus()
                                     onDateSelection.invoke(DateTypeSelection.FROM_DATE)
-                                }
+                                },
                             )
                             ClickableTextField(
                                 modifier = Modifier
@@ -205,7 +202,7 @@ private fun FilterTypesAndView(
                                 onClick = {
                                     focusManager.clearFocus()
                                     onDateSelection.invoke(DateTypeSelection.TO_DATE)
-                                }
+                                },
                             )
                         }
                     }
@@ -214,12 +211,12 @@ private fun FilterTypesAndView(
             item {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
                 ) {
                     Row(
                         modifier = Modifier
                             .padding(16.dp)
-                            .align(Alignment.End)
+                            .align(Alignment.End),
                     ) {
                         TextButton(onClick = complete) {
                             Text(text = stringResource(id = R.string.cancel).uppercase())

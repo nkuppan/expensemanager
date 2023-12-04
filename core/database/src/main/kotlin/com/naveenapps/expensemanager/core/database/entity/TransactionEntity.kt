@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
 import com.naveenapps.expensemanager.core.model.TransactionType
 import java.util.Date
 
-
 @Entity(
     tableName = "transaction",
     foreignKeys = [
@@ -16,23 +15,23 @@ import java.util.Date
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("from_account_id"),
             onUpdate = ForeignKey.NO_ACTION,
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = AccountEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("to_account_id"),
             onUpdate = ForeignKey.NO_ACTION,
-            onDelete = ForeignKey.CASCADE
+            onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
             entity = CategoryEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("category_id"),
             onUpdate = ForeignKey.NO_ACTION,
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
+            onDelete = ForeignKey.CASCADE,
+        ),
+    ],
 )
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = false)

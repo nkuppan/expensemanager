@@ -11,7 +11,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 const val DESTINATION_CLASS = "com.naveenapps.expensemanager.HomeActivity"
 
 @AndroidEntryPoint
@@ -21,9 +20,7 @@ open class BootAlarmReceiver : BroadcastReceiver() {
     lateinit var notificationScheduler: NotificationScheduler
 
     override fun onReceive(context: Context, intent: Intent) {
-
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-
             if (Intent.ACTION_BOOT_COMPLETED == intent.action) {
                 Log.d(TAG, "onReceive: BOOT_COMPLETED")
                 notificationScheduler.setReminder()
@@ -33,7 +30,7 @@ open class BootAlarmReceiver : BroadcastReceiver() {
             notificationScheduler.showNotification(
                 DESTINATION_CLASS,
                 context.getString(R.string.notification_description),
-                context.getString(R.string.notification_title)
+                context.getString(R.string.notification_title),
             )
         }
     }

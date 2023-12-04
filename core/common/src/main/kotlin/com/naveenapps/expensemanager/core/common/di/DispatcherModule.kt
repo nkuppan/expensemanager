@@ -16,7 +16,7 @@ object DispatcherModule {
         return AppCoroutineDispatchers(
             Dispatchers.Main,
             Dispatchers.IO,
-            Dispatchers.Default
+            Dispatchers.Default,
         )
     }
 }

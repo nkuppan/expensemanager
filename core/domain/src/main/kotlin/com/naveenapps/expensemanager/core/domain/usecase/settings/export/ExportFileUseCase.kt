@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class ExportFileUseCase @Inject constructor(
     private val exportRepository: com.naveenapps.expensemanager.core.repository.ExportRepository,
-    private val getExportTransactionsUseCase: GetExportTransactionsUseCase
+    private val getExportTransactionsUseCase: GetExportTransactionsUseCase,
 ) {
 
     suspend operator fun invoke(
@@ -17,14 +17,13 @@ class ExportFileUseCase @Inject constructor(
         uri: String?,
         dateRangeType: DateRangeType,
         accounts: List<AccountUiModel>,
-        isAllAccountsSelected: Boolean
+        isAllAccountsSelected: Boolean,
     ): Resource<String?> {
-
         return when (
             val transactions = getExportTransactionsUseCase.invoke(
                 dateRangeType,
                 accounts.map { it.id },
-                isAllAccountsSelected
+                isAllAccountsSelected,
             )
         ) {
             is Resource.Error -> {

@@ -26,7 +26,7 @@ class CategoryListViewModelTest : BaseCoroutineTest() {
     private val categoryRepository: CategoryRepository = mock()
 
     private val getAllCategoryUseCase: GetAllCategoryUseCase = GetAllCategoryUseCase(
-        categoryRepository
+        categoryRepository,
     )
 
     private val appComposeNavigator: AppComposeNavigator = mock()
@@ -36,19 +36,16 @@ class CategoryListViewModelTest : BaseCoroutineTest() {
     private val categoryFlow = MutableStateFlow<List<Category>>(emptyList())
 
     override fun onCreate() {
-
         whenever(categoryRepository.getCategories()).thenReturn(categoryFlow)
 
         categoryListViewModel = CategoryListViewModel(
             getAllCategoryUseCase,
-            appComposeNavigator
+            appComposeNavigator,
         )
     }
 
-
     @Test
     fun categorySuccess() = runTest {
-
         val totalCount = 20
 
         categoryFlow.value = getRandomCategoryData(totalCount)
@@ -66,10 +63,8 @@ class CategoryListViewModelTest : BaseCoroutineTest() {
         }
     }
 
-
     @Test
     fun categoryEmpty() = runTest {
-
         categoryFlow.value = emptyList()
 
         categoryListViewModel.categories.test {
@@ -85,7 +80,6 @@ class CategoryListViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun categorySuccessAndTypeSwitch() = runTest {
-
         val totalCount = 20
 
         val randomCategoryData = getRandomCategoryData(totalCount)

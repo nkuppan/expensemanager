@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.core.model
 
 enum class CategoryType {
     INCOME,
-    EXPENSE
+    EXPENSE,
 }
 
 fun CategoryType.isIncome(): Boolean {

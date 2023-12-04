@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class GetSelectedTransactionTypesUseCase @Inject constructor(
-    private val settingsRepository: SettingsRepository
+    private val settingsRepository: SettingsRepository,
 ) {
 
     operator fun invoke(): Flow<List<TransactionType>> {

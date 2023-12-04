@@ -34,7 +34,6 @@ import java.util.Calendar
 import java.util.UUID
 import javax.inject.Inject
 
-
 @HiltViewModel
 class AccountCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
@@ -106,7 +105,6 @@ class AccountCreateViewModel @Inject constructor(
     }
 
     private fun updateAccountInfo(account: Account?) {
-
         this.account = account
 
         this.account?.let { accountItem ->
@@ -128,19 +126,19 @@ class AccountCreateViewModel @Inject constructor(
             } else {
                 0.0
             },
-            accountItem?.amount ?: 0.0
+            accountItem?.amount ?: 0.0,
         )
     }
 
     private fun updateAvailableCreditLimit(
         creditLimit: Double,
-        amount: Double
+        amount: Double,
     ) {
         val totalAmount = creditLimit + amount
 
         availableCreditLimit.value = getFormattedAmountUseCase.invoke(
             amount = totalAmount,
-            currency = currency
+            currency = currency,
         )
 
         availableCreditLimitColor.value = if (totalAmount < 0) {
@@ -149,7 +147,6 @@ class AccountCreateViewModel @Inject constructor(
             com.naveenapps.expensemanager.core.common.R.color.green_500
         }
     }
-
 
     private fun readAccountInfo(accountId: String?) {
         accountId ?: return
@@ -169,13 +166,13 @@ class AccountCreateViewModel @Inject constructor(
                 when (deleteAccountUseCase.invoke(account)) {
                     is Resource.Error -> {
                         _message.emit(
-                            UiText.StringResource(R.string.account_delete_error_message)
+                            UiText.StringResource(R.string.account_delete_error_message),
                         )
                     }
 
                     is Resource.Success -> {
                         _message.emit(
-                            UiText.StringResource(R.string.account_delete_success_message)
+                            UiText.StringResource(R.string.account_delete_success_message),
                         )
                         composeNavigator.popBackStack()
                     }
@@ -185,7 +182,6 @@ class AccountCreateViewModel @Inject constructor(
     }
 
     fun saveOrUpdateAccount() {
-
         val name: String = name.value
         val currentBalance: String = currentBalance.value
         val creditLimit: String = creditLimit.value
@@ -229,7 +225,7 @@ class AccountCreateViewModel @Inject constructor(
                 0.0
             },
             createdOn = Calendar.getInstance().time,
-            updatedOn = Calendar.getInstance().time
+            updatedOn = Calendar.getInstance().time,
         )
 
         viewModelScope.launch {

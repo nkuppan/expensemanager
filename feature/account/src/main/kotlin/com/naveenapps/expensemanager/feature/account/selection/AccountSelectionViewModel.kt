@@ -31,15 +31,15 @@ class AccountSelectionViewModel @Inject constructor(
     init {
         combine(
             getCurrencyUseCase.invoke(),
-            getAllAccountsUseCase.invoke()
+            getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
 
             _accounts.value = accounts.map {
                 it.toAccountUiModel(
                     getFormattedAmountUseCase.invoke(
                         it.amount,
-                        currency
-                    )
+                        currency,
+                    ),
                 )
             }
 
@@ -48,12 +48,11 @@ class AccountSelectionViewModel @Inject constructor(
                     it.toAccountUiModel(
                         getFormattedAmountUseCase.invoke(
                             it.amount,
-                            currency
-                        )
+                            currency,
+                        ),
                     )
                 }
             }
-
         }.launchIn(viewModelScope)
     }
 
@@ -84,13 +83,11 @@ class AccountSelectionViewModel @Inject constructor(
     }
 
     fun selectAllThisAccount(accounts: List<AccountUiModel>) {
-
         if (accounts.isEmpty()) {
             return
         }
 
         viewModelScope.launch {
-
             clearChanges()
 
             val selectedAccounts = _selectedAccounts.value.toMutableList()

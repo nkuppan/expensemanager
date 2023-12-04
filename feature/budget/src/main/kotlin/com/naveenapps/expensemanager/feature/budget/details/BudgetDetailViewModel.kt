@@ -20,7 +20,7 @@ class BudgetDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getBudgetDetailUseCase: GetBudgetDetailUseCase,
 
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _budget = MutableStateFlow<BudgetUiModel?>(null)
@@ -40,13 +40,13 @@ class BudgetDetailViewModel @Inject constructor(
 
     fun openTransactionCreateScreen(transactionId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: "")
+            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
         )
     }
 
     fun openBudgetCreateScreen(budgetId: String) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetCreate.createRoute(budgetId)
+            ExpenseManagerScreens.BudgetCreate.createRoute(budgetId),
         )
     }
 }

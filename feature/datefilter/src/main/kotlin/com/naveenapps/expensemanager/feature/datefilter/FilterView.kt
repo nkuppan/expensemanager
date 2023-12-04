@@ -45,7 +45,6 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterView(modifier: Modifier = Modifier) {
-
     val viewModel: FilterViewModel = hiltViewModel()
 
     val date by viewModel.date.collectAsState()
@@ -70,7 +69,7 @@ fun FilterView(modifier: Modifier = Modifier) {
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
             DateFilterSelectionView {
                 scope.launch {
@@ -90,7 +89,7 @@ fun FilterView(modifier: Modifier = Modifier) {
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
             FilterTypeSelection(
                 applyChanges = {
@@ -98,7 +97,7 @@ fun FilterView(modifier: Modifier = Modifier) {
                         showAllFilter = false
                         bottomSheetState.hide()
                     }
-                }
+                },
             )
         }
     }
@@ -116,7 +115,7 @@ fun FilterView(modifier: Modifier = Modifier) {
             onBackwardClick = viewModel::moveDateRangeBackward,
             onFilterClick = {
                 showAllFilter = true
-            }
+            },
         )
         TypeFilter(
             modifier = Modifier.padding(horizontal = 16.dp),
@@ -139,7 +138,7 @@ private fun FilterContentView(
     onForwardClick: () -> Unit,
     onBackwardClick: () -> Unit,
     onFilterClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -149,14 +148,14 @@ private fun FilterContentView(
                 .height(40.dp)
                 .clickable {
                     showBottomSheet.invoke()
-                }
+                },
         ) {
             Icon(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(start = 16.dp),
                 imageVector = Icons.Default.EditCalendar,
-                contentDescription = null
+                contentDescription = null,
             )
             Text(
                 modifier = Modifier
@@ -165,31 +164,31 @@ private fun FilterContentView(
                 text = date,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
         IconButton(
             onClick = onBackwardClick,
-            enabled = showBackward
+            enabled = showBackward,
         ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowLeft,
-                contentDescription = null
+                contentDescription = null,
             )
         }
         IconButton(
             onClick = onForwardClick,
-            enabled = showForward
+            enabled = showForward,
         ) {
             Icon(
                 imageVector = Icons.Filled.KeyboardArrowRight,
-                contentDescription = null
+                contentDescription = null,
             )
         }
         IconButton(onClick = onFilterClick) {
             Icon(
                 imageVector = Icons.Default.FilterList,
-                contentDescription = null
+                contentDescription = null,
             )
         }
     }
@@ -203,7 +202,7 @@ fun TypeFilter(
     onTransactionTypeSelection: (TransactionType) -> Unit,
     onAccountSelection: (AccountUiModel) -> Unit,
     onCategorySelection: (Category) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
@@ -215,26 +214,22 @@ fun TypeFilter(
             InputChipView(
                 label = type.toCapitalize(),
                 selected = true,
-            )
-            {
+            ) {
                 onTransactionTypeSelection.invoke(type)
             }
         }
         selectedAccounts.forEach { account ->
-            InputChipView(account.name, true, iconName = account.storedIcon.name)
-            {
+            InputChipView(account.name, true, iconName = account.storedIcon.name) {
                 onAccountSelection.invoke(account)
             }
         }
         selectedCategories.forEach { category ->
-            InputChipView(category.name, true, iconName = category.storedIcon.name)
-            {
+            InputChipView(category.name, true, iconName = category.storedIcon.name) {
                 onCategorySelection.invoke(category)
             }
         }
     }
 }
-
 
 @Preview
 @Composable
@@ -249,7 +244,7 @@ fun FilterViewPreview() {
                 onForwardClick = {},
                 onBackwardClick = {},
                 onFilterClick = {},
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             FilterContentView(
                 showBackward = true,
@@ -259,7 +254,7 @@ fun FilterViewPreview() {
                 onForwardClick = {},
                 onBackwardClick = {},
                 onFilterClick = {},
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }

@@ -19,18 +19,17 @@ private const val MINUS_SYMBOL = "-"
 private const val DEFAULT_CURRENCY_SYMBOL = "$"
 private const val DEFAULT_CURRENCY_NAME = "US Dollars"
 
-
 @VisibleForTesting
 val defaultCurrency = Currency(
     name = DEFAULT_CURRENCY_NAME,
     symbol = DEFAULT_CURRENCY_SYMBOL,
     position = TextPosition.SUFFIX,
-    format = TextFormat.NONE
+    format = TextFormat.NONE,
 )
 
 class CurrencyRepositoryImpl @Inject constructor(
     private val dataStore: CurrencyDataStore,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : CurrencyRepository {
 
     override fun getDefaultCurrency(): Currency {
@@ -57,14 +56,14 @@ class CurrencyRepositoryImpl @Inject constructor(
             amountString = getCurrency(
                 currency = currency,
                 amount = amount.amount,
-                locale = Locale.getDefault()
+                locale = Locale.getDefault(),
             ).let {
                 return@let if (currency.position.isPrefix() && it.contains(MINUS_SYMBOL)) {
                     "${MINUS_SYMBOL}${it.replace(MINUS_SYMBOL, "")}"
                 } else {
                     it
                 }
-            }
+            },
         )
     }
 }

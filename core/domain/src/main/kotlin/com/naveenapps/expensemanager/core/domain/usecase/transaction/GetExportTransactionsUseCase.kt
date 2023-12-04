@@ -17,9 +17,8 @@ class GetExportTransactionsUseCase @Inject constructor(
     suspend operator fun invoke(
         dateRangeType: DateRangeType,
         selectedAccounts: List<String>,
-        isAllAccountsSelected: Boolean
+        isAllAccountsSelected: Boolean,
     ): Resource<List<Transaction>> {
-
         val accounts: List<String> = if (isAllAccountsSelected) {
             accountRepository.getAccounts().firstOrNull()?.map { it.id }
                 ?: emptyList()

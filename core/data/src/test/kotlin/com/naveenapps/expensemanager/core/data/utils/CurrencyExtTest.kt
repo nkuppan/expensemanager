@@ -15,7 +15,7 @@ class CurrencyExtTest : BaseCoroutineTest() {
         val formattedAmount = getCurrency(
             defaultCurrency,
             amount,
-            Locale.GERMANY
+            Locale.GERMANY,
         )
 
         Truth.assertThat(formattedAmount).isNotNull()
@@ -28,7 +28,7 @@ class CurrencyExtTest : BaseCoroutineTest() {
         val formattedAmount = getCurrency(
             defaultCurrency,
             amount,
-            Locale.getDefault()
+            Locale.getDefault(),
         )
 
         Truth.assertThat(formattedAmount).isNotNull()

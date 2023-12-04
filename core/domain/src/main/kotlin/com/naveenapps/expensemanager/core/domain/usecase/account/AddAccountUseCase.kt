@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class AddAccountUseCase @Inject constructor(
     private val repository: AccountRepository,
-    private val checkAccountValidationUseCase: CheckAccountValidationUseCase
+    private val checkAccountValidationUseCase: CheckAccountValidationUseCase,
 ) {
     suspend operator fun invoke(account: Account): Resource<Boolean> {
         return when (val validationResult = checkAccountValidationUseCase(account)) {

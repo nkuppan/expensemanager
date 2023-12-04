@@ -22,7 +22,6 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-
 @RunWith(AndroidJUnit4::class)
 class ThemeRepositoryImplTest : BaseCoroutineTest() {
 
@@ -35,7 +34,7 @@ class ThemeRepositoryImplTest : BaseCoroutineTest() {
             scope = testCoroutineScope,
             produceFile = {
                 testContext.preferencesDataStoreFile("TEST_DATASTORE_NAME")
-            }
+            },
         )
 
     private val repository: ThemeRepository = ThemeRepositoryImpl(
@@ -44,14 +43,14 @@ class ThemeRepositoryImplTest : BaseCoroutineTest() {
         AppCoroutineDispatchers(
             testCoroutineDispatcher.dispatcher,
             testCoroutineDispatcher.dispatcher,
-            testCoroutineDispatcher.dispatcher
-        )
+            testCoroutineDispatcher.dispatcher,
+        ),
     )
 
     @Test
     fun saveThemeShouldReturnTrue() = runTest {
         val response = repository.saveTheme(
-            defaultTheme.copy(mode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            defaultTheme.copy(mode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM),
         )
 
         Truth.assertThat(response).isNotNull()
@@ -76,7 +75,6 @@ class ThemeRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun getAllThemeShouldReturnFourThemeForQAndAbove() = runTest {
-
         whenever(versionCheckerRepository.isAndroidQAndAbove()).thenReturn(true)
 
         val themes = repository.getThemes()
@@ -87,7 +85,6 @@ class ThemeRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun getAllThemeShouldReturnThreeThemeForQBelow() = runTest {
-
         whenever(versionCheckerRepository.isAndroidQAndAbove()).thenReturn(false)
 
         val themes = repository.getThemes()

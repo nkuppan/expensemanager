@@ -9,9 +9,9 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
-import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -37,17 +37,18 @@ class AccountRepositoryImplTest : BaseCoroutineTest() {
 
         database = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
-            ExpenseManagerDatabase::class.java
+            ExpenseManagerDatabase::class.java,
         ).allowMainThreadQueries().build()
 
         accountDao = database.accountDao()
 
         accountRepository = AccountRepositoryImpl(
-            accountDao, AppCoroutineDispatchers(
+            accountDao,
+            AppCoroutineDispatchers(
                 testCoroutineDispatcher.dispatcher,
                 testCoroutineDispatcher.dispatcher,
-                testCoroutineDispatcher.dispatcher
-            )
+                testCoroutineDispatcher.dispatcher,
+            ),
         )
     }
 

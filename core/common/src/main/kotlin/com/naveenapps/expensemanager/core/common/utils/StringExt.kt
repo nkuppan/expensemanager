@@ -6,7 +6,6 @@ import java.util.Locale
 import kotlin.math.floor
 import kotlin.math.log10
 
-
 fun Float.toPercentString(): String {
     return String.format("%.2f %%", this)
 }
@@ -21,7 +20,6 @@ fun String.toCapitalize() = this.replaceFirstChar { char ->
 
 fun Enum<*>.toCapitalize() = this.toString().lowercase().toCapitalize()
 
-
 fun getCompactNumber(number: Number): String {
     val suffix = charArrayOf(' ', 'k', 'M', 'B', 'T', 'P', 'E')
     val numValue = number.toLong()
@@ -31,8 +29,8 @@ fun getCompactNumber(number: Number): String {
         DecimalFormat("#0.0").format(
             numValue / Math.pow(
                 10.0,
-                (base * 3).toDouble()
-            )
+                (base * 3).toDouble(),
+            ),
         ) + suffix[base]
     } else {
         DecimalFormat("#,##0").format(numValue)
@@ -40,7 +38,7 @@ fun getCompactNumber(number: Number): String {
 }
 
 fun String?.toDoubleOrNullWithLocale(
-    locale: Locale = Locale.getDefault()
+    locale: Locale = Locale.getDefault(),
 ): Double? {
     this ?: return null
     val format = NumberFormat.getInstance(locale)
@@ -53,7 +51,7 @@ fun String?.toDoubleOrNullWithLocale(
 }
 
 fun Double.toStringWithLocale(
-    locale: Locale = Locale.getDefault()
+    locale: Locale = Locale.getDefault(),
 ): String {
     val format = NumberFormat.getInstance(locale)
     return try {

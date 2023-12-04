@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.core.database.utils
 import androidx.room.TypeConverter
 import java.util.Date
 
-
 object DateConverter {
 
     @TypeConverter

@@ -53,7 +53,6 @@ import com.patrykandpatrick.vico.core.entry.entryOf
 
 @Composable
 fun AnalysisGraphScreen() {
-
     val viewModel: AnalysisScreenViewModel = hiltViewModel()
 
     val graphData by viewModel.graphItems.collectAsState()
@@ -66,11 +65,9 @@ fun AnalysisGraphScreen() {
 
     when (val response = graphData) {
         UiState.Empty -> {
-
         }
 
         UiState.Loading -> {
-
         }
 
         is UiState.Success -> {
@@ -82,7 +79,7 @@ fun AnalysisGraphScreen() {
                         ChartScreen(
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
                             chart = newGraphData.chartData,
-                            isDarkTheme = isDarkTheme
+                            isDarkTheme = isDarkTheme,
                         )
                     }
                 }
@@ -96,7 +93,7 @@ fun AnalysisGraphScreen() {
                         ) {
                             Text(
                                 modifier = Modifier.align(Alignment.Center),
-                                text = stringResource(id = R.string.no_chart_available)
+                                text = stringResource(id = R.string.no_chart_available),
                             )
                         }
                     }
@@ -115,7 +112,7 @@ fun AnalysisGraphScreen() {
                 item {
                     TransactionAverageItem(
                         modifier = Modifier.padding(16.dp),
-                        averageData = averageData
+                        averageData = averageData,
                     )
                 }
             }
@@ -136,65 +133,64 @@ fun IncomeExpenseBalanceView(
         incomeAmount = amountUiState.income,
         balanceAmount = amountUiState.balance,
         transactionPeriod = transactionPeriod,
-        modifier = modifier
+        modifier = modifier,
     )
 }
-
 
 @Composable
 fun TransactionAverageItem(
     averageData: WholeAverageData,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        tonalElevation = 1.dp
+        tonalElevation = 1.dp,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             DashboardWidgetTitle(title = stringResource(id = R.string.average_and_projected))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Column(
                     modifier = Modifier
                         .weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     Text(
                         text = stringResource(id = R.string.day),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
                     )
                     Text(
                         text = stringResource(id = R.string.week),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
                     )
                     Text(
                         text = stringResource(id = R.string.month),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Normal
+                        fontWeight = FontWeight.Normal,
                     )
                 }
                 AverageAmountItems(
                     averageData = averageData.incomeAverageData,
                     textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
-                    modifier = Modifier.align(Alignment.CenterVertically)
+                    modifier = Modifier.align(Alignment.CenterVertically),
                 )
                 AverageAmountItems(
                     averageData = averageData.expenseAverageData,
                     textColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500),
                     modifier = Modifier
                         .wrapContentSize()
-                        .align(Alignment.CenterVertically)
+                        .align(Alignment.CenterVertically),
                 )
             }
         }
@@ -205,32 +201,32 @@ fun TransactionAverageItem(
 private fun AverageAmountItems(
     averageData: AverageData,
     modifier: Modifier = Modifier,
-    textColor: Color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
+    textColor: Color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             modifier = Modifier.align(Alignment.End),
             text = averageData.perDay,
             color = textColor,
             style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
         )
         Text(
             modifier = Modifier.align(Alignment.End),
             text = averageData.perWeek,
             color = textColor,
             style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
         )
         Text(
             modifier = Modifier.align(Alignment.End),
             text = averageData.perMonth,
             color = textColor,
             style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.End
+            textAlign = TextAlign.End,
         )
     }
 }
@@ -241,7 +237,6 @@ fun ChartScreen(
     isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
 ) {
-
     chart ?: return
 
     val expenseColor = getExpenseColor()
@@ -259,7 +254,7 @@ fun ChartScreen(
                         lineBackgroundShader = verticalGradient(
                             arrayOf(
                                 expenseColor.copy(0.5f),
-                                expenseColor.copy(alpha = 0f)
+                                expenseColor.copy(alpha = 0f),
                             ),
                         ),
                     ),
@@ -268,10 +263,10 @@ fun ChartScreen(
                         lineBackgroundShader = verticalGradient(
                             arrayOf(
                                 incomeColor.copy(0.5f),
-                                incomeColor.copy(alpha = 0f)
+                                incomeColor.copy(alpha = 0f),
                             ),
                         ),
-                    )
+                    ),
                 ),
             ),
             startAxis = rememberStartAxis(
@@ -279,7 +274,7 @@ fun ChartScreen(
                 label = axisLabelComponent(),
                 valueFormatter = { value, _ ->
                     getCompactNumber(value)
-                }
+                },
             ),
             bottomAxis = rememberBottomAxis(
                 itemPlacer = AxisItemPlacer.Horizontal.default(5),
@@ -290,7 +285,7 @@ fun ChartScreen(
                     } else {
                         ""
                     }
-                }
+                },
             ),
             model = chart.chartData,
             marker = marker,
@@ -317,7 +312,7 @@ fun ChartScreenPreview() {
                         entryOf(2, 3),
                         entryOf(2, 3),
                         entryOf(2, 3),
-                        entryOf(2, 3)
+                        entryOf(2, 3),
                     ),
                     listOf(
                         entryOf(0, 4),
@@ -330,7 +325,7 @@ fun ChartScreenPreview() {
                         entryOf(2, 3),
                         entryOf(2, 3),
                         entryOf(2, 3),
-                        entryOf(2, 3)
+                        entryOf(2, 3),
                     ),
                 ),
                 dates = listOf(
@@ -343,9 +338,9 @@ fun ChartScreenPreview() {
                     "21/09",
                     "24/09",
                     "28/09",
-                    "28/09"
-                )
-            )
+                    "28/09",
+                ),
+            ),
         )
     }
 }
@@ -365,7 +360,7 @@ fun TransactionAverageItemPreview() {
                     "10.0$",
                     "10.0$",
                     "10.0$",
-                )
+                ),
             ),
         )
     }

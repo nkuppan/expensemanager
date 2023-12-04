@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class AccountRepositoryImpl @Inject constructor(
     private val accountDao: AccountDao,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : AccountRepository {
 
     override fun getAccounts(): Flow<List<Account>> {

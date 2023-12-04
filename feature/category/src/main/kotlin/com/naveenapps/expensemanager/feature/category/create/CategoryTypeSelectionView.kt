@@ -21,17 +21,15 @@ import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.feature.category.R
 
-
 @Composable
 fun CategoryTypeSelectionView(
     selectedCategoryType: CategoryType,
     onCategoryTypeChange: ((CategoryType) -> Unit),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
@@ -41,7 +39,7 @@ fun CategoryTypeSelectionView(
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
             onClick = {
                 onCategoryTypeChange.invoke(CategoryType.INCOME)
-            }
+            },
         )
         AppFilterChip(
             modifier = Modifier.align(Alignment.CenterVertically),
@@ -51,7 +49,7 @@ fun CategoryTypeSelectionView(
             filterSelectedColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
             onClick = {
                 onCategoryTypeChange.invoke(CategoryType.EXPENSE)
-            }
+            },
         )
     }
 }
@@ -66,14 +64,14 @@ private fun CategoryTypeSelectionViewPreview() {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 selectedCategoryType = CategoryType.EXPENSE,
-                onCategoryTypeChange = {}
+                onCategoryTypeChange = {},
             )
             CategoryTypeSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 selectedCategoryType = CategoryType.INCOME,
-                onCategoryTypeChange = {}
+                onCategoryTypeChange = {},
             )
         }
     }

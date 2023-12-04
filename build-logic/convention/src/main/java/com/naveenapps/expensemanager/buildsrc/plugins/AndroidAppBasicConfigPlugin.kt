@@ -14,7 +14,6 @@ import org.gradle.kotlin.dsl.configure
 class AndroidAppBasicConfigPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-
             with(pluginManager) {
                 apply("com.android.application")
                 apply("jacoco")

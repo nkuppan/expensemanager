@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class BudgetRepositoryImpl @Inject constructor(
     private val budgetDao: BudgetDao,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : BudgetRepository {
 
     override fun getBudgets(): Flow<List<Budget>> {
@@ -25,7 +25,7 @@ class BudgetRepositoryImpl @Inject constructor(
                 val categories = budgetDao.getBudgetCategories(budget.id)
                 budget.toDomainModel(
                     accounts = accounts?.map { it.accountId } ?: emptyList(),
-                    categories = categories?.map { it.categoryId } ?: emptyList()
+                    categories = categories?.map { it.categoryId } ?: emptyList(),
                 )
             } ?: emptyList()
         }
@@ -58,7 +58,7 @@ class BudgetRepositoryImpl @Inject constructor(
         val categories = budgetDao.getBudgetCategories(budget.id)
         return budget.toDomainModel(
             accounts = accounts?.map { it.accountId } ?: emptyList(),
-            categories = categories?.map { it.categoryId } ?: emptyList()
+            categories = categories?.map { it.categoryId } ?: emptyList(),
         )
     }
 
@@ -66,7 +66,9 @@ class BudgetRepositoryImpl @Inject constructor(
         withContext(dispatchers.io) {
             return@withContext try {
                 val response = budgetDao.insertBudget(
-                    budget.toEntityModel(), budget.categories, budget.accounts
+                    budget.toEntityModel(),
+                    budget.categories,
+                    budget.accounts,
                 )
                 Resource.Success(response != -1L)
             } catch (exception: Exception) {
@@ -78,7 +80,9 @@ class BudgetRepositoryImpl @Inject constructor(
         withContext(dispatchers.io) {
             return@withContext try {
                 budgetDao.updateBudget(
-                    budget.toEntityModel(), budget.categories, budget.accounts
+                    budget.toEntityModel(),
+                    budget.categories,
+                    budget.accounts,
                 )
                 Resource.Success(true)
             } catch (exception: Exception) {

@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class CategoryRepositoryImpl @Inject constructor(
     private val categoryDao: CategoryDao,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : CategoryRepository {
 
     override fun getCategories(): Flow<List<Category>> {

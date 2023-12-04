@@ -14,14 +14,20 @@ data class Transaction(
     val createdOn: Date,
     val updatedOn: Date,
     var category: Category = Category(
-        "", "", CategoryType.INCOME,
+        "",
+        "",
+        CategoryType.INCOME,
         StoredIcon("", ""),
-        Date(), Date()
+        Date(),
+        Date(),
     ),
     var fromAccount: Account = Account(
-        "", "", AccountType.REGULAR,
+        "",
+        "",
+        AccountType.REGULAR,
         StoredIcon("", ""),
-        Date(), Date()
+        Date(),
+        Date(),
     ),
-    var toAccount: Account? = null
+    var toAccount: Account? = null,
 )

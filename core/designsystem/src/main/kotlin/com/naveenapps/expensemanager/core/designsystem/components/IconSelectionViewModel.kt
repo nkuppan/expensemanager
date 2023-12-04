@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
-
-//TODO Modify this with categories and icons in future
+// TODO Modify this with categories and icons in future
 private val iconSelectionList = listOf(
     R.drawable.account_balance,
     R.drawable.account_balance_wallet,
@@ -52,7 +51,7 @@ private val iconSelectionList = listOf(
     R.drawable.store,
     R.drawable.train,
     R.drawable.travel,
-    R.drawable.wallet
+    R.drawable.wallet,
 )
 
 @HiltViewModel

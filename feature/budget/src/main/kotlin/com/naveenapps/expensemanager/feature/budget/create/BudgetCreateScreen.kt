@@ -55,23 +55,20 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.budget.R
-import com.naveenapps.expensemanager.feature.budget.create.BudgetCreateSheetSelection.*
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
 enum class BudgetCreateSheetSelection {
     ACCOUNT_SELECTION,
-    CATEGORY_SELECTION
+    CATEGORY_SELECTION,
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetCreateScreen() {
-
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
@@ -80,7 +77,7 @@ fun BudgetCreateScreen() {
 
     val viewModel: BudgetCreateViewModel = hiltViewModel()
 
-    var sheetSelection by remember { mutableStateOf(CATEGORY_SELECTION) }
+    var sheetSelection by remember { mutableStateOf(BudgetCreateSheetSelection.CATEGORY_SELECTION) }
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
@@ -95,7 +92,7 @@ fun BudgetCreateScreen() {
             dialogTitle = stringResource(id = R.string.delete),
             dialogText = stringResource(id = R.string.delete_item_message),
             positiveButtonText = stringResource(id = R.string.delete),
-            negativeButtonText = stringResource(id = R.string.cancel)
+            negativeButtonText = stringResource(id = R.string.cancel),
         )
     }
 
@@ -105,7 +102,7 @@ fun BudgetCreateScreen() {
     if (errorMessage != null) {
         LaunchedEffect(key1 = "errorMessage", block = {
             snackbarHostState.showSnackbar(
-                message = errorMessage!!.asString(context)
+                message = errorMessage!!.asString(context),
             )
         })
     }
@@ -122,11 +119,11 @@ fun BudgetCreateScreen() {
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
             BudgetCreateBottomSheetContent(
                 sheetSelection,
-                viewModel
+                viewModel,
             ) {
                 scope.launch {
                     showBottomSheet = false
@@ -136,7 +133,6 @@ fun BudgetCreateScreen() {
         }
     }
 
-
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -144,7 +140,7 @@ fun BudgetCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.budgets),
-                showDelete = showDelete
+                showDelete = showDelete,
             ) {
                 if (it == 1) {
                     viewModel.closePage()
@@ -157,10 +153,10 @@ fun BudgetCreateScreen() {
             FloatingActionButton(onClick = viewModel::saveOrUpdateBudget) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         val name by viewModel.name.collectAsState()
@@ -197,8 +193,8 @@ fun BudgetCreateScreen() {
             openAccountSelection = {
                 scope.launch {
                     val oldSelection = sheetSelection
-                    if (oldSelection != ACCOUNT_SELECTION) {
-                        sheetSelection = ACCOUNT_SELECTION
+                    if (oldSelection != BudgetCreateSheetSelection.ACCOUNT_SELECTION) {
+                        sheetSelection = BudgetCreateSheetSelection.ACCOUNT_SELECTION
                     }
                     showBottomSheet = true
                 }
@@ -206,12 +202,12 @@ fun BudgetCreateScreen() {
             openCategorySelection = {
                 scope.launch {
                     val oldSelection = sheetSelection
-                    if (oldSelection != CATEGORY_SELECTION) {
-                        sheetSelection = CATEGORY_SELECTION
+                    if (oldSelection != BudgetCreateSheetSelection.CATEGORY_SELECTION) {
+                        sheetSelection = BudgetCreateSheetSelection.CATEGORY_SELECTION
                     }
                     showBottomSheet = true
                 }
-            }
+            },
         )
     }
 }
@@ -220,21 +216,21 @@ fun BudgetCreateScreen() {
 private fun BudgetCreateBottomSheetContent(
     sheetSelection: BudgetCreateSheetSelection,
     viewModel: BudgetCreateViewModel,
-    hideBottomSheet: () -> Unit
+    hideBottomSheet: () -> Unit,
 ) {
     when (sheetSelection) {
-        ACCOUNT_SELECTION -> {
+        BudgetCreateSheetSelection.ACCOUNT_SELECTION -> {
             MultipleAccountSelectionScreen(
-                selectedAccounts = viewModel.getSelectedAccounts()
+                selectedAccounts = viewModel.getSelectedAccounts(),
             ) { items, selected ->
                 viewModel.setAccounts(items, selected)
                 hideBottomSheet.invoke()
             }
         }
 
-        CATEGORY_SELECTION -> {
+        BudgetCreateSheetSelection.CATEGORY_SELECTION -> {
             MultipleCategoriesSelectionScreen(
-                selectedCategories = viewModel.getSelectedCategories()
+                selectedCategories = viewModel.getSelectedCategories(),
             ) { items, selected ->
                 viewModel.setCategories(items, selected)
                 hideBottomSheet.invoke()
@@ -242,7 +238,6 @@ private fun BudgetCreateBottomSheetContent(
         }
     }
 }
-
 
 @Composable
 private fun BudgetCreateScreen(
@@ -276,14 +271,14 @@ private fun BudgetCreateScreen(
                 .padding(16.dp)
                 .background(
                     color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
                 ),
             currentMonth = (selectedDate ?: Date()).toMonth(),
             currentYear = (selectedDate ?: Date()).toYearInt(),
             confirmButtonCLicked = { month, year ->
-                SimpleDateFormat("MM-yyyy", Locale.getDefault()).parse("${month}-${year}")?.let {
+                SimpleDateFormat("MM-yyyy", Locale.getDefault()).parse("$month-$year")?.let {
                     onDateChange?.invoke(
-                        it
+                        it,
                     )
                 }
                 showDatePicker = false
@@ -295,7 +290,6 @@ private fun BudgetCreateScreen(
     }
 
     Column(modifier = modifier) {
-
         ClickableTextField(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp)
@@ -306,7 +300,7 @@ private fun BudgetCreateScreen(
             onClick = {
                 focusManager.clearFocus(force = true)
                 showDatePicker = true
-            }
+            },
         )
 
         StringTextField(
@@ -316,7 +310,7 @@ private fun BudgetCreateScreen(
             value = name,
             errorMessage = nameErrorMessage,
             onValueChange = onNameChange,
-            label = R.string.budget_name
+            label = R.string.budget_name,
         )
 
         IconAndColorComponent(
@@ -326,7 +320,7 @@ private fun BudgetCreateScreen(
             selectedColor = selectedColor,
             selectedIcon = selectedIcon,
             onColorSelection = openColorPicker,
-            onIconSelection = openIconPicker
+            onIconSelection = openIconPicker,
         )
 
         DecimalTextField(
@@ -341,7 +335,7 @@ private fun BudgetCreateScreen(
         )
 
         Divider(
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp),
         )
 
         SelectedItemView(
@@ -354,7 +348,7 @@ private fun BudgetCreateScreen(
             title = stringResource(id = R.string.select_account),
             icon = Icons.Default.AccountBalance,
             selectedCount = accountCount?.asString(context)
-                ?: stringResource(id = R.string.all_time)
+                ?: stringResource(id = R.string.all_time),
         )
 
         SelectedItemView(
@@ -367,7 +361,7 @@ private fun BudgetCreateScreen(
             title = stringResource(id = R.string.select_category),
             icon = Icons.Default.FilterList,
             selectedCount = categoriesCount?.asString(context)
-                ?: stringResource(id = R.string.all_time)
+                ?: stringResource(id = R.string.all_time),
         )
 
         Divider()
@@ -375,7 +369,7 @@ private fun BudgetCreateScreen(
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
         )
     }
 }

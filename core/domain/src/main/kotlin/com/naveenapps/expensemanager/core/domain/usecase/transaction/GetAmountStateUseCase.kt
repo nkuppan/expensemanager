@@ -20,7 +20,7 @@ class GetAmountStateUseCase @Inject constructor(
         return combine(
             getCurrencyUseCase.invoke(),
             getIncomeAmountUseCase.invoke(),
-            getExpenseAmountUseCase.invoke()
+            getExpenseAmountUseCase.invoke(),
         ) { currency, income, expense ->
 
             val incomeValue = income ?: 0.0
@@ -28,15 +28,15 @@ class GetAmountStateUseCase @Inject constructor(
             AmountUiState(
                 income = getFormattedAmountUseCase.invoke(
                     incomeValue,
-                    currency
+                    currency,
                 ).amountString.orEmpty(),
                 expense = getFormattedAmountUseCase.invoke(
                     expenseValue,
-                    currency
+                    currency,
                 ).amountString.orEmpty(),
                 balance = getFormattedAmountUseCase.invoke(
                     (incomeValue - expenseValue),
-                    currency
+                    currency,
                 ).amountString.orEmpty(),
             )
         }.flowOn(dispatcher.computation)

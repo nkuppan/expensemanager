@@ -20,7 +20,6 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 
-
 data class PieChartUiData(
     var name: String,
     var value: Float,
@@ -34,9 +33,8 @@ fun PieChartView(
     modifier: Modifier = Modifier,
     chartHeight: Int = 600,
     hideValues: Boolean = false,
-    chartWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT
+    chartWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT,
 ) {
-
     var isAnimated by remember { mutableStateOf(false) }
 
     val colorCode = MaterialTheme.colorScheme.onBackground.hashCode()
@@ -97,7 +95,7 @@ fun PieChartView(
                 // on below line we are calling update pie chart
                 // method and passing pie chart and list of data.
                 updatePieChartWithData(it, pieChartData, hideValues)
-            }
+            },
         )
     }
 }
@@ -105,7 +103,7 @@ fun PieChartView(
 fun updatePieChartWithData(
     chart: PieChart,
     data: List<PieChartUiData>,
-    hideValues: Boolean
+    hideValues: Boolean,
 ) {
     val entries = mutableListOf<PieEntry>()
     val colors = mutableListOf<Int>()
@@ -113,7 +111,7 @@ fun updatePieChartWithData(
     for (i in data.indices) {
         val item = data[i]
         entries.add(
-            PieEntry(item.value, "", item.name)
+            PieEntry(item.value, "", item.name),
         )
         colors.add(item.color)
     }

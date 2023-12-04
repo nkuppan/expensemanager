@@ -10,16 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.naveenapps.expensemanager.core.designsystem.R
 
-
 @Composable
 fun DashboardWidgetTitle(
     title: String,
     modifier: Modifier = Modifier,
-    onViewAllClick: (() -> Unit)? = null
+    onViewAllClick: (() -> Unit)? = null,
 ) {
     Box(modifier = modifier) {
         Text(
-            text = title, style = MaterialTheme.typography.headlineSmall
+            text = title,
+            style = MaterialTheme.typography.headlineSmall,
         )
         if (onViewAllClick != null) {
             Text(
@@ -27,7 +27,7 @@ fun DashboardWidgetTitle(
                     .align(Alignment.CenterEnd)
                     .clickable { onViewAllClick.invoke() },
                 text = stringResource(id = R.string.view_all).uppercase(),
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }

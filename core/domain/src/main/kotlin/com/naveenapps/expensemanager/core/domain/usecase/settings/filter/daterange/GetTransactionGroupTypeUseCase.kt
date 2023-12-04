@@ -6,7 +6,7 @@ import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import javax.inject.Inject
 
 class GetTransactionGroupTypeUseCase @Inject constructor(
-    private val dateRangeFilterRepository: DateRangeFilterRepository
+    private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
     suspend operator fun invoke(dateRangeType: DateRangeType): GroupType {

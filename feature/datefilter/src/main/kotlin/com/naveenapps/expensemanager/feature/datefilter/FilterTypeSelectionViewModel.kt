@@ -35,7 +35,7 @@ class FilterTypeSelectionViewModel @Inject constructor(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val updateSelectedTransactionTypesUseCase: UpdateSelectedTransactionTypesUseCase,
     private val updateSelectedCategoryUseCase: UpdateSelectedCategoryUseCase,
-    private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase
+    private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase,
 ) : ViewModel() {
 
     private val _saved = MutableSharedFlow<Boolean>()
@@ -111,8 +111,6 @@ class FilterTypeSelectionViewModel @Inject constructor(
         }
     }
 }
-
-
 
 fun List<TransactionType>.addOrRemove(type: TransactionType): List<TransactionType> {
     val finalList = toMutableList()

@@ -43,10 +43,8 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.feature.account.R
 
-
 @Composable
 fun AccountCreateScreen() {
-
     val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -67,7 +65,7 @@ fun AccountCreateScreen() {
             dialogTitle = stringResource(id = R.string.delete),
             dialogText = stringResource(id = R.string.delete_item_message),
             positiveButtonText = stringResource(id = R.string.delete),
-            negativeButtonText = stringResource(id = R.string.cancel)
+            negativeButtonText = stringResource(id = R.string.cancel),
         )
     }
 
@@ -77,7 +75,7 @@ fun AccountCreateScreen() {
     if (accountCreated != null) {
         LaunchedEffect(key1 = "completed", block = {
             snackbarHostState.showSnackbar(
-                message = context.getString(R.string.account_create_success)
+                message = context.getString(R.string.account_create_success),
             )
         })
     }
@@ -89,7 +87,7 @@ fun AccountCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.accounts),
-                showDelete = showDelete
+                showDelete = showDelete,
             ) {
                 if (it == 1) {
                     viewModel.closePage()
@@ -102,10 +100,10 @@ fun AccountCreateScreen() {
             FloatingActionButton(onClick = viewModel::saveOrUpdateAccount) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         val name by viewModel.name.collectAsState()
@@ -142,11 +140,10 @@ fun AccountCreateScreen() {
             availableCreditLimit = availableCreditLimit,
             availableCreditLimitColor = availableCreditLimitColor,
             openColorPicker = viewModel::setColorValue,
-            openIconPicker = viewModel::setIcon
+            openIconPicker = viewModel::setIcon,
         )
     }
 }
-
 
 @Composable
 private fun AccountCreateScreen(
@@ -171,13 +168,12 @@ private fun AccountCreateScreen(
     @ColorRes availableCreditLimitColor: Int = com.naveenapps.expensemanager.core.common.R.color.green_500,
 ) {
     Column(modifier = modifier) {
-
         AccountTypeSelectionView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp),
             selectedAccountType = selectedAccountType,
-            onAccountTypeChange = onAccountTypeChange
+            onAccountTypeChange = onAccountTypeChange,
         )
 
         StringTextField(
@@ -187,7 +183,7 @@ private fun AccountCreateScreen(
             value = name,
             errorMessage = nameErrorMessage,
             onValueChange = onNameChange,
-            label = R.string.account_name
+            label = R.string.account_name,
         )
 
         IconAndColorComponent(
@@ -197,7 +193,7 @@ private fun AccountCreateScreen(
             selectedColor = selectedColor,
             selectedIcon = selectedIcon,
             onColorSelection = openColorPicker,
-            onIconSelection = openIconPicker
+            onIconSelection = openIconPicker,
         )
 
         DecimalTextField(
@@ -229,14 +225,14 @@ private fun AccountCreateScreen(
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                     .background(
                         color = colorResource(id = availableCreditLimitColor).copy(.1f),
-                        shape = RoundedCornerShape(4.dp)
+                        shape = RoundedCornerShape(4.dp),
                     )
-                    .padding(16.dp)
+                    .padding(16.dp),
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
                     text = stringResource(id = R.string.available_balance),
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodyMedium,
                 )
                 Text(
                     text = availableCreditLimit.amountString ?: "",
@@ -248,7 +244,7 @@ private fun AccountCreateScreen(
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
         )
     }
 }
@@ -258,9 +254,7 @@ private fun AccountCreateScreen(
 private fun AccountCreateStatePreview() {
     ExpenseManagerTheme {
         AccountCreateScreen(
-            onAccountTypeChange = {
-
-            },
+            onAccountTypeChange = {},
         )
     }
 }

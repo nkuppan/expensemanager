@@ -31,12 +31,11 @@ class AnalysisScreenViewModel @Inject constructor(
     getAmountStateUseCase: GetAmountStateUseCase,
 ) : ViewModel() {
 
-
     private val _currentTheme = MutableStateFlow(
         Theme(
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
-            R.string.analysis
-        )
+            R.string.analysis,
+        ),
     )
     val currentTheme = _currentTheme.asStateFlow()
 
@@ -60,8 +59,8 @@ class AnalysisScreenViewModel @Inject constructor(
                 "0.00$",
                 "0.00$",
                 "0.00$",
-            )
-        )
+            ),
+        ),
     )
     val averageData = _averageData.asStateFlow()
 
@@ -77,15 +76,15 @@ class AnalysisScreenViewModel @Inject constructor(
                                     it.map { entry ->
                                         entryOf(
                                             entry.index,
-                                            entry.total
+                                            entry.total,
                                         )
                                     }
-                                }
+                                },
                             ).getModel(),
-                            dates = chart.dates
+                            dates = chart.dates,
                         )
-                    }
-                )
+                    },
+                ),
             )
         }.launchIn(viewModelScope)
 
@@ -102,7 +101,6 @@ class AnalysisScreenViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 }
-
 
 data class AnalysisUiData(
     val transactions: List<TransactionUiItem>,

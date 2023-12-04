@@ -5,7 +5,7 @@ import java.util.Date
 import javax.inject.Inject
 
 class SetDateRangesUseCase @Inject constructor(
-    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
+    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository,
 ) {
 
     suspend operator fun invoke(customDateRange: List<Date>): Resource<Boolean> {

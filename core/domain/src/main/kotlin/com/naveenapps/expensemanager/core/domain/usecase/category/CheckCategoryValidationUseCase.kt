@@ -7,7 +7,6 @@ import javax.inject.Inject
 class CheckCategoryValidationUseCase @Inject constructor() {
 
     operator fun invoke(category: Category): Resource<Boolean> {
-
         if (category.id.isBlank()) {
             return Resource.Error(Exception("Please specify the category id"))
         }

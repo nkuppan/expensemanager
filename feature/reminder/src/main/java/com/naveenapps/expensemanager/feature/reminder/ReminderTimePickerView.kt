@@ -9,9 +9,8 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 
 @Composable
 fun ReminderTimePickerView(
-    complete: (Boolean) -> Unit
+    complete: (Boolean) -> Unit,
 ) {
-
     val viewModel: ReminderTimePickerViewModel = hiltViewModel()
     val reminderTimeState by viewModel.currentReminderTime.collectAsState()
 
@@ -23,10 +22,10 @@ fun ReminderTimePickerView(
         ),
         onTimeSelected = {
             viewModel.setReminderTimeState(
-                ReminderTimeState(it.first, it.second, it.third)
+                ReminderTimeState(it.first, it.second, it.third),
             )
             complete.invoke(true)
-        }
+        },
     ) {
         complete.invoke(false)
     }

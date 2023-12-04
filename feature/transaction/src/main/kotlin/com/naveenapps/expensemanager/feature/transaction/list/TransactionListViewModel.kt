@@ -26,11 +26,11 @@ class TransactionListViewModel @Inject constructor(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _transactions = MutableStateFlow<UiState<List<TransactionGroup>>>(
-        UiState.Loading
+        UiState.Loading,
     )
     val transactions = _transactions.asStateFlow()
 
@@ -38,7 +38,7 @@ class TransactionListViewModel @Inject constructor(
 
         combine(
             getCurrencyUseCase.invoke(),
-            getTransactionWithFilterUseCase.invoke()
+            getTransactionWithFilterUseCase.invoke(),
         ) { currency, transactions ->
             _transactions.value = if (transactions.isNullOrEmpty()) {
                 UiState.Empty
@@ -56,12 +56,12 @@ class TransactionListViewModel @Inject constructor(
                                 transaction.toTransactionUIModel(
                                     getFormattedAmountUseCase.invoke(
                                         transaction.amount.amount,
-                                        currency
-                                    )
+                                        currency,
+                                    ),
                                 )
                             },
                         )
-                    }
+                    },
                 )
             }
         }.launchIn(viewModelScope)
@@ -69,7 +69,7 @@ class TransactionListViewModel @Inject constructor(
 
     fun openCreateScreen(transactionId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: "")
+            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
         )
     }
 
@@ -77,7 +77,6 @@ class TransactionListViewModel @Inject constructor(
         appComposeNavigator.popBackStack()
     }
 }
-
 
 fun List<Transaction>.toTransactionSum() =
     this.sumOf {

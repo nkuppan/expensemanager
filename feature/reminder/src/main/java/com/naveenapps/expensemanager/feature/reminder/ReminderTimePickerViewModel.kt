@@ -20,7 +20,7 @@ class ReminderTimePickerViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _currentReminderTime = MutableStateFlow(
-        ReminderTimeState(10, 0, false)
+        ReminderTimeState(10, 0, false),
     )
     val currentReminderTime = _currentReminderTime.asStateFlow()
 

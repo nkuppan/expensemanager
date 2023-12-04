@@ -27,7 +27,7 @@ class CategoryDetailViewModel @Inject constructor(
     private val findCategoryByIdFlowUseCase: FindCategoryByIdFlowUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _category = MutableStateFlow<CategoryTransaction?>(null)
@@ -41,7 +41,7 @@ class CategoryDetailViewModel @Inject constructor(
             combine(
                 getCurrencyUseCase.invoke(),
                 findCategoryByIdFlowUseCase.invoke(it),
-                getTransactionWithFilterUseCase.invoke()
+                getTransactionWithFilterUseCase.invoke(),
             ) { currency, category, transactions ->
                 if (category != null && transactions?.isNotEmpty() == true) {
                     val filterTransaction = transactions.filter { transaction ->
@@ -55,8 +55,9 @@ class CategoryDetailViewModel @Inject constructor(
                         .map { transaction ->
                             transaction.toTransactionUIModel(
                                 getFormattedAmountUseCase.invoke(
-                                    transaction.amount.amount, currency
-                                )
+                                    transaction.amount.amount,
+                                    currency,
+                                ),
                             )
                         }
 
@@ -67,16 +68,15 @@ class CategoryDetailViewModel @Inject constructor(
                         percent = (categoryAmount / totalSpent).toFloat() * 100,
                         amount = getFormattedAmountUseCase.invoke(
                             amount = categoryAmount,
-                            currency = currency
+                            currency = currency,
                         ),
-                        transaction = filterTransaction
+                        transaction = filterTransaction,
                     )
                     _categoryTransactions.value = categoryTransaction
                 } else {
                     _category.value = null
                     _categoryTransactions.value = emptyList()
                 }
-
             }.launchIn(viewModelScope)
         }
     }
@@ -86,13 +86,13 @@ class CategoryDetailViewModel @Inject constructor(
         categoryId ?: return
 
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate.createRoute(categoryId)
+            ExpenseManagerScreens.CategoryCreate.createRoute(categoryId),
         )
     }
 
     fun openTransactionCreateScreen(transactionId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: "")
+            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
         )
     }
 

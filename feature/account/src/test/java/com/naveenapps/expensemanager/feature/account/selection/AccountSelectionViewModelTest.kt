@@ -43,7 +43,7 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
         accountSelectionViewModel = AccountSelectionViewModel(
             getCurrencyUseCase,
             getFormattedAmountUseCase,
-            getAllAccountsUseCase
+            getAllAccountsUseCase,
         )
     }
 
@@ -143,12 +143,12 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
 
             accountSelectionViewModel.selectAllThisAccount(selectThisAccountsOnly)
 
-            //Clearing the selection
+            // Clearing the selection
             val thirdItem = awaitItem()
             Truth.assertThat(thirdItem).isNotNull()
             Truth.assertThat(thirdItem).isEmpty()
 
-            //Applying the new selection
+            // Applying the new selection
             val fourthItem = awaitItem()
             Truth.assertThat(fourthItem).isNotNull()
             Truth.assertThat(fourthItem).isNotEmpty()

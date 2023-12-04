@@ -11,10 +11,10 @@ import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
-import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -25,7 +25,6 @@ import org.junit.runner.RunWith
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 class TransactionRepositoryImplTest : BaseCoroutineTest() {
-
 
     private lateinit var accountDao: AccountDao
     private lateinit var categoryDao: CategoryDao
@@ -42,7 +41,8 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
         super.onCreate()
 
         database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(), ExpenseManagerDatabase::class.java
+            ApplicationProvider.getApplicationContext(),
+            ExpenseManagerDatabase::class.java,
         ).allowMainThreadQueries().build()
 
         transactionDao = database.transactionDao()
@@ -56,8 +56,8 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
             AppCoroutineDispatchers(
                 testCoroutineDispatcher.dispatcher,
                 testCoroutineDispatcher.dispatcher,
-                testCoroutineDispatcher.dispatcher
-            )
+                testCoroutineDispatcher.dispatcher,
+            ),
         )
     }
 
@@ -128,7 +128,7 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
                 TransactionType.INCOME -> (addedTransaction.amount.amount)
                 TransactionType.EXPENSE -> (addedTransaction.amount.amount * -1)
                 else -> (addedTransaction.amount.amount)
-            }
+            },
         )
         if (addedTransaction.type == TransactionType.TRANSFER) {
             Truth.assertThat(transaction.toAccountId).isEqualTo(addedTransaction.toAccountId)

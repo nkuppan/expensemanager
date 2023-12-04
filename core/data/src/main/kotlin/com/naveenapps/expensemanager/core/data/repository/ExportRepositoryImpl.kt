@@ -24,14 +24,13 @@ import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
 
-
 class ExportRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : ExportRepository {
     override suspend fun createCsvFile(
         uri: String?,
-        transactions: List<Transaction>
+        transactions: List<Transaction>,
     ): Resource<String?> =
         withContext(dispatchers.io) {
             kotlin.runCatching {
@@ -47,7 +46,7 @@ class ExportRepositoryImpl @Inject constructor(
                             context.getString(R.string.to_account),
                             context.getString(R.string.notes),
                             context.getString(R.string.amount),
-                        )
+                        ),
                     )
                     if (transactions.isNotEmpty()) {
                         transactions.forEach { transaction ->
@@ -60,7 +59,7 @@ class ExportRepositoryImpl @Inject constructor(
                                     transaction.toAccount?.name ?: "",
                                     transaction.notes,
                                     transaction.amount.amount.toTrimAmount(),
-                                )
+                                ),
                             )
                         }
                     }
@@ -76,14 +75,16 @@ class ExportRepositoryImpl @Inject constructor(
 
     override suspend fun createPdfFile(
         uri: String?,
-        transactions: List<Transaction>
+        transactions: List<Transaction>,
     ): Resource<String?> =
         withContext(dispatchers.io) {
             kotlin.runCatching {
                 val fileUri = generateFile(getFileName(ExportFileType.PDF), uri) { output ->
                     val document = PdfDocument()
                     val pageInfo = PdfDocument.PageInfo.Builder(
-                        100, 100, 1
+                        100,
+                        100,
+                        1,
                     ).create()
                     val page = document.startPage(pageInfo)
                     document.finishPage(page)
@@ -100,7 +101,7 @@ class ExportRepositoryImpl @Inject constructor(
     private fun generateFile(
         fileName: String,
         uri: String?,
-        write: (FileOutputStream) -> Unit
+        write: (FileOutputStream) -> Unit,
     ): String? {
         try {
             return if (uri != null) {

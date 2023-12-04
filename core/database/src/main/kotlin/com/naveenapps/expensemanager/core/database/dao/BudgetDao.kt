@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 import java.util.UUID
 
-
 @Dao
 interface BudgetDao : BaseDao<BudgetEntity> {
 
@@ -54,7 +53,7 @@ interface BudgetDao : BaseDao<BudgetEntity> {
     suspend fun insertBudget(
         budgetEntity: BudgetEntity,
         categories: List<String>,
-        accounts: List<String>
+        accounts: List<String>,
     ): Long {
         val id = insertBudget(budgetEntity)
         if (id != -1L) {
@@ -66,8 +65,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                             budgetId = budgetEntity.id,
                             categoryId = categoryId,
                             createdOn = Date(),
-                            updatedOn = Date()
-                        )
+                            updatedOn = Date(),
+                        ),
                     )
                 }
             }
@@ -79,8 +78,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                             budgetId = budgetEntity.id,
                             accountId = accountId,
                             createdOn = Date(),
-                            updatedOn = Date()
-                        )
+                            updatedOn = Date(),
+                        ),
                     )
                 }
             }
@@ -92,7 +91,7 @@ interface BudgetDao : BaseDao<BudgetEntity> {
     suspend fun updateBudget(
         budgetEntity: BudgetEntity,
         categories: List<String>,
-        accounts: List<String>
+        accounts: List<String>,
     ) {
         updateBudget(budgetEntity)
 
@@ -107,8 +106,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                         budgetId = budgetEntity.id,
                         categoryId = categoryId,
                         createdOn = Date(),
-                        updatedOn = Date()
-                    )
+                        updatedOn = Date(),
+                    ),
                 )
             }
         }
@@ -120,8 +119,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                         budgetId = budgetEntity.id,
                         accountId = accountId,
                         createdOn = Date(),
-                        updatedOn = Date()
-                    )
+                        updatedOn = Date(),
+                    ),
                 )
             }
         }

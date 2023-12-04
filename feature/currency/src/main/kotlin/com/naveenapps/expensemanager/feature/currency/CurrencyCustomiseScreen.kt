@@ -33,12 +33,11 @@ import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
 
-
 typealias CountryPickerCountry = com.github.nkuppan.country.domain.model.Country
 
 @Composable
 fun CurrencyCustomiseScreen(
-    viewModel: CurrencyViewModel = hiltViewModel()
+    viewModel: CurrencyViewModel = hiltViewModel(),
 ) {
     var showCurrencyPage by remember { mutableStateOf(false) }
     val selectedCurrency by viewModel.currentCurrency.collectAsState()
@@ -49,10 +48,10 @@ fun CurrencyCustomiseScreen(
             isDarkTheme = shouldUseDarkTheme(theme = theme.mode),
             onDismissRequest = {
                 showCurrencyPage = false
-            }
+            },
         ) { country ->
             viewModel.selectThisCurrency(
-                country.toExpenseCurrency()
+                country.toExpenseCurrency(),
             )
             showCurrencyPage = false
         }
@@ -72,7 +71,7 @@ fun CurrencyCustomiseScreen(
 private fun CountryPickerCountry.toExpenseCurrency(): Currency {
     return Currency(
         name = currency?.name ?: name ?: "",
-        symbol = currency?.symbol ?: currency?.nativeSymbol ?: countryCode ?: ""
+        symbol = currency?.symbol ?: currency?.nativeSymbol ?: countryCode ?: "",
     )
 }
 
@@ -89,16 +88,16 @@ private fun CurrencyScreen(
             TopNavigationBar(
                 onClick = {
                     closePage.invoke()
-                }, title = stringResource(R.string.currency)
+                },
+                title = stringResource(R.string.currency),
             )
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(innerPadding)
+                .padding(innerPadding),
         ) {
-
             CurrencyItem(
                 modifier = Modifier
                     .clickable {
@@ -108,7 +107,7 @@ private fun CurrencyScreen(
                     .fillMaxWidth(),
                 title = stringResource(id = R.string.select_currency),
                 description = "${selectedCurrency.name}(${selectedCurrency.symbol})",
-                icon = Icons.Default.CurrencyExchange
+                icon = Icons.Default.CurrencyExchange,
             )
 
             Text(
@@ -116,7 +115,7 @@ private fun CurrencyScreen(
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp, top = 8.dp),
                 text = stringResource(id = R.string.currency_position),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
 
             TextFormatSelectionView(
@@ -124,7 +123,7 @@ private fun CurrencyScreen(
                     .fillMaxWidth()
                     .padding(start = 14.dp, end = 14.dp),
                 selectedCurrencyPositionType = selectedCurrency.position,
-                onCurrencyPositionTypeChange = onTextPositionChange
+                onCurrencyPositionTypeChange = onTextPositionChange,
             )
 
             Text(
@@ -132,7 +131,7 @@ private fun CurrencyScreen(
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, bottom = 8.dp, top = 8.dp),
                 text = stringResource(id = R.string.currency_format),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
 
             TextFormatSelectionView(
@@ -140,7 +139,7 @@ private fun CurrencyScreen(
                     .fillMaxWidth()
                     .padding(start = 14.dp, end = 14.dp),
                 textFormat = selectedCurrency.format,
-                onTextFormatChange = onTextFormatChange
+                onTextFormatChange = onTextFormatChange,
             )
         }
     }
@@ -151,7 +150,7 @@ private fun CurrencyItem(
     title: String,
     description: String,
     icon: ImageVector,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
         Icon(
@@ -159,12 +158,12 @@ private fun CurrencyItem(
                 .wrapContentSize()
                 .padding(16.dp),
             imageVector = icon,
-            contentDescription = null
+            contentDescription = null,
         )
         Column(
             modifier = Modifier
                 .weight(1f)
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             Text(text = title)
             Text(text = description, style = MaterialTheme.typography.labelMedium)
@@ -181,7 +180,7 @@ fun CurrencyCustomiseScreenPreview() {
             onTextPositionChange = {},
             onTextFormatChange = {},
             openCurrencySelection = {},
-            closePage = {}
+            closePage = {},
         )
     }
 }

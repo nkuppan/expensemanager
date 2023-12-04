@@ -15,16 +15,14 @@ import java.util.Date
 
 class FindAccountByIdUseCaseTest : BaseCoroutineTest() {
 
-
     private val account = Account(
         id = "1",
         name = "Sample",
         type = AccountType.CREDIT,
         storedIcon = StoredIcon("ic_account", "#ffffff"),
         createdOn = Date(),
-        updatedOn = Date()
+        updatedOn = Date(),
     )
-
 
     private val accountRepository: AccountRepository = mock()
 
@@ -38,7 +36,6 @@ class FindAccountByIdUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIsValidShouldReturnValidAccountSuccessfully() = runTest {
-
         whenever(accountRepository.findAccount(account.id)).thenReturn(Resource.Success(account))
 
         val response = findAccountByIdUseCase.invoke(account.id)

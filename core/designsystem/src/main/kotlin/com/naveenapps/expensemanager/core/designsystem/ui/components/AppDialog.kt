@@ -22,7 +22,7 @@ fun AppDialog(
         title = {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = dialogTitle
+                text = dialogTitle,
             )
         },
         text = {
@@ -35,7 +35,7 @@ fun AppDialog(
             TextButton(
                 onClick = {
                     onConfirmation()
-                }
+                },
             ) {
                 Text(positiveButtonText)
             }
@@ -45,15 +45,14 @@ fun AppDialog(
                 TextButton(
                     onClick = {
                         onDismissRequest()
-                    }
+                    },
                 ) {
                     Text(negativeButtonText)
                 }
             }
-        }
+        },
     )
 }
-
 
 @Preview
 @Composable
@@ -65,7 +64,7 @@ private fun AppDialogPreview() {
             dialogTitle = "Info",
             dialogText = "Do you want to delete this item?",
             positiveButtonText = "Delete",
-            negativeButtonText = "Cancel"
+            negativeButtonText = "Cancel",
         )
     }
 }

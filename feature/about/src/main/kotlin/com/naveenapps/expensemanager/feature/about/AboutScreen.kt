@@ -37,7 +37,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
 
 @Composable
 fun AboutScreen(viewModel: AboutUsViewModel = hiltViewModel()) {
-
     AboutUsScreenScaffoldView {
         when (it) {
             AboutUsOption.BACK -> {
@@ -51,7 +50,7 @@ fun AboutScreen(viewModel: AboutUsViewModel = hiltViewModel()) {
 
 @Composable
 private fun AboutUsScreenScaffoldView(
-    settingOptionSelected: ((AboutUsOption) -> Unit)? = null
+    settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
@@ -61,9 +60,9 @@ private fun AboutUsScreenScaffoldView(
                 onClick = {
                     settingOptionSelected?.invoke(AboutUsOption.BACK)
                 },
-                title = stringResource(R.string.about_us)
+                title = stringResource(R.string.about_us),
             )
-        }
+        },
     ) { innerPadding ->
         AboutUsScreenContent(
             modifier = Modifier
@@ -72,7 +71,6 @@ private fun AboutUsScreenScaffoldView(
                 .padding(innerPadding),
         ) {
             when (it) {
-
                 AboutUsOption.ABOUT_US -> {
                     openWebPage(context, "https://expensemanager.naveenapps.com/")
                 }
@@ -116,7 +114,7 @@ private fun AboutUsScreenScaffoldView(
 @Composable
 private fun AboutUsScreenContent(
     modifier: Modifier = Modifier,
-    settingOptionSelected: ((AboutUsOption) -> Unit)? = null
+    settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
         SettingsItem(
@@ -127,7 +125,7 @@ private fun AboutUsScreenContent(
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.about_us),
-            icon = Icons.Outlined.Info
+            icon = Icons.Outlined.Info,
         )
         SettingsItem(
             modifier = Modifier
@@ -137,7 +135,7 @@ private fun AboutUsScreenContent(
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.terms_and_conditions),
-            icon = Icons.Outlined.Policy
+            icon = Icons.Outlined.Policy,
         )
         SettingsItem(
             modifier = Modifier
@@ -147,7 +145,7 @@ private fun AboutUsScreenContent(
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.privacy_policy),
-            icon = Icons.Outlined.PrivacyTip
+            icon = Icons.Outlined.PrivacyTip,
         )
         SettingsItem(
             modifier = Modifier
@@ -157,7 +155,7 @@ private fun AboutUsScreenContent(
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.licenses),
-            icon = Icons.Outlined.FolderOpen
+            icon = Icons.Outlined.FolderOpen,
         )
 
         DeveloperInfoView(settingOptionSelected)
@@ -166,33 +164,33 @@ private fun AboutUsScreenContent(
 
 @Composable
 private fun DeveloperInfoView(
-    settingOptionSelected: ((AboutUsOption) -> Unit)? = null
+    settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
 ) {
     val context = LocalContext.current
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         Text(
             modifier = Modifier
                 .wrapContentSize()
                 .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.developed_by)
+            text = stringResource(id = R.string.developed_by),
         )
         Row(
             modifier = Modifier
                 .wrapContentSize()
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp)
+                .padding(top = 16.dp),
         ) {
             IconButton(onClick = {
                 settingOptionSelected?.invoke(AboutUsOption.GITHUB)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_github),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
             IconButton(onClick = {
@@ -200,7 +198,7 @@ private fun DeveloperInfoView(
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_twitter),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
             IconButton(onClick = {
@@ -208,7 +206,7 @@ private fun DeveloperInfoView(
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_instagram),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
             IconButton(onClick = {
@@ -216,7 +214,7 @@ private fun DeveloperInfoView(
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_mail),
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
         }
@@ -227,8 +225,8 @@ private fun DeveloperInfoView(
                 .padding(top = 16.dp),
             text = stringResource(
                 id = R.string.app_version,
-                context.getAppVersionName()
-            )
+                context.getAppVersionName(),
+            ),
         )
     }
 }
@@ -238,7 +236,7 @@ private fun SettingsItem(
     title: String,
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    description: String? = null
+    description: String? = null,
 ) {
     Row(modifier = modifier) {
         Icon(
@@ -246,20 +244,20 @@ private fun SettingsItem(
                 .wrapContentSize()
                 .padding(16.dp),
             imageVector = icon,
-            contentDescription = null
+            contentDescription = null,
         )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             Text(text = title)
-            if (description?.isNotBlank() == true)
+            if (description?.isNotBlank() == true) {
                 Text(text = description, style = MaterialTheme.typography.labelMedium)
+            }
         }
     }
 }
-
 
 private enum class AboutUsOption {
     BACK,
@@ -270,5 +268,5 @@ private enum class AboutUsOption {
     GITHUB,
     TWITTER,
     INSTAGRAM,
-    MAIL
+    MAIL,
 }

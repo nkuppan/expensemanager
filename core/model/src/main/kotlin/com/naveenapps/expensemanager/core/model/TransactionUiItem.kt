@@ -2,13 +2,12 @@ package com.naveenapps.expensemanager.core.model
 
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 
-
 data class TransactionGroup(
     val date: String,
     val amountTextColor: Int,
     val totalAmount: Amount,
     val transactions: List<TransactionUiItem>,
-    val isLastItem: Boolean = false
+    val isLastItem: Boolean = false,
 )
 
 data class TransactionUiItem(
@@ -24,7 +23,6 @@ data class TransactionUiItem(
     val toAccountName: String? = null,
     val toAccountIcon: StoredIcon? = null,
 )
-
 
 fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
     return TransactionUiItem(

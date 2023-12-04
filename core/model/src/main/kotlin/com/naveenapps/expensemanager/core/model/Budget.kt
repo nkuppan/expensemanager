@@ -13,5 +13,5 @@ data class Budget(
     val isAllAccountsSelected: Boolean,
     val isAllCategoriesSelected: Boolean,
     val createdOn: Date,
-    val updatedOn: Date
+    val updatedOn: Date,
 )

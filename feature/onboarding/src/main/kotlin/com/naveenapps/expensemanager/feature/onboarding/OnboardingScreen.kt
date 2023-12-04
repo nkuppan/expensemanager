@@ -42,7 +42,6 @@ import com.naveenapps.expensemanager.feature.account.list.AccountItem
 
 @Composable
 fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
-
     val currency by viewModel.currency.collectAsState()
     val accounts by viewModel.accounts.collectAsState()
 
@@ -54,7 +53,6 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
         ) { actionType, id ->
             when (actionType) {
                 1 -> {
-                    
                 }
 
                 2 -> {
@@ -74,17 +72,17 @@ private fun OnboardingContentView(
     currency: Currency,
     accounts: List<AccountUiModel>,
     modifier: Modifier = Modifier,
-    onSelection: (Int, String?) -> Unit
+    onSelection: (Int, String?) -> Unit,
 ) {
     Column(modifier = modifier) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
+                .weight(1f),
         ) {
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             ) {
                 Image(
                     modifier = Modifier
@@ -92,7 +90,7 @@ private fun OnboardingContentView(
                         .size(128.dp)
                         .align(Alignment.BottomCenter),
                     painter = painterResource(id = com.naveenapps.expensemanager.core.common.R.drawable.expenses),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
             Text(
@@ -101,7 +99,7 @@ private fun OnboardingContentView(
                     .fillMaxWidth(),
                 text = stringResource(id = R.string.welcome_message),
                 style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
             )
             DashboardWidgetTitle(
                 modifier = Modifier
@@ -147,7 +145,7 @@ private fun OnboardingContentView(
         Surface(
             modifier = Modifier
                 .fillMaxWidth(),
-            tonalElevation = 2.dp
+            tonalElevation = 2.dp,
         ) {
             Button(
                 modifier = Modifier
@@ -156,7 +154,7 @@ private fun OnboardingContentView(
                 onClick = {
                     onSelection.invoke(3, null)
                 },
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(8.dp),
             ) {
                 Text(text = stringResource(id = R.string.proceed).uppercase())
             }
@@ -164,13 +162,12 @@ private fun OnboardingContentView(
     }
 }
 
-
 @Composable
 private fun CurrencyItem(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
-    @DrawableRes icon: Int? = null
+    @DrawableRes icon: Int? = null,
 ) {
     Row(modifier = modifier) {
         if (icon != null) {
@@ -179,21 +176,21 @@ private fun CurrencyItem(
                     .wrapContentSize()
                     .padding(16.dp),
                 painter = painterResource(id = icon),
-                contentDescription = null
+                contentDescription = null,
             )
         }
         Text(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            text = "$title $description"
+            text = "$title $description",
         )
         Icon(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(end = 16.dp),
             imageVector = Icons.Filled.ArrowRight,
-            contentDescription = null
+            contentDescription = null,
         )
     }
 }
@@ -214,14 +211,13 @@ fun OnboardingScreenPreview() {
                         type = AccountType.REGULAR,
                         storedIcon = StoredIcon(
                             name = "currency_dollar",
-                            backgroundColor = "#000000"
+                            backgroundColor = "#000000",
                         ),
                         amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                         amount = Amount(0.0, "$ 0.00"),
-                    )
-                )
+                    ),
+                ),
             ) { type, id ->
-
             }
         }
     }

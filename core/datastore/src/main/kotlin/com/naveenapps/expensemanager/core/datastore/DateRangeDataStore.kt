@@ -18,8 +18,10 @@ class DateRangeDataStore @Inject constructor(private val dataStore: DataStore<Pr
         }
 
     fun getFilterType(): Flow<DateRangeType> = dataStore.data.map { preferences ->
-        DateRangeType.entries[preferences[KEY_DATE_FILTER_TYPE]
-            ?: DateRangeType.THIS_MONTH.ordinal]
+        DateRangeType.entries[
+            preferences[KEY_DATE_FILTER_TYPE]
+                ?: DateRangeType.THIS_MONTH.ordinal,
+        ]
     }
 
     suspend fun setDateRanges(startDate: Long, endDate: Long) = dataStore.edit { preferences ->

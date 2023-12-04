@@ -6,7 +6,7 @@ import androidx.startup.Initializer
 class DependencyGraphInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-        //this will lazily initialize ApplicationComponent before Application's `onCreate`
+        // this will lazily initialize ApplicationComponent before Application's `onCreate`
         InitializerEntryPoint.resolve(context)
     }
 

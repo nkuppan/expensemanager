@@ -34,18 +34,18 @@ fun AccountSelectionScreen(
     accounts: List<AccountUiModel> = emptyList(),
     selectedAccount: AccountUiModel? = null,
     createNewCallback: (() -> Unit)? = null,
-    onItemSelection: ((AccountUiModel) -> Unit)? = null
+    onItemSelection: ((AccountUiModel) -> Unit)? = null,
 ) {
     LazyColumn(modifier = modifier) {
         item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
+                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             ) {
                 SelectionTitle(
                     title = stringResource(id = R.string.select_account),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 )
                 Text(
                     modifier = Modifier
@@ -54,7 +54,7 @@ fun AccountSelectionScreen(
                             createNewCallback?.invoke()
                         },
                     text = stringResource(id = R.string.add_new).uppercase(),
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
         }
@@ -71,14 +71,14 @@ fun AccountSelectionScreen(
                                 .padding(4.dp)
                                 .background(
                                     color = getSelectedBGColor(),
-                                    shape = RoundedCornerShape(size = 12.dp)
+                                    shape = RoundedCornerShape(size = 12.dp),
                                 )
                         } else {
                             Modifier
                                 .padding(4.dp)
-                        }
+                        },
                     )
-                    .then(ItemSpecModifier)
+                    .then(ItemSpecModifier),
             ) {
                 AccountItem(
                     modifier = Modifier
@@ -98,7 +98,6 @@ fun AccountSelectionScreen(
     }
 }
 
-
 @Preview
 @Composable
 private fun AccountSelectionScreenPreview() {
@@ -106,7 +105,7 @@ private fun AccountSelectionScreenPreview() {
         val accounts = getRandomAccountUiModel(10)
         AccountSelectionScreen(
             accounts = accounts,
-            selectedAccount = accounts.firstOrNull()
+            selectedAccount = accounts.firstOrNull(),
         )
     }
 }

@@ -18,6 +18,6 @@ class BaseProfileGenerateTest {
         profileBlock = {
             startActivityAndWait()
             device.waitForIdle()
-        }
+        },
     )
 }

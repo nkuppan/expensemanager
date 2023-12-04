@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.model
 enum class TransactionType {
     INCOME,
     EXPENSE,
-    TRANSFER
+    TRANSFER,
 }
 
 fun TransactionType.isTransfer(): Boolean {

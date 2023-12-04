@@ -61,10 +61,9 @@ import com.naveenapps.expensemanager.feature.account.R
 import java.util.Date
 import java.util.Random
 
-
 @Composable
 fun AccountListScreen(
-    viewModel: AccountListViewModel = hiltViewModel()
+    viewModel: AccountListViewModel = hiltViewModel(),
 ) {
     val accountUiState by viewModel.accounts.collectAsState()
 
@@ -79,7 +78,7 @@ fun AccountListScreen(
                 title = stringResource(R.string.accounts),
                 onClick = {
                     viewModel.closePage()
-                }
+                },
             )
         },
         floatingActionButton = {
@@ -88,17 +87,17 @@ fun AccountListScreen(
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         AccountListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            accountUiState = accountUiState
+            accountUiState = accountUiState,
         ) { account ->
             viewModel.openCreateScreen(account.id)
         }
@@ -109,10 +108,9 @@ fun AccountListScreen(
 private fun AccountListScreenContent(
     accountUiState: UiState<List<AccountUiModel>>,
     modifier: Modifier = Modifier,
-    onItemClick: ((AccountUiModel) -> Unit)? = null
+    onItemClick: ((AccountUiModel) -> Unit)? = null,
 ) {
     Box(modifier = modifier) {
-
         when (accountUiState) {
             UiState.Empty -> {
                 Text(
@@ -120,7 +118,7 @@ private fun AccountListScreenContent(
                         .wrapContentSize()
                         .align(Alignment.Center),
                     text = stringResource(id = R.string.no_account_available),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
 
@@ -128,12 +126,11 @@ private fun AccountListScreenContent(
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(72.dp)
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
                 )
             }
 
             is UiState.Success -> {
-
                 LazyColumn {
                     items(accountUiState.data) { account ->
                         AccountItem(
@@ -145,14 +142,14 @@ private fun AccountListScreenContent(
                             name = account.name,
                             icon = account.storedIcon.name,
                             iconBackgroundColor = account.storedIcon.backgroundColor,
-                            amount = account.amount.amountString
+                            amount = account.amount.amountString,
                         )
                     }
                     item {
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(36.dp)
+                                .padding(36.dp),
                         )
                     }
                 }
@@ -169,7 +166,7 @@ fun AccountItem(
     iconBackgroundColor: String,
     amount: String?,
     modifier: Modifier = Modifier,
-    endIcon: ImageVector? = null
+    endIcon: ImageVector? = null,
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
@@ -177,7 +174,7 @@ fun AccountItem(
                 .align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
-            name = name
+            name = name,
         )
         Text(
             modifier = Modifier
@@ -192,10 +189,11 @@ fun AccountItem(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = amount,
                 style = MaterialTheme.typography.titleMedium,
-                color = if (true)
+                color = if (true) {
                     colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
-                else
+                } else {
                     colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
+                },
             )
         }
         if (endIcon != null) {
@@ -218,7 +216,7 @@ fun AccountCheckedItem(
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit)? = null
+    onCheckedChange: ((Boolean) -> Unit)? = null,
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
@@ -226,7 +224,7 @@ fun AccountCheckedItem(
                 .align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
-            name = name
+            name = name,
         )
         Text(
             modifier = Modifier
@@ -240,7 +238,7 @@ fun AccountCheckedItem(
             modifier = Modifier
                 .align(Alignment.CenterVertically),
             checked = isSelected,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
         )
     }
 }
@@ -258,12 +256,12 @@ fun DashBoardAccountItem(
     Surface(
         modifier = modifier,
         color = backgroundColor,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
-                .width(160.dp)
+                .width(160.dp),
         ) {
             Row {
                 Text(
@@ -273,7 +271,7 @@ fun DashBoardAccountItem(
                     text = name,
                     maxLines = 1,
                     style = MaterialTheme.typography.titleMedium,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Icon(
                     modifier = Modifier.padding(start = 8.dp),
@@ -293,11 +291,10 @@ fun DashBoardAccountItem(
     }
 }
 
-
 fun getAccountData(
     index: Int,
     accountType: AccountType,
-    amount: Double
+    amount: Double,
 ): Account {
     return Account(
         id = "$index",
@@ -305,11 +302,11 @@ fun getAccountData(
         type = accountType,
         storedIcon = StoredIcon(
             name = "credit_card",
-            backgroundColor = "#000000"
+            backgroundColor = "#000000",
         ),
         amount = amount,
         createdOn = Date(),
-        updatedOn = Date()
+        updatedOn = Date(),
     )
 }
 
@@ -327,8 +324,8 @@ fun getRandomAccountData(totalCount: Int = 10): List<Account> {
                     } else {
                         AccountType.REGULAR
                     },
-                    amount = 100.0
-                )
+                    amount = 100.0,
+                ),
             )
         }
     }
@@ -366,7 +363,7 @@ private fun AccountItemPreview() {
             name = "Utilities",
             icon = "ic_calendar",
             iconBackgroundColor = "#000000",
-            amount = "$100.00"
+            amount = "$100.00",
         )
     }
 }
@@ -382,7 +379,7 @@ private fun AccountCheckedItemPreview() {
             name = "First Account",
             icon = "savings",
             iconBackgroundColor = "#000000",
-            isSelected = true
+            isSelected = true,
         )
     }
 }
@@ -409,7 +406,7 @@ private fun AccountListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         AccountListScreenContent(
             accountUiState = UiState.Success(
-                getRandomAccountUiModel(10)
+                getRandomAccountUiModel(10),
             ),
         )
     }

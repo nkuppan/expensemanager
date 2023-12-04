@@ -44,9 +44,8 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 fun FilterTypeSelection(
     modifier: Modifier = Modifier,
     applyChanges: () -> Unit,
-    viewModel: FilterTypeSelectionViewModel = hiltViewModel()
+    viewModel: FilterTypeSelectionViewModel = hiltViewModel(),
 ) {
-
     val saved by viewModel.saved.collectAsState(false)
 
     if (saved) {
@@ -76,7 +75,7 @@ fun FilterTypeSelection(
         onCategorySelection = viewModel::setCategory,
         applyChanges = {
             viewModel.saveChanges()
-        }
+        },
     )
 }
 
@@ -98,19 +97,19 @@ private fun FilterSelectionView(
         Text(
             modifier = Modifier.padding(16.dp),
             text = stringResource(id = R.string.transaction_type),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             TransactionTypeFilter(
                 transactionTypes,
                 selectedTransactionTypes,
-                onTransactionTypeSelection
+                onTransactionTypeSelection,
             )
         }
         Text(
             modifier = Modifier.padding(16.dp),
             text = stringResource(id = R.string.accounts),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             AccountFilter(accounts, selectedAccounts, onAccountSelection)
@@ -118,7 +117,7 @@ private fun FilterSelectionView(
         Text(
             modifier = Modifier.padding(16.dp),
             text = stringResource(id = R.string.categories),
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.titleMedium,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             CategoryFilter(categories, selectedCategories, onCategorySelection)
@@ -126,11 +125,11 @@ private fun FilterSelectionView(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             TextButton(
                 modifier = Modifier.align(Alignment.CenterEnd),
-                onClick = applyChanges
+                onClick = applyChanges,
             ) {
                 Text(text = stringResource(id = R.string.apply))
             }
@@ -143,7 +142,7 @@ private fun FilterSelectionView(
 fun TransactionTypeFilter(
     transactionTypes: List<TransactionType>,
     selectedTransactionType: List<TransactionType>,
-    onSelection: (TransactionType) -> Unit
+    onSelection: (TransactionType) -> Unit,
 ) {
     FlowRow(
         modifier = Modifier
@@ -152,8 +151,7 @@ fun TransactionTypeFilter(
     ) {
         transactionTypes.forEach { type ->
             val isSelected = selectedTransactionType.fastAny { it == type }
-            FilterChipView(isSelected, type.toCapitalize())
-            {
+            FilterChipView(isSelected, type.toCapitalize()) {
                 onSelection.invoke(type)
             }
         }
@@ -165,7 +163,7 @@ fun TransactionTypeFilter(
 fun AccountFilter(
     accounts: List<AccountUiModel>,
     selectedAccounts: List<AccountUiModel>,
-    onSelection: (AccountUiModel) -> Unit
+    onSelection: (AccountUiModel) -> Unit,
 ) {
     FlowRow(
         modifier = Modifier
@@ -186,7 +184,7 @@ fun AccountFilter(
 fun CategoryFilter(
     categories: List<Category>,
     selectedCategories: List<Category>,
-    onSelection: (Category) -> Unit
+    onSelection: (Category) -> Unit,
 ) {
     FlowRow(
         modifier = Modifier
@@ -208,7 +206,7 @@ fun FilterChipView(
     selected: Boolean,
     label: String,
     iconName: String? = null,
-    onSelection: (() -> Unit) = { }
+    onSelection: (() -> Unit) = { },
 ) {
     val context = LocalContext.current
     FilterChip(
@@ -222,12 +220,12 @@ fun FilterChipView(
                 Icon(
                     painter = painterResource(id = context.getDrawable(iconName)),
                     contentDescription = "Localized description",
-                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    modifier = Modifier.size(FilterChipDefaults.IconSize),
                 )
             }
         } else {
             null
-        }
+        },
     )
 }
 
@@ -237,7 +235,7 @@ fun InputChipView(
     label: String,
     selected: Boolean,
     iconName: String? = null,
-    onSelection: (() -> Unit) = { }
+    onSelection: (() -> Unit) = { },
 ) {
     val context = LocalContext.current
     InputChip(
@@ -251,7 +249,7 @@ fun InputChipView(
                 Icon(
                     painter = painterResource(id = context.getDrawable(iconName)),
                     contentDescription = "Localized description",
-                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                    modifier = Modifier.size(FilterChipDefaults.IconSize),
                 )
             }
         } else {
@@ -261,12 +259,11 @@ fun InputChipView(
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = "Localized description",
-                modifier = Modifier.size(FilterChipDefaults.IconSize)
+                modifier = Modifier.size(FilterChipDefaults.IconSize),
             )
-        }
+        },
     )
 }
-
 
 @AppPreviewsLightAndDarkMode
 @Composable
@@ -275,8 +272,7 @@ fun FilterTypeSelectionPreview() {
         FilterTypeSelection(
             modifier = Modifier.fillMaxSize(),
             applyChanges = {
-
-            }
+            },
         )
     }
 }

@@ -23,14 +23,13 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.getBalanceBGColo
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseBGColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 
-
 @Composable
 fun AmountStatusView(
     modifier: Modifier,
     expenseAmount: String,
     incomeAmount: String,
     balanceAmount: String,
-    showBalance: Boolean = false
+    showBalance: Boolean = false,
 ) {
     Row(
         modifier = modifier,
@@ -43,7 +42,7 @@ fun AmountStatusView(
                 .fillMaxWidth()
                 .weight(1f),
             showBalance = showBalance,
-            color = getIncomeBGColor()
+            color = getIncomeBGColor(),
         )
         NewColorIconAmountView(
             amount = expenseAmount,
@@ -52,7 +51,7 @@ fun AmountStatusView(
                 .fillMaxWidth()
                 .weight(1f),
             showBalance = showBalance,
-            color = getExpenseBGColor()
+            color = getExpenseBGColor(),
         )
         if (showBalance) {
             NewColorIconAmountView(
@@ -62,7 +61,7 @@ fun AmountStatusView(
                     .fillMaxWidth()
                     .weight(1f),
                 showBalance = showBalance,
-                color = getBalanceBGColor()
+                color = getBalanceBGColor(),
             )
         }
     }
@@ -74,22 +73,23 @@ fun NewColorIconAmountView(
     title: String,
     modifier: Modifier = Modifier,
     showBalance: Boolean = false,
-    color: Color
+    color: Color,
 ) {
     Surface(
         modifier = modifier,
         color = color,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
         ) {
             Text(
                 text = title,
-                style = if (showBalance)
+                style = if (showBalance) {
                     MaterialTheme.typography.bodySmall
-                else
-                    MaterialTheme.typography.titleMedium,
+                } else {
+                    MaterialTheme.typography.titleMedium
+                },
             )
             Text(
                 modifier = Modifier
@@ -97,10 +97,11 @@ fun NewColorIconAmountView(
                     .padding(top = 4.dp),
                 text = amount,
                 fontWeight = FontWeight.Bold,
-                style = if (showBalance)
+                style = if (showBalance) {
                     MaterialTheme.typography.bodySmall
-                else
-                    MaterialTheme.typography.headlineSmall,
+                } else {
+                    MaterialTheme.typography.headlineSmall
+                },
             )
         }
     }
@@ -128,7 +129,7 @@ private fun AmountStatusViewPreview() {
                 expenseAmount = AMOUNT_VALUE,
                 incomeAmount = AMOUNT_VALUE,
                 balanceAmount = AMOUNT_VALUE,
-                showBalance = true
+                showBalance = true,
             )
         }
     }

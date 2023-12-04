@@ -11,15 +11,16 @@ class GetCategoryByNameUseCase @Inject constructor(private val repository: Categ
         return when (val response = repository.getAllCategory()) {
             is Resource.Error -> response
             is Resource.Success -> {
-
                 val values = response.data
 
                 val filteredList = mutableListOf<Category>()
 
                 if (categoryName?.isNotBlank() == true && values.isNotEmpty()) {
-                    filteredList.addAll(values.filter {
-                        it.name.contains(categoryName, ignoreCase = true)
-                    })
+                    filteredList.addAll(
+                        values.filter {
+                            it.name.contains(categoryName, ignoreCase = true)
+                        },
+                    )
                 } else {
                     filteredList.addAll(values)
                 }

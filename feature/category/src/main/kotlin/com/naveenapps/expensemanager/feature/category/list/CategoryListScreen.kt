@@ -58,11 +58,10 @@ import com.naveenapps.expensemanager.feature.category.R
 import java.util.Date
 import java.util.Random
 
-
 enum class CategoryTabItems(
     @StringRes val labelResourceID: Int,
     val categoryType: CategoryType,
-    val index: Int
+    val index: Int,
 ) {
     Expense(R.string.expense, CategoryType.EXPENSE, 0),
     Income(R.string.income, CategoryType.INCOME, 1),
@@ -71,7 +70,6 @@ enum class CategoryTabItems(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
-
     var state by remember { mutableStateOf(CategoryTabItems.Expense) }
 
     Scaffold(
@@ -81,26 +79,26 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
                     viewModel.closePage()
                 },
                 title = stringResource(R.string.category),
-                disableBackIcon = false
+                disableBackIcon = false,
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
                     viewModel.openCreateScreen(null)
-                }
+                },
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             TabRow(selectedTabIndex = state.index) {
                 CategoryTabItems.entries.forEach { items ->
@@ -114,9 +112,9 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
                             Text(
                                 text = stringResource(id = items.labelResourceID),
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -128,12 +126,11 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
 
 @Composable
 private fun CategoryListContent(viewModel: CategoryListViewModel) {
-
     val categoryUiState by viewModel.categories.collectAsState()
 
     CategoryListScreenContent(
         modifier = Modifier.fillMaxSize(),
-        categoryUiState = categoryUiState
+        categoryUiState = categoryUiState,
     ) { categoryId ->
         viewModel.openCreateScreen(categoryId)
     }
@@ -143,10 +140,9 @@ private fun CategoryListContent(viewModel: CategoryListViewModel) {
 private fun CategoryListScreenContent(
     categoryUiState: UiState<List<Category>>,
     modifier: Modifier = Modifier,
-    onItemClick: ((String) -> Unit)? = null
+    onItemClick: ((String) -> Unit)? = null,
 ) {
     Box(modifier = modifier) {
-
         when (categoryUiState) {
             UiState.Empty -> {
                 Text(
@@ -154,7 +150,7 @@ private fun CategoryListScreenContent(
                         .wrapContentSize()
                         .align(Alignment.Center),
                     text = stringResource(id = R.string.no_category_available),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
             }
 
@@ -162,7 +158,7 @@ private fun CategoryListScreenContent(
                 CircularProgressIndicator(
                     modifier = Modifier
                         .size(72.dp)
-                        .align(Alignment.Center)
+                        .align(Alignment.Center),
                 )
             }
 
@@ -186,7 +182,7 @@ private fun CategoryListScreenContent(
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(64.dp)
+                                .height(64.dp),
                         )
                     }
                 }
@@ -201,21 +197,21 @@ fun CategoryItem(
     icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
-    endIcon: ImageVector? = null
+    endIcon: ImageVector? = null,
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
             modifier = Modifier.align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
-            name = name
+            name = name,
         )
         Text(
             modifier = Modifier
                 .weight(1f)
                 .align(Alignment.CenterVertically)
                 .padding(start = 16.dp, end = 16.dp),
-            text = name
+            text = name,
         )
         if (endIcon != null) {
             Icon(
@@ -235,14 +231,14 @@ fun CategoryCheckedItem(
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit)? = null
+    onCheckedChange: ((Boolean) -> Unit)? = null,
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
             modifier = Modifier.align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
-            name = name
+            name = name,
         )
         Text(
             modifier = Modifier
@@ -257,14 +253,14 @@ fun CategoryCheckedItem(
                 .align(Alignment.CenterVertically)
                 .padding(start = 8.dp),
             checked = isSelected,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
         )
     }
 }
 
 fun getCategoryData(
     index: Int,
-    categoryType: CategoryType
+    categoryType: CategoryType,
 ): Category {
     return Category(
         id = "$index",
@@ -272,10 +268,10 @@ fun getCategoryData(
         type = categoryType,
         storedIcon = StoredIcon(
             "account_balance",
-            "#000000"
+            "#000000",
         ),
         createdOn = Date(),
-        updatedOn = Date()
+        updatedOn = Date(),
     )
 }
 
@@ -292,8 +288,8 @@ fun getRandomCategoryData(totalCount: Int = 10): List<Category> {
                         CategoryType.EXPENSE
                     } else {
                         CategoryType.INCOME
-                    }
-                )
+                    },
+                ),
             )
         }
     }
@@ -312,7 +308,7 @@ private fun CategoryItemPreview() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100))
-                    .then(ItemSpecModifier)
+                    .then(ItemSpecModifier),
             )
         }
     }

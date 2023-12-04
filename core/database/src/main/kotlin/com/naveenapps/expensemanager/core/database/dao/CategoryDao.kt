@@ -5,7 +5,6 @@ import androidx.room.Query
 import com.naveenapps.expensemanager.core.database.entity.CategoryEntity
 import kotlinx.coroutines.flow.Flow
 
-
 @Dao
 interface CategoryDao : BaseDao<CategoryEntity> {
 

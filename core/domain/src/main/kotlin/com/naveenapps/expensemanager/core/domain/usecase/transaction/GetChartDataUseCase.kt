@@ -33,7 +33,7 @@ class GetChartDataUseCase @Inject constructor(
         return combine(
             getDateRangeUseCase.invoke(),
             getCurrencyUseCase.invoke(),
-            getTransactionWithFilterUseCase.invoke()
+            getTransactionWithFilterUseCase.invoke(),
         ) { dateRangeModel, currency, transactions ->
 
             val groupType = getTransactionGroupTypeUseCase.invoke(dateRangeModel.type)
@@ -45,7 +45,6 @@ class GetChartDataUseCase @Inject constructor(
             val ranges = dateRangeModel.dateRanges
             var fromDate = DateTime(ranges[0])
             val toDate = DateTime(ranges[1])
-
 
             val transaction = mutableListOf<TransactionUiItem>()
             val dates = mutableListOf<String>()
@@ -64,10 +63,10 @@ class GetChartDataUseCase @Inject constructor(
                             it.toTransactionUIModel(
                                 getFormattedAmountUseCase.invoke(
                                     it.amount.amount,
-                                    currency
-                                )
+                                    currency,
+                                ),
                             )
-                        }
+                        },
                     )
                 }
 
@@ -80,9 +79,9 @@ class GetChartDataUseCase @Inject constructor(
                         totalExpense,
                         getFormattedAmountUseCase.invoke(
                             totalExpense,
-                            currency
-                        )
-                    )
+                            currency,
+                        ),
+                    ),
                 )
                 val totalIncome = values?.sumOf {
                     if (it.category.type.isIncome()) it.amount.amount else 0.0
@@ -93,14 +92,13 @@ class GetChartDataUseCase @Inject constructor(
                         totalIncome,
                         getFormattedAmountUseCase.invoke(
                             totalIncome,
-                            currency
-                        )
-                    )
+                            currency,
+                        ),
+                    ),
                 )
                 fromDate = getAdjustedDateTime(groupType, fromDate)
                 index++
             }
-
 
             return@combine AnalysisData(
                 transaction,
@@ -109,16 +107,16 @@ class GetChartDataUseCase @Inject constructor(
                 } else {
                     AnalysisChartData(
                         listOf(expenses, incomes),
-                        dates
+                        dates,
                     )
-                }
+                },
             )
         }.flowOn(dispatcher.computation)
     }
 
     private fun getAdjustedDateTime(
         groupType: GroupType,
-        fromDate: DateTime
+        fromDate: DateTime,
     ) = when (groupType) {
         GroupType.YEAR -> {
             fromDate.plusYears(1)
@@ -151,7 +149,7 @@ class GetChartDataUseCase @Inject constructor(
 data class FloatEntryModel(
     val index: Int,
     val total: Double,
-    val amountString: Amount
+    val amountString: Amount,
 )
 
 data class AnalysisData(

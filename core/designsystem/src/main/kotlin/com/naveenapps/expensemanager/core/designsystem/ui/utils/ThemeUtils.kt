@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.colorResource
 import com.naveenapps.expensemanager.core.common.R
 
-
 @ColorInt
 fun getColorValue(colorValue: String?): Int {
     return runCatching {

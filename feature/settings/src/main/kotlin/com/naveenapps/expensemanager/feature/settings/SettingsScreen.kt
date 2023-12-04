@@ -46,7 +46,6 @@ import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun SettingsScreen() {
     val viewModel: SettingsViewModel = hiltViewModel()
@@ -84,7 +83,7 @@ fun SettingsScreen() {
 private fun SettingsScreenScaffoldView(
     currency: Currency,
     theme: Theme? = null,
-    settingOptionSelected: ((SettingOption) -> Unit)? = null
+    settingOptionSelected: ((SettingOption) -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -108,7 +107,7 @@ private fun SettingsScreenScaffoldView(
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
             DateFilterSelectionView {
                 scope.launch {
@@ -125,9 +124,9 @@ private fun SettingsScreenScaffoldView(
                 onClick = {
                     settingOptionSelected?.invoke(SettingOption.BACK)
                 },
-                title = stringResource(R.string.settings)
+                title = stringResource(R.string.settings),
             )
-        }
+        },
     ) { innerPadding ->
         SettingsScreenContent(
             modifier = Modifier
@@ -166,7 +165,7 @@ private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     selectedCurrency: Currency,
     theme: Theme? = null,
-    settingOptionSelected: ((SettingOption) -> Unit)? = null
+    settingOptionSelected: ((SettingOption) -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
         SettingsItem(
@@ -177,11 +176,12 @@ private fun SettingsScreenContent(
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.theme),
-            description = if (theme != null)
+            description = if (theme != null) {
                 (stringResource(id = theme.titleResId))
-            else
-                stringResource(id = R.string.system_default),
-            icon = R.drawable.ic_palette
+            } else {
+                stringResource(id = R.string.system_default)
+            },
+            icon = R.drawable.ic_palette,
         )
         SettingsItem(
             modifier = Modifier
@@ -192,7 +192,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.currency),
             description = "${selectedCurrency.name}(${selectedCurrency.symbol})",
-            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.payments
+            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.payments,
         )
         SettingsItem(
             modifier = Modifier
@@ -203,7 +203,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.reminder_notification),
             description = stringResource(id = R.string.selected_daily_reminder_time),
-            icon = R.drawable.ic_edit_notifications
+            icon = R.drawable.ic_edit_notifications,
         )
         SettingsItem(
             modifier = Modifier
@@ -214,7 +214,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.filter),
             description = stringResource(id = R.string.filter_message),
-            icon = R.drawable.ic_filter
+            icon = R.drawable.ic_filter,
         )
         SettingsItem(
             modifier = Modifier
@@ -225,7 +225,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.export),
             description = stringResource(id = R.string.export_message),
-            icon = R.drawable.ic_export
+            icon = R.drawable.ic_export,
         )
         SettingsItem(
             modifier = Modifier
@@ -236,7 +236,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
             description = stringResource(id = R.string.about_the_app_information),
-            icon = R.drawable.ic_info
+            icon = R.drawable.ic_info,
         )
         SettingsItem(
             modifier = Modifier
@@ -247,7 +247,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.rate_us),
             description = stringResource(id = R.string.rate_us_message),
-            icon = R.drawable.ic_rate
+            icon = R.drawable.ic_rate,
         )
     }
 }
@@ -257,7 +257,7 @@ private fun SettingsItem(
     title: String,
     description: String,
     @DrawableRes icon: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
         Icon(
@@ -265,12 +265,12 @@ private fun SettingsItem(
                 .wrapContentSize()
                 .padding(16.dp),
             painter = painterResource(id = icon),
-            contentDescription = null
+            contentDescription = null,
         )
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .align(Alignment.CenterVertically)
+                .align(Alignment.CenterVertically),
         ) {
             Text(text = title)
             Text(text = description, style = MaterialTheme.typography.labelMedium)
@@ -300,7 +300,7 @@ fun SettingsScreenItemPreview() {
                 .fillMaxWidth(),
             title = stringResource(id = R.string.theme),
             description = stringResource(id = R.string.system_default),
-            icon = R.drawable.ic_palette
+            icon = R.drawable.ic_palette,
         )
     }
 }
@@ -311,11 +311,10 @@ fun SettingsScreenItemPreview() {
 fun SettingsScreenPreview() {
     ExpenseManagerTheme {
         SettingsScreenScaffoldView(
-            currency = Currency("$", "US Dollar")
+            currency = Currency("$", "US Dollar"),
         )
     }
 }
-
 
 fun launchReviewWorkflow(context: Context) {
     val packageName = context.packageName

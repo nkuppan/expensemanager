@@ -21,10 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryTransactionListViewModel @Inject constructor(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
     private val _categoryTransaction = MutableStateFlow<UiState<CategoryTransactionUiModel>>(
-        UiState.Loading
+        UiState.Loading,
     )
     val categoryTransaction = _categoryTransaction.asStateFlow()
 
@@ -38,11 +38,11 @@ class CategoryTransactionListViewModel @Inject constructor(
             _categoryTransaction.value = UiState.Success(
                 if (model.hideValues) {
                     model.copy(
-                        categoryTransactions = emptyList()
+                        categoryTransactions = emptyList(),
                     )
                 } else {
                     model
-                }
+                },
             )
         }.launchIn(viewModelScope)
     }
@@ -57,13 +57,13 @@ class CategoryTransactionListViewModel @Inject constructor(
 
     fun openTransactionCreatePage() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute("")
+            ExpenseManagerScreens.TransactionCreate.createRoute(""),
         )
     }
 
     fun openCategoryDetailsPage(categoryTransaction: CategoryTransaction) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryDetails.createRoute(categoryTransaction.category.id)
+            ExpenseManagerScreens.CategoryDetails.createRoute(categoryTransaction.category.id),
         )
     }
 

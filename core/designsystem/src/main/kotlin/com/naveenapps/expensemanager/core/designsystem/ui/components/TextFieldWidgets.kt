@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 
-
 @Composable
 fun ClickableTextField(
     label: Int,
@@ -29,7 +28,7 @@ fun ClickableTextField(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions()
+    keyboardOptions: KeyboardOptions = KeyboardOptions(),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()
@@ -42,7 +41,6 @@ fun ClickableTextField(
         }
     }
 
-
     OutlinedTextField(
         modifier = modifier,
         interactionSource = interactionSource,
@@ -52,7 +50,7 @@ fun ClickableTextField(
             {
                 Icon(
                     imageVector = leadingIcon,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
         } else {
@@ -62,7 +60,7 @@ fun ClickableTextField(
             Text(text = stringResource(id = label))
         },
         onValueChange = {},
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
     )
 }
 
@@ -74,9 +72,8 @@ fun StringTextField(
     label: Int,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
 ) {
-
     val context = LocalContext.current
 
     OutlinedTextField(
@@ -95,7 +92,7 @@ fun StringTextField(
             { Text(text = errorMessage.asString(context)) }
         } else {
             null
-        }
+        },
     )
 }
 
@@ -106,7 +103,7 @@ fun DecimalTextField(
     onValueChange: ((String) -> Unit)?,
     leadingIconText: String?,
     label: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -120,7 +117,7 @@ fun DecimalTextField(
             {
                 Text(
                     text = leadingIconText,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
                 )
             }
         } else {
@@ -133,18 +130,18 @@ fun DecimalTextField(
             onValueChange?.invoke(it)
         },
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Decimal
+            keyboardType = KeyboardType.Decimal,
         ),
         keyboardActions = KeyboardActions(
             onDone = {
                 focusManager.clearFocus(force = true)
-            }
+            },
         ),
         isError = errorMessage != null,
         supportingText = if (errorMessage != null) {
             { Text(text = errorMessage.asString(context)) }
         } else {
             null
-        }
+        },
     )
 }

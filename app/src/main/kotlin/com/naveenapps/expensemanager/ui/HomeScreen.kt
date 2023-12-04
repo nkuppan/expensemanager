@@ -40,7 +40,6 @@ import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
 
-
 @Composable
 fun HomePageNavHostContainer(
     navHostController: NavHostController,
@@ -48,14 +47,13 @@ fun HomePageNavHostContainer(
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = landingScreen
+        startDestination = landingScreen,
     ) {
         this.expenseManagerNavigation()
     }
 }
 
 fun NavGraphBuilder.expenseManagerNavigation() {
-
     composable(route = ExpenseManagerScreens.Onboarding.route) {
         OnboardingScreen()
     }
@@ -67,13 +65,13 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(
         route = ExpenseManagerScreens.CategoryCreate.name,
-        arguments = ExpenseManagerScreens.CategoryCreate.navArguments
+        arguments = ExpenseManagerScreens.CategoryCreate.navArguments,
     ) {
         CategoryCreateScreen()
     }
     composable(
         route = ExpenseManagerScreens.CategoryDetails.name,
-        arguments = ExpenseManagerScreens.CategoryDetails.navArguments
+        arguments = ExpenseManagerScreens.CategoryDetails.navArguments,
     ) {
         CategoryDetailScreen()
     }
@@ -82,7 +80,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(
         route = ExpenseManagerScreens.TransactionCreate.name,
-        arguments = ExpenseManagerScreens.TransactionCreate.navArguments
+        arguments = ExpenseManagerScreens.TransactionCreate.navArguments,
     ) {
         TransactionCreateScreen()
     }
@@ -91,7 +89,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(
         route = ExpenseManagerScreens.AccountCreate.name,
-        arguments = ExpenseManagerScreens.AccountCreate.navArguments
+        arguments = ExpenseManagerScreens.AccountCreate.navArguments,
     ) {
         AccountCreateScreen()
     }
@@ -100,13 +98,13 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(
         route = ExpenseManagerScreens.BudgetCreate.name,
-        arguments = ExpenseManagerScreens.BudgetCreate.navArguments
+        arguments = ExpenseManagerScreens.BudgetCreate.navArguments,
     ) {
         BudgetCreateScreen()
     }
     composable(
         route = ExpenseManagerScreens.BudgetDetails.name,
-        arguments = ExpenseManagerScreens.BudgetDetails.navArguments
+        arguments = ExpenseManagerScreens.BudgetDetails.navArguments,
     ) {
         BudgetDetailScreen()
     }
@@ -135,7 +133,6 @@ fun NavGraphBuilder.expenseManagerNavigation() {
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
-
     val context = LocalContext.current
 
     BackHandler {
@@ -167,7 +164,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     ) { paddingValues ->
         Column(
             modifier = Modifier.padding(
-                bottom = paddingValues.calculateBottomPadding()
+                bottom = paddingValues.calculateBottomPadding(),
             ),
         ) {
             when (viewModel.homeScreenBottomBarItems) {

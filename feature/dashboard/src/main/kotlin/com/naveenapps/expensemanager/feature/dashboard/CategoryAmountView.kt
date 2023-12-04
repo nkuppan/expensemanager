@@ -20,16 +20,15 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.feature.category.transaction.getRandomCategoryTransactionData
 
-
 @Composable
 fun CategoryAmountView(
     modifier: Modifier = Modifier,
-    categoryTransactionUiModel: CategoryTransactionUiModel
+    categoryTransactionUiModel: CategoryTransactionUiModel,
 ) {
     Column(modifier = modifier) {
         DashboardWidgetTitle(
             modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.categories)
+            title = stringResource(id = R.string.categories),
         )
         Row(modifier = Modifier.padding(top = 16.dp)) {
             PieChartView(
@@ -38,19 +37,19 @@ fun CategoryAmountView(
                     PieChartUiData(
                         it.name,
                         it.value,
-                        it.color.toColorInt()
+                        it.color.toColorInt(),
                     )
                 },
                 hideValues = true,
                 chartHeight = 300,
-                chartWidth = 300
+                chartWidth = 300,
             )
             Column(
                 modifier = Modifier
                     .wrapContentHeight()
                     .padding(start = 16.dp)
                     .align(Alignment.CenterVertically),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 repeat(categoryTransactionUiModel.categoryTransactions.size) {
                     if (it < 4) {
@@ -59,7 +58,7 @@ fun CategoryAmountView(
                             name = item.category.name,
                             icon = item.category.storedIcon.name,
                             iconBackgroundColor = item.category.storedIcon.backgroundColor,
-                            amount = item.amount.amountString ?: ""
+                            amount = item.amount.amountString ?: "",
                         )
                     }
                 }
@@ -77,7 +76,7 @@ fun CategoryAmountViewPreview() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                categoryTransactionUiModel = getRandomCategoryTransactionData()
+                categoryTransactionUiModel = getRandomCategoryTransactionData(),
             )
         }
     }

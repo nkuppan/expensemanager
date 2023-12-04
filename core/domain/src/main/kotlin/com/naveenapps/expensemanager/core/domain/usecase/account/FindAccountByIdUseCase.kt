@@ -8,7 +8,6 @@ import javax.inject.Inject
 class FindAccountByIdUseCase @Inject constructor(private val repository: AccountRepository) {
 
     suspend operator fun invoke(accountId: String?): Resource<Account> {
-
         if (accountId.isNullOrBlank()) {
             return Resource.Error(Exception("Provide valid account id value"))
         }

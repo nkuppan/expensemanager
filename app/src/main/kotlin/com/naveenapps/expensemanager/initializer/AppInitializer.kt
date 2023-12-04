@@ -19,7 +19,6 @@ class AppInitializer : Initializer<Unit> {
     lateinit var notificationScheduler: NotificationScheduler
 
     override fun create(context: Context) {
-
         InitializerEntryPoint.resolve(context).inject(this)
 
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {

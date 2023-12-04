@@ -5,7 +5,7 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import javax.inject.Inject
 
 class FindTransactionByIdUseCase @Inject constructor(
-    private val repository: com.naveenapps.expensemanager.core.repository.TransactionRepository
+    private val repository: com.naveenapps.expensemanager.core.repository.TransactionRepository,
 ) {
     suspend fun invoke(id: String?): Resource<Transaction> {
         if (id.isNullOrEmpty()) {

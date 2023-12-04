@@ -36,10 +36,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.feature.category.R
 
-
 @Composable
 fun CategoryCreateScreen() {
-
     val context = LocalContext.current
 
     val snackbarHostState = remember { SnackbarHostState() }
@@ -60,7 +58,7 @@ fun CategoryCreateScreen() {
             dialogTitle = stringResource(id = R.string.delete),
             dialogText = stringResource(id = R.string.delete_item_message),
             positiveButtonText = stringResource(id = R.string.delete),
-            negativeButtonText = stringResource(id = R.string.cancel)
+            negativeButtonText = stringResource(id = R.string.cancel),
         )
     }
 
@@ -80,7 +78,7 @@ fun CategoryCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.category),
-                showDelete = showDelete
+                showDelete = showDelete,
             ) {
                 if (it == 1) {
                     viewModel.closePage()
@@ -93,10 +91,10 @@ fun CategoryCreateScreen() {
             FloatingActionButton(onClick = viewModel::saveOrUpdateCategory) {
                 Icon(
                     imageVector = Icons.Default.Done,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
 
         val name by viewModel.name.collectAsState()
@@ -117,11 +115,10 @@ fun CategoryCreateScreen() {
             onCategoryTypeChange = viewModel::setCategoryType,
             onNameChange = viewModel::setNameChange,
             onColorSelection = viewModel::setColorValue,
-            onIconSelection = viewModel::setIcon
+            onIconSelection = viewModel::setIcon,
         )
     }
 }
-
 
 @Composable
 private fun CategoryCreateScreen(
@@ -134,21 +131,19 @@ private fun CategoryCreateScreen(
     selectedIcon: String = "ic_calendar",
     onIconSelection: ((String) -> Unit)? = null,
     onColorSelection: ((Int) -> Unit)? = null,
-    onNameChange: ((String) -> Unit)? = null
+    onNameChange: ((String) -> Unit)? = null,
 ) {
-
     val context = LocalContext.current
 
     val focusManager = LocalFocusManager.current
 
     Column(modifier = modifier) {
-
         CategoryTypeSelectionView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp),
             selectedCategoryType = selectedCategoryType,
-            onCategoryTypeChange = onCategoryTypeChange
+            onCategoryTypeChange = onCategoryTypeChange,
         )
 
         OutlinedTextField(
@@ -166,14 +161,14 @@ private fun CategoryCreateScreen(
             keyboardActions = KeyboardActions(
                 onDone = {
                     focusManager.clearFocus(force = true)
-                }
+                },
             ),
             isError = nameErrorMessage != null,
             supportingText = if (nameErrorMessage != null) {
                 { Text(text = nameErrorMessage.asString(context)) }
             } else {
                 null
-            }
+            },
         )
 
         IconAndColorComponent(
@@ -183,7 +178,7 @@ private fun CategoryCreateScreen(
             selectedColor = selectedColor,
             selectedIcon = selectedIcon,
             onColorSelection = onColorSelection,
-            onIconSelection = onIconSelection
+            onIconSelection = onIconSelection,
         )
     }
 }
@@ -194,8 +189,7 @@ private fun CategoryCreateStatePreview() {
     ExpenseManagerTheme {
         CategoryCreateScreen(
             onCategoryTypeChange = {
-
-            }
+            },
         )
     }
 }

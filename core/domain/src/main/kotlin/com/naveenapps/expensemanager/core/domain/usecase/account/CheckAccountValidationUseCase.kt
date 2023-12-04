@@ -7,7 +7,6 @@ import javax.inject.Inject
 class CheckAccountValidationUseCase @Inject constructor() {
 
     operator fun invoke(account: Account): Resource<Boolean> {
-
         if (account.id.isBlank()) {
             return Resource.Error(Exception("ID shouldn't be blank"))
         }

@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 enum class SelectionType {
     NONE,
     COLOR_SELECTION,
-    ICON_SELECTION
+    ICON_SELECTION,
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +58,7 @@ fun IconAndColorComponent(
         confirmValueChange = {
             Log.d("******", "IconAndColorComponent: $it")
             true
-        }
+        },
     )
 
     val scope = rememberCoroutineScope()
@@ -71,7 +71,7 @@ fun IconAndColorComponent(
             onDismissRequest = {
                 sheetSelection = SelectionType.NONE
             },
-            windowInsets = WindowInsets(0.dp)
+            windowInsets = WindowInsets(0.dp),
         ) {
             when (sheetSelection) {
                 SelectionType.COLOR_SELECTION -> {
@@ -102,7 +102,6 @@ fun IconAndColorComponent(
     }
 
     Row(modifier = modifier) {
-
         val containerColor = selectedColor.toColor()
         val contentColor = colorResource(id = android.R.color.white)
 
@@ -114,7 +113,7 @@ fun IconAndColorComponent(
                     focusManager.clearFocus(force = true)
                 }
                 .align(Alignment.CenterVertically),
-            iconBackgroundColor = selectedColor
+            iconBackgroundColor = selectedColor,
         )
 
         Text(
@@ -122,7 +121,7 @@ fun IconAndColorComponent(
                 .align(Alignment.CenterVertically)
                 .padding(8.dp),
             text = "+",
-            fontSize = 24.sp
+            fontSize = 24.sp,
         )
 
         FilledTonalIconButton(
@@ -130,11 +129,13 @@ fun IconAndColorComponent(
             onClick = {
                 sheetSelection = SelectionType.ICON_SELECTION
                 focusManager.clearFocus(force = true)
-            }) {
+            },
+        ) {
             Icon(
                 painter = painterResource(
-                    context.getDrawable(selectedIcon)
-                ), contentDescription = ""
+                    context.getDrawable(selectedIcon),
+                ),
+                contentDescription = "",
             )
         }
 
@@ -143,7 +144,7 @@ fun IconAndColorComponent(
                 .align(Alignment.CenterVertically)
                 .padding(8.dp),
             text = "=",
-            fontSize = 24.sp
+            fontSize = 24.sp,
         )
 
         FilledTonalIconButton(
@@ -151,14 +152,14 @@ fun IconAndColorComponent(
             onClick = { },
             colors = IconButtonDefaults.filledTonalIconButtonColors(
                 containerColor = containerColor,
-                contentColor = contentColor
-            )
+                contentColor = contentColor,
+            ),
         ) {
             Icon(
                 painter = painterResource(
-                    context.getDrawable(selectedIcon)
+                    context.getDrawable(selectedIcon),
                 ),
-                contentDescription = ""
+                contentDescription = "",
             )
         }
     }
@@ -172,7 +173,7 @@ private fun IconAndColorComponentPreview() {
             selectedColor = "#000000",
             selectedIcon = "ic_add",
             onColorSelection = {},
-            onIconSelection = {}
+            onIconSelection = {},
         )
     }
 }

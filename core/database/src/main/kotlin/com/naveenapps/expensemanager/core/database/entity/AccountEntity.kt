@@ -6,7 +6,6 @@ import androidx.room.PrimaryKey
 import com.naveenapps.expensemanager.core.model.AccountType
 import java.util.Date
 
-
 @Entity(tableName = "account")
 data class AccountEntity(
     @PrimaryKey(autoGenerate = false)
@@ -27,5 +26,5 @@ data class AccountEntity(
     @ColumnInfo(name = "created_on")
     val createdOn: Date,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date
+    val updatedOn: Date,
 )

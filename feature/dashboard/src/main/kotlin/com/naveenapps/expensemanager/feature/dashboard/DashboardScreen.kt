@@ -51,11 +51,10 @@ import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import kotlinx.coroutines.launch
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
-    viewModel: DashboardViewModel = hiltViewModel()
+    viewModel: DashboardViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
     val myTooltipState = remember { RichTooltipState() }
@@ -73,13 +72,13 @@ fun DashboardScreen(
             TopAppBar(title = {
                 Text(
                     text = stringResource(id = R.string.home),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.titleLarge,
                 )
             }, actions = {
                 IconButton(onClick = viewModel::openSettings) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
-                        contentDescription = stringResource(id = R.string.settings)
+                        contentDescription = stringResource(id = R.string.settings),
                     )
                 }
             })
@@ -90,7 +89,7 @@ fun DashboardScreen(
                 title = {
                     Text(
                         text = stringResource(id = R.string.help),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
                     )
                 },
                 action = {
@@ -105,29 +104,29 @@ fun DashboardScreen(
                                 }
                                 .align(Alignment.BottomEnd)
                                 .padding(end = 16.dp),
-                            text = stringResource(id = R.string.ok)
+                            text = stringResource(id = R.string.ok),
                         )
                     }
                 },
                 text = {
                     Text(stringResource(id = R.string.transaction_create_message))
-                }
+                },
             ) {
                 FloatingActionButton(onClick = { viewModel.openTransactionCreate(null) }) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = ""
+                        contentDescription = "",
                     )
                 }
             }
-        }
+        },
     ) { innerPadding ->
         innerPadding.calculateTopPadding()
         DashboardScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            viewModel = viewModel
+            viewModel = viewModel,
         )
     }
 }
@@ -144,13 +143,13 @@ private fun DashboardScreenContent(
     val categoryTransaction by viewModel.categoryTransaction.collectAsState()
 
     LazyColumn(
-        modifier = modifier
+        modifier = modifier,
     ) {
         item {
             FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 6.dp)
+                    .padding(end = 6.dp),
             )
         }
         item {
@@ -179,7 +178,7 @@ private fun DashboardScreenContent(
                         .fillMaxWidth()
                         .padding(top = 16.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     items(accounts) {
                         DashBoardAccountItem(
@@ -206,7 +205,7 @@ private fun DashboardScreenContent(
             CategoryAmountView(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                categoryTransactionUiModel = categoryTransaction
+                categoryTransactionUiModel = categoryTransaction,
             )
         }
         item {
@@ -217,7 +216,7 @@ private fun DashboardScreenContent(
                 title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
                 onViewAllClick = {
                     viewModel.openBudgetList()
-                }
+                },
             )
         }
         if (budgets.isNotEmpty()) {
@@ -226,7 +225,7 @@ private fun DashboardScreenContent(
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     items(budgets) { budget ->
                         DashBoardBudgetItem(
@@ -258,7 +257,7 @@ private fun DashboardScreenContent(
                 title = stringResource(id = R.string.transaction),
                 onViewAllClick = {
                     viewModel.openTransactionList()
-                }
+                },
             )
         }
         if (transactions.isNotEmpty()) {
@@ -307,7 +306,7 @@ fun IncomeExpenseBalanceView(
         expenseAmount = amountUiState.expense,
         incomeAmount = amountUiState.income,
         balanceAmount = amountUiState.balance,
-        showBalance = showBalance
+        showBalance = showBalance,
     )
 }
 
@@ -316,14 +315,14 @@ fun DashboardEmptyView(emptyViewMessage: String) {
     Box(
         modifier = Modifier
             .height(200.dp)
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Text(
-            modifier = Modifier.align(Alignment.Center), text = emptyViewMessage
+            modifier = Modifier.align(Alignment.Center),
+            text = emptyViewMessage,
         )
     }
 }
-
 
 @Preview
 @Composable

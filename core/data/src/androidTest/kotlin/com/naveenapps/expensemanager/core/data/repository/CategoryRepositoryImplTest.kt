@@ -9,9 +9,9 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
-import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -36,17 +36,19 @@ class CategoryRepositoryImplTest : BaseCoroutineTest() {
         super.onCreate()
 
         database = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(), ExpenseManagerDatabase::class.java
+            ApplicationProvider.getApplicationContext(),
+            ExpenseManagerDatabase::class.java,
         ).allowMainThreadQueries().build()
 
         categoryDao = database.categoryDao()
 
         categoryRepository = CategoryRepositoryImpl(
-            categoryDao, AppCoroutineDispatchers(
+            categoryDao,
+            AppCoroutineDispatchers(
                 testCoroutineDispatcher.dispatcher,
                 testCoroutineDispatcher.dispatcher,
-                testCoroutineDispatcher.dispatcher
-            )
+                testCoroutineDispatcher.dispatcher,
+            ),
         )
     }
 

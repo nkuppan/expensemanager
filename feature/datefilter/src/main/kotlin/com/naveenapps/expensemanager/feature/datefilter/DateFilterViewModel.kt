@@ -91,7 +91,7 @@ class DateFilterViewModel @Inject constructor(
             if (customRanges != null) {
                 saveDateRangeUseCase.invoke(
                     selectedFilter,
-                    customRanges
+                    customRanges,
                 )
             }
         }
