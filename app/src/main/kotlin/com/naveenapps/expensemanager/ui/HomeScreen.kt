@@ -129,6 +129,9 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     composable(ExpenseManagerScreens.AboutUsScreen.route) {
         AboutScreen()
     }
+    composable(ExpenseManagerScreens.AdvancedSettingsScreen.route) {
+        AboutScreen()
+    }
 }
 
 @Composable

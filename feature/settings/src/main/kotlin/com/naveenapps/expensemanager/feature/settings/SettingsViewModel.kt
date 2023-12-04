@@ -58,4 +58,8 @@ class SettingsViewModel @Inject constructor(
     fun openAboutUs() {
         appComposeNavigator.navigate(ExpenseManagerScreens.AboutUsScreen.route)
     }
+
+    fun openAdvancedSettings() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.AdvancedSettingsScreen.route)
+    }
 }

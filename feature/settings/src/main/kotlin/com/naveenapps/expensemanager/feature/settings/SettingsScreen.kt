@@ -73,6 +73,10 @@ fun SettingsScreen() {
                 viewModel.openAboutUs()
             }
 
+            SettingOption.ADVANCED -> {
+                viewModel.openAdvancedSettings()
+            }
+
             else -> Unit
         }
     }
@@ -249,6 +253,17 @@ private fun SettingsScreenContent(
             description = stringResource(id = R.string.rate_us_message),
             icon = R.drawable.ic_rate,
         )
+        SettingsItem(
+            modifier = Modifier
+                .clickable {
+                    settingOptionSelected?.invoke(SettingOption.RATE_US)
+                }
+                .padding(top = 8.dp, bottom = 8.dp)
+                .fillMaxWidth(),
+            title = stringResource(id = R.string.advanced),
+            description = stringResource(id = R.string.advanced_config_message),
+            icon = R.drawable.ic_rate,
+        )
     }
 }
 
@@ -287,6 +302,7 @@ private enum class SettingOption {
     EXPORT,
     ABOUT_US,
     RATE_US,
+    ADVANCED,
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

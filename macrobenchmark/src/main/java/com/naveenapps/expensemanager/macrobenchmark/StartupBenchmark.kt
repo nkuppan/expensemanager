@@ -1,5 +1,7 @@
 package com.naveenapps.expensemanager.macrobenchmark
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupTimingMetric
@@ -14,9 +16,11 @@ class StartupBenchmark {
     @get:Rule
     val benchmarkRule = MacrobenchmarkRule()
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @Test
     fun startupWithNoCompilation() = startup(CompilationMode.None())
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @Test
     fun startupWithBaselineProfileCompilation() =
         startup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))

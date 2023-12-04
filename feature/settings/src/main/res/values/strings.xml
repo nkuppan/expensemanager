@@ -22,4 +22,6 @@
     <string name="developed_by">Developed by Naveen Kumar Kuppan</string>
     <string name="system_default">System Default</string>
     <string name="app_version">Version: %s</string>
+    <string name="advanced">Advanced</string>
+    <string name="advanced_config_message">Manage advanced configurations for the app</string>
 </resources>
