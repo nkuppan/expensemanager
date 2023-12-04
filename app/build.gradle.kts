@@ -24,6 +24,7 @@ android {
         debug {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
+            enableUnitTestCoverage = true
         }
         create("macrobenchmark") {
             signingConfig = signingConfigs.getByName("debug")

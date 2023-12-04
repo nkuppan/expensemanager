@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +15,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.EditNotifications
+import androidx.compose.material.icons.outlined.FilterAlt
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Palette
+import androidx.compose.material.icons.outlined.Payments
+import androidx.compose.material.icons.outlined.RateReview
+import androidx.compose.material.icons.outlined.SettingsApplications
+import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,8 +40,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -185,7 +193,7 @@ private fun SettingsScreenContent(
             } else {
                 stringResource(id = R.string.system_default)
             },
-            icon = R.drawable.ic_palette,
+            imageVector = Icons.Outlined.Palette,
         )
         SettingsItem(
             modifier = Modifier
@@ -196,7 +204,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.currency),
             description = "${selectedCurrency.name}(${selectedCurrency.symbol})",
-            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.payments,
+            imageVector = Icons.Outlined.Payments,
         )
         SettingsItem(
             modifier = Modifier
@@ -207,7 +215,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.reminder_notification),
             description = stringResource(id = R.string.selected_daily_reminder_time),
-            icon = R.drawable.ic_edit_notifications,
+            imageVector = Icons.Outlined.EditNotifications,
         )
         SettingsItem(
             modifier = Modifier
@@ -218,7 +226,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.filter),
             description = stringResource(id = R.string.filter_message),
-            icon = R.drawable.ic_filter,
+            imageVector = Icons.Outlined.FilterAlt,
         )
         SettingsItem(
             modifier = Modifier
@@ -229,7 +237,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.export),
             description = stringResource(id = R.string.export_message),
-            icon = R.drawable.ic_export,
+            imageVector = Icons.Outlined.Upload,
         )
         SettingsItem(
             modifier = Modifier
@@ -240,7 +248,7 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
             description = stringResource(id = R.string.about_the_app_information),
-            icon = R.drawable.ic_info,
+            imageVector = Icons.Outlined.Info,
         )
         SettingsItem(
             modifier = Modifier
@@ -251,18 +259,18 @@ private fun SettingsScreenContent(
                 .fillMaxWidth(),
             title = stringResource(id = R.string.rate_us),
             description = stringResource(id = R.string.rate_us_message),
-            icon = R.drawable.ic_rate,
+            imageVector = Icons.Outlined.RateReview,
         )
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.RATE_US)
+                    settingOptionSelected?.invoke(SettingOption.ADVANCED)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.advanced),
             description = stringResource(id = R.string.advanced_config_message),
-            icon = R.drawable.ic_rate,
+            imageVector = Icons.Outlined.SettingsApplications,
         )
     }
 }
@@ -271,7 +279,7 @@ private fun SettingsScreenContent(
 private fun SettingsItem(
     title: String,
     description: String,
-    @DrawableRes icon: Int,
+    imageVector: ImageVector,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier) {
@@ -279,7 +287,7 @@ private fun SettingsItem(
             modifier = Modifier
                 .wrapContentSize()
                 .padding(16.dp),
-            painter = painterResource(id = icon),
+            imageVector = imageVector,
             contentDescription = null,
         )
         Column(
@@ -316,7 +324,7 @@ fun SettingsScreenItemPreview() {
                 .fillMaxWidth(),
             title = stringResource(id = R.string.theme),
             description = stringResource(id = R.string.system_default),
-            icon = R.drawable.ic_palette,
+            imageVector = Icons.Outlined.Upload,
         )
     }
 }
