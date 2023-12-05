@@ -79,5 +79,5 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          files: '**/build/reports/', '**/build/reports/allDebugCoverage.xml'
+          files: ./build/reports/, ./build/reports/allDebugCoverage.xml
           full_report: '**/build/reports/allDebugCoverage.xml'
