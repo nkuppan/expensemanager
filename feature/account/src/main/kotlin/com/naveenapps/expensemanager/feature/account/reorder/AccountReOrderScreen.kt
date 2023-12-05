@@ -20,16 +20,15 @@ import com.naveenapps.expensemanager.feature.account.R
 
 @Composable
 fun AccountReOrderScreen(
-    viewModel: AccountReOrderViewModel = hiltViewModel()
+    viewModel: AccountReOrderViewModel = hiltViewModel(),
 ) {
     AccountReOrderScaffoldView(
-        backPress = viewModel::closePage
+        backPress = viewModel::closePage,
     )
 }
 
 @Composable
 private fun AccountReOrderScaffoldView(backPress: () -> Unit) {
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -56,7 +55,6 @@ private fun AccountReOrderScaffoldView(backPress: () -> Unit) {
                 .padding(innerPadding)
                 .fillMaxSize(),
         ) {
-
         }
     }
 }

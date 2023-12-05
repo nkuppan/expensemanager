@@ -63,7 +63,6 @@ class SettingsRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun `when getTransactionTypes after saving the item should return the saved value`() = runTest {
-
         val transactionTypes =
             listOf(TransactionType.EXPENSE, TransactionType.INCOME, TransactionType.TRANSFER)
 
@@ -182,7 +181,6 @@ class SettingsRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun `when getDefaultAccount after saving the item should return the saved value`() = runTest {
-
         val expectedItem = "sampleId"
 
         repository.setDefaultAccount(expectedItem)
@@ -214,7 +212,6 @@ class SettingsRepositoryImplTest : BaseCoroutineTest() {
     @Test
     fun `when getDefaultExpenseCategory after saving the item should return the saved value`() =
         runTest {
-
             val expectedItem = "sampleId"
 
             repository.setDefaultExpenseCategory(expectedItem)
@@ -246,7 +243,6 @@ class SettingsRepositoryImplTest : BaseCoroutineTest() {
     @Test
     fun `when getDefaultIncomeCategory after saving the item should return the saved value`() =
         runTest {
-
             val expectedItem = "sampleId"
 
             repository.setDefaultIncomeCategory(expectedItem)

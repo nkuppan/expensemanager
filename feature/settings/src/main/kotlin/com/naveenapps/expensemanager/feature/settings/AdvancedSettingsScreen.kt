@@ -39,7 +39,7 @@ import java.util.Date
 
 @Composable
 fun AdvancedSettingsScreen(
-    viewModel: AdvancedSettingsViewModel = hiltViewModel()
+    viewModel: AdvancedSettingsViewModel = hiltViewModel(),
 ) {
     AdvancedSettingsScaffoldView(
         accounts = viewModel.accounts,
@@ -80,13 +80,13 @@ private fun AdvancedSettingsScaffoldView(
                     contentDescription = "",
                 )
             }
-        }
+        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
         ) {
             if (accounts.isNotEmpty() && selectedAccount != null) {
                 AccountPreSelectionView(
@@ -139,7 +139,7 @@ private fun AccountPreSelectionView(
         expanded = expanded,
         onExpandedChange = {
             expanded = expanded.not()
-        }
+        },
     ) {
         OutlinedTextField(
             modifier = Modifier
@@ -153,9 +153,9 @@ private fun AccountPreSelectionView(
             },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
+                    expanded = expanded,
                 )
-            }
+            },
         )
         ExposedDropdownMenu(
             modifier = Modifier
@@ -163,7 +163,7 @@ private fun AccountPreSelectionView(
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
-            }
+            },
         ) {
             accounts.forEach { item ->
                 DropdownMenuItem(
@@ -173,7 +173,7 @@ private fun AccountPreSelectionView(
                     onClick = {
                         onItemSelection?.invoke(item)
                         expanded = false
-                    }
+                    },
                 )
             }
         }
@@ -196,7 +196,7 @@ private fun CategoryPreSelectionView(
         expanded = expanded,
         onExpandedChange = {
             expanded = expanded.not()
-        }
+        },
     ) {
         OutlinedTextField(
             modifier = Modifier
@@ -210,9 +210,9 @@ private fun CategoryPreSelectionView(
             },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
+                    expanded = expanded,
                 )
-            }
+            },
         )
         ExposedDropdownMenu(
             modifier = Modifier
@@ -220,7 +220,7 @@ private fun CategoryPreSelectionView(
             expanded = expanded,
             onDismissRequest = {
                 expanded = false
-            }
+            },
         ) {
             categories.forEach { item ->
                 DropdownMenuItem(
@@ -230,7 +230,7 @@ private fun CategoryPreSelectionView(
                     onClick = {
                         onItemSelection?.invoke(item)
                         expanded = false
-                    }
+                    },
                 )
             }
         }

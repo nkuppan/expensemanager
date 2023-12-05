@@ -163,7 +163,7 @@ class TransactionCreateViewModel @Inject constructor(
 
             _categories.value = filteredCategories
             _selectedCategory.value = expenseCategory ?: filteredCategories.firstOrNull()
-                    ?: defaultCategory
+                ?: defaultCategory
         }.launchIn(viewModelScope)
 
         readInfo(
