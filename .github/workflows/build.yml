@@ -70,7 +70,7 @@ jobs:
         run: ./gradlew allDebugCoverage
 
       - name: generate report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: report
           path: '**/build/reports/'
@@ -79,5 +79,5 @@ jobs:
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-          files: ./build/reports/, ./build/reports/allDebugCoverage.xml
-          full_report: '**/build/reports/allDebugCoverage.xml'
+          directory: ./build/reports/
+          files: ./build/reports/,./build/reports/allDebugCoverage.xml
