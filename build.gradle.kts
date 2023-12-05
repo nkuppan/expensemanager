@@ -117,7 +117,6 @@ tasks.create("allDebugCoverage", JacocoReport::class) {
     reports {
         xml.required.set(true)
         html.required.set(true)
-        xml.outputLocation = File(rootDir, "reports.xml")
     }
 
     val jClasses: List<String> = subprojects.map { proj ->
