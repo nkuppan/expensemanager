@@ -27,4 +27,6 @@
     <string name="default_account">Default Account</string>
     <string name="default_expense_category">Default Expense Category</string>
     <string name="default_income_category">Default Income Category</string>
+    <string name="accounts_re_order">Accounts Re-Order</string>
+    <string name="accounts_re_order_message">Can change the order of the accounts list on the dashboard.</string>
 </resources>

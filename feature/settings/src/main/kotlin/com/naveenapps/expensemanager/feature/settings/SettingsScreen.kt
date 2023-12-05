@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.RateReview
+import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -83,6 +84,10 @@ fun SettingsScreen() {
 
             SettingOption.ADVANCED -> {
                 viewModel.openAdvancedSettings()
+            }
+
+            SettingOption.ACCOUNTS_RE_ORDER -> {
+                viewModel.openAccountsReOrder()
             }
 
             else -> Unit
@@ -242,17 +247,6 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.ABOUT_US)
-                }
-                .padding(top = 8.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
-            description = stringResource(id = R.string.about_the_app_information),
-            imageVector = Icons.Outlined.Info,
-        )
-        SettingsItem(
-            modifier = Modifier
-                .clickable {
                     settingOptionSelected?.invoke(SettingOption.RATE_US)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -271,6 +265,28 @@ private fun SettingsScreenContent(
             title = stringResource(id = R.string.advanced),
             description = stringResource(id = R.string.advanced_config_message),
             imageVector = Icons.Outlined.SettingsApplications,
+        )
+        SettingsItem(
+            modifier = Modifier
+                .clickable {
+                    settingOptionSelected?.invoke(SettingOption.ACCOUNTS_RE_ORDER)
+                }
+                .padding(top = 8.dp, bottom = 8.dp)
+                .fillMaxWidth(),
+            title = stringResource(id = R.string.accounts_re_order),
+            description = stringResource(id = R.string.accounts_re_order_message),
+            imageVector = Icons.Outlined.Reorder,
+        )
+        SettingsItem(
+            modifier = Modifier
+                .clickable {
+                    settingOptionSelected?.invoke(SettingOption.ABOUT_US)
+                }
+                .padding(top = 8.dp, bottom = 8.dp)
+                .fillMaxWidth(),
+            title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
+            description = stringResource(id = R.string.about_the_app_information),
+            imageVector = Icons.Outlined.Info,
         )
     }
 }
@@ -311,6 +327,7 @@ private enum class SettingOption {
     ABOUT_US,
     RATE_US,
     ADVANCED,
+    ACCOUNTS_RE_ORDER,
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

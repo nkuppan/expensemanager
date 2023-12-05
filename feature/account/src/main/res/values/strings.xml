@@ -23,4 +23,5 @@
     <string name="select">Select</string>
     <string name="account_delete_success_message">Account deleted successfully</string>
     <string name="add_new">Add New</string>
+    <string name="accounts_re_order">Accounts Re-Order</string>
 </resources>

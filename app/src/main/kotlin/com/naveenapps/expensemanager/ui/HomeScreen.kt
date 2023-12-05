@@ -23,6 +23,7 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.about.AboutScreen
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
+import com.naveenapps.expensemanager.feature.account.reorder.AccountReOrderScreen
 import com.naveenapps.expensemanager.feature.analysis.AnalysisScreen
 import com.naveenapps.expensemanager.feature.budget.create.BudgetCreateScreen
 import com.naveenapps.expensemanager.feature.budget.details.BudgetDetailScreen
@@ -132,6 +133,9 @@ fun NavGraphBuilder.expenseManagerNavigation() {
     }
     composable(ExpenseManagerScreens.AdvancedSettingsScreen.route) {
         AdvancedSettingsScreen()
+    }
+    composable(ExpenseManagerScreens.AccountReOrderScreen.route) {
+        AccountReOrderScreen()
     }
 }
 
