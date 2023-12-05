@@ -240,6 +240,7 @@ private fun TransactionCreateBottomSheetContent(
             selectedCategory = selectedCategory,
             createNewCallback = {
                 viewModel.openCategoryCreate()
+                hideBottomSheet.invoke()
             },
         ) { category ->
             viewModel.setCategorySelection(category)
@@ -258,6 +259,7 @@ private fun TransactionCreateBottomSheetContent(
             },
             createNewCallback = {
                 viewModel.openAccountCreate()
+                hideBottomSheet.invoke()
             },
         ) { account ->
             viewModel.setAccountSelection(sheetSelection, account)

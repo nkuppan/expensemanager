@@ -28,6 +28,7 @@ import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.feature.transaction.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -35,6 +36,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -53,6 +55,7 @@ class TransactionCreateViewModel @Inject constructor(
     private val addTransactionUseCase: AddTransactionUseCase,
     private val updateTransactionUseCase: UpdateTransactionUseCase,
     private val deleteTransactionUseCase: DeleteTransactionUseCase,
+    private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
@@ -121,9 +124,13 @@ class TransactionCreateViewModel @Inject constructor(
                     )
                 }
             }
+
+            val accountId = settingsRepository.getDefaultAccount().firstOrNull()
+            val account = mappedAccounts.find { it.id == accountId }
+
             _accounts.value = mappedAccounts
-            _selectedFromAccount.value = mappedAccounts.firstOrNull() ?: defaultAccount
-            _selectedToAccount.value = mappedAccounts.firstOrNull() ?: defaultAccount
+            _selectedFromAccount.value = account ?: mappedAccounts.firstOrNull() ?: defaultAccount
+            _selectedToAccount.value = account ?: mappedAccounts.firstOrNull() ?: defaultAccount
         }.launchIn(viewModelScope)
 
         combine(
@@ -137,8 +144,26 @@ class TransactionCreateViewModel @Inject constructor(
                     category.type.isExpense()
                 }
             }
+
+            val categoryId = when (transactionType) {
+                TransactionType.INCOME -> {
+                    settingsRepository.getDefaultIncomeCategory().firstOrNull()
+                }
+
+                TransactionType.EXPENSE -> {
+                    settingsRepository.getDefaultExpenseCategory().firstOrNull()
+                }
+
+                else -> {
+                    null
+                }
+            }
+
+            val expenseCategory = filteredCategories.find { it.id == categoryId }
+
             _categories.value = filteredCategories
-            _selectedCategory.value = filteredCategories.firstOrNull() ?: defaultCategory
+            _selectedCategory.value = expenseCategory ?: filteredCategories.firstOrNull()
+                    ?: defaultCategory
         }.launchIn(viewModelScope)
 
         readInfo(

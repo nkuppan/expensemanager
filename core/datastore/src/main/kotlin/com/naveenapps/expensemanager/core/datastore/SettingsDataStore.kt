@@ -4,6 +4,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
@@ -56,6 +57,30 @@ class SettingsDataStore @Inject constructor(private val dataStore: DataStore<Pre
         preferences[KEY_IS_ON_BOARDING_COMPLETED] ?: false
     }
 
+    suspend fun setDefaultAccount(defaultAccount: String?) = dataStore.edit { preferences ->
+        preferences[KEY_DEFAULT_ACCOUNT] = defaultAccount ?: ""
+    }
+
+    fun getDefaultAccount(): Flow<String?> = dataStore.data.map { preferences ->
+        preferences[KEY_DEFAULT_ACCOUNT]
+    }
+
+    suspend fun setDefaultExpenseCategory(expenseCategory: String?) = dataStore.edit { preferences ->
+        preferences[KEY_DEFAULT_EXPENSE_CATEGORY] = expenseCategory ?: ""
+    }
+
+    fun getDefaultExpenseCategory(): Flow<String?> = dataStore.data.map { preferences ->
+        preferences[KEY_DEFAULT_EXPENSE_CATEGORY]
+    }
+
+    suspend fun setDefaultIncomeCategory(expenseCategory: String?) = dataStore.edit { preferences ->
+        preferences[KEY_DEFAULT_INCOME_CATEGORY] = expenseCategory ?: ""
+    }
+
+    fun getDefaultIncomeCategory(): Flow<String?> = dataStore.data.map { preferences ->
+        preferences[KEY_DEFAULT_INCOME_CATEGORY]
+    }
+
     companion object {
         private val KEY_IS_PRELOAD = booleanPreferencesKey("is_preloaded")
         private val KEY_IS_ON_BOARDING_COMPLETED = booleanPreferencesKey("is_on_boarding_completed")
@@ -63,5 +88,9 @@ class SettingsDataStore @Inject constructor(private val dataStore: DataStore<Pre
         private val KEY_SELECTED_ACCOUNTS = stringSetPreferencesKey("selected_accounts")
         private val KEY_SELECTED_CATEGORIES = stringSetPreferencesKey("selected_categories")
         private val KEY_TRANSACTION_TYPES = stringSetPreferencesKey("transaction_types")
+
+        private val KEY_DEFAULT_ACCOUNT = stringPreferencesKey("default_account")
+        private val KEY_DEFAULT_EXPENSE_CATEGORY = stringPreferencesKey("default_expense_category")
+        private val KEY_DEFAULT_INCOME_CATEGORY = stringPreferencesKey("default_income_category")
     }
 }

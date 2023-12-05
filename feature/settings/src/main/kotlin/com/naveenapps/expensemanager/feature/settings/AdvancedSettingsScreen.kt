@@ -1,15 +1,20 @@
 package com.naveenapps.expensemanager.feature.settings
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -38,16 +43,28 @@ fun AdvancedSettingsScreen(
 ) {
     AdvancedSettingsScaffoldView(
         accounts = viewModel.accounts,
-        categories = viewModel.categories,
+        selectedAccount = viewModel.selectedAccount,
+        expenseCategories = viewModel.expenseCategories,
+        selectedExpenseCategory = viewModel.selectedExpenseCategory,
+        incomeCategories = viewModel.incomeCategories,
+        selectedIncomeCategory = viewModel.selectedIncomeCategory,
+        onItemSelection = viewModel::onItemSelection,
         backPress = viewModel::closePage,
+        saveChanges = viewModel::saveChanges,
     )
 }
 
 @Composable
 private fun AdvancedSettingsScaffoldView(
     accounts: List<Account>,
-    categories: List<Category>,
-    backPress: () -> Unit
+    selectedAccount: Account?,
+    expenseCategories: List<Category>,
+    selectedExpenseCategory: Category?,
+    incomeCategories: List<Category>,
+    selectedIncomeCategory: Category?,
+    onItemSelection: (Any) -> Unit,
+    backPress: () -> Unit,
+    saveChanges: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -56,6 +73,14 @@ private fun AdvancedSettingsScaffoldView(
                 title = stringResource(R.string.advanced),
             )
         },
+        floatingActionButton = {
+            FloatingActionButton(onClick = saveChanges) {
+                Icon(
+                    imageVector = Icons.Outlined.Done,
+                    contentDescription = "",
+                )
+            }
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -63,19 +88,36 @@ private fun AdvancedSettingsScaffoldView(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
         ) {
-            if (accounts.isNotEmpty()) {
+            if (accounts.isNotEmpty() && selectedAccount != null) {
                 AccountPreSelectionView(
-                    accounts, modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
-            }
-            if (categories.isNotEmpty()) {
-                CategoryPreSelectionView(
-                    categories,
+                    accounts = accounts,
+                    selectedAccount = selectedAccount,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    onItemSelection = onItemSelection,
+                )
+            }
+            if (expenseCategories.isNotEmpty() && selectedExpenseCategory != null) {
+                CategoryPreSelectionView(
+                    expenseCategories,
+                    selectedExpenseCategory,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    label = R.string.default_expense_category,
+                    onItemSelection = onItemSelection,
+                )
+            }
+            if (incomeCategories.isNotEmpty() && selectedIncomeCategory != null) {
+                CategoryPreSelectionView(
+                    incomeCategories,
+                    selectedIncomeCategory,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    label = R.string.default_income_category,
+                    onItemSelection = onItemSelection,
                 )
             }
         }
@@ -86,10 +128,11 @@ private fun AdvancedSettingsScaffoldView(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun AccountPreSelectionView(
     accounts: List<Account>,
-    modifier: Modifier = Modifier
+    selectedAccount: Account,
+    modifier: Modifier = Modifier,
+    onItemSelection: ((Any) -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedAccount by remember { mutableStateOf(accounts[0]) }
 
     ExposedDropdownMenuBox(
         modifier = modifier,
@@ -106,7 +149,7 @@ private fun AccountPreSelectionView(
             value = selectedAccount.name,
             onValueChange = { },
             label = {
-                Text(stringResource(id = R.string.default_selected_account))
+                Text(stringResource(id = R.string.default_account))
             },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -122,13 +165,13 @@ private fun AccountPreSelectionView(
                 expanded = false
             }
         ) {
-            accounts.forEach { account ->
+            accounts.forEach { item ->
                 DropdownMenuItem(
                     text = {
-                        Text(text = account.name)
+                        Text(text = item.name)
                     },
                     onClick = {
-                        selectedAccount = account
+                        onItemSelection?.invoke(item)
                         expanded = false
                     }
                 )
@@ -141,10 +184,12 @@ private fun AccountPreSelectionView(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CategoryPreSelectionView(
     categories: List<Category>,
-    modifier: Modifier = Modifier
+    selectedCategory: Category,
+    @StringRes label: Int,
+    modifier: Modifier = Modifier,
+    onItemSelection: ((Any) -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedAccount by remember { mutableStateOf(categories[0]) }
 
     ExposedDropdownMenuBox(
         modifier = modifier,
@@ -158,10 +203,10 @@ private fun CategoryPreSelectionView(
                 .fillMaxWidth()
                 .menuAnchor(),
             readOnly = true,
-            value = selectedAccount.name,
+            value = selectedCategory.name,
             onValueChange = { },
             label = {
-                Text(stringResource(id = R.string.default_selected_category))
+                Text(stringResource(id = label))
             },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
@@ -177,13 +222,13 @@ private fun CategoryPreSelectionView(
                 expanded = false
             }
         ) {
-            categories.forEach { account ->
+            categories.forEach { item ->
                 DropdownMenuItem(
                     text = {
-                        Text(text = account.name)
+                        Text(text = item.name)
                     },
                     onClick = {
-                        selectedAccount = account
+                        onItemSelection?.invoke(item)
                         expanded = false
                     }
                 )
@@ -250,9 +295,14 @@ fun AdvancedSettingsPreview() {
     ExpenseManagerTheme {
         AdvancedSettingsScaffoldView(
             accounts = getRandomAccountData(5),
-            categories = getRandomCategoryData(5),
-        ) {
-
-        }
+            selectedAccount = getRandomAccountData(5).firstOrNull(),
+            expenseCategories = getRandomCategoryData(5),
+            selectedExpenseCategory = getRandomCategoryData(5).firstOrNull(),
+            incomeCategories = getRandomCategoryData(5),
+            selectedIncomeCategory = getRandomCategoryData(5).firstOrNull(),
+            onItemSelection = {},
+            saveChanges = {},
+            backPress = {},
+        )
     }
 }

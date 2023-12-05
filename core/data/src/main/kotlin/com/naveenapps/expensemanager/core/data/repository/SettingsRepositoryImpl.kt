@@ -62,4 +62,34 @@ class SettingsRepositoryImpl @Inject constructor(
             dataStore.setOnboardingCompleted(isOnboardingCompleted)
             return@withContext Resource.Success(true)
         }
+
+    override fun getDefaultAccount(): Flow<String?> {
+        return dataStore.getDefaultAccount()
+    }
+
+    override suspend fun setDefaultAccount(accountId: String): Resource<Boolean>  =
+        withContext(dispatcher.io) {
+            dataStore.setDefaultAccount(accountId)
+            return@withContext Resource.Success(true)
+        }
+
+    override fun getDefaultExpenseCategory(): Flow<String?> {
+        return dataStore.getDefaultExpenseCategory()
+    }
+
+    override suspend fun setDefaultExpenseCategory(categoryId: String): Resource<Boolean>  =
+        withContext(dispatcher.io) {
+            dataStore.setDefaultExpenseCategory(categoryId)
+            return@withContext Resource.Success(true)
+        }
+
+    override fun getDefaultIncomeCategory(): Flow<String?> {
+        return dataStore.getDefaultIncomeCategory()
+    }
+
+    override suspend fun setDefaultIncomeCategory(categoryId: String): Resource<Boolean>  =
+        withContext(dispatcher.io) {
+            dataStore.setDefaultIncomeCategory(categoryId)
+            return@withContext Resource.Success(true)
+        }
 }

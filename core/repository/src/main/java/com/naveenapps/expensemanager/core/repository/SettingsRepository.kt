@@ -25,4 +25,16 @@ interface SettingsRepository {
     fun isOnboardingCompleted(): Flow<Boolean>
 
     suspend fun setOnboardingCompleted(isOnboardingCompleted: Boolean): Resource<Boolean>
+
+    fun getDefaultAccount() : Flow<String?>
+
+    suspend fun setDefaultAccount(accountId: String): Resource<Boolean>
+
+    fun getDefaultExpenseCategory() : Flow<String?>
+
+    suspend fun setDefaultExpenseCategory(categoryId: String): Resource<Boolean>
+
+    fun getDefaultIncomeCategory() : Flow<String?>
+
+    suspend fun setDefaultIncomeCategory(categoryId: String): Resource<Boolean>
 }
