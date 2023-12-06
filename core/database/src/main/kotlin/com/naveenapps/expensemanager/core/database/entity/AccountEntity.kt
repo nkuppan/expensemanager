@@ -23,6 +23,8 @@ data class AccountEntity(
     val amount: Double,
     @ColumnInfo(name = "credit_limit")
     val creditLimit: Double,
+    @ColumnInfo(name = "sequence")
+    val sequence: Int,
     @ColumnInfo(name = "created_on")
     val createdOn: Date,
     @ColumnInfo(name = "updated_on")

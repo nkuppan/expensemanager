@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface AccountDao : BaseDao<AccountEntity> {
 
-    @Query("SELECT * FROM account ORDER BY created_on DESC")
+    @Query("SELECT * FROM account ORDER BY sequence ASC")
     fun getAccounts(): Flow<List<AccountEntity>?>
 
     @Query("SELECT * FROM account WHERE id = :id")

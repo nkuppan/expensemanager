@@ -9,6 +9,7 @@ data class Account(
     val storedIcon: StoredIcon,
     val createdOn: Date,
     val updatedOn: Date,
+    val sequence: Int = Int.MAX_VALUE,
     val amount: Double = 0.0,
     val creditLimit: Double = 0.0,
 )

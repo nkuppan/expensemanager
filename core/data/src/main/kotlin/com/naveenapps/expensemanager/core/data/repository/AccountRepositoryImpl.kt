@@ -58,6 +58,16 @@ class AccountRepositoryImpl @Inject constructor(
             }
         }
 
+    override suspend fun updateAllAccount(accounts: List<Account>): Resource<Boolean> =
+        withContext(dispatchers.io) {
+            return@withContext try {
+                accountDao.updateAll(accounts.map { it.toEntityModel() })
+                Resource.Success(true)
+            } catch (exception: Exception) {
+                Resource.Error(exception)
+            }
+        }
+
     override suspend fun deleteAccount(account: Account): Resource<Boolean> =
         withContext(dispatchers.io) {
             return@withContext try {

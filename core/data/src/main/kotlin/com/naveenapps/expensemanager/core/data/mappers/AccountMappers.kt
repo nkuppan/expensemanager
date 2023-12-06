@@ -13,6 +13,7 @@ fun Account.toEntityModel(): AccountEntity {
         iconName = storedIcon.name,
         amount = amount,
         creditLimit = creditLimit,
+        sequence = sequence,
         createdOn = createdOn,
         updatedOn = updatedOn,
     )
@@ -29,6 +30,7 @@ fun AccountEntity.toDomainModel(): Account {
         ),
         amount = amount,
         creditLimit = creditLimit,
+        sequence = sequence,
         createdOn = createdOn,
         updatedOn = updatedOn,
     )

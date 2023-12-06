@@ -2,6 +2,8 @@ package com.naveenapps.expensemanager.core.database.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.BudgetDao
@@ -13,6 +15,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+
+private val MIGRATION_2_3 = object : Migration(2, 3) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE account ADD COLUMN sequence INTEGER NOT NULL DEFAULT ${Int.MAX_VALUE}")
+    }
+}
+
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -27,6 +36,8 @@ object DatabaseModule {
             context,
             ExpenseManagerDatabase::class.java,
             DATA_BASE_NAME,
+        ).addMigrations(
+            MIGRATION_2_3
         ).build()
     }
 

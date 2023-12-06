@@ -14,5 +14,7 @@ interface AccountRepository {
 
     suspend fun updateAccount(account: Account): Resource<Boolean>
 
+    suspend fun updateAllAccount(accounts: List<Account>): Resource<Boolean>
+
     suspend fun deleteAccount(account: Account): Resource<Boolean>
 }
