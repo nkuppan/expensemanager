@@ -104,9 +104,10 @@ fun DecimalTextField(
     leadingIconText: String?,
     label: Int,
     modifier: Modifier = Modifier,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
+    val pattern = remember { Regex("^\\d+\$") }
     val context = LocalContext.current
-
     val focusManager = LocalFocusManager.current
 
     OutlinedTextField(
@@ -123,11 +124,16 @@ fun DecimalTextField(
         } else {
             null
         },
+        trailingIcon = trailingIcon,
         label = {
             Text(text = stringResource(id = label))
         },
         onValueChange = {
-            onValueChange?.invoke(it)
+            if (it.isEmpty() || it.matches(pattern)) {
+                onValueChange?.invoke(it)
+            } else {
+                onValueChange?.invoke(value)
+            }
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,

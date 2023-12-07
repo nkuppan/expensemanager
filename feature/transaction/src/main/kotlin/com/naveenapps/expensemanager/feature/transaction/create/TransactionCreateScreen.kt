@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
@@ -24,7 +23,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -49,7 +47,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -59,6 +56,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePick
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
+import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -364,24 +362,16 @@ private fun TransactionCreateScreen(
             )
         }
 
-        OutlinedTextField(
+        DecimalTextField(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
             value = amount,
-            singleLine = true,
-            leadingIcon = if (currencyIcon != null) {
-                {
-                    Text(
-                        currencyIcon,
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                }
-            } else {
-                null
-            },
-            trailingIcon =
-            {
+            errorMessage = amountErrorMessage,
+            onValueChange = amountChange,
+            leadingIconText = currencyIcon,
+            label = R.string.amount,
+            trailingIcon = {
                 IconButton(
                     onClick = {
                         openSelection?.invoke(4)
@@ -393,27 +383,8 @@ private fun TransactionCreateScreen(
                     )
                 }
             },
-            label = {
-                Text(text = stringResource(id = R.string.amount))
-            },
-            onValueChange = {
-                amountChange?.invoke(it)
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Decimal,
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus(force = true)
-                },
-            ),
-            isError = amountErrorMessage != null,
-            supportingText = if (amountErrorMessage != null) {
-                { Text(text = amountErrorMessage.asString(context)) }
-            } else {
-                null
-            },
         )
+
         if (selectedTransactionType != TransactionType.TRANSFER) {
             Text(
                 modifier = Modifier

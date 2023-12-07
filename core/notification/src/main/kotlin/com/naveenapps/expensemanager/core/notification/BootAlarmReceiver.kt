@@ -11,7 +11,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val DESTINATION_CLASS = "com.naveenapps.expensemanager.HomeActivity"
+const val DESTINATION_CLASS = "com.naveenapps.expensemanager.MainActivity"
 
 @AndroidEntryPoint
 open class BootAlarmReceiver : BroadcastReceiver() {
