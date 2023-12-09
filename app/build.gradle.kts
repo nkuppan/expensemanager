@@ -91,20 +91,14 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
-    //implementation(libs.firebase.performance)
 
     implementation(libs.androidx.splash.screen)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.material)
-    implementation(libs.androidx.navigation)
-    implementation(libs.androidx.navigation.ui)
     implementation(libs.androidx.profileinstaller)
-    implementation(libs.androidx.dataStore.core)
-    implementation(libs.androidx.dataStore.preference)
 
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.androidx.work.ktx)
     implementation(libs.hilt.ext.work)
 
     implementation(libs.google.oss.licenses)

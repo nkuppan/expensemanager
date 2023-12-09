@@ -21,6 +21,7 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.spotless) apply false
+    id("com.autonomousapps.dependency-analysis").version("1.27.0")
 }
 
 val ktlintVersion = "0.48.1"

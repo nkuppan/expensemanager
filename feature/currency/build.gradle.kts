@@ -11,4 +11,5 @@ android {
 
 dependencies {
     implementation(libs.country.compose)
+    implementation(libs.androidx.appcompat)
 }

@@ -38,7 +38,7 @@ dependencies {
     api(libs.truth)
     api(libs.robolectric)
 
-    debugApi(libs.androidx.compose.ui.testManifest)
+    debugRuntimeOnly(libs.androidx.compose.ui.testManifest)
 
     implementation(project(":core:common"))
     implementation(project(":core:data"))

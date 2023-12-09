@@ -13,8 +13,9 @@ dependencies {
     implementation(project(":core:common"))
 
     api(libs.androidx.appcompat)
+    implementation(libs.androidx.compose.activity)
+    implementation(libs.androidx.core.ktx)
 
-    api(libs.androidx.compose.activity)
     api(libs.androidx.compose.animation)
     api(libs.androidx.compose.foundation)
     api(libs.androidx.compose.foundation.layout)
@@ -32,11 +33,5 @@ dependencies {
 
     debugApi(libs.androidx.compose.ui.tooling)
 
-    api(libs.androidx.core.ktx)
-
-    implementation(libs.vico.compose)
-    implementation(libs.vico.compose.m3)
-    implementation(libs.vico.core)
-
-    implementation(libs.mpcharts)
+    api(libs.mpcharts)
 }

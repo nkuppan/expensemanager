@@ -14,9 +14,7 @@ dependencies {
     implementation(project(":core:repository"))
     implementation(project(":core:data"))
 
-    implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.joda.time)
 
     androidTestImplementation(project(":core:testing"))
