@@ -14,7 +14,6 @@ import java.util.Date
 
 class AddBudgetUseCaseTest : BaseCoroutineTest() {
 
-
     private val budget = Budget(
         id = "1",
         name = "Sample",
@@ -110,8 +109,8 @@ class AddBudgetUseCaseTest : BaseCoroutineTest() {
         val response = addBudgetUseCase.invoke(
             budget.copy(
                 isAllAccountsSelected = false,
-                accounts = emptyList()
-            )
+                accounts = emptyList(),
+            ),
         )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
@@ -125,8 +124,8 @@ class AddBudgetUseCaseTest : BaseCoroutineTest() {
         val response = addBudgetUseCase.invoke(
             budget.copy(
                 isAllCategoriesSelected = false,
-                categories = emptyList()
-            )
+                categories = emptyList(),
+            ),
         )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)

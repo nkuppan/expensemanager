@@ -11,7 +11,6 @@ class UpdateAllAccountUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(accounts: List<Account>): Resource<Boolean> {
-
         if (accounts.isEmpty()) {
             return Resource.Error(Exception("Accounts are empty"))
         }

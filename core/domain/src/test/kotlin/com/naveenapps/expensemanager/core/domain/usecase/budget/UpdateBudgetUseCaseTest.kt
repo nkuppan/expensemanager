@@ -14,7 +14,6 @@ import java.util.Date
 
 class UpdateBudgetUseCaseTest : BaseCoroutineTest() {
 
-
     private val budget = Budget(
         id = "1",
         name = "Sample",
@@ -97,7 +96,7 @@ class UpdateBudgetUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenBudgetStoredIconBGColorIsInValidColorShouldReturnError() = runTest {
         val response = updateBudgetUseCase.invoke(
-            budget.copy(storedIcon = StoredIcon("ic_calendar", "sample"))
+            budget.copy(storedIcon = StoredIcon("ic_calendar", "sample")),
         )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
@@ -111,8 +110,8 @@ class UpdateBudgetUseCaseTest : BaseCoroutineTest() {
         val response = updateBudgetUseCase.invoke(
             budget.copy(
                 isAllAccountsSelected = false,
-                accounts = emptyList()
-            )
+                accounts = emptyList(),
+            ),
         )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
@@ -126,8 +125,8 @@ class UpdateBudgetUseCaseTest : BaseCoroutineTest() {
         val response = updateBudgetUseCase.invoke(
             budget.copy(
                 isAllCategoriesSelected = false,
-                categories = emptyList()
-            )
+                categories = emptyList(),
+            ),
         )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)

@@ -13,13 +13,12 @@ class GetBudgetDetailUseCaseTest : BaseCoroutineTest() {
     private val transactionRepository: TransactionRepository = mock()
     private val currencyRepository: CurrencyRepository = mock()
 
-    private val getCurrencyUseCase= GetCurrencyUseCase(currencyRepository)
-    private val getFormattedAmountUseCase= GetFormattedAmountUseCase(currencyRepository)
+    private val getCurrencyUseCase = GetCurrencyUseCase(currencyRepository)
+    private val getFormattedAmountUseCase = GetFormattedAmountUseCase(currencyRepository)
 
     private lateinit var getBudgetDetailUseCase: GetBudgetDetailUseCase
 
     @Test
     fun whenAllDataAvailableItShouldSendSuccessResult() {
-
     }
 }

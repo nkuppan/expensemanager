@@ -44,7 +44,7 @@ class AccountReOrderViewModel @Inject constructor(
             updateAllAccountUseCase.invoke(
                 accounts.mapIndexed { index, item ->
                     item.copy(sequence = index)
-                }
+                },
             )
 
             closePage()

@@ -20,25 +20,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-
 fun Modifier.dragGestureHandler(
     scope: CoroutineScope,
     itemListDragAndDropState: ItemListDragAndDropState,
-    overscrollJob: MutableState<Job?>
+    overscrollJob: MutableState<Job?>,
 ): Modifier = this.pointerInput(Unit) {
-    detectDragGesturesAfterLongPress(onDrag = { change, offset ->
-        change.consume()
-        itemListDragAndDropState.onDrag(offset)
-        handleOverscrollJob(overscrollJob, scope, itemListDragAndDropState)
-    }, onDragStart = { offset -> itemListDragAndDropState.onDragStart(offset) },
+    detectDragGesturesAfterLongPress(
+        onDrag = { change, offset ->
+            change.consume()
+            itemListDragAndDropState.onDrag(offset)
+            handleOverscrollJob(overscrollJob, scope, itemListDragAndDropState)
+        },
+        onDragStart = { offset -> itemListDragAndDropState.onDragStart(offset) },
         onDragEnd = { itemListDragAndDropState.onDragInterrupted() },
-        onDragCancel = { itemListDragAndDropState.onDragInterrupted() })
+        onDragCancel = { itemListDragAndDropState.onDragInterrupted() },
+    )
 }
 
 private fun handleOverscrollJob(
     overscrollJob: MutableState<Job?>,
     scope: CoroutineScope,
-    itemListDragAndDropState: ItemListDragAndDropState
+    itemListDragAndDropState: ItemListDragAndDropState,
 ) {
     if (overscrollJob.value?.isActive == true) return
     val overscrollOffset = itemListDragAndDropState.checkForOverScroll()
@@ -54,7 +56,8 @@ private fun handleOverscrollJob(
 @Composable
 fun rememberDragDropListState(
     lazyListState: LazyListState = rememberLazyListState(),
-    onMove: (Int, Int) -> Unit): ItemListDragAndDropState {
+    onMove: (Int, Int) -> Unit,
+): ItemListDragAndDropState {
     return remember { ItemListDragAndDropState(lazyListState, onMove) }
 }
 
@@ -170,7 +173,7 @@ class ItemListDragAndDropState(
 
 fun LazyListState.getVisibleItemInfoFor(absoluteIndex: Int): LazyListItemInfo? {
     return this.layoutInfo.visibleItemsInfo.getOrNull(
-        absoluteIndex - this.layoutInfo.visibleItemsInfo.first().index
+        absoluteIndex - this.layoutInfo.visibleItemsInfo.first().index,
     )
 }
 
@@ -185,10 +188,11 @@ val LazyListItemInfo.offsetEnd: Int
 */
 fun <T> MutableList<T>.move(
     from: Int,
-    to: Int
+    to: Int,
 ) {
-    if (from == to)
+    if (from == to) {
         return
+    }
     val element = this.removeAt(from) ?: return
     this.add(to, element)
 }

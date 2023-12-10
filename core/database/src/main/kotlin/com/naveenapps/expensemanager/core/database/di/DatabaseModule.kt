@@ -22,7 +22,6 @@ private val MIGRATION_2_3 = object : Migration(2, 3) {
     }
 }
 
-
 @InstallIn(SingletonComponent::class)
 @Module
 object DatabaseModule {
@@ -37,7 +36,7 @@ object DatabaseModule {
             ExpenseManagerDatabase::class.java,
             DATA_BASE_NAME,
         ).addMigrations(
-            MIGRATION_2_3
+            MIGRATION_2_3,
         ).build()
     }
 

@@ -28,7 +28,6 @@ class FindBudgetByIdUseCaseTest : BaseCoroutineTest() {
         updatedOn = Date(),
     )
 
-
     private val budgetRepository: BudgetRepository = mock()
 
     private lateinit var findBudgetByIdUseCase: FindBudgetByIdUseCase

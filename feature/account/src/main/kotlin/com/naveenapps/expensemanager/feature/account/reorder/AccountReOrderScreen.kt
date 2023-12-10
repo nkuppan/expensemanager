@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
@@ -46,7 +45,7 @@ fun AccountReOrderScreen(
         showActionButton = viewModel.showActionButton,
         backPress = viewModel::closePage,
         saveChanges = viewModel::saveChanges,
-        onMove = viewModel::swap
+        onMove = viewModel::swap,
     )
 }
 
@@ -104,7 +103,7 @@ private fun ReOrderContent(
     LazyColumn(
         modifier = modifier
             .dragGestureHandler(coroutineScope, dragDropListState, overscrollJob),
-        state = dragDropListState.getLazyListState()
+        state = dragDropListState.getLazyListState(),
     ) {
         itemsIndexed(accounts) { index, account ->
             val displacementOffset =
@@ -123,9 +122,6 @@ private fun ReOrderContent(
                 icon = account.storedIcon.name,
                 iconBackgroundColor = account.storedIcon.backgroundColor,
             )
-        }
-        items(accounts, key = { it.id }) { account ->
-
         }
         item {
             Spacer(

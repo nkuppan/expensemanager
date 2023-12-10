@@ -86,18 +86,23 @@ class GetBudgetTransactionsUseCaseTest : BaseCoroutineTest() {
         getBudgetTransactionsUseCase = GetBudgetTransactionsUseCase(
             categoryRepository,
             accountRepository,
-            transactionRepository
+            transactionRepository,
         )
     }
 
     @Test
     fun whenAllDataAvailableShouldReturnListOfTransactionAssociatedWithBudget() = runTest {
-
         whenever(categoryRepository.getCategories()).thenReturn(flowOf(listOf(category)))
         whenever(accountRepository.getAccounts()).thenReturn(flowOf(listOf(account)))
-        whenever(transactionRepository.getFilteredTransaction(
-            any(), any(), any(), any(), any()
-        )).thenReturn(flowOf(listOf(transaction)))
+        whenever(
+            transactionRepository.getFilteredTransaction(
+                any(),
+                any(),
+                any(),
+                any(),
+                any(),
+            ),
+        ).thenReturn(flowOf(listOf(transaction)))
 
         val response = getBudgetTransactionsUseCase.invoke(budget)
         Truth.assertThat(response).isNotNull()
@@ -108,12 +113,17 @@ class GetBudgetTransactionsUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenThereIsNoDataItShouldBeEmpty() = runTest {
-
         whenever(categoryRepository.getCategories()).thenReturn(flowOf(listOf(category)))
         whenever(accountRepository.getAccounts()).thenReturn(flowOf(listOf(account)))
-        whenever(transactionRepository.getFilteredTransaction(
-            any(), any(), any(), any(), any()
-        )).thenReturn(flowOf(listOf()))
+        whenever(
+            transactionRepository.getFilteredTransaction(
+                any(),
+                any(),
+                any(),
+                any(),
+                any(),
+            ),
+        ).thenReturn(flowOf(listOf()))
 
         val response = getBudgetTransactionsUseCase.invoke(budget)
         Truth.assertThat(response).isNotNull()
