@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class GetBudgetDetailUseCase @Inject constructor(
-    private val repository: BudgetRepository,
+    private val budgetRepository: BudgetRepository,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase,
@@ -21,22 +21,23 @@ class GetBudgetDetailUseCase @Inject constructor(
 ) {
     operator fun invoke(budgetId: String): Flow<BudgetUiModel?> {
         return combine(
-            repository.findBudgetByIdFlow(budgetId),
+            budgetRepository.findBudgetByIdFlow(budgetId),
             getTransactionWithFilterUseCase.invoke(),
-        ) { budget, transactions ->
+        ) { budget, _ ->
             budget?.let {
                 val currency = getCurrencyUseCase.invoke().first()
-                val budgetTransactions = when (val transaction = getBudgetTransactionsUseCase(budget)) {
-                    is Resource.Error -> {
-                        null
-                    }
+                val budgetTransactions =
+                    when (val transaction = getBudgetTransactionsUseCase.invoke(budget)) {
+                        is Resource.Error -> {
+                            null
+                        }
 
-                    is Resource.Success -> {
-                        transaction.data.filter {
-                            it.type.isExpense()
+                        is Resource.Success -> {
+                            transaction.data.filter {
+                                it.type.isExpense()
+                            }
                         }
                     }
-                }
                 val transactionAmount = budgetTransactions?.sumOf { it.amount.amount } ?: 0.0
                 val percent = (transactionAmount / budget.amount).toFloat() * 100
                 budget.toBudgetUiModel(

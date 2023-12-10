@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class GetBudgetsUseCase @Inject constructor(
-    private val repository: BudgetRepository,
+    private val budgetRepository: BudgetRepository,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
@@ -26,10 +26,10 @@ class GetBudgetsUseCase @Inject constructor(
         return combine(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(),
-            repository.getBudgets(),
+            budgetRepository.getBudgets(),
         ) { currency, _, budgets ->
             budgets.map {
-                val transactions = when (val response = getBudgetTransactionsUseCase(it)) {
+                val transactions = when (val response = getBudgetTransactionsUseCase.invoke(it)) {
                     is Resource.Error -> {
                         null
                     }

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.data.repository
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
@@ -105,6 +106,20 @@ val FAKE_TRANSFER_TRANSACTION = Transaction(
     type = TransactionType.INCOME,
     amount = Amount(200.0),
     imagePath = "",
+    createdOn = Date(),
+    updatedOn = Date(),
+)
+
+val FAKE_BUDGET = Budget(
+    id = "1",
+    name = "Sample",
+    amount = 5000.0,
+    selectedMonth = "11/2023",
+    accounts = emptyList(),
+    categories = emptyList(),
+    isAllAccountsSelected = true,
+    isAllCategoriesSelected = true,
+    storedIcon = StoredIcon("ic_account", "#ffffff"),
     createdOn = Date(),
     updatedOn = Date(),
 )

@@ -31,10 +31,9 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     )
 
     private val testContext: Context = ApplicationProvider.getApplicationContext()
-    private val testCoroutineScope = TestScope(testCoroutineDispatcher.dispatcher)
     private val testDataStore: DataStore<Preferences> =
         PreferenceDataStoreFactory.create(
-            scope = testCoroutineScope,
+            scope = TestScope(testCoroutineDispatcher.dispatcher),
             produceFile = {
                 testContext.preferencesDataStoreFile("TEST_DATASTORE_NAME")
             },
