@@ -11,6 +11,22 @@ class CheckBudgetValidateUseCase @Inject constructor() {
             return Resource.Error(Exception("Please specify the budget id"))
         }
 
+        if (budget.name.isBlank()) {
+            return Resource.Error(Exception("Budget name shouldn't be empty"))
+        }
+
+        if (budget.isAllAccountsSelected.not() && budget.accounts.isEmpty()) {
+            return Resource.Error(Exception("Accounts shouldn't be empty"))
+        }
+
+        if (budget.isAllCategoriesSelected.not() && budget.categories.isEmpty()) {
+            return Resource.Error(Exception("Categories shouldn't be empty"))
+        }
+
+        if (budget.storedIcon.name.isBlank()) {
+            return Resource.Error(Exception("Background name is not available"))
+        }
+
         if (budget.storedIcon.backgroundColor.isBlank()) {
             return Resource.Error(Exception("Background color is not available"))
         }

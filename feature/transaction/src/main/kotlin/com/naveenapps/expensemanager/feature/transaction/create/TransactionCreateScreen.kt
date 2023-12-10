@@ -284,7 +284,6 @@ private fun TransactionCreateScreen(
     onNotesChange: ((String) -> Unit)? = null,
     openSelection: ((Int) -> Unit)? = null,
 ) {
-    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     var showDatePicker by remember { mutableStateOf(false) }

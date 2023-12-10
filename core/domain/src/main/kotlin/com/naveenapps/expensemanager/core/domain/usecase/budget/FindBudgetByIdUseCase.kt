@@ -5,9 +5,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import javax.inject.Inject
 
-class FindBudgetByIdUseCase @Inject constructor(
-    private val repository: BudgetRepository,
-) {
+class FindBudgetByIdUseCase @Inject constructor(private val repository: BudgetRepository) {
 
     suspend operator fun invoke(budgetId: String?): Resource<Budget> {
         if (budgetId.isNullOrBlank()) {
