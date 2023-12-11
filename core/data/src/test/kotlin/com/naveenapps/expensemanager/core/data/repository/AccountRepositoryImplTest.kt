@@ -12,6 +12,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

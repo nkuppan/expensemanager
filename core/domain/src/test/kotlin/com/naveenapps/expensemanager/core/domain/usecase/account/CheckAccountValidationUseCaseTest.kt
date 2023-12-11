@@ -1,30 +1,19 @@
 package com.naveenapps.expensemanager.core.domain.usecase.account
 
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import org.junit.Test
-import java.util.Date
 
 class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
-
-    private val account = Account(
-        id = "1",
-        name = "Sample",
-        type = AccountType.CREDIT,
-        storedIcon = StoredIcon("ic_account", "#ffffff"),
-        createdOn = Date(),
-        updatedOn = Date(),
-    )
 
     private var checkAccountValidationUseCase = CheckAccountValidationUseCase()
 
     @Test
     fun whenProperAccountShouldReturnSuccess() {
-        val response = checkAccountValidationUseCase.invoke(account)
+        val response = checkAccountValidationUseCase.invoke(FAKE_ACCOUNT)
 
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Success::class.java)
@@ -36,7 +25,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenAccountIdIsNotAvailableShouldResultError() {
         val response = checkAccountValidationUseCase.invoke(
-            account.copy(id = ""),
+            FAKE_ACCOUNT.copy(id = ""),
         )
 
         Truth.assertThat(response).isNotNull()
@@ -49,7 +38,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenStoredIconNameNotAvailableShouldResultError() {
         val response = checkAccountValidationUseCase.invoke(
-            account.copy(
+            FAKE_ACCOUNT.copy(
                 storedIcon = StoredIcon(
                     name = "",
                     backgroundColor = "#ffff",
@@ -67,7 +56,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenStoredIconBGColorNotAvailableShouldResultError() {
         val response = checkAccountValidationUseCase.invoke(
-            account.copy(
+            FAKE_ACCOUNT.copy(
                 storedIcon = StoredIcon(
                     name = "Sample",
                     backgroundColor = "",
@@ -85,7 +74,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenStoredIconBGColorNotStartsWithHashShouldResultError() {
         val response = checkAccountValidationUseCase.invoke(
-            account.copy(
+            FAKE_ACCOUNT.copy(
                 storedIcon = StoredIcon(
                     name = "Sample",
                     backgroundColor = "sample",
@@ -103,7 +92,7 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenAccountNameIsNotAvailableShouldResultError() {
         val response = checkAccountValidationUseCase.invoke(
-            account.copy(name = ""),
+            FAKE_ACCOUNT.copy(name = ""),
         )
 
         Truth.assertThat(response).isNotNull()

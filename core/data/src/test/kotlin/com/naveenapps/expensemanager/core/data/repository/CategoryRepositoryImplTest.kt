@@ -12,6 +12,8 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_CATEGORY
+import com.naveenapps.expensemanager.core.testing.FAKE_FAVORITE_CATEGORY
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

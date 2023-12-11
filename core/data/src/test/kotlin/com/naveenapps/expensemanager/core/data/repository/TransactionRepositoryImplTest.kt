@@ -15,6 +15,13 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
+import com.naveenapps.expensemanager.core.testing.FAKE_CATEGORY
+import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
+import com.naveenapps.expensemanager.core.testing.FAKE_INCOME_TRANSACTION
+import com.naveenapps.expensemanager.core.testing.FAKE_SECOND_ACCOUNT
+import com.naveenapps.expensemanager.core.testing.FAKE_SECOND_CATEGORY
+import com.naveenapps.expensemanager.core.testing.FAKE_TRANSFER_TRANSACTION
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

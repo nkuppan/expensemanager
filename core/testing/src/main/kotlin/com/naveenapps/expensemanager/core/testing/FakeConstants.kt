@@ -1,5 +1,6 @@
-package com.naveenapps.expensemanager.core.data.repository
+package com.naveenapps.expensemanager.core.testing
 
+import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
@@ -114,7 +115,7 @@ val FAKE_BUDGET = Budget(
     id = "1",
     name = "Sample",
     amount = 5000.0,
-    selectedMonth = "11/2023",
+    selectedMonth = Date().toMonthYear(),
     accounts = emptyList(),
     categories = emptyList(),
     isAllAccountsSelected = true,

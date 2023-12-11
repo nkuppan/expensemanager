@@ -1,28 +1,17 @@
 package com.naveenapps.expensemanager.core.domain.usecase.account
 
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import java.util.Date
 
 class DeleteAccountUseCaseTest : BaseCoroutineTest() {
-
-    private val account = Account(
-        id = "1",
-        name = "Sample",
-        type = AccountType.CREDIT,
-        storedIcon = StoredIcon("ic_account", "#ffffff"),
-        createdOn = Date(),
-        updatedOn = Date(),
-    )
 
     private val accountRepository: AccountRepository = mock()
     private val checkAccountValidationUseCase = CheckAccountValidationUseCase()
@@ -40,9 +29,9 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIsValidShouldDeleteSuccessfully() = runTest {
-        whenever(accountRepository.deleteAccount(account)).thenReturn(Resource.Success(true))
+        whenever(accountRepository.deleteAccount(FAKE_ACCOUNT)).thenReturn(Resource.Success(true))
 
-        val response = deleteAccountUseCase.invoke(account)
+        val response = deleteAccountUseCase.invoke(FAKE_ACCOUNT)
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Success::class.java)
         Truth.assertThat((response as Resource.Success).data).isTrue()
@@ -50,7 +39,7 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIsInValidShouldReturnError() = runTest {
-        val response = deleteAccountUseCase.invoke(account.copy(id = ""))
+        val response = deleteAccountUseCase.invoke(FAKE_ACCOUNT.copy(id = ""))
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -60,7 +49,7 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountNameIsInValidShouldReturnError() = runTest {
-        val response = deleteAccountUseCase.invoke(account.copy(name = ""))
+        val response = deleteAccountUseCase.invoke(FAKE_ACCOUNT.copy(name = ""))
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -71,7 +60,7 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
     @Test
     fun whenAccountStoredIconNameIsInValidShouldReturnError() = runTest {
         val response =
-            deleteAccountUseCase.invoke(account.copy(storedIcon = StoredIcon("", "#ffffff")))
+            deleteAccountUseCase.invoke(FAKE_ACCOUNT.copy(storedIcon = StoredIcon("", "#ffffff")))
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -81,8 +70,14 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountStoredIconBGColorIsInValidShouldReturnError() = runTest {
-        val response =
-            deleteAccountUseCase.invoke(account.copy(storedIcon = StoredIcon("ic_calendar", "")))
+        val response = deleteAccountUseCase.invoke(
+            FAKE_ACCOUNT.copy(
+                storedIcon = StoredIcon(
+                    "ic_calendar",
+                    "",
+                ),
+            ),
+        )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -92,8 +87,14 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountStoredIconBGColorIsInValidColorShouldReturnError() = runTest {
-        val response =
-            deleteAccountUseCase.invoke(account.copy(storedIcon = StoredIcon("ic_calendar", "sample")))
+        val response = deleteAccountUseCase.invoke(
+            FAKE_ACCOUNT.copy(
+                storedIcon = StoredIcon(
+                    "ic_calendar",
+                    "sample",
+                ),
+            ),
+        )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception

@@ -34,4 +34,16 @@ class CurrencyExtTest : BaseCoroutineTest() {
         Truth.assertThat(formattedAmount).isNotNull()
         Truth.assertThat(formattedAmount).isEqualTo("0.0$")
     }
+
+    @Test
+    fun getCurrencyWithoutLocale() = runTest {
+        val amount = 0.0
+        val formattedAmount = getCurrency(
+            defaultCurrency,
+            amount,
+        )
+
+        Truth.assertThat(formattedAmount).isNotNull()
+        Truth.assertThat(formattedAmount).isEqualTo("0.0$")
+    }
 }

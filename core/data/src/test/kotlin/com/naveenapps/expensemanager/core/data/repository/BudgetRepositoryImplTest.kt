@@ -14,6 +14,7 @@ import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_BUDGET
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -141,6 +142,25 @@ class BudgetRepositoryImplTest : BaseCoroutineTest() {
         Truth.assertThat(data).isTrue()
 
         findBudgetAndAssert(FAKE_BUDGET.id)
+    }
+
+    @Test
+    fun whenFindTheBudgetAsFlow() = runTest {
+        budgetRepository.findBudgetByIdFlow(FAKE_BUDGET.id).test {
+            val response = awaitItem()
+            Truth.assertThat(response).isNull()
+
+            addBudgetAndAssert(FAKE_BUDGET)
+
+            val updatedItem = awaitItem()
+            Truth.assertThat(updatedItem).isNotNull()
+            Truth.assertThat(updatedItem?.id).isEqualTo(FAKE_BUDGET.id)
+
+            deleteBudgetAndAssert(FAKE_BUDGET)
+
+            val afterUpdateItem = awaitItem()
+            Truth.assertThat(afterUpdateItem).isNull()
+        }
     }
 
     private suspend fun findBudgetAndAssert(accountId: String) {

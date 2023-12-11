@@ -1,28 +1,17 @@
 package com.naveenapps.expensemanager.core.domain.usecase.account
 
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import java.util.Date
 
 class UpdateAccountUseCaseTest : BaseCoroutineTest() {
-
-    private val account = Account(
-        id = "1",
-        name = "Sample",
-        type = AccountType.CREDIT,
-        storedIcon = StoredIcon("ic_account", "#ffffff"),
-        createdOn = Date(),
-        updatedOn = Date(),
-    )
 
     private val accountRepository: AccountRepository = mock()
     private val checkAccountValidationUseCase = CheckAccountValidationUseCase()
@@ -40,9 +29,9 @@ class UpdateAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIsValidShouldUpdateSuccessfully() = runTest {
-        whenever(accountRepository.updateAccount(account)).thenReturn(Resource.Success(true))
+        whenever(accountRepository.updateAccount(FAKE_ACCOUNT)).thenReturn(Resource.Success(true))
 
-        val response = updateAccountUseCase.invoke(account)
+        val response = updateAccountUseCase.invoke(FAKE_ACCOUNT)
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Success::class.java)
         Truth.assertThat((response as Resource.Success).data).isTrue()
@@ -50,7 +39,7 @@ class UpdateAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIsInValidShouldReturnError() = runTest {
-        val response = updateAccountUseCase.invoke(account.copy(id = ""))
+        val response = updateAccountUseCase.invoke(FAKE_ACCOUNT.copy(id = ""))
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -60,7 +49,7 @@ class UpdateAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountNameIsInValidShouldReturnError() = runTest {
-        val response = updateAccountUseCase.invoke(account.copy(name = ""))
+        val response = updateAccountUseCase.invoke(FAKE_ACCOUNT.copy(name = ""))
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -70,8 +59,9 @@ class UpdateAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountStoredIconNameIsInValidShouldReturnError() = runTest {
-        val response =
-            updateAccountUseCase.invoke(account.copy(storedIcon = StoredIcon("", "#ffffff")))
+        val response = updateAccountUseCase.invoke(
+            FAKE_ACCOUNT.copy(storedIcon = StoredIcon("", "#ffffff")),
+        )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -81,8 +71,14 @@ class UpdateAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountStoredIconBGColorIsInValidShouldReturnError() = runTest {
-        val response =
-            updateAccountUseCase.invoke(account.copy(storedIcon = StoredIcon("ic_calendar", "")))
+        val response = updateAccountUseCase.invoke(
+            FAKE_ACCOUNT.copy(
+                storedIcon = StoredIcon(
+                    "ic_calendar",
+                    "",
+                ),
+            ),
+        )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception
@@ -92,8 +88,14 @@ class UpdateAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountStoredIconBGColorIsInValidColorShouldReturnError() = runTest {
-        val response =
-            updateAccountUseCase.invoke(account.copy(storedIcon = StoredIcon("ic_calendar", "sample")))
+        val response = updateAccountUseCase.invoke(
+            FAKE_ACCOUNT.copy(
+                storedIcon = StoredIcon(
+                    "ic_calendar",
+                    "sample",
+                ),
+            ),
+        )
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
         val exception = (response as Resource.Error).exception

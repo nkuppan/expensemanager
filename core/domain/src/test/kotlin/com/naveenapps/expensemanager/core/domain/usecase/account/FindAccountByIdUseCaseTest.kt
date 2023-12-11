@@ -1,28 +1,16 @@
 package com.naveenapps.expensemanager.core.domain.usecase.account
 
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import java.util.Date
 
 class FindAccountByIdUseCaseTest : BaseCoroutineTest() {
-
-    private val account = Account(
-        id = "1",
-        name = "Sample",
-        type = AccountType.CREDIT,
-        storedIcon = StoredIcon("ic_account", "#ffffff"),
-        createdOn = Date(),
-        updatedOn = Date(),
-    )
 
     private val accountRepository: AccountRepository = mock()
 
@@ -36,12 +24,16 @@ class FindAccountByIdUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIsValidShouldReturnValidAccountSuccessfully() = runTest {
-        whenever(accountRepository.findAccount(account.id)).thenReturn(Resource.Success(account))
+        whenever(accountRepository.findAccount(FAKE_ACCOUNT.id)).thenReturn(
+            Resource.Success(
+                FAKE_ACCOUNT,
+            ),
+        )
 
-        val response = findAccountByIdUseCase.invoke(account.id)
+        val response = findAccountByIdUseCase.invoke(FAKE_ACCOUNT.id)
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Success::class.java)
-        Truth.assertThat((response as Resource.Success).data).isEqualTo(account)
+        Truth.assertThat((response as Resource.Success).data).isEqualTo(FAKE_ACCOUNT)
     }
 
     @Test
