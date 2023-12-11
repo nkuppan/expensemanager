@@ -74,6 +74,7 @@ vico = "1.11.1"
 play-publish = "3.8.5"
 google-services = "4.4.0"
 country-compose = "1.1.1"
+backup-restore = "1.0.0-beta13"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -180,6 +181,7 @@ vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
 country-compose = { group = "com.github.nkuppan.country", name = "countrycompose", version.ref = "country-compose" }
+backup-restore = { group = "de.raphaelebner", name = "roomdatabasebackup", version.ref = "backup-restore" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

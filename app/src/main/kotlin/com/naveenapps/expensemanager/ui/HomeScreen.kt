@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.feature.about.AboutScreen
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
@@ -44,6 +45,7 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScr
 
 @Composable
 fun HomePageNavHostContainer(
+    backupRepository: BackupRepository,
     navHostController: NavHostController,
     landingScreen: String,
 ) {
@@ -51,11 +53,15 @@ fun HomePageNavHostContainer(
         navController = navHostController,
         startDestination = landingScreen,
     ) {
-        this.expenseManagerNavigation()
+        this.expenseManagerNavigation(
+            backupRepository
+        )
     }
 }
 
-fun NavGraphBuilder.expenseManagerNavigation() {
+fun NavGraphBuilder.expenseManagerNavigation(
+    backupRepository: BackupRepository
+) {
     composable(route = ExpenseManagerScreens.Onboarding.route) {
         OnboardingScreen()
     }
@@ -132,7 +138,7 @@ fun NavGraphBuilder.expenseManagerNavigation() {
         AboutScreen()
     }
     composable(ExpenseManagerScreens.AdvancedSettingsScreen.route) {
-        AdvancedSettingsScreen()
+        AdvancedSettingsScreen(backupRepository = backupRepository)
     }
     composable(ExpenseManagerScreens.AccountReOrderScreen.route) {
         AccountReOrderScreen()

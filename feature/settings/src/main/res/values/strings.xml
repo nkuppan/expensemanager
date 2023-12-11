@@ -29,4 +29,8 @@
     <string name="default_income_category">Default Income Category</string>
     <string name="accounts_re_order">Accounts Re-Order</string>
     <string name="accounts_re_order_message">Can change the order of the accounts list on the dashboard.</string>
+    <string name="backup">Backup</string>
+    <string name="backup_message">Create your data backup and restore them at any devices.</string>
+    <string name="restore">Restore</string>
+    <string name="restore_message">Restore your data to retrieve your data back into devices.</string>
 </resources>

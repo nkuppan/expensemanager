@@ -1,20 +1,26 @@
 package com.naveenapps.expensemanager.feature.settings
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,8 +28,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,12 +44,16 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.repository.BackupRepository
 import java.util.Date
 
 @Composable
 fun AdvancedSettingsScreen(
     viewModel: AdvancedSettingsViewModel = hiltViewModel(),
+    backupRepository: BackupRepository,
 ) {
+    val scope = rememberCoroutineScope()
+
     AdvancedSettingsScaffoldView(
         accounts = viewModel.accounts,
         selectedAccount = viewModel.selectedAccount,
@@ -50,6 +63,12 @@ fun AdvancedSettingsScreen(
         selectedIncomeCategory = viewModel.selectedIncomeCategory,
         onItemSelection = viewModel::onItemSelection,
         backPress = viewModel::closePage,
+        backup = {
+            backupRepository.backupData(null)
+        },
+        restore = {
+            backupRepository.restoreData(null)
+        },
         saveChanges = viewModel::saveChanges,
     )
 }
@@ -63,6 +82,8 @@ private fun AdvancedSettingsScaffoldView(
     incomeCategories: List<Category>,
     selectedIncomeCategory: Category?,
     onItemSelection: (Any) -> Unit,
+    backup: () -> Unit,
+    restore: () -> Unit,
     backPress: () -> Unit,
     saveChanges: () -> Unit,
 ) {
@@ -120,6 +141,57 @@ private fun AdvancedSettingsScaffoldView(
                     onItemSelection = onItemSelection,
                 )
             }
+
+            SettingsItem(
+                modifier = Modifier
+                    .clickable {
+                        backup.invoke()
+                    }
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.backup),
+                description = stringResource(id = R.string.backup_message),
+                imageVector = Icons.Outlined.Backup,
+            )
+
+            SettingsItem(
+                modifier = Modifier
+                    .clickable {
+                        restore.invoke()
+                    }
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.restore),
+                description = stringResource(id = R.string.restore_message),
+                imageVector = Icons.Outlined.Restore,
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun SettingsItem(
+    title: String,
+    description: String,
+    imageVector: ImageVector,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier) {
+        Icon(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(16.dp),
+            imageVector = imageVector,
+            contentDescription = null,
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterVertically),
+        ) {
+            Text(text = title)
+            Text(text = description, style = MaterialTheme.typography.labelMedium)
         }
     }
 }
@@ -301,6 +373,8 @@ fun AdvancedSettingsPreview() {
             incomeCategories = getRandomCategoryData(5),
             selectedIncomeCategory = getRandomCategoryData(5).firstOrNull(),
             onItemSelection = {},
+            backup = {},
+            restore = {},
             saveChanges = {},
             backPress = {},
         )
