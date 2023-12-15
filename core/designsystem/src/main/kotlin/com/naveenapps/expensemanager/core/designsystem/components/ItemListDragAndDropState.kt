@@ -183,20 +183,6 @@ fun LazyListState.getVisibleItemInfoFor(absoluteIndex: Int): LazyListItemInfo? {
 val LazyListItemInfo.offsetEnd: Int
     get() = this.offset + this.size
 
-/*
-   Moving element in the list
-*/
-fun <T> MutableList<T>.move(
-    from: Int,
-    to: Int,
-) {
-    if (from == to) {
-        return
-    }
-    val element = this.removeAt(from) ?: return
-    this.add(to, element)
-}
-
 fun <T> List<T>.swap(index1: Int, index2: Int): List<T> {
     if (index1 == index2 || index1 < 0 || index2 < 0 || index1 >= size || index2 >= size) {
         return this

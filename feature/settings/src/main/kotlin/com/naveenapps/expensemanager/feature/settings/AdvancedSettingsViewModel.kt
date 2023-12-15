@@ -70,35 +70,34 @@ class AdvancedSettingsViewModel @Inject constructor(
     }
 
     private fun changeDefaultAccount(account: Account) {
-        selectedAccount = account
+        viewModelScope.launch {
+            selectedAccount = account
+            selectedAccount?.let {
+                settingsRepository.setDefaultAccount(it.id)
+            }
+        }
     }
 
     private fun changeSelectedExpenseCategory(category: Category) {
-        selectedExpenseCategory = category
+        viewModelScope.launch {
+            selectedExpenseCategory = category
+            selectedExpenseCategory?.let {
+                settingsRepository.setDefaultExpenseCategory(it.id)
+            }
+        }
     }
 
     private fun changeSelectedIncomeCategory(category: Category) {
-        selectedIncomeCategory = category
+        viewModelScope.launch {
+            selectedIncomeCategory = category
+            selectedIncomeCategory?.let {
+                settingsRepository.setDefaultIncomeCategory(it.id)
+            }
+        }
     }
 
     fun closePage() {
         appComposeNavigator.popBackStack()
-    }
-
-    fun saveChanges() {
-        viewModelScope.launch {
-            selectedAccount?.let {
-                settingsRepository.setDefaultAccount(it.id)
-            }
-            selectedExpenseCategory?.let {
-                settingsRepository.setDefaultExpenseCategory(it.id)
-            }
-            selectedIncomeCategory?.let {
-                settingsRepository.setDefaultIncomeCategory(it.id)
-            }
-
-            closePage()
-        }
     }
 
     fun onItemSelection(item: Any) {

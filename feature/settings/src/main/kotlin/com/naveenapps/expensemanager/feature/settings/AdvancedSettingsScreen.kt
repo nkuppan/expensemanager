@@ -12,13 +12,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Backup
-import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -28,7 +26,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
@@ -52,8 +50,6 @@ fun AdvancedSettingsScreen(
     viewModel: AdvancedSettingsViewModel = hiltViewModel(),
     backupRepository: BackupRepository,
 ) {
-    val scope = rememberCoroutineScope()
-
     AdvancedSettingsScaffoldView(
         accounts = viewModel.accounts,
         selectedAccount = viewModel.selectedAccount,
@@ -69,7 +65,6 @@ fun AdvancedSettingsScreen(
         restore = {
             backupRepository.restoreData(null)
         },
-        saveChanges = viewModel::saveChanges,
     )
 }
 
@@ -85,7 +80,6 @@ private fun AdvancedSettingsScaffoldView(
     backup: () -> Unit,
     restore: () -> Unit,
     backPress: () -> Unit,
-    saveChanges: () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -94,14 +88,6 @@ private fun AdvancedSettingsScaffoldView(
                 title = stringResource(R.string.advanced),
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(onClick = saveChanges) {
-                Icon(
-                    imageVector = Icons.Outlined.Done,
-                    contentDescription = "",
-                )
-            }
-        },
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -109,6 +95,12 @@ private fun AdvancedSettingsScaffoldView(
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
         ) {
+            Text(
+                modifier = Modifier.then(ItemSpecModifier),
+                text = stringResource(id = R.string.default_selected_items),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.secondary,
+            )
             if (accounts.isNotEmpty() && selectedAccount != null) {
                 AccountPreSelectionView(
                     accounts = accounts,
@@ -141,6 +133,13 @@ private fun AdvancedSettingsScaffoldView(
                     onItemSelection = onItemSelection,
                 )
             }
+
+            Text(
+                modifier = Modifier.then(ItemSpecModifier),
+                text = stringResource(id = R.string.restore_and_backup),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.secondary,
+            )
 
             SettingsItem(
                 modifier = Modifier
@@ -375,7 +374,6 @@ fun AdvancedSettingsPreview() {
             onItemSelection = {},
             backup = {},
             restore = {},
-            saveChanges = {},
             backPress = {},
         )
     }

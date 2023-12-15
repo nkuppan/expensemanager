@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 
 @Composable
@@ -106,7 +107,6 @@ fun DecimalTextField(
     modifier: Modifier = Modifier,
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
-    val pattern = remember { Regex("^\\d+\$") }
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
@@ -129,8 +129,9 @@ fun DecimalTextField(
             Text(text = stringResource(id = label))
         },
         onValueChange = {
-            if (it.isEmpty() || it.matches(pattern)) {
-                onValueChange?.invoke(it)
+            val formatString = it.toDoubleOrNullWithLocale()
+            if (formatString != null) {
+                onValueChange?.invoke(formatString.toString())
             } else {
                 onValueChange?.invoke(value)
             }
