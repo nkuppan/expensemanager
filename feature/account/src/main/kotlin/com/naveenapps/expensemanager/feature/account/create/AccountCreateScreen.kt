@@ -115,7 +115,6 @@ fun AccountCreateScreen() {
         val currencyIcon by viewModel.currencyIcon.collectAsState()
         val colorValue by viewModel.colorValue.collectAsState()
         val iconValue by viewModel.icon.collectAsState()
-        val selectedAccountType by viewModel.accountType.collectAsState()
         val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
         val availableCreditLimitColor by viewModel.availableCreditLimitColor.collectAsState()
 
@@ -131,8 +130,8 @@ fun AccountCreateScreen() {
             currentBalanceErrorMessage = currentBalanceErrorMessage,
             creditLimit = creditLimit,
             creditLimitErrorMessage = creditLimitErrorMessage,
-            selectedAccountType = selectedAccountType,
-            onAccountTypeChange = viewModel::setAccountType,
+            selectedAccountType = viewModel.accountType,
+            onAccountTypeChange = viewModel::setAccountTypeChange,
             currencyIcon = currencyIcon,
             onNameChange = viewModel::setNameChange,
             onCurrentBalanceChange = viewModel::setCurrentBalanceChange,

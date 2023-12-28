@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -14,12 +16,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 
 @Composable
@@ -33,6 +35,7 @@ fun ClickableTextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed: Boolean by interactionSource.collectIsPressedAsState()
+    val isFocused: Boolean by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(isPressed) {
@@ -42,8 +45,26 @@ fun ClickableTextField(
         }
     }
 
+    LaunchedEffect(isFocused) {
+        if (isFocused) {
+            onClick.invoke()
+            focusManager.clearFocus(force = true)
+        }
+    }
+
+    val gesture = Modifier.pointerInput(onClick) {
+        detectTapGestures(
+            onPress = { pos ->
+                onClick()
+            },
+            onTap = { pos ->
+                onClick()
+            }
+        )
+    }
+
     OutlinedTextField(
-        modifier = modifier,
+        modifier = modifier.then(gesture),
         interactionSource = interactionSource,
         value = value,
         singleLine = true,
@@ -129,12 +150,7 @@ fun DecimalTextField(
             Text(text = stringResource(id = label))
         },
         onValueChange = {
-            val formatString = it.toDoubleOrNullWithLocale()
-            if (formatString != null) {
-                onValueChange?.invoke(formatString.toString())
-            } else {
-                onValueChange?.invoke(value)
-            }
+            onValueChange?.invoke(it)
         },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,

@@ -67,7 +67,6 @@ internal class MainActivity : ComponentActivity() {
 
         setContent {
             val currentTheme by viewModel.currentTheme.collectAsState()
-
             val onBoardingStatus by viewModel.onboardingStatus.collectAsState()
 
             val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)

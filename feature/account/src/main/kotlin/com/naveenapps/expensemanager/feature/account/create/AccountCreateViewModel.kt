@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.feature.account.create
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -53,7 +56,7 @@ class AccountCreateViewModel @Inject constructor(
     private val _showDelete = MutableStateFlow(false)
     val showDelete = _showDelete.asStateFlow()
 
-    var accountType = MutableStateFlow(AccountType.REGULAR)
+    var accountType by mutableStateOf(AccountType.REGULAR)
         private set
 
     var name = MutableStateFlow("")
@@ -111,7 +114,7 @@ class AccountCreateViewModel @Inject constructor(
             name.value = accountItem.name
             currentBalance.value = accountItem.amount.toStringWithLocale()
             creditLimit.value = accountItem.creditLimit.toStringWithLocale()
-            accountType.value = accountItem.type
+            accountType = accountItem.type
             colorValue.value = accountItem.storedIcon.backgroundColor
             icon.value = accountItem.storedIcon.name
             updateAccountValue(accountItem)
@@ -121,7 +124,7 @@ class AccountCreateViewModel @Inject constructor(
 
     private fun updateAccountValue(accountItem: Account?) {
         updateAvailableCreditLimit(
-            if (accountType.value == AccountType.CREDIT) {
+            if (accountType == AccountType.CREDIT) {
                 accountItem?.creditLimit ?: 0.0
             } else {
                 0.0
@@ -174,7 +177,7 @@ class AccountCreateViewModel @Inject constructor(
                         _message.emit(
                             UiText.StringResource(R.string.account_delete_success_message),
                         )
-                        composeNavigator.popBackStack()
+                        closePage()
                     }
                 }
             }
@@ -208,7 +211,7 @@ class AccountCreateViewModel @Inject constructor(
             return
         }
 
-        val accountType = accountType.value
+        val accountType = accountType
 
         val account = Account(
             id = account?.id ?: UUID.randomUUID().toString(),
@@ -255,8 +258,8 @@ class AccountCreateViewModel @Inject constructor(
         this.colorValue.value = String.format("#%06X", 0xFFFFFF and colorValue)
     }
 
-    fun setAccountType(accountType: AccountType) {
-        this.accountType.value = accountType
+    fun setAccountTypeChange(accountType: AccountType) {
+        this.accountType = accountType
         updateAccountValue(account)
     }
 

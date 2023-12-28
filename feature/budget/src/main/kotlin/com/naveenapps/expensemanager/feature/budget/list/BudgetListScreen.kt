@@ -31,8 +31,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,8 +58,20 @@ import com.naveenapps.expensemanager.feature.budget.R
 fun BudgetListScreen(
     viewModel: BudgetListViewModel = hiltViewModel(),
 ) {
-    val budgetUiState by viewModel.budgets.collectAsState()
 
+    BudgetListScreenContent(
+        budgetUiState = viewModel.budgets,
+        closePage = viewModel::closePage,
+        openCreatePage = viewModel::openCreateScreen
+    )
+}
+
+@Composable
+private fun BudgetListScreenContent(
+    budgetUiState: UiState<List<BudgetUiModel>>,
+    closePage: () -> Unit,
+    openCreatePage: (BudgetUiModel?) -> Unit,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -70,16 +80,12 @@ fun BudgetListScreen(
         },
         topBar = {
             TopNavigationBar(
-                onClick = {
-                    viewModel.closePage()
-                },
+                onClick = closePage,
                 title = stringResource(R.string.budgets),
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.openCreateScreen(null)
-            }) {
+            FloatingActionButton(onClick = { openCreatePage.invoke(null) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -87,23 +93,21 @@ fun BudgetListScreen(
             }
         },
     ) { innerPadding ->
-
         BudgetListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
             budgetUiState = budgetUiState,
-        ) { budget ->
-            viewModel.openCreateScreen(budget.id)
-        }
+            onItemClick = openCreatePage
+        )
     }
 }
 
 @Composable
 private fun BudgetListScreenContent(
     budgetUiState: UiState<List<BudgetUiModel>>,
+    onItemClick: ((BudgetUiModel) -> Unit),
     modifier: Modifier = Modifier,
-    onItemClick: ((BudgetUiModel) -> Unit)? = null,
 ) {
     val scrollState = rememberLazyListState()
 
@@ -129,7 +133,10 @@ private fun BudgetListScreenContent(
 
             is UiState.Success -> {
                 LazyColumn(state = scrollState) {
-                    items(budgetUiState.data) { budget ->
+                    items(
+                        budgetUiState.data,
+                        key = { it.id }
+                    ) { budget ->
                         BudgetItem(
                             name = budget.name,
                             icon = budget.icon,
@@ -140,7 +147,7 @@ private fun BudgetListScreenContent(
                             percentage = budget.percent,
                             modifier = Modifier
                                 .clickable {
-                                    onItemClick?.invoke(budget)
+                                    onItemClick.invoke(budget)
                                 }
                                 .then(ItemSpecModifier),
                         )
@@ -299,7 +306,7 @@ val DUMMY_DATA = listOf(
     BudgetUiModel(
         id = "1",
         name = "Cash",
-        icon = "ic_budget",
+        icon = "account_balance",
         iconBackgroundColor = "#000000",
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
@@ -309,7 +316,7 @@ val DUMMY_DATA = listOf(
     BudgetUiModel(
         id = "2",
         name = "Bank Budget - xxxx",
-        icon = "ic_budget_balance",
+        icon = "account_balance",
         iconBackgroundColor = "#000000",
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
@@ -319,7 +326,7 @@ val DUMMY_DATA = listOf(
     BudgetUiModel(
         id = "3",
         name = "Credit Card - xxxx",
-        icon = "credit_card",
+        icon = "account_balance",
         iconBackgroundColor = "#000000",
         amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
         transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
@@ -334,7 +341,7 @@ private fun BudgetItemPreview() {
     ExpenseManagerTheme {
         BudgetItem(
             name = "Utilities",
-            icon = "ic_calendar",
+            icon = "account_balance",
             iconBackgroundColor = "#000000",
             amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
@@ -367,6 +374,8 @@ private fun BudgetListItemLoadingStatePreview() {
     ExpenseManagerTheme {
         BudgetListScreenContent(
             budgetUiState = UiState.Loading,
+            closePage = {},
+            openCreatePage = {}
         )
     }
 }
@@ -377,6 +386,8 @@ private fun BudgetListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         BudgetListScreenContent(
             budgetUiState = UiState.Empty,
+            closePage = {},
+            openCreatePage = {}
         )
     }
 }
@@ -389,6 +400,8 @@ private fun BudgetListItemSuccessStatePreview() {
             budgetUiState = UiState.Success(
                 DUMMY_DATA,
             ),
+            closePage = {},
+            openCreatePage = {}
         )
     }
 }

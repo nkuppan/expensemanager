@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
@@ -82,9 +82,9 @@ fun TopNavigationBarWithDeleteAction(
     })
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
-private fun TopNavigationBarWithDeleteAction() {
+private fun TopNavigationBarWithDeleteActionPreview() {
     ExpenseManagerTheme {
         Column {
             TopNavigationBar(
@@ -103,13 +103,13 @@ private fun TopNavigationBarWithDeleteAction() {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
                 showDelete = null,
-            ) {
-            }
+                onClick= {}
+            )
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
                 showDelete = true,
-            ) {
-            }
+                onClick= {}
+            )
         }
     }
 }
