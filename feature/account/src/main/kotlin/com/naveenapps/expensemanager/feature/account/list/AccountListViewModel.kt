@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.feature.account.list
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
@@ -11,8 +14,6 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import javax.inject.Inject
@@ -25,15 +26,15 @@ class AccountListViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _accounts = MutableStateFlow<UiState<List<AccountUiModel>>>(UiState.Loading)
-    val accounts = _accounts.asStateFlow()
+    var accounts by mutableStateOf<UiState<List<AccountUiModel>>>(UiState.Loading)
+        private set
 
     init {
         combine(
             getCurrencyUseCase.invoke(),
             getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
-            _accounts.value = if (accounts.isEmpty()) {
+            this.accounts = if (accounts.isEmpty()) {
                 UiState.Empty
             } else {
                 UiState.Success(
@@ -50,9 +51,9 @@ class AccountListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun openCreateScreen(accountId: String?) {
+    fun openCreateScreen(account: AccountUiModel?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: ""),
+            ExpenseManagerScreens.AccountCreate.createRoute(account?.id ?: ""),
         )
     }
 

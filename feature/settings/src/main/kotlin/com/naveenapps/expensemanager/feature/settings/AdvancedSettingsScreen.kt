@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Backup
+import androidx.compose.material.icons.outlined.FilterAlt
+import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,13 +22,16 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +49,8 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.repository.BackupRepository
+import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
+import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
@@ -58,16 +66,18 @@ fun AdvancedSettingsScreen(
         incomeCategories = viewModel.incomeCategories,
         selectedIncomeCategory = viewModel.selectedIncomeCategory,
         onItemSelection = viewModel::onItemSelection,
-        backPress = viewModel::closePage,
         backup = {
             backupRepository.backupData(null)
         },
         restore = {
             backupRepository.restoreData(null)
         },
+        accountsReOrder = viewModel::openAccountsReOrder,
+        backPress = viewModel::closePage,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AdvancedSettingsScaffoldView(
     accounts: List<Account>,
@@ -79,8 +89,38 @@ private fun AdvancedSettingsScaffoldView(
     onItemSelection: (Any) -> Unit,
     backup: () -> Unit,
     restore: () -> Unit,
+    accountsReOrder: () -> Unit,
     backPress: () -> Unit,
 ) {
+
+    val scope = rememberCoroutineScope()
+    var showDateFilter by remember { mutableStateOf(false) }
+    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    if (showDateFilter) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                scope.launch {
+                    showDateFilter = false
+                    bottomSheetState.hide()
+                }
+            },
+            sheetState = bottomSheetState,
+            windowInsets = WindowInsets(0.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            tonalElevation = 0.dp,
+        ) {
+            DateFilterSelectionView(
+                onComplete = {
+                    scope.launch {
+                        showDateFilter = false
+                        bottomSheetState.hide()
+                    }
+                }
+            )
+        }
+    }
+
     Scaffold(
         topBar = {
             TopNavigationBar(
@@ -163,6 +203,40 @@ private fun AdvancedSettingsScaffoldView(
                 title = stringResource(id = R.string.restore),
                 description = stringResource(id = R.string.restore_message),
                 imageVector = Icons.Outlined.Restore,
+            )
+
+            Text(
+                modifier = Modifier.then(ItemSpecModifier),
+                text = stringResource(id = R.string.others),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+
+            SettingsItem(
+                modifier = Modifier
+                    .clickable {
+                        scope.launch {
+                            bottomSheetState.show()
+                            showDateFilter = true
+                        }
+                    }
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.filter),
+                description = stringResource(id = R.string.filter_message),
+                imageVector = Icons.Outlined.FilterAlt,
+            )
+
+            SettingsItem(
+                modifier = Modifier
+                    .clickable {
+                        accountsReOrder.invoke()
+                    }
+                    .padding(top = 8.dp, bottom = 8.dp)
+                    .fillMaxWidth(),
+                title = stringResource(id = R.string.accounts_re_order),
+                description = stringResource(id = R.string.accounts_re_order_message),
+                imageVector = Icons.Outlined.Reorder,
             )
         }
     }
@@ -374,7 +448,7 @@ fun AdvancedSettingsPreview() {
             onItemSelection = {},
             backup = {},
             restore = {},
-            backPress = {},
-        )
+            accountsReOrder = {}
+        ) {}
     }
 }

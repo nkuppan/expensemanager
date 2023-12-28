@@ -23,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -144,6 +145,8 @@ fun TransactionCreateScreen() {
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            tonalElevation = 0.dp,
         ) {
             TransactionCreateBottomSheetContent(
                 sheetSelection,
@@ -431,6 +434,7 @@ private fun TransactionCreateScreen(
             iconBackgroundColor = selectedFromAccount.storedIcon.backgroundColor,
             endIcon = Icons.Filled.KeyboardArrowRight,
             amount = selectedFromAccount.amount.amountString,
+            amountTextColor = selectedFromAccount.amountTextColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
@@ -456,6 +460,7 @@ private fun TransactionCreateScreen(
                 iconBackgroundColor = selectedToAccount.storedIcon.backgroundColor,
                 endIcon = Icons.Filled.KeyboardArrowRight,
                 amount = selectedToAccount.amount.amountString,
+                amountTextColor = selectedFromAccount.amountTextColor,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {

@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.feature.datefilter
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetAllDateRangeUseCase
@@ -8,9 +11,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.dateran
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.TextFieldValue
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -24,20 +26,38 @@ class DateFilterViewModel @Inject constructor(
     private val saveDateRangeUseCase: SaveDateRangeUseCase,
 ) : ViewModel() {
 
-    private val _dateRangeType = MutableStateFlow(DateRangeType.THIS_MONTH)
-    val dateRangeFilterType = _dateRangeType.asStateFlow()
+    var dateRangeType by mutableStateOf(
+        TextFieldValue(
+            value = DateRangeType.THIS_MONTH,
+            valueError = false,
+            onValueChange = this::setFilterType
+        )
+    )
+        private set
 
-    private val _fromDate = MutableStateFlow(Date())
-    val fromDate = _fromDate.asStateFlow()
+    var showCustomRangeSelection by mutableStateOf(false)
+        private set
 
-    private val _toDate = MutableStateFlow(Date())
-    val toDate = _toDate.asStateFlow()
+    var fromDate by mutableStateOf(
+        TextFieldValue(
+            value = Date(),
+            valueError = false,
+            onValueChange = this::setFromDate
+        )
+    )
+        private set
 
-    private val _showCustomRangeSelection = MutableStateFlow(false)
-    val showCustomRangeSelection = _showCustomRangeSelection.asStateFlow()
+    var toDate by mutableStateOf(
+        TextFieldValue(
+            value = Date(),
+            valueError = false,
+            onValueChange = this::setToDate
+        )
+    )
+        private set
 
-    private val _dateRangeFilterTypes = MutableStateFlow<List<DateRangeModel>>(emptyList())
-    val dateRangeFilterTypes = _dateRangeFilterTypes.asStateFlow()
+    var dateRangeFilterTypes by mutableStateOf<List<DateRangeModel>>(emptyList())
+        private set
 
     init {
         getDateRangeUseCase.invoke().onEach {
@@ -53,15 +73,15 @@ class DateFilterViewModel @Inject constructor(
             when (val response = getAllDateRangeUseCase.invoke()) {
                 is Resource.Error -> Unit
                 is Resource.Success -> {
-                    _dateRangeFilterTypes.value = response.data
+                    dateRangeFilterTypes = response.data
                 }
             }
         }
     }
 
     private fun updateFilterType(dateRangeType: DateRangeType) {
-        _dateRangeType.value = dateRangeType
-        _showCustomRangeSelection.value = dateRangeType == DateRangeType.CUSTOM
+        this.dateRangeType = this.dateRangeType.copy(value = dateRangeType)
+        showCustomRangeSelection = dateRangeType == DateRangeType.CUSTOM
     }
 
     fun setFilterType(dateRangeType: DateRangeType?) {
@@ -73,13 +93,13 @@ class DateFilterViewModel @Inject constructor(
 
     fun save() {
         viewModelScope.launch {
-            val selectedFilter = _dateRangeType.value
+            val selectedFilter = dateRangeType.value
 
             val customRanges =
                 if (selectedFilter == DateRangeType.CUSTOM) {
-                    listOf(_fromDate.value, _toDate.value)
+                    listOf(fromDate.value, toDate.value)
                 } else {
-                    _dateRangeFilterTypes.value.filter {
+                    dateRangeFilterTypes.filter {
                         it.type == selectedFilter
                     }.let {
                         it.firstOrNull()?.dateRanges?.map {
@@ -98,10 +118,10 @@ class DateFilterViewModel @Inject constructor(
     }
 
     fun setFromDate(date: Date) {
-        this._fromDate.value = date
+        this.fromDate = this.fromDate.copy(value = date)
     }
 
     fun setToDate(date: Date) {
-        this._toDate.value = date
+        this.toDate = this.toDate.copy(value = date)
     }
 }

@@ -32,8 +32,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,8 +53,6 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 fun BudgetDetailScreen(
     viewModel: BudgetDetailViewModel = hiltViewModel(),
 ) {
-    val budget by viewModel.budget.collectAsState()
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -78,7 +74,7 @@ fun BudgetDetailScreen(
                         title = {
                         },
                         actions = {
-                            budget?.let {
+                            viewModel.budget?.let {
                                 IconButton(onClick = {
                                     viewModel.openBudgetCreateScreen(it.id)
                                 }) {
@@ -90,7 +86,7 @@ fun BudgetDetailScreen(
                             }
                         },
                     )
-                    budget?.let {
+                    viewModel.budget?.let {
                         BudgetHeaderItem(
                             modifier = Modifier
                                 .padding(16.dp)
@@ -122,7 +118,7 @@ fun BudgetDetailScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
         ) {
-            val transactions = budget?.transactions
+            val transactions = viewModel.budget?.transactions
             if (transactions.isNullOrEmpty()) {
                 Text(
                     modifier = Modifier

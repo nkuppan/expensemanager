@@ -89,6 +89,7 @@ fun AccountSelectionScreen(
                     icon = account.storedIcon.name,
                     iconBackgroundColor = account.storedIcon.backgroundColor,
                     amount = account.amount.amountString,
+                    amountTextColor = account.amountTextColor,
                 )
             }
         }

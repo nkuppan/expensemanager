@@ -13,29 +13,36 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.TextFieldValue
+import kotlinx.coroutines.launch
 import java.util.Date
 
 enum class DateTypeSelection {
@@ -44,14 +51,10 @@ enum class DateTypeSelection {
 }
 
 @Composable
-fun DateFilterSelectionView(complete: () -> Unit) {
-    val viewModel: DateFilterViewModel = hiltViewModel()
-    val selectedFilterType by viewModel.dateRangeFilterType.collectAsState()
-    val showCustomRangeSelection by viewModel.showCustomRangeSelection.collectAsState()
-    val filterTypes by viewModel.dateRangeFilterTypes.collectAsState(emptyList())
-
-    val fromDate by viewModel.fromDate.collectAsState()
-    val toDate by viewModel.toDate.collectAsState()
+fun DateFilterSelectionView(
+    onComplete: () -> Unit,
+    viewModel: DateFilterViewModel = hiltViewModel()
+) {
 
     var showDatePicker by remember { mutableStateOf(false) }
 
@@ -63,9 +66,9 @@ fun DateFilterSelectionView(complete: () -> Unit) {
                 .wrapContentSize()
                 .padding(16.dp),
             selectedDate = if (dateTypeSelection == DateTypeSelection.FROM_DATE) {
-                fromDate
+                viewModel.fromDate.value
             } else {
-                toDate
+                viewModel.toDate.value
             },
             onDateSelected = { date ->
                 showDatePicker = false
@@ -82,154 +85,210 @@ fun DateFilterSelectionView(complete: () -> Unit) {
     }
 
     FilterTypesAndView(
-        filterTypes,
-        selectedFilterType,
-        viewModel,
-        showCustomRangeSelection,
-        fromDate,
-        toDate,
-        complete,
-    ) {
-        dateTypeSelection = it
-        showDatePicker = true
-    }
+        filterTypes = viewModel.dateRangeFilterTypes,
+        selectedFilterType = viewModel.dateRangeType,
+        fromDate = viewModel.fromDate,
+        toDate = viewModel.toDate,
+        showCustomRangeSelection = viewModel.showCustomRangeSelection,
+        complete = {
+            viewModel.save()
+            onComplete.invoke()
+        },
+        onDateSelection = {
+            dateTypeSelection = it
+            showDatePicker = true
+        },
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(16.dp)
+    )
 }
 
 @Composable
 private fun FilterTypesAndView(
     filterTypes: List<DateRangeModel>,
-    selectedFilterType: DateRangeType,
-    viewModel: DateFilterViewModel,
+    selectedFilterType: TextFieldValue<DateRangeType>,
+    fromDate: TextFieldValue<Date>,
+    toDate: TextFieldValue<Date>,
     showCustomRangeSelection: Boolean,
-    fromDate: Date,
-    toDate: Date,
     complete: () -> Unit,
     onDateSelection: (DateTypeSelection) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val focusManager = LocalFocusManager.current
-    Surface(
-        modifier = Modifier.padding(16.dp),
-        shape = RoundedCornerShape(8.dp),
-    ) {
-        LazyColumn(
-            modifier = Modifier.wrapContentSize(),
-        ) {
-            item {
-                Text(
-                    modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 8.dp),
-                    text = stringResource(id = R.string.date_filter).uppercase(),
-                    style = MaterialTheme.typography.titleMedium,
-                )
-            }
-            items(filterTypes) { filter ->
-                val isSelected = selectedFilterType == filter.type
-                Row(
+    LazyColumn(modifier = modifier) {
+        item {
+            Text(
+                modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 8.dp),
+                text = stringResource(id = R.string.date_filter).uppercase(),
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+        items(filterTypes) { filter ->
+            val isSelected = selectedFilterType.value == filter.type
+            Row(
+                modifier = Modifier
+                    .clickable {
+                        selectedFilterType.onValueChange.invoke(filter.type)
+                    }
+                    .fillMaxWidth()
+                    .then(
+                        if (isSelected) {
+                            Modifier
+                                .padding(4.dp)
+                                .background(
+                                    color = getSelectedBGColor(),
+                                    shape = RoundedCornerShape(size = 12.dp),
+                                )
+                        } else {
+                            Modifier
+                                .padding(4.dp)
+                        },
+                    )
+                    .padding(8.dp),
+            ) {
+                Column(
                     modifier = Modifier
-                        .clickable {
-                            viewModel.setFilterType(filter.type)
-                        }
-                        .fillMaxWidth()
-                        .then(
-                            if (isSelected) {
-                                Modifier
-                                    .padding(4.dp)
-                                    .background(
-                                        color = getSelectedBGColor(),
-                                        shape = RoundedCornerShape(size = 12.dp),
-                                    )
-                            } else {
-                                Modifier
-                                    .padding(4.dp)
-                            },
-                        )
-                        .padding(8.dp),
+                        .weight(1f)
+                        .align(Alignment.CenterVertically),
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .weight(1f)
-                            .align(Alignment.CenterVertically),
-                    ) {
+                    Text(
+                        text = filter.name,
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                    if (filter.description.isNotBlank()) {
                         Text(
-                            text = filter.name,
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
-                        if (filter.description.isNotBlank()) {
-                            Text(
-                                text = filter.description,
-                                style = MaterialTheme.typography.bodyMedium,
-                            )
-                        }
-                    }
-                    if (isSelected) {
-                        Icon(
-                            modifier = Modifier.align(Alignment.CenterVertically),
-                            imageVector = Icons.Default.Done,
-                            contentDescription = null,
+                            text = filter.description,
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 }
-            }
-            item {
-                if (showCustomRangeSelection) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(top = 8.dp, start = 16.dp, bottom = 8.dp, end = 16.dp)
-                                .fillMaxWidth(),
-                        ) {
-                            ClickableTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(end = 8.dp),
-                                value = fromDate.toCompleteDateWithDate(),
-                                label = R.string.from_date,
-                                leadingIcon = Icons.Default.EditCalendar,
-                                onClick = {
-                                    focusManager.clearFocus()
-                                    onDateSelection.invoke(DateTypeSelection.FROM_DATE)
-                                },
-                            )
-                            ClickableTextField(
-                                modifier = Modifier
-                                    .weight(1f)
-                                    .padding(start = 8.dp),
-                                value = toDate.toCompleteDateWithDate(),
-                                label = R.string.to_date,
-                                leadingIcon = Icons.Default.EditCalendar,
-                                onClick = {
-                                    focusManager.clearFocus()
-                                    onDateSelection.invoke(DateTypeSelection.TO_DATE)
-                                },
-                            )
-                        }
-                    }
+                if (isSelected) {
+                    Icon(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        imageVector = Icons.Default.Done,
+                        contentDescription = null,
+                    )
                 }
             }
-            item {
+        }
+        item {
+            if (showCustomRangeSelection) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(),
                 ) {
                     Row(
                         modifier = Modifier
-                            .padding(16.dp)
-                            .align(Alignment.End),
+                            .padding(top = 8.dp, start = 16.dp, bottom = 8.dp, end = 16.dp)
+                            .fillMaxWidth(),
                     ) {
-                        TextButton(onClick = complete) {
-                            Text(text = stringResource(id = R.string.cancel).uppercase())
-                        }
-                        TextButton(onClick = {
-                            viewModel.save()
-                            complete.invoke()
-                        }) {
-                            Text(text = stringResource(id = R.string.select).uppercase())
-                        }
+                        ClickableTextField(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(end = 8.dp),
+                            value = fromDate.value.toCompleteDateWithDate(),
+                            label = R.string.from_date,
+                            leadingIcon = Icons.Default.EditCalendar,
+                            onClick = {
+                                onDateSelection.invoke(DateTypeSelection.FROM_DATE)
+                            },
+                        )
+                        ClickableTextField(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(start = 8.dp),
+                            value = toDate.value.toCompleteDateWithDate(),
+                            label = R.string.to_date,
+                            leadingIcon = Icons.Default.EditCalendar,
+                            onClick = {
+                                onDateSelection.invoke(DateTypeSelection.TO_DATE)
+                            },
+                        )
+                    }
+                }
+            }
+        }
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(),
+            ) {
+                Row(
+                    modifier = modifier
+                        .align(Alignment.End),
+                ) {
+                    TextButton(onClick = complete) {
+                        Text(text = stringResource(id = R.string.cancel).uppercase())
+                    }
+                    TextButton(onClick = { complete.invoke() }) {
+                        Text(text = stringResource(id = R.string.select).uppercase())
                     }
                 }
             }
         }
     }
 }
+
+@Preview
+@Composable
+private fun FilterNormalViewPreview() {
+    ExpenseManagerTheme {
+        val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
+        val dateFilter = TextFieldValue(Date(), false, {})
+        FilterTypesAndView(
+            filterTypes = DateRangeType.entries.map {
+                DateRangeModel(
+                    name = it.toCapitalize(),
+                    description = "Sample",
+                    type = it,
+                    listOf(Date().time, Date().time)
+                )
+            },
+            selectedFilterType = dateRange,
+            fromDate = dateFilter,
+            toDate = dateFilter,
+            showCustomRangeSelection = true,
+            complete = { },
+            onDateSelection = {}
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun FilterDialogViewPreview() {
+    val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
+    val dateFilter = TextFieldValue(Date(), false, {})
+    ExpenseManagerTheme {
+        val sheetState = rememberModalBottomSheetState()
+        ModalBottomSheet(
+            onDismissRequest = { /*TODO*/ },
+            sheetState = sheetState
+        ) {
+            FilterTypesAndView(
+                filterTypes = DateRangeType.entries.map {
+                    DateRangeModel(
+                        name = it.toCapitalize(),
+                        description = "Sample",
+                        type = it,
+                        listOf(Date().time, Date().time)
+                    )
+                },
+                selectedFilterType = dateRange,
+                fromDate = dateFilter,
+                toDate = dateFilter,
+                showCustomRangeSelection = true,
+                complete = { },
+                onDateSelection = {}
+            )
+        }
+        val scoper = rememberCoroutineScope()
+        LaunchedEffect("") {
+            scoper.launch {
+                sheetState.show()
+            }
+        }
+    }
+}
+

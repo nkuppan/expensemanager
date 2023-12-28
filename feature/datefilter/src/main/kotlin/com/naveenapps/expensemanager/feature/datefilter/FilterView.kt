@@ -70,13 +70,17 @@ fun FilterView(modifier: Modifier = Modifier) {
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            tonalElevation = 0.dp,
         ) {
-            DateFilterSelectionView {
-                scope.launch {
-                    showDateDateFilter = false
-                    bottomSheetState.hide()
+            DateFilterSelectionView(
+                onComplete = {
+                    scope.launch {
+                        showDateDateFilter = false
+                        bottomSheetState.hide()
+                    }
                 }
-            }
+            )
         }
     }
 
@@ -90,6 +94,8 @@ fun FilterView(modifier: Modifier = Modifier) {
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            tonalElevation = 0.dp,
         ) {
             FilterTypeSelection(
                 applyChanges = {

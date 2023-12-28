@@ -50,20 +50,21 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
             modifier = Modifier.padding(it),
             currency = currency,
             accounts = accounts,
-        ) { actionType, id ->
-            when (actionType) {
-                1 -> {
-                }
+            onSelection = { actionType, id ->
+                when (actionType) {
+                    1 -> {
+                    }
 
-                2 -> {
-                    viewModel.openAccountCreateScreen(id)
-                }
+                    2 -> {
+                        viewModel.openAccountCreateScreen(id)
+                    }
 
-                3 -> {
-                    viewModel.openHome()
+                    3 -> {
+                        viewModel.openHome()
+                    }
                 }
-            }
-        }
+            },
+        )
     }
 }
 
@@ -71,8 +72,8 @@ fun OnboardingScreen(viewModel: OnboardingViewModel = hiltViewModel()) {
 private fun OnboardingContentView(
     currency: Currency,
     accounts: List<AccountUiModel>,
-    modifier: Modifier = Modifier,
     onSelection: (Int, String?) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Column(
@@ -132,6 +133,7 @@ private fun OnboardingContentView(
                     icon = account.storedIcon.name,
                     iconBackgroundColor = account.storedIcon.backgroundColor,
                     amount = account.amount.amountString,
+                    amountTextColor = account.amountTextColor,
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
@@ -199,26 +201,26 @@ private fun CurrencyItem(
 @Composable
 fun OnboardingScreenPreview() {
     ExpenseManagerTheme {
-        Surface {
-            OnboardingContentView(
-                modifier = Modifier
-                    .fillMaxSize(),
-                currency = Currency("1", "1"),
-                accounts = listOf(
-                    AccountUiModel(
-                        id = "1",
-                        name = "Shopping",
-                        type = AccountType.REGULAR,
-                        storedIcon = StoredIcon(
-                            name = "currency_dollar",
-                            backgroundColor = "#000000",
-                        ),
-                        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-                        amount = Amount(0.0, "$ 0.00"),
+        OnboardingContentView(
+            modifier = Modifier
+                .fillMaxSize(),
+            currency = Currency("1", "1"),
+            accounts = listOf(
+                AccountUiModel(
+                    id = "1",
+                    name = "Shopping",
+                    type = AccountType.REGULAR,
+                    storedIcon = StoredIcon(
+                        name = "currency_dollar",
+                        backgroundColor = "#000000",
                     ),
+                    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+                    amount = Amount(0.0, "$ 0.00"),
                 ),
-            ) { type, id ->
+            ),
+            onSelection = { type, id ->
+
             }
-        }
+        )
     }
 }

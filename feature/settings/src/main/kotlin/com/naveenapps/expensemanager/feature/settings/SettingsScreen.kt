@@ -8,7 +8,6 @@ import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,27 +16,22 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.EditNotifications
-import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.RateReview
-import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,9 +45,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigati
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
-import com.naveenapps.expensemanager.feature.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
-import kotlinx.coroutines.launch
 
 @Composable
 fun SettingsScreen() {
@@ -86,10 +78,6 @@ fun SettingsScreen() {
                 viewModel.openAdvancedSettings()
             }
 
-            SettingOption.ACCOUNTS_RE_ORDER -> {
-                viewModel.openAccountsReOrder()
-            }
-
             else -> Unit
         }
     }
@@ -103,35 +91,11 @@ private fun SettingsScreenScaffoldView(
     settingOptionSelected: ((SettingOption) -> Unit)? = null,
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     var showThemeSelection by remember { mutableStateOf(false) }
     if (showThemeSelection) {
         ThemeDialogView {
             showThemeSelection = false
-        }
-    }
-
-    var showDateFilter by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    if (showDateFilter) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                scope.launch {
-                    showDateFilter = false
-                    bottomSheetState.hide()
-                }
-            },
-            sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp),
-        ) {
-            DateFilterSelectionView {
-                scope.launch {
-                    showDateFilter = false
-                    bottomSheetState.hide()
-                }
-            }
         }
     }
 
@@ -156,13 +120,6 @@ private fun SettingsScreenScaffoldView(
             when (it) {
                 SettingOption.THEME -> {
                     showThemeSelection = true
-                }
-
-                SettingOption.FILTER -> {
-                    scope.launch {
-                        bottomSheetState.show()
-                        showDateFilter = true
-                    }
                 }
 
                 SettingOption.RATE_US -> {
@@ -225,17 +182,6 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.FILTER)
-                }
-                .padding(top = 8.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            title = stringResource(id = R.string.filter),
-            description = stringResource(id = R.string.filter_message),
-            imageVector = Icons.Outlined.FilterAlt,
-        )
-        SettingsItem(
-            modifier = Modifier
-                .clickable {
                     settingOptionSelected?.invoke(SettingOption.EXPORT)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -265,17 +211,6 @@ private fun SettingsScreenContent(
             title = stringResource(id = R.string.advanced),
             description = stringResource(id = R.string.advanced_config_message),
             imageVector = Icons.Outlined.SettingsApplications,
-        )
-        SettingsItem(
-            modifier = Modifier
-                .clickable {
-                    settingOptionSelected?.invoke(SettingOption.ACCOUNTS_RE_ORDER)
-                }
-                .padding(top = 8.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            title = stringResource(id = R.string.accounts_re_order),
-            description = stringResource(id = R.string.accounts_re_order_message),
-            imageVector = Icons.Outlined.Reorder,
         )
         SettingsItem(
             modifier = Modifier
@@ -322,12 +257,10 @@ private enum class SettingOption {
     THEME,
     CURRENCY,
     REMINDER,
-    FILTER,
     EXPORT,
     ABOUT_US,
     RATE_US,
     ADVANCED,
-    ACCOUNTS_RE_ORDER,
 }
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)

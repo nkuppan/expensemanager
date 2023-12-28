@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.firstOrNull
@@ -114,5 +115,9 @@ class AdvancedSettingsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun openAccountsReOrder() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.AccountReOrderScreen.route)
     }
 }

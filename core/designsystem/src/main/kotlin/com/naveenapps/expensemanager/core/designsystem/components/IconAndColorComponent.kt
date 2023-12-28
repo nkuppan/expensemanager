@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -72,6 +73,8 @@ fun IconAndColorComponent(
                 sheetSelection = SelectionType.NONE
             },
             windowInsets = WindowInsets(0.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            tonalElevation = 0.dp,
         ) {
             when (sheetSelection) {
                 SelectionType.COLOR_SELECTION -> {

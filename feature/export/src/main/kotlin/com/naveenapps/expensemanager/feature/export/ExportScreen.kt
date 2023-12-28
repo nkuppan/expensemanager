@@ -156,6 +156,8 @@ fun ExportScreen() {
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            tonalElevation = 0.dp,
         ) {
             MultipleAccountSelectionScreen { items, selected ->
                 viewModel.setAccounts(items, selected)
@@ -249,10 +251,14 @@ private fun ExportScreenContent(
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp),
+            containerColor = MaterialTheme.colorScheme.background,
+            tonalElevation = 0.dp,
         ) {
-            DateFilterSelectionView {
-                showBottomSheet = false
-            }
+            DateFilterSelectionView(
+                onComplete = {
+                    showBottomSheet = false
+                }
+            )
         }
     }
 

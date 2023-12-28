@@ -29,8 +29,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -65,8 +63,19 @@ import java.util.Random
 fun AccountListScreen(
     viewModel: AccountListViewModel = hiltViewModel(),
 ) {
-    val accountUiState by viewModel.accounts.collectAsState()
+    AccountListContentView(
+        viewModel.accounts,
+        closePage = viewModel::closePage,
+        openCreateScreen = viewModel::openCreateScreen
+    )
+}
 
+@Composable
+private fun AccountListContentView(
+    accountUiState: UiState<List<AccountUiModel>>,
+    closePage: () -> Unit,
+    openCreateScreen: (AccountUiModel?) -> Unit,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -76,14 +85,12 @@ fun AccountListScreen(
         topBar = {
             TopNavigationBar(
                 title = stringResource(R.string.accounts),
-                onClick = {
-                    viewModel.closePage()
-                },
+                onClick = closePage,
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                viewModel.openCreateScreen(null)
+                openCreateScreen(null)
             }) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -92,23 +99,21 @@ fun AccountListScreen(
             }
         },
     ) { innerPadding ->
-
         AccountListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
             accountUiState = accountUiState,
-        ) { account ->
-            viewModel.openCreateScreen(account.id)
-        }
+            onItemClick = openCreateScreen,
+        )
     }
 }
 
 @Composable
 private fun AccountListScreenContent(
     accountUiState: UiState<List<AccountUiModel>>,
+    onItemClick: ((AccountUiModel) -> Unit)?,
     modifier: Modifier = Modifier,
-    onItemClick: ((AccountUiModel) -> Unit)? = null,
 ) {
     Box(modifier = modifier) {
         when (accountUiState) {
@@ -132,7 +137,7 @@ private fun AccountListScreenContent(
 
             is UiState.Success -> {
                 LazyColumn {
-                    items(accountUiState.data) { account ->
+                    items(accountUiState.data, key = { it.id }) { account ->
                         AccountItem(
                             modifier = Modifier
                                 .clickable {
@@ -143,6 +148,7 @@ private fun AccountListScreenContent(
                             icon = account.storedIcon.name,
                             iconBackgroundColor = account.storedIcon.backgroundColor,
                             amount = account.amount.amountString,
+                            amountTextColor = account.amountTextColor,
                         )
                     }
                     item {
@@ -165,6 +171,7 @@ fun AccountItem(
     icon: String,
     iconBackgroundColor: String,
     amount: String?,
+    amountTextColor: Int?,
     modifier: Modifier = Modifier,
     endIcon: ImageVector? = null,
 ) {
@@ -184,16 +191,12 @@ fun AccountItem(
             text = name,
             style = MaterialTheme.typography.bodyLarge,
         )
-        if (amount != null) {
+        if (amount != null && amountTextColor != null) {
             Text(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 text = amount,
                 style = MaterialTheme.typography.titleMedium,
-                color = if (true) {
-                    colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
-                } else {
-                    colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
-                },
+                color = colorResource(id = amountTextColor),
             )
         }
         if (endIcon != null) {
@@ -208,7 +211,6 @@ fun AccountItem(
     }
 }
 
-@SuppressLint("DiscouragedApi")
 @Composable
 fun AccountCheckedItem(
     name: String,
@@ -344,7 +346,7 @@ private fun DashBoardAccountItemPreview() {
                 .wrapContentWidth()
                 .padding(16.dp),
             name = "Utilities is having a lengthy one",
-            icon = "ic_calendar",
+            icon = "credit_card",
             amount = "100.00$",
             amountTextColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
             backgroundColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100),
@@ -361,9 +363,10 @@ private fun AccountItemPreview() {
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
             name = "Utilities",
-            icon = "ic_calendar",
+            icon = "credit_card",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
+            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         )
     }
 }
@@ -388,7 +391,11 @@ private fun AccountCheckedItemPreview() {
 @Composable
 private fun AccountListItemLoadingStatePreview() {
     ExpenseManagerTheme {
-        AccountListScreenContent(accountUiState = UiState.Loading)
+        AccountListContentView(
+            accountUiState = UiState.Loading,
+            openCreateScreen = { },
+            closePage = { },
+        )
     }
 }
 
@@ -396,7 +403,11 @@ private fun AccountListItemLoadingStatePreview() {
 @Composable
 private fun AccountListItemEmptyStatePreview() {
     ExpenseManagerTheme {
-        AccountListScreenContent(accountUiState = UiState.Empty)
+        AccountListContentView(
+            accountUiState = UiState.Empty,
+            openCreateScreen = { },
+            closePage = { },
+        )
     }
 }
 
@@ -404,10 +415,12 @@ private fun AccountListItemEmptyStatePreview() {
 @Composable
 private fun AccountListItemSuccessStatePreview() {
     ExpenseManagerTheme {
-        AccountListScreenContent(
+        AccountListContentView(
             accountUiState = UiState.Success(
                 getRandomAccountUiModel(10),
             ),
+            openCreateScreen = { },
+            closePage = { },
         )
     }
 }

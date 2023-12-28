@@ -25,15 +25,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.feature.account.R
+import com.naveenapps.expensemanager.feature.account.list.getRandomAccountData
 import kotlinx.coroutines.Job
 
 @Composable
@@ -163,5 +166,20 @@ fun AccountReOrderItem(
             imageVector = Icons.Outlined.Reorder,
             contentDescription = null,
         )
+    }
+}
+
+@Preview
+@Composable
+fun AccountReOrderScaffoldViewPreview() {
+    ExpenseManagerTheme {
+        AccountReOrderScaffoldView(
+            accounts = getRandomAccountData(5),
+            showActionButton = true,
+            onMove = { i, j ->
+
+            },
+            saveChanges = { },
+            backPress = {})
     }
 }
