@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.account.create
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth
+import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.CheckAccountValidationUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
@@ -214,7 +215,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         accountCreateViewModel.currentBalanceField.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem.value).isNotEmpty()
-            Truth.assertThat(firstItem.value).isEqualTo("100")
+            Truth.assertThat(firstItem.value).isEqualTo("0")
         }
 
         accountCreateViewModel.iconValueField.test {
@@ -249,6 +250,81 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         accountCreateViewModel.currentBalanceField.value.onValueChange?.invoke("100")
 
         accountCreateViewModel.saveOrUpdateAccount()
+
+        advanceUntilIdle()
+
+        verify(appComposeNavigator, times(1)).popBackStack()
+    }
+
+    @Test
+    fun whenSaveAccountWithoutProperValueItShouldReflectError() = runTest {
+
+        accountCreateViewModel.nameField.value.onValueChange?.invoke("")
+        accountCreateViewModel.iconValueField.value.onValueChange?.invoke("account_balance")
+        accountCreateViewModel.colorValueField.value.onValueChange?.invoke("#FFFFFF")
+        accountCreateViewModel.currentBalanceField.value.onValueChange?.invoke("")
+        accountCreateViewModel.accountTypeField.value.onValueChange?.invoke(AccountType.CREDIT)
+        accountCreateViewModel.creditLimitField.value.onValueChange?.invoke("")
+
+        accountCreateViewModel.saveOrUpdateAccount()
+
+        advanceUntilIdle()
+
+        Truth.assertThat(accountCreateViewModel.nameField.value.valueError).isTrue()
+        Truth.assertThat(accountCreateViewModel.currentBalanceField.value.valueError).isTrue()
+        Truth.assertThat(accountCreateViewModel.creditLimitField.value.valueError).isTrue()
+    }
+
+    @Test
+    fun whenChangeAccountTypeCreditWithMinusValueShouldReflectAvailableBalanceErrorBG() = runTest {
+        accountCreateViewModel.accountTypeField.value.onValueChange?.invoke(AccountType.CREDIT)
+        accountCreateViewModel.currentBalanceField.value.onValueChange?.invoke("-1500")
+        accountCreateViewModel.creditLimitField.value.onValueChange?.invoke("1000")
+
+        advanceUntilIdle()
+
+        Truth.assertThat(accountCreateViewModel.availableCreditLimitColor.value.value)
+            .isEqualTo(R.color.red_500)
+        Truth.assertThat(accountCreateViewModel.availableCreditLimit.value.value)
+            .isNotNull()
+        Truth.assertThat(accountCreateViewModel.availableCreditLimit.value.value?.amount)
+            .isEqualTo(100.0)
+    }
+
+    @Test
+    fun checkClosePageNavigation() = runTest {
+        accountCreateViewModel.closePage()
+        verify(appComposeNavigator, times(1)).popBackStack()
+    }
+
+
+
+    @Test
+    fun whenAccountIsAvailableOnDeleteItShouldReflect() = runTest {
+
+        val accountId = "accountId"
+
+        whenever(accountRepository.findAccount(accountId)).thenReturn(
+            Resource.Success(FAKE_ACCOUNT)
+        )
+
+        whenever(accountRepository.deleteAccount(any())).thenReturn(Resource.Success(true))
+
+        accountCreateViewModel = AccountCreateViewModel(
+            SavedStateHandle(mapOf(KEY_ACCOUNT_ID to accountId)),
+            getCurrencyUseCase,
+            getDefaultCurrencyUseCase,
+            getFormattedAmountUseCase,
+            findAccountByIdUseCase,
+            addAccountUseCase,
+            updateAccountUseCase,
+            deleteAccountUseCase,
+            appComposeNavigator,
+        )
+
+        advanceUntilIdle()
+
+        accountCreateViewModel.deleteAccount()
 
         advanceUntilIdle()
 
