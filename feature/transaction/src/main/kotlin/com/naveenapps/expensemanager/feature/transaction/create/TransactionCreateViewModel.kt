@@ -21,6 +21,7 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isExpense
@@ -65,11 +66,14 @@ class TransactionCreateViewModel @Inject constructor(
     private val _showDelete = MutableStateFlow(false)
     val showDelete = _showDelete.asStateFlow()
 
-    private val _amount: MutableStateFlow<String> = MutableStateFlow(0.0.toStringWithLocale())
-    val amount = _amount.asStateFlow()
-
-    private val _amountErrorMessage: MutableStateFlow<UiText?> = MutableStateFlow(null)
-    val amountErrorMessage = _amountErrorMessage.asStateFlow()
+    var amount = MutableStateFlow(
+        TextFieldValue(
+            value = 0.0.toStringWithLocale(),
+            valueError = false,
+            onValueChange = this::setAmountOnChange
+        )
+    )
+        private set
 
     private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
     val date = _date.asStateFlow()
@@ -163,7 +167,7 @@ class TransactionCreateViewModel @Inject constructor(
 
             _categories.value = filteredCategories
             _selectedCategory.value = expenseCategory ?: filteredCategories.firstOrNull()
-                ?: defaultCategory
+                    ?: defaultCategory
         }.launchIn(viewModelScope)
 
         readInfo(
@@ -182,7 +186,7 @@ class TransactionCreateViewModel @Inject constructor(
                     val transaction = response.data
                     val currency = selectedCurrency
                     currency ?: return@launch
-                    setAmount(transaction.amount.amount.toStringWithLocale())
+                    setAmountOnChange(transaction.amount.amount.toStringWithLocale())
                     setDate(transaction.createdOn)
                     setNotes(transaction.notes)
                     setCategorySelection(transaction.category)
@@ -216,25 +220,30 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun doSave() {
-        val amount = this.amount.value
+        val amount: String = this.amount.value.value
+
+        var isError = false
 
         if (amount.isBlank()) {
-            _amountErrorMessage.value = UiText.StringResource(R.string.amount_error_message)
-            return
+            this.amount.value = this.amount.value.copy(valueError = true)
+            isError = true
         }
 
         val amountValue = amount.toDoubleOrNullWithLocale()
 
         if (amountValue == null || amountValue <= 0.0) {
-            _amountErrorMessage.value =
-                UiText.StringResource(R.string.amount_should_greater_than_zero)
-            return
+            this.amount.value = this.amount.value.copy(valueError = true)
+            isError = true
         }
 
         if (selectedTransactionType.value == TransactionType.TRANSFER &&
             selectedFromAccount.value.id == selectedToAccount.value.id
         ) {
             _message.tryEmit(UiText.StringResource(R.string.select_different_account))
+            isError = true
+        }
+
+        if (isError) {
             return
         }
 
@@ -250,7 +259,7 @@ class TransactionCreateViewModel @Inject constructor(
                 null
             },
             type = selectedTransactionType.value,
-            amount = Amount(amountValue),
+            amount = Amount(amountValue!!),
             imagePath = "",
             createdOn = date.value,
             updatedOn = Calendar.getInstance().time,
@@ -274,22 +283,14 @@ class TransactionCreateViewModel @Inject constructor(
         }
     }
 
-    fun setAmount(amount: String) {
-        _amount.value = amount
-
-        if (amount.isBlank()) {
-            _amountErrorMessage.value = UiText.StringResource(R.string.amount_error_message)
-            return
-        }
+    fun setAmountOnChange(amount: String) {
 
         val amountValue = amount.toDoubleOrNullWithLocale()
-        if (amountValue == null || amountValue <= 0.0) {
-            _amountErrorMessage.value =
-                UiText.StringResource(R.string.amount_should_greater_than_zero)
-            return
-        }
 
-        _amountErrorMessage.value = null
+        this.amount.value = this.amount.value.copy(
+            value = amount,
+            valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0
+        )
     }
 
     fun setDate(date: Date) {

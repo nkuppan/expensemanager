@@ -10,6 +10,7 @@
     <string name="accounts">Accounts</string>
     <string name="available_balance">Available balance</string>
     <string name="credit_limit">Credit Limit</string>
+    <string name="credit_limit_error">Credit Limit shouldn\'t be empty</string>
     <string name="current_balance">Current Balance</string>
     <string name="current_balance_error">Current balance shouldn\'t be empty</string>
     <string name="current_balance_value_error">Current balance shouldn\'t be invalid number</string>

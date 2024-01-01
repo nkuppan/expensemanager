@@ -150,7 +150,7 @@ private fun AccountCreateScreen(
             isError = nameField.valueError,
             onValueChange = nameField.onValueChange,
             label = R.string.account_name,
-            errorMessage = "",
+            errorMessage = stringResource(id = R.string.account_name_error),
         )
 
         IconAndColorComponent(
@@ -168,7 +168,8 @@ private fun AccountCreateScreen(
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
             value = currentBalance.value,
-            errorMessage = null,
+            isError = currentBalance.valueError,
+            errorMessage = stringResource(id = R.string.current_balance_error),
             onValueChange = currentBalance.onValueChange,
             leadingIconText = currencyIcon.value,
             label = R.string.current_balance,
@@ -180,7 +181,8 @@ private fun AccountCreateScreen(
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                     .fillMaxWidth(),
                 value = creditLimit.value,
-                errorMessage = null,
+                isError = creditLimit.valueError,
+                errorMessage = stringResource(id = R.string.credit_limit_error),
                 onValueChange = creditLimit.onValueChange,
                 leadingIconText = currencyIcon.value,
                 label = R.string.credit_limit,

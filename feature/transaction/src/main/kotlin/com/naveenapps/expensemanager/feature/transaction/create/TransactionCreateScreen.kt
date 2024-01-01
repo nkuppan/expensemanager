@@ -61,7 +61,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalText
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -69,6 +68,7 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.account.selection.AccountSelectionScreen
@@ -82,7 +82,9 @@ import java.util.Date
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun TransactionCreateScreen() {
+fun TransactionCreateScreen(
+    viewModel: TransactionCreateViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
@@ -90,8 +92,6 @@ fun TransactionCreateScreen() {
     var showBottomSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val snackbarHostState = remember { SnackbarHostState() }
-
-    val viewModel: TransactionCreateViewModel = hiltViewModel()
 
     var sheetSelection by remember { mutableIntStateOf(1) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -119,7 +119,7 @@ fun TransactionCreateScreen() {
                 showNumberPadDialog = false
                 amount ?: return@NumberPadDialogView
                 scope.launch {
-                    viewModel.setAmount(amount)
+                    viewModel.setAmountOnChange(amount)
                     showBottomSheet = false
                 }
             },
@@ -186,8 +186,7 @@ fun TransactionCreateScreen() {
         },
     ) { innerPadding ->
 
-        val amount by viewModel.amount.collectAsState()
-        val amountErrorMessage by viewModel.amountErrorMessage.collectAsState()
+        val amountField by viewModel.amount.collectAsState()
 
         val currencyIcon by viewModel.currencyIcon.collectAsState()
         val selectedDate by viewModel.date.collectAsState()
@@ -206,9 +205,7 @@ fun TransactionCreateScreen() {
             selectedFromAccount = selectedFromAccount,
             selectedToAccount = selectedToAccount,
             currencyIcon = currencyIcon,
-            amount = amount,
-            amountErrorMessage = amountErrorMessage,
-            amountChange = viewModel::setAmount,
+            amountField = amountField,
             selectedDate = selectedDate,
             onDateChange = viewModel::setDate,
             selectedTransactionType = selectedTransactionType,
@@ -272,9 +269,7 @@ private fun TransactionCreateBottomSheetContent(
 @Composable
 private fun TransactionCreateScreen(
     modifier: Modifier = Modifier,
-    amount: String = "",
-    amountErrorMessage: UiText? = null,
-    amountChange: ((String) -> Unit)? = null,
+    amountField: TextFieldValue<String>,
     currencyIcon: String? = null,
     selectedDate: Date? = null,
     onDateChange: ((Date) -> Unit)? = null,
@@ -368,11 +363,12 @@ private fun TransactionCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
-            value = amount,
-            errorMessage = amountErrorMessage,
-            onValueChange = amountChange,
+            value = amountField.value,
+            isError = amountField.valueError,
+            onValueChange = amountField.onValueChange,
             leadingIconText = currencyIcon,
             label = R.string.amount,
+            errorMessage = stringResource(id = R.string.amount_error_message),
             trailingIcon = {
                 IconButton(
                     onClick = {
@@ -531,8 +527,12 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 @Preview
 @Composable
 private fun TransactionCreateStatePreview() {
+
+    val amountField = TextFieldValue(value = "", valueError = false, {})
+
     ExpenseManagerTheme {
         TransactionCreateScreen(
+            amountField = amountField,
             currencyIcon = "$",
             selectedCategory = Category(
                 id = "1",

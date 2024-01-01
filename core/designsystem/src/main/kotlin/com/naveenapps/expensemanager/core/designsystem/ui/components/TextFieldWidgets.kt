@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 
 @Composable
 fun ClickableTextField(
@@ -54,10 +53,10 @@ fun ClickableTextField(
 
     val gesture = Modifier.pointerInput(onClick) {
         detectTapGestures(
-            onPress = { pos ->
+            onPress = { _ ->
                 onClick()
             },
-            onTap = { pos ->
+            onTap = { _ ->
                 onClick()
             }
         )
@@ -108,7 +107,7 @@ fun StringTextField(
             onValueChange?.invoke(it)
         },
         keyboardOptions = keyboardOptions,
-        isError = true,
+        isError = isError,
         supportingText = if (isError) {
             { Text(text = errorMessage) }
         } else {
@@ -120,11 +119,12 @@ fun StringTextField(
 @Composable
 fun DecimalTextField(
     value: String,
-    errorMessage: UiText?,
+    isError: Boolean,
     onValueChange: ((String) -> Unit)?,
     leadingIconText: String?,
     label: Int,
     modifier: Modifier = Modifier,
+    errorMessage: String = "",
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
@@ -159,9 +159,9 @@ fun DecimalTextField(
                 focusManager.clearFocus(force = true)
             },
         ),
-        isError = errorMessage != null,
-        supportingText = if (errorMessage != null) {
-            { Text(text = errorMessage.asString(context)) }
+        isError = isError,
+        supportingText = if (isError) {
+            { Text(text = errorMessage) }
         } else {
             null
         },

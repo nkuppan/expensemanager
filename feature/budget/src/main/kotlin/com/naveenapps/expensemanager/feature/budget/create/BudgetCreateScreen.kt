@@ -68,14 +68,14 @@ enum class BudgetCreateSheetSelection {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BudgetCreateScreen() {
+fun BudgetCreateScreen(
+    viewModel: BudgetCreateViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
 
     val snackbarHostState = remember { SnackbarHostState() }
-
-    val viewModel: BudgetCreateViewModel = hiltViewModel()
 
     var sheetSelection by remember { mutableStateOf(BudgetCreateSheetSelection.CATEGORY_SELECTION) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -330,7 +330,7 @@ private fun BudgetCreateScreen(
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
             value = amount,
-            errorMessage = amountErrorMessage,
+            isError = amountErrorMessage != null,
             onValueChange = onAmountChange,
             leadingIconText = currencyIcon,
             label = R.string.budget_amount,

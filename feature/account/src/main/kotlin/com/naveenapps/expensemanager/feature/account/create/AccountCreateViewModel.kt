@@ -225,11 +225,12 @@ class AccountCreateViewModel @Inject constructor(
         val currentBalance: String = currentBalanceField.value.value
         val creditLimit: String = creditLimitField.value.value
         val color: String = colorValueField.value.value
+        val accountType = accountTypeField.value.value
 
         var isError = false
 
         if (name.isBlank()) {
-            nameField.value.copy(valueError = true)
+            nameField.value = nameField.value.copy(valueError = true)
             isError = true
         }
 
@@ -238,11 +239,16 @@ class AccountCreateViewModel @Inject constructor(
             isError = true
         }
 
+        if (accountType == AccountType.CREDIT) {
+            if (creditLimit.isBlank() || creditLimit.toDoubleOrNullWithLocale() == null) {
+                creditLimitField.value = creditLimitField.value.copy(valueError = true)
+                isError = true
+            }
+        }
+
         if (isError) {
             return
         }
-
-        val accountType = accountTypeField.value.value
 
         val account = Account(
             id = account?.id ?: UUID.randomUUID().toString(),
