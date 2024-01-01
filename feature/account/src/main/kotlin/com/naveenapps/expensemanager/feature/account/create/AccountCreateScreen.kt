@@ -99,7 +99,7 @@ fun AccountCreateScreen(
         val creditLimit by viewModel.creditLimitField.collectAsState()
         val currencyIcon by viewModel.currencyIconField.collectAsState()
         val colorValue by viewModel.colorValueField.collectAsState()
-        val iconValue by viewModel.iconField.collectAsState()
+        val iconValue by viewModel.iconValueField.collectAsState()
         val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
         val availableCreditLimitColor by viewModel.availableCreditLimitColor.collectAsState()
 

@@ -88,7 +88,7 @@ class AccountCreateViewModel @Inject constructor(
         TextFieldValue(
             value = "",
             valueError = false,
-            onValueChange = this::setCurrencyIcon
+            onValueChange = null
         )
     )
         private set
@@ -102,11 +102,11 @@ class AccountCreateViewModel @Inject constructor(
     )
         private set
 
-    var iconField = MutableStateFlow(
+    var iconValueField = MutableStateFlow(
         TextFieldValue(
             value = DEFAULT_ICON,
             valueError = false,
-            onValueChange = this::setColorValue
+            onValueChange = this::setIconValue
         )
     )
         private set
@@ -136,9 +136,9 @@ class AccountCreateViewModel @Inject constructor(
     init {
         readAccountInfo(savedStateHandle.get<String>(ExpenseManagerScreens.AccountCreate.KEY_ACCOUNT_ID))
 
-        getCurrencyUseCase.invoke().onEach {
-            currency = it
-            currencyIconField.value = currencyIconField.value.copy(value = it.symbol)
+        getCurrencyUseCase.invoke().onEach { updatedCurrency ->
+            currency = updatedCurrency
+            currencyIconField.update { it.copy(updatedCurrency.symbol) }
             updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
     }
@@ -155,7 +155,7 @@ class AccountCreateViewModel @Inject constructor(
             accountTypeField.value = this.accountTypeField.value.copy(value = accountItem.type)
             colorValueField.value =
                 this.colorValueField.value.copy(value = accountItem.storedIcon.backgroundColor)
-            iconField.value = iconField.value.copy(value = accountItem.storedIcon.name)
+            iconValueField.value = iconValueField.value.copy(value = accountItem.storedIcon.name)
             updateAccountValue(accountItem)
             showDelete.value = true
         }
@@ -255,7 +255,7 @@ class AccountCreateViewModel @Inject constructor(
             name = name,
             type = accountType,
             storedIcon = StoredIcon(
-                name = iconField.value.value,
+                name = iconValueField.value.value,
                 backgroundColor = color,
             ),
             amount = currentBalance.toDoubleOrNullWithLocale() ?: 0.0,
@@ -288,25 +288,20 @@ class AccountCreateViewModel @Inject constructor(
     }
 
     private fun setColorValue(colorValue: String) {
-        this.colorValueField.value = this.colorValueField.value.copy(value = colorValue)
+        colorValueField.update { it.copy(value = colorValue) }
     }
 
     private fun setAccountTypeChange(accountType: AccountType) {
-        this.accountTypeField.value = accountTypeField.value.copy(value = accountType)
+        accountTypeField.update { it.copy(value = accountType) }
         updateAccountValue(account)
     }
 
-    private fun setCurrencyIcon(icon: String) {
-        this.iconField.value = this.iconField.value.copy(
-            value = icon
-        )
+    private fun setIconValue(icon: String) {
+        iconValueField.update { it.copy(value = icon) }
     }
 
     private fun setNameChange(name: String) {
-        this.nameField.value = nameField.value.copy(
-            value = name,
-            valueError = name.isBlank()
-        )
+        nameField.update { it.copy(value = name, valueError = name.isBlank()) }
     }
 
     private fun setCurrentBalanceChange(currentBalance: String) {

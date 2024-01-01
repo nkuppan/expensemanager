@@ -70,18 +70,18 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     fun whenAccountIconSetItShouldReflect() = runTest {
         val iconName = "icon_name"
 
-        accountCreateViewModel.iconField.test {
+        accountCreateViewModel.iconValueField.test {
             val firstIconName = awaitItem()
             Truth.assertThat(firstIconName).isNotNull()
             Truth.assertThat(firstIconName.value).isNotEmpty()
-            Truth.assertThat(firstIconName).isEqualTo("account_balance")
+            Truth.assertThat(firstIconName.value).isEqualTo("account_balance")
 
-            accountCreateViewModel.iconField.value.onValueChange?.invoke(iconName)
+            accountCreateViewModel.iconValueField.value.onValueChange?.invoke(iconName)
 
             val secondIconName = awaitItem()
             Truth.assertThat(secondIconName).isNotNull()
             Truth.assertThat(secondIconName.value).isNotEmpty()
-            Truth.assertThat(secondIconName).isEqualTo(iconName)
+            Truth.assertThat(secondIconName.value).isEqualTo(iconName)
         }
     }
 
@@ -93,29 +93,30 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()
             Truth.assertThat(firstItem.value).isNotEmpty()
-            Truth.assertThat(firstItem).isEqualTo("#43A546")
+            Truth.assertThat(firstItem.value).isEqualTo("#43A546")
 
             accountCreateViewModel.colorValueField.value.onValueChange?.invoke(selectedColor)
 
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem.value).isNotEmpty()
-            Truth.assertThat(secondItem).isEqualTo(selectedColor)
+            Truth.assertThat(secondItem.value).isEqualTo(selectedColor)
         }
     }
 
     @Test
     fun whenChangingAccountTypeItShouldReflect() = runTest {
+        accountCreateViewModel.accountTypeField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem).isNotNull()
+            Truth.assertThat(firstItem.value).isEqualTo(AccountType.REGULAR)
 
-        val firstItem = accountCreateViewModel.accountTypeField
-        Truth.assertThat(firstItem).isNotNull()
-        Truth.assertThat(firstItem).isEqualTo(AccountType.REGULAR)
+            accountCreateViewModel.accountTypeField.value.onValueChange?.invoke(AccountType.CREDIT)
 
-        accountCreateViewModel.accountTypeField.value.onValueChange?.invoke(AccountType.CREDIT)
-
-        val secondItem = accountCreateViewModel.accountTypeField
-        Truth.assertThat(secondItem).isNotNull()
-        Truth.assertThat(secondItem).isEqualTo(AccountType.CREDIT)
+            val secondItem = awaitItem()
+            Truth.assertThat(secondItem).isNotNull()
+            Truth.assertThat(secondItem.value).isEqualTo(AccountType.CREDIT)
+        }
     }
 
     @Test
@@ -130,7 +131,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
-            Truth.assertThat(secondItem).isEqualTo(changedName)
+            Truth.assertThat(secondItem.value).isEqualTo(changedName)
 
             accountCreateViewModel.nameField.value.onValueChange?.invoke(" ")
 
