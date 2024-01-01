@@ -236,8 +236,8 @@ class BudgetCreateViewModel @Inject constructor(
         }
     }
 
-    fun setColorValue(colorValue: Int) {
-        this.colorValue.value = String.format("#%06X", 0xFFFFFF and colorValue)
+    fun setColorValue(colorValue: String) {
+        this.colorValue.value = colorValue
     }
 
     fun setIcon(icon: String) {

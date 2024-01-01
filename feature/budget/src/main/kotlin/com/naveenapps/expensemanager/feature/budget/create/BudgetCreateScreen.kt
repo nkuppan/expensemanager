@@ -255,7 +255,7 @@ private fun BudgetCreateScreen(
     categoriesCount: UiText? = null,
     accountCount: UiText? = null,
     openIconPicker: ((String) -> Unit)? = null,
-    openColorPicker: ((Int) -> Unit)? = null,
+    openColorPicker: ((String) -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null,
     onAmountChange: ((String) -> Unit)? = null,
     onDateChange: ((Date) -> Unit)? = null,
@@ -310,7 +310,7 @@ private fun BudgetCreateScreen(
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 .fillMaxWidth(),
             value = name,
-            errorMessage = nameErrorMessage,
+            isError = nameErrorMessage != null,
             onValueChange = onNameChange,
             label = R.string.budget_name,
         )

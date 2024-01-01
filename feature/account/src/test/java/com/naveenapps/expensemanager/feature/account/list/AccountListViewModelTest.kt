@@ -121,13 +121,13 @@ class AccountListViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun checkOpenCreateNavigation() = runTest {
-        accountListViewModel.openCreateScreen("")
+        accountListViewModel.openCreateScreen(null)
         verify(appComposeNavigator, times(1)).navigate(ArgumentMatchers.anyString(), eq(null))
     }
 
     @Test
     fun checkOpenCreateNavigationAndCommands() = runTest {
-        accountListViewModel.openCreateScreen("accountId")
+        accountListViewModel.openCreateScreen(null)
         verify(appComposeNavigator, times(1)).navigate(ArgumentMatchers.anyString(), eq(null))
         appComposeNavigator
     }

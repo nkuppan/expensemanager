@@ -13,19 +13,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,7 +37,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGCol
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
-import kotlinx.coroutines.launch
 import java.util.Date
 
 enum class DateTypeSelection {
@@ -128,7 +122,7 @@ private fun FilterTypesAndView(
             Row(
                 modifier = Modifier
                     .clickable {
-                        selectedFilterType.onValueChange.invoke(filter.type)
+                        selectedFilterType.onValueChange?.invoke(filter.type)
                     }
                     .fillMaxWidth()
                     .then(
@@ -251,44 +245,6 @@ private fun FilterNormalViewPreview() {
             complete = { },
             onDateSelection = {}
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview
-@Composable
-private fun FilterDialogViewPreview() {
-    val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
-    val dateFilter = TextFieldValue(Date(), false, {})
-    ExpenseManagerTheme {
-        val sheetState = rememberModalBottomSheetState()
-        ModalBottomSheet(
-            onDismissRequest = { /*TODO*/ },
-            sheetState = sheetState
-        ) {
-            FilterTypesAndView(
-                filterTypes = DateRangeType.entries.map {
-                    DateRangeModel(
-                        name = it.toCapitalize(),
-                        description = "Sample",
-                        type = it,
-                        listOf(Date().time, Date().time)
-                    )
-                },
-                selectedFilterType = dateRange,
-                fromDate = dateFilter,
-                toDate = dateFilter,
-                showCustomRangeSelection = true,
-                complete = { },
-                onDateSelection = {}
-            )
-        }
-        val scoper = rememberCoroutineScope()
-        LaunchedEffect("") {
-            scoper.launch {
-                sheetState.show()
-            }
-        }
     }
 }
 

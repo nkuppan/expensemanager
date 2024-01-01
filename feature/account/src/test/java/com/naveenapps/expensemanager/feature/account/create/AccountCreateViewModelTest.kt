@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.account.create
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.CheckAccountValidationUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
@@ -71,17 +70,17 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     fun whenAccountIconSetItShouldReflect() = runTest {
         val iconName = "icon_name"
 
-        accountCreateViewModel.icon.test {
+        accountCreateViewModel.iconField.test {
             val firstIconName = awaitItem()
             Truth.assertThat(firstIconName).isNotNull()
-            Truth.assertThat(firstIconName).isNotEmpty()
+            Truth.assertThat(firstIconName.value).isNotEmpty()
             Truth.assertThat(firstIconName).isEqualTo("account_balance")
 
-            accountCreateViewModel.setIcon(iconName)
+            accountCreateViewModel.iconField.value.onValueChange?.invoke(iconName)
 
             val secondIconName = awaitItem()
             Truth.assertThat(secondIconName).isNotNull()
-            Truth.assertThat(secondIconName).isNotEmpty()
+            Truth.assertThat(secondIconName.value).isNotEmpty()
             Truth.assertThat(secondIconName).isEqualTo(iconName)
         }
     }
@@ -89,90 +88,55 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     @Test
     fun whenAccountColorSetItShouldReflect() = runTest {
         val selectedColor = "#000064"
-        val colorValue = 100
 
-        accountCreateViewModel.colorValue.test {
+        accountCreateViewModel.colorValueField.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isNotEmpty()
+            Truth.assertThat(firstItem.value).isNotEmpty()
             Truth.assertThat(firstItem).isEqualTo("#43A546")
 
-            accountCreateViewModel.setColorValue(colorValue)
+            accountCreateViewModel.colorValueField.value.onValueChange?.invoke(selectedColor)
 
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
-            Truth.assertThat(secondItem).isNotEmpty()
+            Truth.assertThat(secondItem.value).isNotEmpty()
             Truth.assertThat(secondItem).isEqualTo(selectedColor)
         }
     }
 
     @Test
     fun whenChangingAccountTypeItShouldReflect() = runTest {
-        accountCreateViewModel.accountType.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isEqualTo(AccountType.REGULAR)
 
-            accountCreateViewModel.setAccountType(AccountType.CREDIT)
+        val firstItem = accountCreateViewModel.accountTypeField
+        Truth.assertThat(firstItem).isNotNull()
+        Truth.assertThat(firstItem).isEqualTo(AccountType.REGULAR)
 
-            val secondItem = awaitItem()
-            Truth.assertThat(secondItem).isNotNull()
-            Truth.assertThat(secondItem).isEqualTo(AccountType.CREDIT)
-        }
+        accountCreateViewModel.accountTypeField.value.onValueChange?.invoke(AccountType.CREDIT)
+
+        val secondItem = accountCreateViewModel.accountTypeField
+        Truth.assertThat(secondItem).isNotNull()
+        Truth.assertThat(secondItem).isEqualTo(AccountType.CREDIT)
     }
 
     @Test
     fun whenChangingNameItShouldReflect() = runTest {
-        accountCreateViewModel.name.test {
+        accountCreateViewModel.nameField.test {
             val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isEmpty()
+            Truth.assertThat(firstItem.value).isEmpty()
 
             val changedName = "Name"
 
-            accountCreateViewModel.setNameChange(changedName)
+            accountCreateViewModel.nameField.value.onValueChange?.invoke(changedName)
 
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem).isEqualTo(changedName)
-        }
-    }
 
-    @Test
-    fun whenChangingEmptyNameItShouldReflectInErrorMessage() = runTest {
-        accountCreateViewModel.nameErrorMessage.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNull()
-
-            val changedName = " "
-
-            accountCreateViewModel.setNameChange(changedName)
-
-            val secondItem = awaitItem()
-            Truth.assertThat(secondItem).isNotNull()
-            Truth.assertThat(secondItem).isInstanceOf(UiText::class.java)
-            Truth.assertThat(secondItem as UiText.StringResource).isNotNull()
-        }
-    }
-
-    @Test
-    fun whenChangingValidNameItShouldReflectInErrorMessage() = runTest {
-        accountCreateViewModel.nameErrorMessage.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNull()
-
-            val changedName = " "
-
-            accountCreateViewModel.setNameChange(changedName)
-
-            val secondItem = awaitItem()
-            Truth.assertThat(secondItem).isNotNull()
-            Truth.assertThat(secondItem).isInstanceOf(UiText::class.java)
-            Truth.assertThat(secondItem as UiText.StringResource).isNotNull()
-
-            accountCreateViewModel.setNameChange("Valid")
+            accountCreateViewModel.nameField.value.onValueChange?.invoke(" ")
 
             val thirdItem = awaitItem()
-            Truth.assertThat(thirdItem).isNull()
+            Truth.assertThat(thirdItem).isNotNull()
+            Truth.assertThat(thirdItem.valueError).isTrue()
         }
     }
 }

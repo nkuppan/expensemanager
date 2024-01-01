@@ -58,7 +58,6 @@ import com.naveenapps.expensemanager.feature.budget.R
 fun BudgetListScreen(
     viewModel: BudgetListViewModel = hiltViewModel(),
 ) {
-
     BudgetListScreenContent(
         budgetUiState = viewModel.budgets,
         closePage = viewModel::closePage,

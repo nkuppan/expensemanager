@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.testing
 
-import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
@@ -10,7 +9,9 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 val FAKE_CATEGORY = Category(
     id = "1",
@@ -115,7 +116,7 @@ val FAKE_BUDGET = Budget(
     id = "1",
     name = "Sample",
     amount = 5000.0,
-    selectedMonth = Date().toMonthYear(),
+    selectedMonth = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(Date()),
     accounts = emptyList(),
     categories = emptyList(),
     isAllAccountsSelected = true,

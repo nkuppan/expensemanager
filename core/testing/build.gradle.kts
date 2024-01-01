@@ -1,7 +1,6 @@
 plugins {
     id("naveenapps.plugin.android.library")
     id("naveenapps.plugin.kotlin.basic")
-    id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
 }
 
@@ -22,8 +21,6 @@ dependencies {
     api(libs.mockito)
     api(libs.truth)
     api(libs.robolectric)
-
-    debugRuntimeOnly(libs.androidx.compose.ui.testManifest)
 
     implementation(project(":core:model"))
     implementation(libs.kotlinx.datetime)

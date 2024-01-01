@@ -1,8 +1,5 @@
 package com.naveenapps.expensemanager.feature.account.list
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
@@ -14,6 +11,7 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import javax.inject.Inject
@@ -26,7 +24,7 @@ class AccountListViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    var accounts by mutableStateOf<UiState<List<AccountUiModel>>>(UiState.Loading)
+    var accounts = MutableStateFlow<UiState<List<AccountUiModel>>>(UiState.Loading)
         private set
 
     init {
@@ -34,7 +32,7 @@ class AccountListViewModel @Inject constructor(
             getCurrencyUseCase.invoke(),
             getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
-            this.accounts = if (accounts.isEmpty()) {
+            this.accounts.value = if (accounts.isEmpty()) {
                 UiState.Empty
             } else {
                 UiState.Success(

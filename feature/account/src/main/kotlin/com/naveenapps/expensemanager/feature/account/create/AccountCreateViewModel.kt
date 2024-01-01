@@ -1,14 +1,11 @@
 package com.naveenapps.expensemanager.feature.account.create
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
@@ -22,16 +19,14 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.feature.account.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
@@ -50,47 +45,88 @@ class AccountCreateViewModel @Inject constructor(
     private val composeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _message = MutableSharedFlow<UiText>()
-    val message = _message.asSharedFlow()
-
-    private val _showDelete = MutableStateFlow(false)
-    val showDelete = _showDelete.asStateFlow()
-
-    var accountType by mutableStateOf(AccountType.REGULAR)
+    var showDelete = MutableStateFlow(false)
         private set
 
-    var name = MutableStateFlow("")
+    var accountTypeField = MutableStateFlow(
+        TextFieldValue(
+            value = AccountType.REGULAR,
+            valueError = false,
+            onValueChange = this::setAccountTypeChange
+        )
+    )
         private set
 
-    var nameErrorMessage = MutableStateFlow<UiText?>(null)
+    var nameField = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = this::setNameChange
+        )
+    )
         private set
 
-    var currentBalance = MutableStateFlow("")
+    var currentBalanceField = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = this::setCurrentBalanceChange
+        )
+    )
         private set
 
-    var currentBalanceErrorMessage = MutableStateFlow<UiText?>(null)
+    var creditLimitField = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = this::setCreditLimitChange
+        )
+    )
         private set
 
-    var creditLimit = MutableStateFlow("")
+    var currencyIconField = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = this::setCurrencyIcon
+        )
+    )
         private set
 
-    var creditLimitErrorMessage = MutableStateFlow<UiText?>(null)
+    var colorValueField = MutableStateFlow(
+        TextFieldValue(
+            value = DEFAULT_COLOR,
+            valueError = false,
+            onValueChange = this::setColorValue
+        )
+    )
         private set
 
-    var currencyIcon = MutableStateFlow<String?>(null)
+    var iconField = MutableStateFlow(
+        TextFieldValue(
+            value = DEFAULT_ICON,
+            valueError = false,
+            onValueChange = this::setColorValue
+        )
+    )
         private set
 
-    var colorValue = MutableStateFlow(DEFAULT_COLOR)
+    var availableCreditLimit = MutableStateFlow<TextFieldValue<Amount?>>(
+        TextFieldValue(
+            value = null,
+            valueError = false,
+            onValueChange = null
+        )
+    )
         private set
 
-    var icon = MutableStateFlow(DEFAULT_ICON)
-        private set
-
-    var availableCreditLimit = MutableStateFlow<Amount?>(null)
-        private set
-
-    var availableCreditLimitColor =
-        MutableStateFlow(com.naveenapps.expensemanager.core.common.R.color.green_500)
+    var availableCreditLimitColor = MutableStateFlow(
+        TextFieldValue(
+            value = R.color.green_500,
+            valueError = false,
+            onValueChange = null
+        )
+    )
         private set
 
     private var account: Account? = null
@@ -102,7 +138,7 @@ class AccountCreateViewModel @Inject constructor(
 
         getCurrencyUseCase.invoke().onEach {
             currency = it
-            currencyIcon.value = it.symbol
+            currencyIconField.value = currencyIconField.value.copy(value = it.symbol)
             updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
     }
@@ -111,20 +147,23 @@ class AccountCreateViewModel @Inject constructor(
         this.account = account
 
         this.account?.let { accountItem ->
-            name.value = accountItem.name
-            currentBalance.value = accountItem.amount.toStringWithLocale()
-            creditLimit.value = accountItem.creditLimit.toStringWithLocale()
-            accountType = accountItem.type
-            colorValue.value = accountItem.storedIcon.backgroundColor
-            icon.value = accountItem.storedIcon.name
+            nameField.value = this.nameField.value.copy(value = accountItem.name)
+            currentBalanceField.value =
+                this.currentBalanceField.value.copy(value = accountItem.amount.toStringWithLocale())
+            creditLimitField.value =
+                this.creditLimitField.value.copy(value = accountItem.creditLimit.toStringWithLocale())
+            accountTypeField.value = this.accountTypeField.value.copy(value = accountItem.type)
+            colorValueField.value =
+                this.colorValueField.value.copy(value = accountItem.storedIcon.backgroundColor)
+            iconField.value = iconField.value.copy(value = accountItem.storedIcon.name)
             updateAccountValue(accountItem)
-            _showDelete.value = true
+            showDelete.value = true
         }
     }
 
     private fun updateAccountValue(accountItem: Account?) {
         updateAvailableCreditLimit(
-            if (accountType == AccountType.CREDIT) {
+            if (accountTypeField.value.value == AccountType.CREDIT) {
                 accountItem?.creditLimit ?: 0.0
             } else {
                 0.0
@@ -139,15 +178,20 @@ class AccountCreateViewModel @Inject constructor(
     ) {
         val totalAmount = creditLimit + amount
 
-        availableCreditLimit.value = getFormattedAmountUseCase.invoke(
-            amount = totalAmount,
-            currency = currency,
+        availableCreditLimit.value = availableCreditLimit.value.copy(
+            value = getFormattedAmountUseCase.invoke(
+                amount = totalAmount,
+                currency = currency,
+            )
         )
 
-        availableCreditLimitColor.value = if (totalAmount < 0) {
-            com.naveenapps.expensemanager.core.common.R.color.red_500
-        } else {
-            com.naveenapps.expensemanager.core.common.R.color.green_500
+        availableCreditLimitColor.update {
+            it.value = if (totalAmount < 0) {
+                R.color.red_500
+            } else {
+                R.color.green_500
+            }
+            it
         }
     }
 
@@ -167,16 +211,8 @@ class AccountCreateViewModel @Inject constructor(
         viewModelScope.launch {
             account?.let { account ->
                 when (deleteAccountUseCase.invoke(account)) {
-                    is Resource.Error -> {
-                        _message.emit(
-                            UiText.StringResource(R.string.account_delete_error_message),
-                        )
-                    }
-
+                    is Resource.Error -> Unit
                     is Resource.Success -> {
-                        _message.emit(
-                            UiText.StringResource(R.string.account_delete_success_message),
-                        )
                         closePage()
                     }
                 }
@@ -185,25 +221,20 @@ class AccountCreateViewModel @Inject constructor(
     }
 
     fun saveOrUpdateAccount() {
-        val name: String = name.value
-        val currentBalance: String = currentBalance.value
-        val creditLimit: String = creditLimit.value
-        val color: String = colorValue.value
+        val name: String = nameField.value.value
+        val currentBalance: String = currentBalanceField.value.value
+        val creditLimit: String = creditLimitField.value.value
+        val color: String = colorValueField.value.value
 
         var isError = false
 
         if (name.isBlank()) {
-            nameErrorMessage.value = UiText.StringResource(R.string.account_name_error)
+            nameField.value.copy(valueError = true)
             isError = true
         }
 
-        if (currentBalance.isBlank()) {
-            currentBalanceErrorMessage.value = UiText.StringResource(R.string.current_balance_error)
-            isError = true
-        }
-
-        if (currentBalance.toDoubleOrNullWithLocale() == null) {
-            currentBalanceErrorMessage.value = UiText.StringResource(R.string.current_balance_value_error)
+        if (currentBalance.isBlank() || currentBalance.toDoubleOrNullWithLocale() == null) {
+            currentBalanceField.value = currentBalanceField.value.copy(valueError = true)
             isError = true
         }
 
@@ -211,14 +242,14 @@ class AccountCreateViewModel @Inject constructor(
             return
         }
 
-        val accountType = accountType
+        val accountType = accountTypeField.value.value
 
         val account = Account(
             id = account?.id ?: UUID.randomUUID().toString(),
             name = name,
             type = accountType,
             storedIcon = StoredIcon(
-                name = icon.value,
+                name = iconField.value.value,
                 backgroundColor = color,
             ),
             amount = currentBalance.toDoubleOrNullWithLocale() ?: 0.0,
@@ -238,12 +269,8 @@ class AccountCreateViewModel @Inject constructor(
                 addAccountUseCase(account)
             }
             when (response) {
-                is Resource.Error -> {
-                    _message.emit(UiText.StringResource(R.string.account_create_error))
-                }
-
+                is Resource.Error -> Unit
                 is Resource.Success -> {
-                    _message.emit(UiText.StringResource(R.string.account_create_success))
                     composeNavigator.popBackStack()
                 }
             }
@@ -254,54 +281,49 @@ class AccountCreateViewModel @Inject constructor(
         composeNavigator.popBackStack()
     }
 
-    fun setColorValue(colorValue: Int) {
-        this.colorValue.value = String.format("#%06X", 0xFFFFFF and colorValue)
+    private fun setColorValue(colorValue: String) {
+        this.colorValueField.value = this.colorValueField.value.copy(value = colorValue)
     }
 
-    fun setAccountTypeChange(accountType: AccountType) {
-        this.accountType = accountType
+    private fun setAccountTypeChange(accountType: AccountType) {
+        this.accountTypeField.value = accountTypeField.value.copy(value = accountType)
         updateAccountValue(account)
     }
 
-    fun setIcon(icon: String) {
-        this.icon.value = icon
-    }
-
-    fun setNameChange(name: String) {
-        this.name.value = name
-        if (name.isBlank()) {
-            nameErrorMessage.value = UiText.StringResource(R.string.account_name_error)
-        } else {
-            nameErrorMessage.value = null
-        }
-    }
-
-    fun setCurrentBalanceChange(currentBalance: String) {
-        this.currentBalance.value = currentBalance
-        if (currentBalance.isBlank()) {
-            currentBalanceErrorMessage.value = UiText.StringResource(R.string.current_balance_error)
-        } else {
-            currentBalanceErrorMessage.value = null
-        }
-
-        if (currentBalance.toDoubleOrNullWithLocale() == null) {
-            currentBalanceErrorMessage.value = UiText.StringResource(R.string.current_balance_value_error)
-        } else {
-            currentBalanceErrorMessage.value = null
-        }
-
-        updateAvailableCreditLimit(
-            this.creditLimit.value.toDoubleOrNullWithLocale() ?: 0.0,
-            this.currentBalance.value.toDoubleOrNullWithLocale() ?: 0.0,
+    private fun setCurrencyIcon(icon: String) {
+        this.iconField.value = this.iconField.value.copy(
+            value = icon
         )
     }
 
-    fun setCreditLimitChange(creditLimit: String) {
-        this.creditLimit.value = creditLimit
+    private fun setNameChange(name: String) {
+        this.nameField.value = nameField.value.copy(
+            value = name,
+            valueError = name.isBlank()
+        )
+    }
+
+    private fun setCurrentBalanceChange(currentBalance: String) {
+        this.currentBalanceField.value = currentBalanceField.value.copy(
+            value = currentBalance,
+            valueError = currentBalance.isBlank()
+        )
 
         updateAvailableCreditLimit(
-            this.creditLimit.value.toDoubleOrNullWithLocale() ?: 0.0,
-            this.currentBalance.value.toDoubleOrNullWithLocale() ?: 0.0,
+            this.creditLimitField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
+            this.currentBalanceField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
+        )
+    }
+
+    private fun setCreditLimitChange(creditLimit: String) {
+        this.creditLimitField.value = creditLimitField.value.copy(
+            value = creditLimit,
+            valueError = false
+        )
+
+        updateAvailableCreditLimit(
+            this.creditLimitField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
+            this.currentBalanceField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
         )
     }
 

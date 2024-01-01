@@ -30,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.naveenapps.expensemanager.core.common.utils.toColorString
 import com.naveenapps.expensemanager.core.designsystem.ui.components.RoundIconView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
@@ -47,7 +48,7 @@ enum class SelectionType {
 fun IconAndColorComponent(
     selectedColor: String,
     selectedIcon: String,
-    onColorSelection: ((Int) -> Unit)?,
+    onColorSelection: ((String) -> Unit)?,
     onIconSelection: ((String) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
@@ -79,7 +80,7 @@ fun IconAndColorComponent(
             when (sheetSelection) {
                 SelectionType.COLOR_SELECTION -> {
                     ColorSelectionScreen {
-                        onColorSelection?.invoke(it)
+                        onColorSelection?.invoke(it.toColorString())
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
                                 sheetSelection = SelectionType.NONE

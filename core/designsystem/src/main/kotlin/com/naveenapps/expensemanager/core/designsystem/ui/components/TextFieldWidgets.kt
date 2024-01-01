@@ -89,15 +89,14 @@ fun ClickableTextField(
 @Composable
 fun StringTextField(
     value: String,
-    errorMessage: UiText?,
+    isError: Boolean,
     onValueChange: ((String) -> Unit)?,
     label: Int,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     singleLine: Boolean = true,
+    errorMessage: String = "",
 ) {
-    val context = LocalContext.current
-
     OutlinedTextField(
         modifier = modifier,
         value = value,
@@ -109,9 +108,9 @@ fun StringTextField(
             onValueChange?.invoke(it)
         },
         keyboardOptions = keyboardOptions,
-        isError = errorMessage != null,
-        supportingText = if (errorMessage != null) {
-            { Text(text = errorMessage.asString(context)) }
+        isError = true,
+        supportingText = if (isError) {
+            { Text(text = errorMessage) }
         } else {
             null
         },

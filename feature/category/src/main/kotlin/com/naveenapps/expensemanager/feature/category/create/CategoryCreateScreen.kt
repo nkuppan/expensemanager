@@ -130,7 +130,7 @@ private fun CategoryCreateScreen(
     selectedColor: String = "#000000",
     selectedIcon: String = "ic_calendar",
     onIconSelection: ((String) -> Unit)? = null,
-    onColorSelection: ((Int) -> Unit)? = null,
+    onColorSelection: ((String) -> Unit)? = null,
     onNameChange: ((String) -> Unit)? = null,
 ) {
     val context = LocalContext.current
