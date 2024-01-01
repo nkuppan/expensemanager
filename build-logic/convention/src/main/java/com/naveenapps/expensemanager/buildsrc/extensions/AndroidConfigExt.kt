@@ -11,8 +11,8 @@ const val TARGET_SDK = 34
 const val COMPILE_SDK: Int = 34
 const val MIN_SDK = 21
 
-const val VERSION_CODE = 12
-const val VERSION_NAME = "1.0.12"
+const val VERSION_CODE = 13
+const val VERSION_NAME = "1.0.13"
 
 const val BENCHMARK_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
 
