@@ -14,15 +14,21 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens.AccountCreate.KEY_ACCOUNT_ID
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class AccountCreateViewModelTest : BaseCoroutineTest() {
@@ -105,6 +111,16 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     }
 
     @Test
+    fun whenCurrencyIconItShouldReflect() = runTest {
+        accountCreateViewModel.currencyIconField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem).isNotNull()
+            Truth.assertThat(firstItem.value).isNotEmpty()
+            Truth.assertThat(firstItem.value).isEqualTo("$")
+        }
+    }
+
+    @Test
     fun whenChangingAccountTypeItShouldReflect() = runTest {
         accountCreateViewModel.accountTypeField.test {
             val firstItem = awaitItem()
@@ -139,5 +155,103 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             Truth.assertThat(thirdItem).isNotNull()
             Truth.assertThat(thirdItem.valueError).isTrue()
         }
+    }
+
+    @Test
+    fun whenChangingCurrentBalanceItShouldReflect() = runTest {
+        accountCreateViewModel.currentBalanceField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem.value).isEmpty()
+
+            val changedCurrentBalance = "1000"
+
+            accountCreateViewModel.currentBalanceField.value.onValueChange?.invoke(
+                changedCurrentBalance
+            )
+
+            val secondItem = awaitItem()
+            Truth.assertThat(secondItem).isNotNull()
+            Truth.assertThat(secondItem.value).isEqualTo(changedCurrentBalance)
+
+            accountCreateViewModel.currentBalanceField.value.onValueChange?.invoke("")
+
+            val thirdItem = awaitItem()
+            Truth.assertThat(thirdItem).isNotNull()
+            Truth.assertThat(thirdItem.valueError).isTrue()
+        }
+    }
+
+    @Test
+    fun whenAccountIsAvailableOnSavedStateItShouldReflect() = runTest {
+
+        val accountId = "accountId"
+
+        whenever(accountRepository.findAccount(accountId)).thenReturn(
+            Resource.Success(FAKE_ACCOUNT)
+        )
+
+        accountCreateViewModel = AccountCreateViewModel(
+            SavedStateHandle(mapOf(KEY_ACCOUNT_ID to accountId)),
+            getCurrencyUseCase,
+            getDefaultCurrencyUseCase,
+            getFormattedAmountUseCase,
+            findAccountByIdUseCase,
+            addAccountUseCase,
+            updateAccountUseCase,
+            deleteAccountUseCase,
+            appComposeNavigator,
+        )
+
+        accountCreateViewModel.nameField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem.value).isEmpty()
+
+            val secondItem = awaitItem()
+            Truth.assertThat(secondItem.value).isNotNull()
+            Truth.assertThat(secondItem.value).isEqualTo(FAKE_ACCOUNT.name)
+        }
+
+        accountCreateViewModel.currentBalanceField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem.value).isNotEmpty()
+            Truth.assertThat(firstItem.value).isEqualTo("100")
+        }
+
+        accountCreateViewModel.iconValueField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem).isNotNull()
+            Truth.assertThat(firstItem.value).isNotEmpty()
+            Truth.assertThat(firstItem.value).isEqualTo(FAKE_ACCOUNT.storedIcon.name)
+        }
+
+        accountCreateViewModel.colorValueField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem).isNotNull()
+            Truth.assertThat(firstItem.value).isNotEmpty()
+            Truth.assertThat(firstItem.value).isEqualTo(FAKE_ACCOUNT.storedIcon.backgroundColor)
+        }
+
+        accountCreateViewModel.accountTypeField.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem).isNotNull()
+            Truth.assertThat(firstItem.value).isEqualTo(FAKE_ACCOUNT.type)
+        }
+    }
+
+    @Test
+    fun whenSaveAccountWithoutEditModeItShouldReflect() = runTest {
+
+        whenever(accountRepository.addAccount(any())).thenReturn(Resource.Success(true))
+
+        accountCreateViewModel.nameField.value.onValueChange?.invoke("Account")
+        accountCreateViewModel.iconValueField.value.onValueChange?.invoke("account_balance")
+        accountCreateViewModel.colorValueField.value.onValueChange?.invoke("#FFFFFF")
+        accountCreateViewModel.currentBalanceField.value.onValueChange?.invoke("100")
+
+        accountCreateViewModel.saveOrUpdateAccount()
+
+        advanceUntilIdle()
+
+        verify(appComposeNavigator, times(1)).popBackStack()
     }
 }

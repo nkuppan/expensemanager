@@ -134,28 +134,25 @@ class AccountCreateViewModel @Inject constructor(
     private var currency: Currency = getDefaultCurrencyUseCase.invoke()
 
     init {
-        readAccountInfo(savedStateHandle.get<String>(ExpenseManagerScreens.AccountCreate.KEY_ACCOUNT_ID))
-
         getCurrencyUseCase.invoke().onEach { updatedCurrency ->
             currency = updatedCurrency
             currencyIconField.update { it.copy(updatedCurrency.symbol) }
             updateAvailableCreditLimit(0.0, 0.0)
         }.launchIn(viewModelScope)
+
+        readAccountInfo(savedStateHandle.get<String>(ExpenseManagerScreens.AccountCreate.KEY_ACCOUNT_ID))
     }
 
     private fun updateAccountInfo(account: Account?) {
         this.account = account
 
         this.account?.let { accountItem ->
-            nameField.value = this.nameField.value.copy(value = accountItem.name)
-            currentBalanceField.value =
-                this.currentBalanceField.value.copy(value = accountItem.amount.toStringWithLocale())
-            creditLimitField.value =
-                this.creditLimitField.value.copy(value = accountItem.creditLimit.toStringWithLocale())
-            accountTypeField.value = this.accountTypeField.value.copy(value = accountItem.type)
-            colorValueField.value =
-                this.colorValueField.value.copy(value = accountItem.storedIcon.backgroundColor)
-            iconValueField.value = iconValueField.value.copy(value = accountItem.storedIcon.name)
+            nameField.update { it.copy(value = accountItem.name) }
+            currentBalanceField.update { it.copy(value = accountItem.amount.toStringWithLocale()) }
+            creditLimitField.update { it.copy(value = accountItem.creditLimit.toStringWithLocale()) }
+            accountTypeField.update { it.copy(value = accountItem.type) }
+            colorValueField.update { it.copy(value = accountItem.storedIcon.backgroundColor) }
+            iconValueField.update { it.copy(value = accountItem.storedIcon.name) }
             updateAccountValue(accountItem)
             showDelete.value = true
         }
@@ -178,20 +175,23 @@ class AccountCreateViewModel @Inject constructor(
     ) {
         val totalAmount = creditLimit + amount
 
-        availableCreditLimit.value = availableCreditLimit.value.copy(
-            value = getFormattedAmountUseCase.invoke(
-                amount = totalAmount,
-                currency = currency,
+        availableCreditLimit.update {
+            it.copy(
+                value = getFormattedAmountUseCase.invoke(
+                    amount = totalAmount,
+                    currency = currency,
+                )
             )
-        )
+        }
 
         availableCreditLimitColor.update {
-            it.value = if (totalAmount < 0) {
-                R.color.red_500
-            } else {
-                R.color.green_500
-            }
-            it
+            it.copy(
+                value = if (totalAmount < 0) {
+                    R.color.red_500
+                } else {
+                    R.color.green_500
+                }
+            )
         }
     }
 
@@ -305,10 +305,9 @@ class AccountCreateViewModel @Inject constructor(
     }
 
     private fun setCurrentBalanceChange(currentBalance: String) {
-        this.currentBalanceField.value = currentBalanceField.value.copy(
-            value = currentBalance,
-            valueError = currentBalance.isBlank()
-        )
+        currentBalanceField.update {
+            it.copy(value = currentBalance, valueError = currentBalance.isBlank())
+        }
 
         updateAvailableCreditLimit(
             this.creditLimitField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
@@ -317,10 +316,9 @@ class AccountCreateViewModel @Inject constructor(
     }
 
     private fun setCreditLimitChange(creditLimit: String) {
-        this.creditLimitField.value = creditLimitField.value.copy(
-            value = creditLimit,
-            valueError = false
-        )
+        creditLimitField.update {
+            it.copy(value = creditLimit, valueError = false)
+        }
 
         updateAvailableCreditLimit(
             this.creditLimitField.value.value.toDoubleOrNullWithLocale() ?: 0.0,

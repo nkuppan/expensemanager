@@ -18,7 +18,7 @@ val FAKE_CATEGORY = Category(
     name = "Test",
     type = CategoryType.EXPENSE,
     storedIcon = StoredIcon(
-        name = "#FFFFFF",
+        name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
@@ -30,7 +30,7 @@ val FAKE_SECOND_CATEGORY = Category(
     name = "Test",
     type = CategoryType.EXPENSE,
     storedIcon = StoredIcon(
-        name = "#FFFFFF",
+        name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
@@ -42,7 +42,7 @@ val FAKE_FAVORITE_CATEGORY = Category(
     name = "Test",
     type = CategoryType.EXPENSE,
     storedIcon = StoredIcon(
-        name = "#FFFFFF",
+        name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
@@ -52,9 +52,10 @@ val FAKE_FAVORITE_CATEGORY = Category(
 val FAKE_ACCOUNT = Account(
     id = "1",
     name = "Test",
+    amount = 100.0,
     type = AccountType.REGULAR,
     storedIcon = StoredIcon(
-        name = "#FFFFFF",
+        name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
@@ -66,7 +67,7 @@ val FAKE_SECOND_ACCOUNT = Account(
     name = "Test",
     type = AccountType.REGULAR,
     storedIcon = StoredIcon(
-        name = "#FFFFFF",
+        name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
     createdOn = Date(),
