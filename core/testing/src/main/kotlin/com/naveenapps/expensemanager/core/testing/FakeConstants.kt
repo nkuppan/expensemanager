@@ -52,7 +52,6 @@ val FAKE_FAVORITE_CATEGORY = Category(
 val FAKE_ACCOUNT = Account(
     id = "1",
     name = "Test",
-    amount = 100.0,
     type = AccountType.REGULAR,
     storedIcon = StoredIcon(
         name = "account_balance",
