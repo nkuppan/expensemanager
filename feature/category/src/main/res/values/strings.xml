@@ -3,7 +3,7 @@
     <string name="categories">Categories</string>
     <string name="income">Income</string>
     <string name="expense">Expense</string>
-    <string name="no_category_available">No category available</string>
+    <string name="no_category_available">No category available\nTap + button to create your categories</string>
     <string name="no_transactions_available">No transactions available for the selected period.\nTap + button to note your transactions</string>
     <string name="category_selection_message">Should select at least one category to proceed</string>
     <string name="select_account">Select Account</string>

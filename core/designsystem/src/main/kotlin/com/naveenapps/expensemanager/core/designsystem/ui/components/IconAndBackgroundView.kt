@@ -106,11 +106,11 @@ fun IconAndBackgroundViewPreview() {
     ExpenseManagerTheme {
         Column {
             IconAndBackgroundView(
-                icon = "ic_calendar",
+                icon = "account_balance_wallet",
                 iconBackgroundColor = "#000000",
             )
             SmallIconAndBackgroundView(
-                icon = "ic_calendar",
+                icon = "account_balance_wallet",
                 iconBackgroundColor = "#000000",
                 iconSize = 12.dp,
             )
