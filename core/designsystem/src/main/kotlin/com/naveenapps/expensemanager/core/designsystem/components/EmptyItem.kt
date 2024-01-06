@@ -38,7 +38,7 @@ fun EmptyItem(
             Image(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(16.dp)
+                    .padding(bottom = 16.dp)
                     .size(96.dp),
                 painter = painterResource(id = icon),
                 contentDescription = null
