@@ -41,8 +41,6 @@
 
     <string name="transaction">Transaction</string>
     <string name="clear">Clear</string>
-    <string name="delete">Delete</string>
-    <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="amount">Amount</string>

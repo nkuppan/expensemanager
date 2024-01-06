@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.components.AmountStatusView
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
+import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -198,7 +199,11 @@ private fun DashboardScreenContent(
             }
         } else {
             item {
-                DashboardEmptyView(stringResource(id = R.string.no_transactions_available))
+                EmptyItem(
+                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+                    modifier = Modifier.fillMaxSize().height(200.dp)
+                )
             }
         }
         item {
@@ -246,7 +251,11 @@ private fun DashboardScreenContent(
             }
         } else {
             item {
-                DashboardEmptyView(stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available))
+                EmptyItem(
+                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available_short),
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
+                    modifier = Modifier.fillMaxSize().height(200.dp)
+                )
             }
         }
         item {
@@ -286,7 +295,11 @@ private fun DashboardScreenContent(
             }
         } else {
             item {
-                DashboardEmptyView(stringResource(id = R.string.no_transactions_available))
+                EmptyItem(
+                    emptyItemText = stringResource(id = R.string.no_transactions_available),
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
+                    modifier = Modifier.fillMaxSize().height(200.dp)
+                )
             }
         }
         item {

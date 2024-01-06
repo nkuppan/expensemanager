@@ -63,8 +63,11 @@ class TransactionCreateViewModel @Inject constructor(
     private val _message = MutableSharedFlow<UiText>()
     val message = _message.asSharedFlow()
 
-    private val _showDelete = MutableStateFlow(false)
-    val showDelete = _showDelete.asStateFlow()
+    private val _isDeleteEnabled = MutableStateFlow(false)
+    val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
+
+    private val _showDeleteDialog = MutableStateFlow(false)
+    val showDeleteDialog = _showDeleteDialog.asStateFlow()
 
     var amount = MutableStateFlow(
         TextFieldValue(
@@ -213,7 +216,7 @@ class TransactionCreateViewModel @Inject constructor(
                     }
                     setTransactionType(transaction.type)
                     this@TransactionCreateViewModel.transaction = transaction
-                    _showDelete.value = true
+                    _isDeleteEnabled.value = true
                 }
             }
         }
@@ -349,6 +352,14 @@ class TransactionCreateViewModel @Inject constructor(
         appComposeNavigator.navigate(
             ExpenseManagerScreens.AccountCreate.createRoute(""),
         )
+    }
+
+    fun closeDeleteDialog() {
+        _showDeleteDialog.value = false
+    }
+
+    fun openDeleteDialog() {
+        _showDeleteDialog.value = true
     }
 
     companion object {

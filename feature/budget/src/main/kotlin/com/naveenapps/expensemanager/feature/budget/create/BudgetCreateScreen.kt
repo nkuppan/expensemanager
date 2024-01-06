@@ -84,11 +84,11 @@ fun BudgetCreateScreen(
     if (showDeleteDialog) {
         DeleteDialogItem(
             confirm = viewModel::deleteBudget,
-            dismiss = viewModel::dismissDeleteDialog
+            dismiss = viewModel::closeDeleteDialog
         )
     }
 
-    val showDelete by viewModel.showDelete.collectAsState()
+    val isDeleteEnabled by viewModel.isDeleteEnabled.collectAsState()
 
     val errorMessage by viewModel.message.collectAsState(null)
     if (errorMessage != null) {
@@ -134,14 +134,10 @@ fun BudgetCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.budgets),
-                isDeleteEnabled = showDelete,
-            ) {
-                if (it == 1) {
-                    viewModel.closePage()
-                } else {
-                    viewModel.showDeleteDialog()
-                }
-            }
+                isDeleteEnabled = isDeleteEnabled,
+                onNavigationIconClick = viewModel::closePage,
+                onDeleteActionClick = viewModel::openDeleteDialog,
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = viewModel::saveOrUpdateBudget) {

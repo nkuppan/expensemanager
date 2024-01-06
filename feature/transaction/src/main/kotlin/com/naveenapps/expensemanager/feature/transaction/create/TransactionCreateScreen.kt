@@ -53,8 +53,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
+import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
@@ -89,27 +89,20 @@ fun TransactionCreateScreen(
 
     val scope = rememberCoroutineScope()
 
+    val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
+    val isDeleteEnabled by viewModel.isDeleteEnabled.collectAsState()
+
     var showBottomSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val snackbarHostState = remember { SnackbarHostState() }
 
     var sheetSelection by remember { mutableIntStateOf(1) }
-    var showDeleteDialog by remember { mutableStateOf(false) }
     var showNumberPadDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
-        AppDialog(
-            onDismissRequest = {
-                showDeleteDialog = false
-            },
-            onConfirmation = {
-                showDeleteDialog = false
-                viewModel.deleteTransaction()
-            },
-            dialogTitle = stringResource(id = R.string.delete),
-            dialogText = stringResource(id = R.string.delete_item_message),
-            positiveButtonText = stringResource(id = R.string.delete),
-            negativeButtonText = stringResource(id = R.string.cancel),
+        DeleteDialogItem(
+            confirm = viewModel::deleteTransaction,
+            dismiss = viewModel::closeDeleteDialog
         )
     }
 
@@ -125,8 +118,6 @@ fun TransactionCreateScreen(
             },
         )
     }
-
-    val showDelete by viewModel.showDelete.collectAsState()
 
     val message by viewModel.message.collectAsState(null)
     if (message != null) {
@@ -167,14 +158,10 @@ fun TransactionCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.transaction),
-                isDeleteEnabled = showDelete,
-            ) {
-                if (it == 1) {
-                    viewModel.closePage()
-                } else {
-                    showDeleteDialog = true
-                }
-            }
+                isDeleteEnabled = isDeleteEnabled,
+                onNavigationIconClick = viewModel::closePage,
+                onDeleteActionClick = viewModel::openDeleteDialog,
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = viewModel::doSave) {

@@ -248,10 +248,13 @@ private fun AccountCreateStatePreview() {
         value = "", valueError = false, onValueChange = { }
     )
     val selectedColorField = TextFieldValue(
-        value = "#FFFFF", valueError = false, onValueChange = { }
+        value = "#000000", valueError = false, onValueChange = { }
     )
     val selectedIconField = TextFieldValue(
         value = "account_balance_wallet", valueError = false, onValueChange = { }
+    )
+    val selectedCurrencyField = TextFieldValue(
+        value = "$", valueError = false, onValueChange = { }
     )
     val amountField = TextFieldValue<Amount?>(
         value = Amount(amount = 0.0),
@@ -270,12 +273,12 @@ private fun AccountCreateStatePreview() {
     )
     ExpenseManagerTheme {
         AccountCreateScaffoldView(
-            showDeleteDialog = true,
+            showDeleteDialog = false,
             isDeleteEnabled = true,
             nameField = nameField,
             currentBalance = nameField,
             selectedAccountType = accountField,
-            currencyIcon = nameField,
+            currencyIcon = selectedCurrencyField,
             selectedColor = selectedColorField,
             selectedIcon = selectedIconField,
             creditLimit = nameField,
@@ -284,8 +287,8 @@ private fun AccountCreateStatePreview() {
             saveOrUpdateAccount = { /*TODO*/ },
             deleteAccount = { /*TODO*/ },
             openDeleteDialog = { /*TODO*/ },
-            dismissDeleteDialog = { /*TODO*/ }) {
-
-        }
+            dismissDeleteDialog = { /*TODO*/ },
+            closePage = {}
+        )
     }
 }

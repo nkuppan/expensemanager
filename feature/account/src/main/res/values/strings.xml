@@ -12,6 +12,7 @@
     <string name="current_balance_error">Current balance shouldn\'t be empty</string>
     <string name="current_balance_value_error">Current balance shouldn\'t be invalid number</string>
     <string name="no_account_available">No accounts available\nTap + button to create your first account</string>
+    <string name="no_account_available_short">No accounts available</string>
     <string name="account_create_error">Please enter valid values</string>
     <string name="bank_account">Bank account</string>
     <string name="credit">Credit</string>

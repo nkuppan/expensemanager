@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.category.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.DeleteCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.FindCategoryByIdUseCase
@@ -12,14 +11,13 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.feature.category.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
@@ -35,25 +33,47 @@ class CategoryCreateViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _message = MutableSharedFlow<UiText>()
-    val message = _message.asSharedFlow()
+    private val _isDeleteEnabled = MutableStateFlow(false)
+    val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
 
-    private val _showDelete = MutableStateFlow(false)
-    val showDelete = _showDelete.asStateFlow()
+    private val _showDeleteDialog = MutableStateFlow(false)
+    val showDeleteDialog = _showDeleteDialog.asStateFlow()
 
-    var categoryType = MutableStateFlow(CategoryType.EXPENSE)
+    var categoryTypeField = MutableStateFlow(
+        TextFieldValue(
+            value = CategoryType.EXPENSE,
+            valueError = false,
+            onValueChange = this::setCategoryTypeChange
+        )
+    )
         private set
 
-    var name = MutableStateFlow("")
+    var nameField = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = this::setNameChange
+        )
+    )
         private set
 
-    var nameErrorMessage = MutableStateFlow<UiText?>(null)
+
+    var selectedColorField = MutableStateFlow(
+        TextFieldValue(
+            value = DEFAULT_COLOR,
+            valueError = false,
+            onValueChange = this::setColorChange
+        )
+    )
         private set
 
-    var colorValue = MutableStateFlow(DEFAULT_COLOR)
-        private set
-
-    var icon = MutableStateFlow(DEFAULT_ICON)
+    var selectedIconField = MutableStateFlow(
+        TextFieldValue(
+            value = DEFAULT_ICON,
+            valueError = false,
+            onValueChange = this::setIconChange
+        )
+    )
         private set
 
     private var category: Category? = null
@@ -67,14 +87,13 @@ class CategoryCreateViewModel @Inject constructor(
     }
 
     private fun updateCategoryInfo(category: Category?) {
-        this.category = category
-
-        this.category?.let { categoryItem ->
-            name.value = categoryItem.name
-            categoryType.value = categoryItem.type
-            colorValue.value = categoryItem.storedIcon.backgroundColor
-            icon.value = categoryItem.storedIcon.name
-            _showDelete.value = true
+        category?.let { categoryItem ->
+            this.category = categoryItem
+            nameField.update { it.copy(value = categoryItem.name) }
+            categoryTypeField.update { it.copy(value = categoryItem.type) }
+            selectedColorField.update { it.copy(value = categoryItem.storedIcon.backgroundColor) }
+            selectedIconField.update { it.copy(value = categoryItem.storedIcon.name) }
+            _isDeleteEnabled.value = true
         }
     }
 
@@ -94,12 +113,7 @@ class CategoryCreateViewModel @Inject constructor(
         viewModelScope.launch {
             category?.let { category ->
                 when (deleteCategoryUseCase.invoke(category)) {
-                    is Resource.Error -> {
-                        _message.emit(
-                            UiText.StringResource(R.string.category_delete_error_message),
-                        )
-                    }
-
+                    is Resource.Error -> Unit
                     is Resource.Success -> {
                         closePage()
                     }
@@ -109,20 +123,21 @@ class CategoryCreateViewModel @Inject constructor(
     }
 
     fun saveOrUpdateCategory() {
-        val name: String = name.value
-        val color: String = colorValue.value
+        val name: String = nameField.value.value
+        val color: String = selectedColorField.value.value
+        val icon: String = selectedIconField.value.value
 
         if (name.isBlank()) {
-            nameErrorMessage.value = UiText.StringResource(R.string.category_name_error)
+            nameField.update { it.copy(valueError = true) }
             return
         }
 
         val category = Category(
             id = category?.id ?: UUID.randomUUID().toString(),
             name = name,
-            type = categoryType.value,
+            type = categoryTypeField.value.value,
             storedIcon = StoredIcon(
-                name = icon.value,
+                name = icon,
                 backgroundColor = color,
             ),
             createdOn = Calendar.getInstance().time,
@@ -136,10 +151,7 @@ class CategoryCreateViewModel @Inject constructor(
                 addCategoryUseCase(category)
             }
             when (response) {
-                is Resource.Error -> {
-                    _message.emit(UiText.StringResource(R.string.category_create_error))
-                }
-
+                is Resource.Error -> Unit
                 is Resource.Success -> {
                     closePage()
                 }
@@ -147,29 +159,33 @@ class CategoryCreateViewModel @Inject constructor(
         }
     }
 
-    fun setColorValue(colorValue: String) {
-        this.colorValue.value = colorValue
+    fun setColorChange(colorValue: String) {
+        selectedColorField.update { it.copy(value = colorValue) }
     }
 
-    fun setCategoryType(categoryType: CategoryType) {
-        this.categoryType.value = categoryType
+    fun setCategoryTypeChange(categoryType: CategoryType) {
+        categoryTypeField.update { it.copy(value = categoryType) }
     }
 
-    fun setIcon(icon: String) {
-        this.icon.value = icon
+    fun setIconChange(icon: String) {
+        selectedIconField.update { it.copy(value = icon) }
     }
 
     fun setNameChange(name: String) {
-        this.name.value = name
-        if (name.isBlank()) {
-            nameErrorMessage.value = UiText.StringResource(R.string.category_name_error)
-        } else {
-            nameErrorMessage.value = null
-        }
+        nameField.update { it.copy(value = name) }
+        nameField.update { it.copy(valueError = name.isBlank()) }
     }
 
     fun closePage() {
         appComposeNavigator.popBackStack()
+    }
+
+    fun openDeleteDialog() {
+        _showDeleteDialog.value = true
+    }
+
+    fun closeDeleteDialog() {
+        _showDeleteDialog.value = false
     }
 
     companion object {

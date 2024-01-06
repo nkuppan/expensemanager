@@ -114,7 +114,7 @@ private fun BudgetListScreenContent(
             UiState.Empty -> {
                 EmptyItem(
                     emptyItemText = stringResource(id = R.string.no_budget_available),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
                     modifier = Modifier.fillMaxSize()
                 )
             }

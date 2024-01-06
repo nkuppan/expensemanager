@@ -55,8 +55,8 @@ class BudgetCreateViewModel @Inject constructor(
     private val _errorMessage = MutableSharedFlow<UiText>()
     val message = _errorMessage.asSharedFlow()
 
-    private val _showDelete = MutableStateFlow(false)
-    val showDelete = _showDelete.asStateFlow()
+    private val _isDeleteEnabled = MutableStateFlow(false)
+    val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
 
     private val _showDeleteDialog = MutableStateFlow(false)
     val showDeleteDialog = _showDeleteDialog.asStateFlow()
@@ -146,7 +146,7 @@ class BudgetCreateViewModel @Inject constructor(
                 setCategories(categories, budgetItem.isAllAccountsSelected)
             }
 
-            _showDelete.value = true
+            _isDeleteEnabled.value = true
         }
     }
 
@@ -180,11 +180,11 @@ class BudgetCreateViewModel @Inject constructor(
         }
     }
 
-    fun dismissDeleteDialog() {
+    fun closeDeleteDialog() {
         _showDeleteDialog.value = false
     }
 
-    fun showDeleteDialog() {
+    fun openDeleteDialog() {
         _showDeleteDialog.value = false
     }
 
