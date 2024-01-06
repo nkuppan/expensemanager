@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="delete">Delete</string>
-    <string name="delete_item_message">Do you really want to delete this item?</string>
-    <string name="cancel">Cancel</string>
     <string name="account_create_success">Account created/updated successfully</string>
     <string name="account_name_error">Name shouldn\'t be null</string>
     <string name="account_delete_error_message">Unable to delete this account</string>
@@ -14,7 +11,7 @@
     <string name="current_balance">Current Balance</string>
     <string name="current_balance_error">Current balance shouldn\'t be empty</string>
     <string name="current_balance_value_error">Current balance shouldn\'t be invalid number</string>
-    <string name="no_account_available">No account available</string>
+    <string name="no_account_available">No accounts available\nTap + button to create your first account</string>
     <string name="account_create_error">Please enter valid values</string>
     <string name="bank_account">Bank account</string>
     <string name="credit">Credit</string>

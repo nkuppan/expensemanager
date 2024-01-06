@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.feature.transaction.list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -44,6 +42,8 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
+import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
@@ -60,23 +60,22 @@ import com.naveenapps.expensemanager.feature.transaction.R
 import java.util.Date
 
 @Composable
-fun TransactionListScreen() {
-    val viewModel: TransactionListViewModel = hiltViewModel()
+fun TransactionListScreen(
+    viewModel: TransactionListViewModel = hiltViewModel()
+) {
+
     val transactionUiState by viewModel.transactions.collectAsState()
+
     Scaffold(
         topBar = {
             TopNavigationBar(
-                onClick = {
-                    viewModel.closePage()
-                },
+                onClick = viewModel::closePage,
                 title = stringResource(R.string.transaction),
                 disableBackIcon = true,
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.openCreateScreen(null)
-            }) {
+            FloatingActionButton(onClick = viewModel::openCreateScreen) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -106,25 +105,15 @@ private fun TransactionListScreen(
 
         when (transactionGroup) {
             UiState.Empty -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Text(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .align(Alignment.Center),
-                        text = stringResource(id = R.string.no_transactions_available),
-                        textAlign = TextAlign.Center,
-                    )
-                }
+                EmptyItem(
+                    modifier = Modifier.fillMaxSize(),
+                    emptyItemText = stringResource(id = R.string.no_transactions_available),
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction
+                )
             }
 
             UiState.Loading -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    CircularProgressIndicator(
-                        modifier = Modifier
-                            .size(72.dp)
-                            .align(Alignment.Center),
-                    )
-                }
+                LoadingItem()
             }
 
             is UiState.Success -> {

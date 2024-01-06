@@ -45,7 +45,10 @@ class AccountCreateViewModel @Inject constructor(
     private val composeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    var showDelete = MutableStateFlow(false)
+    var isDeleteEnabled = MutableStateFlow(false)
+        private set
+
+    var showDeleteDialog = MutableStateFlow(false)
         private set
 
     var accountTypeField = MutableStateFlow(
@@ -154,7 +157,7 @@ class AccountCreateViewModel @Inject constructor(
             colorValueField.update { it.copy(value = accountItem.storedIcon.backgroundColor) }
             iconValueField.update { it.copy(value = accountItem.storedIcon.name) }
             updateAccountValue(accountItem)
-            showDelete.value = true
+            isDeleteEnabled.value = true
         }
     }
 
@@ -324,6 +327,14 @@ class AccountCreateViewModel @Inject constructor(
             this.creditLimitField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
             this.currentBalanceField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
         )
+    }
+
+    fun dismissDeleteDialog() {
+        showDeleteDialog.value = false
+    }
+
+    fun showDeleteDialog() {
+        showDeleteDialog.value = true
     }
 
     companion object {

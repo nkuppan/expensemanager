@@ -22,7 +22,7 @@
     <string name="unable_to_find_transaction">Unable to find transaction</string>
     <string name="transaction_delete_error_message">Unable to delete this transaction</string>
 
-    <string name="no_transactions_available">No transactions available</string>
+    <string name="no_transactions_available">No transactions available for the selected period.\nTap + button to note your transactions</string>
     <string name="date">Date</string>
     <string name="notes">Notes</string>
     <string name="expense">Expense</string>

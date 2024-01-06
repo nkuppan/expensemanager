@@ -20,17 +20,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
@@ -45,27 +43,67 @@ fun AccountCreateScreen(
     viewModel: AccountCreateViewModel = hiltViewModel()
 ) {
 
+    val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
+    val isDeleteEnabled by viewModel.isDeleteEnabled.collectAsState()
+
+    val nameField by viewModel.nameField.collectAsState()
+    val selectedAccountType by viewModel.accountTypeField.collectAsState()
+    val currentBalance by viewModel.currentBalanceField.collectAsState()
+    val creditLimit by viewModel.creditLimitField.collectAsState()
+    val currencyIcon by viewModel.currencyIconField.collectAsState()
+    val selectedColor by viewModel.colorValueField.collectAsState()
+    val selectedIcon by viewModel.iconValueField.collectAsState()
+    val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
+    val availableCreditLimitColor by viewModel.availableCreditLimitColor.collectAsState()
+
+    AccountCreateScaffoldView(
+        showDeleteDialog = showDeleteDialog,
+        isDeleteEnabled = isDeleteEnabled,
+        nameField = nameField,
+        currentBalance = currentBalance,
+        selectedAccountType = selectedAccountType,
+        currencyIcon = currencyIcon,
+        selectedColor = selectedColor,
+        selectedIcon = selectedIcon,
+        creditLimit = creditLimit,
+        availableCreditLimit = availableCreditLimit,
+        availableCreditLimitColor = availableCreditLimitColor,
+        saveOrUpdateAccount = viewModel::saveOrUpdateAccount,
+        deleteAccount = viewModel::deleteAccount,
+        openDeleteDialog = viewModel::showDeleteDialog,
+        dismissDeleteDialog = viewModel::dismissDeleteDialog,
+        closePage = viewModel::closePage
+    )
+}
+
+@Composable
+private fun AccountCreateScaffoldView(
+    showDeleteDialog: Boolean,
+    isDeleteEnabled: Boolean,
+    nameField: TextFieldValue<String>,
+    currentBalance: TextFieldValue<String>,
+    selectedAccountType: TextFieldValue<AccountType>,
+    currencyIcon: TextFieldValue<String>,
+    selectedColor: TextFieldValue<String>,
+    selectedIcon: TextFieldValue<String>,
+    creditLimit: TextFieldValue<String>,
+    availableCreditLimit: TextFieldValue<Amount?>,
+    availableCreditLimitColor: TextFieldValue<Int>,
+    saveOrUpdateAccount: () -> Unit,
+    deleteAccount: () -> Unit,
+    openDeleteDialog: () -> Unit,
+    dismissDeleteDialog: () -> Unit,
+    closePage: () -> Unit,
+) {
+
     val snackbarHostState = remember { SnackbarHostState() }
 
-    var showDeleteDialog by remember { mutableStateOf(false) }
-
     if (showDeleteDialog) {
-        AppDialog(
-            onDismissRequest = {
-                showDeleteDialog = false
-            },
-            onConfirmation = {
-                viewModel.deleteAccount()
-                showDeleteDialog = false
-            },
-            dialogTitle = stringResource(id = R.string.delete),
-            dialogText = stringResource(id = R.string.delete_item_message),
-            positiveButtonText = stringResource(id = R.string.delete),
-            negativeButtonText = stringResource(id = R.string.cancel),
+        DeleteDialogItem(
+            confirm = deleteAccount,
+            dismiss = dismissDeleteDialog
         )
     }
-
-    val showDelete by viewModel.showDelete.collectAsState(null)
 
     Scaffold(
         snackbarHost = {
@@ -74,17 +112,13 @@ fun AccountCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.accounts),
-                showDelete = showDelete,
-            ) {
-                if (it == 1) {
-                    viewModel.closePage()
-                } else {
-                    showDeleteDialog = true
-                }
-            }
+                isDeleteEnabled = isDeleteEnabled,
+                onNavigationIconClick = closePage,
+                onDeleteActionClick = openDeleteDialog,
+            )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::saveOrUpdateAccount) {
+            FloatingActionButton(onClick = saveOrUpdateAccount) {
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "",
@@ -92,27 +126,16 @@ fun AccountCreateScreen(
             }
         },
     ) { innerPadding ->
-
-        val name by viewModel.nameField.collectAsState()
-        val accountType by viewModel.accountTypeField.collectAsState()
-        val currentBalance by viewModel.currentBalanceField.collectAsState()
-        val creditLimit by viewModel.creditLimitField.collectAsState()
-        val currencyIcon by viewModel.currencyIconField.collectAsState()
-        val colorValue by viewModel.colorValueField.collectAsState()
-        val iconValue by viewModel.iconValueField.collectAsState()
-        val availableCreditLimit by viewModel.availableCreditLimit.collectAsState()
-        val availableCreditLimitColor by viewModel.availableCreditLimitColor.collectAsState()
-
         AccountCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            nameField = name,
+            nameField = nameField,
             currentBalance = currentBalance,
-            selectedAccountType = accountType,
+            selectedAccountType = selectedAccountType,
             currencyIcon = currencyIcon,
-            selectedColor = colorValue,
-            selectedIcon = iconValue,
+            selectedColor = selectedColor,
+            selectedIcon = selectedIcon,
             creditLimit = creditLimit,
             availableCreditLimit = availableCreditLimit,
             availableCreditLimitColor = availableCreditLimitColor
@@ -160,7 +183,7 @@ private fun AccountCreateScreen(
             selectedColor = selectedColor.value,
             selectedIcon = selectedIcon.value,
             onColorSelection = selectedColor.onValueChange,
-            onIconSelection = selectedColor.onValueChange,
+            onIconSelection = selectedIcon.onValueChange,
         )
 
         DecimalTextField(
@@ -221,7 +244,48 @@ private fun AccountCreateScreen(
 @Preview
 @Composable
 private fun AccountCreateStatePreview() {
+    val nameField = TextFieldValue(
+        value = "", valueError = false, onValueChange = { }
+    )
+    val selectedColorField = TextFieldValue(
+        value = "#FFFFF", valueError = false, onValueChange = { }
+    )
+    val selectedIconField = TextFieldValue(
+        value = "account_balance_wallet", valueError = false, onValueChange = { }
+    )
+    val amountField = TextFieldValue<Amount?>(
+        value = Amount(amount = 0.0),
+        valueError = false,
+        onValueChange = { }
+    )
+    val colorField = TextFieldValue(
+        value = com.naveenapps.expensemanager.core.common.R.color.red_500,
+        valueError = false,
+        onValueChange = { }
+    )
+    val accountField = TextFieldValue(
+        value = AccountType.REGULAR,
+        valueError = false,
+        onValueChange = { }
+    )
     ExpenseManagerTheme {
-        AccountCreateScreen()
+        AccountCreateScaffoldView(
+            showDeleteDialog = true,
+            isDeleteEnabled = true,
+            nameField = nameField,
+            currentBalance = nameField,
+            selectedAccountType = accountField,
+            currencyIcon = nameField,
+            selectedColor = selectedColorField,
+            selectedIcon = selectedIconField,
+            creditLimit = nameField,
+            availableCreditLimit = amountField,
+            availableCreditLimitColor = colorField,
+            saveOrUpdateAccount = { /*TODO*/ },
+            deleteAccount = { /*TODO*/ },
+            openDeleteDialog = { /*TODO*/ },
+            dismissDeleteDialog = { /*TODO*/ }) {
+
+        }
     }
 }

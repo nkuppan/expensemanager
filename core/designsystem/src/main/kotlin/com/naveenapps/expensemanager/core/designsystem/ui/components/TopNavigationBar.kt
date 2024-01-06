@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
@@ -13,8 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
@@ -50,28 +47,23 @@ fun TopNavigationBar(
 @OptIn(ExperimentalMaterial3Api::class)
 fun TopNavigationBarWithDeleteAction(
     title: String,
-    showDelete: Boolean?,
-    onClick: (Int) -> Unit,
+    isDeleteEnabled: Boolean?,
+    onNavigationIconClick: () -> Unit,
+    onDeleteActionClick: () -> Unit,
 ) {
-    TopAppBar(navigationIcon = {
-        NavigationButton(
-            onClick = {
-                onClick.invoke(1)
-            },
-            navigationIcon = Icons.Default.Close,
-        )
-    }, title = {
-        Row {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                text = title,
+    TopAppBar(
+        navigationIcon = {
+            NavigationButton(
+                onClick = onNavigationIconClick,
+                navigationIcon = Icons.Default.Close,
             )
-            if (showDelete == true) {
-                IconButton(onClick = {
-                    onClick.invoke(2)
-                }) {
+        },
+        title = {
+            Text(text = title)
+        },
+        actions = {
+            if (isDeleteEnabled == true) {
+                IconButton(onClick = onDeleteActionClick) {
                     Icon(
                         imageVector = Icons.Outlined.Delete,
                         contentDescription = "",
@@ -79,7 +71,7 @@ fun TopNavigationBarWithDeleteAction(
                 }
             }
         }
-    })
+    )
 }
 
 @AppPreviewsLightAndDarkMode
@@ -102,13 +94,15 @@ private fun TopNavigationBarWithDeleteActionPreview() {
             )
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
-                showDelete = null,
-                onClick= {}
+                isDeleteEnabled = null,
+                onNavigationIconClick = {},
+                onDeleteActionClick = {}
             )
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.page_name),
-                showDelete = true,
-                onClick= {}
+                isDeleteEnabled = true,
+                onNavigationIconClick = {},
+                onDeleteActionClick = {}
             )
         }
     }

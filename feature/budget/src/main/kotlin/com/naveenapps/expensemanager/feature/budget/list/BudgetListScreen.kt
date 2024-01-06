@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +19,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -38,13 +36,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
+import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
@@ -113,21 +112,15 @@ private fun BudgetListScreenContent(
     Box(modifier = modifier) {
         when (budgetUiState) {
             UiState.Empty -> {
-                Text(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_budget_available),
-                    textAlign = TextAlign.Center,
+                EmptyItem(
+                    emptyItemText = stringResource(id = R.string.no_budget_available),
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 
             UiState.Loading -> {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .align(Alignment.Center),
-                )
+                LoadingItem()
             }
 
             is UiState.Success -> {

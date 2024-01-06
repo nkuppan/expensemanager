@@ -13,4 +13,7 @@
     <string name="balance">Balance</string>
     <string name="transaction_summary">Summary</string>
     <string name="total">Total</string>
+
+    <string name="delete">Delete</string>
+    <string name="delete_item_message">Do you really want to delete this item?</string>
 </resources>

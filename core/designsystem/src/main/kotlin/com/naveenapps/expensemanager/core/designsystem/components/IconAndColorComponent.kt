@@ -136,9 +136,7 @@ fun IconAndColorComponent(
             },
         ) {
             Icon(
-                painter = painterResource(
-                    context.getDrawable(selectedIcon),
-                ),
+                painter = painterResource(context.getDrawable(selectedIcon)),
                 contentDescription = "",
             )
         }
@@ -160,9 +158,7 @@ fun IconAndColorComponent(
             ),
         ) {
             Icon(
-                painter = painterResource(
-                    context.getDrawable(selectedIcon),
-                ),
+                painter = painterResource(context.getDrawable(selectedIcon)),
                 contentDescription = "",
             )
         }

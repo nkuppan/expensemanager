@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
@@ -89,9 +90,7 @@ fun CategoryTransactionTabScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.openTransactionCreatePage()
-            }) {
+            FloatingActionButton(onClick = viewModel::openTransactionCreatePage) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -107,12 +106,9 @@ fun CategoryTransactionTabScreen(
             CategoryTransactionListScreenContent(
                 uiState = uiState,
                 categoryType = categoryType,
-                changeChart = {
-                    viewModel.switchCategory()
-                },
-            ) {
-                viewModel.openCategoryDetailsPage(it)
-            }
+                changeChart = viewModel::switchCategory,
+                onItemClick = viewModel::openCategoryDetailsPage
+            )
         }
     }
 }
@@ -184,12 +180,10 @@ private fun CategoryTransactionListScreenContent(
 
                 if (uiState.data.categoryTransactions.isEmpty()) {
                     item {
-                        Text(
-                            text = stringResource(id = R.string.no_transactions_available),
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(36.dp),
-                            textAlign = TextAlign.Center,
+                        EmptyItem(
+                            modifier = Modifier.fillMaxSize(),
+                            emptyItemText = stringResource(id = R.string.no_transactions_available),
+                            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_grouping_available
                         )
                     }
                 } else {

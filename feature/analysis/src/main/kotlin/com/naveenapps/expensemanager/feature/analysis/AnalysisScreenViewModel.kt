@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.analysis
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageDataUseCase
@@ -45,7 +44,7 @@ class AnalysisScreenViewModel @Inject constructor(
     private val _transactionPeriod = MutableStateFlow("")
     val transactionPeriod = _transactionPeriod.asStateFlow()
 
-    private val _graphItems = MutableStateFlow<UiState<AnalysisUiData>>(UiState.Loading)
+    private val _graphItems = MutableStateFlow<AnalysisUiData?>(null)
     val graphItems = _graphItems.asStateFlow()
 
     private val _averageData = MutableStateFlow(
@@ -66,25 +65,23 @@ class AnalysisScreenViewModel @Inject constructor(
 
     init {
         getChartDataUseCase.invoke().onEach { response ->
-            _graphItems.value = UiState.Success(
-                AnalysisUiData(
-                    transactions = response.transactions,
-                    chartData = response.chartData?.let { chart ->
-                        AnalysisUiChartData(
-                            chartData = ChartEntryModelProducer(
-                                chart.chartData.map {
-                                    it.map { entry ->
-                                        entryOf(
-                                            entry.index,
-                                            entry.total,
-                                        )
-                                    }
-                                },
-                            ).getModel(),
-                            dates = chart.dates,
-                        )
-                    },
-                ),
+            _graphItems.value = AnalysisUiData(
+                transactions = response.transactions,
+                chartData = response.chartData?.let { chart ->
+                    AnalysisUiChartData(
+                        chartData = ChartEntryModelProducer(
+                            chart.chartData.map {
+                                it.map { entry ->
+                                    entryOf(
+                                        entry.index,
+                                        entry.total,
+                                    )
+                                }
+                            },
+                        ).getModel(),
+                        dates = chart.dates,
+                    )
+                },
             )
         }.launchIn(viewModelScope)
 

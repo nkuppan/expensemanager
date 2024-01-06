@@ -167,7 +167,7 @@ fun TransactionCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.transaction),
-                showDelete = showDelete,
+                isDeleteEnabled = showDelete,
             ) {
                 if (it == 1) {
                     viewModel.closePage()

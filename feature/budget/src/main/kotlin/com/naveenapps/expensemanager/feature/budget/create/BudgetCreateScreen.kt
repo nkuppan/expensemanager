@@ -43,9 +43,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
+import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
@@ -78,21 +78,13 @@ fun BudgetCreateScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     var sheetSelection by remember { mutableStateOf(BudgetCreateSheetSelection.CATEGORY_SELECTION) }
-    var showDeleteDialog by remember { mutableStateOf(false) }
+
+    val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
 
     if (showDeleteDialog) {
-        AppDialog(
-            onDismissRequest = {
-                showDeleteDialog = false
-            },
-            onConfirmation = {
-                viewModel.deleteBudget()
-                showDeleteDialog = false
-            },
-            dialogTitle = stringResource(id = R.string.delete),
-            dialogText = stringResource(id = R.string.delete_item_message),
-            positiveButtonText = stringResource(id = R.string.delete),
-            negativeButtonText = stringResource(id = R.string.cancel),
+        DeleteDialogItem(
+            confirm = viewModel::deleteBudget,
+            dismiss = viewModel::dismissDeleteDialog
         )
     }
 
@@ -142,12 +134,12 @@ fun BudgetCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.budgets),
-                showDelete = showDelete,
+                isDeleteEnabled = showDelete,
             ) {
                 if (it == 1) {
                     viewModel.closePage()
                 } else {
-                    showDeleteDialog = true
+                    viewModel.showDeleteDialog()
                 }
             }
         },

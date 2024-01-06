@@ -78,7 +78,7 @@ fun CategoryCreateScreen() {
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.category),
-                showDelete = showDelete,
+                isDeleteEnabled = showDelete,
             ) {
                 if (it == 1) {
                     viewModel.closePage()

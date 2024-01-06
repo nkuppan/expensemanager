@@ -58,6 +58,9 @@ class BudgetCreateViewModel @Inject constructor(
     private val _showDelete = MutableStateFlow(false)
     val showDelete = _showDelete.asStateFlow()
 
+    private val _showDeleteDialog = MutableStateFlow(false)
+    val showDeleteDialog = _showDeleteDialog.asStateFlow()
+
     var name = MutableStateFlow("")
         private set
 
@@ -175,6 +178,14 @@ class BudgetCreateViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun dismissDeleteDialog() {
+        _showDeleteDialog.value = false
+    }
+
+    fun showDeleteDialog() {
+        _showDeleteDialog.value = false
     }
 
     fun saveOrUpdateBudget() {

@@ -1,15 +1,15 @@
 package com.naveenapps.expensemanager.feature.analysis
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,12 +26,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AMOUNT_VALUE
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
+import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
@@ -52,8 +52,9 @@ import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
 
 @Composable
-fun AnalysisGraphScreen() {
-    val viewModel: AnalysisScreenViewModel = hiltViewModel()
+fun AnalysisGraphScreen(
+    viewModel: AnalysisScreenViewModel = hiltViewModel()
+) {
 
     val graphData by viewModel.graphItems.collectAsState()
     val averageData by viewModel.averageData.collectAsState()
@@ -63,62 +64,38 @@ fun AnalysisGraphScreen() {
     val currentTheme by viewModel.currentTheme.collectAsState()
     val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
-    when (val response = graphData) {
-        UiState.Empty -> {
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
+    ) {
+        graphData?.chartData?.let {
+            ChartScreen(
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp),
+                chart = it,
+                isDarkTheme = isDarkTheme,
+            )
+        } ?: run {
+            EmptyItem(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                emptyItemText = stringResource(id = R.string.no_chart_available),
+                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_analysis
+            )
         }
 
-        UiState.Loading -> {
-        }
+        IncomeExpenseBalanceView(
+            amountUiState = amountUiState,
+            transactionPeriod = transactionPeriod,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+        )
 
-        is UiState.Success -> {
-            val newGraphData = response.data
-
-            LazyColumn {
-                if (newGraphData.chartData != null) {
-                    item {
-                        ChartScreen(
-                            modifier = Modifier.padding(start = 16.dp, end = 16.dp),
-                            chart = newGraphData.chartData,
-                            isDarkTheme = isDarkTheme,
-                        )
-                    }
-                }
-                if (newGraphData.chartData == null) {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .padding(start = 16.dp, end = 16.dp)
-                                .fillMaxWidth()
-                                .height(200.dp),
-                        ) {
-                            Text(
-                                modifier = Modifier.align(Alignment.Center),
-                                text = stringResource(id = R.string.no_chart_available),
-                            )
-                        }
-                    }
-                }
-
-                item {
-                    IncomeExpenseBalanceView(
-                        amountUiState = amountUiState,
-                        transactionPeriod = transactionPeriod,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                    )
-                }
-
-                item {
-                    TransactionAverageItem(
-                        modifier = Modifier.padding(16.dp),
-                        averageData = averageData,
-                    )
-                }
-            }
-        }
-
-        else -> {}
+        TransactionAverageItem(
+            modifier = Modifier.padding(16.dp),
+            averageData = averageData,
+        )
     }
 }
 
