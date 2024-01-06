@@ -28,4 +28,5 @@ dependencies {
 
     androidTestImplementation(project(":core:testing"))
     testImplementation(project(":core:testing"))
+    testImplementation(libs.robolectric)
 }

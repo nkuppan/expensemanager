@@ -93,8 +93,6 @@ fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
             val bom = libs.findLibrary("androidx-compose-bom").get()
             add("implementation", platform(bom))
             add("androidTestImplementation", platform(bom))
-            // Add ComponentActivity to debug manifest
-            add("debugImplementation", libs.findLibrary("androidx.compose.ui.testManifest").get())
         }
 
         testOptions {
