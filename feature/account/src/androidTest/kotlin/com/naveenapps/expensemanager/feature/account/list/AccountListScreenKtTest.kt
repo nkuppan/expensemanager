@@ -20,11 +20,13 @@ class AccountListScreenKtTest {
     val composeTestRule = createAndroidComposeRule<TestMainActivity>()
 
     @Test
-    fun openAccountListScreenAndClickCreateButton() {
+    fun openAccountListScreenAndClickCreateButton()  {
         // Start the app
         composeTestRule.setContent {
             AccountListContentView(
                 accountUiState = UiState.Success(emptyList()),
+                showReOrder = false,
+                openAccountReOrderScreen = {},
                 closePage = {},
                 openCreateScreen = {}
             )
@@ -34,18 +36,18 @@ class AccountListScreenKtTest {
     }
 
     @Test
-    fun openAccountListScreenWithDataShouldShowAccountList() {
-        // Start the app
+    fun openAccountListScreenWithDataShouldShowAccountList()  {
         composeTestRule.setContent {
             AccountListContentView(
-                accountUiState = UiState.Success(getRandomAccountUiModel(10)),
+                accountUiState = UiState.Success(getRandomAccountUiModel(5)),
+                showReOrder = true,
+                openAccountReOrderScreen = {},
                 closePage = {},
                 openCreateScreen = {}
             )
         }
 
         composeTestRule.onNodeWithTag("Create").assertIsDisplayed()
-        composeTestRule.onAllNodesWithTag("Item").assertCountEquals(10)
-        composeTestRule.onAllNodesWithTag("Item").assertCountEquals(10)
+        composeTestRule.onAllNodesWithTag("Item").assertCountEquals(5)
     }
 }
