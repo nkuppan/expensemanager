@@ -284,10 +284,10 @@ private fun AccountCreateStatePreview() {
             creditLimit = nameField,
             availableCreditLimit = amountField,
             availableCreditLimitColor = colorField,
-            saveOrUpdateAccount = { /*TODO*/ },
-            deleteAccount = { /*TODO*/ },
-            openDeleteDialog = { /*TODO*/ },
-            dismissDeleteDialog = { /*TODO*/ },
+            saveOrUpdateAccount = {},
+            deleteAccount = {},
+            openDeleteDialog = {},
+            dismissDeleteDialog = {},
             closePage = {}
         )
     }

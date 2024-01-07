@@ -22,17 +22,17 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.budget.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -52,38 +52,68 @@ class BudgetCreateViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _errorMessage = MutableSharedFlow<UiText>()
-    val message = _errorMessage.asSharedFlow()
-
     private val _isDeleteEnabled = MutableStateFlow(false)
     val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
 
     private val _showDeleteDialog = MutableStateFlow(false)
     val showDeleteDialog = _showDeleteDialog.asStateFlow()
 
-    var name = MutableStateFlow("")
+    var bottomSheetSelection = MutableStateFlow(BottomSheetSelection.NONE)
         private set
 
-    var nameErrorMessage = MutableStateFlow<UiText?>(null)
+    var nameField = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = this::setNameChange
+        )
+    )
         private set
 
-    var amount = MutableStateFlow("")
+    var amountField = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = this::setAmountChange
+        )
+    )
         private set
 
-    var amountErrorMessage = MutableStateFlow<UiText?>(null)
+    var currencyIcon = MutableStateFlow(
+        TextFieldValue(
+            value = "",
+            valueError = false,
+            onValueChange = null
+        )
+    )
         private set
 
-    var currencyIcon = MutableStateFlow<String?>(null)
+    var selectedColorField = MutableStateFlow(
+        TextFieldValue(
+            value = DEFAULT_COLOR,
+            valueError = false,
+            onValueChange = this::setColorValue
+        )
+    )
         private set
 
-    var colorValue = MutableStateFlow(DEFAULT_COLOR)
+    var selectedIconField = MutableStateFlow(
+        TextFieldValue(
+            value = DEFAULT_ICON,
+            valueError = false,
+            onValueChange = this::setIconValue
+        )
+    )
         private set
 
-    var icon = MutableStateFlow(DEFAULT_ICON)
+    var selectedDate = MutableStateFlow(
+        TextFieldValue(
+            value = Date(),
+            valueError = false,
+            onValueChange = this::setDateChange
+        )
+    )
         private set
-
-    private val _date = MutableStateFlow(Date())
-    val date = _date.asStateFlow()
 
     private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
     val accountCount = _accountCount.asStateFlow()
@@ -103,9 +133,9 @@ class BudgetCreateViewModel @Inject constructor(
     init {
         readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerScreens.BudgetCreate.KEY_BUDGET_ID))
 
-        getCurrencyUseCase.invoke().onEach {
-            currency = it
-            currencyIcon.value = it.symbol
+        getCurrencyUseCase.invoke().onEach { updatedCurrency ->
+            currency = updatedCurrency
+            currencyIcon.update { it.copy(value = updatedCurrency.symbol) }
         }.launchIn(viewModelScope)
     }
 
@@ -113,11 +143,11 @@ class BudgetCreateViewModel @Inject constructor(
         this.budget = budget
 
         this.budget?.let { budgetItem ->
-            name.value = budgetItem.name
-            amount.value = budgetItem.amount.toStringWithLocale()
-            colorValue.value = budgetItem.storedIcon.backgroundColor
-            icon.value = budgetItem.storedIcon.name
-            budgetItem.selectedMonth.fromMonthAndYear()?.let { setDate(it) }
+            nameField.update { it.copy(value = budgetItem.name) }
+            amountField.update { it.copy(value = budgetItem.amount.toStringWithLocale()) }
+            selectedColorField.update { it.copy(value = budgetItem.storedIcon.backgroundColor) }
+            selectedIconField.update { it.copy(value = budgetItem.storedIcon.name) }
+            budgetItem.selectedMonth.fromMonthAndYear()?.let { setDateChange(it) }
 
             val accounts = budgetItem.accounts.map {
                 return@map when (val response = findAccountByIdUseCase.invoke(it)) {
@@ -166,12 +196,7 @@ class BudgetCreateViewModel @Inject constructor(
         viewModelScope.launch {
             budget?.let { budget ->
                 when (deleteBudgetUseCase.invoke(budget)) {
-                    is Resource.Error -> {
-                        _errorMessage.emit(
-                            UiText.StringResource(R.string.budget_delete_error_message),
-                        )
-                    }
-
+                    is Resource.Error -> Unit
                     is Resource.Success -> {
                         closePage()
                     }
@@ -189,37 +214,40 @@ class BudgetCreateViewModel @Inject constructor(
     }
 
     fun saveOrUpdateBudget() {
-        val name: String = name.value
-        val color: String = colorValue.value
-        val date: Date = _date.value
-        val amount: Double? = amount.value.toDoubleOrNullWithLocale()
+        val name: String = nameField.value.value
+        val color: String = selectedColorField.value.value
+        val icon: String = selectedIconField.value.value
+        val date: Date = selectedDate.value.value
+        val amount: Double? = amountField.value.value.toDoubleOrNullWithLocale()
+
+        var isError = false
 
         if (name.isBlank()) {
-            nameErrorMessage.value = UiText.StringResource(R.string.budget_name_error)
-            return
+            nameField.update { it.copy(valueError = true) }
+            isError = true
         }
 
         if (amount == null || amount == 0.0) {
-            amountErrorMessage.value = UiText.StringResource(R.string.budget_amount_error)
+            amountField.update { it.copy(valueError = true) }
+            isError = true
+        }
+
+        if (isError) {
             return
         }
 
-        val categories = selectedCategories.map {
-            it.id
-        }
+        val categories = selectedCategories.map { it.id }
 
-        val accounts = selectedAccounts.map {
-            it.id
-        }
+        val accounts = selectedAccounts.map { it.id }
 
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
             name = name,
             storedIcon = StoredIcon(
-                name = icon.value,
+                name = icon,
                 backgroundColor = color,
             ),
-            amount = amount,
+            amount = amount ?: 0.0,
             selectedMonth = date.toMonthAndYear(),
             categories = categories,
             accounts = accounts,
@@ -236,10 +264,7 @@ class BudgetCreateViewModel @Inject constructor(
                 addBudgetUseCase(budget)
             }
             when (response) {
-                is Resource.Error -> {
-                    _errorMessage.emit(UiText.StringResource(R.string.budget_create_error))
-                }
-
+                is Resource.Error -> Unit
                 is Resource.Success -> {
                     closePage()
                 }
@@ -247,35 +272,35 @@ class BudgetCreateViewModel @Inject constructor(
         }
     }
 
-    fun setColorValue(colorValue: String) {
-        this.colorValue.value = colorValue
+    private fun setColorValue(colorValue: String) {
+        selectedColorField.update { it.copy(value = colorValue) }
     }
 
-    fun setIcon(icon: String) {
-        this.icon.value = icon
+    private fun setIconValue(icon: String) {
+        selectedColorField.update { it.copy(value = icon) }
     }
 
-    fun setNameChange(name: String) {
-        this.name.value = name
-        if (name.isBlank()) {
-            nameErrorMessage.value = UiText.StringResource(R.string.budget_name_error)
-        } else {
-            nameErrorMessage.value = null
+    private fun setNameChange(name: String) {
+        nameField.update {
+            it.copy(
+                value = name,
+                valueError = name.isBlank()
+            )
         }
     }
 
-    fun setAmountChange(amount: String) {
-        this.amount.value = amount
+    private fun setAmountChange(amount: String) {
         val amountValue = amount.toDoubleOrNullWithLocale()
-        if (amountValue == null || amountValue == 0.0) {
-            amountErrorMessage.value = UiText.StringResource(R.string.budget_amount_error)
-        } else {
-            amountErrorMessage.value = null
+        amountField.update {
+            it.copy(
+                value = amount,
+                valueError = amountValue == null || amountValue == 0.0
+            )
         }
     }
 
-    fun setDate(date: Date) {
-        _date.value = date
+    private fun setDateChange(date: Date) {
+        selectedDate.update { it.copy(value = date) }
     }
 
     fun setAccounts(selectedAccounts: List<AccountUiModel>, isAllSelected: Boolean) {
@@ -308,6 +333,18 @@ class BudgetCreateViewModel @Inject constructor(
 
     fun getSelectedCategories(): List<Category> {
         return this.selectedCategories
+    }
+
+    fun hideBottomSheet() {
+        bottomSheetSelection.value = BottomSheetSelection.NONE
+    }
+
+    fun openAccountSelection() {
+        bottomSheetSelection.value = BottomSheetSelection.ACCOUNT_SELECTION
+    }
+
+    fun openCategorySelection() {
+        bottomSheetSelection.value = BottomSheetSelection.CATEGORY_SELECTION
     }
 
     companion object {

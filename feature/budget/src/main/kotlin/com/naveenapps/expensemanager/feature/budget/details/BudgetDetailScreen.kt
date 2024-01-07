@@ -32,27 +32,49 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
+import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.NavigationButton
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BudgetDetailScreen(
     viewModel: BudgetDetailViewModel = hiltViewModel(),
 ) {
+
+    val budget by viewModel.budget.collectAsState()
+
+    BudgetDetailsScaffoldView(
+        budget = budget,
+        openBudgetEditScreen = viewModel::openBudgetCreateScreen,
+        closePage = viewModel::closePage,
+        openTransactionCreateScreen = viewModel::openTransactionCreateScreen
+    )
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun BudgetDetailsScaffoldView(
+    budget: BudgetUiModel?,
+    openBudgetEditScreen: () -> Unit,
+    closePage: () -> Unit,
+    openTransactionCreateScreen: (String?) -> Unit,
+) {
+
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -65,19 +87,16 @@ fun BudgetDetailScreen(
                     TopAppBar(
                         navigationIcon = {
                             NavigationButton(
-                                onClick = {
-                                    viewModel.closePage()
-                                },
+                                onClick = closePage,
                                 Icons.Default.Close,
                             )
                         },
                         title = {
+                            Text(text = stringResource(id = R.string.budgets))
                         },
                         actions = {
-                            viewModel.budget?.let {
-                                IconButton(onClick = {
-                                    viewModel.openBudgetCreateScreen(it.id)
-                                }) {
+                            budget?.let {
+                                IconButton(onClick = openBudgetEditScreen) {
                                     Icon(
                                         imageVector = Icons.Outlined.Edit,
                                         contentDescription = "",
@@ -86,7 +105,7 @@ fun BudgetDetailScreen(
                             }
                         },
                     )
-                    viewModel.budget?.let {
+                    budget?.let {
                         BudgetHeaderItem(
                             modifier = Modifier
                                 .padding(16.dp)
@@ -102,9 +121,7 @@ fun BudgetDetailScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.openTransactionCreateScreen(null)
-            }) {
+            FloatingActionButton(onClick = { openTransactionCreateScreen.invoke(null) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -112,55 +129,65 @@ fun BudgetDetailScreen(
             }
         },
     ) { innerPadding ->
-
-        Box(
+        BudgetDetailContent(
+            budget = budget,
+            onItemClick = openTransactionCreateScreen,
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize(),
-        ) {
-            val transactions = viewModel.budget?.transactions
-            if (transactions.isNullOrEmpty()) {
-                Text(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_budget_available),
-                    textAlign = TextAlign.Center,
-                )
-            } else {
-                LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
-                    items(transactions) { item ->
-                        TransactionItem(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clickable {
-                                    viewModel.openTransactionCreateScreen(item.id)
-                                }
-                                .then(ItemSpecModifier),
-                            categoryName = item.categoryName,
-                            categoryColor = item.categoryIcon.backgroundColor,
-                            categoryIcon = item.categoryIcon.name,
-                            amount = item.amount,
-                            date = item.date,
-                            notes = item.notes,
-                            transactionType = item.transactionType,
-                            fromAccountName = item.fromAccountName,
-                            fromAccountIcon = item.fromAccountIcon.name,
-                            fromAccountColor = item.fromAccountIcon.backgroundColor,
-                            toAccountName = item.toAccountName,
-                            toAccountIcon = item.toAccountIcon?.name,
-                            toAccountColor = item.toAccountIcon?.backgroundColor,
-                        )
-                    }
-                    item {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(36.dp),
-                        )
-                    }
+                .fillMaxSize()
+        )
+    }
+}
+
+@Composable
+private fun BudgetDetailContent(
+    budget: BudgetUiModel?,
+    onItemClick: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier) {
+        val transactions = budget?.transactions
+        if (transactions?.isNotEmpty() == true) {
+            LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
+                items(transactions) { item ->
+                    TransactionItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onItemClick.invoke(item.id)
+                            }
+                            .then(ItemSpecModifier),
+                        categoryName = item.categoryName,
+                        categoryColor = item.categoryIcon.backgroundColor,
+                        categoryIcon = item.categoryIcon.name,
+                        amount = item.amount,
+                        date = item.date,
+                        notes = item.notes,
+                        transactionType = item.transactionType,
+                        fromAccountName = item.fromAccountName,
+                        fromAccountIcon = item.fromAccountIcon.name,
+                        fromAccountColor = item.fromAccountIcon.backgroundColor,
+                        toAccountName = item.toAccountName,
+                        toAccountIcon = item.toAccountIcon?.name,
+                        toAccountColor = item.toAccountIcon?.backgroundColor,
+                    )
+                }
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(36.dp),
+                    )
                 }
             }
+        } else {
+            EmptyItem(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.Center),
+                emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.category.R.string.no_transactions_available),
+                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
+            )
         }
     }
 }

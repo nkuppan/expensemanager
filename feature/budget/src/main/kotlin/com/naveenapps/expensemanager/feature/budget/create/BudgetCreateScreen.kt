@@ -26,7 +26,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +52,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextF
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
+import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
@@ -61,7 +61,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-enum class BudgetCreateSheetSelection {
+enum class BottomSheetSelection {
+    NONE,
     ACCOUNT_SELECTION,
     CATEGORY_SELECTION,
 }
@@ -71,15 +72,22 @@ enum class BudgetCreateSheetSelection {
 fun BudgetCreateScreen(
     viewModel: BudgetCreateViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
-
     val scope = rememberCoroutineScope()
 
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    var sheetSelection by remember { mutableStateOf(BudgetCreateSheetSelection.CATEGORY_SELECTION) }
-
     val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
+    val isDeleteEnabled by viewModel.isDeleteEnabled.collectAsState()
+
+    val nameField by viewModel.nameField.collectAsState()
+    val amountField by viewModel.amountField.collectAsState()
+    val currencyIcon by viewModel.currencyIcon.collectAsState()
+    val selectedColorField by viewModel.selectedColorField.collectAsState()
+    val selectedIconField by viewModel.selectedIconField.collectAsState()
+    val selectedDate by viewModel.selectedDate.collectAsState()
+
+    val accountCount by viewModel.accountCount.collectAsState()
+    val categoriesCount by viewModel.categoriesCount.collectAsState()
+
+    val bottomSheetSelection by viewModel.bottomSheetSelection.collectAsState()
 
     if (showDeleteDialog) {
         DeleteDialogItem(
@@ -88,25 +96,13 @@ fun BudgetCreateScreen(
         )
     }
 
-    val isDeleteEnabled by viewModel.isDeleteEnabled.collectAsState()
-
-    val errorMessage by viewModel.message.collectAsState(null)
-    if (errorMessage != null) {
-        LaunchedEffect(key1 = "errorMessage", block = {
-            snackbarHostState.showSnackbar(
-                message = errorMessage!!.asString(context),
-            )
-        })
-    }
-
-    var showBottomSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    if (showBottomSheet) {
+    if (bottomSheetSelection != BottomSheetSelection.NONE) {
         ModalBottomSheet(
             onDismissRequest = {
                 scope.launch {
-                    showBottomSheet = false
+                    viewModel.hideBottomSheet()
                     bottomSheetState.hide()
                 }
             },
@@ -116,16 +112,53 @@ fun BudgetCreateScreen(
             tonalElevation = 0.dp,
         ) {
             BudgetCreateBottomSheetContent(
-                sheetSelection,
+                bottomSheetSelection,
                 viewModel,
             ) {
                 scope.launch {
-                    showBottomSheet = false
+                    viewModel.hideBottomSheet()
                     bottomSheetState.hide()
                 }
             }
         }
     }
+
+    BudgetCreateScreenScaffoldView(
+        isDeleteEnabled = isDeleteEnabled,
+        nameField = nameField,
+        amountField = amountField,
+        currencyIcon = currencyIcon,
+        selectedColorField = selectedColorField,
+        selectedIconField = selectedIconField,
+        selectedDate = selectedDate,
+        accountCount = accountCount,
+        categoriesCount = categoriesCount,
+        closePage = viewModel::closePage,
+        openDeleteDialog = viewModel::openDeleteDialog,
+        saveOrUpdateBudget = viewModel::saveOrUpdateBudget,
+        openAccountSelection = viewModel::openAccountSelection,
+        openCategorySelection = viewModel::openCategorySelection,
+    )
+}
+
+@Composable
+private fun BudgetCreateScreenScaffoldView(
+    isDeleteEnabled: Boolean,
+    nameField: TextFieldValue<String>,
+    amountField: TextFieldValue<String>,
+    currencyIcon: TextFieldValue<String>,
+    selectedColorField: TextFieldValue<String>,
+    selectedIconField: TextFieldValue<String>,
+    selectedDate: TextFieldValue<Date>,
+    accountCount: UiText,
+    categoriesCount: UiText,
+    closePage: () -> Unit,
+    openDeleteDialog: () -> Unit,
+    saveOrUpdateBudget: () -> Unit,
+    openAccountSelection: () -> Unit,
+    openCategorySelection: () -> Unit
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         snackbarHost = {
@@ -135,12 +168,12 @@ fun BudgetCreateScreen(
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.budgets),
                 isDeleteEnabled = isDeleteEnabled,
-                onNavigationIconClick = viewModel::closePage,
-                onDeleteActionClick = viewModel::openDeleteDialog,
+                onNavigationIconClick = closePage,
+                onDeleteActionClick = openDeleteDialog,
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::saveOrUpdateBudget) {
+            FloatingActionButton(onClick = saveOrUpdateBudget) {
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "",
@@ -149,106 +182,37 @@ fun BudgetCreateScreen(
         },
     ) { innerPadding ->
 
-        val name by viewModel.name.collectAsState()
-        val nameErrorMessage by viewModel.nameErrorMessage.collectAsState()
-        val amount by viewModel.amount.collectAsState()
-        val amountErrorMessage by viewModel.amountErrorMessage.collectAsState()
-        val currencyIcon by viewModel.currencyIcon.collectAsState()
-        val colorValue by viewModel.colorValue.collectAsState()
-        val iconValue by viewModel.icon.collectAsState()
-        val selectedDate by viewModel.date.collectAsState()
-
-        val accountCount by viewModel.accountCount.collectAsState()
-        val categoriesCount by viewModel.categoriesCount.collectAsState()
-
         BudgetCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            selectedColor = colorValue,
-            selectedIcon = iconValue,
-            name = name,
-            nameErrorMessage = nameErrorMessage,
-            amount = amount,
-            amountErrorMessage = amountErrorMessage,
+            nameField = nameField,
+            amountField = amountField,
+            currencyIconField = currencyIcon,
+            selectedColorField = selectedColorField,
+            selectedIconField = selectedIconField,
             selectedDate = selectedDate,
-            currencyIcon = currencyIcon,
             accountCount = accountCount,
             categoriesCount = categoriesCount,
-            onNameChange = viewModel::setNameChange,
-            onAmountChange = viewModel::setAmountChange,
-            onDateChange = viewModel::setDate,
-            openColorPicker = viewModel::setColorValue,
-            openIconPicker = viewModel::setIcon,
-            openAccountSelection = {
-                scope.launch {
-                    val oldSelection = sheetSelection
-                    if (oldSelection != BudgetCreateSheetSelection.ACCOUNT_SELECTION) {
-                        sheetSelection = BudgetCreateSheetSelection.ACCOUNT_SELECTION
-                    }
-                    showBottomSheet = true
-                }
-            },
-            openCategorySelection = {
-                scope.launch {
-                    val oldSelection = sheetSelection
-                    if (oldSelection != BudgetCreateSheetSelection.CATEGORY_SELECTION) {
-                        sheetSelection = BudgetCreateSheetSelection.CATEGORY_SELECTION
-                    }
-                    showBottomSheet = true
-                }
-            },
+            openAccountSelection = openAccountSelection,
+            openCategorySelection = openCategorySelection
         )
     }
 }
 
 @Composable
-private fun BudgetCreateBottomSheetContent(
-    sheetSelection: BudgetCreateSheetSelection,
-    viewModel: BudgetCreateViewModel,
-    hideBottomSheet: () -> Unit,
-) {
-    when (sheetSelection) {
-        BudgetCreateSheetSelection.ACCOUNT_SELECTION -> {
-            MultipleAccountSelectionScreen(
-                selectedAccounts = viewModel.getSelectedAccounts(),
-            ) { items, selected ->
-                viewModel.setAccounts(items, selected)
-                hideBottomSheet.invoke()
-            }
-        }
-
-        BudgetCreateSheetSelection.CATEGORY_SELECTION -> {
-            MultipleCategoriesSelectionScreen(
-                selectedCategories = viewModel.getSelectedCategories(),
-            ) { items, selected ->
-                viewModel.setCategories(items, selected)
-                hideBottomSheet.invoke()
-            }
-        }
-    }
-}
-
-@Composable
-private fun BudgetCreateScreen(
-    modifier: Modifier = Modifier,
-    name: String = "",
-    nameErrorMessage: UiText? = null,
-    amount: String = "",
-    amountErrorMessage: UiText? = null,
-    currencyIcon: String? = null,
-    selectedColor: String = "#000000",
-    selectedIcon: String = "savings",
-    selectedDate: Date? = null,
-    categoriesCount: UiText? = null,
-    accountCount: UiText? = null,
-    openIconPicker: ((String) -> Unit)? = null,
-    openColorPicker: ((String) -> Unit)? = null,
-    onNameChange: ((String) -> Unit)? = null,
-    onAmountChange: ((String) -> Unit)? = null,
-    onDateChange: ((Date) -> Unit)? = null,
-    openAccountSelection: (() -> Unit)? = null,
-    openCategorySelection: (() -> Unit)? = null,
+fun BudgetCreateScreen(
+    modifier: Modifier,
+    nameField: TextFieldValue<String>,
+    amountField: TextFieldValue<String>,
+    currencyIconField: TextFieldValue<String>,
+    selectedColorField: TextFieldValue<String>,
+    selectedIconField: TextFieldValue<String>,
+    selectedDate: TextFieldValue<Date>,
+    accountCount: UiText,
+    categoriesCount: UiText,
+    openAccountSelection: () -> Unit,
+    openCategorySelection: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
@@ -263,11 +227,11 @@ private fun BudgetCreateScreen(
                     color = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(8.dp),
                 ),
-            currentMonth = (selectedDate ?: Date()).toMonth(),
-            currentYear = (selectedDate ?: Date()).toYearInt(),
+            currentMonth = selectedDate.value.toMonth(),
+            currentYear = selectedDate.value.toYearInt(),
             confirmButtonCLicked = { month, year ->
                 SimpleDateFormat("MM-yyyy", Locale.getDefault()).parse("$month-$year")?.let {
-                    onDateChange?.invoke(
+                    selectedDate.onValueChange?.invoke(
                         it,
                     )
                 }
@@ -284,7 +248,7 @@ private fun BudgetCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 .fillMaxWidth(),
-            value = selectedDate?.toMonthAndYear() ?: "",
+            value = selectedDate.value.toMonthAndYear(),
             label = R.string.select_date,
             leadingIcon = Icons.Default.EditCalendar,
             onClick = {
@@ -297,9 +261,10 @@ private fun BudgetCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 .fillMaxWidth(),
-            value = name,
-            isError = nameErrorMessage != null,
-            onValueChange = onNameChange,
+            value = nameField.value,
+            isError = nameField.valueError,
+            errorMessage = stringResource(id = R.string.budget_name_error),
+            onValueChange = nameField.onValueChange,
             label = R.string.budget_name,
         )
 
@@ -307,20 +272,21 @@ private fun BudgetCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
-            selectedColor = selectedColor,
-            selectedIcon = selectedIcon,
-            onColorSelection = openColorPicker,
-            onIconSelection = openIconPicker,
+            selectedColor = selectedColorField.value,
+            selectedIcon = selectedIconField.value,
+            onColorSelection = selectedColorField.onValueChange,
+            onIconSelection = selectedIconField.onValueChange,
         )
 
         DecimalTextField(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
-            value = amount,
-            isError = amountErrorMessage != null,
-            onValueChange = onAmountChange,
-            leadingIconText = currencyIcon,
+            value = amountField.value,
+            isError = amountField.valueError,
+            errorMessage = stringResource(id = R.string.budget_amount_error),
+            onValueChange = amountField.onValueChange,
+            leadingIconText = currencyIconField.value,
             label = R.string.budget_amount,
         )
 
@@ -331,27 +297,25 @@ private fun BudgetCreateScreen(
         SelectedItemView(
             modifier = Modifier
                 .clickable {
-                    openAccountSelection?.invoke()
+                    openAccountSelection.invoke()
                 }
                 .padding(16.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
             icon = Icons.Default.AccountBalance,
-            selectedCount = accountCount?.asString(context)
-                ?: stringResource(id = R.string.all_time),
+            selectedCount = accountCount.asString(context),
         )
 
         SelectedItemView(
             modifier = Modifier
                 .clickable {
-                    openCategorySelection?.invoke()
+                    openCategorySelection.invoke()
                 }
                 .padding(16.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_category),
             icon = Icons.Default.FilterList,
-            selectedCount = categoriesCount?.asString(context)
-                ?: stringResource(id = R.string.all_time),
+            selectedCount = categoriesCount.asString(context),
         )
 
         Divider()
@@ -364,10 +328,76 @@ private fun BudgetCreateScreen(
     }
 }
 
+@Composable
+private fun BudgetCreateBottomSheetContent(
+    sheetSelection: BottomSheetSelection,
+    viewModel: BudgetCreateViewModel,
+    hideBottomSheet: () -> Unit,
+) {
+    when (sheetSelection) {
+        BottomSheetSelection.ACCOUNT_SELECTION -> {
+            MultipleAccountSelectionScreen(
+                selectedAccounts = viewModel.getSelectedAccounts(),
+            ) { items, selected ->
+                viewModel.setAccounts(items, selected)
+                hideBottomSheet.invoke()
+            }
+        }
+
+        BottomSheetSelection.CATEGORY_SELECTION -> {
+            MultipleCategoriesSelectionScreen(
+                selectedCategories = viewModel.getSelectedCategories(),
+            ) { items, selected ->
+                viewModel.setCategories(items, selected)
+                hideBottomSheet.invoke()
+            }
+        }
+
+        else -> Unit
+    }
+}
+
 @Preview
 @Composable
 private fun BudgetCreateStatePreview() {
+    val nameField = TextFieldValue(
+        value = "", valueError = false, onValueChange = { }
+    )
+    val selectedColorField = TextFieldValue(
+        value = "#000000", valueError = false, onValueChange = { }
+    )
+    val selectedIconField = TextFieldValue(
+        value = "account_balance_wallet", valueError = false, onValueChange = { }
+    )
+    val selectedCurrencyField = TextFieldValue(
+        value = "$", valueError = false, onValueChange = { }
+    )
+    val amountField = TextFieldValue(
+        value = "0.0",
+        valueError = false,
+        onValueChange = { }
+    )
+    val dateField = TextFieldValue(
+        value = Date(),
+        valueError = false,
+        onValueChange = { }
+    )
     ExpenseManagerTheme {
-        BudgetCreateScreen(currencyIcon = "$")
+        BudgetCreateScreenScaffoldView(
+            isDeleteEnabled = true,
+            nameField = nameField,
+            amountField = amountField,
+            currencyIcon = selectedCurrencyField,
+            selectedColorField = selectedColorField,
+            selectedIconField = selectedIconField,
+            selectedDate = dateField,
+            accountCount = UiText.DynamicString("All"),
+            categoriesCount =  UiText.DynamicString("All"),
+            closePage = {},
+            openDeleteDialog = {},
+            saveOrUpdateBudget = {},
+            openAccountSelection = {},
+            openCategorySelection = {}
+        )
     }
 }

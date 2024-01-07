@@ -178,10 +178,10 @@ private fun CategoryCreateStatePreview() {
             categoryTypeField = categoryType,
             selectedColorField = selectedColorField,
             selectedIconField = selectedIconField,
-            deleteCategory = { /*TODO*/ },
-            closeDeleteDialog = { /*TODO*/ },
-            closePage = { /*TODO*/ },
-            openDeleteDialog = { /*TODO*/ },
+            deleteCategory = {},
+            closeDeleteDialog = {},
+            closePage = {},
+            openDeleteDialog = {},
             saveOrUpdateCategory = {}
         )
     }

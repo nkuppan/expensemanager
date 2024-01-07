@@ -59,8 +59,8 @@ fun AppDialog(
 private fun AppDialogPreview() {
     ExpenseManagerTheme {
         AppDialog(
-            onDismissRequest = { /*TODO*/ },
-            onConfirmation = { /*TODO*/ },
+            onDismissRequest = {},
+            onConfirmation = {},
             dialogTitle = "Info",
             dialogText = "Do you want to delete this item?",
             positiveButtonText = "Delete",

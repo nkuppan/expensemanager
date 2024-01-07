@@ -29,6 +29,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,8 +59,10 @@ import com.naveenapps.expensemanager.feature.budget.R
 fun BudgetListScreen(
     viewModel: BudgetListViewModel = hiltViewModel(),
 ) {
+    val budgetUiState by viewModel.budgets.collectAsState()
+
     BudgetListScreenContent(
-        budgetUiState = viewModel.budgets,
+        budgetUiState = budgetUiState,
         closePage = viewModel::closePage,
         openCreatePage = viewModel::openCreateScreen
     )
