@@ -129,8 +129,8 @@ class CategoryRepositoryImplTest : BaseCoroutineTest() {
 
             val updatedItem = awaitItem()
             Truth.assertThat(updatedItem).isNotNull()
-            Truth.assertThat(updatedItem?.id).isEqualTo(FAKE_FAVORITE_CATEGORY.id)
-            Truth.assertThat(updatedItem?.name).isEqualTo(FAKE_FAVORITE_CATEGORY.name)
+            Truth.assertThat(updatedItem?.id).isEqualTo(updated.id)
+            Truth.assertThat(updatedItem?.name).isEqualTo(updated.name)
         }
     }
 
