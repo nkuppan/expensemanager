@@ -99,6 +99,42 @@ class CategoryRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
+    fun updateCategorySuccessCase() = runTest {
+        insertCategoryAndAssert(FAKE_FAVORITE_CATEGORY)
+        val category = FAKE_FAVORITE_CATEGORY.copy(name = "Sample Notes")
+        updateCategoryAndAssert(category)
+        findCategoryAndAssert(category.id)
+    }
+
+    @Test
+    fun getAllCategoryCase() = runTest {
+        insertCategoryAndAssert(FAKE_FAVORITE_CATEGORY)
+        val result = categoryRepository.getAllCategory()
+        Truth.assertThat(result).isNotNull()
+        Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
+        Truth.assertThat((result as Resource.Success).data).hasSize(1)
+    }
+
+    @Test
+    fun checkCategoryChangeFlow() = runTest {
+        insertCategoryAndAssert(FAKE_FAVORITE_CATEGORY)
+
+        categoryRepository.findCategoryFlow(FAKE_FAVORITE_CATEGORY.id).test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem).isNotNull()
+            Truth.assertThat(firstItem?.id).isEqualTo(FAKE_FAVORITE_CATEGORY.id)
+
+            val updated = FAKE_FAVORITE_CATEGORY.copy(name = "Updated")
+            categoryRepository.updateCategory(updated)
+
+            val updatedItem = awaitItem()
+            Truth.assertThat(updatedItem).isNotNull()
+            Truth.assertThat(updatedItem?.id).isEqualTo(FAKE_FAVORITE_CATEGORY.id)
+            Truth.assertThat(updatedItem?.name).isEqualTo(FAKE_FAVORITE_CATEGORY.name)
+        }
+    }
+
+    @Test
     fun checkGetAllCategoryFlowAfterInsertCase() = runTest {
         categoryRepository.getCategories().test {
             val data = awaitItem()
@@ -129,6 +165,15 @@ class CategoryRepositoryImplTest : BaseCoroutineTest() {
 
     private suspend fun insertCategoryAndAssert(category: Category) {
         val result = categoryRepository.addCategory(category)
+        Truth.assertThat(result).isNotNull()
+        Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
+        val data = (result as Resource.Success).data
+        Truth.assertThat(data).isNotNull()
+        Truth.assertThat(data).isTrue()
+    }
+
+    private suspend fun updateCategoryAndAssert(category: Category) {
+        val result = categoryRepository.updateCategory(category)
         Truth.assertThat(result).isNotNull()
         Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
         val data = (result as Resource.Success).data

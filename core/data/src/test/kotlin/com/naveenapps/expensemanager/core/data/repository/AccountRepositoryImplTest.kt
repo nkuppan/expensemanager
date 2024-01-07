@@ -17,6 +17,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -62,6 +64,18 @@ class AccountRepositoryImplTest : BaseCoroutineTest() {
     @Test
     fun checkInsertSuccessCase() = runTest {
         addAccountAndAssert(FAKE_ACCOUNT)
+    }
+
+    @Test
+    fun checkInsertWithErrorCase() = runTest {
+
+        whenever(accountDao.insert(any())).thenThrow(IllegalArgumentException(""))
+
+        val result = accountRepository.addAccount(FAKE_ACCOUNT)
+        Truth.assertThat(result).isNotNull()
+        Truth.assertThat(result).isInstanceOf(Resource.Error::class.java)
+        val exception = (result as Resource.Error).exception
+        Truth.assertThat(exception).isNotNull()
     }
 
     @Test
@@ -114,6 +128,15 @@ class AccountRepositoryImplTest : BaseCoroutineTest() {
     @Test
     fun checkDeleteAccountErrorCase() = runTest {
         val newResult = accountRepository.deleteAccount(FAKE_ACCOUNT)
+        Truth.assertThat(newResult).isNotNull()
+        Truth.assertThat(newResult).isInstanceOf(Resource.Success::class.java)
+        val foundData = (newResult as Resource.Success).data
+        Truth.assertThat(foundData).isFalse()
+    }
+
+    @Test
+    fun checkUpdateAllAccountErrorCase() = runTest {
+        val newResult = accountRepository.updateAllAccount(listOf(FAKE_ACCOUNT))
         Truth.assertThat(newResult).isNotNull()
         Truth.assertThat(newResult).isInstanceOf(Resource.Success::class.java)
         val foundData = (newResult as Resource.Success).data

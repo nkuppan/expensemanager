@@ -92,4 +92,9 @@ class ThemeRepositoryImplTest : BaseCoroutineTest() {
         Truth.assertThat(themes).isNotEmpty()
         Truth.assertThat(themes).hasSize(3)
     }
+
+    @Test
+    fun checkApplyTheme() = runTest {
+        repository.applyTheme()
+    }
 }

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.data.repository
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
@@ -115,6 +116,43 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
         deleteTransactionAndAssert(FAKE_INCOME_TRANSACTION)
     }
 
+    @Test
+    fun getAllTransactions() = runTest {
+        setupBasicAppData()
+
+        insertTransactionAndAssert(FAKE_INCOME_TRANSACTION)
+
+        transactionRepository.getAllTransaction().test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem).isNotNull()
+            Truth.assertThat(firstItem).isNotEmpty()
+            Truth.assertThat(firstItem).hasSize(1)
+            val transaction = firstItem?.firstOrNull()
+            Truth.assertThat(transaction).isNotNull()
+            Truth.assertThat(transaction!!.id).isEqualTo(FAKE_INCOME_TRANSACTION.id)
+        }
+    }
+
+    @Test
+    fun updateTransaction() = runTest {
+        setupBasicAppData()
+
+        insertTransactionAndAssert(FAKE_INCOME_TRANSACTION)
+        val updatedTransaction = FAKE_INCOME_TRANSACTION.copy(notes = "Sample Notes")
+        updateTransactionAndAssert(updatedTransaction)
+
+        validateTransaction(updatedTransaction)
+    }
+
+    @Test
+    fun findTransactionForUnknownId() = runTest {
+        setupBasicAppData()
+        val result = transactionRepository.findTransactionById("unknownId")
+        Truth.assertThat(result).isNotNull()
+        Truth.assertThat(result).isInstanceOf(Resource.Error::class.java)
+        Truth.assertThat((result as Resource.Error).exception).isNotNull()
+    }
+
     private suspend fun validateTransaction(addedTransaction: Transaction) {
         val response = transactionRepository.findTransactionById(addedTransaction.id)
         Truth.assertThat(response).isNotNull()
@@ -124,6 +162,7 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
         Truth.assertThat(transaction.type).isEqualTo(addedTransaction.type)
         Truth.assertThat(transaction.amount).isEqualTo(addedTransaction.amount)
         Truth.assertThat(transaction.fromAccountId).isEqualTo(addedTransaction.fromAccountId)
+        Truth.assertThat(transaction.notes).isEqualTo(addedTransaction.notes)
         Truth.assertThat(transaction.fromAccount).isNotNull()
         Truth.assertThat(transaction.fromAccount.amount).isEqualTo(
             when (addedTransaction.type) {
@@ -140,6 +179,15 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
 
     private suspend fun insertTransactionAndAssert(transaction: Transaction) {
         val result = transactionRepository.addTransaction(transaction)
+        Truth.assertThat(result).isNotNull()
+        Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
+        val data = (result as Resource.Success).data
+        Truth.assertThat(data).isNotNull()
+        Truth.assertThat(data).isTrue()
+    }
+
+    private suspend fun updateTransactionAndAssert(transaction: Transaction) {
+        val result = transactionRepository.updateTransaction(transaction)
         Truth.assertThat(result).isNotNull()
         Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
         val data = (result as Resource.Success).data

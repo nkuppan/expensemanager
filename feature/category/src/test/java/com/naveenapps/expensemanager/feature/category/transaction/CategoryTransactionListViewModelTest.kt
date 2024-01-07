@@ -1,3 +1,7 @@
 package com.naveenapps.expensemanager.feature.category.transaction
 
-class CategoryTransactionListViewModelTest
+import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+
+class CategoryTransactionListViewModelTest : BaseCoroutineTest() {
+
+}
