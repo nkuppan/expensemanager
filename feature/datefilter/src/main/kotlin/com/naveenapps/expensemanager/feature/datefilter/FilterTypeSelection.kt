@@ -21,7 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -49,9 +48,7 @@ fun FilterTypeSelection(
     val saved by viewModel.saved.collectAsState(false)
 
     if (saved) {
-        LaunchedEffect(key1 = "saved") {
-            applyChanges.invoke()
-        }
+        applyChanges.invoke()
     }
 
     val transactionTypes by viewModel.transactionTypes.collectAsState()
@@ -73,9 +70,7 @@ fun FilterTypeSelection(
         onTransactionTypeSelection = viewModel::setTransactionTypes,
         onAccountSelection = viewModel::setAccount,
         onCategorySelection = viewModel::setCategory,
-        applyChanges = {
-            viewModel.saveChanges()
-        },
+        applyChanges = viewModel::saveChanges,
     )
 }
 
@@ -125,7 +120,7 @@ private fun FilterSelectionView(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(bottom = 32.dp, top = 16.dp, start = 16.dp, end = 16.dp),
         ) {
             TextButton(
                 modifier = Modifier.align(Alignment.CenterEnd),

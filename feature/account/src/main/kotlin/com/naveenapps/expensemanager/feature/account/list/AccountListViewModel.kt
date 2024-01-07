@@ -24,6 +24,9 @@ class AccountListViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
+    var showReOrder = MutableStateFlow(false)
+        private set
+
     var accounts = MutableStateFlow<UiState<List<AccountUiModel>>>(UiState.Loading)
         private set
 
@@ -46,6 +49,7 @@ class AccountListViewModel @Inject constructor(
                     },
                 )
             }
+            showReOrder.value = accounts.isNotEmpty() && accounts.size > 1
         }.launchIn(viewModelScope)
     }
 
@@ -57,5 +61,9 @@ class AccountListViewModel @Inject constructor(
 
     fun closePage() {
         appComposeNavigator.popBackStack()
+    }
+
+    fun openAccountReOrderScreen() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.AccountReOrderScreen.route)
     }
 }

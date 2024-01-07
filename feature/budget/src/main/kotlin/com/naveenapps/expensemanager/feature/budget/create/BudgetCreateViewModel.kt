@@ -210,7 +210,7 @@ class BudgetCreateViewModel @Inject constructor(
     }
 
     fun openDeleteDialog() {
-        _showDeleteDialog.value = false
+        _showDeleteDialog.value = true
     }
 
     fun saveOrUpdateBudget() {
@@ -277,7 +277,7 @@ class BudgetCreateViewModel @Inject constructor(
     }
 
     private fun setIconValue(icon: String) {
-        selectedColorField.update { it.copy(value = icon) }
+        selectedIconField.update { it.copy(value = icon) }
     }
 
     private fun setNameChange(name: String) {

@@ -17,15 +17,20 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -47,7 +52,7 @@ import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.NavigationButton
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -65,18 +70,24 @@ import java.util.Random
 fun AccountListScreen(
     viewModel: AccountListViewModel = hiltViewModel(),
 ) {
-    val collectAsState by viewModel.accounts.collectAsState()
+    val accounts by viewModel.accounts.collectAsState()
+    val showReOrder by viewModel.showReOrder.collectAsState()
 
     AccountListContentView(
-        collectAsState,
+        accountUiState = accounts,
+        showReOrder = showReOrder,
+        openAccountReOrderScreen = viewModel::openAccountReOrderScreen,
         closePage = viewModel::closePage,
         openCreateScreen = viewModel::openCreateScreen
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AccountListContentView(
     accountUiState: UiState<List<AccountUiModel>>,
+    showReOrder: Boolean,
+    openAccountReOrderScreen: () -> Unit,
     closePage: () -> Unit,
     openCreateScreen: (AccountUiModel?) -> Unit,
 ) {
@@ -87,9 +98,26 @@ internal fun AccountListContentView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopNavigationBar(
-                title = stringResource(R.string.accounts),
-                onClick = closePage,
+            TopAppBar(
+                navigationIcon = {
+                    NavigationButton(closePage, Icons.Default.ArrowBack)
+                },
+                title = {
+                    Text(
+                        text = stringResource(R.string.accounts),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+                },
+                actions = {
+                    if (showReOrder) {
+                        IconButton(onClick = openAccountReOrderScreen) {
+                            Icon(
+                                imageVector = Icons.Default.Shuffle,
+                                contentDescription = null
+                            )
+                        }
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -395,6 +423,8 @@ private fun AccountListItemLoadingStatePreview() {
     ExpenseManagerTheme {
         AccountListContentView(
             accountUiState = UiState.Loading,
+            showReOrder = false,
+            openAccountReOrderScreen = { },
             openCreateScreen = { },
             closePage = { },
         )
@@ -407,6 +437,8 @@ private fun AccountListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         AccountListContentView(
             accountUiState = UiState.Empty,
+            showReOrder = false,
+            openAccountReOrderScreen = { },
             openCreateScreen = { },
             closePage = { },
         )
@@ -421,6 +453,8 @@ private fun AccountListItemSuccessStatePreview() {
             accountUiState = UiState.Success(
                 getRandomAccountUiModel(10),
             ),
+            showReOrder = true,
+            openAccountReOrderScreen = { },
             openCreateScreen = { },
             closePage = { },
         )
