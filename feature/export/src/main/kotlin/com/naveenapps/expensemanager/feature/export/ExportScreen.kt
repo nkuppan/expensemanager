@@ -50,7 +50,6 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
@@ -228,16 +227,15 @@ fun ExportScreen() {
             exportFileType,
             accountCount,
             viewModel::setExportFileType,
-            openAccountSelection = {
-                scope.launch {
-                    if (bottomSheetState.isVisible) {
-                        bottomSheetState.hide()
-                    } else {
-                        showBottomSheet = true
-                    }
+        ) {
+            scope.launch {
+                if (bottomSheetState.isVisible) {
+                    bottomSheetState.hide()
+                } else {
+                    showBottomSheet = true
                 }
-            },
-        )
+            }
+        }
     }
 }
 
@@ -245,7 +243,7 @@ fun ExportScreen() {
 @Composable
 private fun ExportScreenContent(
     modifier: Modifier = Modifier,
-    selectedDate: String? = Date().toCompleteDateWithDate(),
+    selectedDate: UiText? = null,
     exportFileType: ExportFileType,
     accountCount: UiText,
     onExportFileTypeChange: (ExportFileType) -> Unit,
@@ -294,7 +292,7 @@ private fun ExportScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-            value = selectedDate ?: "",
+            value = selectedDate?.asString(context) ?: "",
             label = R.string.select_range,
             leadingIcon = Icons.Default.EditCalendar,
             onClick = {

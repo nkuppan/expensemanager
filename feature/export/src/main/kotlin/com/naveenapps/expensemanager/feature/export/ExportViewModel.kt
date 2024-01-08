@@ -35,7 +35,7 @@ class ExportViewModel @Inject constructor(
     private val _success = MutableSharedFlow<ExportedMessage?>()
     val success = _success.asSharedFlow()
 
-    private val _selectedDateRange = MutableStateFlow<String?>(null)
+    private val _selectedDateRange = MutableStateFlow<UiText?>(null)
     val selectedDateRange = _selectedDateRange.asStateFlow()
 
     private val _exportFileType = MutableStateFlow(ExportFileType.CSV)
@@ -51,7 +51,11 @@ class ExportViewModel @Inject constructor(
     init {
         getDateRangeUseCase.invoke().map {
             selectedDateRangeType = it.type
-            _selectedDateRange.value = it.description
+            _selectedDateRange.value = if (it.description.isBlank()) {
+                UiText.StringResource(R.string.all_time)
+            } else {
+                UiText.DynamicString(it.description)
+            }
         }.launchIn(viewModelScope)
     }
 
