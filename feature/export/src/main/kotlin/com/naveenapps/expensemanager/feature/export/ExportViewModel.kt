@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.export.ExportF
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.ExportData
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -31,7 +32,7 @@ class ExportViewModel @Inject constructor(
     private val _error = MutableSharedFlow<UiText?>()
     val error = _error.asSharedFlow()
 
-    private val _success = MutableSharedFlow<ExportData?>()
+    private val _success = MutableSharedFlow<ExportedMessage?>()
     val success = _success.asSharedFlow()
 
     private val _selectedDateRange = MutableStateFlow<String?>(null)
@@ -84,9 +85,9 @@ class ExportViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     _success.emit(
-                        ExportData(
+                        ExportedMessage(
                             message = UiText.StringResource(R.string.export_success_message),
-                            fileUri = response.data ?: "",
+                            exportData = response.data
                         ),
                     )
                 }
@@ -103,7 +104,7 @@ class ExportViewModel @Inject constructor(
     }
 }
 
-data class ExportData(
+data class ExportedMessage(
     val message: UiText,
-    val fileUri: String,
+    val exportData: ExportData,
 )

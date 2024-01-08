@@ -7,8 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
-import androidx.core.net.toUri
 import com.naveenapps.expensemanager.core.designsystem.R
 
 @SuppressLint("DiscouragedApi")
@@ -45,15 +43,11 @@ fun openEmailToOption(context: Context, emailId: String) {
     }
 }
 
-fun Context.shareThisFile(fileUri: String) {
+fun Context.shareThisFile(fileUri: Uri) {
     try {
         val shareIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                putExtra(Intent.EXTRA_STREAM, fileUri.toUri())
-            } else {
-                putExtra(Intent.EXTRA_STREAM, fileUri)
-            }
+            putExtra(Intent.EXTRA_STREAM, fileUri)
             type = "*/*"
             flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
         }

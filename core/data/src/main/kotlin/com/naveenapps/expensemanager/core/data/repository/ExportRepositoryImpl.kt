@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.data.R
+import com.naveenapps.expensemanager.core.model.ExportData
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
@@ -31,7 +32,7 @@ class ExportRepositoryImpl @Inject constructor(
     override suspend fun createCsvFile(
         uri: String?,
         transactions: List<Transaction>,
-    ): Resource<String?> =
+    ): Resource<ExportData> =
         withContext(dispatchers.io) {
             kotlin.runCatching {
                 val fileUri = generateFile(getFileName(ExportFileType.CSV), uri) { output ->
@@ -76,7 +77,7 @@ class ExportRepositoryImpl @Inject constructor(
     override suspend fun createPdfFile(
         uri: String?,
         transactions: List<Transaction>,
-    ): Resource<String?> =
+    ): Resource<ExportData> =
         withContext(dispatchers.io) {
             kotlin.runCatching {
                 val fileUri = generateFile(getFileName(ExportFileType.PDF), uri) { output ->
@@ -102,13 +103,13 @@ class ExportRepositoryImpl @Inject constructor(
         fileName: String,
         uri: String?,
         write: (FileOutputStream) -> Unit,
-    ): String? {
+    ): ExportData {
         try {
             return if (uri != null) {
                 context.contentResolver.openFileDescriptor(uri.toUri(), "w")?.use {
                     write.invoke(FileOutputStream(it.fileDescriptor))
                 }
-                uri
+                ExportData(uri, null)
             } else {
                 val directory = File(Environment.getExternalStorageDirectory(), "Expense Manager")
                 if (!directory.exists()) {
@@ -118,14 +119,14 @@ class ExportRepositoryImpl @Inject constructor(
                 file.outputStream().use {
                     write.invoke(it)
                 }
-                file.toUri().toString()
+                ExportData(null, file)
             }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         } catch (e: IOException) {
             e.printStackTrace()
         }
-        return null
+        return ExportData(null, null)
     }
 
     private fun getFileName(exportFileType: ExportFileType): String {

@@ -43,6 +43,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -126,8 +128,17 @@ fun ExportScreen() {
                 when (this) {
                     SnackbarResult.Dismissed -> Unit
                     SnackbarResult.ActionPerformed -> {
-                        success?.fileUri?.let {
-                            context.shareThisFile(it)
+                        success?.exportData?.let {
+                            if (it.uri?.isNotBlank() == true) {
+                                context.shareThisFile(it.uri!!.toUri())
+                            } else if (it.file != null) {
+                                val fileUri = FileProvider.getUriForFile(
+                                    context,
+                                    context.packageName + ".fileprovider",
+                                    it.file!!
+                                )
+                                context.shareThisFile(fileUri)
+                            }
                         }
                     }
                 }

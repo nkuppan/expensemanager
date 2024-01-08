@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings.export
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetExportTransactionsUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.ExportData
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.ExportRepository
@@ -19,7 +20,7 @@ class ExportFileUseCase @Inject constructor(
         dateRangeType: DateRangeType,
         accounts: List<AccountUiModel>,
         isAllAccountsSelected: Boolean,
-    ): Resource<String?> {
+    ): Resource<ExportData> {
         return when (
             val transactions = getExportTransactionsUseCase.invoke(
                 dateRangeType,
