@@ -111,14 +111,14 @@ class ExportRepositoryImpl @Inject constructor(
                 uri
             } else {
                 val directory = File(Environment.getExternalStorageDirectory(), "Expense Manager")
-                if (directory.exists().not()) {
-                    directory.mkdirs()
+                if (!directory.exists()) {
+                    directory.mkdir()
                 }
                 val file = File(directory, fileName)
                 file.outputStream().use {
                     write.invoke(it)
                 }
-                directory.toUri().toString()
+                file.toUri().toString()
             }
         } catch (e: FileNotFoundException) {
             e.printStackTrace()

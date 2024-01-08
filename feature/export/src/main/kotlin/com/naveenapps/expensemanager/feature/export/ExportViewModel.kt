@@ -97,6 +97,10 @@ class ExportViewModel @Inject constructor(
     fun closePage() {
         appComposeNavigator.popBackStack()
     }
+
+    fun resetSuccess() {
+        viewModelScope.launch { _success.emit(null) }
+    }
 }
 
 data class ExportData(

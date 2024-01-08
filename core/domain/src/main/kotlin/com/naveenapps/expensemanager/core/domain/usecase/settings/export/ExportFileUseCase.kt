@@ -5,10 +5,11 @@ import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.ExportRepository
 import javax.inject.Inject
 
 class ExportFileUseCase @Inject constructor(
-    private val exportRepository: com.naveenapps.expensemanager.core.repository.ExportRepository,
+    private val exportRepository: ExportRepository,
     private val getExportTransactionsUseCase: GetExportTransactionsUseCase,
 ) {
 

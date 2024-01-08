@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import androidx.core.net.toUri
 import com.naveenapps.expensemanager.core.designsystem.R
 
@@ -45,13 +46,21 @@ fun openEmailToOption(context: Context, emailId: String) {
 }
 
 fun Context.shareThisFile(fileUri: String) {
-    val shareIntent: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_STREAM, fileUri.toUri())
-        type = "*/*"
-        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    try {
+        val shareIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                putExtra(Intent.EXTRA_STREAM, fileUri.toUri())
+            } else {
+                putExtra(Intent.EXTRA_STREAM, fileUri)
+            }
+            type = "*/*"
+            flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }
+        startActivity(Intent.createChooser(shareIntent, null))
+    } catch (e: ActivityNotFoundException) {
+        // Define what your app should do if no activity can handle the intent.
     }
-    startActivity(Intent.createChooser(shareIntent, null))
 }
 
 fun Context.getAppVersionName(): String {

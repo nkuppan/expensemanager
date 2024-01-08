@@ -131,6 +131,8 @@ fun ExportScreen() {
                         }
                     }
                 }
+
+                viewModel.resetSuccess()
             }
         })
     }
