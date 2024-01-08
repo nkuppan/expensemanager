@@ -269,6 +269,7 @@ class AccountCreateViewModel @Inject constructor(
             },
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time,
+            sequence = account?.sequence ?: Int.MAX_VALUE
         )
 
         viewModelScope.launch {

@@ -191,6 +191,7 @@ private fun DashboardScreenContent(
                             name = it.name,
                             icon = it.storedIcon.name,
                             amount = it.amount.amountString ?: "",
+                            availableCreditLimit = it.availableCreditLimit?.amountString ?: "",
                             amountTextColor = colorResource(id = it.amountTextColor),
                             backgroundColor = it.storedIcon.backgroundColor.toColor().copy(alpha = .1f),
                         )

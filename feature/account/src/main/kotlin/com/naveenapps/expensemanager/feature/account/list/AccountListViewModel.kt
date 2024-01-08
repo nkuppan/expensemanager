@@ -6,7 +6,9 @@ import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -45,6 +47,14 @@ class AccountListViewModel @Inject constructor(
                                 it.amount,
                                 currency,
                             ),
+                            if (it.type == AccountType.CREDIT) {
+                                getFormattedAmountUseCase.invoke(
+                                    it.getAvailableCreditLimit(),
+                                    currency
+                                )
+                            } else {
+                                null
+                            }
                         )
                     },
                 )

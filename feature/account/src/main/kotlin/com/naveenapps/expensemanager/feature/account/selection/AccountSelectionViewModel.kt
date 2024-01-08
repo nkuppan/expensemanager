@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,6 +42,14 @@ class AccountSelectionViewModel @Inject constructor(
                         it.amount,
                         currency,
                     ),
+                    if (it.type == AccountType.CREDIT) {
+                        getFormattedAmountUseCase.invoke(
+                            it.getAvailableCreditLimit(),
+                            currency
+                        )
+                    } else {
+                        null
+                    }
                 )
             }
 
@@ -50,6 +60,14 @@ class AccountSelectionViewModel @Inject constructor(
                             it.amount,
                             currency,
                         ),
+                        if (it.type == AccountType.CREDIT) {
+                            getFormattedAmountUseCase.invoke(
+                                it.getAvailableCreditLimit(),
+                                currency
+                            )
+                        } else {
+                            null
+                        }
                     )
                 }
             }

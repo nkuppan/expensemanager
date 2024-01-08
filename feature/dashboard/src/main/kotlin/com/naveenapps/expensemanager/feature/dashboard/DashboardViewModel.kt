@@ -12,12 +12,14 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.Set
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -103,6 +105,14 @@ class DashboardViewModel @Inject constructor(
                         it.amount,
                         currency,
                     ),
+                    if (it.type == AccountType.CREDIT) {
+                        getFormattedAmountUseCase.invoke(
+                            it.getAvailableCreditLimit(),
+                            currency
+                        )
+                    } else {
+                        null
+                    }
                 )
             }
         }.launchIn(viewModelScope)

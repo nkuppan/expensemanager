@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.account.list
 
-import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -178,6 +179,7 @@ private fun AccountListScreenContent(
                             icon = account.storedIcon.name,
                             iconBackgroundColor = account.storedIcon.backgroundColor,
                             amount = account.amount.amountString,
+                            availableCreditLimit = account.availableCreditLimit?.amountString,
                             amountTextColor = account.amountTextColor,
                         )
                     }
@@ -194,7 +196,6 @@ private fun AccountListScreenContent(
     }
 }
 
-@SuppressLint("DiscouragedApi")
 @Composable
 fun AccountItem(
     name: String,
@@ -204,6 +205,7 @@ fun AccountItem(
     amountTextColor: Int?,
     modifier: Modifier = Modifier,
     endIcon: ImageVector? = null,
+    availableCreditLimit: String? = null,
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
@@ -213,21 +215,33 @@ fun AccountItem(
             iconBackgroundColor = iconBackgroundColor,
             name = name,
         )
-        Text(
+        Column(
             modifier = Modifier
+                .align(Alignment.CenterVertically)
                 .weight(1f)
                 .padding(start = 16.dp, end = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = name,
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        if (amount != null && amountTextColor != null) {
+        ) {
             Text(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                text = amount,
-                style = MaterialTheme.typography.titleMedium,
-                color = colorResource(id = amountTextColor),
+                modifier = Modifier,
+                text = name,
+                style = MaterialTheme.typography.bodyLarge,
             )
+            if (availableCreditLimit != null) {
+                Text(
+                    text = stringResource(id = R.string.available_limit, availableCreditLimit),
+                    style = MaterialTheme.typography.labelMedium,
+                )
+            }
+        }
+        Column(modifier = Modifier.align(Alignment.CenterVertically)) {
+            if (amount != null && amountTextColor != null) {
+                Text(
+                    modifier = Modifier.align(Alignment.End),
+                    text = amount,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = colorResource(id = amountTextColor),
+                )
+            }
         }
         if (endIcon != null) {
             Icon(
@@ -275,12 +289,14 @@ fun AccountCheckedItem(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DashBoardAccountItem(
     name: String,
     icon: String,
     modifier: Modifier = Modifier,
     amount: String,
+    availableCreditLimit: String?,
     amountTextColor: Color,
     backgroundColor: Color,
 ) {
@@ -314,7 +330,19 @@ fun DashBoardAccountItem(
             Text(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(top = 16.dp),
+                    .padding(top = 8.dp)
+                    .basicMarquee(),
+                text = if (availableCreditLimit?.isNotBlank() == true) {
+                    stringResource(id = R.string.available_limit, availableCreditLimit)
+                } else {
+                    ""
+                },
+                style = MaterialTheme.typography.labelMedium,
+            )
+            Text(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(top = 8.dp),
                 color = amountTextColor,
                 text = amount,
                 style = MaterialTheme.typography.headlineSmall,
@@ -378,6 +406,7 @@ private fun DashBoardAccountItemPreview() {
             name = "Utilities is having a lengthy one",
             icon = "credit_card",
             amount = "100.00$",
+            availableCreditLimit = "Available Limit 100.00$",
             amountTextColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
             backgroundColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100),
         )
@@ -396,6 +425,7 @@ private fun AccountItemPreview() {
             icon = "credit_card",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
+            availableCreditLimit = "Available limit ₹ 5,14,000.00",
             amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         )
     }
