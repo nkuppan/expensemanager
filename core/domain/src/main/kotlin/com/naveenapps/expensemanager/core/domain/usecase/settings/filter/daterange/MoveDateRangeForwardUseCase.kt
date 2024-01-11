@@ -31,44 +31,50 @@ class MoveDateRangeForwardUseCase @Inject constructor(
     }
 }
 
-fun Instant.addRespectiveFrame(type: DateRangeType): Instant {
+fun Instant.addRespectiveFrame(
+    type: DateRangeType,
+    timeZone: TimeZone = TimeZone.currentSystemDefault()
+): Instant {
     return when (type) {
         DateRangeType.TODAY -> {
-            this.plus(1, DateTimeUnit.DAY, TimeZone.UTC)
+            this.plus(1, DateTimeUnit.DAY, timeZone)
         }
 
         DateRangeType.THIS_WEEK -> {
-            this.plus(1, DateTimeUnit.WEEK, TimeZone.UTC)
+            this.plus(1, DateTimeUnit.WEEK, timeZone)
         }
 
         DateRangeType.THIS_MONTH -> {
-            this.plus(1, DateTimeUnit.MONTH, TimeZone.UTC)
+            this.plus(1, DateTimeUnit.MONTH, timeZone)
         }
 
         DateRangeType.THIS_YEAR -> {
-            this.plus(1, DateTimeUnit.YEAR, TimeZone.UTC)
+            this.plus(1, DateTimeUnit.YEAR, timeZone)
         }
 
         else -> this
     }
 }
 
-fun Instant.minusRespectiveFrame(type: DateRangeType): Instant {
+fun Instant.minusRespectiveFrame(
+    type: DateRangeType,
+    timeZone: TimeZone = TimeZone.currentSystemDefault()
+): Instant {
     return when (type) {
         DateRangeType.TODAY -> {
-            this.minus(1, DateTimeUnit.DAY, TimeZone.UTC)
+            this.minus(1, DateTimeUnit.DAY, timeZone)
         }
 
         DateRangeType.THIS_WEEK -> {
-            this.minus(1, DateTimeUnit.WEEK, TimeZone.UTC)
+            this.minus(1, DateTimeUnit.WEEK, timeZone)
         }
 
         DateRangeType.THIS_MONTH -> {
-            this.minus(1, DateTimeUnit.MONTH, TimeZone.UTC)
+            this.minus(1, DateTimeUnit.MONTH, timeZone)
         }
 
         DateRangeType.THIS_YEAR -> {
-            this.minus(1, DateTimeUnit.YEAR, TimeZone.UTC)
+            this.minus(1, DateTimeUnit.YEAR, timeZone)
         }
 
         else -> this

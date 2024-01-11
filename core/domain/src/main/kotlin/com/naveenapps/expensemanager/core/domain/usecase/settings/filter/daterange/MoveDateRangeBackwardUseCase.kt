@@ -3,11 +3,12 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.datera
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.datetime.Instant
 import javax.inject.Inject
 
 class MoveDateRangeBackwardUseCase @Inject constructor(
-    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository,
+    private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
     suspend operator fun invoke(type: DateRangeType): Resource<Boolean> {

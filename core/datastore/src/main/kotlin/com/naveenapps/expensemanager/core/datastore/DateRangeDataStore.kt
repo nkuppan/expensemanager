@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
+import com.naveenapps.expensemanager.core.common.utils.fromUTCToLocalTimeStamp
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -25,8 +27,8 @@ class DateRangeDataStore @Inject constructor(private val dataStore: DataStore<Pr
     }
 
     suspend fun setDateRanges(startDate: Long, endDate: Long) = dataStore.edit { preferences ->
-        preferences[KEY_DATE_RANGE_START_TIME_TYPE] = startDate
-        preferences[KEY_DATE_RANGE_END_TIME_TYPE] = endDate
+        preferences[KEY_DATE_RANGE_START_TIME_TYPE] = startDate.fromLocalToUTCTimeStamp()
+        preferences[KEY_DATE_RANGE_END_TIME_TYPE] = endDate.fromLocalToUTCTimeStamp()
     }
 
     fun getDateRanges(): Flow<List<Long>?> =
@@ -34,7 +36,10 @@ class DateRangeDataStore @Inject constructor(private val dataStore: DataStore<Pr
             val startDate = preferences[KEY_DATE_RANGE_START_TIME_TYPE]
             val endDate = preferences[KEY_DATE_RANGE_END_TIME_TYPE]
             if (startDate != null && endDate != null) {
-                listOf(startDate, endDate)
+                listOf(
+                    startDate.fromUTCToLocalTimeStamp(),
+                    endDate.fromUTCToLocalTimeStamp()
+                )
             } else {
                 null
             }
