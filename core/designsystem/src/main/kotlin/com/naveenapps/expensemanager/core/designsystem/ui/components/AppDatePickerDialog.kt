@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
 import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDay
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
@@ -31,7 +32,9 @@ fun AppDatePickerDialog(
     onDateSelected: (Date) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDate.time)
+    val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = selectedDate.time.fromLocalToUTCTimeStamp()
+    )
 
     Dialog(
         onDismissRequest = {

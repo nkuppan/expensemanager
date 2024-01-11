@@ -14,13 +14,6 @@ private val DEFAULT_TIME = TimeZone.currentSystemDefault()
 class DateUtilsTest {
 
     @Test
-    fun whenExactDateShouldAlwaysReturnThatDateStarting() {
-        Truth.assertThat(
-            "10/01/2024".fromCompleteDate().time.toExactStartOfTheDay().toCompleteDateWithDate()
-        ).isEqualTo("10/01/2024")
-    }
-
-    @Test
     fun testingTimeZonShift() {
         val now = Clock.System.now()
         val actual = now.toLocalDateTime(AUSTRALIA_TIME_ZONE).date

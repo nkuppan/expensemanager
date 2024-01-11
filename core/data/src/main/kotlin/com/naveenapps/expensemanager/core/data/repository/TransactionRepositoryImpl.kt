@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
 import com.naveenapps.expensemanager.core.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
@@ -159,8 +160,8 @@ class TransactionRepositoryImpl @Inject constructor(
             accounts,
             categories,
             transactionType,
-            startDate,
-            endDate,
+            startDate.fromLocalToUTCTimeStamp(),
+            endDate.fromLocalToUTCTimeStamp(),
         ).map {
             convertTransactionAndCategory(it)
         }

@@ -8,6 +8,7 @@ import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.isoDayNumber
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -55,6 +56,24 @@ fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
         startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
         endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds()
     )
+}
+
+fun Long.fromLocalToUTCTimeStamp(): Long {
+    return Instant.fromEpochMilliseconds(this)
+        .toLocalDateTime(TimeZone.currentSystemDefault())
+        .toInstant(TimeZone.UTC)
+        .toEpochMilliseconds()
+}
+
+fun Long.fromUTCToLocalTimeStamp(): Long {
+    return Instant.fromEpochMilliseconds(this)
+        .toLocalDateTime(TimeZone.UTC)
+        .toInstant(TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
+}
+
+fun Long.fromUTCToLocalDate(): Date {
+    return Date(this.fromUTCToLocalTimeStamp())
 }
 
 fun Long.toExactStartOfTheDay(): Date {
