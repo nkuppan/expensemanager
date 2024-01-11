@@ -15,7 +15,7 @@ dependencies {
     implementation(project(":core:data"))
 
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.joda.time)
+    implementation(libs.kotlinx.datetime)
 
     androidTestImplementation(project(":core:testing"))
     testImplementation(project(":core:testing"))

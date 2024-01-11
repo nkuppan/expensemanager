@@ -56,9 +56,6 @@ fun DateFilterSelectionView(
 
     if (showDatePicker) {
         AppDatePickerDialog(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp),
             selectedDate = if (dateTypeSelection == DateTypeSelection.FROM_DATE) {
                 viewModel.fromDate.value
             } else {
@@ -72,10 +69,9 @@ fun DateFilterSelectionView(
                     viewModel.setToDate(date)
                 }
             },
-            onDismiss = {
-                showDatePicker = false
-            },
-        )
+        ) {
+            showDatePicker = false
+        }
     }
 
     FilterTypesAndView(

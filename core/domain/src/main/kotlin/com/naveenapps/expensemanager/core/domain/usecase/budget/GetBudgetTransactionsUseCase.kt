@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.getEndOfTheMonth
+import com.naveenapps.expensemanager.core.common.utils.getStartOfTheMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.CategoryType
@@ -10,7 +12,6 @@ import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
-import org.joda.time.DateTime
 import javax.inject.Inject
 
 class GetBudgetTransactionsUseCase @Inject constructor(
@@ -32,13 +33,11 @@ class GetBudgetTransactionsUseCase @Inject constructor(
         }
 
         val date = budget.selectedMonth.fromMonthAndYear()
-        val startDayOfMonth = DateTime(date).withDayOfMonth(1)
-            .withTimeAtStartOfDay().millis
-        val endDayOfMonth = DateTime()
-            .run {
-                return@run dayOfMonth().withMaximumValue().plusDays(1)
-                    .withTimeAtStartOfDay().millis
-            }
+
+        date ?: return Resource.Error(IllegalArgumentException("Unknown month value"))
+
+        val startDayOfMonth = date.getStartOfTheMonth()
+        val endDayOfMonth = date.getEndOfTheMonth()
 
         val transaction = transactionRepository.getFilteredTransaction(
             accounts = accounts,

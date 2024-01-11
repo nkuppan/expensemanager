@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
+import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDay
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import java.util.Date
@@ -30,7 +30,6 @@ fun AppDatePickerDialog(
     selectedDate: Date,
     onDateSelected: (Date) -> Unit,
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val datePickerState = rememberDatePickerState(initialSelectedDateMillis = selectedDate.time)
 
@@ -58,7 +57,7 @@ fun AppDatePickerDialog(
                     }
                     TextButton(onClick = {
                         onDateSelected.invoke(
-                            datePickerState.selectedDateMillis?.toCompleteDate() ?: Date()
+                            datePickerState.selectedDateMillis?.toExactStartOfTheDay() ?: Date()
                         )
                     }) {
                         Text(text = stringResource(id = R.string.select).uppercase())
@@ -74,12 +73,8 @@ fun AppDatePickerDialog(
 fun AppDatePickerDialogPreview() {
     ExpenseManagerTheme {
         AppDatePickerDialog(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp),
             selectedDate = Date(),
             onDateSelected = {},
-            onDismiss = {},
-        )
+        ) {}
     }
 }

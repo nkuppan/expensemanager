@@ -275,18 +275,14 @@ private fun TransactionCreateScreen(
 
     if (showDatePicker) {
         AppDatePickerDialog(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp),
             selectedDate = selectedDate ?: Date(),
             onDateSelected = {
                 onDateChange?.invoke(it)
                 showDatePicker = false
             },
-            onDismiss = {
-                showDatePicker = false
-            },
-        )
+        ) {
+            showDatePicker = false
+        }
     }
     var showTimePicker by remember { mutableStateOf(false) }
 

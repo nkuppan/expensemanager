@@ -1,45 +1,82 @@
 package com.naveenapps.expensemanager.core.common.utils
 
-import org.joda.time.DateTime
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-fun getTodayRange(): List<Long> {
-    val startOfTheDay = DateTime().withTimeAtStartOfDay().millis
-    val endOfTheDay = DateTime().plusDays(1).withTimeAtStartOfDay().millis
-    return listOf(startOfTheDay, endOfTheDay)
+fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
+    val clock = Clock.System.now()
+    val todayStartTime = clock.toLocalDateTime(timeZone).date
+    val nextDateStartTime = todayStartTime.plus(1, DateTimeUnit.DAY)
+    return listOf(
+        todayStartTime.atStartOfDayIn(timeZone).toEpochMilliseconds(),
+        nextDateStartTime.atStartOfDayIn(timeZone).toEpochMilliseconds()
+    )
 }
 
-fun getThisWeekRange(): List<Long> {
-    val startDayOfWeek = DateTime().withDayOfWeek(1).withTimeAtStartOfDay().millis
-    val endDayOfWeek = DateTime()
-        .run {
-            return@run dayOfWeek().withMaximumValue().plusDays(1).withTimeAtStartOfDay().millis
-        }
-
-    return listOf(startDayOfWeek, endDayOfWeek)
+fun getThisWeekRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
+    val clock = Clock.System.now()
+    val todayDateTime = clock.toLocalDateTime(timeZone)
+    val startOfTheWeekDay =
+        todayDateTime.date.minus(todayDateTime.dayOfWeek.isoDayNumber, DateTimeUnit.DAY)
+    val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.WEEK)
+    return listOf(
+        startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
+        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds()
+    )
 }
 
-fun getThisMonthRange(): List<Long> {
-    val startDayOfMonth = DateTime().withDayOfMonth(1).withTimeAtStartOfDay().millis
-    val endDayOfMonth = DateTime()
-        .run {
-            return@run dayOfMonth().withMaximumValue().plusDays(1)
-                .withTimeAtStartOfDay().millis
-        }
-
-    return listOf(startDayOfMonth, endDayOfMonth)
+fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
+    val clock = Clock.System.now()
+    val todayDateTime = clock.toLocalDateTime(timeZone)
+    val startOfTheWeekDay = todayDateTime.date.minus(todayDateTime.dayOfMonth - 1, DateTimeUnit.DAY)
+    val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.MONTH)
+    return listOf(
+        startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
+        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds()
+    )
 }
 
-fun getThisYearRange(): List<Long> {
-    val startDayOfMonth = DateTime().withMonthOfYear(1).withTimeAtStartOfDay().millis
-    val endDayOfMonth = DateTime()
-        .run {
-            return@run monthOfYear().withMaximumValue().plusDays(1).withTimeAtStartOfDay().millis
-        }
+fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
+    val clock = Clock.System.now()
+    val todayDateTime = clock.toLocalDateTime(timeZone)
+    val startOfTheWeekDay = todayDateTime.date.minus(todayDateTime.dayOfYear - 1, DateTimeUnit.DAY)
+    val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.YEAR)
+    return listOf(
+        startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
+        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds()
+    )
+}
 
-    return listOf(startDayOfMonth, endDayOfMonth)
+fun Long.toExactStartOfTheDay(): Date {
+    val dateTime = Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.UTC)
+    return Date(dateTime.date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds())
+}
+
+fun Date.getStartOfTheMonth(): Long {
+    val dateTime =
+        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
+    return dateTime.date.minus(dateTime.dayOfMonth, DateTimeUnit.DAY)
+        .atStartOfDayIn(TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
+}
+
+fun Date.getEndOfTheMonth(): Long {
+    val dateTime =
+        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
+    val startOfTheWeekDay = dateTime.date.minus(dateTime.dayOfMonth, DateTimeUnit.DAY)
+        .atStartOfDayIn(TimeZone.currentSystemDefault())
+    return startOfTheWeekDay.plus(1, DateTimeUnit.MONTH, TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
 }
 
 fun Long.toCompleteDate(): Date {

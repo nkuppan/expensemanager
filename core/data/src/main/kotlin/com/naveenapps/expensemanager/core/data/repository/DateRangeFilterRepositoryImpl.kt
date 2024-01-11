@@ -19,7 +19,9 @@ import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
-import org.joda.time.DateTime
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import java.util.Date
 import javax.inject.Inject
 
@@ -135,11 +137,12 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
     }
 
     private fun getFormattedDateRangeString(fromDate: Date, toDate: Date): String {
-        val fromDateTime = DateTime(fromDate)
-        val toDateTime = DateTime(toDate)
+        val fromDateTime =
+            Instant.fromEpochMilliseconds(fromDate.time).toLocalDateTime(TimeZone.UTC)
+        val toDateTime = Instant.fromEpochMilliseconds(toDate.time).toLocalDateTime(TimeZone.UTC)
 
         return if (fromDateTime.year == toDateTime.year) {
-            if (fromDateTime.monthOfYear == toDateTime.monthOfYear) {
+            if (fromDateTime.monthNumber == toDateTime.monthNumber) {
                 "${fromDate.toDate()} - ${toDate.toCompleteDate()}"
             } else {
                 "${fromDate.toDateAndMonth()} - ${toDate.toCompleteDate()}"
@@ -153,16 +156,15 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         dateRangeType: DateRangeType,
     ): GroupType = withContext(dispatcher.computation) {
         val dateRanges = getOriginalDateRangeValues(dateRangeType)
-        val fromDate = dateRanges[0]
-        val fromDateTime = DateTime(fromDate)
-        val toDate = dateRanges[1]
-        val toDateTime = DateTime(toDate)
+        val fromDateTime =
+            Instant.fromEpochMilliseconds(dateRanges[0]).toLocalDateTime(TimeZone.UTC)
+        val toDateTime = Instant.fromEpochMilliseconds(dateRanges[1]).toLocalDateTime(TimeZone.UTC)
 
         var isCrossingYears = false
         var isCrossingMonths = false
 
         if (fromDateTime.year == toDateTime.year) {
-            if (fromDateTime.monthOfYear != toDateTime.monthOfYear) {
+            if (fromDateTime.monthNumber != toDateTime.monthNumber) {
                 isCrossingMonths = true
             }
         } else {

@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYear
@@ -17,7 +18,10 @@ import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import org.joda.time.DateTime
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
 import java.util.Date
 import javax.inject.Inject
 
@@ -43,8 +47,8 @@ class GetChartDataUseCase @Inject constructor(
             } ?: emptyMap()
 
             val ranges = dateRangeModel.dateRanges
-            var fromDate = DateTime(ranges[0])
-            val toDate = DateTime(ranges[1])
+            var fromDate = Instant.fromEpochMilliseconds(ranges[0])
+            val toDate = Instant.fromEpochMilliseconds(ranges[1])
 
             val transaction = mutableListOf<TransactionUiItem>()
             val dates = mutableListOf<String>()
@@ -53,7 +57,7 @@ class GetChartDataUseCase @Inject constructor(
             var index = 0
 
             while (fromDate < toDate) {
-                val key = groupValue(groupType, fromDate.toDate())
+                val key = groupValue(groupType, fromDate.toEpochMilliseconds().toCompleteDate())
                 val values = transactionGroupByDate[key]
                 dates.add(key)
 
@@ -116,18 +120,18 @@ class GetChartDataUseCase @Inject constructor(
 
     private fun getAdjustedDateTime(
         groupType: GroupType,
-        fromDate: DateTime,
+        fromDate: Instant,
     ) = when (groupType) {
         GroupType.YEAR -> {
-            fromDate.plusYears(1)
+            fromDate.plus(1, DateTimeUnit.YEAR, TimeZone.UTC)
         }
 
         GroupType.MONTH -> {
-            fromDate.plusMonths(1)
+            fromDate.plus(1, DateTimeUnit.MONTH, TimeZone.UTC)
         }
 
         GroupType.DATE -> {
-            fromDate.plusDays(1)
+            fromDate.plus(1, DateTimeUnit.DAY, TimeZone.UTC)
         }
     }
 

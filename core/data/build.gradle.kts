@@ -19,7 +19,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.joda.time)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.opencsv)
 

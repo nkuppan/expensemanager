@@ -10,5 +10,5 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.joda.time)
+    implementation(libs.kotlinx.datetime)
 }
