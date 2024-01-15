@@ -37,8 +37,6 @@ the world of Android development by providing regular news updates.
 | <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> | 
 
 ## Android development
-
-![Expense Manager Android](docs/images/splash.png)
 Expense Manager attempts to make use of the latest Android libraries and best practices:
 
 * Completely written in [Jetpack Compose](https://developer.android.com/jetpack/compose)
