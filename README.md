@@ -21,12 +21,12 @@ the world of Android development by providing regular news updates.
 
 **Features**
 
-* Users can create a multiple accounts to group their transactions under the specific accounts
-* Wants to create a budgets for your month and more customisable options are available for budgets
+* Users can create multiple accounts to group their transactions under specific accounts
+* Create monthly budgets and find extra budget customimizing options
 * Analyse and know the trends of your transactions on a day, week and monthly wise.
-* Interactive category grouping pie chart to understand where you mostly spending your money.
-* Multiple currency switching in UI(Currency conversion is yet to support)
-* Export your transactions into csv format(pdf will be added soon)
+* Interactive category grouping pie chart to understand where you are mostly spending your money.
+* Multiple currency switching in UI (Currency conversion is yet to be supported)
+* Export your transactions into csv format (pdf will be added soon)
 
 |                    Home Screen                    |                  Analysis Screen                  |                Transaction Screen                 |               Category Chart Screen               |
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
@@ -37,22 +37,20 @@ the world of Android development by providing regular news updates.
 | <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> | 
 
 ## Android development
+Expense Manager attempts to make use of the latest Android libraries and best practices:
 
-Rugby Ranker attempts to make use of the latest Android libraries and best practices:
-
-* Completely written in compose [Jetpack Compose](https://developer.android.com/jetpack/compose)
+* Completely written in [Jetpack Compose](https://developer.android.com/jetpack/compose)
 * Entirely written in [Kotlin](https://kotlinlang.org/) (
   including [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
   and [Flow](https://kotlinlang.org/docs/reference/coroutines/flow.html))
   with [Spotless](https://github.com/diffplug/spotless) for code style
-* Makes use of [Android Jetpack](https://developer.android.com/jetpack/):
-    * [Architecture Components](https://developer.android.com/jetpack/arch/) including **ViewModel
-      **,**Room**, **Navigation**, **WorkManager** and **DataStore**
+* Makes use of [Android Jetpack:](https://developer.android.com/jetpack/):
+    * [Architecture Components](https://developer.android.com/jetpack/arch/) including **ViewModel**, **Room**, **Navigation**, **WorkManager** and **DataStore**
     * [Android KTX](https://developer.android.com/kotlin/ktx) for more fluent use of Android APIs
 * [Hilt](https://dagger.dev/hilt/) for dependency injection
 * Designed and built using Material 3 Design [components](https://m3.material.io/)
   and [theming](https://m3.material.io/theme-builder)
-* Full [dark theme](https://m3.material.io/styles/color/choosing-a-scheme) support
+* Full [Dark Theme](https://m3.material.io/styles/color/choosing-a-scheme) support
 
 ## Contributions
 
