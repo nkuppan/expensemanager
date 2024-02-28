@@ -9,6 +9,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -149,8 +151,10 @@ fun NavGraphBuilder.expenseManagerNavigation(
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
+    val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsState()
+
     BackHandler {
-        if (viewModel.homeScreenBottomBarItems != HomeScreenBottomBarItems.Home) {
+        if (homeScreenBottomBarItems != HomeScreenBottomBarItems.Home) {
             viewModel.setUISystem(HomeScreenBottomBarItems.Home)
         } else {
             (context as? Activity)?.finish()
@@ -162,7 +166,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
             BottomAppBar {
                 HomeScreenBottomBarItems.entries.forEach { uiSystem ->
                     NavigationBarItem(
-                        selected = viewModel.homeScreenBottomBarItems == uiSystem,
+                        selected = homeScreenBottomBarItems == uiSystem,
                         onClick = { viewModel.setUISystem(uiSystem) },
                         icon = {
                             Icon(
@@ -181,7 +185,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
                 bottom = paddingValues.calculateBottomPadding(),
             ),
         ) {
-            when (viewModel.homeScreenBottomBarItems) {
+            when (homeScreenBottomBarItems) {
                 HomeScreenBottomBarItems.Home -> {
                     DashboardScreen()
                 }

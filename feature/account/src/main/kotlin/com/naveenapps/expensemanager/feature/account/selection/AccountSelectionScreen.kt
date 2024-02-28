@@ -41,7 +41,7 @@ fun AccountSelectionScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
+                    .padding(16.dp),
             ) {
                 SelectionTitle(
                     title = stringResource(id = R.string.select_account),

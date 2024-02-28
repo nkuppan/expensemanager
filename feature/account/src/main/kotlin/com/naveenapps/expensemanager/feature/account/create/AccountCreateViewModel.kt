@@ -233,20 +233,18 @@ class AccountCreateViewModel @Inject constructor(
         var isError = false
 
         if (name.isBlank()) {
-            nameField.value = nameField.value.copy(valueError = true)
+            nameField.update { it.copy(valueError = true) }
             isError = true
         }
 
         if (currentBalance.isBlank() || currentBalance.toDoubleOrNullWithLocale() == null) {
-            currentBalanceField.value = currentBalanceField.value.copy(valueError = true)
+            currentBalanceField.update { it.copy(valueError = true) }
             isError = true
         }
 
-        if (accountType == AccountType.CREDIT) {
-            if (creditLimit.isBlank() || creditLimit.toDoubleOrNullWithLocale() == null) {
-                creditLimitField.value = creditLimitField.value.copy(valueError = true)
-                isError = true
-            }
+        if (accountType == AccountType.CREDIT && (creditLimit.isBlank() || creditLimit.toDoubleOrNullWithLocale() == null)) {
+            creditLimitField.update { it.copy(valueError = true) }
+            isError = true
         }
 
         if (isError) {
@@ -295,13 +293,13 @@ class AccountCreateViewModel @Inject constructor(
         colorValueField.update { it.copy(value = colorValue) }
     }
 
+    private fun setIconValue(icon: String) {
+        iconValueField.update { it.copy(value = icon) }
+    }
+
     private fun setAccountTypeChange(accountType: AccountType) {
         accountTypeField.update { it.copy(value = accountType) }
         updateAccountValue(account)
-    }
-
-    private fun setIconValue(icon: String) {
-        iconValueField.update { it.copy(value = icon) }
     }
 
     private fun setNameChange(name: String) {

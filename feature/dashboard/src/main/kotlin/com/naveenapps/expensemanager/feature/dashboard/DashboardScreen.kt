@@ -21,17 +21,12 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RichTooltipBox
-import androidx.compose.material3.RichTooltipState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -50,24 +45,12 @@ import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
-    val myTooltipState = remember { RichTooltipState() }
-
-    val showToolTip by viewModel.showToolTip.collectAsState()
-
-    if (showToolTip) {
-        LaunchedEffect(key1 = "tooltip") {
-            myTooltipState.show()
-        }
-    }
-
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -85,40 +68,11 @@ fun DashboardScreen(
             })
         },
         floatingActionButton = {
-            RichTooltipBox(
-                tooltipState = myTooltipState,
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.help),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                },
-                action = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            modifier = Modifier
-                                .clickable {
-                                    scope.launch {
-                                        viewModel.closeToolTip()
-                                        myTooltipState.dismiss()
-                                    }
-                                }
-                                .align(Alignment.BottomEnd)
-                                .padding(end = 16.dp),
-                            text = stringResource(id = R.string.ok),
-                        )
-                    }
-                },
-                text = {
-                    Text(stringResource(id = R.string.transaction_create_message))
-                },
-            ) {
-                FloatingActionButton(onClick = { viewModel.openTransactionCreate(null) }) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "",
-                    )
-                }
+            FloatingActionButton(onClick = { viewModel.openTransactionCreate(null) }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "",
+                )
             }
         },
     ) { innerPadding ->

@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -71,16 +72,16 @@ class TransactionCreateViewModel @Inject constructor(
     private val _showDeleteDialog = MutableStateFlow(false)
     val showDeleteDialog = _showDeleteDialog.asStateFlow()
 
-    var amount = MutableStateFlow(
+    private val _amount = MutableStateFlow(
         TextFieldValue(
             value = 0.0.toStringWithLocale(),
             valueError = false,
             onValueChange = this::setAmountOnChange
         )
     )
-        private set
+    val amount = _amount.asStateFlow()
 
-    private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
+    private val _date = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
     private val _currencyIcon = MutableStateFlow<String?>(null)
@@ -233,19 +234,19 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun doSave() {
-        val amount: String = this.amount.value.value
+        val amount: String = this._amount.value.value
 
         var isError = false
 
         if (amount.isBlank()) {
-            this.amount.value = this.amount.value.copy(valueError = true)
+            this._amount.update { it.copy(valueError = true) }
             isError = true
         }
 
         val amountValue = amount.toDoubleOrNullWithLocale()
 
         if (amountValue == null || amountValue <= 0.0) {
-            this.amount.value = this.amount.value.copy(valueError = true)
+            this._amount.update { it.copy(valueError = true) }
             isError = true
         }
 
@@ -297,13 +298,13 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun setAmountOnChange(amount: String) {
-
         val amountValue = amount.toDoubleOrNullWithLocale()
-
-        this.amount.value = this.amount.value.copy(
-            value = amount,
-            valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0
-        )
+        this._amount.update {
+            it.copy(
+                value = amount,
+                valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0
+            )
+        }
     }
 
     fun setDate(date: Date) {

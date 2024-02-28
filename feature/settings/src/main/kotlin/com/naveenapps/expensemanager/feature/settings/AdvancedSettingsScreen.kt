@@ -28,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,13 +59,20 @@ fun AdvancedSettingsScreen(
     viewModel: AdvancedSettingsViewModel = hiltViewModel(),
     backupRepository: BackupRepository,
 ) {
+    val accounts by viewModel.accounts.collectAsState()
+    val selectedAccount by viewModel.selectedAccount.collectAsState()
+    val expenseCategories by viewModel.expenseCategories.collectAsState()
+    val selectedExpenseCategory by viewModel.selectedExpenseCategory.collectAsState()
+    val incomeCategories by viewModel.incomeCategories.collectAsState()
+    val selectedIncomeCategory by viewModel.selectedIncomeCategory.collectAsState()
+
     AdvancedSettingsScaffoldView(
-        accounts = viewModel.accounts,
-        selectedAccount = viewModel.selectedAccount,
-        expenseCategories = viewModel.expenseCategories,
-        selectedExpenseCategory = viewModel.selectedExpenseCategory,
-        incomeCategories = viewModel.incomeCategories,
-        selectedIncomeCategory = viewModel.selectedIncomeCategory,
+        accounts = accounts,
+        selectedAccount = selectedAccount,
+        expenseCategories = expenseCategories,
+        selectedExpenseCategory = selectedExpenseCategory,
+        incomeCategories = incomeCategories,
+        selectedIncomeCategory = selectedIncomeCategory,
         onItemSelection = viewModel::onItemSelection,
         backup = {
             backupRepository.backupData(null)

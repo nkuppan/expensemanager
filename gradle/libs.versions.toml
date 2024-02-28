@@ -1,40 +1,40 @@
 [versions]
 accompanist = "0.32.0"
 androidDesugarJdkLibs = "2.0.4"
-androidGradlePlugin = "8.2.1"
+androidGradlePlugin = "8.2.2"
 androidxActivity = "1.8.2"
 androidxAppCompat = "1.6.1"
 androidxMaterial = "1.11.0"
 androidxBrowser = "1.7.0"
-androidxComposeBom = "2023.10.01"
+androidxComposeBom = "2024.02.01"
 androidxComposeCompiler = "1.5.7"
 androidxComposeRuntimeTracing = "1.0.0-beta01"
-material3 = "1.1.2"
+material3 = "1.2.0"
 androidxCore = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
 androidxDataStore = "1.0.0"
 androidxEspresso = "3.5.1"
-androidxHiltNavigationCompose = "1.1.0"
-androidxLifecycle = "2.6.2"
-androidxMacroBenchmark = "1.2.2"
-benchmark = "1.2.2"
-androidxMetrics = "1.0.0-alpha04"
-androidxNavigation = "2.7.6"
-androidxNavigationSafeArgs = "2.7.6"
+androidxHiltNavigationCompose = "1.2.0"
+androidxLifecycle = "2.7.0"
+androidxMacroBenchmark = "1.2.3"
+benchmark = "1.2.3"
+androidxMetrics = "1.0.0-beta01"
+androidxNavigation = "2.7.7"
+androidxNavigationSafeArgs = "2.7.7"
 androidxProfileinstaller = "1.3.1"
 androidxSplashScreen = "1.0.1"
 androidxStartup = "1.1.1"
 androidxTestArchCore = "2.2.0"
-androidxTestCore = "1.6.0-alpha04"
+androidxTestCore = "1.6.0-alpha05"
 androidxTestExt = "1.1.5"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
 androidxTracing = "1.2.0"
-androidxUiAutomator = "2.2.0"
+androidxUiAutomator = "2.3.0"
 androidxWindowManager = "1.2.0"
 androidxWork = "2.9.0"
 coil = "2.4.0"
-firebaseBom = "32.7.0"
+firebaseBom = "32.7.3"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
 googleOss = "17.0.1"
@@ -43,7 +43,7 @@ review = "2.0.1"
 googleOssPlugin = "0.10.6"
 spotless = "6.23.0"
 hilt = "2.48.1"
-hiltExt = "1.1.0"
+hiltExt = "1.2.0"
 jacoco = "0.8.8"
 junit4 = "4.13.2"
 kotlin = "1.9.21"
@@ -52,7 +52,7 @@ kotlinxCoroutines = "1.7.3"
 kotlinxDatetime = "0.4.1"
 kotlinxSerializationJson = "1.6.0"
 ksp = "1.9.10-1.0.13"
-lint = "31.2.1"
+lint = "31.2.2"
 okhttp = "4.12.0"
 protobuf = "3.24.4"
 protobufPlugin = "0.9.4"
@@ -70,7 +70,7 @@ jxl = "2.6.12"
 truth = "1.1.4"
 vico = "1.11.1"
 play-publish = "3.8.5"
-google-services = "4.4.0"
+google-services = "4.4.1"
 country-compose = "1.1.1"
 backup-restore = "1.0.0-beta13"
 
@@ -78,14 +78,10 @@ backup-restore = "1.0.0-beta13"
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 accompanist-testharness = { group = "com.google.accompanist", name = "accompanist-testharness", version.ref = "accompanist" }
 accompanist-systemUIController = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanist" }
-accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist" }
-accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist" }
-android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppCompat" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidxMaterial" }
 androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "androidxMacroBenchmark" }
-androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "androidxBrowser" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-activity = { group = "androidx.activity", name = "activity-compose" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation" }
@@ -187,9 +183,9 @@ firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "fir
 firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-work-testing = { group = "androidx.work", name = "work-testing", version = "2.8.1" }
+work-testing = { group = "androidx.work", name = "work-testing", version = "2.9.0" }
 app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version = "2.1.0" }
-androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version = "1.1.0" }
+androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version = "hiltExt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

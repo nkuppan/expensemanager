@@ -1,18 +1,18 @@
 package com.naveenapps.expensemanager.ui
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
-    var homeScreenBottomBarItems by mutableStateOf(HomeScreenBottomBarItems.Home)
-        private set
+
+    private val _homeScreenBottomBarItems = MutableStateFlow(HomeScreenBottomBarItems.Home)
+    val homeScreenBottomBarItems = _homeScreenBottomBarItems.asStateFlow()
 
     fun setUISystem(homeScreenBottomBarItems: HomeScreenBottomBarItems) {
-        this.homeScreenBottomBarItems = homeScreenBottomBarItems
+        _homeScreenBottomBarItems.value = homeScreenBottomBarItems
     }
 }

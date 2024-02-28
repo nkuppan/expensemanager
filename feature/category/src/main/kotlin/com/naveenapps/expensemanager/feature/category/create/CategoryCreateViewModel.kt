@@ -159,19 +159,19 @@ class CategoryCreateViewModel @Inject constructor(
         }
     }
 
-    fun setColorChange(colorValue: String) {
+    private fun setColorChange(colorValue: String) {
         selectedColorField.update { it.copy(value = colorValue) }
     }
 
-    fun setCategoryTypeChange(categoryType: CategoryType) {
+    private fun setCategoryTypeChange(categoryType: CategoryType) {
         categoryTypeField.update { it.copy(value = categoryType) }
     }
 
-    fun setIconChange(icon: String) {
+    private fun setIconChange(icon: String) {
         selectedIconField.update { it.copy(value = icon) }
     }
 
-    fun setNameChange(name: String) {
+    private fun setNameChange(name: String) {
         nameField.update { it.copy(value = name) }
         nameField.update { it.copy(valueError = name.isBlank()) }
     }

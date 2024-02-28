@@ -101,7 +101,11 @@ private fun TransactionListScreen(
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
-        FilterView(modifier = Modifier.fillMaxWidth())
+        FilterView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 6.dp),
+        )
 
         when (transactionGroup) {
             UiState.Empty -> {
