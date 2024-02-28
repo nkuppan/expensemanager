@@ -58,7 +58,7 @@ fun AccountSelectionScreen(
                 )
             }
         }
-        items(accounts) { account ->
+        items(accounts, key = { it.id }) { account ->
             val isSelected = selectedAccount?.id == account.id
             Box(
                 modifier = Modifier

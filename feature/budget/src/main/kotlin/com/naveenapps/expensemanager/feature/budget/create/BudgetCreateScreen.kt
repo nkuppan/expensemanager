@@ -15,9 +15,9 @@ import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -290,9 +290,7 @@ fun BudgetCreateScreen(
             label = R.string.budget_amount,
         )
 
-        Divider(
-            modifier = Modifier.padding(top = 16.dp),
-        )
+        HorizontalDivider(modifier = Modifier.padding(top = 16.dp))
 
         SelectedItemView(
             modifier = Modifier
@@ -318,7 +316,7 @@ fun BudgetCreateScreen(
             selectedCount = categoriesCount.asString(context),
         )
 
-        Divider()
+        HorizontalDivider()
 
         Spacer(
             modifier = Modifier

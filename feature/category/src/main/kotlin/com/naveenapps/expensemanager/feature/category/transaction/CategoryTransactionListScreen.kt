@@ -187,7 +187,10 @@ private fun CategoryTransactionListScreenContent(
                         )
                     }
                 } else {
-                    items(uiState.data.categoryTransactions) { categoryTransaction ->
+                    items(
+                        uiState.data.categoryTransactions,
+                        key = { it.category.id }
+                    ) { categoryTransaction ->
                         CategoryTransactionItem(
                             modifier = Modifier
                                 .clickable {

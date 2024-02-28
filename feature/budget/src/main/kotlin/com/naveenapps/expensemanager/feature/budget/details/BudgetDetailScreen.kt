@@ -149,7 +149,7 @@ private fun BudgetDetailContent(
         val transactions = budget?.transactions
         if (transactions?.isNotEmpty() == true) {
             LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
-                items(transactions) { item ->
+                items(transactions, key = { it.id }) { item ->
                     TransactionItem(
                         modifier = Modifier
                             .fillMaxWidth()

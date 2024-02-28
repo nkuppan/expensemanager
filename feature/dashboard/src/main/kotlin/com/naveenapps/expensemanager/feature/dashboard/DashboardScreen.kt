@@ -135,7 +135,7 @@ private fun DashboardScreenContent(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(accounts) {
+                    items(accounts, key = { it.id }) {
                         DashBoardAccountItem(
                             modifier = Modifier
                                 .wrapContentWidth()
@@ -187,7 +187,7 @@ private fun DashboardScreenContent(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(budgets) { budget ->
+                    items(budgets, key = { it.id }) { budget ->
                         DashBoardBudgetItem(
                             modifier = Modifier
                                 .clickable {
@@ -225,7 +225,7 @@ private fun DashboardScreenContent(
             )
         }
         if (transactions.isNotEmpty()) {
-            items(transactions) { transaction ->
+            items(transactions, key = { it.id }) { transaction ->
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth()

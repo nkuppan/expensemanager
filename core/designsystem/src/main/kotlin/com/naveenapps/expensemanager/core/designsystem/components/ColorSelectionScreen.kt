@@ -129,7 +129,7 @@ fun ColorSelectionScreen(onColorPicked: ((Int) -> Unit)? = null) {
                     .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             )
         }
-        items(colors) { color ->
+        items(colors, key = { it }) { color ->
             val parsedColor = color.toColorInt()
             Box(
                 modifier = ColorIconSpecModifier
