@@ -32,7 +32,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -42,7 +41,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -85,7 +83,6 @@ import java.util.Date
 fun TransactionCreateScreen(
     viewModel: TransactionCreateViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
 
@@ -117,13 +114,6 @@ fun TransactionCreateScreen(
                 }
             },
         )
-    }
-
-    val message by viewModel.message.collectAsState(null)
-    if (message != null) {
-        LaunchedEffect(key1 = "completed", block = {
-            snackbarHostState.showSnackbar(message = message?.asString(context) ?: "")
-        })
     }
 
     if (showBottomSheet) {

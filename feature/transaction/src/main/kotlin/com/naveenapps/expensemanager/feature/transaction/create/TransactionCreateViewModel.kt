@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -32,11 +31,8 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
-import com.naveenapps.expensemanager.feature.transaction.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
@@ -62,9 +58,6 @@ class TransactionCreateViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
-
-    private val _message = MutableSharedFlow<UiText>()
-    val message = _message.asSharedFlow()
 
     private val _isDeleteEnabled = MutableStateFlow(false)
     val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
@@ -180,8 +173,11 @@ class TransactionCreateViewModel @Inject constructor(
             val expenseCategory = filteredCategories.find { it.id == categoryId }
 
             _categories.value = filteredCategories
-            _selectedCategory.value = expenseCategory ?: filteredCategories.firstOrNull()
-                    ?: defaultCategory
+            if (transaction == null) {
+                setCategorySelection(
+                    expenseCategory ?: filteredCategories.firstOrNull() ?: defaultCategory
+                )
+            }
         }.launchIn(viewModelScope)
 
         readInfo(
@@ -198,6 +194,7 @@ class TransactionCreateViewModel @Inject constructor(
                 is Resource.Error -> Unit
                 is Resource.Success -> {
                     val transaction = response.data
+                    this@TransactionCreateViewModel.transaction = transaction
                     val currency = selectedCurrency
                     currency ?: return@launch
                     setAmountOnChange(transaction.amount.amount.toStringWithLocale())
@@ -226,7 +223,6 @@ class TransactionCreateViewModel @Inject constructor(
                         )
                     }
                     setTransactionType(transaction.type)
-                    this@TransactionCreateViewModel.transaction = transaction
                     _isDeleteEnabled.value = true
                 }
             }
@@ -253,7 +249,7 @@ class TransactionCreateViewModel @Inject constructor(
         if (selectedTransactionType.value == TransactionType.TRANSFER &&
             selectedFromAccount.value.id == selectedToAccount.value.id
         ) {
-            _message.tryEmit(UiText.StringResource(R.string.select_different_account))
+            //_message.tryEmit(UiText.StringResource(R.string.select_different_account))
             isError = true
         }
 
@@ -286,10 +282,7 @@ class TransactionCreateViewModel @Inject constructor(
                 addTransactionUseCase.invoke(transaction)
             }
             when (response) {
-                is Resource.Error -> {
-                    _message.emit(UiText.StringResource(R.string.unable_to_add_transaction))
-                }
-
+                is Resource.Error -> Unit
                 is Resource.Success -> {
                     closePage()
                 }
@@ -335,12 +328,7 @@ class TransactionCreateViewModel @Inject constructor(
         viewModelScope.launch {
             transaction?.let {
                 when (deleteTransactionUseCase.invoke(it)) {
-                    is Resource.Error -> {
-                        _message.emit(
-                            UiText.StringResource(R.string.transaction_delete_error_message),
-                        )
-                    }
-
+                    is Resource.Error -> Unit
                     is Resource.Success -> {
                         closePage()
                     }
