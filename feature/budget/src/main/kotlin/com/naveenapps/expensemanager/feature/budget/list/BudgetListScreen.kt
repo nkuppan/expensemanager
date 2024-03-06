@@ -298,37 +298,23 @@ fun DashBoardBudgetItem(
     }
 }
 
-val DUMMY_DATA = listOf(
-    BudgetUiModel(
-        id = "1",
-        name = "Cash",
-        icon = "account_balance",
-        iconBackgroundColor = "#000000",
-        amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
-        percent = 0.9f,
-    ),
-    BudgetUiModel(
-        id = "2",
-        name = "Bank Budget - xxxx",
-        icon = "account_balance",
-        iconBackgroundColor = "#000000",
-        amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
-        percent = 0.9f,
-    ),
-    BudgetUiModel(
-        id = "3",
-        name = "Credit Card - xxxx",
-        icon = "account_balance",
-        iconBackgroundColor = "#000000",
-        amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-        progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
-        percent = 0.9f,
-    ),
+fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> {
+    return buildList {
+        repeat(size) {
+            add(getBudgetUiModel(it.toString()))
+        }
+    }
+}
+
+private fun getBudgetUiModel(id: String) = BudgetUiModel(
+    id = id,
+    name = "Cash",
+    icon = "account_balance",
+    iconBackgroundColor = "#000000",
+    amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+    transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+    progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
+    percent = 0.9f,
 )
 
 @Preview
@@ -394,7 +380,7 @@ private fun BudgetListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         BudgetListScreenContent(
             budgetUiState = UiState.Success(
-                DUMMY_DATA,
+                getRandomBudgetUiModel(5),
             ),
             closePage = {},
             openCreatePage = {}

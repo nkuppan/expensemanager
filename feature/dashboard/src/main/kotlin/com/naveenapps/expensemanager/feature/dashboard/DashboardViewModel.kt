@@ -172,7 +172,7 @@ class DashboardViewModel @Inject constructor(
         appComposeNavigator.navigate(ExpenseManagerScreens.TransactionList.route)
     }
 
-    fun openTransactionCreate(transactionId: String?) {
+    fun openTransactionCreate(transactionId: String? = null) {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
         )

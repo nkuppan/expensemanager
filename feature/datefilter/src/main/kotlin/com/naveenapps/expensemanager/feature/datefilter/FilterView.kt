@@ -44,8 +44,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterView(modifier: Modifier = Modifier) {
-    val viewModel: FilterViewModel = hiltViewModel()
+fun FilterView(
+    modifier: Modifier = Modifier,
+    viewModel: FilterViewModel = hiltViewModel()
+) {
 
     val date by viewModel.date.collectAsState()
     val showForward by viewModel.showForward.collectAsState()
@@ -55,16 +57,16 @@ fun FilterView(modifier: Modifier = Modifier) {
     val selectedAccounts by viewModel.selectedAccounts.collectAsState()
     val selectedCategories by viewModel.selectedCategories.collectAsState()
 
-    var showDateDateFilter by remember { mutableStateOf(false) }
+    var showDateFilter by remember { mutableStateOf(false) }
     var showAllFilter by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    if (showDateDateFilter) {
+    if (showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
                 scope.launch {
-                    showDateDateFilter = false
+                    showDateFilter = false
                     bottomSheetState.hide()
                 }
             },
@@ -76,7 +78,7 @@ fun FilterView(modifier: Modifier = Modifier) {
             DateFilterSelectionView(
                 onComplete = {
                     scope.launch {
-                        showDateDateFilter = false
+                        showDateFilter = false
                         bottomSheetState.hide()
                     }
                 }
@@ -115,7 +117,7 @@ fun FilterView(modifier: Modifier = Modifier) {
             showBackward = showBackward,
             date = date,
             showBottomSheet = {
-                showDateDateFilter = true
+                showDateFilter = true
             },
             onForwardClick = viewModel::moveDateRangeForward,
             onBackwardClick = viewModel::moveDateRangeBackward,

@@ -410,7 +410,7 @@ val DUMMY_DATA = listOf(
     getTransactionUiState(),
 )
 
-private fun getTransactionItem() = TransactionUiItem(
+fun getTransactionItem() = TransactionUiItem(
     id = "1",
     notes = "Sample Description",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
