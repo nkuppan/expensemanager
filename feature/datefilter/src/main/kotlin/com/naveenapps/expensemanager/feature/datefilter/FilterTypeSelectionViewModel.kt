@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -86,15 +87,14 @@ class FilterTypeSelectionViewModel @Inject constructor(
     }
 
     fun setTransactionTypes(type: TransactionType) {
-        _selectedTransactionTypes.value = _selectedTransactionTypes.value.addOrRemove(type)
+        _selectedTransactionTypes.update { it.addOrRemove(type) }
     }
 
     fun setAccount(account: AccountUiModel) {
-        _selectedAccounts.value = _selectedAccounts.value.addOrRemove(account)
+        _selectedAccounts.update { it.addOrRemove(account) }
     }
-
     fun setCategory(category: Category) {
-        _selectedCategories.value = _selectedCategories.value.addOrRemove(category)
+        _selectedCategories.update { it.addOrRemove(category) }
     }
 
     fun saveChanges() {
