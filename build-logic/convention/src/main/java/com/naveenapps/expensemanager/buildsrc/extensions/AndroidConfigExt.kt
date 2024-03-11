@@ -66,7 +66,7 @@ fun ApplicationExtension.configureAndroidAppVersion() {
     }
 }
 
-fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *>) {
+fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *, *>) {
     extension.apply {
         testOptions {
             unitTests {
@@ -77,7 +77,7 @@ fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *>) {
     }
 }
 
-fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
+fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *, *>) {
     extension.apply {
         buildFeatures {
             compose = true
@@ -104,7 +104,7 @@ fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
     }
 }
 
-fun CommonExtension<*, *, *, *, *>.configureBuildFeatures() {
+fun CommonExtension<*, *, *, *, *, *>.configureBuildFeatures() {
     (buildFeatures as? LibraryBuildFeatures)?.apply {
         dataBinding = true
         viewBinding = true

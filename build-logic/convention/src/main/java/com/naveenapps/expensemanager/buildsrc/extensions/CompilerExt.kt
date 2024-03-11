@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val JAVA_VERSION = JavaVersion.VERSION_17
 
-fun CommonExtension<*, *, *, *, *>.configureJVM() {
+fun CommonExtension<*, *, *, *, *, *>.configureJVM() {
     this.compileOptions {
         sourceCompatibility = JAVA_VERSION
         targetCompatibility = JAVA_VERSION
