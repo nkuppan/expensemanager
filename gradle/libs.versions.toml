@@ -72,6 +72,7 @@ play-publish = "3.8.5"
 google-services = "4.4.1"
 country-compose = "1.1.1"
 backup-restore = "1.0.0-beta13"
+baselineprofile = "1.2.2"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
