@@ -1,6 +1,10 @@
 package com.naveenapps.expensemanager.ui
 
+import android.Manifest
 import android.app.Activity
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -9,8 +13,12 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -152,6 +160,28 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
 
     val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsState()
+
+    var hasNotificationPermission by remember { mutableStateOf(false) }
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = {
+            hasNotificationPermission = it
+            if (it) {
+                viewModel.turnOnNotification()
+            }
+        }
+    )
+
+    LaunchedEffect(key1 = "permission") {
+        if (hasNotificationPermission.not()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            } else {
+                viewModel.turnOnNotification()
+            }
+        }
+    }
 
     BackHandler {
         if (homeScreenBottomBarItems != HomeScreenBottomBarItems.Home) {
