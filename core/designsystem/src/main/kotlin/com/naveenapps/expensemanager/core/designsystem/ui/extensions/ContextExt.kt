@@ -30,9 +30,7 @@ fun openWebPage(context: Context, webpage: String) {
         context.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.
-        Toast.makeText(context, context.getString(R.string.no_browser_found), Toast.LENGTH_SHORT)
-                .show()
-        return
+
     }
 }
 
@@ -44,9 +42,7 @@ fun openEmailToOption(context: Context, emailId: String) {
         context.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.
-        Toast.makeText(context, context.getString(R.string.no_email_app_found), Toast.LENGTH_SHORT)
-                .show()
-        return
+
     }
 }
 
