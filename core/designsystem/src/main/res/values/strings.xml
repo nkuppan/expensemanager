@@ -16,4 +16,5 @@
 
     <string name="delete">Delete</string>
     <string name="delete_item_message">Do you really want to delete this item?</string>
+    <string name="no_browser_found">No browser app found</string>
 </resources>
