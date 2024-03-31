@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -53,28 +54,21 @@ class CurrencyViewModel @Inject constructor(
     fun selectThisCurrency(currency: Currency?) {
         currency ?: return
         viewModelScope.launch {
-            _currentCurrency.value = _currentCurrency.value.copy(
-                name = currency.name,
-                symbol = currency.symbol,
-            )
+            _currentCurrency.update { it.copy(name = currency.name, symbol = currency.symbol) }
             saveSelectedCurrency()
         }
     }
 
     fun setCurrencyPositionType(textPosition: TextPosition) {
         viewModelScope.launch {
-            _currentCurrency.value = _currentCurrency.value.copy(
-                position = textPosition,
-            )
+            _currentCurrency.update { it.copy(position = textPosition) }
             saveSelectedCurrency()
         }
     }
 
     fun setTextFormatChange(textFormat: TextFormat) {
         viewModelScope.launch {
-            _currentCurrency.value = _currentCurrency.value.copy(
-                format = textFormat,
-            )
+            _currentCurrency.update { it.copy(format = textFormat) }
             saveSelectedCurrency()
         }
     }

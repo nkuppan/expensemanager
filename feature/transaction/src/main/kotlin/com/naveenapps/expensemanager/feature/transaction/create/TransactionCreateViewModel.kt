@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -32,15 +31,13 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
-import com.naveenapps.expensemanager.feature.transaction.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
@@ -62,25 +59,22 @@ class TransactionCreateViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _message = MutableSharedFlow<UiText>()
-    val message = _message.asSharedFlow()
-
     private val _isDeleteEnabled = MutableStateFlow(false)
     val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
 
     private val _showDeleteDialog = MutableStateFlow(false)
     val showDeleteDialog = _showDeleteDialog.asStateFlow()
 
-    var amount = MutableStateFlow(
+    private val _amount = MutableStateFlow(
         TextFieldValue(
             value = 0.0.toStringWithLocale(),
             valueError = false,
             onValueChange = this::setAmountOnChange
         )
     )
-        private set
+    val amount = _amount.asStateFlow()
 
-    private val _date: MutableStateFlow<Date> = MutableStateFlow(Date())
+    private val _date = MutableStateFlow(Date())
     val date = _date.asStateFlow()
 
     private val _currencyIcon = MutableStateFlow<String?>(null)
@@ -179,8 +173,11 @@ class TransactionCreateViewModel @Inject constructor(
             val expenseCategory = filteredCategories.find { it.id == categoryId }
 
             _categories.value = filteredCategories
-            _selectedCategory.value = expenseCategory ?: filteredCategories.firstOrNull()
-                    ?: defaultCategory
+            if (transaction == null) {
+                setCategorySelection(
+                    expenseCategory ?: filteredCategories.firstOrNull() ?: defaultCategory
+                )
+            }
         }.launchIn(viewModelScope)
 
         readInfo(
@@ -197,6 +194,7 @@ class TransactionCreateViewModel @Inject constructor(
                 is Resource.Error -> Unit
                 is Resource.Success -> {
                     val transaction = response.data
+                    this@TransactionCreateViewModel.transaction = transaction
                     val currency = selectedCurrency
                     currency ?: return@launch
                     setAmountOnChange(transaction.amount.amount.toStringWithLocale())
@@ -225,7 +223,6 @@ class TransactionCreateViewModel @Inject constructor(
                         )
                     }
                     setTransactionType(transaction.type)
-                    this@TransactionCreateViewModel.transaction = transaction
                     _isDeleteEnabled.value = true
                 }
             }
@@ -233,26 +230,26 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun doSave() {
-        val amount: String = this.amount.value.value
+        val amount: String = this._amount.value.value
 
         var isError = false
 
         if (amount.isBlank()) {
-            this.amount.value = this.amount.value.copy(valueError = true)
+            this._amount.update { it.copy(valueError = true) }
             isError = true
         }
 
         val amountValue = amount.toDoubleOrNullWithLocale()
 
         if (amountValue == null || amountValue <= 0.0) {
-            this.amount.value = this.amount.value.copy(valueError = true)
+            this._amount.update { it.copy(valueError = true) }
             isError = true
         }
 
         if (selectedTransactionType.value == TransactionType.TRANSFER &&
             selectedFromAccount.value.id == selectedToAccount.value.id
         ) {
-            _message.tryEmit(UiText.StringResource(R.string.select_different_account))
+            //_message.tryEmit(UiText.StringResource(R.string.select_different_account))
             isError = true
         }
 
@@ -285,10 +282,7 @@ class TransactionCreateViewModel @Inject constructor(
                 addTransactionUseCase.invoke(transaction)
             }
             when (response) {
-                is Resource.Error -> {
-                    _message.emit(UiText.StringResource(R.string.unable_to_add_transaction))
-                }
-
+                is Resource.Error -> Unit
                 is Resource.Success -> {
                     closePage()
                 }
@@ -297,13 +291,13 @@ class TransactionCreateViewModel @Inject constructor(
     }
 
     fun setAmountOnChange(amount: String) {
-
         val amountValue = amount.toDoubleOrNullWithLocale()
-
-        this.amount.value = this.amount.value.copy(
-            value = amount,
-            valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0
-        )
+        this._amount.update {
+            it.copy(
+                value = amount,
+                valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0
+            )
+        }
     }
 
     fun setDate(date: Date) {
@@ -334,12 +328,7 @@ class TransactionCreateViewModel @Inject constructor(
         viewModelScope.launch {
             transaction?.let {
                 when (deleteTransactionUseCase.invoke(it)) {
-                    is Resource.Error -> {
-                        _message.emit(
-                            UiText.StringResource(R.string.transaction_delete_error_message),
-                        )
-                    }
-
+                    is Resource.Error -> Unit
                     is Resource.Success -> {
                         closePage()
                     }

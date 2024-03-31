@@ -40,7 +40,7 @@ fun CategorySelectionScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
+                    .padding(16.dp),
             ) {
                 SelectionTitle(
                     title = stringResource(id = R.string.select_category),
@@ -57,7 +57,7 @@ fun CategorySelectionScreen(
                 )
             }
         }
-        items(categories) { category ->
+        items(categories, key = { it.id }) { category ->
             val isSelected = selectedCategory?.id == category.id
             Box(
                 modifier = Modifier

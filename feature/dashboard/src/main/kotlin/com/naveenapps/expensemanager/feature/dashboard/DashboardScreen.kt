@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,53 +20,86 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RichTooltipBox
-import androidx.compose.material3.RichTooltipState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AmountStatusView
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AmountUiState
+import com.naveenapps.expensemanager.core.model.CategoryTransaction
+import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
+import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
+import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
+import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
-import kotlinx.coroutines.launch
+import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
+import kotlin.random.Random
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
-    val scope = rememberCoroutineScope()
-    val myTooltipState = remember { RichTooltipState() }
 
-    val showToolTip by viewModel.showToolTip.collectAsState()
+    val amountUiState by viewModel.amountUiState.collectAsState()
+    val accounts by viewModel.accounts.collectAsState()
+    val transactions by viewModel.transactions.collectAsState()
+    val budgets by viewModel.budgets.collectAsState()
+    val categoryTransaction by viewModel.categoryTransaction.collectAsState()
 
-    if (showToolTip) {
-        LaunchedEffect(key1 = "tooltip") {
-            myTooltipState.show()
-        }
-    }
+    DashboardScaffoldContent(
+        amountUiState = amountUiState,
+        accounts = accounts,
+        categoryTransaction = categoryTransaction,
+        budgets = budgets,
+        transactions = transactions,
+        openTransactionCreate = viewModel::openTransactionCreate,
+        openTransactionList = viewModel::openTransactionList,
+        openBudgetCreate = viewModel::openBudgetCreate,
+        openBudgetList = viewModel::openBudgetList,
+        openAccountCreate = viewModel::openAccountCreate,
+        openAccountList = viewModel::openAccountList,
+        openSettings = viewModel::openSettings,
+    )
+}
 
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun DashboardScaffoldContent(
+    amountUiState: AmountUiState,
+    accounts: List<AccountUiModel>,
+    categoryTransaction: CategoryTransactionUiModel,
+    budgets: List<BudgetUiModel>,
+    transactions: List<TransactionUiItem>,
+    openTransactionCreate: (String?) -> Unit,
+    openTransactionList: () -> Unit,
+    openBudgetCreate: (String?) -> Unit,
+    openBudgetList: () -> Unit,
+    openAccountCreate: (String?) -> Unit,
+    openAccountList: () -> Unit,
+    openSettings: () -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(title = {
@@ -76,7 +108,7 @@ fun DashboardScreen(
                     style = MaterialTheme.typography.titleLarge,
                 )
             }, actions = {
-                IconButton(onClick = viewModel::openSettings) {
+                IconButton(onClick = openSettings) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(id = R.string.settings),
@@ -85,63 +117,48 @@ fun DashboardScreen(
             })
         },
         floatingActionButton = {
-            RichTooltipBox(
-                tooltipState = myTooltipState,
-                title = {
-                    Text(
-                        text = stringResource(id = R.string.help),
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-                },
-                action = {
-                    Box(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            modifier = Modifier
-                                .clickable {
-                                    scope.launch {
-                                        viewModel.closeToolTip()
-                                        myTooltipState.dismiss()
-                                    }
-                                }
-                                .align(Alignment.BottomEnd)
-                                .padding(end = 16.dp),
-                            text = stringResource(id = R.string.ok),
-                        )
-                    }
-                },
-                text = {
-                    Text(stringResource(id = R.string.transaction_create_message))
-                },
-            ) {
-                FloatingActionButton(onClick = { viewModel.openTransactionCreate(null) }) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "",
-                    )
-                }
+            FloatingActionButton(onClick = { openTransactionCreate.invoke(null) }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "",
+                )
             }
         },
     ) { innerPadding ->
-        innerPadding.calculateTopPadding()
         DashboardScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            viewModel = viewModel,
+            amountUiState = amountUiState,
+            accounts = accounts,
+            categoryTransaction = categoryTransaction,
+            budgets = budgets,
+            transactions = transactions,
+            openTransactionCreate = openTransactionCreate,
+            openTransactionList = openTransactionList,
+            openBudgetCreate = openBudgetCreate,
+            openBudgetList = openBudgetList,
+            openAccountCreate = openAccountCreate,
+            openAccountList = openAccountList
         )
     }
 }
 
 @Composable
 private fun DashboardScreenContent(
-    viewModel: DashboardViewModel,
     modifier: Modifier = Modifier,
+    amountUiState: AmountUiState,
+    accounts: List<AccountUiModel>,
+    categoryTransaction: CategoryTransactionUiModel,
+    budgets: List<BudgetUiModel>,
+    transactions: List<TransactionUiItem>,
+    openTransactionCreate: (String?) -> Unit,
+    openTransactionList: () -> Unit,
+    openBudgetCreate: (String?) -> Unit,
+    openBudgetList: () -> Unit,
+    openAccountCreate: (String?) -> Unit,
+    openAccountList: () -> Unit,
 ) {
-    val amountUiState by viewModel.amountUiState.collectAsState()
-    val accounts by viewModel.accounts.collectAsState()
-    val transactions by viewModel.transactions.collectAsState()
-    val budgets by viewModel.budgets.collectAsState()
-    val categoryTransaction by viewModel.categoryTransaction.collectAsState()
 
     LazyColumn(
         modifier = modifier,
@@ -168,7 +185,7 @@ private fun DashboardScreenContent(
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
                 onViewAllClick = {
-                    viewModel.openAccountList()
+                    openAccountList()
                 },
             )
         }
@@ -181,19 +198,20 @@ private fun DashboardScreenContent(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(accounts) {
+                    items(accounts, key = { it.id }) {
                         DashBoardAccountItem(
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .clickable {
-                                    viewModel.openAccountCreate(it.id)
+                                    openAccountCreate(it.id)
                                 },
                             name = it.name,
                             icon = it.storedIcon.name,
                             amount = it.amount.amountString ?: "",
                             availableCreditLimit = it.availableCreditLimit?.amountString ?: "",
                             amountTextColor = colorResource(id = it.amountTextColor),
-                            backgroundColor = it.storedIcon.backgroundColor.toColor().copy(alpha = .1f),
+                            backgroundColor = it.storedIcon.backgroundColor.toColor()
+                                .copy(alpha = .1f),
                         )
                     }
                 }
@@ -203,7 +221,9 @@ private fun DashboardScreenContent(
                 EmptyItem(
                     emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
                     icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
-                    modifier = Modifier.fillMaxSize().height(200.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(200.dp)
                 )
             }
         }
@@ -221,7 +241,7 @@ private fun DashboardScreenContent(
                     .padding(16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
                 onViewAllClick = {
-                    viewModel.openBudgetList()
+                    openBudgetList()
                 },
             )
         }
@@ -233,11 +253,11 @@ private fun DashboardScreenContent(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(budgets) { budget ->
+                    items(budgets, key = { it.id }) { budget ->
                         DashBoardBudgetItem(
                             modifier = Modifier
                                 .clickable {
-                                    viewModel.openBudgetCreate(budget.id)
+                                    openBudgetCreate(budget.id)
                                 },
                             name = budget.name,
                             backgroundColor = budget.iconBackgroundColor.toColor()
@@ -255,7 +275,9 @@ private fun DashboardScreenContent(
                 EmptyItem(
                     emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available_short),
                     icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
-                    modifier = Modifier.fillMaxSize().height(200.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(200.dp)
                 )
             }
         }
@@ -266,17 +288,17 @@ private fun DashboardScreenContent(
                     .padding(16.dp),
                 title = stringResource(id = R.string.transaction),
                 onViewAllClick = {
-                    viewModel.openTransactionList()
+                    openTransactionList.invoke()
                 },
             )
         }
         if (transactions.isNotEmpty()) {
-            items(transactions) { transaction ->
+            items(transactions, key = { it.id }) { transaction ->
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            viewModel.openTransactionCreate(transaction.id)
+                            openTransactionCreate(transaction.id)
                         }
                         .then(ItemSpecModifier),
                     categoryName = transaction.categoryName,
@@ -299,7 +321,9 @@ private fun DashboardScreenContent(
                 EmptyItem(
                     emptyItemText = stringResource(id = R.string.no_transactions_available),
                     icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
-                    modifier = Modifier.fillMaxSize().height(200.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(200.dp)
                 )
             }
         }
@@ -324,28 +348,13 @@ fun IncomeExpenseBalanceView(
     )
 }
 
+@AppPreviewsLightAndDarkMode
 @Composable
-fun DashboardEmptyView(emptyViewMessage: String) {
-    Box(
-        modifier = Modifier
-            .height(200.dp)
-            .fillMaxWidth(),
-    ) {
-        Text(
-            modifier = Modifier.align(Alignment.Center),
-            text = emptyViewMessage,
-        )
-    }
-}
-
-@Preview
-@Composable
-fun IncomeExpenseBalanceViewPreview() {
+fun DashboardScaffoldContentPreview() {
     ExpenseManagerTheme {
-        /*DashboardScreenContent(
+        DashboardScaffoldContent(
             amountUiState = AmountUiState(),
-            modifier = Modifier.fillMaxSize(),
-            accounts = ACCOUNT_DUMMY_DATA,
+            accounts = getRandomAccountUiModel(5),
             categoryTransaction = CategoryTransactionUiModel(
                 pieChartData = listOf(
                     getDummyPieChartData("", 25.0f),
@@ -359,7 +368,7 @@ fun IncomeExpenseBalanceViewPreview() {
                         add(
                             CategoryTransaction(
                                 category = getCategoryData(
-                                    it
+                                    it, CategoryType.EXPENSE
                                 ),
                                 amount = Amount(0.0, "100.00$"),
                                 percent = Random(100).nextFloat(),
@@ -368,7 +377,16 @@ fun IncomeExpenseBalanceViewPreview() {
                         )
                     }
                 }.take(5)
-            )
-        )*/
+            ),
+            budgets = getRandomBudgetUiModel(5),
+            transactions = listOf(getTransactionItem()),
+            openTransactionCreate = {},
+            openTransactionList = {},
+            openBudgetCreate = {},
+            openBudgetList = {},
+            openAccountList = {},
+            openAccountCreate = {},
+            openSettings = {}
+        )
     }
 }

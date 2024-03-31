@@ -149,7 +149,7 @@ private fun BudgetDetailContent(
         val transactions = budget?.transactions
         if (transactions?.isNotEmpty() == true) {
             LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
-                items(transactions) { item ->
+                items(transactions, key = { it.id }) { item ->
                     TransactionItem(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -222,7 +222,7 @@ fun BudgetHeaderItem(
         }
         Row(modifier = Modifier.padding(top = 4.dp)) {
             LinearProgressIndicator(
-                progress = percentage / 100,
+                progress = { percentage / 100 },
                 modifier = Modifier
                     .weight(1f)
                     .height(8.dp)

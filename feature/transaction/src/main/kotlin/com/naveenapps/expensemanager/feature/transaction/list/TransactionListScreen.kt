@@ -15,8 +15,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -101,7 +101,11 @@ private fun TransactionListScreen(
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
-        FilterView(modifier = Modifier.fillMaxWidth())
+        FilterView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 6.dp),
+        )
 
         when (transactionGroup) {
             UiState.Empty -> {
@@ -169,7 +173,7 @@ fun TransactionGroupItem(
             )
         }
         if (isLastItem.not()) {
-            Divider(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
         }
     }
 }
@@ -406,7 +410,7 @@ val DUMMY_DATA = listOf(
     getTransactionUiState(),
 )
 
-private fun getTransactionItem() = TransactionUiItem(
+fun getTransactionItem() = TransactionUiItem(
     id = "1",
     notes = "Sample Description",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),

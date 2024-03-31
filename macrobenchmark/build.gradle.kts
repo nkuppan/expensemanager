@@ -48,6 +48,7 @@ android {
 
     defaultConfig {
         testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "DEBUGGABLE"
+        testInstrumentationRunnerArguments["androidx.benchmark.suppressErrors"] = "EMULATOR"
     }
 }
 
@@ -59,9 +60,7 @@ dependencies {
 }
 
 androidComponents {
-/*
     beforeVariants {
         it.enable = it.buildType == "macrobenchmark"
     }
-*/
 }

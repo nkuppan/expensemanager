@@ -1,8 +1,5 @@
 package com.naveenapps.expensemanager.feature.account.reorder
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.designsystem.components.swap
@@ -11,6 +8,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.UpdateAllAccoun
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -23,15 +22,15 @@ class AccountReOrderViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    var showActionButton by mutableStateOf(false)
-        private set
+    private val _showActionButton = MutableStateFlow<Boolean>(false)
+    val showActionButton = _showActionButton.asStateFlow()
 
-    var accounts by mutableStateOf(emptyList<Account>())
-        private set
+    private val _accounts = MutableStateFlow<List<Account>>(emptyList())
+    val accounts = _accounts.asStateFlow()
 
     init {
         getAllAccountsUseCase.invoke().onEach {
-            accounts = it
+            _accounts.value = it
         }.launchIn(viewModelScope)
     }
 
@@ -42,7 +41,7 @@ class AccountReOrderViewModel @Inject constructor(
     fun saveChanges() {
         viewModelScope.launch {
             updateAllAccountUseCase.invoke(
-                accounts.mapIndexed { index, item ->
+                _accounts.value.mapIndexed { index, item ->
                     item.copy(sequence = index)
                 },
             )
@@ -53,10 +52,10 @@ class AccountReOrderViewModel @Inject constructor(
 
     fun swap(fromIndex: Int, toIndex: Int) {
         viewModelScope.launch {
-            val updatedPomodoroList = accounts.toMutableList()
+            val updatedPomodoroList = _accounts.value.toMutableList()
             val swappedList = updatedPomodoroList.swap(fromIndex, toIndex)
-            accounts = swappedList
-            showActionButton = true
+            _accounts.value = swappedList
+            _showActionButton.value = true
         }
     }
 }

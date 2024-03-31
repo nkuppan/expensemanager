@@ -55,7 +55,7 @@ fun IconSelectionScreen(
                     .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             )
         }
-        items(icons) { icon ->
+        items(icons, key = { it }) { icon ->
             Box(
                 modifier = ColorIconSpecModifier
                     .aspectRatio(1f)

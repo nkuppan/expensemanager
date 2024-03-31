@@ -82,7 +82,7 @@ fun ThemeDialogViewContent(
                         fontWeight = FontWeight.Bold,
                     )
                 }
-                items(themes) { theme ->
+                items(themes, key = { it.mode }) { theme ->
                     val isThemeSelected = selectedTheme.mode == theme.mode
                     Row(
                         modifier = Modifier
