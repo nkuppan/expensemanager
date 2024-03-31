@@ -13,9 +13,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Notes
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.EditCalendar
@@ -32,7 +32,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -42,7 +41,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -85,7 +83,6 @@ import java.util.Date
 fun TransactionCreateScreen(
     viewModel: TransactionCreateViewModel = hiltViewModel()
 ) {
-    val context = LocalContext.current
 
     val scope = rememberCoroutineScope()
 
@@ -117,13 +114,6 @@ fun TransactionCreateScreen(
                 }
             },
         )
-    }
-
-    val message by viewModel.message.collectAsState(null)
-    if (message != null) {
-        LaunchedEffect(key1 = "completed", block = {
-            snackbarHostState.showSnackbar(message = message?.asString(context) ?: "")
-        })
     }
 
     if (showBottomSheet) {
@@ -380,7 +370,7 @@ private fun TransactionCreateScreen(
                 name = selectedCategory.name,
                 icon = selectedCategory.storedIcon.name,
                 iconBackgroundColor = selectedCategory.storedIcon.backgroundColor,
-                endIcon = Icons.Filled.KeyboardArrowRight,
+                endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
@@ -411,7 +401,7 @@ private fun TransactionCreateScreen(
             name = selectedFromAccount.name,
             icon = selectedFromAccount.storedIcon.name,
             iconBackgroundColor = selectedFromAccount.storedIcon.backgroundColor,
-            endIcon = Icons.Filled.KeyboardArrowRight,
+            endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             amount = selectedFromAccount.amount.amountString,
             amountTextColor = selectedFromAccount.amountTextColor,
             modifier = Modifier
@@ -437,7 +427,7 @@ private fun TransactionCreateScreen(
                 name = selectedToAccount.name,
                 icon = selectedToAccount.storedIcon.name,
                 iconBackgroundColor = selectedToAccount.storedIcon.backgroundColor,
-                endIcon = Icons.Filled.KeyboardArrowRight,
+                endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 amount = selectedToAccount.amount.amountString,
                 amountTextColor = selectedFromAccount.amountTextColor,
                 modifier = Modifier
@@ -459,7 +449,7 @@ private fun TransactionCreateScreen(
             leadingIcon =
             {
                 Icon(
-                    imageVector = Icons.Filled.Notes,
+                    imageVector = Icons.AutoMirrored.Filled.Notes,
                     contentDescription = "",
                 )
             },
@@ -511,7 +501,7 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 @Composable
 private fun TransactionCreateStatePreview() {
 
-    val amountField = TextFieldValue(value = "", valueError = false, {})
+    val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
 
     ExpenseManagerTheme {
         TransactionCreateScreen(

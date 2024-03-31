@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -95,7 +95,7 @@ fun MultipleCategoriesSelectionScreen(
                     .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
             )
         }
-        items(categories) { category ->
+        items(categories, key = { it.id }) { category ->
             val isSelected = selectedCategories.fastAny { it.id == category.id }
             CategoryCheckedItem(
                 modifier = Modifier
@@ -114,7 +114,7 @@ fun MultipleCategoriesSelectionScreen(
         }
         item {
             Column {
-                Divider(modifier = Modifier.padding(top = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)

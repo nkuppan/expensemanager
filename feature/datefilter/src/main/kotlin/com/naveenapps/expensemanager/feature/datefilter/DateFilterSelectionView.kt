@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,15 +52,20 @@ fun DateFilterSelectionView(
 ) {
 
     var showDatePicker by remember { mutableStateOf(false) }
-
     var dateTypeSelection by remember { mutableStateOf(DateTypeSelection.FROM_DATE) }
+
+    val fromDate by viewModel.fromDate.collectAsState()
+    val toDate by viewModel.toDate.collectAsState()
+    val dateRangeFilterTypes by viewModel.dateRangeFilterTypes.collectAsState()
+    val dateRangeType by viewModel.dateRangeType.collectAsState()
+    val showCustomRangeSelection by viewModel.showCustomRangeSelection.collectAsState()
 
     if (showDatePicker) {
         AppDatePickerDialog(
             selectedDate = if (dateTypeSelection == DateTypeSelection.FROM_DATE) {
-                viewModel.fromDate.value
+                fromDate.value
             } else {
-                viewModel.toDate.value
+                toDate.value
             },
             onDateSelected = { date ->
                 showDatePicker = false
@@ -75,11 +81,11 @@ fun DateFilterSelectionView(
     }
 
     FilterTypesAndView(
-        filterTypes = viewModel.dateRangeFilterTypes,
-        selectedFilterType = viewModel.dateRangeType,
-        fromDate = viewModel.fromDate,
-        toDate = viewModel.toDate,
-        showCustomRangeSelection = viewModel.showCustomRangeSelection,
+        filterTypes = dateRangeFilterTypes,
+        selectedFilterType = dateRangeType,
+        fromDate = fromDate,
+        toDate = toDate,
+        showCustomRangeSelection = showCustomRangeSelection,
         complete = {
             viewModel.save()
             onComplete.invoke()

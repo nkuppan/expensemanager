@@ -50,4 +50,20 @@ class AccountListScreenKtTest {
         composeTestRule.onNodeWithTag("Create").assertIsDisplayed()
         composeTestRule.onAllNodesWithTag("Item").assertCountEquals(5)
     }
+
+    @Test
+    fun showAccountListEmptyStateWhenNoItemsAvailable()  {
+        composeTestRule.setContent {
+            AccountListContentView(
+                accountUiState = UiState.Empty,
+                showReOrder = true,
+                openAccountReOrderScreen = {},
+                closePage = {},
+                openCreateScreen = {}
+            )
+        }
+
+        composeTestRule.onNodeWithTag("Create").assertIsDisplayed()
+        composeTestRule.onAllNodesWithTag("Item").assertCountEquals(0)
+    }
 }

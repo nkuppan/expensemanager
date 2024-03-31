@@ -11,8 +11,8 @@ const val TARGET_SDK = 34
 const val COMPILE_SDK: Int = 34
 const val MIN_SDK = 21
 
-const val VERSION_CODE = 16
-const val VERSION_NAME = "1.0.16"
+const val VERSION_CODE = 20
+const val VERSION_NAME = "1.2.0"
 
 const val BENCHMARK_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -66,7 +66,7 @@ fun ApplicationExtension.configureAndroidAppVersion() {
     }
 }
 
-fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *>) {
+fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *, *>) {
     extension.apply {
         testOptions {
             unitTests {
@@ -77,7 +77,7 @@ fun Project.configureTestOptions(extension: CommonExtension<*, *, *, *, *>) {
     }
 }
 
-fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
+fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *, *>) {
     extension.apply {
         buildFeatures {
             compose = true
@@ -104,7 +104,7 @@ fun Project.configureAndroidCompose(extension: CommonExtension<*, *, *, *, *>) {
     }
 }
 
-fun CommonExtension<*, *, *, *, *>.configureBuildFeatures() {
+fun CommonExtension<*, *, *, *, *, *>.configureBuildFeatures() {
     (buildFeatures as? LibraryBuildFeatures)?.apply {
         dataBinding = true
         viewBinding = true

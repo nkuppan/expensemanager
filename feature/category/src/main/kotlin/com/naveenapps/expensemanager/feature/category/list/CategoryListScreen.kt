@@ -123,7 +123,7 @@ private fun CategoryListScreenContentView(
                         },
                         text = {
                             Text(
-                                text = stringResource(id = items.labelResourceID),
+                                text = stringResource(id = items.labelResourceID).uppercase(),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
@@ -167,7 +167,7 @@ private fun CategoryListScreenContent(
                 val items = categoryUiState.data
 
                 LazyColumn {
-                    items(items) { category ->
+                    items(items, key = { it.id }) { category ->
                         CategoryItem(
                             name = category.name,
                             icon = category.storedIcon.name,

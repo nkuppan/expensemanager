@@ -130,7 +130,7 @@ fun MonthPicker(
                         .fillMaxWidth(),
                     columns = GridCells.Adaptive(minSize = 96.dp),
                 ) {
-                    items(months) {
+                    items(months, key = { it }) {
                         Box(
                             modifier = Modifier
                                 .size(60.dp)

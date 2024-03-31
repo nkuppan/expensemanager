@@ -11,10 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterList
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,8 +44,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterView(modifier: Modifier = Modifier) {
-    val viewModel: FilterViewModel = hiltViewModel()
+fun FilterView(
+    modifier: Modifier = Modifier,
+    viewModel: FilterViewModel = hiltViewModel()
+) {
 
     val date by viewModel.date.collectAsState()
     val showForward by viewModel.showForward.collectAsState()
@@ -178,7 +180,7 @@ private fun FilterContentView(
             enabled = showBackward,
         ) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowLeft,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
                 contentDescription = null,
             )
         }
@@ -187,7 +189,7 @@ private fun FilterContentView(
             enabled = showForward,
         ) {
             Icon(
-                imageVector = Icons.Filled.KeyboardArrowRight,
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
             )
         }

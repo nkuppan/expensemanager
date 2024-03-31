@@ -37,9 +37,7 @@ class CategoryTransactionListViewModel @Inject constructor(
         }.onEach { model ->
             _categoryTransaction.value = UiState.Success(
                 if (model.hideValues) {
-                    model.copy(
-                        categoryTransactions = emptyList(),
-                    )
+                    model.copy(categoryTransactions = emptyList())
                 } else {
                     model
                 },

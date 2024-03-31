@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("naveenapps.plugin.android.app")
     id("naveenapps.plugin.kotlin.basic")
@@ -9,6 +12,30 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.android.gms.oss-licenses-plugin")
     id("jacoco")
+}
+
+val credentialFilePath = "${rootDir.absolutePath}/keys/credentials.properties"
+println(credentialFilePath)
+val credentials = File(credentialFilePath)
+if (credentials.exists()) {
+    println("----- Credentials available -----")
+    val properties = Properties().apply {
+        load(FileInputStream(credentials))
+    }
+
+    android {
+        signingConfigs {
+            create("release") {
+                keyAlias = properties.getProperty("KEY_ALIAS")
+                storePassword = properties.getProperty("KEY_STORE_PASSWORD")
+                keyPassword = properties.getProperty("KEY_PASSWORD")
+                storeFile = File("${rootDir.absolutePath}/keys/android_keystore.jks")
+                println("Credentials release created")
+            }
+        }
+    }
+} else {
+    println("----- Credentials not available -----")
 }
 
 android {
@@ -32,12 +59,17 @@ android {
             isDebuggable = false
         }
         release {
+            isShrinkResources = true
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+
+            val keyStore = runCatching { signingConfigs.getByName("release") }.getOrNull() ?:
+                signingConfigs.getByName("debug")
+
+            signingConfig = keyStore
         }
     }
 

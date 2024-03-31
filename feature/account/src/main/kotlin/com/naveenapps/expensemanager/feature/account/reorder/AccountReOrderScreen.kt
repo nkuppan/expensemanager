@@ -18,6 +18,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,9 +27,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -43,9 +45,12 @@ import kotlinx.coroutines.Job
 fun AccountReOrderScreen(
     viewModel: AccountReOrderViewModel = hiltViewModel(),
 ) {
+    val accounts by viewModel.accounts.collectAsState()
+    val showActionButton by viewModel.showActionButton.collectAsState()
+
     AccountReOrderScaffoldView(
-        accounts = viewModel.accounts,
-        showActionButton = viewModel.showActionButton,
+        accounts = accounts,
+        showActionButton = showActionButton,
         backPress = viewModel::closePage,
         saveChanges = viewModel::saveChanges,
         onMove = viewModel::swap,
@@ -169,7 +174,7 @@ fun AccountReOrderItem(
     }
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 fun AccountReOrderScaffoldViewPreview() {
     ExpenseManagerTheme {
@@ -179,7 +184,7 @@ fun AccountReOrderScaffoldViewPreview() {
             onMove = { i, j ->
 
             },
-            saveChanges = { },
+            saveChanges = {},
             backPress = {})
     }
 }

@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -92,10 +92,10 @@ fun MultipleAccountSelectionScreen(
                 stringResource(id = R.string.select_account),
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
+                    .padding(16.dp),
             )
         }
-        items(accounts) { account ->
+        items(accounts, key = { it.id }) { account ->
             val isSelected = selectedAccounts.fastAny { it.id == account.id }
             AccountCheckedItem(
                 modifier = Modifier
@@ -114,7 +114,7 @@ fun MultipleAccountSelectionScreen(
         }
         item {
             Column {
-                Divider(modifier = Modifier.padding(top = 8.dp))
+                HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
                 Row(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp)
