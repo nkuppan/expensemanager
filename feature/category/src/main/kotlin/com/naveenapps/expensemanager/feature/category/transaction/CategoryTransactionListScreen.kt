@@ -255,13 +255,13 @@ fun CategoryTransactionItem(
             }
             Row {
                 LinearProgressIndicator(
-                    progress = { percentage / 100 },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(8.dp)
-                        .align(Alignment.CenterVertically),
-                    color = iconBackgroundColor.toColor(),
-                    strokeCap = StrokeCap.Round,
+                        progress = { percentage/100 },
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(8.dp)
+                            .align(Alignment.CenterVertically),
+                        color = iconBackgroundColor.toColor(),
+                        strokeCap = StrokeCap.Round,
                 )
                 Text(
                     modifier = Modifier
@@ -342,7 +342,7 @@ private fun CategoryTransactionSmallItemPreview() {
                 .fillMaxWidth()
                 .then(ItemSpecModifier),
             name = "Utilities",
-            icon = "ic_calendar",
+            icon = "account_balance",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
         )
@@ -358,7 +358,7 @@ private fun CategoryTransactionItemPreview() {
                 .fillMaxWidth()
                 .then(ItemSpecModifier),
             name = "Utilities",
-            icon = "ic_calendar",
+            icon = "account_balance",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
             percentage = 0.5f,
