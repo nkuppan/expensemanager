@@ -9,7 +9,7 @@ import com.naveenapps.expensemanager.core.common.R
 @ColorInt
 fun getColorValue(colorValue: String?): Int {
     return runCatching {
-        return Color.parseColor(if (colorValue?.isNotEmpty() == true) colorValue else "#000000")
+       Color.parseColor(if (colorValue?.isNotEmpty() == true) colorValue else "#000000")
     }.getOrNull() ?: Color.BLACK
 }
 
