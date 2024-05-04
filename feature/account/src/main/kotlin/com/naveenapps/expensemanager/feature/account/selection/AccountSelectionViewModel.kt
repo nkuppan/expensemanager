@@ -101,9 +101,8 @@ class AccountSelectionViewModel @Inject constructor(
     }
 
     fun selectAllThisAccount(accounts: List<AccountUiModel>) {
-        if (accounts.isEmpty()) {
-            return
-        }
+
+        accounts.ifEmpty { return }
 
         viewModelScope.launch {
             clearChanges()

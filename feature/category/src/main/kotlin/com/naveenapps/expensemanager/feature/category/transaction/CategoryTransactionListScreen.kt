@@ -62,52 +62,81 @@ import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.datefilter.FilterView
 import kotlin.random.Random
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun CategoryTransactionTabScreen(
-    viewModel: CategoryTransactionListViewModel = hiltViewModel(),
+    viewModel: CategoryTransactionListViewModel = hiltViewModel()
 ) {
+
+    IntermediateScreen(viewModel = viewModel)
+}
+
+@Composable
+fun IntermediateScreen(viewModel: CategoryTransactionListViewModel) {
     val uiState by viewModel.categoryTransaction.collectAsState()
     val categoryType by viewModel.categoryType.collectAsState()
 
+    CategoryTransactionTabScreen(
+            uiState = uiState,
+            categoryType = categoryType,
+            openCategoryList = viewModel::openCategoryList,
+            openTransactionCreatePage = viewModel::openTransactionCreatePage,
+            changeChart = viewModel::switchCategory,
+            onItemClick = viewModel::openCategoryDetailsPage
+    )
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CategoryTransactionTabScreen(
+    uiState: UiState<CategoryTransactionUiModel>,
+    categoryType: CategoryType,
+    openCategoryList: () -> Unit,
+    openTransactionCreatePage: () -> Unit,
+    changeChart: (() -> Unit)? = null,
+    onItemClick: ((CategoryTransaction) -> Unit)? = null
+) {
+
+
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.categories),
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                },
-                actions = {
-                    IconButton(onClick = viewModel::openCategoryList) {
-                        Icon(
-                            imageVector = Icons.Outlined.Edit,
-                            contentDescription = stringResource(id = R.string.edit),
-                        )
-                    }
-                },
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::openTransactionCreatePage) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "",
+            topBar = {
+                TopAppBar(
+                        title = {
+                            Text(
+                                    text = stringResource(R.string.categories),
+                                    style = MaterialTheme.typography.titleLarge,
+                            )
+                        },
+                        actions = {
+                            IconButton(onClick = openCategoryList) {
+                                Icon(
+                                        imageVector = Icons.Outlined.Edit,
+                                        contentDescription = stringResource(id = R.string.edit),
+                                )
+                            }
+                        },
                 )
-            }
-        },
+            },
+            floatingActionButton = {
+                FloatingActionButton(onClick = openTransactionCreatePage) {
+                    Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "",
+                    )
+                }
+            },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
+                modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize(),
         ) {
             CategoryTransactionListScreenContent(
-                uiState = uiState,
-                categoryType = categoryType,
-                changeChart = viewModel::switchCategory,
-                onItemClick = viewModel::openCategoryDetailsPage
+                    uiState = uiState,
+                    categoryType = categoryType,
+                    changeChart = changeChart,
+                    onItemClick = onItemClick
             )
         }
     }
@@ -124,11 +153,11 @@ private fun CategoryTransactionListScreenContent(
         UiState.Empty -> {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .align(Alignment.Center),
-                    text = stringResource(id = R.string.no_transactions_available),
-                    textAlign = TextAlign.Center,
+                        modifier = Modifier
+                                .wrapContentSize()
+                                .align(Alignment.Center),
+                        text = stringResource(id = R.string.no_transactions_available),
+                        textAlign = TextAlign.Center,
                 )
             }
         }
@@ -136,9 +165,9 @@ private fun CategoryTransactionListScreenContent(
         UiState.Loading -> {
             Box(modifier = Modifier.fillMaxWidth()) {
                 CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .align(Alignment.Center),
+                        modifier = Modifier
+                                .size(72.dp)
+                                .align(Alignment.Center),
                 )
             }
         }
@@ -149,67 +178,67 @@ private fun CategoryTransactionListScreenContent(
             LazyColumn(modifier = Modifier.fillMaxWidth()) {
                 item {
                     FilterView(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 6.dp),
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(end = 6.dp),
                     )
                 }
                 item {
                     PieChartView(
-                        if (categoryType.isExpense()) {
-                            stringResource(id = R.string.expense)
-                        } else {
-                            stringResource(id = R.string.income)
-                        } + "\n" + uiState.data.totalAmount.amountString,
-                        chartData = uiState.data.pieChartData.map {
-                            PieChartUiData(
-                                it.name,
-                                it.value,
-                                it.color.toColorInt(),
-                            )
-                        },
-                        chartHeight = 600,
-                        hideValues = uiState.data.hideValues,
-                        modifier = Modifier
-                            .padding(top = 16.dp, bottom = 16.dp)
-                            .clickable(indicationSource, null) {
-                                changeChart?.invoke()
+                            if (categoryType.isExpense()) {
+                                stringResource(id = R.string.expense)
+                            } else {
+                                stringResource(id = R.string.income)
+                            } + "\n" + uiState.data.totalAmount.amountString,
+                            chartData = uiState.data.pieChartData.map {
+                                PieChartUiData(
+                                        it.name,
+                                        it.value,
+                                        it.color.toColorInt(),
+                                )
                             },
+                            chartHeight = 600,
+                            hideValues = uiState.data.hideValues,
+                            modifier = Modifier
+                                    .padding(top = 16.dp, bottom = 16.dp)
+                                    .clickable(indicationSource, null) {
+                                        changeChart?.invoke()
+                                    },
                     )
                 }
 
                 if (uiState.data.categoryTransactions.isEmpty()) {
                     item {
                         EmptyItem(
-                            modifier = Modifier.fillMaxSize(),
-                            emptyItemText = stringResource(id = R.string.no_transactions_available),
-                            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_grouping_available
+                                modifier = Modifier.fillMaxSize(),
+                                emptyItemText = stringResource(id = R.string.no_transactions_available),
+                                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_grouping_available
                         )
                     }
                 } else {
                     items(
-                        uiState.data.categoryTransactions,
-                        key = { it.category.id }
+                            uiState.data.categoryTransactions,
+                            key = { it.category.id }
                     ) { categoryTransaction ->
                         CategoryTransactionItem(
-                            modifier = Modifier
-                                .clickable {
-                                    onItemClick?.invoke(categoryTransaction)
-                                }
-                                .then(ItemSpecModifier),
-                            name = categoryTransaction.category.name,
-                            icon = categoryTransaction.category.storedIcon.name,
-                            iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
-                            amount = categoryTransaction.amount.amountString ?: "",
-                            percentage = categoryTransaction.percent,
+                                modifier = Modifier
+                                        .clickable {
+                                            onItemClick?.invoke(categoryTransaction)
+                                        }
+                                        .then(ItemSpecModifier),
+                                name = categoryTransaction.category.name,
+                                icon = categoryTransaction.category.storedIcon.name,
+                                iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
+                                amount = categoryTransaction.amount.amountString ?: "",
+                                percentage = categoryTransaction.percent,
                         )
                     }
                 }
                 item {
                     Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(36.dp),
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(36.dp),
                     )
                 }
             }
@@ -228,77 +257,51 @@ fun CategoryTransactionItem(
 ) {
     Row(modifier = modifier) {
         IconAndBackgroundView(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            icon = icon,
-            iconBackgroundColor = iconBackgroundColor,
-            name = name,
+                modifier = Modifier.align(Alignment.CenterVertically),
+                icon = icon,
+                iconBackgroundColor = iconBackgroundColor,
+                name = name,
         )
         Column(
-            modifier = Modifier
-                .padding(start = 16.dp),
+                modifier = Modifier
+                        .padding(start = 16.dp),
         ) {
             Row {
                 Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
-                    text = name,
-                    style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier
+                                .weight(1f)
+                                .align(Alignment.CenterVertically),
+                        text = name,
+                        style = MaterialTheme.typography.bodyLarge,
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .align(Alignment.CenterVertically),
-                    text = amount,
-                    style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier
+                                .padding(start = 8.dp)
+                                .align(Alignment.CenterVertically),
+                        text = amount,
+                        style = MaterialTheme.typography.titleMedium,
                 )
             }
             Row {
                 LinearProgressIndicator(
-                    progress = { percentage / 100 },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(8.dp)
-                        .align(Alignment.CenterVertically),
-                    color = iconBackgroundColor.toColor(),
-                    strokeCap = StrokeCap.Round,
+                        progress = { percentage / 100 },
+                        modifier = Modifier
+                                .weight(1f)
+                                .height(8.dp)
+                                .align(Alignment.CenterVertically),
+                        color = iconBackgroundColor.toColor(),
+                        strokeCap = StrokeCap.Round,
                 )
                 Text(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .align(Alignment.CenterVertically),
-                    text = percentage.toPercentString(),
-                    style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier
+                                .padding(start = 8.dp)
+                                .align(Alignment.CenterVertically),
+                        text = percentage.toPercentString(),
+                        style = MaterialTheme.typography.labelSmall,
                 )
             }
         }
     }
-}
-
-val getPieChartData = listOf(
-    PieChartData("Chrome", 34.68f, "#43A546"),
-    PieChartData("Firefox", 16.60F, "#F44336"),
-    PieChartData("Safari", 16.15F, "#166EF7"),
-    PieChartData("Internet Explorer", 15.62F, "#121212"),
-)
-
-fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
-    return CategoryTransactionUiModel(
-        pieChartData = getPieChartData,
-        totalAmount = Amount(300.0, "300.00$"),
-        categoryTransactions = buildList {
-            repeat(15) {
-                add(
-                    CategoryTransaction(
-                        category = getCategoryData(it, CategoryType.EXPENSE),
-                        amount = Amount(300.0, "300.00$"),
-                        percent = Random(100).nextFloat(),
-                        transaction = emptyList(),
-                    ),
-                )
-            }
-        },
-    )
 }
 
 @Composable
@@ -311,26 +314,57 @@ fun CategoryTransactionSmallItem(
 ) {
     Row(modifier = modifier) {
         SmallIconAndBackgroundView(
-            icon = icon,
-            iconBackgroundColor = iconBackgroundColor,
-            modifier = Modifier.align(Alignment.CenterVertically),
-            name = name,
-            iconSize = 12.dp,
+                icon = icon,
+                iconBackgroundColor = iconBackgroundColor,
+                modifier = Modifier.align(Alignment.CenterVertically),
+                name = name,
+                iconSize = 12.dp,
         )
         Text(
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
-                .padding(start = 16.dp, end = 16.dp),
-            text = name,
-            style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically)
+                        .padding(start = 16.dp, end = 16.dp),
+                text = name,
+                style = MaterialTheme.typography.bodySmall,
         )
         Text(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            text = amount,
-            style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.align(Alignment.CenterVertically),
+                text = amount,
+                style = MaterialTheme.typography.labelSmall,
         )
     }
+}
+
+val getPieChartData = listOf(
+        PieChartData("Chrome", 34.68f, "#43A546"),
+        PieChartData("Firefox", 16.60F, "#F44336"),
+        PieChartData("Safari", 16.15F, "#166EF7"),
+        PieChartData("Internet Explorer", 15.62F, "#121212"),
+)
+
+fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
+    return CategoryTransactionUiModel(
+            pieChartData = getPieChartData,
+            totalAmount = Amount(300.0, "300.00$"),
+            categoryTransactions = buildList {
+                repeat(15) {
+                    add(
+                            CategoryTransaction(
+                                    category = getCategoryData(it, CategoryType.EXPENSE),
+                                    amount = Amount(300.0, "300.00$"),
+                                    percent = Random(100).nextFloat(),
+                                    transaction = emptyList(),
+                            ),
+                    )
+                }
+            },
+    )
+}
+
+fun getUiState(): UiState<CategoryTransactionUiModel> {
+
+    return UiState.Success(data = getRandomCategoryTransactionData())
 }
 
 @AppPreviewsLightAndDarkMode
@@ -338,13 +372,13 @@ fun CategoryTransactionSmallItem(
 private fun CategoryTransactionSmallItemPreview() {
     ExpenseManagerTheme {
         CategoryTransactionSmallItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(ItemSpecModifier),
-            name = "Utilities",
-            icon = "ic_calendar",
-            iconBackgroundColor = "#000000",
-            amount = "$100.00",
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .then(ItemSpecModifier),
+                name = "Utilities",
+                icon = "account_balance",
+                iconBackgroundColor = "#000000",
+                amount = "$100.00",
         )
     }
 }
@@ -354,14 +388,14 @@ private fun CategoryTransactionSmallItemPreview() {
 private fun CategoryTransactionItemPreview() {
     ExpenseManagerTheme {
         CategoryTransactionItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(ItemSpecModifier),
-            name = "Utilities",
-            icon = "ic_calendar",
-            iconBackgroundColor = "#000000",
-            amount = "$100.00",
-            percentage = 0.5f,
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .then(ItemSpecModifier),
+                name = "Utilities",
+                icon = "account_balance",
+                iconBackgroundColor = "#000000",
+                amount = "$100.00",
+                percentage = 0.5f,
         )
     }
 }
@@ -370,6 +404,16 @@ private fun CategoryTransactionItemPreview() {
 @Composable
 private fun CategoryTransactionTabScreenPreview() {
     ExpenseManagerTheme {
-        CategoryTransactionTabScreen()
+
+        val uiState = getUiState()
+        val categoryType = CategoryType.INCOME
+        CategoryTransactionTabScreen(
+                uiState = uiState,
+                categoryType = categoryType,
+                openCategoryList = {},
+                openTransactionCreatePage = {},
+                changeChart = {},
+                onItemClick = {}
+        )
     }
 }

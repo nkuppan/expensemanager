@@ -7,15 +7,16 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
 import com.naveenapps.expensemanager.core.designsystem.R
 
 @SuppressLint("DiscouragedApi")
 fun Context.getDrawable(iconName: String): Int {
     return runCatching {
         val resources = this.resources.getIdentifier(
-            iconName,
-            "drawable",
-            this.packageName,
+                iconName,
+                "drawable",
+                this.packageName,
         )
 
         if (resources > 0) resources else null
@@ -29,6 +30,7 @@ fun openWebPage(context: Context, webpage: String) {
         context.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.
+
     }
 }
 
@@ -40,6 +42,7 @@ fun openEmailToOption(context: Context, emailId: String) {
         context.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.
+
     }
 }
 
