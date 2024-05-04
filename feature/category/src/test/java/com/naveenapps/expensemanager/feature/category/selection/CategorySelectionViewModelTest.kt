@@ -97,7 +97,7 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
             Truth.assertThat(firstItem).isNotEmpty()
             Truth.assertThat(firstItem).hasSize(5)
 
-            categorySelectionViewModel.selectAllThisCategory(getRandomCategoryData(3))
+            categorySelectionViewModel.selectAllTheseCategories(getRandomCategoryData(3))
 
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isEmpty()
@@ -117,7 +117,7 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
             Truth.assertThat(firstItem).isNotEmpty()
             Truth.assertThat(firstItem).hasSize(5)
 
-            categorySelectionViewModel.selectAllThisCategory(emptyList())
+            categorySelectionViewModel.selectAllTheseCategories(emptyList())
         }
     }
 }
