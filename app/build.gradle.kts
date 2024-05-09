@@ -6,7 +6,6 @@ plugins {
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
-    id("androidx.navigation.safeargs")
     id("com.github.triplet.play")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
