@@ -11,7 +11,9 @@ buildscript {
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.test) apply false
     alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.benchmark) apply false
@@ -19,5 +21,7 @@ plugins {
     alias(libs.plugins.play.publish) apply false
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
-    id("com.autonomousapps.dependency-analysis").version("1.27.0")
+    alias(libs.plugins.firebase.distribution) apply false
+    alias(libs.plugins.spotless) apply false
+    alias(libs.plugins.dependency.analysis) apply false
 }

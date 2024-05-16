@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.core.navigation
 
 import androidx.navigation.NavController
-import androidx.navigation.NavOptionsBuilder
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onCompletion
@@ -19,11 +18,18 @@ abstract class Navigator {
 }
 
 abstract class AppComposeNavigator : Navigator() {
-    abstract fun navigate(route: String, optionsBuilder: (NavOptionsBuilder.() -> Unit)? = null)
-    abstract fun <T> navigateBackWithResult(key: String, result: T, route: String?)
+
+    abstract fun navigate(route: Any)
+
+    abstract fun <T> navigateUpWithResult(key: String, result: T, route: String?)
+
+    abstract fun <T> navigateBackWithResult(key: String, result: T)
+
+    abstract fun navigateBackWithMultipleResult(values: MutableMap<String, Any>)
 
     abstract fun popUpTo(route: String, inclusive: Boolean)
-    abstract fun navigateAndClearBackStack(route: String)
+
+    abstract fun navigateAndClearBackStack(route: Any)
 
     abstract fun popBackStack()
 
@@ -53,6 +59,28 @@ abstract class AppComposeNavigator : Navigator() {
             ComposeNavigationCommand.PopBackStack -> {
                 popBackStack()
             }
+
+            is ComposeNavigationCommand.NavigateBackWithResult<*> -> {
+                previousBackStackEntry?.savedStateHandle?.set(
+                    navigationCommand.key,
+                    navigationCommand.result,
+                )
+                popBackStack()
+            }
+
+            is ComposeNavigationCommand.NavigateBackWithMultipleResult -> {
+                navigationCommand.values.forEach {
+                    previousBackStackEntry?.savedStateHandle?.set(
+                        it.key,
+                        it.value,
+                    )
+                }
+                popBackStack()
+            }
+
+            is ComposeNavigationCommand.NavigateTo -> {
+                navigate(navigationCommand.route)
+            }
         }
     }
 
@@ -73,6 +101,5 @@ abstract class AppComposeNavigator : Navigator() {
             navigateUp()
         }
     }
-
-    fun canNavUp(navController: NavController): Boolean = navController.backQueue.isNotEmpty()
 }
+

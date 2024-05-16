@@ -117,6 +117,6 @@ class AdvancedSettingsViewModel @Inject constructor(
     }
 
     fun openAccountsReOrder() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.AccountReOrderScreen.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.AccountReOrderScreen)
     }
 }

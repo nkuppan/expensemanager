@@ -40,15 +40,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun openCurrencyCustomiseScreen() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.CurrencyCustomiseScreen.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.CurrencyCustomiseScreen)
     }
 
     fun openExportScreen() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.ExportScreen.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.ExportScreen)
     }
 
     fun openReminderScreen() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.ReminderScreen.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.ReminderScreen)
     }
 
     fun closePage() {
@@ -56,10 +56,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun openAboutUs() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.AboutUsScreen.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.AboutUsScreen)
     }
 
     fun openAdvancedSettings() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.AdvancedSettingsScreen.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.AdvancedSettingsScreen)
     }
 }

@@ -122,36 +122,36 @@ class DashboardViewModel @Inject constructor(
     }
 
     fun openSettings() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.Settings.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.Settings)
     }
 
     fun openAccountList() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.AccountList.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.AccountList)
     }
 
     fun openAccountCreate(accountId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute(accountId ?: ""),
+            ExpenseManagerScreens.AccountCreate(accountId),
         )
     }
 
     fun openBudgetList() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.BudgetList.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.BudgetList)
     }
 
     fun openBudgetCreate(budgetId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetDetails.createRoute(budgetId ?: ""),
+            ExpenseManagerScreens.BudgetDetails(budgetId),
         )
     }
 
     fun openTransactionList() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.TransactionList.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.TransactionList)
     }
 
     fun openTransactionCreate(transactionId: String? = null) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
+            ExpenseManagerScreens.TransactionCreate(transactionId),
         )
     }
 

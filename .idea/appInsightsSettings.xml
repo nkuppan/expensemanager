@@ -8,7 +8,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.androidshowtime" />
+                  <option name="appId" value="com.ancient.amart" />
                 </ConnectionSetting>
               </option>
               <option name="failureTypes">

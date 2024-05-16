@@ -3,6 +3,7 @@ plugins {
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -10,5 +11,6 @@ android {
 }
 
 dependencies {
+    implementation(libs.kotlinx.serialization.json)
     implementation(project(":core:designsystem"))
 }

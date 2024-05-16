@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetDetailUseCase
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens.BudgetDetails.KEY_BUDGET_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -24,7 +24,7 @@ class BudgetDetailViewModel @Inject constructor(
         private set
 
     init {
-        savedStateHandle.get<String>(KEY_BUDGET_ID)?.let {
+        savedStateHandle.get<String>(ExpenseManagerArgsNames.ID)?.let {
             getBudgetDetailUseCase.invoke(it).onEach { updatedBudget ->
                 budget.value = updatedBudget
             }.launchIn(viewModelScope)
@@ -37,13 +37,13 @@ class BudgetDetailViewModel @Inject constructor(
 
     fun openTransactionCreateScreen(transactionId: String? = null) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
+            ExpenseManagerScreens.TransactionCreate(transactionId),
         )
     }
 
     fun openBudgetCreateScreen() {
         budget.value?.id?.let {
-            appComposeNavigator.navigate(ExpenseManagerScreens.BudgetCreate.createRoute(it))
+            appComposeNavigator.navigate(ExpenseManagerScreens.BudgetCreate(it))
         }
     }
 }

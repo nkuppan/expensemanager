@@ -196,7 +196,6 @@ fun CategoryFilter(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun FilterChipView(
     selected: Boolean,
     label: String,

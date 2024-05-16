@@ -14,8 +14,7 @@ import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.kotlin.eq
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -116,15 +115,14 @@ class CategoryListViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun checkOpenCreateNavigation() = runTest {
-        categoryListViewModel.openCreateScreen("")
-        verify(appComposeNavigator, times(1)).navigate(anyString(), eq(null))
+        categoryListViewModel.openCreateScreen(null)
+        verify(appComposeNavigator, times(1)).navigate(any())
     }
 
     @Test
     fun checkOpenCreateNavigationAndCommands() = runTest {
         categoryListViewModel.openCreateScreen("")
-        verify(appComposeNavigator, times(1)).navigate(anyString(), eq(null))
-        appComposeNavigator
+        verify(appComposeNavigator, times(1)).navigate(any())
     }
 
     @Test

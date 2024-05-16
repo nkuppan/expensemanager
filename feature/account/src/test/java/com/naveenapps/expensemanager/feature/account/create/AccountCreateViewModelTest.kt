@@ -17,7 +17,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
-import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens.AccountCreate.KEY_ACCOUNT_ID
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
@@ -192,7 +192,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         )
 
         accountCreateViewModel = AccountCreateViewModel(
-            SavedStateHandle(mapOf(KEY_ACCOUNT_ID to accountId)),
+            SavedStateHandle(mapOf(ExpenseManagerArgsNames.ID to accountId)),
             getCurrencyUseCase,
             getDefaultCurrencyUseCase,
             getFormattedAmountUseCase,
@@ -311,7 +311,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         whenever(accountRepository.deleteAccount(any())).thenReturn(Resource.Success(true))
 
         accountCreateViewModel = AccountCreateViewModel(
-            SavedStateHandle(mapOf(KEY_ACCOUNT_ID to accountId)),
+            SavedStateHandle(mapOf(ExpenseManagerArgsNames.ID to accountId)),
             getCurrencyUseCase,
             getDefaultCurrencyUseCase,
             getFormattedAmountUseCase,

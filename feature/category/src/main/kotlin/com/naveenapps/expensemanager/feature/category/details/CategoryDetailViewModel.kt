@@ -11,8 +11,8 @@ import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens.CategoryDetails.KEY_CATEGORY_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -37,7 +37,7 @@ class CategoryDetailViewModel @Inject constructor(
     val categoryTransactions = _categoryTransactions.asStateFlow()
 
     init {
-        savedStateHandle.get<String>(KEY_CATEGORY_ID)?.let {
+        savedStateHandle.get<String>(ExpenseManagerArgsNames.ID)?.let {
             combine(
                 getCurrencyUseCase.invoke(),
                 findCategoryByIdFlowUseCase.invoke(it),
@@ -82,17 +82,17 @@ class CategoryDetailViewModel @Inject constructor(
     }
 
     fun openCategoryEditScreen() {
-        val categoryId = savedStateHandle.get<String>(KEY_CATEGORY_ID)
+        val categoryId = savedStateHandle.get<String>(ExpenseManagerArgsNames.ID)
         categoryId ?: return
 
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate.createRoute(categoryId),
+            ExpenseManagerScreens.CategoryCreate(categoryId),
         )
     }
 
     fun openTransactionCreateScreen(transactionId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
+            ExpenseManagerScreens.TransactionCreate(transactionId),
         )
     }
 

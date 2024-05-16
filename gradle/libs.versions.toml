@@ -1,30 +1,30 @@
 [versions]
-accompanist = "0.32.0"
+accompanist = "0.34.0"
 androidDesugarJdkLibs = "2.0.4"
-androidGradlePlugin = "8.3.0"
-androidxActivity = "1.8.2"
+androidGradlePlugin = "8.3.2"
+androidxActivity = "1.9.0"
 androidxAppCompat = "1.6.1"
-androidxMaterial = "1.11.0"
+androidxMaterial = "1.12.0"
 androidxBrowser = "1.7.0"
-androidxComposeBom = "2024.02.02"
-androidxComposeCompiler = "1.5.7"
+androidxComposeBom = "2024.05.00"
+androidxComposeCompiler = "1.5.13"
 androidxComposeRuntimeTracing = "1.0.0-beta01"
 material3 = "1.2.1"
-androidxCore = "1.12.0"
+androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
-androidxDataStore = "1.0.0"
+androidxDataStore = "1.1.1"
 androidxEspresso = "3.5.1"
 androidxHiltNavigationCompose = "1.2.0"
 androidxLifecycle = "2.7.0"
-androidxMacroBenchmark = "1.2.3"
-benchmark = "1.2.3"
+androidxMacroBenchmark = "1.2.4"
+benchmark = "1.2.4"
 androidxMetrics = "1.0.0-beta01"
-androidxNavigation = "2.7.7"
+androidxNavigation = "2.8.0-beta01"
 androidxProfileinstaller = "1.3.1"
 androidxSplashScreen = "1.0.1"
 androidxStartup = "1.1.1"
 androidxTestArchCore = "2.2.0"
-androidxTestCore = "1.6.0-alpha05"
+androidxTestCore = "1.6.0-alpha06"
 androidxTestExt = "1.1.5"
 androidxTestRules = "1.5.0"
 androidxTestRunner = "1.5.2"
@@ -32,24 +32,25 @@ androidxTracing = "1.2.0"
 androidxUiAutomator = "2.3.0"
 androidxWindowManager = "1.2.0"
 androidxWork = "2.9.0"
-firebaseBom = "32.7.3"
+firebaseBom = "33.0.0"
 firebaseCrashlyticsPlugin = "2.9.9"
 firebasePerfPlugin = "1.4.2"
+firebaseDistribution = "5.0.0"
 googleOss = "17.0.1"
 opencsv = "4.6"
 review = "2.0.1"
 googleOssPlugin = "0.10.6"
 spotless = "6.23.0"
-hilt = "2.49"
+hilt = "2.51"
 hiltExt = "1.2.0"
 jacoco = "0.8.8"
 junit4 = "4.13.2"
-kotlin = "1.9.21"
-kotlinxCoroutines = "1.7.3"
+kotlin = "1.9.23"
+kotlinxCoroutines = "1.8.0"
 kotlinxDatetime = "0.4.1"
-kotlinxSerializationJson = "1.6.0"
-ksp = "1.9.21-1.0.16"
-lint = "31.3.0"
+kotlinxSerializationJson = "1.6.3"
+ksp = "1.9.23-1.0.20"
+lint = "31.4.0"
 okhttp = "4.12.0"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
@@ -68,6 +69,11 @@ google-services = "4.4.1"
 country-compose = "1.1.1"
 backup-restore = "1.0.0-beta13"
 baselineprofile = "1.2.2"
+gson = "2.10.1"
+sain = "2.0.2"
+uiGraphicsAndroid = "1.6.7"
+pdf-viewer = "3.2.0-beta.1"
+dependency-analysis = "1.27.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -115,6 +121,10 @@ androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "
 androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
 androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxUiAutomator" }
 androidx-tracing-ktx = { group = "androidx.tracing", name = "tracing-ktx", version.ref = "androidxTracing" }
+androidx-navigation = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "androidxNavigation" }
+androidx-navigation-ui = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "androidxNavigation" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation" }
+androidx-navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "androidxNavigation" }
 androidx-window-manager = { module = "androidx.window:window", version.ref = "androidxWindowManager" }
 androidx-work-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWork" }
 androidx-work-testing = { group = "androidx.work", name = "work-testing", version.ref = "androidxWork" }
@@ -178,6 +188,7 @@ android-library = { id = "com.android.library", version.ref = "androidGradlePlug
 android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }
+firebase-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseDistribution" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
@@ -189,5 +200,4 @@ org-jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.re
 play-publish = { id = "com.github.triplet.play", version.ref = "play-publish" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-
-
+dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }

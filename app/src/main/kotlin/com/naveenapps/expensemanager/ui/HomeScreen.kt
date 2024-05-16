@@ -57,7 +57,7 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScr
 fun HomePageNavHostContainer(
     backupRepository: BackupRepository,
     navHostController: NavHostController,
-    landingScreen: String,
+    landingScreen: ExpenseManagerScreens,
 ) {
     NavHost(
         navController = navHostController,
@@ -72,85 +72,67 @@ fun HomePageNavHostContainer(
 fun NavGraphBuilder.expenseManagerNavigation(
     backupRepository: BackupRepository
 ) {
-    composable(route = ExpenseManagerScreens.Onboarding.route) {
+    composable<ExpenseManagerScreens.Onboarding> {
         OnboardingScreen()
     }
-    composable(ExpenseManagerScreens.Home.route) {
+    composable<ExpenseManagerScreens.Home> {
         HomeScreen()
     }
-    composable(ExpenseManagerScreens.CategoryList.route) {
+    composable<ExpenseManagerScreens.CategoryList> {
         CategoryListScreen()
     }
-    composable(
-        route = ExpenseManagerScreens.CategoryCreate.name,
-        arguments = ExpenseManagerScreens.CategoryCreate.navArguments,
-    ) {
+    composable<ExpenseManagerScreens.CategoryCreate> {
         CategoryCreateScreen()
     }
-    composable(
-        route = ExpenseManagerScreens.CategoryDetails.name,
-        arguments = ExpenseManagerScreens.CategoryDetails.navArguments,
-    ) {
+    composable<ExpenseManagerScreens.CategoryDetails> {
         CategoryDetailScreen()
     }
-    composable(ExpenseManagerScreens.TransactionList.route) {
+    composable<ExpenseManagerScreens.TransactionList> {
         TransactionListScreen()
     }
-    composable(
-        route = ExpenseManagerScreens.TransactionCreate.name,
-        arguments = ExpenseManagerScreens.TransactionCreate.navArguments,
-    ) {
+    composable<ExpenseManagerScreens.TransactionCreate> {
         TransactionCreateScreen()
     }
-    composable(ExpenseManagerScreens.AccountList.route) {
+    composable<ExpenseManagerScreens.AccountList> {
         AccountListScreen()
     }
-    composable(
-        route = ExpenseManagerScreens.AccountCreate.name,
-        arguments = ExpenseManagerScreens.AccountCreate.navArguments,
-    ) {
+    composable<ExpenseManagerScreens.AccountCreate> {
         AccountCreateScreen()
     }
-    composable(ExpenseManagerScreens.BudgetList.route) {
+    composable<ExpenseManagerScreens.BudgetList> {
         BudgetListScreen()
     }
-    composable(
-        route = ExpenseManagerScreens.BudgetCreate.name,
-        arguments = ExpenseManagerScreens.BudgetCreate.navArguments,
-    ) {
+    composable<ExpenseManagerScreens.BudgetCreate> {
         BudgetCreateScreen()
     }
-    composable(
-        route = ExpenseManagerScreens.BudgetDetails.name,
-        arguments = ExpenseManagerScreens.BudgetDetails.navArguments,
-    ) {
+    composable<ExpenseManagerScreens.BudgetDetails> {
         BudgetDetailScreen()
     }
-    composable(ExpenseManagerScreens.AnalysisScreen.route) {
+    composable<ExpenseManagerScreens.AnalysisScreen> {
         AnalysisScreen()
     }
-    composable(ExpenseManagerScreens.Settings.route) {
+    composable<ExpenseManagerScreens.Settings> {
         SettingsScreen()
     }
-    composable(ExpenseManagerScreens.ExportScreen.route) {
+    composable<ExpenseManagerScreens.ExportScreen> {
         ExportScreen()
     }
-    composable(ExpenseManagerScreens.ReminderScreen.route) {
+    composable<ExpenseManagerScreens.ReminderScreen> {
         ReminderScreen()
     }
-    composable(ExpenseManagerScreens.CurrencyCustomiseScreen.route) {
+    composable<ExpenseManagerScreens.CurrencyCustomiseScreen> {
         CurrencyCustomiseScreen()
     }
-    composable(ExpenseManagerScreens.CategoryTransaction.route) {
+    composable<ExpenseManagerScreens.CategoryTransaction> {
         CategoryTransactionTabScreen()
     }
-    composable(ExpenseManagerScreens.AboutUsScreen.route) {
+    composable<ExpenseManagerScreens.AboutUsScreen> {
         AboutScreen()
     }
-    composable(ExpenseManagerScreens.AdvancedSettingsScreen.route) {
+    composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
         AdvancedSettingsScreen(backupRepository = backupRepository)
     }
-    composable(ExpenseManagerScreens.AccountReOrderScreen.route) {
+    composable<ExpenseManagerScreens.AccountReOrderScreen> {
         AccountReOrderScreen()
     }
 }

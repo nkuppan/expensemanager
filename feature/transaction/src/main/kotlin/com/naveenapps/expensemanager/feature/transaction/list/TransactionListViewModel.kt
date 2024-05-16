@@ -69,7 +69,7 @@ class TransactionListViewModel @Inject constructor(
 
     fun openCreateScreen(transactionId: String? = null) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(transactionId ?: ""),
+            ExpenseManagerScreens.TransactionCreate(transactionId),
         )
     }
 

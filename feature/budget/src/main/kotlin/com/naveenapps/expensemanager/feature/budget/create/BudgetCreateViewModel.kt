@@ -25,7 +25,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
-import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.feature.budget.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -131,7 +131,7 @@ class BudgetCreateViewModel @Inject constructor(
     private var currency: Currency? = null
 
     init {
-        readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerScreens.BudgetCreate.KEY_BUDGET_ID))
+        readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
 
         getCurrencyUseCase.invoke().onEach { updatedCurrency ->
             currency = updatedCurrency

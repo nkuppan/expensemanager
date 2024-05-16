@@ -42,7 +42,7 @@ class CategoryListViewModel @Inject constructor(
 
     fun openCreateScreen(categoryId: String?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate.createRoute(categoryId ?: ""),
+            ExpenseManagerScreens.CategoryCreate(categoryId),
         )
     }
 

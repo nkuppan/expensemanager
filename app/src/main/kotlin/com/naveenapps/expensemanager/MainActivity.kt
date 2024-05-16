@@ -86,7 +86,7 @@ internal class MainActivity : ComponentActivity() {
                     appComposeNavigator,
                     backupRepository,
                     isDarkTheme,
-                    ExpenseManagerScreens.Home.name,
+                    ExpenseManagerScreens.Home,
                     /*if (onBoardingStatus == true) {
                         ExpenseManagerScreens.Home.name
                     } else {

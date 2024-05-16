@@ -60,15 +60,11 @@ class OnboardingViewModel @Inject constructor(
     fun openHome() {
         viewModelScope.launch {
             setOnboardingStatusUseCase.invoke(true)
-            composeNavigator.navigateAndClearBackStack(ExpenseManagerScreens.Home.route)
+            composeNavigator.navigateAndClearBackStack(ExpenseManagerScreens.Home)
         }
     }
 
     fun openAccountCreateScreen(accountId: String?) {
-        composeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute(
-                accountId ?: "",
-            ),
-        )
+        composeNavigator.navigate(ExpenseManagerScreens.AccountCreate(accountId))
     }
 }

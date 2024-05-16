@@ -6,12 +6,11 @@ import javax.inject.Inject
 
 class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator() {
 
-    override fun navigate(route: String, optionsBuilder: (NavOptionsBuilder.() -> Unit)?) {
-        val options = optionsBuilder?.let { navOptions(it) }
-        navigationCommands.tryEmit(ComposeNavigationCommand.NavigateToRoute(route, options))
+    override fun navigate(route: Any) {
+        navigationCommands.tryEmit(ComposeNavigationCommand.NavigateTo(route))
     }
 
-    override fun navigateAndClearBackStack(route: String) {
+    override fun navigateAndClearBackStack(route: Any) {
         navigationCommands.tryEmit(
             ComposeNavigationCommand.NavigateToRoute(
                 route,
@@ -30,7 +29,7 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
         navigationCommands.tryEmit(ComposeNavigationCommand.PopUpToRoute(route, inclusive))
     }
 
-    override fun <T> navigateBackWithResult(
+    override fun <T> navigateUpWithResult(
         key: String,
         result: T,
         route: String?,
@@ -41,6 +40,21 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
                 result = result,
                 route = route,
             ),
+        )
+    }
+
+    override fun <T> navigateBackWithResult(key: String, result: T) {
+        navigationCommands.tryEmit(
+            ComposeNavigationCommand.NavigateBackWithResult(
+                key = key,
+                result = result,
+            ),
+        )
+    }
+
+    override fun navigateBackWithMultipleResult(values: MutableMap<String, Any>) {
+        navigationCommands.tryEmit(
+            ComposeNavigationCommand.NavigateBackWithMultipleResult(values = values)
         )
     }
 }

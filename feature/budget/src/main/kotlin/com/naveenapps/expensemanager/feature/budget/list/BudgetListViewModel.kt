@@ -34,7 +34,7 @@ class BudgetListViewModel @Inject constructor(
 
     fun openCreateScreen(model: BudgetUiModel? = null) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetCreate.createRoute(model?.id ?: ""),
+            ExpenseManagerScreens.BudgetCreate(model?.id),
         )
     }
 

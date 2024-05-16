@@ -65,7 +65,7 @@ class AccountListViewModel @Inject constructor(
 
     fun openCreateScreen(account: AccountUiModel?) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute(account?.id ?: ""),
+            ExpenseManagerScreens.AccountCreate(account?.id),
         )
     }
 
@@ -74,6 +74,6 @@ class AccountListViewModel @Inject constructor(
     }
 
     fun openAccountReOrderScreen() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.AccountReOrderScreen.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.AccountReOrderScreen)
     }
 }

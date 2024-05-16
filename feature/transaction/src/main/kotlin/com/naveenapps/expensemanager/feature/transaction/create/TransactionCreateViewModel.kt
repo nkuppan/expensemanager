@@ -29,6 +29,7 @@ import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -180,11 +181,7 @@ class TransactionCreateViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
 
-        readInfo(
-            savedStateHandle.get<String>(
-                ExpenseManagerScreens.TransactionCreate.KEY_TRANSACTION_ID,
-            ),
-        )
+        readInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
     }
 
     private fun readInfo(transactionId: String?) {
@@ -343,13 +340,13 @@ class TransactionCreateViewModel @Inject constructor(
 
     fun openCategoryCreate() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate.createRoute(""),
+            ExpenseManagerScreens.CategoryCreate(""),
         )
     }
 
     fun openAccountCreate() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate.createRoute(""),
+            ExpenseManagerScreens.AccountCreate(""),
         )
     }
 

@@ -13,7 +13,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
-import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -80,9 +80,7 @@ class CategoryCreateViewModel @Inject constructor(
 
     init {
         readCategoryInfo(
-            savedStateHandle.get<String>(
-                ExpenseManagerScreens.CategoryCreate.KEY_CATEGORY_ID,
-            ),
+            savedStateHandle.get<String>(ExpenseManagerArgsNames.ID),
         )
     }
 

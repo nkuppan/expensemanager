@@ -55,13 +55,13 @@ class CategoryTransactionListViewModel @Inject constructor(
 
     fun openTransactionCreatePage() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.TransactionCreate.createRoute(""),
+            ExpenseManagerScreens.TransactionCreate(null),
         )
     }
 
     fun openCategoryDetailsPage(categoryTransaction: CategoryTransaction) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryDetails.createRoute(categoryTransaction.category.id),
+            ExpenseManagerScreens.CategoryDetails(categoryTransaction.category.id),
         )
     }
 
@@ -70,6 +70,6 @@ class CategoryTransactionListViewModel @Inject constructor(
     }
 
     fun openCategoryList() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryList.route)
+        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryList)
     }
 }

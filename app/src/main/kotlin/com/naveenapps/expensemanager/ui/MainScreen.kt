@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.compose.rememberNavController
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 
 @Composable
@@ -12,7 +13,7 @@ fun MainScreen(
     composeNavigator: AppComposeNavigator,
     backupRepository: BackupRepository,
     isDarkTheme: Boolean,
-    landingScreen: String,
+    landingScreen: ExpenseManagerScreens,
 ) {
     ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
         val navHostController = rememberNavController()
