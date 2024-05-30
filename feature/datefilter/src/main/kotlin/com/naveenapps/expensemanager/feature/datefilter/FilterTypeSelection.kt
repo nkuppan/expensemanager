@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
@@ -36,8 +35,12 @@ import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMo
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
+import java.util.Date
 
 @Composable
 fun FilterTypeSelection(
@@ -224,7 +227,6 @@ fun FilterChipView(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun InputChipView(
     label: String,
     selected: Boolean,
@@ -263,10 +265,39 @@ fun InputChipView(
 @Composable
 fun FilterTypeSelectionPreview() {
     ExpenseManagerTheme {
-        FilterTypeSelection(
+        FilterSelectionView(
             modifier = Modifier.fillMaxSize(),
-            applyChanges = {
-            },
+            transactionTypes = TransactionType.entries,
+            selectedTransactionTypes = emptyList(),
+            accounts = listOf(getAccount(1), getAccount(2)),
+            selectedAccounts = listOf(),
+            categories = listOf(getCategory(1), getCategory(2)),
+            selectedCategories = listOf(),
+            onTransactionTypeSelection = {},
+            onAccountSelection = {},
+            onCategorySelection = {},
+            applyChanges = {},
         )
     }
+}
+
+fun getAccount(index: Int): AccountUiModel {
+    return AccountUiModel(
+        id = index.toString(),
+        name = "Account 1",
+        storedIcon = StoredIcon("", ""),
+        amount = Amount(0.0, "$ 0.0", currency = null),
+        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500
+    )
+}
+
+fun getCategory(index: Int): Category {
+    return Category(
+        id = index.toString(),
+        name = "Account 1",
+        type = CategoryType.INCOME,
+        storedIcon = StoredIcon("", ""),
+        createdOn = Date(),
+        updatedOn = Date(),
+    )
 }

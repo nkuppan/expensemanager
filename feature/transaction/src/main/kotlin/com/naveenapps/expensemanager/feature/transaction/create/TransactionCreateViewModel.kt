@@ -340,13 +340,13 @@ class TransactionCreateViewModel @Inject constructor(
 
     fun openCategoryCreate() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate(""),
+            ExpenseManagerScreens.CategoryCreate(null),
         )
     }
 
     fun openAccountCreate() {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate(""),
+            ExpenseManagerScreens.AccountCreate(null),
         )
     }
 

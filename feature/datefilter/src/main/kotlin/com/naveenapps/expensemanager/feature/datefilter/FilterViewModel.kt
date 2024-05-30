@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,49 +39,56 @@ class FilterViewModel @Inject constructor(
     private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase,
 ) : ViewModel() {
 
-    private val _date = MutableStateFlow("")
-    val date = _date.asStateFlow()
-
-    private val _showForward = MutableStateFlow(true)
-    val showForward = _showForward.asStateFlow()
-
-    private val _showBackward = MutableStateFlow(true)
-    val showBackward = _showBackward.asStateFlow()
-
-    private var dateRangeType = DateRangeType.THIS_MONTH
-
-    private val _selectedTransactionTypes = MutableStateFlow<List<TransactionType>>(emptyList())
-    val selectedTransactionTypes = _selectedTransactionTypes.asStateFlow()
-
-    private val _selectedAccounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
-    val selectedAccounts = _selectedAccounts.asStateFlow()
-
-    private val _selectedCategories = MutableStateFlow<List<Category>>(emptyList())
-    val selectedCategories = _selectedCategories.asStateFlow()
+    private val _filterState = MutableStateFlow(
+        FilterState(
+            date = "",
+            dateRangeType = DateRangeType.THIS_MONTH,
+            selectedTransactionTypes = emptyList(),
+            selectedAccounts = emptyList(),
+            selectedCategories = emptyList(),
+            showBackward = true,
+            showForward = true,
+            showDateFilter = false,
+            showTypeFilter = false
+        )
+    )
+    val filterState = _filterState.asStateFlow()
 
     init {
-        getSelectedTransactionTypesUseCase.invoke().onEach {
-            _selectedTransactionTypes.value = it
+        getSelectedTransactionTypesUseCase.invoke().onEach { types ->
+            _filterState.update {
+                it.copy(
+                    selectedTransactionTypes = types
+                )
+            }
         }.launchIn(viewModelScope)
 
-        getSelectedAccountUseCase.invoke().onEach {
-            _selectedAccounts.value = it?.map { account ->
-                account.toAccountUiModel(Amount(amount = account.amount))
-            } ?: emptyList()
+        getSelectedAccountUseCase.invoke().onEach { accounts ->
+            _filterState.update {
+                it.copy(
+                    selectedAccounts = accounts?.map { account ->
+                        account.toAccountUiModel(Amount(amount = account.amount))
+                    } ?: emptyList()
+                )
+            }
         }.launchIn(viewModelScope)
 
-        getSelectedCategoriesUseCase.invoke().onEach {
-            _selectedCategories.value = it
+        getSelectedCategoriesUseCase.invoke().onEach { categories ->
+            _filterState.update {
+                it.copy(selectedCategories = categories)
+            }
         }.launchIn(viewModelScope)
 
         getDateRangeUseCase.invoke().onEach {
-            dateRangeType = it.type
+            val dateRangeType = it.type
 
-            _date.value = if (it.type == DateRangeType.ALL) {
+            val date = if (it.type == DateRangeType.ALL) {
                 it.name
             } else {
                 it.description
             }
+            var showForward = false
+            var showBackward = false
 
             when (it.type) {
                 DateRangeType.TODAY,
@@ -88,53 +96,87 @@ class FilterViewModel @Inject constructor(
                 DateRangeType.THIS_MONTH,
                 DateRangeType.THIS_YEAR,
                 -> {
-                    _showForward.value = true
-                    _showBackward.value = true
+                    showForward = true
+                    showBackward = true
                 }
 
                 DateRangeType.ALL,
                 DateRangeType.CUSTOM,
                 -> {
-                    _showForward.value = false
-                    _showBackward.value = false
+                    showForward = false
+                    showBackward = false
                 }
+            }
+
+            _filterState.update { state ->
+                state.copy(
+                    showForward = showForward,
+                    showBackward = showBackward,
+                    dateRangeType = dateRangeType,
+                    date = date
+                )
             }
         }.launchIn(viewModelScope)
     }
 
-    fun moveDateRangeForward() {
+    private fun moveDateRangeForward() {
         viewModelScope.launch {
-            moveDateRangeForwardUseCase.invoke(dateRangeType)
+            moveDateRangeForwardUseCase.invoke(_filterState.value.dateRangeType)
         }
     }
 
-    fun moveDateRangeBackward() {
+    private fun moveDateRangeBackward() {
         viewModelScope.launch {
-            moveDateRangeBackwardUseCase.invoke(dateRangeType)
+            moveDateRangeBackwardUseCase.invoke(_filterState.value.dateRangeType)
         }
     }
 
-    fun removeTransaction(transactionType: TransactionType) {
+    private fun removeTransaction(transactionType: TransactionType) {
         viewModelScope.launch {
             updateSelectedTransactionTypesUseCase.invoke(
-                _selectedTransactionTypes.value.addOrRemove(transactionType),
+                _filterState.value.selectedTransactionTypes.addOrRemove(transactionType),
             )
         }
     }
 
-    fun removeAccount(accountUiModel: AccountUiModel) {
+    private fun removeAccount(accountUiModel: AccountUiModel) {
         viewModelScope.launch {
             updateSelectedAccountUseCase.invoke(
-                _selectedAccounts.value.addOrRemove(accountUiModel).map { it.id },
+                _filterState.value.selectedAccounts.addOrRemove(accountUiModel).map { it.id },
             )
         }
     }
 
-    fun removeCategory(category: Category) {
+    private fun removeCategory(category: Category) {
         viewModelScope.launch {
             updateSelectedCategoryUseCase.invoke(
-                _selectedCategories.value.addOrRemove(category).map { it.id },
+                _filterState.value.selectedCategories.addOrRemove(category).map { it.id },
             )
+        }
+    }
+
+    fun processAction(action: FilterAction) {
+        when (action) {
+            FilterAction.MoveDateBackward -> moveDateRangeBackward()
+            FilterAction.MoveDateForward -> moveDateRangeForward()
+            is FilterAction.RemoveAccount -> removeAccount(action.account)
+            is FilterAction.RemoveCategory -> removeCategory(action.category)
+            is FilterAction.RemoveTransactionType -> removeTransaction(action.transactionType)
+            FilterAction.ShowDateFilter -> {
+                _filterState.update { it.copy(showDateFilter = true) }
+            }
+
+            FilterAction.DismissDateFilter -> {
+                _filterState.update { it.copy(showDateFilter = false) }
+            }
+
+            FilterAction.ShowTypeFilter -> {
+                _filterState.update { it.copy(showTypeFilter = true) }
+            }
+
+            FilterAction.DismissTypeFilter -> {
+                _filterState.update { it.copy(showTypeFilter = false) }
+            }
         }
     }
 }

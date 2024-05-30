@@ -25,10 +25,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,10 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.model.AccountUiModel
-import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.core.model.TransactionType
-import kotlinx.coroutines.launch
+import com.naveenapps.expensemanager.core.model.DateRangeType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,27 +41,14 @@ fun FilterView(
     modifier: Modifier = Modifier,
     viewModel: FilterViewModel = hiltViewModel()
 ) {
+    val filterState by viewModel.filterState.collectAsState()
 
-    val date by viewModel.date.collectAsState()
-    val showForward by viewModel.showForward.collectAsState()
-    val showBackward by viewModel.showBackward.collectAsState()
-
-    val selectedTransactionTypes by viewModel.selectedTransactionTypes.collectAsState()
-    val selectedAccounts by viewModel.selectedAccounts.collectAsState()
-    val selectedCategories by viewModel.selectedCategories.collectAsState()
-
-    var showDateFilter by remember { mutableStateOf(false) }
-    var showAllFilter by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    if (showDateFilter) {
+    if (filterState.showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
-                scope.launch {
-                    showDateFilter = false
-                    bottomSheetState.hide()
-                }
+                viewModel.processAction(FilterAction.DismissDateFilter)
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp),
@@ -77,22 +57,16 @@ fun FilterView(
         ) {
             DateFilterSelectionView(
                 onComplete = {
-                    scope.launch {
-                        showDateFilter = false
-                        bottomSheetState.hide()
-                    }
+                    viewModel.processAction(FilterAction.DismissDateFilter)
                 }
             )
         }
     }
 
-    if (showAllFilter) {
+    if (filterState.showTypeFilter) {
         ModalBottomSheet(
             onDismissRequest = {
-                scope.launch {
-                    showAllFilter = false
-                    bottomSheetState.hide()
-                }
+                viewModel.processAction(FilterAction.DismissTypeFilter)
             },
             sheetState = bottomSheetState,
             windowInsets = WindowInsets(0.dp),
@@ -101,10 +75,7 @@ fun FilterView(
         ) {
             FilterTypeSelection(
                 applyChanges = {
-                    scope.launch {
-                        showAllFilter = false
-                        bottomSheetState.hide()
-                    }
+                    viewModel.processAction(FilterAction.DismissTypeFilter)
                 },
             )
         }
@@ -113,39 +84,21 @@ fun FilterView(
     Column(modifier = modifier) {
         FilterContentView(
             modifier = modifier,
-            showForward = showForward,
-            showBackward = showBackward,
-            date = date,
-            showBottomSheet = {
-                showDateFilter = true
-            },
-            onForwardClick = viewModel::moveDateRangeForward,
-            onBackwardClick = viewModel::moveDateRangeBackward,
-            onFilterClick = {
-                showAllFilter = true
-            },
+            filterState = filterState,
+            onAction = viewModel::processAction,
         )
         TypeFilter(
             modifier = Modifier.padding(horizontal = 16.dp),
-            selectedTransactionTypes = selectedTransactionTypes,
-            selectedAccounts = selectedAccounts,
-            selectedCategories = selectedCategories,
-            onTransactionTypeSelection = viewModel::removeTransaction,
-            onAccountSelection = viewModel::removeAccount,
-            onCategorySelection = viewModel::removeCategory,
+            filterState = filterState,
+            onAction = viewModel::processAction,
         )
     }
 }
 
 @Composable
 private fun FilterContentView(
-    showBackward: Boolean,
-    showForward: Boolean,
-    date: String,
-    showBottomSheet: () -> Unit,
-    onForwardClick: () -> Unit,
-    onBackwardClick: () -> Unit,
-    onFilterClick: () -> Unit,
+    filterState: FilterState,
+    onAction: (FilterAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier.fillMaxWidth()) {
@@ -155,7 +108,7 @@ private fun FilterContentView(
                 .align(Alignment.CenterVertically)
                 .height(40.dp)
                 .clickable {
-                    showBottomSheet.invoke()
+                    onAction.invoke(FilterAction.ShowDateFilter)
                 },
         ) {
             Icon(
@@ -169,15 +122,17 @@ private fun FilterContentView(
                 modifier = Modifier
                     .padding(start = 8.dp)
                     .align(Alignment.CenterVertically),
-                text = date,
+                text = filterState.date,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 style = MaterialTheme.typography.bodyMedium,
             )
         }
         IconButton(
-            onClick = onBackwardClick,
-            enabled = showBackward,
+            onClick = {
+                onAction.invoke(FilterAction.MoveDateBackward)
+            },
+            enabled = filterState.showBackward,
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -185,15 +140,19 @@ private fun FilterContentView(
             )
         }
         IconButton(
-            onClick = onForwardClick,
-            enabled = showForward,
+            onClick = {
+                onAction.invoke(FilterAction.MoveDateForward)
+            },
+            enabled = filterState.showForward,
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
             )
         }
-        IconButton(onClick = onFilterClick) {
+        IconButton(onClick = {
+            onAction.invoke(FilterAction.ShowTypeFilter)
+        }) {
             Icon(
                 imageVector = Icons.Default.FilterList,
                 contentDescription = null,
@@ -204,12 +163,8 @@ private fun FilterContentView(
 
 @Composable
 fun TypeFilter(
-    selectedTransactionTypes: List<TransactionType>,
-    selectedAccounts: List<AccountUiModel>,
-    selectedCategories: List<Category>,
-    onTransactionTypeSelection: (TransactionType) -> Unit,
-    onAccountSelection: (AccountUiModel) -> Unit,
-    onCategorySelection: (Category) -> Unit,
+    filterState: FilterState,
+    onAction: (FilterAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -218,22 +173,22 @@ fun TypeFilter(
             .horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        selectedTransactionTypes.forEach { type ->
+        filterState.selectedTransactionTypes.forEach { type ->
             InputChipView(
                 label = type.toCapitalize(),
                 selected = true,
             ) {
-                onTransactionTypeSelection.invoke(type)
+                onAction.invoke(FilterAction.RemoveTransactionType(type))
             }
         }
-        selectedAccounts.forEach { account ->
+        filterState.selectedAccounts.forEach { account ->
             InputChipView(account.name, true, iconName = account.storedIcon.name) {
-                onAccountSelection.invoke(account)
+                onAction.invoke(FilterAction.RemoveAccount(account))
             }
         }
-        selectedCategories.forEach { category ->
+        filterState.selectedCategories.forEach { category ->
             InputChipView(category.name, true, iconName = category.storedIcon.name) {
-                onCategorySelection.invoke(category)
+                onAction.invoke(FilterAction.RemoveCategory(category))
             }
         }
     }
@@ -245,23 +200,33 @@ fun FilterViewPreview() {
     ExpenseManagerTheme {
         Column {
             FilterContentView(
-                showBackward = false,
-                showForward = false,
-                date = "This Month (11/2023)",
-                showBottomSheet = {},
-                onForwardClick = {},
-                onBackwardClick = {},
-                onFilterClick = {},
+                filterState = FilterState(
+                    date = "This Month (11/2023)",
+                    showBackward = false,
+                    showForward = false,
+                    selectedTransactionTypes = emptyList(),
+                    selectedAccounts = emptyList(),
+                    selectedCategories = emptyList(),
+                    showDateFilter = false,
+                    showTypeFilter = false,
+                    dateRangeType = DateRangeType.ALL
+                ),
+                onAction = {},
                 modifier = Modifier.fillMaxWidth(),
             )
             FilterContentView(
-                showBackward = true,
-                showForward = true,
-                date = "This Month (11/2023)",
-                showBottomSheet = {},
-                onForwardClick = {},
-                onBackwardClick = {},
-                onFilterClick = {},
+                filterState = FilterState(
+                    date = "This Month (11/2023)",
+                    showBackward = false,
+                    showForward = false,
+                    selectedTransactionTypes = emptyList(),
+                    selectedAccounts = emptyList(),
+                    selectedCategories = emptyList(),
+                    showDateFilter = false,
+                    showTypeFilter = false,
+                    dateRangeType = DateRangeType.ALL
+                ),
+                onAction = {},
                 modifier = Modifier.fillMaxWidth(),
             )
         }

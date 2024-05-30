@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.datefilter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -114,9 +116,10 @@ private fun FilterTypesAndView(
     LazyColumn(modifier = modifier) {
         item {
             Text(
-                modifier = Modifier.padding(top = 12.dp, start = 12.dp, bottom = 8.dp),
+                modifier = Modifier.padding(top = 12.dp, start = 16.dp, bottom = 8.dp),
                 text = stringResource(id = R.string.date_filter).uppercase(),
                 style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Black,
             )
         }
         items(filterTypes) { filter ->
@@ -140,7 +143,7 @@ private fun FilterTypesAndView(
                                 .padding(4.dp)
                         },
                     )
-                    .padding(8.dp),
+                    .padding(12.dp),
             ) {
                 Column(
                     modifier = Modifier
@@ -154,7 +157,7 @@ private fun FilterTypesAndView(
                     if (filter.description.isNotBlank()) {
                         Text(
                             text = filter.description,
-                            style = MaterialTheme.typography.bodyMedium,
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
                 }
@@ -177,11 +180,10 @@ private fun FilterTypesAndView(
                         modifier = Modifier
                             .padding(top = 8.dp, start = 16.dp, bottom = 8.dp, end = 16.dp)
                             .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         ClickableTextField(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(end = 8.dp),
+                            modifier = Modifier.weight(1f),
                             value = fromDate.value.toCompleteDateWithDate(),
                             label = R.string.from_date,
                             leadingIcon = Icons.Default.EditCalendar,
@@ -190,9 +192,7 @@ private fun FilterTypesAndView(
                             },
                         )
                         ClickableTextField(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 8.dp),
+                            modifier = Modifier.weight(1f),
                             value = toDate.value.toCompleteDateWithDate(),
                             label = R.string.to_date,
                             leadingIcon = Icons.Default.EditCalendar,
@@ -205,13 +205,9 @@ private fun FilterTypesAndView(
             }
         }
         item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
-            ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
                 Row(
-                    modifier = modifier
-                        .align(Alignment.End),
+                    modifier = modifier.align(Alignment.End),
                 ) {
                     TextButton(onClick = complete) {
                         Text(text = stringResource(id = R.string.cancel).uppercase())

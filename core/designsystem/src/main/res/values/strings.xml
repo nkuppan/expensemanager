@@ -16,4 +16,6 @@
 
     <string name="delete">Delete</string>
     <string name="delete_item_message">Do you really want to delete this item?</string>
+    <string name="yes_delete">Yes, Delete</string>
+    <string name="no_keep">No, Keep</string>
 </resources>
