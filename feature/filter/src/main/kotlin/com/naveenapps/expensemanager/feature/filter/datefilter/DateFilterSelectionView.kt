@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.datefilter
+package com.naveenapps.expensemanager.feature.filter.datefilter
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,6 +40,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGCol
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
+import com.naveenapps.expensemanager.feature.filter.R
 import java.util.Date
 
 enum class DateTypeSelection {
@@ -116,7 +117,7 @@ private fun FilterTypesAndView(
     LazyColumn(modifier = modifier) {
         item {
             Text(
-                modifier = Modifier.padding(top = 12.dp, start = 16.dp, bottom = 8.dp),
+                modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
                 text = stringResource(id = R.string.date_filter).uppercase(),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Black,
@@ -126,9 +127,6 @@ private fun FilterTypesAndView(
             val isSelected = selectedFilterType.value == filter.type
             Row(
                 modifier = Modifier
-                    .clickable {
-                        selectedFilterType.onValueChange?.invoke(filter.type)
-                    }
                     .fillMaxWidth()
                     .then(
                         if (isSelected) {
@@ -143,6 +141,9 @@ private fun FilterTypesAndView(
                                 .padding(4.dp)
                         },
                     )
+                    .clickable {
+                        selectedFilterType.onValueChange?.invoke(filter.type)
+                    }
                     .padding(12.dp),
             ) {
                 Column(

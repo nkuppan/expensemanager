@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.datefilter
+package com.naveenapps.expensemanager.feature.filter
 
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category

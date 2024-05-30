@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.datefilter
+package com.naveenapps.expensemanager.feature.filter.type
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,6 +41,7 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.feature.filter.R
 import java.util.Date
 
 @Composable
@@ -54,25 +56,25 @@ fun FilterTypeSelection(
         applyChanges.invoke()
     }
 
-    val transactionTypes by viewModel.transactionTypes.collectAsState()
-    val accounts by viewModel.accounts.collectAsState()
-    val categories by viewModel.categories.collectAsState()
-
-    val selectedTransactionTypes by viewModel.selectedTransactionTypes.collectAsState()
-    val selectedAccounts by viewModel.selectedAccounts.collectAsState()
-    val selectedCategories by viewModel.selectedCategories.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     FilterSelectionView(
         modifier,
-        transactionTypes = transactionTypes,
-        selectedTransactionTypes = selectedTransactionTypes,
-        accounts = accounts,
-        selectedAccounts = selectedAccounts,
-        categories = categories,
-        selectedCategories = selectedCategories,
-        onTransactionTypeSelection = viewModel::setTransactionTypes,
-        onAccountSelection = viewModel::setAccount,
-        onCategorySelection = viewModel::setCategory,
+        transactionTypes = state.transactionTypes,
+        selectedTransactionTypes = state.selectedTransactionTypes,
+        accounts = state.accounts,
+        selectedAccounts = state.selectedAccounts,
+        categories = state.categories,
+        selectedCategories = state.selectedCategories,
+        onTransactionTypeSelection = {
+            viewModel.processAction(FilterTypeAction.SelectTransactionType(it))
+        },
+        onAccountSelection = {
+            viewModel.processAction(FilterTypeAction.SelectAccount(it))
+        },
+        onCategorySelection = {
+            viewModel.processAction(FilterTypeAction.SelectCategory(it))
+        },
         applyChanges = viewModel::saveChanges,
     )
 }
@@ -93,9 +95,10 @@ private fun FilterSelectionView(
 ) {
     Column(modifier = modifier) {
         Text(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
             text = stringResource(id = R.string.transaction_type),
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Black,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             TransactionTypeFilter(
@@ -108,6 +111,7 @@ private fun FilterSelectionView(
             modifier = Modifier.padding(16.dp),
             text = stringResource(id = R.string.accounts),
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Black,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             AccountFilter(accounts, selectedAccounts, onAccountSelection)
@@ -116,6 +120,7 @@ private fun FilterSelectionView(
             modifier = Modifier.padding(16.dp),
             text = stringResource(id = R.string.categories),
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Black,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             CategoryFilter(categories, selectedCategories, onCategorySelection)

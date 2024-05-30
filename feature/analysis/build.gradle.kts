@@ -10,7 +10,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:datefilter"))
+    implementation(project(":feature:filter"))
 
     implementation(libs.vico.compose)
     implementation(libs.vico.core)

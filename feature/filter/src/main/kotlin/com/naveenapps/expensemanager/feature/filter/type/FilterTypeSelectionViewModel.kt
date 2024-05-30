@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.datefilter
+package com.naveenapps.expensemanager.feature.filter.type
 
 import androidx.compose.ui.util.fastAny
 import androidx.lifecycle.ViewModel
@@ -42,72 +42,89 @@ class FilterTypeSelectionViewModel @Inject constructor(
     private val _saved = MutableSharedFlow<Boolean>()
     val saved = _saved.asSharedFlow()
 
-    private val _transactionTypes = MutableStateFlow(TransactionType.entries)
-    val transactionTypes = _transactionTypes.asStateFlow()
-
-    private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
-    val accounts = _accounts.asStateFlow()
-
-    private val _categories = MutableStateFlow<List<Category>>(emptyList())
-    val categories = _categories.asStateFlow()
-
-    private val _selectedTransactionTypes = MutableStateFlow<List<TransactionType>>(emptyList())
-    val selectedTransactionTypes = _selectedTransactionTypes.asStateFlow()
-
-    private val _selectedAccounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
-    val selectedAccounts = _selectedAccounts.asStateFlow()
-
-    private val _selectedCategories = MutableStateFlow<List<Category>>(emptyList())
-    val selectedCategories = _selectedCategories.asStateFlow()
+    private val _state = MutableStateFlow<FilterTypeState>(
+        FilterTypeState(
+            selectedAccounts = emptyList(),
+            accounts = emptyList(),
+            selectedCategories = emptyList(),
+            categories = emptyList(),
+            selectedTransactionTypes = emptyList(),
+            transactionTypes = TransactionType.entries
+        )
+    )
+    val state = _state.asStateFlow()
 
     init {
-        getSelectedTransactionTypesUseCase.invoke().onEach {
-            _selectedTransactionTypes.value = it
+        getSelectedTransactionTypesUseCase.invoke().onEach { types ->
+            _state.update { it.copy(selectedTransactionTypes = types) }
         }.launchIn(viewModelScope)
 
-        getSelectedAccountUseCase.invoke().onEach {
-            _selectedAccounts.value = it?.map { account ->
-                account.toAccountUiModel(Amount(amount = account.amount))
-            } ?: emptyList()
+        getSelectedAccountUseCase.invoke().onEach { accounts ->
+            _state.update {
+                it.copy(
+                    selectedAccounts = accounts?.map { account ->
+                        account.toAccountUiModel(Amount(amount = account.amount))
+                    } ?: emptyList()
+                )
+            }
         }.launchIn(viewModelScope)
 
-        getSelectedCategoriesUseCase.invoke().onEach {
-            _selectedCategories.value = it
+        getSelectedCategoriesUseCase.invoke().onEach { categories ->
+            _state.update { it.copy(selectedCategories = categories) }
         }.launchIn(viewModelScope)
 
-        getAllCategoryUseCase.invoke().onEach {
-            _categories.value = it
+        getAllCategoryUseCase.invoke().onEach { categories ->
+            _state.update { it.copy(categories = categories) }
         }.launchIn(viewModelScope)
 
-        getAllAccountsUseCase.invoke().onEach { accountList ->
-            _accounts.value = accountList.map { account ->
-                account.toAccountUiModel(Amount(amount = account.amount))
+        getAllAccountsUseCase.invoke().onEach { accounts ->
+            _state.update {
+                it.copy(
+                    accounts = accounts.map { account ->
+                        account.toAccountUiModel(Amount(amount = account.amount))
+                    }
+                )
             }
         }.launchIn(viewModelScope)
     }
 
     fun setTransactionTypes(type: TransactionType) {
-        _selectedTransactionTypes.update { it.addOrRemove(type) }
+        _state.update {
+            it.copy(selectedTransactionTypes = it.selectedTransactionTypes.addOrRemove(type))
+        }
     }
 
     fun setAccount(account: AccountUiModel) {
-        _selectedAccounts.update { it.addOrRemove(account) }
+        _state.update {
+            it.copy(selectedAccounts = it.selectedAccounts.addOrRemove(account))
+        }
     }
+
     fun setCategory(category: Category) {
-        _selectedCategories.update { it.addOrRemove(category) }
+        _state.update {
+            it.copy(selectedCategories = it.selectedCategories.addOrRemove(category))
+        }
     }
 
     fun saveChanges() {
         viewModelScope.launch {
-            val transactionTypes = _selectedTransactionTypes.value
-            val selectedAccount = _selectedAccounts.value.map { it.id }
-            val selectedCategories = _selectedCategories.value.map { it.id }
+            val transactionTypes = state.value.selectedTransactionTypes
+            val selectedAccount = state.value.selectedAccounts.map { it.id }
+            val selectedCategories = state.value.selectedCategories.map { it.id }
 
             updateSelectedTransactionTypesUseCase(transactionTypes)
             updateSelectedAccountUseCase(selectedAccount)
             updateSelectedCategoryUseCase(selectedCategories)
 
             _saved.emit(true)
+        }
+    }
+
+    fun processAction(action: FilterTypeAction) {
+        when (action) {
+            is FilterTypeAction.SelectAccount -> setAccount(action.account)
+            is FilterTypeAction.SelectCategory -> setCategory(action.category)
+            is FilterTypeAction.SelectTransactionType -> setTransactionTypes(action.transactionType)
         }
     }
 }

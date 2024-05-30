@@ -15,7 +15,7 @@
     <string name="total">Total</string>
 
     <string name="delete">Delete</string>
-    <string name="delete_item_message">Do you really want to delete this item?</string>
+    <string name="delete_item_message">Are you sure want to delete this item? Deleted item cannot retrieved.</string>
     <string name="yes_delete">Yes, Delete</string>
     <string name="no_keep">No, Keep</string>
 </resources>

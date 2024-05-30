@@ -52,7 +52,7 @@ import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiMode
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
-import com.naveenapps.expensemanager.feature.datefilter.FilterView
+import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import kotlin.random.Random

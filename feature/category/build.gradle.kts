@@ -10,5 +10,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":feature:datefilter"))
+    implementation(project(":feature:filter"))
 }

@@ -12,5 +12,5 @@ android {
 dependencies {
     implementation(project(":feature:category"))
     implementation(project(":feature:account"))
-    implementation(project(":feature:datefilter"))
+    implementation(project(":feature:filter"))
 }

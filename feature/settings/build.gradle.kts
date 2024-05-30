@@ -11,7 +11,7 @@ android {
 
 dependencies {
     implementation(project(":feature:export"))
-    implementation(project(":feature:datefilter"))
+    implementation(project(":feature:filter"))
     implementation(project(":feature:reminder"))
     implementation(project(":feature:theme"))
     implementation(project(":feature:about"))

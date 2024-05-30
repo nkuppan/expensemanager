@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.datefilter
+package com.naveenapps.expensemanager.feature.filter.datefilter
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

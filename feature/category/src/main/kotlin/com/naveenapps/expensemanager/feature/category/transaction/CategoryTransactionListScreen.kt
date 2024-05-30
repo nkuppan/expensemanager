@@ -59,7 +59,7 @@ import com.naveenapps.expensemanager.core.model.PieChartData
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
-import com.naveenapps.expensemanager.feature.datefilter.FilterView
+import com.naveenapps.expensemanager.feature.filter.FilterView
 import kotlin.random.Random
 
 

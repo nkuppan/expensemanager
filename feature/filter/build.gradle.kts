@@ -6,9 +6,5 @@ plugins {
 }
 
 android {
-    namespace = "com.naveenapps.expensemanager.feature.datefilter"
-}
-
-dependencies {
-
+    namespace = "com.naveenapps.expensemanager.feature.filter"
 }
