@@ -42,7 +42,7 @@ class FilterTypeSelectionViewModel @Inject constructor(
     private val _saved = MutableSharedFlow<Boolean>()
     val saved = _saved.asSharedFlow()
 
-    private val _state = MutableStateFlow<FilterTypeState>(
+    private val _state = MutableStateFlow(
         FilterTypeState(
             selectedAccounts = emptyList(),
             accounts = emptyList(),

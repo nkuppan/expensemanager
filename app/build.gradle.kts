@@ -1,4 +1,6 @@
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus
 import java.io.FileInputStream
+import java.util.Locale
 import java.util.Properties
 
 plugins {
@@ -9,15 +11,43 @@ plugins {
     id("com.github.triplet.play")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    id("com.google.firebase.appdistribution")
     id("com.google.android.gms.oss-licenses-plugin")
     id("jacoco")
 }
 
-val credentialFilePath = "${rootDir.absolutePath}/keys/credentials.properties"
-println(credentialFilePath)
-val credentials = File(credentialFilePath)
-if (credentials.exists()) {
-    println("----- Credentials available -----")
+
+
+val keysFolderPath: String = if (System.getenv()["KEYS_PATH"].isNullOrBlank()) {
+    "${rootDir.absolutePath}/keys"
+} else {
+    rootDir.absolutePath
+}
+
+fun getCredentialsFile(): File {
+    val credentialFilePath = "$keysFolderPath/credentials.properties"
+    return File(credentialFilePath)
+}
+
+fun getKeystoreFile(): File {
+    val keystoreFilePath = "$keysFolderPath/android_keystore.jks"
+    return File(keystoreFilePath)
+}
+
+fun getPlayStorePublisherFile(): File {
+    val playStorePublisherFile = "$keysFolderPath/play_publish.json"
+    return File(playStorePublisherFile)
+}
+
+fun getFirebasePublisherFile(): File {
+    val firebasePublishJson = "$keysFolderPath/firebase_distribution_service_account.json"
+    return File(firebasePublishJson)
+}
+
+val credentials = getCredentialsFile()
+val keystore = getKeystoreFile()
+if (credentials.exists() && keystore.exists()) {
+    println("----- Both Keystore & Credentials available -----")
     val properties = Properties().apply {
         load(FileInputStream(credentials))
     }
@@ -28,13 +58,83 @@ if (credentials.exists()) {
                 keyAlias = properties.getProperty("KEY_ALIAS")
                 storePassword = properties.getProperty("KEY_STORE_PASSWORD")
                 keyPassword = properties.getProperty("KEY_PASSWORD")
-                storeFile = File("${rootDir.absolutePath}/keys/android_keystore.jks")
-                println("Credentials release created")
+                storeFile = keystore
             }
         }
     }
 } else {
     println("----- Credentials not available -----")
+}
+
+val playStorePublisher = getPlayStorePublisherFile()
+if (playStorePublisher.exists()) {
+    println("----- Play Store Publisher available -----")
+
+    val playStoreTrack = System.getenv()["PLAYSTORE_TRACK"] ?: "beta"
+    val playStoreReleaseStatus =
+        runCatching {
+            ReleaseStatus.valueOf(
+                System.getenv()["PLAYSTORE_RELEASE_STATUS".uppercase()] ?: ReleaseStatus.DRAFT.name
+            )
+        }.getOrNull() ?: ReleaseStatus.DRAFT
+
+    android {
+        play {
+            serviceAccountCredentials.set(playStorePublisher)
+            track.set(playStoreTrack)
+            releaseStatus.set(playStoreReleaseStatus)
+        }
+    }
+} else {
+    println("----- Publisher not available -----")
+}
+
+val firebasePublisher = getFirebasePublisherFile()
+if (firebasePublisher.exists()) {
+    println("----- Firebase Distribution Publisher available -----")
+
+    var firebaseDistGroups = System.getenv()["FIREBASE_DISTRIBUTION_GROUPS"]
+    if (firebaseDistGroups.isNullOrBlank()) {
+        firebaseDistGroups = "testers"
+    }
+
+    android {
+        buildTypes {
+            debug {
+                firebaseAppDistribution {
+                    serviceCredentialsFile = firebasePublisher.absolutePath
+                    releaseNotes = "Nothing for now"
+                    groups = firebaseDistGroups
+                }
+            }
+            release {
+                firebaseAppDistribution {
+                    serviceCredentialsFile = firebasePublisher.absolutePath
+                    releaseNotes = "Nothing for now"
+                    groups = firebaseDistGroups
+                }
+            }
+        }
+
+        /**
+         * Our APK path leads to our universal APK file - do guarantee that it's present we need to
+         * make the distribution task depend on the universal APK assembly task.
+         */
+        applicationVariants.all { variant ->
+            variant.outputs.forEach { output ->
+                tasks.filter {
+                    return@filter it.name.startsWith(
+                        "appDistributionUpload${variant.name.toCapital()}"
+                    )
+                }.forEach {
+                    it?.dependsOn("assemble${variant.name.toCapital()}")
+                }
+            }
+            return@all true
+        }
+    }
+} else {
+    println("----- Firebase Distribution Publisher not available -----")
 }
 
 android {
@@ -139,4 +239,12 @@ dependencies {
 
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))
+}
+
+fun String.toCapital(): String {
+    return this.replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(
+            Locale.getDefault()
+        ) else it.toString()
+    }
 }
