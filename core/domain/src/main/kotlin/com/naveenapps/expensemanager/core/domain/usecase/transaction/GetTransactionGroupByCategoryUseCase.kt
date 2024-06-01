@@ -4,7 +4,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategory
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
-import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
@@ -19,7 +19,7 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
 ) {
-    fun invoke(categoryType: CategoryType): Flow<CategoryTransactionUiModel> {
+    fun invoke(categoryType: CategoryType): Flow<CategoryTransactionState> {
         return combine(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(),
@@ -94,7 +94,7 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                 }
             }
 
-            CategoryTransactionUiModel(
+            CategoryTransactionState(
                 pieChartData = pieChartData,
                 totalAmount = getFormattedAmountUseCase.invoke(
                     amount = totalAmount,

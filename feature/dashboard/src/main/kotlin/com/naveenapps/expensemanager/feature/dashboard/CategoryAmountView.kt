@@ -17,13 +17,14 @@ import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidge
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
+import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionSmallItem
 import com.naveenapps.expensemanager.feature.category.transaction.getRandomCategoryTransactionData
 
 @Composable
 fun CategoryAmountView(
     modifier: Modifier = Modifier,
-    categoryTransactionUiModel: CategoryTransactionUiModel,
+    categoryTransactionState: CategoryTransactionState,
 ) {
     Column(modifier = modifier) {
         DashboardWidgetTitle(
@@ -32,8 +33,8 @@ fun CategoryAmountView(
         )
         Row(modifier = Modifier.padding(top = 16.dp)) {
             PieChartView(
-                totalAmountText = categoryTransactionUiModel.totalAmount.amountString ?: "",
-                chartData = categoryTransactionUiModel.pieChartData.map {
+                totalAmountText = categoryTransactionState.totalAmount.amountString ?: "",
+                chartData = categoryTransactionState.pieChartData.map {
                     PieChartUiData(
                         it.name,
                         it.value,
@@ -51,10 +52,10 @@ fun CategoryAmountView(
                     .align(Alignment.CenterVertically),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                repeat(categoryTransactionUiModel.categoryTransactions.size) {
+                repeat(categoryTransactionState.categoryTransactions.size) {
                     if (it < 4) {
-                        val item = categoryTransactionUiModel.categoryTransactions[it]
-                        com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionSmallItem(
+                        val item = categoryTransactionState.categoryTransactions[it]
+                        CategoryTransactionSmallItem(
                             name = item.category.name,
                             icon = item.category.storedIcon.name,
                             iconBackgroundColor = item.category.storedIcon.backgroundColor,
@@ -76,7 +77,7 @@ fun CategoryAmountViewPreview() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                categoryTransactionUiModel = getRandomCategoryTransactionData(),
+                categoryTransactionState = getRandomCategoryTransactionData(),
             )
         }
     }

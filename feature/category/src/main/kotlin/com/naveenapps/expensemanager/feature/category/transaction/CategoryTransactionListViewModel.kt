@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
-import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -23,7 +23,7 @@ class CategoryTransactionListViewModel @Inject constructor(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
-    private val _categoryTransaction = MutableStateFlow<UiState<CategoryTransactionUiModel>>(
+    private val _categoryTransaction = MutableStateFlow<UiState<CategoryTransactionState>>(
         UiState.Loading,
     )
     val categoryTransaction = _categoryTransaction.asStateFlow()

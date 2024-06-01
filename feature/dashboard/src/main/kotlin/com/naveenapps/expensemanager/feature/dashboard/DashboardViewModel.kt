@@ -14,7 +14,7 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AmountUiState
-import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
@@ -55,7 +55,7 @@ class DashboardViewModel @Inject constructor(
     val accounts = _accounts.asStateFlow()
 
     private val _categoryTransaction = MutableStateFlow(
-        CategoryTransactionUiModel(
+        CategoryTransactionState(
             pieChartData = listOf(),
             totalAmount = Amount(0.0),
             categoryTransactions = emptyList(),

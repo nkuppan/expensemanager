@@ -43,7 +43,7 @@ import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
-import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
@@ -89,7 +89,7 @@ fun DashboardScreen(
 private fun DashboardScaffoldContent(
     amountUiState: AmountUiState,
     accounts: List<AccountUiModel>,
-    categoryTransaction: CategoryTransactionUiModel,
+    categoryTransaction: CategoryTransactionState,
     budgets: List<BudgetUiModel>,
     transactions: List<TransactionUiItem>,
     openTransactionCreate: (String?) -> Unit,
@@ -149,7 +149,7 @@ private fun DashboardScreenContent(
     modifier: Modifier = Modifier,
     amountUiState: AmountUiState,
     accounts: List<AccountUiModel>,
-    categoryTransaction: CategoryTransactionUiModel,
+    categoryTransaction: CategoryTransactionState,
     budgets: List<BudgetUiModel>,
     transactions: List<TransactionUiItem>,
     openTransactionCreate: (String?) -> Unit,
@@ -231,7 +231,7 @@ private fun DashboardScreenContent(
             CategoryAmountView(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                categoryTransactionUiModel = categoryTransaction,
+                categoryTransactionState = categoryTransaction,
             )
         }
         item {
@@ -355,7 +355,7 @@ fun DashboardScaffoldContentPreview() {
         DashboardScaffoldContent(
             amountUiState = AmountUiState(),
             accounts = getRandomAccountUiModel(5),
-            categoryTransaction = CategoryTransactionUiModel(
+            categoryTransaction = CategoryTransactionState(
                 pieChartData = listOf(
                     getDummyPieChartData("", 25.0f),
                     getDummyPieChartData("", 25.0f),

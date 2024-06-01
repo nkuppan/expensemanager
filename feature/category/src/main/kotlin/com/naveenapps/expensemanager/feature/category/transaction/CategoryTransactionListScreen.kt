@@ -53,7 +53,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
-import com.naveenapps.expensemanager.core.model.CategoryTransactionUiModel
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
 import com.naveenapps.expensemanager.core.model.isExpense
@@ -90,7 +90,7 @@ fun IntermediateScreen(viewModel: CategoryTransactionListViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryTransactionTabScreen(
-    uiState: UiState<CategoryTransactionUiModel>,
+    uiState: UiState<CategoryTransactionState>,
     categoryType: CategoryType,
     openCategoryList: () -> Unit,
     openTransactionCreatePage: () -> Unit,
@@ -144,7 +144,7 @@ fun CategoryTransactionTabScreen(
 
 @Composable
 private fun CategoryTransactionListScreenContent(
-    uiState: UiState<CategoryTransactionUiModel>,
+    uiState: UiState<CategoryTransactionState>,
     categoryType: CategoryType,
     changeChart: (() -> Unit)? = null,
     onItemClick: ((CategoryTransaction) -> Unit)? = null,
@@ -343,8 +343,8 @@ val getPieChartData = listOf(
         PieChartData("Internet Explorer", 15.62F, "#121212"),
 )
 
-fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
-    return CategoryTransactionUiModel(
+fun getRandomCategoryTransactionData(): CategoryTransactionState {
+    return CategoryTransactionState(
             pieChartData = getPieChartData,
             totalAmount = Amount(300.0, "300.00$"),
             categoryTransactions = buildList {
@@ -362,7 +362,7 @@ fun getRandomCategoryTransactionData(): CategoryTransactionUiModel {
     )
 }
 
-fun getUiState(): UiState<CategoryTransactionUiModel> {
+fun getUiState(): UiState<CategoryTransactionState> {
 
     return UiState.Success(data = getRandomCategoryTransactionData())
 }

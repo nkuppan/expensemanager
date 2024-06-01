@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
-data class CategoryTransactionUiModel(
+data class CategoryTransactionState(
     val totalAmount: Amount,
     val pieChartData: List<PieChartData>,
     val categoryTransactions: List<CategoryTransaction>,
