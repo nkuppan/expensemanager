@@ -8,7 +8,6 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCu
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
-import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,11 +30,13 @@ class CategoryDetailViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _category = MutableStateFlow<CategoryTransaction?>(null)
-    val category = _category.asStateFlow()
-
-    private val _categoryTransactions = MutableStateFlow<List<TransactionUiItem>>(emptyList())
-    val categoryTransactions = _categoryTransactions.asStateFlow()
+    private val _state = MutableStateFlow(
+        CategoryDetailsState(
+            categoryTransaction = null,
+            transactions = emptyList()
+        )
+    )
+    val state = _state.asStateFlow()
 
     init {
         savedStateHandle.get<String>(ExpenseManagerArgsNames.ID)?.let {
@@ -63,19 +65,28 @@ class CategoryDetailViewModel @Inject constructor(
 
                     val categoryAmount = categoryTransaction.sumOf { it.amount.amount }
 
-                    _category.value = CategoryTransaction(
-                        category = category,
-                        percent = (categoryAmount / totalSpent).toFloat() * 100,
-                        amount = getFormattedAmountUseCase.invoke(
-                            amount = categoryAmount,
-                            currency = currency,
-                        ),
-                        transaction = filterTransaction,
-                    )
-                    _categoryTransactions.value = categoryTransaction
+
+                    _state.update {
+                        it.copy(
+                            categoryTransaction = CategoryTransaction(
+                                category = category,
+                                percent = (categoryAmount / totalSpent).toFloat() * 100,
+                                amount = getFormattedAmountUseCase.invoke(
+                                    amount = categoryAmount,
+                                    currency = currency,
+                                ),
+                                transaction = filterTransaction,
+                            ),
+                            transactions = categoryTransaction
+                        )
+                    }
                 } else {
-                    _category.value = null
-                    _categoryTransactions.value = emptyList()
+                    _state.update {
+                        it.copy(
+                            categoryTransaction = null,
+                            transactions = emptyList()
+                        )
+                    }
                 }
             }.launchIn(viewModelScope)
         }

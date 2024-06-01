@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material3.FloatingActionButton
@@ -32,8 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Account
@@ -45,25 +46,18 @@ import kotlinx.coroutines.Job
 fun AccountReOrderScreen(
     viewModel: AccountReOrderViewModel = hiltViewModel(),
 ) {
-    val accounts by viewModel.accounts.collectAsState()
-    val showActionButton by viewModel.showActionButton.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     AccountReOrderScaffoldView(
-        accounts = accounts,
-        showActionButton = showActionButton,
-        backPress = viewModel::closePage,
-        saveChanges = viewModel::saveChanges,
-        onMove = viewModel::swap,
+        state = state,
+        onAction = viewModel::processAction,
     )
 }
 
 @Composable
 private fun AccountReOrderScaffoldView(
-    accounts: List<Account>,
-    showActionButton: Boolean,
-    onMove: (Int, Int) -> Unit,
-    saveChanges: () -> Unit,
-    backPress: () -> Unit,
+    state: AccountReOrderState,
+    onAction: (AccountReOrderAction) -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -72,14 +66,21 @@ private fun AccountReOrderScaffoldView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopNavigationBar(
+            AppTopNavigationBar(
                 title = stringResource(R.string.accounts_re_order),
-                onClick = backPress,
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
+                    onAction.invoke(AccountReOrderAction.ClosePage)
+                },
             )
         },
         floatingActionButton = {
-            if (showActionButton) {
-                FloatingActionButton(onClick = saveChanges) {
+            if (state.showSaveButton) {
+                FloatingActionButton(
+                    onClick = {
+                        onAction.invoke(AccountReOrderAction.Save)
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Done,
                         contentDescription = "",
@@ -89,8 +90,12 @@ private fun AccountReOrderScaffoldView(
         },
     ) { innerPadding ->
         ReOrderContent(
-            accounts = accounts,
-            onMove = onMove,
+            accounts = state.accounts,
+            onMove = { from, to ->
+                onAction.invoke(
+                    AccountReOrderAction.Swap(from, to)
+                )
+            },
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
@@ -179,12 +184,11 @@ fun AccountReOrderItem(
 fun AccountReOrderScaffoldViewPreview() {
     ExpenseManagerTheme {
         AccountReOrderScaffoldView(
-            accounts = getRandomAccountData(5),
-            showActionButton = true,
-            onMove = { i, j ->
-
-            },
-            saveChanges = {},
-            backPress = {})
+            state = AccountReOrderState(
+                accounts = getRandomAccountData(5),
+                showSaveButton = true
+            ),
+            onAction = {},
+        )
     }
 }

@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.testing.TestMainActivity
 import org.junit.Rule
 import org.junit.Test
@@ -20,15 +19,15 @@ class AccountListScreenKtTest {
     val composeTestRule = createAndroidComposeRule<TestMainActivity>()
 
     @Test
-    fun openAccountListScreenAndClickCreateButton()  {
+    fun openAccountListScreenAndClickCreateButton() {
         // Start the app
         composeTestRule.setContent {
             AccountListContentView(
-                state = UiState.Success(emptyList()),
-                onAction = false,
-                openAccountReOrderScreen = {},
-                closePage = {},
-                openCreateScreen = {}
+                state = AccountListState(
+                    accounts = emptyList(),
+                    showReOrder = false
+                ),
+                onAction = { },
             )
         }
 
@@ -36,14 +35,14 @@ class AccountListScreenKtTest {
     }
 
     @Test
-    fun openAccountListScreenWithDataShouldShowAccountList()  {
+    fun openAccountListScreenWithDataShouldShowAccountList() {
         composeTestRule.setContent {
             AccountListContentView(
-                state = UiState.Success(getRandomAccountUiModel(5)),
-                onAction = true,
-                openAccountReOrderScreen = {},
-                closePage = {},
-                openCreateScreen = {}
+                state = AccountListState(
+                    accounts = getRandomAccountUiModel(5),
+                    showReOrder = false
+                ),
+                onAction = { },
             )
         }
 
@@ -52,14 +51,14 @@ class AccountListScreenKtTest {
     }
 
     @Test
-    fun showAccountListEmptyStateWhenNoItemsAvailable()  {
+    fun showAccountListEmptyStateWhenNoItemsAvailable() {
         composeTestRule.setContent {
             AccountListContentView(
-                state = UiState.Empty,
-                onAction = true,
-                openAccountReOrderScreen = {},
-                closePage = {},
-                openCreateScreen = {}
+                state = AccountListState(
+                    accounts = emptyList(),
+                    showReOrder = false
+                ),
+                onAction = { },
             )
         }
 

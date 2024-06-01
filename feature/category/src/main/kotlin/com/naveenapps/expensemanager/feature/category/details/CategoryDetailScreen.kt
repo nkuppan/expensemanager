@@ -55,8 +55,7 @@ import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransa
 fun CategoryDetailScreen(
     viewModel: CategoryDetailViewModel = hiltViewModel(),
 ) {
-    val category by viewModel.category.collectAsState()
-    val categoryTransactions by viewModel.categoryTransactions.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -79,7 +78,7 @@ fun CategoryDetailScreen(
                         title = {
                         },
                         actions = {
-                            category?.let {
+                            state.categoryTransaction?.let {
                                 IconButton(onClick = {
                                     viewModel.openCategoryEditScreen()
                                 }) {
@@ -91,7 +90,7 @@ fun CategoryDetailScreen(
                             }
                         },
                     )
-                    category?.let { categoryTransaction ->
+                    state.categoryTransaction?.let { categoryTransaction ->
                         CategoryTransactionItem(
                             modifier = Modifier.padding(16.dp),
                             name = categoryTransaction.category.name,
@@ -121,7 +120,7 @@ fun CategoryDetailScreen(
                 .padding(innerPadding)
                 .fillMaxSize(),
         ) {
-            if (categoryTransactions.isEmpty()) {
+            if (state.transactions.isEmpty()) {
                 Text(
                     modifier = Modifier
                         .wrapContentSize()
@@ -131,7 +130,7 @@ fun CategoryDetailScreen(
                 )
             } else {
                 Column(modifier = Modifier.padding(top = 16.dp)) {
-                    categoryTransactions.forEach { item ->
+                    state.transactions.forEach { item ->
                         TransactionItem(
                             categoryName = item.categoryName,
                             fromAccountName = item.fromAccountName,
