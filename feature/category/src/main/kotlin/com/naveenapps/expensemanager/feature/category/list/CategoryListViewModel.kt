@@ -2,17 +2,16 @@ package com.naveenapps.expensemanager.feature.category.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,36 +20,56 @@ class CategoryListViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _categories = MutableStateFlow<UiState<List<Category>>>(UiState.Loading)
-    val categories = _categories.asStateFlow()
-
-    private val categoryType = MutableStateFlow(CategoryType.EXPENSE)
+    private val _state = MutableStateFlow(
+        CategoryListState(
+            categories = emptyList(),
+            filteredCategories = emptyList(),
+            selectedTab = CategoryTabItems.Expense,
+            tabs = CategoryTabItems.entries
+        )
+    )
+    val state = _state.asStateFlow()
 
     init {
-        combine(
-            categoryType,
-            getAllCategoryUseCase.invoke(),
-        ) { categoryType, categories ->
-            val categoryList = categories.filter { it.type == categoryType }
-            if (categoryList.isEmpty()) {
-                _categories.value = UiState.Empty
-            } else {
-                _categories.value = UiState.Success(categoryList)
-            }
+        getAllCategoryUseCase.invoke().onEach { categories ->
+            updateCategories(categories, _state.value.selectedTab)
         }.launchIn(viewModelScope)
     }
 
-    fun openCreateScreen(categoryId: String?) {
+    private fun updateCategories(
+        totalCategories: List<Category>,
+        categoryType: CategoryTabItems
+    ) {
+        val filteredCategories = totalCategories.filter { it.type == categoryType.categoryType }
+        _state.update {
+            it.copy(
+                categories = totalCategories,
+                filteredCategories = filteredCategories,
+                selectedTab = categoryType
+            )
+        }
+    }
+
+    private fun openCreateScreen(categoryId: String?) {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.CategoryCreate(categoryId),
         )
     }
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
     }
 
-    fun setCategoryType(categoryType: CategoryType) {
-        this.categoryType.value = categoryType
+    private fun setCategoryType(categoryType: CategoryTabItems) {
+        updateCategories(_state.value.categories, categoryType)
+    }
+
+    fun processAction(action: CategoryListAction) {
+        when (action) {
+            CategoryListAction.ClosePage -> closePage()
+            CategoryListAction.Create -> openCreateScreen(null)
+            is CategoryListAction.Edit -> openCreateScreen(action.item.id)
+            is CategoryListAction.ChangeCategory -> setCategoryType(action.type)
+        }
     }
 }

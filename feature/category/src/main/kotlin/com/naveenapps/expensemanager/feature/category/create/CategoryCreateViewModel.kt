@@ -78,6 +78,7 @@ class CategoryCreateViewModel @Inject constructor(
                     type = it.type.copy(value = categoryItem.type),
                     icon = it.icon.copy(value = categoryItem.storedIcon.name),
                     color = it.color.copy(value = categoryItem.storedIcon.backgroundColor),
+                    showDeleteButton = true
                 )
             }
         }

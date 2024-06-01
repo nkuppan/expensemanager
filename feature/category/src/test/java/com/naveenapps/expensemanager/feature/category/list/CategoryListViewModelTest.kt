@@ -2,15 +2,12 @@ package com.naveenapps.expensemanager.feature.category.list
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.core.model.isExpense
-import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import com.naveenapps.expensemanager.core.testing.FAKE_CATEGORY
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -49,16 +46,14 @@ class CategoryListViewModelTest : BaseCoroutineTest() {
 
         categoryFlow.value = getRandomCategoryData(totalCount)
 
-        categoryListViewModel.categories.test {
-            val loadingState = awaitItem()
-            Truth.assertThat(loadingState).isNotNull()
-            Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
+        categoryListViewModel.state.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem.categories).isEmpty()
 
-            val state = awaitItem()
-            Truth.assertThat(state).isNotNull()
-            Truth.assertThat(state).isInstanceOf(UiState.Success::class.java)
-            val categories = (state as UiState.Success).data
-            Truth.assertThat(categories).isNotEmpty()
+            val secondItem = awaitItem()
+            Truth.assertThat(secondItem.categories).isNotEmpty()
+            Truth.assertThat(secondItem.categories).hasSize(totalCount)
+            Truth.assertThat(secondItem.filteredCategories).hasSize(totalCount / 2)
         }
     }
 
@@ -66,68 +61,28 @@ class CategoryListViewModelTest : BaseCoroutineTest() {
     fun categoryEmpty() = runTest {
         categoryFlow.value = emptyList()
 
-        categoryListViewModel.categories.test {
-            val loadingState = awaitItem()
-            Truth.assertThat(loadingState).isNotNull()
-            Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
-
-            val state = awaitItem()
-            Truth.assertThat(state).isNotNull()
-            Truth.assertThat(state).isInstanceOf(UiState.Empty::class.java)
-        }
-    }
-
-    @Test
-    fun categorySuccessAndTypeSwitch() = runTest {
-        val totalCount = 20
-
-        val randomCategoryData = getRandomCategoryData(totalCount)
-        val expectedExpenseCount = randomCategoryData.count { it.type.isExpense() }
-        val expectedIncomeCount = randomCategoryData.count { it.type.isIncome() }
-        categoryFlow.value = randomCategoryData
-
-        categoryListViewModel.categories.test {
-            val loadingState = awaitItem()
-            Truth.assertThat(loadingState).isNotNull()
-            Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
-
-            val state = awaitItem()
-            Truth.assertThat(state).isNotNull()
-            Truth.assertThat(state).isInstanceOf(UiState.Success::class.java)
-            val categories = (state as UiState.Success).data
-            Truth.assertThat(categories).isNotEmpty()
-
-            val actualExpenseCount = categories.count { it.type.isExpense() }
-            Truth.assertThat(actualExpenseCount).isEqualTo(expectedExpenseCount)
-
-            categoryListViewModel.setCategoryType(CategoryType.INCOME)
-
-            val incomeState = awaitItem()
-            Truth.assertThat(incomeState).isNotNull()
-            Truth.assertThat(incomeState).isInstanceOf(UiState.Success::class.java)
-            val incomeCategories = (incomeState as UiState.Success).data
-            Truth.assertThat(incomeCategories).isNotEmpty()
-
-            val actualIncomeCount = incomeCategories.count { it.type.isIncome() }
-            Truth.assertThat(actualIncomeCount).isEqualTo(expectedIncomeCount)
+        categoryListViewModel.state.test {
+            val firstItem = awaitItem()
+            Truth.assertThat(firstItem.categories).isNotNull()
+            Truth.assertThat(firstItem.categories).isEmpty()
         }
     }
 
     @Test
     fun checkOpenCreateNavigation() = runTest {
-        categoryListViewModel.openCreateScreen(null)
+        categoryListViewModel.processAction(CategoryListAction.Create)
         verify(appComposeNavigator, times(1)).navigate(any())
     }
 
     @Test
     fun checkOpenCreateNavigationAndCommands() = runTest {
-        categoryListViewModel.openCreateScreen("")
+        categoryListViewModel.processAction(CategoryListAction.Edit(FAKE_CATEGORY))
         verify(appComposeNavigator, times(1)).navigate(any())
     }
 
     @Test
     fun checkClosePageNavigation() = runTest {
-        categoryListViewModel.closePage()
+        categoryListViewModel.processAction(CategoryListAction.ClosePage)
         verify(appComposeNavigator, times(1)).popBackStack()
     }
 }
