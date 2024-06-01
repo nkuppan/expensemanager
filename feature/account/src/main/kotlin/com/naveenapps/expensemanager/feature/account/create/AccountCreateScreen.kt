@@ -91,15 +91,15 @@ private fun AccountCreateScaffoldView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            nameField = state.name,
+            name = state.name,
             amount = state.amount,
-            selectedAccountType = state.type,
-            currencyIcon = state.currency,
-            selectedColor = state.color,
-            selectedIcon = state.icon,
+            type = state.type,
+            currency = state.currency,
+            color = state.color,
+            icon = state.icon,
             creditLimit = state.creditLimit,
             totalAmount = state.totalAmount,
-            balanceBgColor = state.totalAmountBackgroundColor
+            totalAmountBackgroundColor = state.totalAmountBackgroundColor
         )
     }
 }
@@ -107,32 +107,32 @@ private fun AccountCreateScaffoldView(
 @Composable
 private fun AccountCreateScreen(
     modifier: Modifier = Modifier,
-    nameField: TextFieldValue<String>,
+    name: TextFieldValue<String>,
     amount: TextFieldValue<String>,
-    selectedAccountType: TextFieldValue<AccountType>,
-    currencyIcon: Currency,
-    selectedColor: TextFieldValue<String>,
-    selectedIcon: TextFieldValue<String>,
+    type: TextFieldValue<AccountType>,
+    currency: Currency,
+    color: TextFieldValue<String>,
+    icon: TextFieldValue<String>,
     creditLimit: TextFieldValue<String>,
     totalAmount: String,
-    balanceBgColor: Int,
+    totalAmountBackgroundColor: Int,
 ) {
     Column(modifier = modifier) {
         AccountTypeSelectionView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            selectedAccountType = selectedAccountType.value,
-            onAccountTypeChange = selectedAccountType.onValueChange!!,
+            selectedAccountType = type.value,
+            onAccountTypeChange = type.onValueChange!!,
         )
 
         StringTextField(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 8.dp)
                 .fillMaxWidth(),
-            value = nameField.value,
-            isError = nameField.valueError,
-            onValueChange = nameField.onValueChange,
+            value = name.value,
+            isError = name.valueError,
+            onValueChange = name.onValueChange,
             label = R.string.account_name,
             errorMessage = stringResource(id = R.string.account_name_error),
         )
@@ -141,10 +141,10 @@ private fun AccountCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
-            selectedColor = selectedColor.value,
-            selectedIcon = selectedIcon.value,
-            onColorSelection = selectedColor.onValueChange,
-            onIconSelection = selectedIcon.onValueChange,
+            selectedColor = color.value,
+            selectedIcon = icon.value,
+            onColorSelection = color.onValueChange,
+            onIconSelection = icon.onValueChange,
         )
 
         DecimalTextField(
@@ -155,11 +155,11 @@ private fun AccountCreateScreen(
             isError = amount.valueError,
             errorMessage = stringResource(id = R.string.current_balance_error),
             onValueChange = amount.onValueChange,
-            leadingIconText = currencyIcon.symbol,
+            leadingIconText = currency.symbol,
             label = R.string.current_balance,
         )
 
-        if (selectedAccountType.value == AccountType.CREDIT) {
+        if (type.value == AccountType.CREDIT) {
             DecimalTextField(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
@@ -168,7 +168,7 @@ private fun AccountCreateScreen(
                 isError = creditLimit.valueError,
                 errorMessage = stringResource(id = R.string.credit_limit_error),
                 onValueChange = creditLimit.onValueChange,
-                leadingIconText = currencyIcon.symbol,
+                leadingIconText = currency.symbol,
                 label = R.string.credit_limit,
             )
         }
@@ -177,7 +177,7 @@ private fun AccountCreateScreen(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                     .background(
-                        color = colorResource(id = balanceBgColor).copy(.1f),
+                        color = colorResource(id = totalAmountBackgroundColor).copy(.1f),
                         shape = RoundedCornerShape(4.dp),
                     )
                     .padding(16.dp),

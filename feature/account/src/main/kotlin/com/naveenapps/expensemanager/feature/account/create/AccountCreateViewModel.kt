@@ -16,6 +16,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -97,7 +98,8 @@ class AccountCreateViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     currency = currency,
-                    totalAmount = getAmountValue(totalAmount).amountString ?: "",
+                    totalAmount = getAmountValue(totalAmount, currency).amountString
+                        ?: "",
                     totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount)
                 )
             }
@@ -106,10 +108,16 @@ class AccountCreateViewModel @Inject constructor(
         readAccountInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
     }
 
-    private fun getAmountValue(amount: Double): Amount {
+    private fun getAmountValue(
+        amount: Double,
+        currency: Currency? = null
+    ): Amount {
+
+        val selectedCurrency = currency ?: _state.value.currency
+
         return getFormattedAmountUseCase.invoke(
             amount = amount,
-            currency = _state.value.currency,
+            currency = selectedCurrency,
         )
     }
 
@@ -117,6 +125,9 @@ class AccountCreateViewModel @Inject constructor(
         this.account = account
 
         this.account?.let { accountItem ->
+
+            val totalAmount =
+                getTotalAmount(getCreditAmount().toString(), _state.value.amount.value)
 
             _state.update {
                 it.copy(
@@ -126,6 +137,9 @@ class AccountCreateViewModel @Inject constructor(
                     icon = it.icon.copy(value = accountItem.storedIcon.name),
                     amount = it.amount.copy(value = accountItem.amount.toStringWithLocale()),
                     creditLimit = it.creditLimit.copy(value = accountItem.creditLimit.toStringWithLocale()),
+                    totalAmount = getAmountValue(totalAmount, _state.value.currency).amountString
+                        ?: "",
+                    totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
                     showDeleteButton = true
                 )
             }

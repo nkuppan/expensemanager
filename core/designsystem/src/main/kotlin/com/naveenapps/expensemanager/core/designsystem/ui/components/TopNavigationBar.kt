@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +24,7 @@ fun TopNavigationBar(
     onClick: () -> Unit,
     title: String?,
     disableBackIcon: Boolean = false,
-    navigationIcon: ImageVector = Icons.Filled.ArrowBack,
+    navigationIcon: ImageVector = Icons.AutoMirrored.Filled.ArrowBack,
 ) {
     TopAppBar(
         navigationIcon = {

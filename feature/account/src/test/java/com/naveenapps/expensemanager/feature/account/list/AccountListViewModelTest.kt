@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.feature.account.list
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -59,32 +58,27 @@ class AccountListViewModelTest : BaseCoroutineTest() {
 
         accountFlow.value = getRandomAccountData(totalCount)
 
-        accountListViewModel.accounts.test {
-            val loadingState = awaitItem()
-            Truth.assertThat(loadingState).isNotNull()
-            Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
+        accountListViewModel.state.test {
+            val firstState = awaitItem()
+            Truth.assertThat(firstState).isNotNull()
+            Truth.assertThat(firstState.accounts).isEmpty()
 
-            val state = awaitItem()
-            Truth.assertThat(state).isNotNull()
-            Truth.assertThat(state).isInstanceOf(UiState.Success::class.java)
-            val accounts = (state as UiState.Success).data
-            Truth.assertThat(accounts).isNotEmpty()
-            Truth.assertThat(accounts.size).isEqualTo(totalCount)
+            val secondState = awaitItem()
+            Truth.assertThat(secondState).isNotNull()
+            Truth.assertThat(secondState.accounts).isNotEmpty()
+            Truth.assertThat(secondState.accounts).hasSize(totalCount)
         }
     }
 
     @Test
     fun accountEmpty() = runTest {
+
         accountFlow.value = emptyList()
 
-        accountListViewModel.accounts.test {
-            val loadingState = awaitItem()
-            Truth.assertThat(loadingState).isNotNull()
-            Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
-
-            val state = awaitItem()
-            Truth.assertThat(state).isNotNull()
-            Truth.assertThat(state).isInstanceOf(UiState.Empty::class.java)
+        accountListViewModel.state.test {
+            val firstState = awaitItem()
+            Truth.assertThat(firstState).isNotNull()
+            Truth.assertThat(firstState.accounts).isEmpty()
         }
     }
 
@@ -97,17 +91,16 @@ class AccountListViewModelTest : BaseCoroutineTest() {
         val expectedRegularAccountCount = randomAccountData.count { it.type.isRegular() }
         accountFlow.value = randomAccountData
 
-        accountListViewModel.accounts.test {
-            val loadingState = awaitItem()
-            Truth.assertThat(loadingState).isNotNull()
-            Truth.assertThat(loadingState).isInstanceOf(UiState.Loading::class.java)
+        accountListViewModel.state.test {
+            val firstState = awaitItem()
+            Truth.assertThat(firstState).isNotNull()
+            Truth.assertThat(firstState.accounts).isEmpty()
 
-            val state = awaitItem()
-            Truth.assertThat(state).isNotNull()
-            Truth.assertThat(state).isInstanceOf(UiState.Success::class.java)
-            val accounts = (state as UiState.Success).data
+            val secondState = awaitItem()
+            Truth.assertThat(secondState).isNotNull()
+            val accounts = secondState.accounts
             Truth.assertThat(accounts).isNotEmpty()
-            Truth.assertThat(accounts.size).isEqualTo(totalCount)
+            Truth.assertThat(accounts).hasSize(totalCount)
 
             val actualCreditAccounts = accounts.count { it.type.isCredit() }
             Truth.assertThat(actualCreditAccounts).isEqualTo(expectedCreditAccountCount)
@@ -119,19 +112,21 @@ class AccountListViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun checkOpenCreateNavigation() = runTest {
-        accountListViewModel.openCreateScreen(null)
+        accountListViewModel.processAction(
+            AccountListAction.EditAccount(getRandomAccountUiModel(1).first())
+        )
         verify(appComposeNavigator, times(1)).navigate(any())
     }
 
     @Test
     fun checkOpenCreateNavigationAndCommands() = runTest {
-        accountListViewModel.openCreateScreen(null)
+        accountListViewModel.processAction(AccountListAction.CreateAccount)
         verify(appComposeNavigator, times(1)).navigate(any())
     }
 
     @Test
     fun checkClosePageNavigation() = runTest {
-        accountListViewModel.closePage()
+        accountListViewModel.processAction(AccountListAction.ClosePage)
         verify(appComposeNavigator, times(1)).popBackStack()
     }
 }

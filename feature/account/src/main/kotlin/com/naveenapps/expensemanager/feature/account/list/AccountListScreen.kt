@@ -17,11 +17,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,7 +30,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -49,11 +47,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.NavigationButton
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -71,26 +67,18 @@ import java.util.Random
 fun AccountListScreen(
     viewModel: AccountListViewModel = hiltViewModel(),
 ) {
-    val accounts by viewModel.accounts.collectAsState()
-    val showReOrder by viewModel.showReOrder.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     AccountListContentView(
-        accountUiState = accounts,
-        showReOrder = showReOrder,
-        openAccountReOrderScreen = viewModel::openAccountReOrderScreen,
-        closePage = viewModel::closePage,
-        openCreateScreen = viewModel::openCreateScreen
+        state = state,
+        onAction = viewModel::processAction,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AccountListContentView(
-    accountUiState: UiState<List<AccountUiModel>>,
-    showReOrder: Boolean,
-    openAccountReOrderScreen: () -> Unit,
-    closePage: () -> Unit,
-    openCreateScreen: (AccountUiModel?) -> Unit,
+    state: AccountListState,
+    onAction: (AccountListAction) -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -99,19 +87,19 @@ internal fun AccountListContentView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    NavigationButton(closePage, Icons.Default.ArrowBack)
-                },
-                title = {
-                    Text(
-                        text = stringResource(R.string.accounts),
-                        style = MaterialTheme.typography.titleLarge,
-                    )
+            AppTopNavigationBar(
+                title = stringResource(R.string.accounts),
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
+                    onAction.invoke(AccountListAction.ClosePage)
                 },
                 actions = {
-                    if (showReOrder) {
-                        IconButton(onClick = openAccountReOrderScreen) {
+                    if (state.showReOrder) {
+                        IconButton(
+                            onClick = {
+                                onAction.invoke(AccountListAction.OpenReOrder)
+                            }
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Shuffle,
                                 contentDescription = null
@@ -125,7 +113,7 @@ internal fun AccountListContentView(
             FloatingActionButton(
                 modifier = Modifier.testTag("Create"),
                 onClick = {
-                    openCreateScreen(null)
+                    onAction.invoke(AccountListAction.CreateAccount)
                 }
             ) {
                 Icon(
@@ -139,57 +127,52 @@ internal fun AccountListContentView(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            accountUiState = accountUiState,
-            onItemClick = openCreateScreen,
+            state = state,
+            onItemClick = {
+                onAction.invoke(AccountListAction.EditAccount(it))
+            },
         )
     }
 }
 
 @Composable
 private fun AccountListScreenContent(
-    accountUiState: UiState<List<AccountUiModel>>,
+    state: AccountListState,
     onItemClick: ((AccountUiModel) -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
-        when (accountUiState) {
-            UiState.Empty -> {
-                EmptyItem(
-                    emptyItemText = stringResource(id = R.string.no_account_available),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
 
-            UiState.Loading -> {
-                LoadingItem()
-            }
-
-            is UiState.Success -> {
-                LazyColumn {
-                    items(accountUiState.data, key = { it.id }) { account ->
-                        AccountItem(
-                            modifier = Modifier
-                                .clickable {
-                                    onItemClick?.invoke(account)
-                                }
-                                .then(ItemSpecModifier)
-                                .testTag("Item"),
-                            name = account.name,
-                            icon = account.storedIcon.name,
-                            iconBackgroundColor = account.storedIcon.backgroundColor,
-                            amount = account.amount.amountString,
-                            availableCreditLimit = account.availableCreditLimit?.amountString,
-                            amountTextColor = account.amountTextColor,
-                        )
-                    }
-                    item {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(36.dp),
-                        )
-                    }
+        if (state.accounts.isEmpty()) {
+            EmptyItem(
+                emptyItemText = stringResource(id = R.string.no_account_available),
+                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else {
+            LazyColumn {
+                items(state.accounts, key = { it.id }) { account ->
+                    AccountItem(
+                        modifier = Modifier
+                            .clickable {
+                                onItemClick?.invoke(account)
+                            }
+                            .then(ItemSpecModifier)
+                            .testTag("Item"),
+                        name = account.name,
+                        icon = account.storedIcon.name,
+                        iconBackgroundColor = account.storedIcon.backgroundColor,
+                        amount = account.amount.amountString,
+                        availableCreditLimit = account.availableCreditLimit?.amountString,
+                        amountTextColor = account.amountTextColor,
+                    )
+                }
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(36.dp),
+                    )
                 }
             }
         }
@@ -447,30 +430,18 @@ private fun AccountCheckedItemPreview() {
     }
 }
 
-@Preview
-@Composable
-private fun AccountListItemLoadingStatePreview() {
-    ExpenseManagerTheme {
-        AccountListContentView(
-            accountUiState = UiState.Loading,
-            showReOrder = false,
-            openAccountReOrderScreen = { },
-            openCreateScreen = { },
-            closePage = { },
-        )
-    }
-}
 
 @Preview
 @Composable
 private fun AccountListItemEmptyStatePreview() {
+
     ExpenseManagerTheme {
         AccountListContentView(
-            accountUiState = UiState.Empty,
-            showReOrder = false,
-            openAccountReOrderScreen = { },
-            openCreateScreen = { },
-            closePage = { },
+            state = AccountListState(
+                accounts = emptyList(),
+                showReOrder = true
+            ),
+            onAction = {},
         )
     }
 }
@@ -480,13 +451,11 @@ private fun AccountListItemEmptyStatePreview() {
 private fun AccountListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         AccountListContentView(
-            accountUiState = UiState.Success(
-                getRandomAccountUiModel(10),
+            state = AccountListState(
+                accounts = getRandomAccountUiModel(10),
+                showReOrder = true
             ),
-            showReOrder = true,
-            openAccountReOrderScreen = { },
-            openCreateScreen = { },
-            closePage = { },
+            onAction = {},
         )
     }
 }

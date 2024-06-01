@@ -24,8 +24,8 @@ class AccountListScreenKtTest {
         // Start the app
         composeTestRule.setContent {
             AccountListContentView(
-                accountUiState = UiState.Success(emptyList()),
-                showReOrder = false,
+                state = UiState.Success(emptyList()),
+                onAction = false,
                 openAccountReOrderScreen = {},
                 closePage = {},
                 openCreateScreen = {}
@@ -39,8 +39,8 @@ class AccountListScreenKtTest {
     fun openAccountListScreenWithDataShouldShowAccountList()  {
         composeTestRule.setContent {
             AccountListContentView(
-                accountUiState = UiState.Success(getRandomAccountUiModel(5)),
-                showReOrder = true,
+                state = UiState.Success(getRandomAccountUiModel(5)),
+                onAction = true,
                 openAccountReOrderScreen = {},
                 closePage = {},
                 openCreateScreen = {}
@@ -55,8 +55,8 @@ class AccountListScreenKtTest {
     fun showAccountListEmptyStateWhenNoItemsAvailable()  {
         composeTestRule.setContent {
             AccountListContentView(
-                accountUiState = UiState.Empty,
-                showReOrder = true,
+                state = UiState.Empty,
+                onAction = true,
                 openAccountReOrderScreen = {},
                 closePage = {},
                 openCreateScreen = {}
