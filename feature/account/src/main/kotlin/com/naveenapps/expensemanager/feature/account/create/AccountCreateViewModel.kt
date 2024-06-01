@@ -16,7 +16,6 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -24,6 +23,7 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
@@ -45,156 +45,98 @@ class AccountCreateViewModel @Inject constructor(
     private val composeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    var isDeleteEnabled = MutableStateFlow(false)
-        private set
-
-    var showDeleteDialog = MutableStateFlow(false)
-        private set
-
-    var accountTypeField = MutableStateFlow(
-        TextFieldValue(
-            value = AccountType.REGULAR,
-            valueError = false,
-            onValueChange = this::setAccountTypeChange
+    private var _state = MutableStateFlow(
+        AccountCreateState(
+            name = TextFieldValue(
+                value = "",
+                valueError = false,
+                onValueChange = this::setNameChange
+            ),
+            type = TextFieldValue(
+                value = AccountType.REGULAR,
+                valueError = false,
+                onValueChange = this::setAccountTypeChange
+            ),
+            amount = TextFieldValue(
+                value = "",
+                valueError = false,
+                onValueChange = this::setAmount
+            ),
+            color = TextFieldValue(
+                value = DEFAULT_COLOR,
+                valueError = false,
+                onValueChange = this::setColorValue
+            ),
+            icon = TextFieldValue(
+                value = DEFAULT_ICON,
+                valueError = false,
+                onValueChange = this::setIconValue
+            ),
+            creditLimit = TextFieldValue(
+                value = "",
+                valueError = false,
+                onValueChange = this::setCreditLimitChange
+            ),
+            totalAmountBackgroundColor = R.color.green_500,
+            currency = getDefaultCurrencyUseCase.invoke(),
+            totalAmount = "",
+            showDeleteButton = false,
+            showDeleteDialog = false,
         )
     )
-        private set
-
-    var nameField = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = this::setNameChange
-        )
-    )
-        private set
-
-    var currentBalanceField = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = this::setCurrentBalanceChange
-        )
-    )
-        private set
-
-    var creditLimitField = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = this::setCreditLimitChange
-        )
-    )
-        private set
-
-    var currencyIconField = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = null
-        )
-    )
-        private set
-
-    var colorValueField = MutableStateFlow(
-        TextFieldValue(
-            value = DEFAULT_COLOR,
-            valueError = false,
-            onValueChange = this::setColorValue
-        )
-    )
-        private set
-
-    var iconValueField = MutableStateFlow(
-        TextFieldValue(
-            value = DEFAULT_ICON,
-            valueError = false,
-            onValueChange = this::setIconValue
-        )
-    )
-        private set
-
-    var availableCreditLimit = MutableStateFlow<TextFieldValue<Amount?>>(
-        TextFieldValue(
-            value = null,
-            valueError = false,
-            onValueChange = null
-        )
-    )
-        private set
-
-    var availableCreditLimitColor = MutableStateFlow(
-        TextFieldValue(
-            value = R.color.green_500,
-            valueError = false,
-            onValueChange = null
-        )
-    )
-        private set
+    val state = _state.asStateFlow()
 
     private var account: Account? = null
 
-    private var currency: Currency = getDefaultCurrencyUseCase.invoke()
-
     init {
-        getCurrencyUseCase.invoke().onEach { updatedCurrency ->
-            currency = updatedCurrency
-            currencyIconField.update { it.copy(updatedCurrency.symbol) }
-            updateAvailableCreditLimit(0.0, 0.0)
+        getCurrencyUseCase.invoke().onEach { currency ->
+
+            val totalAmount =
+                getTotalAmount(getCreditAmount().toString(), _state.value.amount.value)
+
+            _state.update {
+                it.copy(
+                    currency = currency,
+                    totalAmount = getAmountValue(totalAmount).amountString ?: "",
+                    totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount)
+                )
+            }
         }.launchIn(viewModelScope)
 
         readAccountInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
+    }
+
+    private fun getAmountValue(amount: Double): Amount {
+        return getFormattedAmountUseCase.invoke(
+            amount = amount,
+            currency = _state.value.currency,
+        )
     }
 
     private fun updateAccountInfo(account: Account?) {
         this.account = account
 
         this.account?.let { accountItem ->
-            nameField.update { it.copy(value = accountItem.name) }
-            currentBalanceField.update { it.copy(value = accountItem.amount.toStringWithLocale()) }
-            creditLimitField.update { it.copy(value = accountItem.creditLimit.toStringWithLocale()) }
-            accountTypeField.update { it.copy(value = accountItem.type) }
-            colorValueField.update { it.copy(value = accountItem.storedIcon.backgroundColor) }
-            iconValueField.update { it.copy(value = accountItem.storedIcon.name) }
-            updateAccountValue(accountItem)
-            isDeleteEnabled.value = true
-        }
-    }
 
-    private fun updateAccountValue(accountItem: Account?) {
-        updateAvailableCreditLimit(
-            if (accountTypeField.value.value == AccountType.CREDIT) {
-                accountItem?.creditLimit ?: 0.0
-            } else {
-                0.0
-            },
-            accountItem?.amount ?: 0.0,
-        )
-    }
-
-    private fun updateAvailableCreditLimit(
-        creditLimit: Double,
-        amount: Double,
-    ) {
-        val totalAmount = creditLimit + amount
-
-        availableCreditLimit.update {
-            it.copy(
-                value = getFormattedAmountUseCase.invoke(
-                    amount = totalAmount,
-                    currency = currency,
+            _state.update {
+                it.copy(
+                    name = it.name.copy(value = accountItem.name),
+                    type = it.type.copy(value = accountItem.type),
+                    color = it.color.copy(value = accountItem.storedIcon.backgroundColor),
+                    icon = it.icon.copy(value = accountItem.storedIcon.name),
+                    amount = it.amount.copy(value = accountItem.amount.toStringWithLocale()),
+                    creditLimit = it.creditLimit.copy(value = accountItem.creditLimit.toStringWithLocale()),
+                    showDeleteButton = true
                 )
-            )
+            }
         }
+    }
 
-        availableCreditLimitColor.update {
-            it.copy(
-                value = if (totalAmount < 0) {
-                    R.color.red_500
-                } else {
-                    R.color.green_500
-                }
-            )
+    private fun getBalanceBackgroundColor(totalAmount: Double): Int {
+        return if (totalAmount < 0) {
+            R.color.red_500
+        } else {
+            R.color.green_500
         }
     }
 
@@ -210,7 +152,7 @@ class AccountCreateViewModel @Inject constructor(
         }
     }
 
-    fun deleteAccount() {
+    private fun deleteAccount() {
         viewModelScope.launch {
             account?.let { account ->
                 when (deleteAccountUseCase.invoke(account)) {
@@ -223,27 +165,28 @@ class AccountCreateViewModel @Inject constructor(
         }
     }
 
-    fun saveOrUpdateAccount() {
-        val name: String = nameField.value.value
-        val currentBalance: String = currentBalanceField.value.value
-        val creditLimit: String = creditLimitField.value.value
-        val color: String = colorValueField.value.value
-        val accountType = accountTypeField.value.value
+    private fun saveOrUpdateAccount() {
+        val name: String = state.value.name.value
+        val currentBalance: String = state.value.amount.value
+        val creditLimit: String = state.value.creditLimit.value
+        val color: String = state.value.color.value
+        val icon: String = state.value.icon.value
+        val accountType = state.value.type.value
 
         var isError = false
 
         if (name.isBlank()) {
-            nameField.update { it.copy(valueError = true) }
+            _state.update { it.copy(name = it.name.copy(valueError = true)) }
             isError = true
         }
 
         if (currentBalance.isBlank() || currentBalance.toDoubleOrNullWithLocale() == null) {
-            currentBalanceField.update { it.copy(valueError = true) }
+            _state.update { it.copy(name = it.amount.copy(valueError = true)) }
             isError = true
         }
 
         if (accountType == AccountType.CREDIT && (creditLimit.isBlank() || creditLimit.toDoubleOrNullWithLocale() == null)) {
-            creditLimitField.update { it.copy(valueError = true) }
+            _state.update { it.copy(name = it.creditLimit.copy(valueError = true)) }
             isError = true
         }
 
@@ -256,7 +199,7 @@ class AccountCreateViewModel @Inject constructor(
             name = name,
             type = accountType,
             storedIcon = StoredIcon(
-                name = iconValueField.value.value,
+                name = icon,
                 backgroundColor = color,
             ),
             amount = currentBalance.toDoubleOrNullWithLocale() ?: 0.0,
@@ -285,55 +228,84 @@ class AccountCreateViewModel @Inject constructor(
         }
     }
 
-    fun closePage() {
+    private fun closePage() {
         composeNavigator.popBackStack()
     }
 
-    private fun setColorValue(colorValue: String) {
-        colorValueField.update { it.copy(value = colorValue) }
+    private fun setColorValue(color: String) {
+        _state.update { it.copy(color = it.color.copy(value = color)) }
     }
 
     private fun setIconValue(icon: String) {
-        iconValueField.update { it.copy(value = icon) }
+        _state.update { it.copy(icon = it.icon.copy(value = icon)) }
     }
 
-    private fun setAccountTypeChange(accountType: AccountType) {
-        accountTypeField.update { it.copy(value = accountType) }
-        updateAccountValue(account)
+    private fun setAccountTypeChange(type: AccountType) {
+        _state.update { it.copy(type = it.type.copy(value = type)) }
     }
 
     private fun setNameChange(name: String) {
-        nameField.update { it.copy(value = name, valueError = name.isBlank()) }
+        _state.update { it.copy(name = it.name.copy(value = name, valueError = name.isBlank())) }
     }
 
-    private fun setCurrentBalanceChange(currentBalance: String) {
-        currentBalanceField.update {
-            it.copy(value = currentBalance, valueError = currentBalance.isBlank())
-        }
+    private fun setAmount(amount: String) {
 
-        updateAvailableCreditLimit(
-            this.creditLimitField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
-            this.currentBalanceField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
-        )
+        val totalAmount = (amount.toDoubleOrNullWithLocale() ?: 0.0) + getCreditAmount()
+
+        _state.update {
+            it.copy(
+                amount = it.amount.copy(value = amount, valueError = amount.isBlank()),
+                totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
+                totalAmount = getAmountValue(totalAmount).amountString ?: ""
+            )
+        }
+    }
+
+    private fun getCreditAmount(): Double {
+        return if (_state.value.type.value == AccountType.CREDIT) {
+            _state.value.creditLimit.value.toDoubleOrNullWithLocale() ?: 0.0
+        } else {
+            0.0
+        }
     }
 
     private fun setCreditLimitChange(creditLimit: String) {
-        creditLimitField.update {
-            it.copy(value = creditLimit, valueError = false)
+
+        val totalAmount = getTotalAmount(creditLimit, _state.value.amount.value)
+
+        _state.update {
+            it.copy(
+                creditLimit = it.creditLimit.copy(
+                    value = creditLimit,
+                    valueError = creditLimit.isBlank()
+                ),
+                totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
+                totalAmount = getAmountValue(totalAmount).amountString ?: ""
+            )
         }
-
-        updateAvailableCreditLimit(
-            this.creditLimitField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
-            this.currentBalanceField.value.value.toDoubleOrNullWithLocale() ?: 0.0,
-        )
     }
 
-    fun dismissDeleteDialog() {
-        showDeleteDialog.value = false
+    private fun getTotalAmount(creditLimit: String, accountAmount: String): Double {
+        return (creditLimit.toDoubleOrNullWithLocale()
+            ?: 0.0) + (accountAmount.toDoubleOrNullWithLocale() ?: 0.0)
     }
 
-    fun showDeleteDialog() {
-        showDeleteDialog.value = true
+    private fun dismissDeleteDialog() {
+        _state.update { it.copy(showDeleteDialog = false) }
+    }
+
+    private fun showDeleteDialog() {
+        _state.update { it.copy(showDeleteDialog = true) }
+    }
+
+    fun processAction(action: AccountCreateAction) {
+        when (action) {
+            AccountCreateAction.ClosePage -> closePage()
+            AccountCreateAction.Delete -> deleteAccount()
+            AccountCreateAction.Save -> saveOrUpdateAccount()
+            AccountCreateAction.DismissDeleteDialog -> dismissDeleteDialog()
+            AccountCreateAction.ShowDeleteDialog -> showDeleteDialog()
+        }
     }
 
     companion object {
