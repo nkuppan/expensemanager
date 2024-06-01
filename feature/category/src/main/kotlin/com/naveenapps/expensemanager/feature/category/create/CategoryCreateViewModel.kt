@@ -33,48 +33,33 @@ class CategoryCreateViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _isDeleteEnabled = MutableStateFlow(false)
-    val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
-
-    private val _showDeleteDialog = MutableStateFlow(false)
-    val showDeleteDialog = _showDeleteDialog.asStateFlow()
-
-    var categoryTypeField = MutableStateFlow(
-        TextFieldValue(
-            value = CategoryType.EXPENSE,
-            valueError = false,
-            onValueChange = this::setCategoryTypeChange
+    private val _state = MutableStateFlow(
+        CategoryCreateState(
+            name = TextFieldValue(
+                value = "",
+                valueError = false,
+                onValueChange = this::setNameChange
+            ),
+            type = TextFieldValue(
+                value = CategoryType.EXPENSE,
+                valueError = false,
+                onValueChange = this::setCategoryTypeChange
+            ),
+            color = TextFieldValue(
+                value = DEFAULT_COLOR,
+                valueError = false,
+                onValueChange = this::setColorChange
+            ),
+            icon = TextFieldValue(
+                value = DEFAULT_ICON,
+                valueError = false,
+                onValueChange = this::setIconChange
+            ),
+            showDeleteDialog = false,
+            showDeleteButton = false
         )
     )
-        private set
-
-    var nameField = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = this::setNameChange
-        )
-    )
-        private set
-
-
-    var selectedColorField = MutableStateFlow(
-        TextFieldValue(
-            value = DEFAULT_COLOR,
-            valueError = false,
-            onValueChange = this::setColorChange
-        )
-    )
-        private set
-
-    var selectedIconField = MutableStateFlow(
-        TextFieldValue(
-            value = DEFAULT_ICON,
-            valueError = false,
-            onValueChange = this::setIconChange
-        )
-    )
-        private set
+    val state = _state.asStateFlow()
 
     private var category: Category? = null
 
@@ -87,11 +72,14 @@ class CategoryCreateViewModel @Inject constructor(
     private fun updateCategoryInfo(category: Category?) {
         category?.let { categoryItem ->
             this.category = categoryItem
-            nameField.update { it.copy(value = categoryItem.name) }
-            categoryTypeField.update { it.copy(value = categoryItem.type) }
-            selectedColorField.update { it.copy(value = categoryItem.storedIcon.backgroundColor) }
-            selectedIconField.update { it.copy(value = categoryItem.storedIcon.name) }
-            _isDeleteEnabled.value = true
+            _state.update {
+                it.copy(
+                    name = it.name.copy(value = categoryItem.name),
+                    type = it.type.copy(value = categoryItem.type),
+                    icon = it.icon.copy(value = categoryItem.storedIcon.name),
+                    color = it.color.copy(value = categoryItem.storedIcon.backgroundColor),
+                )
+            }
         }
     }
 
@@ -120,20 +108,21 @@ class CategoryCreateViewModel @Inject constructor(
         }
     }
 
-    fun saveOrUpdateCategory() {
-        val name: String = nameField.value.value
-        val color: String = selectedColorField.value.value
-        val icon: String = selectedIconField.value.value
+    private fun saveOrUpdateCategory() {
+        val name: String = _state.value.name.value
+        val color: String = _state.value.color.value
+        val icon: String = _state.value.icon.value
+        val type: CategoryType = _state.value.type.value
 
         if (name.isBlank()) {
-            nameField.update { it.copy(valueError = true) }
+            _state.update { it.copy(name = it.name.copy(valueError = true)) }
             return
         }
 
         val category = Category(
             id = category?.id ?: UUID.randomUUID().toString(),
             name = name,
-            type = categoryTypeField.value.value,
+            type = type,
             storedIcon = StoredIcon(
                 name = icon,
                 backgroundColor = color,
@@ -158,32 +147,47 @@ class CategoryCreateViewModel @Inject constructor(
     }
 
     private fun setColorChange(colorValue: String) {
-        selectedColorField.update { it.copy(value = colorValue) }
+        _state.update { it.copy(color = it.color.copy(value = colorValue)) }
     }
 
     private fun setCategoryTypeChange(categoryType: CategoryType) {
-        categoryTypeField.update { it.copy(value = categoryType) }
+        _state.update { it.copy(type = it.type.copy(value = categoryType)) }
     }
 
     private fun setIconChange(icon: String) {
-        selectedIconField.update { it.copy(value = icon) }
+        _state.update { it.copy(icon = it.icon.copy(value = icon)) }
     }
 
     private fun setNameChange(name: String) {
-        nameField.update { it.copy(value = name) }
-        nameField.update { it.copy(valueError = name.isBlank()) }
+        _state.update {
+            it.copy(
+                name = it.name.copy(value = name, valueError = name.isBlank())
+            )
+        }
     }
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
     }
 
-    fun openDeleteDialog() {
-        _showDeleteDialog.value = true
+    private fun showDeleteDialog() {
+        _state.update { it.copy(showDeleteDialog = true) }
     }
 
-    fun closeDeleteDialog() {
-        _showDeleteDialog.value = false
+    private fun dismissDeleteDialog() {
+        _state.update { it.copy(showDeleteDialog = false) }
+    }
+
+    fun processAction(action: CategoryCreateAction) {
+        when (action) {
+            CategoryCreateAction.Save -> saveOrUpdateCategory()
+            is CategoryCreateAction.SelectColor -> setColorChange(action.color)
+            is CategoryCreateAction.SelectIcon -> setIconChange(action.icon)
+            CategoryCreateAction.ShowDeleteDialog -> showDeleteDialog()
+            CategoryCreateAction.DismissDeleteDialog -> dismissDeleteDialog()
+            CategoryCreateAction.ClosePage -> closePage()
+            CategoryCreateAction.Delete -> deleteCategory()
+        }
     }
 
     companion object {

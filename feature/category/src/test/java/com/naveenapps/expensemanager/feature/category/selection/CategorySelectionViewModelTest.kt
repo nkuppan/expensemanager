@@ -22,7 +22,6 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
 
     override fun onCreate() {
         super.onCreate()
-
         whenever(repository.getCategories()).thenReturn(flowOf(getRandomCategoryData(5)))
         categorySelectionViewModel = CategorySelectionViewModel(getCategoriesUseCase)
     }

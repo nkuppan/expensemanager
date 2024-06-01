@@ -33,51 +33,26 @@ import com.naveenapps.expensemanager.feature.category.R
 fun CategoryCreateScreen(
     viewModel: CategoryCreateViewModel = hiltViewModel()
 ) {
-
-    val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
-    val isDeleteEnabled by viewModel.isDeleteEnabled.collectAsState()
-
-    val nameField by viewModel.nameField.collectAsState()
-    val selectedColorField by viewModel.selectedColorField.collectAsState()
-    val selectedIconField by viewModel.selectedIconField.collectAsState()
-    val categoryTypeField by viewModel.categoryTypeField.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     CategoryCreateScreenContentView(
-        showDeleteDialog = showDeleteDialog,
-        isDeleteEnabled = isDeleteEnabled,
-        nameField = nameField,
-        categoryTypeField = categoryTypeField,
-        selectedColorField = selectedColorField,
-        selectedIconField = selectedIconField,
-        deleteCategory = viewModel::deleteCategory,
-        closeDeleteDialog = viewModel::closeDeleteDialog,
-        closePage = viewModel::closePage,
-        openDeleteDialog = viewModel::openDeleteDialog,
-        saveOrUpdateCategory = viewModel::saveOrUpdateCategory
+        state = state,
+        onAction = viewModel::processAction
     )
 }
 
 @Composable
 private fun CategoryCreateScreenContentView(
-    showDeleteDialog: Boolean,
-    isDeleteEnabled: Boolean,
-    nameField: TextFieldValue<String>,
-    categoryTypeField: TextFieldValue<CategoryType>,
-    selectedColorField: TextFieldValue<String>,
-    selectedIconField: TextFieldValue<String>,
-    deleteCategory: () -> Unit,
-    closeDeleteDialog: () -> Unit,
-    closePage: () -> Unit,
-    openDeleteDialog: () -> Unit,
-    saveOrUpdateCategory: () -> Unit,
+    state: CategoryCreateState,
+    onAction: (CategoryCreateAction) -> Unit,
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }
 
-    if (showDeleteDialog) {
+    if (state.showDeleteDialog) {
         DeleteDialogItem(
-            confirm = deleteCategory,
-            dismiss = closeDeleteDialog
+            confirm = { onAction.invoke(CategoryCreateAction.Delete) },
+            dismiss = { onAction.invoke(CategoryCreateAction.DismissDeleteDialog) }
         )
     }
 
@@ -88,13 +63,13 @@ private fun CategoryCreateScreenContentView(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.category),
-                isDeleteEnabled = isDeleteEnabled,
-                onNavigationIconClick = closePage,
-                onDeleteActionClick = openDeleteDialog
+                isDeleteEnabled = state.showDeleteButton,
+                onNavigationIconClick = { onAction.invoke(CategoryCreateAction.ClosePage) },
+                onDeleteActionClick = { onAction.invoke(CategoryCreateAction.ShowDeleteDialog) }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = saveOrUpdateCategory) {
+            FloatingActionButton(onClick = { onAction.invoke(CategoryCreateAction.Save) }) {
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "",
@@ -106,10 +81,10 @@ private fun CategoryCreateScreenContentView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            nameField = nameField,
-            categoryTypeField = categoryTypeField,
-            selectedColorField = selectedColorField,
-            selectedIconField = selectedIconField,
+            nameField = state.name,
+            categoryTypeField = state.type,
+            selectedColorField = state.color,
+            selectedIconField = state.icon,
         )
     }
 }
@@ -172,17 +147,15 @@ private fun CategoryCreateStatePreview() {
 
     ExpenseManagerTheme {
         CategoryCreateScreenContentView(
-            showDeleteDialog = false,
-            isDeleteEnabled = true,
-            nameField = nameField,
-            categoryTypeField = categoryType,
-            selectedColorField = selectedColorField,
-            selectedIconField = selectedIconField,
-            deleteCategory = {},
-            closeDeleteDialog = {},
-            closePage = {},
-            openDeleteDialog = {},
-            saveOrUpdateCategory = {}
+            state = CategoryCreateState(
+                name = nameField,
+                type = categoryType,
+                color = selectedColorField,
+                icon = selectedIconField,
+                showDeleteButton = false,
+                showDeleteDialog = false
+            ),
+            onAction = {}
         )
     }
 }
