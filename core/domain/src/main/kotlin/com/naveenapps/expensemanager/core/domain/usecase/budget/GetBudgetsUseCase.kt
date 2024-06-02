@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
 import com.naveenapps.expensemanager.core.common.R
+import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -13,6 +14,7 @@ import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class GetBudgetsUseCase @Inject constructor(
@@ -21,6 +23,7 @@ class GetBudgetsUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase,
+    private val appCoroutineDispatchers: AppCoroutineDispatchers
 ) {
     operator fun invoke(): Flow<List<BudgetUiModel>> {
         return combine(
@@ -53,7 +56,7 @@ class GetBudgetsUseCase @Inject constructor(
                     },
                 )
             }
-        }
+        }.flowOn(appCoroutineDispatchers.computation)
     }
 }
 

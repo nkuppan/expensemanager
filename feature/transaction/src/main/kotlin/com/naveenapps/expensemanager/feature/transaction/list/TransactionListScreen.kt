@@ -36,14 +36,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
@@ -64,7 +63,7 @@ fun TransactionListScreen(
     viewModel: TransactionListViewModel = hiltViewModel()
 ) {
 
-    val transactionUiState by viewModel.transactions.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     Scaffold(
         topBar = {
@@ -87,7 +86,7 @@ fun TransactionListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            transactionGroup = transactionUiState,
+            state = state,
         ) { transaction ->
             viewModel.openCreateScreen(transaction.id)
         }
@@ -96,84 +95,79 @@ fun TransactionListScreen(
 
 @Composable
 private fun TransactionListScreen(
-    transactionGroup: UiState<List<TransactionGroup>>,
+    state: TransactionListState,
     modifier: Modifier = Modifier,
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
-    Column(modifier = modifier) {
-        FilterView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 6.dp),
-        )
 
-        when (transactionGroup) {
-            UiState.Empty -> {
+    LazyColumn(modifier = modifier.fillMaxWidth()) {
+        item {
+            FilterView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 6.dp),
+            )
+        }
+        if (state.transactionListItem.isEmpty()) {
+            item {
                 EmptyItem(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(400.dp),
                     emptyItemText = stringResource(id = R.string.no_transactions_available),
                     icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction
                 )
             }
+        } else {
 
-            UiState.Loading -> {
-                LoadingItem()
-            }
-
-            is UiState.Success -> {
-                LazyColumn {
-                    items(transactionGroup.data) {
-                        TransactionGroupItem(
-                            it,
-                            onItemClick,
+            items(state.transactionListItem) { transactionListItem ->
+                when (transactionListItem) {
+                    TransactionListItem.Divider -> {
+                        HorizontalDivider(
+                            modifier = Modifier.padding(
+                                top = 8.dp,
+                                bottom = 8.dp
+                            )
                         )
                     }
-                    item {
-                        Spacer(modifier = Modifier.height(48.dp))
+
+                    is TransactionListItem.HeaderItem -> {
+                        TransactionHeaderItem(
+                            transactionListItem.date,
+                            transactionListItem.amountTextColor,
+                            transactionListItem.totalAmount,
+                        )
+                    }
+
+                    is TransactionListItem.TransactionItem -> {
+                        val item = transactionListItem.date
+                        TransactionItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onItemClick?.invoke(item)
+                                }
+                                .then(ItemSpecModifier),
+                            categoryName = item.categoryName,
+                            categoryColor = item.categoryIcon.backgroundColor,
+                            categoryIcon = item.categoryIcon.name,
+                            amount = item.amount,
+                            date = item.date,
+                            notes = item.notes,
+                            transactionType = item.transactionType,
+                            fromAccountName = item.fromAccountName,
+                            fromAccountIcon = item.fromAccountIcon.name,
+                            fromAccountColor = item.fromAccountIcon.backgroundColor,
+                            toAccountName = item.toAccountName,
+                            toAccountIcon = item.toAccountIcon?.name,
+                            toAccountColor = item.toAccountIcon?.backgroundColor,
+                        )
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun TransactionGroupItem(
-    transactionGroup: TransactionGroup,
-    onItemClick: ((TransactionUiItem) -> Unit)?,
-    isLastItem: Boolean = false,
-) {
-    Column {
-        TransactionHeaderItem(
-            transactionGroup.date,
-            transactionGroup.amountTextColor,
-            transactionGroup.totalAmount,
-        )
-        transactionGroup.transactions.forEach {
-            TransactionItem(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        onItemClick?.invoke(it)
-                    }
-                    .then(ItemSpecModifier),
-                categoryName = it.categoryName,
-                categoryColor = it.categoryIcon.backgroundColor,
-                categoryIcon = it.categoryIcon.name,
-                amount = it.amount,
-                date = it.date,
-                notes = it.notes,
-                transactionType = it.transactionType,
-                fromAccountName = it.fromAccountName,
-                fromAccountIcon = it.fromAccountIcon.name,
-                fromAccountColor = it.fromAccountIcon.backgroundColor,
-                toAccountName = it.toAccountName,
-                toAccountIcon = it.toAccountIcon?.name,
-                toAccountColor = it.toAccountIcon?.backgroundColor,
-            )
-        }
-        if (isLastItem.not()) {
-            HorizontalDivider(modifier = Modifier.padding(top = 8.dp, bottom = 8.dp))
+            item {
+                Spacer(modifier = Modifier.height(48.dp))
+            }
         }
     }
 }
@@ -182,7 +176,7 @@ fun TransactionGroupItem(
 fun TransactionHeaderItem(
     date: String,
     textColor: Int,
-    totalAmount: Amount,
+    totalAmount: String,
 ) {
     Row(
         modifier = Modifier
@@ -214,7 +208,7 @@ fun TransactionHeaderItem(
             modifier = Modifier
                 .padding(start = 16.dp)
                 .align(Alignment.CenterVertically),
-            text = totalAmount.amountString ?: "",
+            text = totalAmount,
             color = colorResource(id = textColor),
             style = MaterialTheme.typography.titleMedium,
         )
@@ -350,7 +344,7 @@ private fun AccountNameWithIcon(
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionUiStatePreview() {
     ExpenseManagerTheme {
@@ -373,32 +367,10 @@ fun TransactionUiStatePreview() {
 
 @Preview
 @Composable
-fun TransactionItemPreview() {
-    ExpenseManagerTheme {
-        TransactionGroupItem(
-            getTransactionUiState(),
-            {},
-        )
-    }
-}
-
-@Preview
-@Composable
-fun TransactionListItemLoadingStatePreview() {
-    ExpenseManagerTheme {
-        TransactionListScreen(
-            transactionGroup = UiState.Loading,
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
-
-@Preview
-@Composable
 fun TransactionListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
-            transactionGroup = UiState.Success(emptyList()),
+            state = TransactionListState(emptyList()),
             modifier = Modifier.fillMaxSize(),
         )
     }
@@ -439,14 +411,12 @@ private fun getTransactionUiState() = TransactionGroup(
     },
 )
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         TransactionListScreen(
-            transactionGroup = UiState.Success(
-                DUMMY_DATA,
-            ),
+            state = TransactionListState(DUMMY_DATA.convertGroupToTransactionListItems()),
             modifier = Modifier.fillMaxSize(),
         )
     }

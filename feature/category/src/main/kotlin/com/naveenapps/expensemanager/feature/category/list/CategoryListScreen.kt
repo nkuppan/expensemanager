@@ -101,7 +101,7 @@ private fun CategoryListScreenContentView(
                 .fillMaxSize(),
         ) {
             PrimaryTabRow(selectedTabIndex = state.selectedTab.index) {
-                CategoryTabItems.entries.forEach { item ->
+                state.tabs.forEach { item ->
                     Tab(
                         selected = state.selectedTab.categoryType == item.categoryType,
                         onClick = {

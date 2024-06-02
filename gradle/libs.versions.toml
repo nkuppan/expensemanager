@@ -74,6 +74,7 @@ sain = "2.0.2"
 uiGraphicsAndroid = "1.6.7"
 pdf-viewer = "3.2.0-beta.1"
 dependency-analysis = "1.27.0"
+coil = "2.6.0"
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -171,6 +172,7 @@ vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", ve
 vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
 backup-restore = { group = "de.raphaelebner", name = "roomdatabasebackup", version.ref = "backup-restore" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
