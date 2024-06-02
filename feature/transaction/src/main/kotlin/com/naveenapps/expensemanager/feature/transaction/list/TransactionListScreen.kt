@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -43,8 +44,8 @@ import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -60,6 +61,7 @@ import java.util.Date
 
 @Composable
 fun TransactionListScreen(
+    showBackNavigationIcon: Boolean = false,
     viewModel: TransactionListViewModel = hiltViewModel()
 ) {
 
@@ -67,10 +69,10 @@ fun TransactionListScreen(
 
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = viewModel::closePage,
+            AppTopNavigationBar(
                 title = stringResource(R.string.transaction),
-                disableBackIcon = true,
+                navigationIcon = if (showBackNavigationIcon) Icons.AutoMirrored.Default.ArrowBack else null,
+                navigationBackClick = viewModel::closePage
             )
         },
         floatingActionButton = {

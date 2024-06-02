@@ -88,7 +88,7 @@ fun NavGraphBuilder.expenseManagerNavigation(
         CategoryDetailScreen()
     }
     composable<ExpenseManagerScreens.TransactionList> {
-        TransactionListScreen()
+        TransactionListScreen(showBackNavigationIcon = true)
     }
     composable<ExpenseManagerScreens.TransactionCreate> {
         TransactionCreateScreen()
