@@ -25,15 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.github.nkuppan.countrycompose.presentation.currency.CountryCurrencySelectionDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
-
-typealias CountryPickerCountry = com.github.nkuppan.country.domain.model.Country
+import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
 
 @Composable
 fun CurrencyCustomiseScreen(
@@ -41,18 +38,10 @@ fun CurrencyCustomiseScreen(
 ) {
     var showCurrencyPage by remember { mutableStateOf(false) }
     val selectedCurrency by viewModel.currentCurrency.collectAsState()
-    val theme by viewModel.theme.collectAsState()
 
     if (showCurrencyPage) {
-        CountryCurrencySelectionDialog(
-            isDarkTheme = shouldUseDarkTheme(theme = theme.mode),
-            onDismissRequest = {
-                showCurrencyPage = false
-            },
-        ) { country ->
-            viewModel.selectThisCurrency(
-                country.toExpenseCurrency(),
-            )
+        CountryCurrencySelectionDialog { country ->
+            viewModel.selectThisCurrency(country?.currency)
             showCurrencyPage = false
         }
     }
@@ -65,13 +54,6 @@ fun CurrencyCustomiseScreen(
             showCurrencyPage = true
         },
         closePage = viewModel::closePage,
-    )
-}
-
-private fun CountryPickerCountry.toExpenseCurrency(): Currency {
-    return Currency(
-        name = currency?.name ?: name ?: "",
-        symbol = currency?.symbol ?: currency?.nativeSymbol ?: countryCode ?: "",
     )
 }
 
@@ -122,6 +104,7 @@ private fun CurrencyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 14.dp, end = 14.dp),
+                currency = selectedCurrency.symbol,
                 selectedCurrencyPositionType = selectedCurrency.position,
                 onCurrencyPositionTypeChange = onTextPositionChange,
             )

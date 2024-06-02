@@ -3,9 +3,11 @@ package com.naveenapps.expensemanager.core.data.di
 import com.naveenapps.expensemanager.core.data.repository.AccountRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.BudgetRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CategoryRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.CountryRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CurrencyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DateRangeFilterRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ExportRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.JsonConverterRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.SettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ThemeRepositoryImpl
@@ -14,9 +16,11 @@ import com.naveenapps.expensemanager.core.data.repository.VersionCheckerReposito
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
+import com.naveenapps.expensemanager.core.repository.CountryRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import com.naveenapps.expensemanager.core.repository.ExportRepository
+import com.naveenapps.expensemanager.core.repository.JsonConverterRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.ThemeRepository
@@ -89,4 +93,14 @@ abstract class RepositoryModule {
     abstract fun provideVersionCheckerRepository(
         versionCheckerRepositoryImpl: VersionCheckerRepositoryImpl,
     ): VersionCheckerRepository
+
+    @Binds
+    abstract fun provideJsonConverterRepository(
+        jsonConverterRepositoryImpl: JsonConverterRepositoryImpl,
+    ): JsonConverterRepository
+
+    @Binds
+    abstract fun provideCountryRepository(
+        countryRepositoryImpl: CountryRepositoryImpl,
+    ): CountryRepository
 }

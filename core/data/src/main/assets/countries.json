@@ -1,0 +1,4423 @@
+{
+  "countries": [
+    {
+      "continent": "Asia",
+      "code": "AF",
+      "group": "secondary",
+      "name": "Afghanistan",
+      "states": "Badakhshan|Badghis|Baghlan|Balkh|Bamian|Farah|Faryab|Ghazni|Ghowr|Helmand|Herat|Jowzjan|Kabol|Kandahar|Kapisa|Konar|Kondoz|Laghman|Lowgar|Nangarhar|Nimruz|Oruzgan|Paktia|Paktika|Parvan|Samangan|Sar-e Pol|Takhar|Vardak|Zabol",
+      "currency": {
+        "code": "AFN",
+        "decimal_digits": 0,
+        "name": "Afghan Afghani",
+        "name_plural": "Afghan Afghanis",
+        "symbol_native": "؋",
+        "rounding": 0.0,
+        "symbol": "Af"
+      },
+      "currency_code": "AFN",
+      "dial_code": "+93"
+    },
+    {
+      "continent": "Europe",
+      "code": "AL",
+      "group": "secondary",
+      "name": "Albania",
+      "states": "Berat|Bulqize|Delvine|Devoll (Bilisht)|Diber (Peshkopi)|Durres|Elbasan|Fier|Gjirokaster|Gramsh|Has (Krume)|Kavaje|Kolonje (Erseke)|Korce|Kruje|Kucove|Kukes|Kurbin|Lezhe|Librazhd|Lushnje|Malesi e Madhe (Koplik)|Mallakaster (Ballsh)|Mat (Burrel)|Mirdite (Rreshen)|Peqin|Permet|Pogradec|Puke|Sarande|Shkoder|Skrapar (Corovode)|Tepelene|Tirane (Tirana)|Tirane (Tirana)|Tropoje (Bajram Curri)|Vlore",
+      "currency": {
+        "code": "ALL",
+        "decimal_digits": 0,
+        "name": "Albanian Lek",
+        "name_plural": "Albanian lekë",
+        "symbol_native": "Lek",
+        "rounding": 0.0,
+        "symbol": "ALL"
+      },
+      "currency_code": "ALL",
+      "dial_code": "+355"
+    },
+    {
+      "continent": "Africa",
+      "code": "DZ",
+      "group": "secondary",
+      "name": "Algeria",
+      "states": "Adrar|Ain Defla|Ain Temouchent|Alger|Annaba|Batna|Bechar|Bejaia|Biskra|Blida|Bordj Bou Arreridj|Bouira|Boumerdes|Chlef|Constantine|Djelfa|El Bayadh|El Oued|El Tarf|Ghardaia|Guelma|Illizi|Jijel|Khenchela|Laghouat|M\u0027Sila|Mascara|Medea|Mila|Mostaganem|Naama|Oran|Ouargla|Oum el Bouaghi|Relizane|Saida|Setif|Sidi Bel Abbes|Skikda|Souk Ahras|Tamanghasset|Tebessa|Tiaret|Tindouf|Tipaza|Tissemsilt|Tizi Ouzou|Tlemcen",
+      "currency": {
+        "code": "DZD",
+        "decimal_digits": 2,
+        "name": "Algerian Dinar",
+        "name_plural": "Algerian dinars",
+        "symbol_native": "د.ج.‏",
+        "rounding": 0.0,
+        "symbol": "DA"
+      },
+      "currency_code": "DZD",
+      "dial_code": "+213"
+    },
+    {
+      "continent": "Oceania",
+      "code": "AS",
+      "group": "secondary",
+      "name": "American Samoa",
+      "states": "Eastern|Manu\u0027a|Rose Island|Swains Island|Western",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1 684"
+    },
+    {
+      "continent": "Europe",
+      "code": "AD",
+      "group": "secondary",
+      "name": "Andorra",
+      "states": "Andorra",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+376"
+    },
+    {
+      "continent": "Africa",
+      "code": "AO",
+      "group": "secondary",
+      "name": "Angola",
+      "states": "Andorra la Vella|Bengo|Benguela|Bie|Cabinda|Canillo|Cuando Cubango|Cuanza Norte|Cuanza Sul|Cunene|Encamp|Escaldes-Engordany|Huambo|Huila|La Massana|Luanda|Lunda Norte|Lunda Sul|Malanje|Moxico|Namibe|Ordino|Sant Julia de Loria|Uige|Zaire",
+      "currency": {
+        "code": "AOA",
+        "decimal_digits": 0,
+        "name": "Angolan kwanza",
+        "name_plural": "kwanzas",
+        "symbol_native": "Kz",
+        "rounding": 0.0,
+        "symbol": "Kz"
+      },
+      "currency_code": "AOA",
+      "dial_code": "+244"
+    },
+    {
+      "continent": "North America",
+      "code": "AI",
+      "group": "secondary",
+      "name": "Anguilla",
+      "states": "Anguilla",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1 264"
+    },
+    {
+      "continent": "North America",
+      "code": "AG",
+      "group": "secondary",
+      "name": "Antigua And Barbuda",
+      "states": "Barbuda|Redonda|Saint George|Saint John|Saint Mary|Saint Paul|Saint Peter|Saint Philip",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1268"
+    },
+    {
+      "continent": "South America",
+      "code": "AR",
+      "group": "secondary",
+      "name": "Argentina",
+      "states": "Antartica e Islas del Atlantico Sur|Buenos Aires|Buenos Aires Capital Federal|Catamarca|Chaco|Chubut|Cordoba|Corrientes|Entre Rios|Formosa|Jujuy|La Pampa|La Rioja|Mendoza|Misiones|Neuquen|Rio Negro|Salta|San Juan|San Luis|Santa Cruz|Santa Fe|Santiago del Estero|Tierra del Fuego|Tucuman",
+      "currency": {
+        "code": "ARS",
+        "decimal_digits": 2,
+        "name": "Argentine Peso",
+        "name_plural": "Argentine pesos",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "AR$"
+      },
+      "currency_code": "ARS",
+      "dial_code": "+54"
+    },
+    {
+      "continent": "Asia",
+      "code": "AM",
+      "group": "secondary",
+      "name": "Armenia",
+      "states": "Aragatsotn|Ararat|Armavir|Geghark\u0027unik\u0027|Kotayk\u0027|Lorri|Shirak|Syunik\u0027|Tavush|Vayots\u0027 Dzor|Yerevan",
+      "currency": {
+        "code": "AMD",
+        "decimal_digits": 0,
+        "name": "Armenian Dram",
+        "name_plural": "Armenian drams",
+        "symbol_native": "դր.",
+        "rounding": 0.0,
+        "symbol": "AMD"
+      },
+      "currency_code": "AMD",
+      "dial_code": "+374"
+    },
+    {
+      "continent": "North America",
+      "code": "AW",
+      "group": "secondary",
+      "name": "Aruba",
+      "states": "Aruba",
+      "currency": {
+        "code": "AWG",
+        "decimal_digits": 2,
+        "name": "Aruban florin",
+        "name_plural": "Aruban florin",
+        "symbol_native": "ƒ",
+        "rounding": 0.0,
+        "symbol": "ƒ"
+      },
+      "currency_code": "AWG",
+      "dial_code": "+297"
+    },
+    {
+      "continent": "Oceania",
+      "code": "AU",
+      "group": "secondary",
+      "name": "Australia",
+      "states": "Australian Capital Territory|New South Wales|Northern Territory|Queensland|South Australia|Tasmania|Victoria|Western Australia",
+      "currency": {
+        "code": "AUD",
+        "decimal_digits": 2,
+        "name": "Australian Dollar",
+        "name_plural": "Australian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "AU$"
+      },
+      "currency_code": "AUD",
+      "dial_code": "+61"
+    },
+    {
+      "continent": "Europe",
+      "code": "AT",
+      "group": "secondary",
+      "name": "Austria",
+      "states": "Burgenland|Kaernten|Niederoesterreich|Oberoesterreich|Salzburg|Steiermark|Tirol|Vorarlberg|Wien",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+43"
+    },
+    {
+      "continent": "Asia",
+      "code": "AZ",
+      "group": "secondary",
+      "name": "Azerbaijan",
+      "states": "Abseron Rayonu|Agcabadi Rayonu|Agdam Rayonu|Agdas Rayonu|Agstafa Rayonu|Agsu Rayonu|Ali Bayramli Sahari|Astara Rayonu|Baki Sahari|Balakan Rayonu|Barda Rayonu|Beylaqan Rayonu|Bilasuvar Rayonu|Cabrayil Rayonu|Calilabad Rayonu|Daskasan Rayonu|Davaci Rayonu|Fuzuli Rayonu|Gadabay Rayonu|Ganca Sahari|Goranboy Rayonu|Goycay Rayonu|Haciqabul Rayonu|Imisli Rayonu|Ismayilli Rayonu|Kalbacar Rayonu|Kurdamir Rayonu|Lacin Rayonu|Lankaran Rayonu|Lankaran Sahari|Lerik Rayonu|Masalli Rayonu|Mingacevir Sahari|Naftalan Sahari|Naxcivan Muxtar Respublikasi|Neftcala Rayonu|Oguz Rayonu|Qabala Rayonu|Qax Rayonu|Qazax Rayonu|Qobustan Rayonu|Quba Rayonu|Qubadli Rayonu|Qusar Rayonu|Saatli Rayonu|Sabirabad Rayonu|Saki Rayonu|Saki Sahari|Salyan Rayonu|Samaxi Rayonu|Samkir Rayonu|Samux Rayonu|Siyazan Rayonu|Sumqayit Sahari|Susa Rayonu|Susa Sahari|Tartar Rayonu|Tovuz Rayonu|Ucar Rayonu|Xacmaz Rayonu|Xankandi Sahari|Xanlar Rayonu|Xizi Rayonu|Xocali Rayonu|Xocavand Rayonu|Yardimli Rayonu|Yevlax Rayonu|Yevlax Sahari|Zangilan Rayonu|Zaqatala Rayonu|Zardab Rayonu",
+      "currency": {
+        "code": "AZN",
+        "decimal_digits": 2,
+        "name": "Azerbaijani Manat",
+        "name_plural": "Azerbaijani manats",
+        "symbol_native": "ман.",
+        "rounding": 0.0,
+        "symbol": "man."
+      },
+      "currency_code": "AZN",
+      "dial_code": "+994"
+    },
+    {
+      "continent": "North America",
+      "code": "BS",
+      "group": "secondary",
+      "name": "Bahamas",
+      "states": "Acklins and Crooked Islands|Bimini|Cat Island|Exuma|Freeport|Fresh Creek|Governor\u0027s Harbour|Green Turtle Cay|Harbour Island|High Rock|Inagua|Kemps Bay|Long Island|Marsh Harbour|Mayaguana|New Providence|Nicholls Town and Berry Islands|Ragged Island|Rock Sound|San Salvador and Rum Cay|Sandy Point",
+      "currency": {
+        "code": "BSD",
+        "decimal_digits": 2,
+        "name": "Bahamian dollar",
+        "name_plural": "Bahamian dollar",
+        "symbol_native": "B$",
+        "rounding": 0.0,
+        "symbol": "B$"
+      },
+      "currency_code": "BSD",
+      "dial_code": "+1 242"
+    },
+    {
+      "continent": "Asia",
+      "code": "BH",
+      "group": "secondary",
+      "name": "Bahrain",
+      "states": "Al Hadd|Al Manamah|Al Mintaqah al Gharbiyah|Al Mintaqah al Wusta|Al Mintaqah ash Shamaliyah|Al Muharraq|Ar Rifa\u0027 wa al Mintaqah al Janubiyah|Jidd Hafs|Juzur Hawar|Madinat \u0027Isa|Madinat Hamad|Sitrah",
+      "currency": {
+        "code": "BHD",
+        "decimal_digits": 3,
+        "name": "Bahraini Dinar",
+        "name_plural": "Bahraini dinars",
+        "symbol_native": "د.ب.‏",
+        "rounding": 0.0,
+        "symbol": "BD"
+      },
+      "currency_code": "BHD",
+      "dial_code": "+973"
+    },
+    {
+      "continent": "Asia",
+      "code": "BD",
+      "group": "secondary",
+      "name": "Bangladesh",
+      "states": "Barguna|Barisal|Bhola|Jhalokati|Patuakhali|Pirojpur|Bandarban|Brahmanbaria|Chandpur|Chittagong|Comilla|Cox\u0027s Bazar|Feni|Khagrachari|Lakshmipur|Noakhali|Rangamati|Dhaka|Faridpur|Gazipur|Gopalganj|Jamalpur|Kishoreganj|Madaripur|Manikganj|Munshiganj|Mymensingh|Narayanganj|Narsingdi|Netrokona|Rajbari|Shariatpur|Sherpur|Tangail|Bagerhat|Chuadanga|Jessore|Jhenaidah|Khulna|Kushtia|Magura|Meherpur|Narail|Satkhira|Bogra|Dinajpur|Gaibandha|Jaipurhat|Kurigram|Lalmonirhat|Naogaon|Natore|Nawabganj|Nilphamari|Pabna|Panchagarh|Rajshahi|Rangpur|Sirajganj|Thakurgaon|Habiganj|Maulvi bazar|Sunamganj|Sylhet",
+      "currency": {
+        "code": "BDT",
+        "decimal_digits": 2,
+        "name": "Bangladeshi Taka",
+        "name_plural": "Bangladeshi takas",
+        "symbol_native": "৳",
+        "rounding": 0.0,
+        "symbol": "Tk"
+      },
+      "currency_code": "BDT",
+      "dial_code": "+880"
+    },
+    {
+      "continent": "North America",
+      "code": "BB",
+      "group": "secondary",
+      "name": "Barbados",
+      "states": "Bridgetown|Christ Church|Saint Andrew|Saint George|Saint James|Saint John|Saint Joseph|Saint Lucy|Saint Michael|Saint Peter|Saint Philip|Saint Thomas",
+      "currency": {
+        "code": "BBD",
+        "decimal_digits": 2,
+        "name": "Barbados Dollar",
+        "name_plural": "dollars",
+        "symbol_native": "Bds$",
+        "rounding": 0.0,
+        "symbol": "Bds$"
+      },
+      "currency_code": "BBD",
+      "dial_code": "+1 246"
+    },
+    {
+      "continent": "Europe",
+      "code": "BY",
+      "group": "secondary",
+      "name": "Belarus",
+      "states": "Brestskaya (Brest)|Homyel\u0027skaya (Homyel\u0027)|Horad Minsk|Hrodzyenskaya (Hrodna)|Mahilyowskaya (Mahilyow)|Minskaya|Vitsyebskaya (Vitsyebsk)",
+      "currency": {
+        "code": "BYR",
+        "decimal_digits": 2,
+        "name": "Belarusian Rouble",
+        "name_plural": "rubles",
+        "symbol_native": "BYN",
+        "rounding": 0.0,
+        "symbol": "BYN"
+      },
+      "currency_code": "BYR",
+      "dial_code": "+375"
+    },
+    {
+      "continent": "Europe",
+      "code": "BE",
+      "group": "secondary",
+      "name": "Belgium",
+      "states": "Antwerpen|Brabant Wallon|Brussels Capitol Region|Hainaut|Liege|Limburg|Luxembourg|Namur|Oost-Vlaanderen|Vlaams Brabant|West-Vlaandern",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+32"
+    },
+    {
+      "continent": "North America",
+      "code": "BZ",
+      "group": "secondary",
+      "name": "Belize",
+      "states": "Belize|Cayo|Corozal|Orange Walk|Stann Creek|Toledo",
+      "currency": {
+        "code": "BZD",
+        "decimal_digits": 2,
+        "name": "Belize Dollar",
+        "name_plural": "Belize dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "BZ$"
+      },
+      "currency_code": "BZD",
+      "dial_code": "+501"
+    },
+    {
+      "continent": "Africa",
+      "code": "BJ",
+      "group": "secondary",
+      "name": "Benin",
+      "states": "Alibori|Atakora|Atlantique|Borgou|Collines|Couffo|Donga|Littoral|Mono|Oueme|Plateau|Zou",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+229"
+    },
+    {
+      "continent": "North America",
+      "code": "BM",
+      "group": "secondary",
+      "name": "Bermuda",
+      "states": "Devonshire|Hamilton|Hamilton|Paget|Pembroke|Saint George|Saint Georges|Sandys|Smiths|Southampton|Warwick",
+      "currency": {
+        "code": "BMD",
+        "decimal_digits": 2,
+        "name": "Bermuda Dollar",
+        "name_plural": "Bermuda dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "BMD",
+      "dial_code": "+1 441"
+    },
+    {
+      "continent": "Asia",
+      "code": "BT",
+      "group": "secondary",
+      "name": "Bhutan",
+      "states": "Bumthang|Chhukha|Chirang|Daga|Geylegphug|Ha|Lhuntshi|Mongar|Paro|Pemagatsel|Punakha|Samchi|Samdrup Jongkhar|Shemgang|Tashigang|Thimphu|Tongsa|Wangdi Phodrang",
+      "currency": {
+        "code": "BMD",
+        "decimal_digits": 2,
+        "name": "Bhutanese ngultrum",
+        "name_plural": "Bhutanese ngultrum",
+        "symbol_native": "Nu.",
+        "rounding": 0.0,
+        "symbol": "Nu."
+      },
+      "currency_code": "BTN",
+      "dial_code": "+975"
+    },
+    {
+      "continent": "South America",
+      "code": "BO",
+      "group": "secondary",
+      "name": "Bolivia",
+      "states": "Beni|Chuquisaca|Cochabamba|La Paz|Oruro|Pando|Potosi|Santa Cruz|Tarija",
+      "currency": {
+        "code": "BOB",
+        "decimal_digits": 2,
+        "name": "Bolivian Boliviano",
+        "name_plural": "Bolivian bolivianos",
+        "symbol_native": "Bs",
+        "rounding": 0.0,
+        "symbol": "Bs"
+      },
+      "currency_code": "BOB",
+      "dial_code": "+591"
+    },
+    {
+      "continent": "Europe",
+      "code": "BA",
+      "group": "secondary",
+      "name": "Bosnia And Herzegovina",
+      "states": "Federation of Bosnia and Herzegovina|Republika Srpska",
+      "currency": {
+        "code": "BAM",
+        "decimal_digits": 2,
+        "name": "Bosnia-Herzegovina Convertible Mark",
+        "name_plural": "Bosnia-Herzegovina convertible marks",
+        "symbol_native": "KM",
+        "rounding": 0.0,
+        "symbol": "KM"
+      },
+      "currency_code": "BAM",
+      "dial_code": "+387"
+    },
+    {
+      "continent": "Africa",
+      "code": "BW",
+      "group": "secondary",
+      "name": "Botswana",
+      "states": "Central|Chobe|Francistown|Gaborone|Ghanzi|Kgalagadi|Kgatleng|Kweneng|Lobatse|Ngamiland|North-East|Selebi-Pikwe|South-East|Southern",
+      "currency": {
+        "code": "BWP",
+        "decimal_digits": 2,
+        "name": "Botswanan Pula",
+        "name_plural": "Botswanan pulas",
+        "symbol_native": "P",
+        "rounding": 0.0,
+        "symbol": "BWP"
+      },
+      "currency_code": "BWP",
+      "dial_code": "+267"
+    },
+    {
+      "continent": "South America",
+      "code": "BR",
+      "group": "secondary",
+      "name": "Brazil",
+      "states": "Acre|Alagoas|Amapa|Amazonas|Bahia|Ceara|Distrito Federal|Espirito Santo|Goias|Maranhao|Mato Grosso|Mato Grosso do Sul|Minas Gerais|Para|Paraiba|Parana|Pernambuco|Piaui|Rio de Janeiro|Rio Grande do Norte|Rio Grande do Sul|Rondonia|Roraima|Santa Catarina|Sao Paulo|Sergipe|Tocantins",
+      "currency": {
+        "code": "BRL",
+        "decimal_digits": 2,
+        "name": "Brazilian Real",
+        "name_plural": "Brazilian reals",
+        "symbol_native": "R$",
+        "rounding": 0.0,
+        "symbol": "R$"
+      },
+      "currency_code": "BRL",
+      "dial_code": "+55"
+    },
+    {
+      "continent": "Asia",
+      "code": "IO",
+      "group": "secondary",
+      "name": "British Indian Ocean Territory",
+      "states": "Anegada|Jost Van Dyke|Tortola|Virgin Gorda",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+246"
+    },
+    {
+      "continent": "Asia",
+      "code": "BN",
+      "group": "secondary",
+      "name": "Brunei Darussalam",
+      "states": "Belait|Brunei and Muara|Temburong|Tutong",
+      "currency": {
+        "code": "BND",
+        "decimal_digits": 2,
+        "name": "Brunei Dollar",
+        "name_plural": "Brunei dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "BN$"
+      },
+      "currency_code": "BND",
+      "dial_code": "+673"
+    },
+    {
+      "continent": "Europe",
+      "code": "BG",
+      "group": "secondary",
+      "name": "Bulgaria",
+      "states": "Blagoevgrad|Burgas|Dobrich|Gabrovo|Khaskovo|Kurdzhali|Kyustendil|Lovech|Montana|Pazardzhik|Pernik|Pleven|Plovdiv|Razgrad|Ruse|Shumen|Silistra|Sliven|Smolyan|Sofiya|Sofiya-Grad|Stara Zagora|Turgovishte|Varna|Veliko Turnovo|Vidin|Vratsa|Yambol",
+      "currency": {
+        "code": "BGN",
+        "decimal_digits": 2,
+        "name": "Bulgarian Lev",
+        "name_plural": "Bulgarian leva",
+        "symbol_native": "лв.",
+        "rounding": 0.0,
+        "symbol": "BGN"
+      },
+      "currency_code": "BGN",
+      "dial_code": "+359"
+    },
+    {
+      "continent": "Africa",
+      "code": "BF",
+      "group": "secondary",
+      "name": "Burkina Faso",
+      "states": "Bale|Bam|Banwa|Bazega|Bougouriba|Boulgou|Boulkiemde|Comoe|Ganzourgou|Gnagna|Gourma|Houet|Ioba|Kadiogo|Kenedougou|Komandjari|Kompienga|Kossi|Koupelogo|Kouritenga|Kourweogo|Leraba|Loroum|Mouhoun|Nahouri|Namentenga|Naumbiel|Nayala|Oubritenga|Oudalan|Passore|Poni|Samentenga|Sanguie|Seno|Sissili|Soum|Sourou|Tapoa|Tuy|Yagha|Yatenga|Ziro|Zondomo|Zoundweogo",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+226"
+    },
+    {
+      "continent": "Asia",
+      "code": "MM",
+      "group": "secondary",
+      "name": "Burma",
+      "states": "Ayeyarwady|Bago|Chin State|Kachin State|Kayah State|Kayin State|Magway|Mandalay|Mon State|Rakhine State|Sagaing|Shan State|Tanintharyi|Yangon",
+      "currency": {
+        "code": "MMK",
+        "decimal_digits": 0,
+        "name": "Myanma Kyat",
+        "name_plural": "Myanma kyats",
+        "symbol_native": "K",
+        "rounding": 0.0,
+        "symbol": "MMK"
+      },
+      "currency_code": "MMK",
+      "dial_code": "+95"
+    },
+    {
+      "continent": "Africa",
+      "code": "BI",
+      "group": "secondary",
+      "name": "Burundi",
+      "states": "Bubanza|Bujumbura|Bururi|Cankuzo|Cibitoke|Gitega|Karuzi|Kayanza|Kirundo|Makamba|Muramvya|Muyinga|Mwaro|Ngozi|Rutana|Ruyigi",
+      "currency": {
+        "code": "BIF",
+        "decimal_digits": 0,
+        "name": "Burundian Franc",
+        "name_plural": "Burundian francs",
+        "symbol_native": "FBu",
+        "rounding": 0.0,
+        "symbol": "FBu"
+      },
+      "currency_code": "BIF",
+      "dial_code": "+257"
+    },
+    {
+      "continent": "Asia",
+      "code": "KH",
+      "group": "secondary",
+      "name": "Cambodia",
+      "states": "Banteay Mean Cheay|Batdambang|Kampong Cham|Kampong Chhnang|Kampong Spoe|Kampong Thum|Kampot|Kandal|Kaoh Kong|Keb|Kracheh|Mondol Kiri|Otdar Mean Cheay|Pailin|Phnum Penh|Pouthisat|Preah Seihanu (Sihanoukville)|Preah Vihear|Prey Veng|Rotanah Kiri|Siem Reab|Stoeng Treng|Svay Rieng|Takev",
+      "currency": {
+        "code": "KHR",
+        "decimal_digits": 2,
+        "name": "Cambodian Riel",
+        "name_plural": "Cambodian riels",
+        "symbol_native": "៛",
+        "rounding": 0.0,
+        "symbol": "KHR"
+      },
+      "currency_code": "KHR",
+      "dial_code": "+855"
+    },
+    {
+      "continent": "Africa",
+      "code": "CM",
+      "group": "secondary",
+      "name": "Cameroon",
+      "states": "Adamaoua|Centre|Est|Extreme-Nord|Littoral|Nord|Nord-Ouest|Ouest|Sud|Sud-Ouest",
+      "currency": {
+        "code": "XAF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BEAC",
+        "name_plural": "CFA francs BEAC",
+        "symbol_native": "FCFA",
+        "rounding": 0.0,
+        "symbol": "FCFA"
+      },
+      "currency_code": "XAF",
+      "dial_code": "+237"
+    },
+    {
+      "continent": "North America",
+      "code": "CA",
+      "group": "primary",
+      "name": "Canada",
+      "states": "Alberta|British Columbia|Manitoba|New Brunswick|Newfoundland|Northwest Territories|Nova Scotia|Nunavut|Ontario|Prince Edward Island|Quebec|Saskatchewan|Yukon Territory",
+      "currency": {
+        "code": "CAD",
+        "decimal_digits": 2,
+        "name": "Canadian Dollar",
+        "name_plural": "Canadian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "CA$"
+      },
+      "currency_code": "CAD",
+      "dial_code": "+1"
+    },
+    {
+      "continent": "Africa",
+      "code": "CV",
+      "group": "secondary",
+      "name": "Cape Verde",
+      "states": "Boa Vista|Brava|Maio|Mosteiros|Paul|Porto Novo|Praia|Ribeira Grande|Sal|Santa Catarina|Santa Cruz|Sao Domingos|Sao Filipe|Sao Nicolau|Sao Vicente|Tarrafal",
+      "currency": {
+        "code": "CVE",
+        "decimal_digits": 2,
+        "name": "Cape Verdean Escudo",
+        "name_plural": "Cape Verdean escudos",
+        "symbol_native": "CV$",
+        "rounding": 0.0,
+        "symbol": "CV$"
+      },
+      "currency_code": "CVE",
+      "dial_code": "+238"
+    },
+    {
+      "continent": "North America",
+      "code": "KY",
+      "group": "secondary",
+      "name": "Cayman Islands",
+      "states": "Creek|Eastern|Midland|South Town|Spot Bay|Stake Bay|West End|Western",
+      "currency": {
+        "code": "KYD",
+        "decimal_digits": 2,
+        "name": "Cayman Islands dollar",
+        "name_plural": "Cayman Islands dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "CI$"
+      },
+      "currency_code": "KYD",
+      "dial_code": "+ 345"
+    },
+    {
+      "continent": "Africa",
+      "code": "CF",
+      "group": "secondary",
+      "name": "Central African Republic",
+      "states": "Bamingui-Bangoran|Bangui|Basse-Kotto|Gribingui|Haut-Mbomou|Haute-Kotto|Haute-Sangha|Kemo-Gribingui|Lobaye|Mbomou|Nana-Mambere|Ombella-Mpoko|Ouaka|Ouham|Ouham-Pende|Sangha|Vakaga",
+      "currency": {
+        "code": "XAF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BEAC",
+        "name_plural": "CFA francs BEAC",
+        "symbol_native": "FCFA",
+        "rounding": 0.0,
+        "symbol": "FCFA"
+      },
+      "currency_code": "XAF",
+      "dial_code": "+236"
+    },
+    {
+      "continent": "Africa",
+      "code": "TD",
+      "group": "secondary",
+      "name": "Chad",
+      "states": "Batha|Biltine|Borkou-Ennedi-Tibesti|Chari-Baguirmi|Guera|Kanem|Lac|Logone Occidental|Logone Oriental|Mayo-Kebbi|Moyen-Chari|Ouaddai|Salamat|Tandjile",
+      "currency": {
+        "code": "XAF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BEAC",
+        "name_plural": "CFA francs BEAC",
+        "symbol_native": "FCFA",
+        "rounding": 0.0,
+        "symbol": "FCFA"
+      },
+      "currency_code": "XAF",
+      "dial_code": "+235"
+    },
+    {
+      "continent": "South America",
+      "code": "CL",
+      "group": "secondary",
+      "name": "Chile",
+      "states": "Aisen del General Carlos Ibanez del Campo|Antofagasta|Araucania|Atacama|Bio-Bio|Coquimbo|Libertador General Bernardo O\u0027Higgins|Los Lagos|Magallanes y de la Antartica Chilena|Maule|Region Metropolitana (Santiago)|Tarapaca|Valparaiso",
+      "currency": {
+        "code": "CLP",
+        "decimal_digits": 0,
+        "name": "Chilean Peso",
+        "name_plural": "Chilean pesos",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "CL$"
+      },
+      "currency_code": "CLP",
+      "dial_code": "+56"
+    },
+    {
+      "continent": "Asia",
+      "code": "CN",
+      "group": "secondary",
+      "name": "China",
+      "states": "Anhui|Beijing|Chongqing|Fujian|Gansu|Guangdong|Guangxi|Guizhou|Hainan|Hebei|Heilongjiang|Henan|Hubei|Hunan|Jiangsu|Jiangxi|Jilin|Liaoning|Nei Mongol|Ningxia|Qinghai|Shaanxi|Shandong|Shanghai|Shanxi|Sichuan|Tianjin|Xinjiang|Xizang (Tibet)|Yunnan|Zhejiang",
+      "currency": {
+        "code": "CNY",
+        "decimal_digits": 2,
+        "name": "Chinese Yuan",
+        "name_plural": "Chinese yuan",
+        "symbol_native": "CN¥",
+        "rounding": 0.0,
+        "symbol": "CN¥"
+      },
+      "currency_code": "CNY",
+      "dial_code": "+86"
+    },
+    {
+      "continent": "North America",
+      "code": "KY",
+      "group": "secondary",
+      "name": "Christmas Island",
+      "states": "Christmas Island",
+      "currency": {
+        "code": "KYD",
+        "decimal_digits": 2,
+        "name": "Cayman Islands dollar",
+        "name_plural": "Cayman Islands dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "CI$"
+      },
+      "currency_code": "KYD",
+      "dial_code": "+ 345"
+    },
+    {
+      "continent": "Europe",
+      "code": "FR",
+      "group": "secondary",
+      "name": "Clipperton Island",
+      "states": "Clipperton",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+33"
+    },
+    {
+      "continent": "Asia",
+      "code": "CC",
+      "group": "secondary",
+      "name": "Cocos (Keeling) Islands",
+      "states": "Direction Island|Home Island|Horsburgh Island|North Keeling Island|South Island|West Island",
+      "currency": {
+        "code": "AUD",
+        "decimal_digits": 2,
+        "name": "Australian Dollar",
+        "name_plural": "Australian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "AU$"
+      },
+      "currency_code": "AUD",
+      "dial_code": "+61"
+    },
+    {
+      "continent": "South America",
+      "code": "CO",
+      "group": "secondary",
+      "name": "Colombia",
+      "states": "Amazonas|Antioquia|Arauca|Atlantico|Bolivar|Boyaca|Caldas|Caqueta|Casanare|Cauca|Cesar|Choco|Cordoba|Cundinamarca|Distrito Capital de Santa Fe de Bogota|Guainia|Guaviare|Huila|La Guajira|Magdalena|Meta|Narino|Norte de Santander|Putumayo|Quindio|Risaralda|San Andres y Providencia|Santander|Sucre|Tolima|Valle del Cauca|Vaupes|Vichada",
+      "currency": {
+        "code": "COP",
+        "decimal_digits": 0,
+        "name": "Colombian Peso",
+        "name_plural": "Colombian pesos",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "CO$"
+      },
+      "currency_code": "COP",
+      "dial_code": "+57"
+    },
+    {
+      "continent": "Africa",
+      "code": "KM",
+      "group": "secondary",
+      "name": "Comoros",
+      "states": "Anjouan (Nzwani)|Domoni|Fomboni|Grande Comore (Njazidja)|Moheli (Mwali)|Moroni|Moutsamoudou",
+      "currency": {
+        "code": "KMF",
+        "decimal_digits": 0,
+        "name": "Comorian Franc",
+        "name_plural": "Comorian francs",
+        "symbol_native": "FC",
+        "rounding": 0.0,
+        "symbol": "CF"
+      },
+      "currency_code": "KMF",
+      "dial_code": "+269"
+    },
+    {
+      "continent": "Africa",
+      "code": "CG",
+      "group": "secondary",
+      "name": "Congo",
+      "states": "Bandundu|Bas-Congo|Equateur|Kasai-Occidental|Kasai-Oriental|Katanga|Kinshasa|Maniema|Nord-Kivu|Orientale|Sud-Kivu",
+      "currency": {
+        "code": "XAF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BEAC",
+        "name_plural": "CFA francs BEAC",
+        "symbol_native": "FCFA",
+        "rounding": 0.0,
+        "symbol": "FCFA"
+      },
+      "currency_code": "XAF",
+      "dial_code": "+242"
+    },
+    {
+      "continent": "Africa",
+      "code": "CD",
+      "group": "secondary",
+      "name": "Congo, Democratic Republic",
+      "states": "Bouenza|Brazzaville|Cuvette|Kouilou|Lekoumou|Likouala|Niari|Plateaux|Pool|Sangha",
+      "currency": {
+        "code": "CDF",
+        "decimal_digits": 2,
+        "name": "Congolese Franc",
+        "name_plural": "Congolese francs",
+        "symbol_native": "FrCD",
+        "rounding": 0.0,
+        "symbol": "CDF"
+      },
+      "currency_code": "CDF",
+      "dial_code": "+243"
+    },
+    {
+      "continent": "Oceania",
+      "code": "CK",
+      "group": "secondary",
+      "name": "Cook Islands",
+      "states": "Aitutaki|Atiu|Avarua|Mangaia|Manihiki|Manuae|Mauke|Mitiaro|Nassau Island|Palmerston|Penrhyn|Pukapuka|Rakahanga|Rarotonga|Suwarrow|Takutea",
+      "currency": {
+        "code": "NZD",
+        "decimal_digits": 2,
+        "name": "New Zealand Dollar",
+        "name_plural": "New Zealand dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "NZ$"
+      },
+      "currency_code": "NZD",
+      "dial_code": "+682"
+    },
+    {
+      "continent": "North America",
+      "code": "CR",
+      "group": "secondary",
+      "name": "Costa Rica",
+      "states": "Alajuela|Cartago|Guanacaste|Heredia|Limon|Puntarenas|San Jose",
+      "currency": {
+        "code": "CRC",
+        "decimal_digits": 0,
+        "name": "Costa Rican Colón",
+        "name_plural": "Costa Rican colóns",
+        "symbol_native": "₡",
+        "rounding": 0.0,
+        "symbol": "₡"
+      },
+      "currency_code": "CRC",
+      "dial_code": "+506"
+    },
+    {
+      "continent": "Africa",
+      "code": "CI",
+      "group": "secondary",
+      "name": "Cote D\u0027Ivoire",
+      "states": "Abengourou|Abidjan|Aboisso|Adiake\u0027|Adzope|Agboville|Agnibilekrou|Ale\u0027pe\u0027|Bangolo|Beoumi|Biankouma|Bocanda|Bondoukou|Bongouanou|Bouafle|Bouake|Bouna|Boundiali|Dabakala|Dabon|Daloa|Danane|Daoukro|Dimbokro|Divo|Duekoue|Ferkessedougou|Gagnoa|Grand Bassam|Grand-Lahou|Guiglo|Issia|Jacqueville|Katiola|Korhogo|Lakota|Man|Mankono|Mbahiakro|Odienne|Oume|Sakassou|San-Pedro|Sassandra|Seguela|Sinfra|Soubre|Tabou|Tanda|Tiassale|Tiebissou|Tingrela|Touba|Toulepleu|Toumodi|Vavoua|Yamoussoukro|Zuenoula",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+225"
+    },
+    {
+      "continent": "Europe",
+      "code": "HR",
+      "group": "secondary",
+      "name": "Croatia",
+      "states": "Bjelovarsko-Bilogorska Zupanija|Brodsko-Posavska Zupanija|Dubrovacko-Neretvanska Zupanija|Istarska Zupanija|Karlovacka Zupanija|Koprivnicko-Krizevacka Zupanija|Krapinsko-Zagorska Zupanija|Licko-Senjska Zupanija|Medimurska Zupanija|Osjecko-Baranjska Zupanija|Pozesko-Slavonska Zupanija|Primorsko-Goranska Zupanija|Sibensko-Kninska Zupanija|Sisacko-Moslavacka Zupanija|Splitsko-Dalmatinska Zupanija|Varazdinska Zupanija|Viroviticko-Podravska Zupanija|Vukovarsko-Srijemska Zupanija|Zadarska Zupanija|Zagreb|Zagrebacka Zupanija",
+      "currency": {
+        "code": "HRK",
+        "decimal_digits": 2,
+        "name": "Croatian Kuna",
+        "name_plural": "Croatian kunas",
+        "symbol_native": "kn",
+        "rounding": 0.0,
+        "symbol": "kn"
+      },
+      "currency_code": "HRK",
+      "dial_code": "+385"
+    },
+    {
+      "continent": "North America",
+      "code": "CU",
+      "group": "secondary",
+      "name": "Cuba",
+      "states": "Camaguey|Ciego de Avila|Cienfuegos|Ciudad de La Habana|Granma|Guantanamo|Holguin|Isla de la Juventud|La Habana|Las Tunas|Matanzas|Pinar del Rio|Sancti Spiritus|Santiago de Cuba|Villa Clara",
+      "currency": {
+        "code": "CUP",
+        "decimal_digits": 2,
+        "name": "Cuban peso",
+        "name_plural": "pesos",
+        "symbol_native": "₱",
+        "rounding": 0.0,
+        "symbol": "₱"
+      },
+      "currency_code": "CUP",
+      "dial_code": "+53"
+    },
+    {
+      "continent": "Europe",
+      "code": "CY",
+      "group": "secondary",
+      "name": "Cyprus",
+      "states": "Famagusta|Kyrenia|Larnaca|Limassol|Nicosia|Paphos",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+537"
+    },
+    {
+      "continent": "Europe",
+      "code": "CZ",
+      "group": "secondary",
+      "name": "Czech Republic",
+      "states": "Brnensky|Budejovicky|Jihlavsky|Karlovarsky|Kralovehradecky|Liberecky|Olomoucky|Ostravsky|Pardubicky|Plzensky|Praha|Stredocesky|Ustecky|Zlinsky",
+      "currency": {
+        "code": "CZK",
+        "decimal_digits": 2,
+        "name": "Czech Republic Koruna",
+        "name_plural": "Czech Republic korunas",
+        "symbol_native": "Kč",
+        "rounding": 0.0,
+        "symbol": "Kč"
+      },
+      "currency_code": "CZK",
+      "dial_code": "+420"
+    },
+    {
+      "continent": "Europe",
+      "code": "DK",
+      "group": "secondary",
+      "name": "Denmark",
+      "states": "Arhus|Bornholm|Fredericksberg|Frederiksborg|Fyn|Kobenhavn|Kobenhavns|Nordjylland|Ribe|Ringkobing|Roskilde|Sonderjylland|Storstrom|Vejle|Vestsjalland|Viborg",
+      "currency": {
+        "code": "DKK",
+        "decimal_digits": 2,
+        "name": "Danish Krone",
+        "name_plural": "Danish kroner",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Dkr"
+      },
+      "currency_code": "DKK",
+      "dial_code": "+45"
+    },
+    {
+      "continent": "Africa",
+      "code": "DJ",
+      "group": "secondary",
+      "name": "Djibouti",
+      "states": "\u0027Ali Sabih|Dikhil|Djibouti|Obock|Tadjoura",
+      "currency": {
+        "code": "DJF",
+        "decimal_digits": 0,
+        "name": "Djiboutian Franc",
+        "name_plural": "Djiboutian francs",
+        "symbol_native": "Fdj",
+        "rounding": 0.0,
+        "symbol": "Fdj"
+      },
+      "currency_code": "DJF",
+      "dial_code": "+253"
+    },
+    {
+      "continent": "North America",
+      "code": "DM",
+      "group": "secondary",
+      "name": "Dominica",
+      "states": "Saint Andrew|Saint David|Saint George|Saint John|Saint Joseph|Saint Luke|Saint Mark|Saint Patrick|Saint Paul|Saint Peter",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1 767"
+    },
+    {
+      "continent": "North America",
+      "code": "DO",
+      "group": "secondary",
+      "name": "Dominican Republic",
+      "states": "Azua|Baoruco|Barahona|Dajabon|Distrito Nacional|Duarte|El Seibo|Elias Pina|Espaillat|Hato Mayor|Independencia|La Altagracia|La Romana|La Vega|Maria Trinidad Sanchez|Monsenor Nouel|Monte Cristi|Monte Plata|Pedernales|Peravia|Puerto Plata|Salcedo|Samana|San Cristobal|San Juan|San Pedro de Macoris|Sanchez Ramirez|Santiago|Santiago Rodriguez|Valverde",
+      "currency": {
+        "code": "DOP",
+        "decimal_digits": 2,
+        "name": "Dominican Peso",
+        "name_plural": "Dominican pesos",
+        "symbol_native": "RD$",
+        "rounding": 0.0,
+        "symbol": "RD$"
+      },
+      "currency_code": "DOP",
+      "dial_code": "+1 849"
+    },
+    {
+      "continent": "South America",
+      "code": "EC",
+      "group": "secondary",
+      "name": "Ecuador",
+      "states": "Azuay|Bolivar|Canar|Carchi|Chimborazo|Cotopaxi|El Oro|Esmeraldas|Galapagos|Guayas|Imbabura|Loja|Los Rios|Manabi|Morona-Santiago|Napo|Orellana|Pastaza|Pichincha|Sucumbios|Tungurahua|Zamora-Chinchipe",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+593"
+    },
+    {
+      "continent": "Africa",
+      "code": "EG",
+      "group": "secondary",
+      "name": "Egypt",
+      "states": "Ad Daqahliyah|Al Bahr al Ahmar|Al Buhayrah|Al Fayyum|Al Gharbiyah|Al Iskandariyah|Al Isma\u0027iliyah|Al Jizah|Al Minufiyah|Al Minya|Al Qahirah|Al Qalyubiyah|Al Wadi al Jadid|As Suways|Ash Sharqiyah|Aswan|Asyut|Bani Suwayf|Bur Sa\u0027id|Dumyat|Janub Sina\u0027|Kafr ash Shaykh|Matruh|Qina|Shamal Sina\u0027|Suhaj",
+      "currency": {
+        "code": "EGP",
+        "decimal_digits": 2,
+        "name": "Egyptian Pound",
+        "name_plural": "Egyptian pounds",
+        "symbol_native": "ج.م.‏",
+        "rounding": 0.0,
+        "symbol": "EGP"
+      },
+      "currency_code": "EGP",
+      "dial_code": "+20"
+    },
+    {
+      "continent": "North America",
+      "code": "SV",
+      "group": "secondary",
+      "name": "El Salvador",
+      "states": "Ahuachapan|Cabanas|Chalatenango|Cuscatlan|La Libertad|La Paz|La Union|Morazan|San Miguel|San Salvador|San Vicente|Santa Ana|Sonsonate|Usulutan",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+503"
+    },
+    {
+      "continent": "Europe",
+      "code": "GB-ENG",
+      "group": "primary",
+      "name": "England",
+      "states": "Anglesey|Barking and Dagenham|Barnet|Barnsley|Bath and North East Somerset|Bedfordshire|Bexley|Birmingham|Blackburn with Darwen|Blackpool|Bolton|Bournemouth|Bracknell Forest|Bradford|Brent|Brighton and Hove|Bromley|Buckinghamshire|Bury|Calderdale|Cambridgeshire|Camden|Cheshire|City of Bristol|City of Kingston upon Hull|City of London|Cornwall|Coventry|Croydon|Cumbria|Darlington|Derby|Derbyshire|Devon|Doncaster|Dorset|Dudley|Durham|Ealing|East Riding of Yorkshire|East Sussex|Enfield|Essex|Gateshead|Gloucestershire|Greenwich|Hackney|Halton|Hammersmith and Fulham|Hampshire|Haringey|Harrow|Hartlepool|Havering|Herefordshire|Hertfordshire|Hillingdon|Hounslow|Isle of Wight|Islington|Kensington and Chelsea|Kent|Kingston upon Thames|Kirklees|Knowsley|Lambeth|Lancashire|Leeds|Leicester|Leicestershire|Lewisham|Lincolnshire|Liverpool|Luton|Manchester|Medway|Merton|Middlesbrough|Milton Keynes|Newcastle upon Tyne|Newham|Norfolk|North East Lincolnshire|North Lincolnshire|North Somerset|North Tyneside|North Yorkshire|Northamptonshire|Northumberland|Nottingham|Nottinghamshire|Oldham|Oxfordshire|Peterborough|Plymouth|Poole|Portsmouth|Reading|Redbridge|Redcar and Cleveland|Richmond upon Thames|Rochdale|Rotherham|Rutland|Salford|Sandwell|Sefton|Sheffield|Shropshire|Slough|Solihull|Somerset|South Gloucestershire|South Tyneside|Southampton|Southend-on-Sea|Southwark|St. Helens|Staffordshire|Stockport|Stockton-on-Tees|Stoke-on-Trent|Suffolk|Sunderland|Surrey|Sutton|Swindon|Tameside|Telford and Wrekin|Thurrock|Torbay|Tower Hamlets|Trafford|Wakefield|Walsall|Waltham Forest|Wandsworth|Warrington|Warwickshire|West Berkshire|West Sussex|Westminster|Wigan|Wiltshire|Windsor and Maidenhead|Wirral|Wokingham|Wolverhampton|Worcestershire|York",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "British Pound Sterling",
+        "name_plural": "British pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "Africa",
+      "code": "GQ",
+      "group": "secondary",
+      "name": "Equatorial Guinea",
+      "states": "Annobon|Bioko Norte|Bioko Sur|Centro Sur|Kie-Ntem|Litoral|Wele-Nzas",
+      "currency": {
+        "code": "XAF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BEAC",
+        "name_plural": "CFA francs BEAC",
+        "symbol_native": "FCFA",
+        "rounding": 0.0,
+        "symbol": "FCFA"
+      },
+      "currency_code": "XAF",
+      "dial_code": "+240"
+    },
+    {
+      "continent": "Africa",
+      "code": "ER",
+      "group": "secondary",
+      "name": "Eritrea",
+      "states": "Akale Guzay|Barka|Denkel|Hamasen|Sahil|Semhar|Senhit|Seraye",
+      "currency": {
+        "code": "ERN",
+        "decimal_digits": 2,
+        "name": "Eritrean Nakfa",
+        "name_plural": "Eritrean nakfas",
+        "symbol_native": "Nfk",
+        "rounding": 0.0,
+        "symbol": "Nfk"
+      },
+      "currency_code": "ERN",
+      "dial_code": "+291"
+    },
+    {
+      "continent": "Europe",
+      "code": "EE",
+      "group": "secondary",
+      "name": "Estonia",
+      "states": "Harjumaa (Tallinn)|Hiiumaa (Kardla)|Ida-Virumaa (Johvi)|Jarvamaa (Paide)|Jogevamaa (Jogeva)|Laane-Virumaa (Rakvere)|Laanemaa (Haapsalu)|Parnumaa (Parnu)|Polvamaa (Polva)|Raplamaa (Rapla)|Saaremaa (Kuessaare)|Tartumaa (Tartu)|Valgamaa (Valga)|Viljandimaa (Viljandi)|Vorumaa (Voru)",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+372"
+    },
+    {
+      "continent": "Africa",
+      "code": "ET",
+      "group": "secondary",
+      "name": "Ethiopia",
+      "states": "Adis Abeba (Addis Ababa)|Afar|Amara|Dire Dawa|Gambela Hizboch|Hareri Hizb|Oromiya|Sumale|Tigray|YeDebub Biheroch Bihereseboch na Hizboch",
+      "currency": {
+        "code": "ETB",
+        "decimal_digits": 2,
+        "name": "Ethiopian Birr",
+        "name_plural": "Ethiopian birrs",
+        "symbol_native": "Br",
+        "rounding": 0.0,
+        "symbol": "Br"
+      },
+      "currency_code": "ETB",
+      "dial_code": "+251"
+    },
+    {
+      "continent": "South America",
+      "code": "FK",
+      "group": "secondary",
+      "name": "Falkland Islands ( IslasMalvinas)",
+      "states": "Falkland Islands (Islas Malvinas)",
+      "currency": {
+        "code": "FKP",
+        "decimal_digits": 2,
+        "name": "Falkland Islands pound",
+        "name_plural": "pounds",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "FK£"
+      },
+      "currency_code": "FKP",
+      "dial_code": "+500"
+    },
+    {
+      "continent": "Europe",
+      "code": "FO",
+      "group": "secondary",
+      "name": "Faroe Islands",
+      "states": "Bordoy|Eysturoy|Mykines|Sandoy|Skuvoy|Streymoy|Suduroy|Tvoroyri|Vagar",
+      "currency": {
+        "code": "DKK",
+        "decimal_digits": 2,
+        "name": "Danish Krone",
+        "name_plural": "Danish kroner",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Dkr"
+      },
+      "currency_code": "DKK",
+      "dial_code": "+298"
+    },
+    {
+      "continent": "Oceania",
+      "code": "FJ",
+      "group": "secondary",
+      "name": "Fiji",
+      "states": "Central|Eastern|Northern|Rotuma|Western",
+      "currency": {
+        "code": "FJD",
+        "decimal_digits": 2,
+        "name": "Fijian dollar",
+        "name_plural": "Fijian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "FJ$"
+      },
+      "currency_code": "FJD",
+      "dial_code": "+679"
+    },
+    {
+      "continent": "Europe",
+      "code": "FI",
+      "group": "secondary",
+      "name": "Finland",
+      "states": "Aland|Etela-Suomen Laani|Ita-Suomen Laani|Lansi-Suomen Laani|Lappi|Oulun Laani",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+358"
+    },
+    {
+      "continent": "Europe",
+      "code": "FR",
+      "group": "secondary",
+      "name": "France",
+      "states": "Alsace|Aquitaine|Auvergne|Basse-Normandie|Bourgogne|Bretagne|Centre|Champagne-Ardenne|Corse|Franche-Comte|Haute-Normandie|Ile-de-France|Languedoc-Roussillon|Limousin|Lorraine|Midi-Pyrenees|Nord-Pas-de-Calais|Pays de la Loire|Picardie|Poitou-Charentes|Provence-Alpes-Cote d\u0027Azur|Rhone-Alpes",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+33"
+    },
+    {
+      "continent": "South America",
+      "code": "GF",
+      "group": "secondary",
+      "name": "French Guiana",
+      "states": "French Guiana",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+594"
+    },
+    {
+      "continent": "Oceania",
+      "code": "PF",
+      "group": "secondary",
+      "name": "French Polynesia",
+      "states": "Archipel des Marquises|Archipel des Tuamotu|Archipel des Tubuai|Iles du Vent|Iles Sous-le-Vent",
+      "currency": {
+        "code": "XPF",
+        "decimal_digits": 2,
+        "name": "CFP franc",
+        "name_plural": "CFP francs",
+        "symbol_native": "₣",
+        "rounding": 0.0,
+        "symbol": "₣"
+      },
+      "currency_code": "XPF",
+      "dial_code": "+689"
+    },
+    {
+      "continent": "Africa",
+      "code": "GA",
+      "group": "secondary",
+      "name": "Gabon",
+      "states": "Estuaire|Haut-Ogooue|Moyen-Ogooue|Ngounie|Nyanga|Ogooue-Ivindo|Ogooue-Lolo|Ogooue-Maritime|Woleu-Ntem",
+      "currency": {
+        "code": "XAF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BEAC",
+        "name_plural": "CFA francs BEAC",
+        "symbol_native": "FCFA",
+        "rounding": 0.0,
+        "symbol": "FCFA"
+      },
+      "currency_code": "XAF",
+      "dial_code": "+241"
+    },
+    {
+      "continent": "Africa",
+      "code": "GM",
+      "group": "secondary",
+      "name": "Gambia, The",
+      "states": "Banjul|Central River|Lower River|North Bank|Upper River|Western",
+      "currency_code": "GMD",
+      "dial_code": "+220"
+    },
+    {
+      "continent": "Asia",
+      "code": "PS",
+      "group": "secondary",
+      "name": "Gaza Strip",
+      "states": "Gaza Strip",
+      "currency": {
+        "code": "ILS",
+        "decimal_digits": 2,
+        "name": "Israeli New Sheqel",
+        "name_plural": "Israeli new sheqels",
+        "symbol_native": "₪",
+        "rounding": 0.0,
+        "symbol": "₪"
+      },
+      "currency_code": "ILS",
+      "dial_code": "+970"
+    },
+    {
+      "continent": "Asia",
+      "code": "GE",
+      "group": "secondary",
+      "name": "Georgia",
+      "states": "Abashis|Abkhazia or Ap\u0027khazet\u0027is Avtonomiuri Respublika (Sokhumi)|Adigenis|Ajaria or Acharis Avtonomiuri Respublika (Bat\u0027umi)|Akhalgoris|Akhalk\u0027alak\u0027is|Akhalts\u0027ikhis|Akhmetis|Ambrolauris|Aspindzis|Baghdat\u0027is|Bolnisis|Borjomis|Ch\u0027khorotsqus|Ch\u0027okhatauris|Chiat\u0027ura|Dedop\u0027listsqaros|Dmanisis|Dushet\u0027is|Gardabanis|Gori|Goris|Gurjaanis|Javis|K\u0027arelis|K\u0027ut\u0027aisi|Kaspis|Kharagaulis|Khashuris|Khobis|Khonis|Lagodekhis|Lanch\u0027khut\u0027is|Lentekhis|Marneulis|Martvilis|Mestiis|Mts\u0027khet\u0027is|Ninotsmindis|Onis|Ozurget\u0027is|P\u0027ot\u0027i|Qazbegis|Qvarlis|Rust\u0027avi|Sach\u0027kheris|Sagarejos|Samtrediis|Senakis|Sighnaghis|T\u0027bilisi|T\u0027elavis|T\u0027erjolis|T\u0027et\u0027ritsqaros|T\u0027ianet\u0027is|Tqibuli|Ts\u0027ageris|Tsalenjikhis|Tsalkis|Tsqaltubo|Vanis|Zestap\u0027onis|Zugdidi|Zugdidis",
+      "currency": {
+        "code": "GEL",
+        "decimal_digits": 2,
+        "name": "Georgian Lari",
+        "name_plural": "Georgian laris",
+        "symbol_native": "GEL",
+        "rounding": 0.0,
+        "symbol": "GEL"
+      },
+      "currency_code": "GEL",
+      "dial_code": "+995"
+    },
+    {
+      "continent": "Europe",
+      "code": "DE",
+      "group": "secondary",
+      "name": "Germany",
+      "states": "Baden-Wuerttemberg|Bayern|Berlin|Brandenburg|Bremen|Hamburg|Hessen|Mecklenburg-Vorpommern|Niedersachsen|Nordrhein-Westfalen|Rheinland-Pfalz|Saarland|Sachsen|Sachsen-Anhalt|Schleswig-Holstein|Thueringen",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+49"
+    },
+    {
+      "continent": "Africa",
+      "code": "GH",
+      "group": "secondary",
+      "name": "Ghana",
+      "states": "Ashanti|Brong-Ahafo|Central|Eastern|Greater Accra|Northern|Upper East|Upper West|Volta|Western",
+      "currency": {
+        "code": "GHS",
+        "decimal_digits": 2,
+        "name": "Ghanaian Cedi",
+        "name_plural": "Ghanaian cedis",
+        "symbol_native": "GH₵",
+        "rounding": 0.0,
+        "symbol": "GH₵"
+      },
+      "currency_code": "GHS",
+      "dial_code": "+233"
+    },
+    {
+      "continent": "Europe",
+      "code": "GI",
+      "group": "secondary",
+      "name": "Gibraltar",
+      "states": "Gibraltar",
+      "currency": {
+        "code": "GIP",
+        "decimal_digits": 2,
+        "name": "Gibraltar pound",
+        "name_plural": "Gibraltar pounds",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GIP",
+      "dial_code": "+350"
+    },
+    {
+      "continent": "Europe",
+      "code": "GR",
+      "group": "secondary",
+      "name": "Greece",
+      "states": "Aitolia kai Akarnania|Akhaia|Argolis|Arkadhia|Arta|Attiki|Ayion Oros (Mt. Athos)|Dhodhekanisos|Drama|Evritania|Evros|Evvoia|Florina|Fokis|Fthiotis|Grevena|Ilia|Imathia|Ioannina|Irakleion|Kardhitsa|Kastoria|Kavala|Kefallinia|Kerkyra|Khalkidhiki|Khania|Khios|Kikladhes|Kilkis|Korinthia|Kozani|Lakonia|Larisa|Lasithi|Lesvos|Levkas|Magnisia|Messinia|Pella|Pieria|Preveza|Rethimni|Rodhopi|Samos|Serrai|Thesprotia|Thessaloniki|Trikala|Voiotia|Xanthi|Zakinthos",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+30"
+    },
+    {
+      "continent": "North America",
+      "code": "GL",
+      "group": "secondary",
+      "name": "Greenland",
+      "states": "Avannaa (Nordgronland)|Kitaa (Vestgronland)|Tunu (Ostgronland)",
+      "currency": {
+        "code": "DKK",
+        "decimal_digits": 2,
+        "name": "Danish Krone",
+        "name_plural": "Danish kroner",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Dkr"
+      },
+      "currency_code": "DKK",
+      "dial_code": "+299"
+    },
+    {
+      "continent": "North America",
+      "code": "GD",
+      "group": "secondary",
+      "name": "Grenada",
+      "states": "Carriacou and Petit Martinique|Saint Andrew|Saint David|Saint George|Saint John|Saint Mark|Saint Patrick",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1 473"
+    },
+    {
+      "continent": "North America",
+      "code": "GP",
+      "group": "secondary",
+      "name": "Guadeloupe",
+      "states": "Basse-Terre|Grande-Terre|Iles de la Petite Terre|Iles des Saintes|Marie-Galante",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+590"
+    },
+    {
+      "continent": "Oceania",
+      "code": "GU",
+      "group": "secondary",
+      "name": "Guam",
+      "states": "Guam",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1 671"
+    },
+    {
+      "continent": "North America",
+      "code": "GT",
+      "group": "secondary",
+      "name": "Guatemala",
+      "states": "Alta Verapaz|Baja Verapaz|Chimaltenango|Chiquimula|El Progreso|Escuintla|Guatemala|Huehuetenango|Izabal|Jalapa|Jutiapa|Peten|Quetzaltenango|Quiche|Retalhuleu|Sacatepequez|San Marcos|Santa Rosa|Solola|Suchitepequez|Totonicapan|Zacapa",
+      "currency": {
+        "code": "GTQ",
+        "decimal_digits": 2,
+        "name": "Guatemalan Quetzal",
+        "name_plural": "Guatemalan quetzals",
+        "symbol_native": "Q",
+        "rounding": 0.0,
+        "symbol": "GTQ"
+      },
+      "currency_code": "GTQ",
+      "dial_code": "+502"
+    },
+    {
+      "continent": "Europe",
+      "code": "GG",
+      "group": "secondary",
+      "name": "Guernsey",
+      "states": "Castel|Forest|St. Andrew|St. Martin|St. Peter Port|St. Pierre du Bois|St. Sampson|St. Saviour|Torteval|Vale",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "British Pound Sterling",
+        "name_plural": "British pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "Africa",
+      "code": "GN",
+      "group": "secondary",
+      "name": "Guinea",
+      "states": "Beyla|Boffa|Boke|Conakry|Coyah|Dabola|Dalaba|Dinguiraye|Dubreka|Faranah|Forecariah|Fria|Gaoual|Gueckedou|Kankan|Kerouane|Kindia|Kissidougou|Koubia|Koundara|Kouroussa|Labe|Lelouma|Lola|Macenta|Mali|Mamou|Mandiana|Nzerekore|Pita|Siguiri|Telimele|Tougue|Yomou",
+      "currency": {
+        "code": "GNF",
+        "decimal_digits": 0,
+        "name": "Guinean Franc",
+        "name_plural": "Guinean francs",
+        "symbol_native": "FG",
+        "rounding": 0.0,
+        "symbol": "FG"
+      },
+      "currency_code": "GNF",
+      "dial_code": "+224"
+    },
+    {
+      "continent": "Africa",
+      "code": "GW",
+      "group": "secondary",
+      "name": "Guinea-Bissau",
+      "states": "Bafata|Biombo|Bissau|Bolama-Bijagos|Cacheu|Gabu|Oio|Quinara|Tombali",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+245"
+    },
+    {
+      "continent": "South America",
+      "code": "GY",
+      "group": "secondary",
+      "name": "Guyana",
+      "states": "Barima-Waini|Cuyuni-Mazaruni|Demerara-Mahaica|East Berbice-Corentyne|Essequibo Islands-West Demerara|Mahaica-Berbice|Pomeroon-Supenaam|Potaro-Siparuni|Upper Demerara-Berbice|Upper Takutu-Upper Essequibo",
+      "currency": {
+        "code": "GYD",
+        "decimal_digits": 2,
+        "name": "Guyanese dollar",
+        "name_plural": "Guyanese dollars",
+        "symbol_native": "GY$",
+        "rounding": 0.0,
+        "symbol": "GY$"
+      },
+      "currency_code": "GYD",
+      "dial_code": "+595"
+    },
+    {
+      "continent": "North America",
+      "code": "HT",
+      "group": "secondary",
+      "name": "Haiti",
+      "states": "Artibonite|Centre|Grand\u0027Anse|Nord|Nord-Est|Nord-Ouest|Ouest|Sud|Sud-Est",
+      "currency": {
+        "code": "HTG",
+        "decimal_digits": 2,
+        "name": "Haitian gourde",
+        "name_plural": "Haitian gourdes",
+        "symbol_native": "G",
+        "rounding": 0.0,
+        "symbol": "G"
+      },
+      "currency_code": "HTG",
+      "dial_code": "+509"
+    },
+    {
+      "continent": "Europe",
+      "code": "VA",
+      "group": "secondary",
+      "name": "Holy See (Vatican City State)",
+      "states": "Holy See (Vatican City)",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+379"
+    },
+    {
+      "continent": "North America",
+      "code": "HN",
+      "group": "secondary",
+      "name": "Honduras",
+      "states": "Atlantida|Choluteca|Colon|Comayagua|Copan|Cortes|El Paraiso|Francisco Morazan|Gracias a Dios|Intibuca|Islas de la Bahia|La Paz|Lempira|Ocotepeque|Olancho|Santa Barbara|Valle|Yoro",
+      "currency": {
+        "code": "HNL",
+        "decimal_digits": 2,
+        "name": "Honduran Lempira",
+        "name_plural": "Honduran lempiras",
+        "symbol_native": "L",
+        "rounding": 0.0,
+        "symbol": "HNL"
+      },
+      "currency_code": "HNL",
+      "dial_code": "+504"
+    },
+    {
+      "continent": "Asia",
+      "code": "HK",
+      "group": "secondary",
+      "name": "Hong Kong",
+      "states": "Hong Kong",
+      "currency": {
+        "code": "HKD",
+        "decimal_digits": 2,
+        "name": "Hong Kong Dollar",
+        "name_plural": "Hong Kong dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "HK$"
+      },
+      "currency_code": "HKD",
+      "dial_code": "+852"
+    },
+    {
+      "continent": "Europe",
+      "code": "HU",
+      "group": "secondary",
+      "name": "Hungary",
+      "states": "Bacs-Kiskun|Baranya|Bekes|Bekescsaba|Borsod-Abauj-Zemplen|Budapest|Csongrad|Debrecen|Dunaujvaros|Eger|Fejer|Gyor|Gyor-Moson-Sopron|Hajdu-Bihar|Heves|Hodmezovasarhely|Jasz-Nagykun-Szolnok|Kaposvar|Kecskemet|Komarom-Esztergom|Miskolc|Nagykanizsa|Nograd|Nyiregyhaza|Pecs|Pest|Somogy|Sopron|Szabolcs-Szatmar-Bereg|Szeged|Szekesfehervar|Szolnok|Szombathely|Tatabanya|Tolna|Vas|Veszprem|Veszprem|Zala|Zalaegerszeg",
+      "currency": {
+        "code": "HUF",
+        "decimal_digits": 0,
+        "name": "Hungarian Forint",
+        "name_plural": "Hungarian forints",
+        "symbol_native": "Ft",
+        "rounding": 0.0,
+        "symbol": "Ft"
+      },
+      "currency_code": "HUF",
+      "dial_code": "+36"
+    },
+    {
+      "continent": "Europe",
+      "code": "IS",
+      "group": "secondary",
+      "name": "Iceland",
+      "states": "Akranes|Akureyri|Arnessysla|Austur-Bardhastrandarsysla|Austur-Hunavatnssysla|Austur-Skaftafellssysla|Borgarfjardharsysla|Dalasysla|Eyjafjardharsysla|Gullbringusysla|Hafnarfjordhur|Husavik|Isafjordhur|Keflavik|Kjosarsysla|Kopavogur|Myrasysla|Neskaupstadhur|Nordhur-Isafjardharsysla|Nordhur-Mulasys-la|Nordhur-Thingeyjarsysla|Olafsfjordhur|Rangarvallasysla|Reykjavik|Saudharkrokur|Seydhisfjordhur|Siglufjordhur|Skagafjardharsysla|Snaefellsnes-og Hnappadalssysla|Strandasysla|Sudhur-Mulasysla|Sudhur-Thingeyjarsysla|Vesttmannaeyjar|Vestur-Bardhastrandarsysla|Vestur-Hunavatnssysla|Vestur-Isafjardharsysla|Vestur-Skaftafellssysla",
+      "currency": {
+        "code": "ISK",
+        "decimal_digits": 0,
+        "name": "Icelandic Króna",
+        "name_plural": "Icelandic krónur",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Ikr"
+      },
+      "currency_code": "ISK",
+      "dial_code": "+354"
+    },
+    {
+      "continent": "Asia",
+      "code": "IN",
+      "group": "secondary",
+      "name": "India",
+      "states": "Andaman and Nicobar Islands|Andhra Pradesh|Arunachal Pradesh|Assam|Bihar|Chandigarh|Chhattisgarh|Dadra and Nagar Haveli|Daman and Diu|Delhi|Goa|Gujarat|Haryana|Himachal Pradesh|Jammu and Kashmir|Jharkhand|Karnataka|Kerala|Lakshadweep|Madhya Pradesh|Maharashtra|Manipur|Meghalaya|Mizoram|Nagaland|Orissa|Pondicherry|Punjab|Rajasthan|Sikkim|Tamil Nadu|Tripura|Uttar Pradesh|Uttaranchal|West Bengal",
+      "currency": {
+        "code": "INR",
+        "decimal_digits": 2,
+        "name": "Indian Rupee",
+        "name_plural": "Indian rupees",
+        "symbol_native": "₹",
+        "rounding": 0.0,
+        "symbol": "₹"
+      },
+      "currency_code": "INR",
+      "dial_code": "+91"
+    },
+    {
+      "continent": "Asia",
+      "code": "ID",
+      "group": "secondary",
+      "name": "Indonesia",
+      "states": "Aceh|Bali|Banten|Bengkulu|East Timor|Gorontalo|Irian Jaya|Jakarta Raya|Jambi|Jawa Barat|Jawa Tengah|Jawa Timur|Kalimantan Barat|Kalimantan Selatan|Kalimantan Tengah|Kalimantan Timur|Kepulauan Bangka Belitung|Lampung|Maluku|Maluku Utara|Nusa Tenggara Barat|Nusa Tenggara Timur|Riau|Sulawesi Selatan|Sulawesi Tengah|Sulawesi Tenggara|Sulawesi Utara|Sumatera Barat|Sumatera Selatan|Sumatera Utara|Yogyakarta",
+      "currency": {
+        "code": "IDR",
+        "decimal_digits": 0,
+        "name": "Indonesian Rupiah",
+        "name_plural": "Indonesian rupiahs",
+        "symbol_native": "Rp",
+        "rounding": 0.0,
+        "symbol": "Rp"
+      },
+      "currency_code": "IDR",
+      "dial_code": "+62"
+    },
+    {
+      "continent": "Asia",
+      "code": "IR",
+      "group": "secondary",
+      "name": "Iran",
+      "states": "Ardabil|Azarbayjan-e Gharbi|Azarbayjan-e Sharqi|Bushehr|Chahar Mahall va Bakhtiari|Esfahan|Fars|Gilan|Golestan|Hamadan|Hormozgan|Ilam|Kerman|Kermanshah|Khorasan|Khuzestan|Kohgiluyeh va Buyer Ahmad|Kordestan|Lorestan|Markazi|Mazandaran|Qazvin|Qom|Semnan|Sistan va Baluchestan|Tehran|Yazd|Zanjan",
+      "currency": {
+        "code": "IRR",
+        "decimal_digits": 0,
+        "name": "Iranian Rial",
+        "name_plural": "Iranian rials",
+        "symbol_native": "﷼",
+        "rounding": 0.0,
+        "symbol": "IRR"
+      },
+      "currency_code": "IRR",
+      "dial_code": "+98"
+    },
+    {
+      "continent": "Asia",
+      "code": "IQ",
+      "group": "secondary",
+      "name": "Iraq",
+      "states": "Al Anbar|Al Basrah|Al Muthanna|Al Qadisiyah|An Najaf|Arbil|As Sulaymaniyah|At Ta\u0027mim|Babil|Baghdad|Dahuk|Dhi Qar|Diyala|Karbala\u0027|Maysan|Ninawa|Salah ad Din|Wasit",
+      "currency": {
+        "code": "IQD",
+        "decimal_digits": 0,
+        "name": "Iraqi Dinar",
+        "name_plural": "Iraqi dinars",
+        "symbol_native": "د.ع.‏",
+        "rounding": 0.0,
+        "symbol": "IQD"
+      },
+      "currency_code": "IQD",
+      "dial_code": "+964"
+    },
+    {
+      "continent": "Europe",
+      "code": "IE",
+      "group": "secondary",
+      "name": "Ireland",
+      "states": "Carlow|Cavan|Clare|Cork|Donegal|Dublin|Galway|Kerry|Kildare|Kilkenny|Laois|Leitrim|Limerick|Longford|Louth|Mayo|Meath|Monaghan|Offaly|Roscommon|Sligo|Tipperary|Waterford|Westmeath|Wexford|Wicklow",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+353"
+    },
+    {
+      "continent": "Europe",
+      "code": "IM",
+      "group": "secondary",
+      "name": "Isle Of Man",
+      "states": "Man, Isle of",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "British Pound Sterling",
+        "name_plural": "British pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "Asia",
+      "code": "IL",
+      "group": "secondary",
+      "name": "Israel",
+      "states": "Central|Haifa|Jerusalem|Northern|Southern|Tel Aviv",
+      "currency": {
+        "code": "ILS",
+        "decimal_digits": 2,
+        "name": "Israeli New Sheqel",
+        "name_plural": "Israeli new sheqels",
+        "symbol_native": "₪",
+        "rounding": 0.0,
+        "symbol": "₪"
+      },
+      "currency_code": "ILS",
+      "dial_code": "+972"
+    },
+    {
+      "continent": "Europe",
+      "code": "IT",
+      "group": "secondary",
+      "name": "Italy",
+      "states": "Abruzzo|Basilicata|Calabria|Campania|Emilia-Romagna|Friuli-Venezia Giulia|Lazio|Liguria|Lombardia|Marche|Molise|Piemonte|Puglia|Sardegna|Sicilia|Toscana|Trentino-Alto Adige|Umbria|Valle d\u0027Aosta|Veneto",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+39"
+    },
+    {
+      "continent": "North America",
+      "code": "JM",
+      "group": "secondary",
+      "name": "Jamaica",
+      "states": "Clarendon|Hanover|Kingston|Manchester|Portland|Saint Andrew|Saint Ann|Saint Catherine|Saint Elizabeth|Saint James|Saint Mary|Saint Thomas|Trelawny|Westmoreland",
+      "currency": {
+        "code": "JMD",
+        "decimal_digits": 2,
+        "name": "Jamaican Dollar",
+        "name_plural": "Jamaican dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "J$"
+      },
+      "currency_code": "JMD",
+      "dial_code": "+1 876"
+    },
+    {
+      "continent": "Europe",
+      "code": "SJ",
+      "group": "secondary",
+      "name": "Jan Mayen",
+      "states": "Jan Mayen",
+      "currency": {
+        "code": "NOK",
+        "decimal_digits": 2,
+        "name": "Norwegian Krone",
+        "name_plural": "Norwegian kroner",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Nkr"
+      },
+      "currency_code": "NOK",
+      "dial_code": "+47"
+    },
+    {
+      "continent": "Asia",
+      "code": "JP",
+      "group": "secondary",
+      "name": "Japan",
+      "states": "Aichi|Akita|Aomori|Chiba|Ehime|Fukui|Fukuoka|Fukushima|Gifu|Gumma|Hiroshima|Hokkaido|Hyogo|Ibaraki|Ishikawa|Iwate|Kagawa|Kagoshima|Kanagawa|Kochi|Kumamoto|Kyoto|Mie|Miyagi|Miyazaki|Nagano|Nagasaki|Nara|Niigata|Oita|Okayama|Okinawa|Osaka|Saga|Saitama|Shiga|Shimane|Shizuoka|Tochigi|Tokushima|Tokyo|Tottori|Toyama|Wakayama|Yamagata|Yamaguchi|Yamanashi",
+      "currency": {
+        "code": "JPY",
+        "decimal_digits": 0,
+        "name": "Japanese Yen",
+        "name_plural": "Japanese yen",
+        "symbol_native": "￥",
+        "rounding": 0.0,
+        "symbol": "¥"
+      },
+      "currency_code": "JPY",
+      "dial_code": "+81"
+    },
+    {
+      "continent": "Europe",
+      "code": "JE",
+      "group": "secondary",
+      "name": "Jersey",
+      "states": "Jersey",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "British Pound Sterling",
+        "name_plural": "British pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "Asia",
+      "code": "JO",
+      "group": "secondary",
+      "name": "Jordan",
+      "states": "\u0027Amman|Ajlun|Al \u0027Aqabah|Al Balqa\u0027|Al Karak|Al Mafraq|At Tafilah|Az Zarqa\u0027|Irbid|Jarash|Ma\u0027an|Madaba",
+      "currency": {
+        "code": "JOD",
+        "decimal_digits": 3,
+        "name": "Jordanian Dinar",
+        "name_plural": "Jordanian dinars",
+        "symbol_native": "د.أ.‏",
+        "rounding": 0.0,
+        "symbol": "JD"
+      },
+      "currency_code": "JOD",
+      "dial_code": "+962"
+    },
+    {
+      "continent": "Asia",
+      "code": "KZ",
+      "group": "secondary",
+      "name": "Kazakhstan",
+      "states": "Almaty|Aqmola|Aqtobe|Astana|Atyrau|Batys Qazaqstan|Bayqongyr|Mangghystau|Ongtustik Qazaqstan|Pavlodar|Qaraghandy|Qostanay|Qyzylorda|Shyghys Qazaqstan|Soltustik Qazaqstan|Zhambyl",
+      "currency": {
+        "code": "KZT",
+        "decimal_digits": 2,
+        "name": "Kazakhstani Tenge",
+        "name_plural": "Kazakhstani tenges",
+        "symbol_native": "тңг.",
+        "rounding": 0.0,
+        "symbol": "KZT"
+      },
+      "currency_code": "KZT",
+      "dial_code": "+7 7"
+    },
+    {
+      "continent": "Africa",
+      "code": "KE",
+      "group": "secondary",
+      "name": "Kenya",
+      "states": "Central|Coast|Eastern|Nairobi Area|North Eastern|Nyanza|Rift Valley|Western",
+      "currency": {
+        "code": "KES",
+        "decimal_digits": 2,
+        "name": "Kenyan Shilling",
+        "name_plural": "Kenyan shillings",
+        "symbol_native": "Ksh",
+        "rounding": 0.0,
+        "symbol": "Ksh"
+      },
+      "currency_code": "KES",
+      "dial_code": "+254"
+    },
+    {
+      "continent": "Oceania",
+      "code": "KI",
+      "group": "secondary",
+      "name": "Kiribati",
+      "states": "Abaiang|Abemama|Aranuka|Arorae|Banaba|Banaba|Beru|Butaritari|Central Gilberts|Gilbert Islands|Kanton|Kiritimati|Kuria|Line Islands|Line Islands|Maiana|Makin|Marakei|Nikunau|Nonouti|Northern Gilberts|Onotoa|Phoenix Islands|Southern Gilberts|Tabiteuea|Tabuaeran|Tamana|Tarawa|Tarawa|Teraina",
+      "currency": {
+        "code": "AUD",
+        "decimal_digits": 2,
+        "name": "Australian Dollar",
+        "name_plural": "Australian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "AU$"
+      },
+      "currency_code": "AUD",
+      "dial_code": "+686"
+    },
+    {
+      "continent": "Asia",
+      "code": "KP",
+      "group": "secondary",
+      "name": "Korea, North",
+      "states": "Chagang-do (Chagang Province)|Hamgyong-bukto (North Hamgyong Province)|Hamgyong-namdo (South Hamgyong Province)|Hwanghae-bukto (North Hwanghae Province)|Hwanghae-namdo (South Hwanghae Province)|Kaesong-si (Kaesong City)|Kangwon-do (Kangwon Province)|Namp\u0027o-si (Namp\u0027o City)|P\u0027yongan-bukto (North P\u0027yongan Province)|P\u0027yongan-namdo (South P\u0027yongan Province)|P\u0027yongyang-si (P\u0027yongyang City)|Yanggang-do (Yanggang Province)",
+      "currency": {
+        "code": "KPW",
+        "decimal_digits": 2,
+        "name": "North Korean won",
+        "name_plural": "North Korean won",
+        "symbol_native": "₩",
+        "rounding": 0.0,
+        "symbol": "₩"
+      },
+      "currency_code": "KPW",
+      "dial_code": "+850"
+    },
+    {
+      "continent": "Asia",
+      "code": "KR",
+      "group": "secondary",
+      "name": "Korea, South",
+      "states": "Ch\u0027ungch\u0027ong-bukto|Ch\u0027ungch\u0027ong-namdo|Cheju-do|Cholla-bukto|Cholla-namdo|Inch\u0027on-gwangyoksi|Kangwon-do|Kwangju-gwangyoksi|Kyonggi-do|Kyongsang-bukto|Kyongsang-namdo|Pusan-gwangyoksi|Soul-t\u0027ukpyolsi|Taegu-gwangyoksi|Taejon-gwangyoksi|Ulsan-gwangyoksi",
+      "currency": {
+        "code": "KRW",
+        "decimal_digits": 0,
+        "name": "South Korean Won",
+        "name_plural": "South Korean won",
+        "symbol_native": "₩",
+        "rounding": 0.0,
+        "symbol": "₩"
+      },
+      "currency_code": "KRW",
+      "dial_code": "+82"
+    },
+    {
+      "continent": "Asia",
+      "code": "KW",
+      "group": "secondary",
+      "name": "Kuwait",
+      "states": "Al \u0027Asimah|Al Ahmadi|Al Farwaniyah|Al Jahra\u0027|Hawalli",
+      "currency": {
+        "code": "KWD",
+        "decimal_digits": 3,
+        "name": "Kuwaiti Dinar",
+        "name_plural": "Kuwaiti dinars",
+        "symbol_native": "د.ك.‏",
+        "rounding": 0.0,
+        "symbol": "KD"
+      },
+      "currency_code": "KWD",
+      "dial_code": "+965"
+    },
+    {
+      "continent": "Asia",
+      "code": "KG",
+      "group": "secondary",
+      "name": "Kyrgyzstan",
+      "states": "Batken Oblasty|Bishkek Shaary|Chuy Oblasty (Bishkek)|Jalal-Abad Oblasty|Naryn Oblasty|Osh Oblasty|Talas Oblasty|Ysyk-Kol Oblasty (Karakol)",
+      "currency": {
+        "code": "KGS",
+        "decimal_digits": 2,
+        "name": "Kyrgyzstani som",
+        "name_plural": "Kyrgyzstani som",
+        "symbol_native": "Лв",
+        "rounding": 0.0,
+        "symbol": "Лв"
+      },
+      "currency_code": "KGS",
+      "dial_code": "+996"
+    },
+    {
+      "continent": "Asia",
+      "code": "LA",
+      "group": "secondary",
+      "name": "Laos",
+      "states": "Attapu|Bokeo|Bolikhamxai|Champasak|Houaphan|Khammouan|Louangnamtha|Louangphabang|Oudomxai|Phongsali|Salavan|Savannakhet|Viangchan|Viangchan|Xaignabouli|Xaisomboun|Xekong|Xiangkhoang",
+      "currency": {
+        "code": "LAK",
+        "decimal_digits": 2,
+        "name": "Lao kip",
+        "name_plural": "Lao kip",
+        "symbol_native": "₭N",
+        "rounding": 0.0,
+        "symbol": "₭N"
+      },
+      "currency_code": "LAK",
+      "dial_code": "+856"
+    },
+    {
+      "continent": "Europe",
+      "code": "LV",
+      "group": "secondary",
+      "name": "Latvia",
+      "states": "Aizkraukles Rajons|Aluksnes Rajons|Balvu Rajons|Bauskas Rajons|Cesu Rajons|Daugavpils|Daugavpils Rajons|Dobeles Rajons|Gulbenes Rajons|Jekabpils Rajons|Jelgava|Jelgavas Rajons|Jurmala|Kraslavas Rajons|Kuldigas Rajons|Leipaja|Liepajas Rajons|Limbazu Rajons|Ludzas Rajons|Madonas Rajons|Ogres Rajons|Preilu Rajons|Rezekne|Rezeknes Rajons|Riga|Rigas Rajons|Saldus Rajons|Talsu Rajons|Tukuma Rajons|Valkas Rajons|Valmieras Rajons|Ventspils|Ventspils Rajons",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+371"
+    },
+    {
+      "continent": "Asia",
+      "code": "LB",
+      "group": "secondary",
+      "name": "Lebanon",
+      "states": "Beyrouth|Ech Chimal|Ej Jnoub|El Bekaa|Jabal Loubnane",
+      "currency": {
+        "code": "LBP",
+        "decimal_digits": 0,
+        "name": "Lebanese Pound",
+        "name_plural": "Lebanese pounds",
+        "symbol_native": "ل.ل.‏",
+        "rounding": 0.0,
+        "symbol": "LB£"
+      },
+      "currency_code": "LBP",
+      "dial_code": "+961"
+    },
+    {
+      "continent": "Africa",
+      "code": "LS",
+      "group": "secondary",
+      "name": "Lesotho",
+      "states": "Berea|Butha-Buthe|Leribe|Mafeteng|Maseru|Mohales Hoek|Mokhotlong|Qacha\u0027s Nek|Quthing|Thaba-Tseka",
+      "currency": {
+        "code": "LSL",
+        "decimal_digits": 2,
+        "name": "Lesotho loti",
+        "name_plural": "Lesotho loti",
+        "symbol_native": "M",
+        "rounding": 0.0,
+        "symbol": "M"
+      },
+      "currency_code": "LSL",
+      "dial_code": "+266"
+    },
+    {
+      "continent": "Africa",
+      "code": "LR",
+      "group": "secondary",
+      "name": "Liberia",
+      "states": "Bomi|Bong|Grand Bassa|Grand Cape Mount|Grand Gedeh|Grand Kru|Lofa|Margibi|Maryland|Montserrado|Nimba|River Cess|Sinoe",
+      "currency": {
+        "code": "LRD",
+        "decimal_digits": 2,
+        "name": "Liberian dollar",
+        "name_plural": "Liberian dollars",
+        "symbol_native": "L$",
+        "rounding": 0.0,
+        "symbol": "L$"
+      },
+      "currency_code": "LRD",
+      "dial_code": "+231"
+    },
+    {
+      "continent": "Africa",
+      "code": "LY",
+      "group": "secondary",
+      "name": "Libya",
+      "states": "Ajdabiya|Al \u0027Aziziyah|Al Fatih|Al Jabal al Akhdar|Al Jufrah|Al Khums|Al Kufrah|An Nuqat al Khams|Ash Shati\u0027|Awbari|Az Zawiyah|Banghazi|Darnah|Ghadamis|Gharyan|Misratah|Murzuq|Sabha|Sawfajjin|Surt|Tarabulus|Tarhunah|Tubruq|Yafran|Zlitan",
+      "currency": {
+        "code": "LYD",
+        "decimal_digits": 3,
+        "name": "Libyan Dinar",
+        "name_plural": "Libyan dinars",
+        "symbol_native": "د.ل.‏",
+        "rounding": 0.0,
+        "symbol": "LD"
+      },
+      "currency_code": "LYD",
+      "dial_code": "+218"
+    },
+    {
+      "continent": "Europe",
+      "code": "LI",
+      "group": "secondary",
+      "name": "Liechtenstein",
+      "states": "Balzers|Eschen|Gamprin|Mauren|Planken|Ruggell|Schaan|Schellenberg|Triesen|Triesenberg|Vaduz",
+      "currency": {
+        "code": "CHF",
+        "decimal_digits": 2,
+        "name": "Swiss Franc",
+        "name_plural": "Swiss francs",
+        "symbol_native": "CHF",
+        "rounding": 0.05,
+        "symbol": "CHF"
+      },
+      "currency_code": "CHF",
+      "dial_code": "+423"
+    },
+    {
+      "continent": "Europe",
+      "code": "LT",
+      "group": "secondary",
+      "name": "Lithuania",
+      "states": "Akmenes Rajonas|Alytaus Rajonas|Alytus|Anyksciu Rajonas|Birstonas|Birzu Rajonas|Druskininkai|Ignalinos Rajonas|Jonavos Rajonas|Joniskio Rajonas|Jurbarko Rajonas|Kaisiadoriu Rajonas|Kaunas|Kauno Rajonas|Kedainiu Rajonas|Kelmes Rajonas|Klaipeda|Klaipedos Rajonas|Kretingos Rajonas|Kupiskio Rajonas|Lazdiju Rajonas|Marijampole|Marijampoles Rajonas|Mazeikiu Rajonas|Moletu Rajonas|Neringa Pakruojo Rajonas|Palanga|Panevezio Rajonas|Panevezys|Pasvalio Rajonas|Plunges Rajonas|Prienu Rajonas|Radviliskio Rajonas|Raseiniu Rajonas|Rokiskio Rajonas|Sakiu Rajonas|Salcininku Rajonas|Siauliai|Siauliu Rajonas|Silales Rajonas|Silutes Rajonas|Sirvintu Rajonas|Skuodo Rajonas|Svencioniu Rajonas|Taurages Rajonas|Telsiu Rajonas|Traku Rajonas|Ukmerges Rajonas|Utenos Rajonas|Varenos Rajonas|Vilkaviskio Rajonas|Vilniaus Rajonas|Vilnius|Zarasu Rajonas",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+370"
+    },
+    {
+      "continent": "Europe",
+      "code": "LU",
+      "group": "secondary",
+      "name": "Luxembourg",
+      "states": "Diekirch|Grevenmacher|Luxembourg",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+352"
+    },
+    {
+      "continent": "Asia",
+      "code": "MO",
+      "group": "secondary",
+      "name": "Macao",
+      "states": "Macau",
+      "currency": {
+        "code": "MOP",
+        "decimal_digits": 2,
+        "name": "Macanese Pataca",
+        "name_plural": "Macanese patacas",
+        "symbol_native": "MOP$",
+        "rounding": 0.0,
+        "symbol": "MOP$"
+      },
+      "currency_code": "MOP",
+      "dial_code": "+853"
+    },
+    {
+      "continent": "Europe",
+      "code": "MK",
+      "group": "secondary",
+      "name": "Macedonia",
+      "states": "Aracinovo|Bac|Belcista|Berovo|Bistrica|Bitola|Blatec|Bogdanci|Bogomila|Bogovinje|Bosilovo|Brvenica|Cair (Skopje)|Capari|Caska|Cegrane|Centar (Skopje)|Centar Zupa|Cesinovo|Cucer-Sandevo|Debar|Delcevo|Delogozdi|Demir Hisar|Demir Kapija|Dobrusevo|Dolna Banjica|Dolneni|Dorce Petrov (Skopje)|Drugovo|Dzepciste|Gazi Baba (Skopje)|Gevgelija|Gostivar|Gradsko|Ilinden|Izvor|Jegunovce|Kamenjane|Karbinci|Karpos (Skopje)|Kavadarci|Kicevo|Kisela Voda (Skopje)|Klecevce|Kocani|Konce|Kondovo|Konopiste|Kosel|Kratovo|Kriva Palanka|Krivogastani|Krusevo|Kuklis|Kukurecani|Kumanovo|Labunista|Lipkovo|Lozovo|Lukovo|Makedonska Kamenica|Makedonski Brod|Mavrovi Anovi|Meseista|Miravci|Mogila|Murtino|Negotino|Negotino-Poloska|Novaci|Novo Selo|Oblesevo|Ohrid|Orasac|Orizari|Oslomej|Pehcevo|Petrovec|Plasnia|Podares|Prilep|Probistip|Radovis|Rankovce|Resen|Rosoman|Rostusa|Samokov|Saraj|Sipkovica|Sopiste|Sopotnika|Srbinovo|Star Dojran|Staravina|Staro Nagoricane|Stip|Struga|Strumica|Studenicani|Suto Orizari (Skopje)|Sveti Nikole|Tearce|Tetovo|Topolcani|Valandovo|Vasilevo|Veles|Velesta|Vevcani|Vinica|Vitoliste|Vranestica|Vrapciste|Vratnica|Vrutok|Zajas|Zelenikovo|Zileno|Zitose|Zletovo|Zrnovci",
+      "currency": {
+        "code": "MKD",
+        "decimal_digits": 2,
+        "name": "Macedonian Denar",
+        "name_plural": "Macedonian denari",
+        "symbol_native": "MKD",
+        "rounding": 0.0,
+        "symbol": "MKD"
+      },
+      "currency_code": "MKD",
+      "dial_code": "+389"
+    },
+    {
+      "continent": "Africa",
+      "code": "MG",
+      "group": "secondary",
+      "name": "Madagascar",
+      "states": "Antananarivo|Antsiranana|Fianarantsoa|Mahajanga|Toamasina|Toliara",
+      "currency": {
+        "code": "MGA",
+        "decimal_digits": 0,
+        "name": "Malagasy Ariary",
+        "name_plural": "Malagasy Ariaries",
+        "symbol_native": "MGA",
+        "rounding": 0.0,
+        "symbol": "MGA"
+      },
+      "currency_code": "MGA",
+      "dial_code": "+261"
+    },
+    {
+      "continent": "Africa",
+      "code": "MW",
+      "group": "secondary",
+      "name": "Malawi",
+      "states": "Balaka|Blantyre|Chikwawa|Chiradzulu|Chitipa|Dedza|Dowa|Karonga|Kasungu|Likoma|Lilongwe|Machinga (Kasupe)|Mangochi|Mchinji|Mulanje|Mwanza|Mzimba|Nkhata Bay|Nkhotakota|Nsanje|Ntcheu|Ntchisi|Phalombe|Rumphi|Salima|Thyolo|Zomba",
+      "currency": {
+        "code": "MWK",
+        "decimal_digits": 2,
+        "name": "Malawian kwacha",
+        "name_plural": "Malawian kwacha",
+        "symbol_native": "MK",
+        "rounding": 0.0,
+        "symbol": "MK"
+      },
+      "currency_code": "MWK",
+      "dial_code": "+265"
+    },
+    {
+      "continent": "Asia",
+      "code": "MY",
+      "group": "secondary",
+      "name": "Malaysia",
+      "states": "Johor|Kedah|Kelantan|Labuan|Melaka|Negeri Sembilan|Pahang|Perak|Perlis|Pulau Pinang|Sabah|Sarawak|Selangor|Terengganu|Wilayah Persekutuan",
+      "currency": {
+        "code": "MYR",
+        "decimal_digits": 2,
+        "name": "Malaysian Ringgit",
+        "name_plural": "Malaysian ringgits",
+        "symbol_native": "RM",
+        "rounding": 0.0,
+        "symbol": "RM"
+      },
+      "currency_code": "MYR",
+      "dial_code": "+60"
+    },
+    {
+      "continent": "Asia",
+      "code": "MV",
+      "group": "secondary",
+      "name": "Maldives",
+      "states": "Alifu|Baa|Dhaalu|Faafu|Gaafu Alifu|Gaafu Dhaalu|Gnaviyani|Haa Alifu|Haa Dhaalu|Kaafu|Laamu|Lhaviyani|Maale|Meemu|Noonu|Raa|Seenu|Shaviyani|Thaa|Vaavu",
+      "currency": {
+        "code": "MVR",
+        "decimal_digits": 2,
+        "name": "Maldivian rufiyaa",
+        "name_plural": "Maldivian rufiyaa",
+        "symbol_native": "Rf",
+        "rounding": 0.0,
+        "symbol": "Rf"
+      },
+      "currency_code": "MVR",
+      "dial_code": "+960"
+    },
+    {
+      "continent": "Africa",
+      "code": "ML",
+      "group": "secondary",
+      "name": "Mali",
+      "states": "Gao|Kayes|Kidal|Koulikoro|Mopti|Segou|Sikasso|Tombouctou",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+223"
+    },
+    {
+      "continent": "Europe",
+      "code": "MT",
+      "group": "secondary",
+      "name": "Malta",
+      "states": "Valletta",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+356"
+    },
+    {
+      "continent": "Oceania",
+      "code": "MH",
+      "group": "secondary",
+      "name": "Marshall Islands",
+      "states": "Ailinginae|Ailinglaplap|Ailuk|Arno|Aur|Bikar|Bikini|Bokak|Ebon|Enewetak|Erikub|Jabat|Jaluit|Jemo|Kili|Kwajalein|Lae|Lib|Likiep|Majuro|Maloelap|Mejit|Mili|Namorik|Namu|Rongelap|Rongrik|Toke|Ujae|Ujelang|Utirik|Wotho|Wotje",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+692"
+    },
+    {
+      "continent": "North America",
+      "code": "MQ",
+      "group": "secondary",
+      "name": "Martinique",
+      "states": "Martinique",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+596"
+    },
+    {
+      "continent": "Africa",
+      "code": "MR",
+      "group": "secondary",
+      "name": "Mauritania",
+      "states": "Adrar|Assaba|Brakna|Dakhlet Nouadhibou|Gorgol|Guidimaka|Hodh Ech Chargui|Hodh El Gharbi|Inchiri|Nouakchott|Tagant|Tiris Zemmour|Trarza",
+      "currency": {
+        "code": "MRO",
+        "decimal_digits": 2,
+        "name": "Mauritanian ouguiya",
+        "name_plural": "Mauritanian ouguiya",
+        "symbol_native": "UM",
+        "rounding": 0.0,
+        "symbol": "UM"
+      },
+      "currency_code": "MRO",
+      "dial_code": "+222"
+    },
+    {
+      "continent": "Africa",
+      "code": "MU",
+      "group": "secondary",
+      "name": "Mauritius",
+      "states": "Agalega Islands|Black River|Cargados Carajos Shoals|Flacq|Grand Port|Moka|Pamplemousses|Plaines Wilhems|Port Louis|Riviere du Rempart|Rodrigues|Savanne",
+      "currency": {
+        "code": "MUR",
+        "decimal_digits": 0,
+        "name": "Mauritian Rupee",
+        "name_plural": "Mauritian rupees",
+        "symbol_native": "MURs",
+        "rounding": 0.0,
+        "symbol": "MURs"
+      },
+      "currency_code": "MUR",
+      "dial_code": "+230"
+    },
+    {
+      "continent": "Africa",
+      "code": "YT",
+      "group": "secondary",
+      "name": "Mayotte",
+      "states": "Mayotte",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+262"
+    },
+    {
+      "continent": "North America",
+      "code": "MX",
+      "group": "secondary",
+      "name": "Mexico",
+      "states": "Aguascalientes|Baja California|Baja California Sur|Campeche|Chiapas|Chihuahua|Coahuila de Zaragoza|Colima|Distrito Federal|Durango|Guanajuato|Guerrero|Hidalgo|Jalisco|Mexico|Michoacan de Ocampo|Morelos|Nayarit|Nuevo Leon|Oaxaca|Puebla|Queretaro de Arteaga|Quintana Roo|San Luis Potosi|Sinaloa|Sonora|Tabasco|Tamaulipas|Tlaxcala|Veracruz-Llave|Yucatan|Zacatecas",
+      "currency": {
+        "code": "MXN",
+        "decimal_digits": 2,
+        "name": "Mexican Peso",
+        "name_plural": "Mexican pesos",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "MX$"
+      },
+      "currency_code": "MXN",
+      "dial_code": "+52"
+    },
+    {
+      "continent": "Oceania",
+      "code": "FM",
+      "group": "secondary",
+      "name": "Micronesia, Federated States Of",
+      "states": "Chuuk (Truk)|Kosrae|Pohnpei|Yap",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+691"
+    },
+    {
+      "continent": "Europe",
+      "code": "MD",
+      "group": "secondary",
+      "name": "Moldova",
+      "states": "Balti|Cahul|Chisinau|Chisinau|Dubasari|Edinet|Gagauzia|Lapusna|Orhei|Soroca|Tighina|Ungheni",
+      "currency": {
+        "code": "MDL",
+        "decimal_digits": 2,
+        "name": "Moldovan Leu",
+        "name_plural": "Moldovan lei",
+        "symbol_native": "MDL",
+        "rounding": 0.0,
+        "symbol": "MDL"
+      },
+      "currency_code": "MDL",
+      "dial_code": "+373"
+    },
+    {
+      "continent": "Europe",
+      "code": "MC",
+      "group": "secondary",
+      "name": "Monaco",
+      "states": "Fontvieille|La Condamine|Monaco-Ville|Monte-Carlo",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+377"
+    },
+    {
+      "continent": "Asia",
+      "code": "MN",
+      "group": "secondary",
+      "name": "Mongolia",
+      "states": "Arhangay|Bayan-Olgiy|Bayanhongor|Bulgan|Darhan|Dornod|Dornogovi|Dundgovi|Dzavhan|Erdenet|Govi-Altay|Hentiy|Hovd|Hovsgol|Omnogovi|Ovorhangay|Selenge|Suhbaatar|Tov|Ulaanbaatar|Uvs",
+      "currency": {
+        "code": "MNT",
+        "decimal_digits": 2,
+        "name": "Mongolian tögrög",
+        "name_plural": "Mongolian tögrög",
+        "symbol_native": "₮",
+        "rounding": 0.0,
+        "symbol": "₮"
+      },
+      "currency_code": "MNT",
+      "dial_code": "+976"
+    },
+    {
+      "continent": "Europe",
+      "code": "ME",
+      "group": "secondary",
+      "name": "Montenegro",
+      "states": "",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+382"
+    },
+    {
+      "continent": "North America",
+      "code": "MS",
+      "group": "secondary",
+      "name": "Montserrat",
+      "states": "Saint Anthony|Saint Georges|Saint Peter\u0027s",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1664"
+    },
+    {
+      "continent": "Africa",
+      "code": "MA",
+      "group": "secondary",
+      "name": "Morocco",
+      "states": "Agadir|Al Hoceima|Azilal|Ben Slimane|Beni Mellal|Boulemane|Casablanca|Chaouen|El Jadida|El Kelaa des Srarhna|Er Rachidia|Essaouira|Fes|Figuig|Guelmim|Ifrane|Kenitra|Khemisset|Khenifra|Khouribga|Laayoune|Larache|Marrakech|Meknes|Nador|Ouarzazate|Oujda|Rabat-Sale|Safi|Settat|Sidi Kacem|Tan-Tan|Tanger|Taounate|Taroudannt|Tata|Taza|Tetouan|Tiznit",
+      "currency": {
+        "code": "MAD",
+        "decimal_digits": 2,
+        "name": "Moroccan Dirham",
+        "name_plural": "Moroccan dirhams",
+        "symbol_native": "د.م.‏",
+        "rounding": 0.0,
+        "symbol": "MAD"
+      },
+      "currency_code": "MAD",
+      "dial_code": "+212"
+    },
+    {
+      "continent": "Africa",
+      "code": "MZ",
+      "group": "secondary",
+      "name": "Mozambique",
+      "states": "Cabo Delgado|Gaza|Inhambane|Manica|Maputo|Nampula|Niassa|Sofala|Tete|Zambezia",
+      "currency": {
+        "code": "MZN",
+        "decimal_digits": 2,
+        "name": "Mozambican Metical",
+        "name_plural": "Mozambican meticals",
+        "symbol_native": "MTn",
+        "rounding": 0.0,
+        "symbol": "MTn"
+      },
+      "currency_code": "MZN",
+      "dial_code": "+258"
+    },
+    {
+      "continent": "Asia",
+      "code": "MM",
+      "group": "secondary",
+      "name": "Myanmar",
+      "states": "",
+      "currency": {
+        "code": "MMK",
+        "decimal_digits": 0,
+        "name": "Myanma Kyat",
+        "name_plural": "Myanma kyats",
+        "symbol_native": "K",
+        "rounding": 0.0,
+        "symbol": "MMK"
+      },
+      "currency_code": "MMK",
+      "dial_code": "+95"
+    },
+    {
+      "continent": "Africa",
+      "code": "NA",
+      "group": "secondary",
+      "name": "Namibia",
+      "states": "Caprivi|Erongo|Hardap|Karas|Khomas|Kunene|Ohangwena|Okavango|Omaheke|Omusati|Oshana|Oshikoto|Otjozondjupa",
+      "currency": {
+        "code": "NAD",
+        "decimal_digits": 2,
+        "name": "Namibian Dollar",
+        "name_plural": "Namibian dollars",
+        "symbol_native": "N$",
+        "rounding": 0.0,
+        "symbol": "N$"
+      },
+      "currency_code": "NAD",
+      "dial_code": "+264"
+    },
+    {
+      "continent": "Oceania",
+      "code": "NR",
+      "group": "secondary",
+      "name": "Nauru",
+      "states": "Aiwo|Anabar|Anetan|Anibare|Baiti|Boe|Buada|Denigomodu|Ewa|Ijuw|Meneng|Nibok|Uaboe|Yaren",
+      "currency": {
+        "code": "AUD",
+        "decimal_digits": 2,
+        "name": "Australian Dollar",
+        "name_plural": "Australian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "AU$"
+      },
+      "currency_code": "AUD",
+      "dial_code": "+674"
+    },
+    {
+      "continent": "Asia",
+      "code": "NP",
+      "group": "secondary",
+      "name": "Nepal",
+      "states": "Bagmati|Bheri|Dhawalagiri|Gandaki|Janakpur|Karnali|Kosi|Lumbini|Mahakali|Mechi|Narayani|Rapti|Sagarmatha|Seti",
+      "currency": {
+        "code": "NPR",
+        "decimal_digits": 2,
+        "name": "Nepalese Rupee",
+        "name_plural": "Nepalese rupees",
+        "symbol_native": "नेरू",
+        "rounding": 0.0,
+        "symbol": "NPRs"
+      },
+      "currency_code": "NPR",
+      "dial_code": "+977"
+    },
+    {
+      "continent": "Europe",
+      "code": "NL",
+      "group": "secondary",
+      "name": "Netherlands",
+      "states": "Drenthe|Flevoland|Friesland|Gelderland|Groningen|Limburg|Noord-Brabant|Noord-Holland|Overijssel|Utrecht|Zeeland|Zuid-Holland",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+31"
+    },
+    {
+      "continent": "Oceania",
+      "code": "NC",
+      "group": "secondary",
+      "name": "New Caledonia",
+      "states": "Iles Loyaute|Nord|Sud",
+      "currency": {
+        "code": "XPF",
+        "decimal_digits": 2,
+        "name": "CFP franc",
+        "name_plural": "CFP francs",
+        "symbol_native": "₣",
+        "rounding": 0.0,
+        "symbol": "₣"
+      },
+      "currency_code": "XPF",
+      "dial_code": "+687"
+    },
+    {
+      "continent": "Oceania",
+      "code": "NZ",
+      "group": "secondary",
+      "name": "New Zealand",
+      "states": "Northland|Auckland|Waikato|Bay of Plenty|Gisborne|Hawke\u0027s Bay|Taranaki|Manawatu-Wanganui|Wellington|Tasman|Nelson|Marlborough|West Coast|Canterbury|Otago|Southland",
+      "currency": {
+        "code": "NZD",
+        "decimal_digits": 2,
+        "name": "New Zealand Dollar",
+        "name_plural": "New Zealand dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "NZ$"
+      },
+      "currency_code": "NZD",
+      "dial_code": "+64"
+    },
+    {
+      "continent": "North America",
+      "code": "NI",
+      "group": "secondary",
+      "name": "Nicaragua",
+      "states": "Atlantico Norte|Atlantico Sur|Boaco|Carazo|Chinandega|Chontales|Esteli|Granada|Jinotega|Leon|Madriz|Managua|Masaya|Matagalpa|Nueva Segovia|Rio San Juan|Rivas",
+      "currency": {
+        "code": "NIO",
+        "decimal_digits": 2,
+        "name": "Nicaraguan Córdoba",
+        "name_plural": "Nicaraguan córdobas",
+        "symbol_native": "C$",
+        "rounding": 0.0,
+        "symbol": "C$"
+      },
+      "currency_code": "NIO",
+      "dial_code": "+505"
+    },
+    {
+      "continent": "Africa",
+      "code": "NE",
+      "group": "secondary",
+      "name": "Niger",
+      "states": "Agadez|Diffa|Dosso|Maradi|Niamey|Tahoua|Tillaberi|Zinder",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+227"
+    },
+    {
+      "continent": "Africa",
+      "code": "NG",
+      "group": "secondary",
+      "name": "Nigeria",
+      "states": "Abia|Abuja Federal Capital Territory|Adamawa|Akwa Ibom|Anambra|Bauchi|Bayelsa|Benue|Borno|Cross River|Delta|Ebonyi|Edo|Ekiti|Enugu|Gombe|Imo|Jigawa|Kaduna|Kano|Katsina|Kebbi|Kogi|Kwara|Lagos|Nassarawa|Niger|Ogun|Ondo|Osun|Oyo|Plateau|Rivers|Sokoto|Taraba|Yobe|Zamfara",
+      "currency": {
+        "code": "NGN",
+        "decimal_digits": 2,
+        "name": "Nigerian Naira",
+        "name_plural": "Nigerian nairas",
+        "symbol_native": "₦",
+        "rounding": 0.0,
+        "symbol": "₦"
+      },
+      "currency_code": "NGN",
+      "dial_code": "+234"
+    },
+    {
+      "continent": "Oceania",
+      "code": "NU",
+      "group": "secondary",
+      "name": "Niue",
+      "states": "Niue",
+      "currency": {
+        "code": "NZD",
+        "decimal_digits": 2,
+        "name": "New Zealand Dollar",
+        "name_plural": "New Zealand dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "NZ$"
+      },
+      "currency_code": "NZD",
+      "dial_code": "+683"
+    },
+    {
+      "continent": "Oceania",
+      "code": "NF",
+      "group": "secondary",
+      "name": "Norfolk Island",
+      "states": "Norfolk Island",
+      "currency": {
+        "code": "AUD",
+        "decimal_digits": 2,
+        "name": "Australian Dollar",
+        "name_plural": "Australian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "AU$"
+      },
+      "currency_code": "AUD",
+      "dial_code": "+672"
+    },
+    {
+      "continent": "Europe",
+      "code": "GB-NIR",
+      "group": "secondary",
+      "name": "Northern Ireland",
+      "states": "",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "Pound Sterling",
+        "name_plural": "Pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "Oceania",
+      "code": "MP",
+      "group": "secondary",
+      "name": "Northern Mariana Islands",
+      "states": "Northern Islands|Rota|Saipan|Tinian",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1 670"
+    },
+    {
+      "continent": "Europe",
+      "code": "NO",
+      "group": "secondary",
+      "name": "Norway",
+      "states": "Akershus|Aust-Agder|Buskerud|Finnmark|Hedmark|Hordaland|More og Romsdal|Nord-Trondelag|Nordland|Oppland|Oslo|Ostfold|Rogaland|Sogn og Fjordane|Sor-Trondelag|Telemark|Troms|Vest-Agder|Vestfold",
+      "currency": {
+        "code": "NOK",
+        "decimal_digits": 2,
+        "name": "Norwegian Krone",
+        "name_plural": "Norwegian kroner",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Nkr"
+      },
+      "currency_code": "NOK",
+      "dial_code": "+47"
+    },
+    {
+      "continent": "Asia",
+      "code": "OM",
+      "group": "secondary",
+      "name": "Oman",
+      "states": "Ad Dakhiliyah|Al Batinah|Al Wusta|Ash Sharqiyah|Az Zahirah|Masqat|Musandam|Zufar",
+      "currency": {
+        "code": "OMR",
+        "decimal_digits": 3,
+        "name": "Omani Rial",
+        "name_plural": "Omani rials",
+        "symbol_native": "ر.ع.‏",
+        "rounding": 0.0,
+        "symbol": "OMR"
+      },
+      "currency_code": "OMR",
+      "dial_code": "+968"
+    },
+    {
+      "continent": "Asia",
+      "code": "PK",
+      "group": "secondary",
+      "name": "Pakistan",
+      "states": "Balochistan|Federally Administered Tribal Areas|Islamabad Capital Territory|Khayber Pakhtunkhwa|Punjab|Sindh",
+      "currency": {
+        "code": "PKR",
+        "decimal_digits": 0,
+        "name": "Pakistani Rupee",
+        "name_plural": "Pakistani rupees",
+        "symbol_native": "₨",
+        "rounding": 0.0,
+        "symbol": "PKRs"
+      },
+      "currency_code": "PKR",
+      "dial_code": "+92"
+    },
+    {
+      "continent": "Oceania",
+      "code": "PW",
+      "group": "secondary",
+      "name": "Palau",
+      "states": "Aimeliik|Airai|Angaur|Hatobohei|Kayangel|Koror|Melekeok|Ngaraard|Ngarchelong|Ngardmau|Ngatpang|Ngchesar|Ngeremlengui|Ngiwal|Palau Island|Peleliu|Sonsoral|Tobi",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+680"
+    },
+    {
+      "continent": "Asia",
+      "code": "PS",
+      "group": "secondary",
+      "name": "Palestine",
+      "states": "",
+      "currency": {
+        "code": "ILS",
+        "decimal_digits": 2,
+        "name": "Israeli New Sheqel",
+        "name_plural": "Israeli new sheqels",
+        "symbol_native": "₪",
+        "rounding": 0.0,
+        "symbol": "₪"
+      },
+      "currency_code": "ILS",
+      "dial_code": "+970"
+    },
+    {
+      "continent": "North America",
+      "code": "PA",
+      "group": "secondary",
+      "name": "Panama",
+      "states": "Bocas del Toro|Chiriqui|Cocle|Colon|Darien|Herrera|Los Santos|Panama|San Blas|Veraguas",
+      "currency": {
+        "code": "PAB",
+        "decimal_digits": 2,
+        "name": "Panamanian Balboa",
+        "name_plural": "Panamanian balboas",
+        "symbol_native": "B/.",
+        "rounding": 0.0,
+        "symbol": "B/."
+      },
+      "currency_code": "PAB",
+      "dial_code": "+507"
+    },
+    {
+      "continent": "Oceania",
+      "code": "PG",
+      "group": "secondary",
+      "name": "Papua New Guinea",
+      "states": "Bougainville|Central|Chimbu|East New Britain|East Sepik|Eastern Highlands|Enga|Gulf|Madang|Manus|Milne Bay|Morobe|National Capital|New Ireland|Northern|Sandaun|Southern Highlands|West New Britain|Western|Western Highlands",
+      "currency": {
+        "code": "PGK",
+        "decimal_digits": 2,
+        "name": "Papua New Guinean kina",
+        "name_plural": "Papua New Guinean kina",
+        "symbol_native": "K",
+        "rounding": 0.0,
+        "symbol": "K"
+      },
+      "currency_code": "PGK",
+      "dial_code": "+675"
+    },
+    {
+      "continent": "South America",
+      "code": "PY",
+      "group": "secondary",
+      "name": "Paraguay",
+      "states": "Alto Paraguay|Alto Parana|Amambay|Asuncion (city)|Boqueron|Caaguazu|Caazapa|Canindeyu|Central|Concepcion|Cordillera|Guaira|Itapua|Misiones|Neembucu|Paraguari|Presidente Hayes|San Pedro",
+      "currency": {
+        "code": "PYG",
+        "decimal_digits": 0,
+        "name": "Paraguayan Guarani",
+        "name_plural": "Paraguayan guaranis",
+        "symbol_native": "₲",
+        "rounding": 0.0,
+        "symbol": "₲"
+      },
+      "currency_code": "PYG",
+      "dial_code": "+595"
+    },
+    {
+      "continent": "South America",
+      "code": "PE",
+      "group": "secondary",
+      "name": "Peru",
+      "states": "Amazonas|Ancash|Apurimac|Arequipa|Ayacucho|Cajamarca|Callao|Cusco|Huancavelica|Huanuco|Ica|Junin|La Libertad|Lambayeque|Lima|Loreto|Madre de Dios|Moquegua|Pasco|Piura|Puno|San Martin|Tacna|Tumbes|Ucayali",
+      "currency": {
+        "code": "PEN",
+        "decimal_digits": 2,
+        "name": "Peruvian Nuevo Sol",
+        "name_plural": "Peruvian nuevos soles",
+        "symbol_native": "S/.",
+        "rounding": 0.0,
+        "symbol": "S/."
+      },
+      "currency_code": "PEN",
+      "dial_code": "+51"
+    },
+    {
+      "continent": "Asia",
+      "code": "PH",
+      "group": "secondary",
+      "name": "Philippines",
+      "states": "Abra|Agusan del Norte|Agusan del Sur|Aklan|Albay|Angeles|Antique|Aurora|Bacolod|Bago|Baguio|Bais|Basilan|Basilan City|Bataan|Batanes|Batangas|Batangas City|Benguet|Bohol|Bukidnon|Bulacan|Butuan|Cabanatuan|Cadiz|Cagayan|Cagayan de Oro|Calbayog|Caloocan|Camarines Norte|Camarines Sur|Camiguin|Canlaon|Capiz|Catanduanes|Cavite|Cavite City|Cebu|Cebu City|Cotabato|Dagupan|Danao|Dapitan|Davao City Davao|Davao del Sur|Davao Oriental|Dipolog|Dumaguete|Eastern Samar|General Santos|Gingoog|Ifugao|Iligan|Ilocos Norte|Ilocos Sur|Iloilo|Iloilo City|Iriga|Isabela|Kalinga-Apayao|La Carlota|La Union|Laguna|Lanao del Norte|Lanao del Sur|Laoag|Lapu-Lapu|Legaspi|Leyte|Lipa|Lucena|Maguindanao|Mandaue|Manila|Marawi|Marinduque|Masbate|Mindoro Occidental|Mindoro Oriental|Misamis Occidental|Misamis Oriental|Mountain|Naga|Negros Occidental|Negros Oriental|North Cotabato|Northern Samar|Nueva Ecija|Nueva Vizcaya|Olongapo|Ormoc|Oroquieta|Ozamis|Pagadian|Palawan|Palayan|Pampanga|Pangasinan|Pasay|Puerto Princesa|Quezon|Quezon City|Quirino|Rizal|Romblon|Roxas|Samar|San Carlos (in Negros Occidental)|San Carlos (in Pangasinan)|San Jose|San Pablo|Silay|Siquijor|Sorsogon|South Cotabato|Southern Leyte|Sultan Kudarat|Sulu|Surigao|Surigao del Norte|Surigao del Sur|Tacloban|Tagaytay|Tagbilaran|Tangub|Tarlac|Tawitawi|Toledo|Trece Martires|Zambales|Zamboanga|Zamboanga del Norte|Zamboanga del Sur",
+      "currency": {
+        "code": "PHP",
+        "decimal_digits": 2,
+        "name": "Philippine Peso",
+        "name_plural": "Philippine pesos",
+        "symbol_native": "₱",
+        "rounding": 0.0,
+        "symbol": "₱"
+      },
+      "currency_code": "PHP",
+      "dial_code": "+63"
+    },
+    {
+      "continent": "Oceania",
+      "code": "PN",
+      "group": "secondary",
+      "name": "Pitcairn",
+      "states": "Pitcaim Islands",
+      "currency": {
+        "code": "NZD",
+        "decimal_digits": 2,
+        "name": "New Zealand Dollar",
+        "name_plural": "New Zealand dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "NZ$"
+      },
+      "currency_code": "NZD",
+      "dial_code": "+872"
+    },
+    {
+      "continent": "Europe",
+      "code": "PL",
+      "group": "secondary",
+      "name": "Poland",
+      "states": "Dolnoslaskie|Kujawsko-Pomorskie|Lodzkie|Lubelskie|Lubuskie|Malopolskie|Mazowieckie|Opolskie|Podkarpackie|Podlaskie|Pomorskie|Slaskie|Swietokrzyskie|Warminsko-Mazurskie|Wielkopolskie|Zachodniopomorskie",
+      "currency": {
+        "code": "PLN",
+        "decimal_digits": 2,
+        "name": "Polish Zloty",
+        "name_plural": "Polish zlotys",
+        "symbol_native": "zł",
+        "rounding": 0.0,
+        "symbol": "zł"
+      },
+      "currency_code": "PLN",
+      "dial_code": "+48"
+    },
+    {
+      "continent": "Europe",
+      "code": "PT",
+      "group": "secondary",
+      "name": "Portugal",
+      "states": "Acores (Azores)|Aveiro|Beja|Braga|Braganca|Castelo Branco|Coimbra|Evora|Faro|Guarda|Leiria|Lisboa|Madeira|Portalegre|Porto|Santarem|Setubal|Viana do Castelo|Vila Real|Viseu",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+351"
+    },
+    {
+      "continent": "North America",
+      "code": "PR",
+      "group": "secondary",
+      "name": "Puerto Rico",
+      "states": "Adjuntas|Aguada|Aguadilla|Aguas Buenas|Aibonito|Anasco|Arecibo|Arroyo|Barceloneta|Barranquitas|Bayamon|Cabo Rojo|Caguas|Camuy|Canovanas|Carolina|Catano|Cayey|Ceiba|Ciales|Cidra|Coamo|Comerio|Corozal|Culebra|Dorado|Fajardo|Florida|Guanica|Guayama|Guayanilla|Guaynabo|Gurabo|Hatillo|Hormigueros|Humacao|Isabela|Jayuya|Juana Diaz|Juncos|Lajas|Lares|Las Marias|Las Piedras|Loiza|Luquillo|Manati|Maricao|Maunabo|Mayaguez|Moca|Morovis|Naguabo|Naranjito|Orocovis|Patillas|Penuelas|Ponce|Quebradillas|Rincon|Rio Grande|Sabana Grande|Salinas|San German|San Juan|San Lorenzo|San Sebastian|Santa Isabel|Toa Alta|Toa Baja|Trujillo Alto|Utuado|Vega Alta|Vega Baja|Vieques|Villalba|Yabucoa|Yauco",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1 939"
+    },
+    {
+      "continent": "Asia",
+      "code": "QA",
+      "group": "secondary",
+      "name": "Qatar",
+      "states": "Ad Dawhah|Al Ghuwayriyah|Al Jumayliyah|Al Khawr|Al Wakrah|Ar Rayyan|Jarayan al Batinah|Madinat ash Shamal|Umm Salal",
+      "currency": {
+        "code": "QAR",
+        "decimal_digits": 2,
+        "name": "Qatari Rial",
+        "name_plural": "Qatari rials",
+        "symbol_native": "ر.ق.‏",
+        "rounding": 0.0,
+        "symbol": "QR"
+      },
+      "currency_code": "QAR",
+      "dial_code": "+974"
+    },
+    {
+      "continent": "Africa",
+      "code": "RE",
+      "group": "secondary",
+      "name": "Reunion",
+      "states": "Reunion",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+262"
+    },
+    {
+      "continent": "Europe",
+      "code": "RO",
+      "group": "secondary",
+      "name": "Romania",
+      "states": "Alba|Arad|Arges|Bacau|Bihor|Bistrita-Nasaud|Botosani|Braila|Brasov|Bucuresti|Buzau|Calarasi|Caras-Severin|Cluj|Constanta|Covasna|Dimbovita|Dolj|Galati|Giurgiu|Gorj|Harghita|Hunedoara|Ialomita|Iasi|Maramures|Mehedinti|Mures|Neamt|Olt|Prahova|Salaj|Satu Mare|Sibiu|Suceava|Teleorman|Timis|Tulcea|Vaslui|Vilcea|Vrancea",
+      "currency": {
+        "code": "RON",
+        "decimal_digits": 2,
+        "name": "Romanian Leu",
+        "name_plural": "Romanian lei",
+        "symbol_native": "RON",
+        "rounding": 0.0,
+        "symbol": "RON"
+      },
+      "currency_code": "RON",
+      "dial_code": "+40"
+    },
+    {
+      "continent": "Europe",
+      "code": "RU",
+      "group": "secondary",
+      "name": "Russia",
+      "states": "Adygeya (Maykop)|Aginskiy Buryatskiy (Aginskoye)|Altay (Gorno-Altaysk)|Altayskiy (Barnaul)|Amurskaya (Blagoveshchensk)|Arkhangel\u0027skaya|Astrakhanskaya|Bashkortostan (Ufa)|Belgorodskaya|Bryanskaya|Buryatiya (Ulan-Ude)|Chechnya (Groznyy)|Chelyabinskaya|Chitinskaya|Chukotskiy (Anadyr\u0027)|Chuvashiya (Cheboksary)|Dagestan (Makhachkala)|Evenkiyskiy (Tura)|Ingushetiya (Nazran\u0027)|Irkutskaya|Ivanovskaya|Kabardino-Balkariya (Nal\u0027chik)|Kaliningradskaya|Kalmykiya (Elista)|Kaluzhskaya|Kamchatskaya (Petropavlovsk-Kamchatskiy)|Karachayevo-Cherkesiya (Cherkessk)|Kareliya (Petrozavodsk)|Kemerovskaya|Khabarovskiy|Khakasiya (Abakan)|Khanty-Mansiyskiy (Khanty-Mansiysk)|Kirovskaya|Komi (Syktyvkar)|Komi-Permyatskiy (Kudymkar)|Koryakskiy (Palana)|Kostromskaya|Krasnodarskiy|Krasnoyarskiy|Kurganskaya|Kurskaya|Leningradskaya|Lipetskaya|Magadanskaya|Mariy-El (Yoshkar-Ola)|Mordoviya (Saransk)|Moskovskaya|Moskva (Moscow)|Murmanskaya|Nenetskiy (Nar\u0027yan-Mar)|Nizhegorodskaya|Novgorodskaya|Novosibirskaya|Omskaya|Orenburgskaya|Orlovskaya (Orel)|Penzenskaya|Permskaya|Primorskiy (Vladivostok)|Pskovskaya|Rostovskaya|Ryazanskaya|Sakha (Yakutsk)|Sakhalinskaya (Yuzhno-Sakhalinsk)|Samarskaya|Sankt-Peterburg (Saint Petersburg)|Saratovskaya|Severnaya Osetiya-Alaniya [North Ossetia] (Vladikavkaz)|Smolenskaya|Stavropol\u0027skiy|Sverdlovskaya (Yekaterinburg)|Tambovskaya|Tatarstan (Kazan\u0027)|Taymyrskiy (Dudinka)|Tomskaya|Tul\u0027skaya|Tverskaya|Tyumenskaya|Tyva (Kyzyl)|Udmurtiya (Izhevsk)|Ul\u0027yanovskaya|Ust\u0027-Ordynskiy Buryatskiy (Ust\u0027-Ordynskiy)|Vladimirskaya|Volgogradskaya|Vologodskaya|Voronezhskaya|Yamalo-Nenetskiy (Salekhard)|Yaroslavskaya|Yevreyskaya",
+      "currency": {
+        "code": "RUB",
+        "decimal_digits": 2,
+        "name": "Russian Ruble",
+        "name_plural": "Russian rubles",
+        "symbol_native": "₽.",
+        "rounding": 0.0,
+        "symbol": "RUB"
+      },
+      "currency_code": "RUB",
+      "dial_code": "+7"
+    },
+    {
+      "continent": "Africa",
+      "code": "RW",
+      "group": "secondary",
+      "name": "Rwanda",
+      "states": "Butare|Byumba|Cyangugu|Gikongoro|Gisenyi|Gitarama|Kibungo|Kibuye|Kigali Rurale|Kigali-ville|Ruhengeri|Umutara",
+      "currency": {
+        "code": "RWF",
+        "decimal_digits": 0,
+        "name": "Rwandan Franc",
+        "name_plural": "Rwandan francs",
+        "symbol_native": "FR",
+        "rounding": 0.0,
+        "symbol": "RWF"
+      },
+      "currency_code": "RWF",
+      "dial_code": "+250"
+    },
+    {
+      "continent": "North America",
+      "code": "BL",
+      "group": "secondary",
+      "name": "Saint Barthelemy",
+      "states": "",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+590"
+    },
+    {
+      "continent": "Africa",
+      "code": "SH",
+      "group": "secondary",
+      "name": "Saint Helena",
+      "states": "Ascension|Saint Helena|Tristan da Cunha",
+      "currency": {
+        "code": "SHP",
+        "decimal_digits": 2,
+        "name": "St Helena Pound",
+        "name_plural": "St Helena pounds",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "SHP",
+      "dial_code": "+290"
+    },
+    {
+      "continent": "North America",
+      "code": "KN",
+      "group": "secondary",
+      "name": "Saint Kitts And Nevi",
+      "states": "Christ Church Nichola Town|Saint Anne Sandy Point|Saint George Basseterre|Saint George Gingerland|Saint James Windward|Saint John Capisterre|Saint John Figtree|Saint Mary Cayon|Saint Paul Capisterre|Saint Paul Charlestown|Saint Peter Basseterre|Saint Thomas Lowland|Saint Thomas Middle Island|Trinity Palmetto Point",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1 869"
+    },
+    {
+      "continent": "North America",
+      "code": "LC",
+      "group": "secondary",
+      "name": "Saint Lucia",
+      "states": "Anse-la-Raye|Castries|Choiseul|Dauphin|Dennery|Gros Islet|Laborie|Micoud|Praslin|Soufriere|Vieux Fort",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1 758"
+    },
+    {
+      "continent": "North America",
+      "code": "MF",
+      "group": "secondary",
+      "name": "Saint Martin",
+      "states": "",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+590"
+    },
+    {
+      "continent": "North America",
+      "code": "PM",
+      "group": "secondary",
+      "name": "Saint Pierre And Miquelon",
+      "states": "Miquelon|Saint Pierre",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+508"
+    },
+    {
+      "continent": "North America",
+      "code": "VC",
+      "group": "secondary",
+      "name": "Saint Vincent And Grenadines",
+      "states": "Charlotte|Grenadines|Saint Andrew|Saint David|Saint George|Saint Patrick",
+      "currency": {
+        "code": "XCD",
+        "decimal_digits": 0,
+        "name": "Eastern Caribbean dollar",
+        "name_plural": "dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "XCD",
+      "dial_code": "+1 784"
+    },
+    {
+      "continent": "Oceania",
+      "code": "WS",
+      "group": "secondary",
+      "name": "Samoa",
+      "states": "A\u0027ana|Aiga-i-le-Tai|Atua|Fa\u0027asaleleaga|Gaga\u0027emauga|Gagaifomauga|Palauli|Satupa\u0027itea|Tuamasaga|Va\u0027a-o-Fonoti|Vaisigano",
+      "currency": {
+        "code": "WST",
+        "decimal_digits": 2,
+        "name": "Samoan tālā",
+        "name_plural": "Samoan tālā",
+        "symbol_native": "SAT",
+        "rounding": 0.0,
+        "symbol": "SAT"
+      },
+      "currency_code": "WST",
+      "dial_code": "+685"
+    },
+    {
+      "continent": "Europe",
+      "code": "SM",
+      "group": "secondary",
+      "name": "San Marino",
+      "states": "Acquaviva|Borgo Maggiore|Chiesanuova|Domagnano|Faetano|Fiorentino|Monte Giardino|San Marino|Serravalle",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+378"
+    },
+    {
+      "continent": "Asia",
+      "code": "SA",
+      "group": "secondary",
+      "name": "Saudi Arabia",
+      "states": "\u0027Asir|Al Bahah|Al Hudud ash Shamaliyah|Al Jawf|Al Madinah|Al Qasim|Ar Riyad|Ash Sharqiyah (Eastern Province)|Ha\u0027il|Jizan|Makkah|Najran|Tabuk",
+      "currency": {
+        "code": "SAR",
+        "decimal_digits": 2,
+        "name": "Saudi Riyal",
+        "name_plural": "Saudi riyals",
+        "symbol_native": "ر.س.‏",
+        "rounding": 0.0,
+        "symbol": "SR"
+      },
+      "currency_code": "SAR",
+      "dial_code": "+966"
+    },
+    {
+      "continent": "Europe",
+      "code": "GB-SCT",
+      "group": "secondary",
+      "name": "Scotland",
+      "states": "Aberdeen City|Aberdeenshire|Angus|Argyll and Bute|City of Edinburgh|Clackmannanshire|Dumfries and Galloway|Dundee City|East Ayrshire|East Dunbartonshire|East Lothian|East Renfrewshire|Eilean Siar (Western Isles)|Falkirk|Fife|Glasgow City|Highland|Inverclyde|Midlothian|Moray|North Ayrshire|North Lanarkshire|Orkney Islands|Perth and Kinross|Renfrewshire|Shetland Islands|South Ayrshire|South Lanarkshire|Stirling|The Scottish Borders|West Dunbartonshire|West Lothian",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "Pound Sterling",
+        "name_plural": "Pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "Africa",
+      "code": "SN",
+      "group": "secondary",
+      "name": "Senegal",
+      "states": "Dakar|Diourbel|Fatick|Kaolack|Kolda|Louga|Saint-Louis|Tambacounda|Thies|Ziguinchor",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+221"
+    },
+    {
+      "continent": "Africa",
+      "code": "SC",
+      "group": "secondary",
+      "name": "Seychelles",
+      "states": "Anse aux Pins|Anse Boileau|Anse Etoile|Anse Louis|Anse Royale|Baie Lazare|Baie Sainte Anne|Beau Vallon|Bel Air|Bel Ombre|Cascade|Glacis|Grand\u0027 Anse (on Mahe)|Grand\u0027 Anse (on Praslin)|La Digue|La Riviere Anglaise|Mont Buxton|Mont Fleuri|Plaisance|Pointe La Rue|Port Glaud|Saint Louis|Takamaka",
+      "currency": {
+        "code": "SCR",
+        "decimal_digits": 0,
+        "name": "Seychellois rupee",
+        "name_plural": "Seychellois rupees",
+        "symbol_native": "SR",
+        "rounding": 0.0,
+        "symbol": "SR"
+      },
+      "currency_code": "SCR",
+      "dial_code": "+248"
+    },
+    {
+      "continent": "Africa",
+      "code": "SL",
+      "group": "secondary",
+      "name": "Sierra Leone",
+      "states": "Eastern|Northern|Southern|Western",
+      "currency": {
+        "code": "SLL",
+        "decimal_digits": 0,
+        "name": "Sierra Leonean leone",
+        "name_plural": "Sierra Leonean leones",
+        "symbol_native": "Le",
+        "rounding": 0.0,
+        "symbol": "Le"
+      },
+      "currency_code": "SLL",
+      "dial_code": "+232"
+    },
+    {
+      "continent": "Asia",
+      "code": "SG",
+      "group": "secondary",
+      "name": "Singapore",
+      "states": "Singapore",
+      "currency": {
+        "code": "SGD",
+        "decimal_digits": 2,
+        "name": "Singapore Dollar",
+        "name_plural": "Singapore dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "S$"
+      },
+      "currency_code": "SGD",
+      "dial_code": "+65"
+    },
+    {
+      "continent": "Europe",
+      "code": "SK",
+      "group": "secondary",
+      "name": "Slovakia",
+      "states": "Banskobystricky|Bratislavsky|Kosicky|Nitriansky|Presovsky|Trenciansky|Trnavsky|Zilinsky",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+421"
+    },
+    {
+      "continent": "Europe",
+      "code": "SI",
+      "group": "secondary",
+      "name": "Slovenia",
+      "states": "Ajdovscina|Beltinci|Bled|Bohinj|Borovnica|Bovec|Brda|Brezice|Brezovica|Cankova-Tisina|Celje|Cerklje na Gorenjskem|Cerknica|Cerkno|Crensovci|Crna na Koroskem|Crnomelj|Destrnik-Trnovska Vas|Divaca|Dobrepolje|Dobrova-Horjul-Polhov Gradec|Dol pri Ljubljani|Domzale|Dornava|Dravograd|Duplek|Gorenja Vas-Poljane|Gorisnica|Gornja Radgona|Gornji Grad|Gornji Petrovci|Grosuplje|Hodos Salovci|Hrastnik|Hrpelje-Kozina|Idrija|Ig|Ilirska Bistrica|Ivancna Gorica|Izola|Jesenice|Jursinci|Kamnik|Kanal|Kidricevo|Kobarid|Kobilje|Kocevje|Komen|Koper|Kozje|Kranj|Kranjska Gora|Krsko|Kungota|Kuzma|Lasko|Lenart|Lendava|Litija|Ljubljana|Ljubno|Ljutomer|Logatec|Loska Dolina|Loski Potok|Luce|Lukovica|Majsperk|Maribor|Medvode|Menges|Metlika|Mezica|Miren-Kostanjevica|Mislinja|Moravce|Moravske Toplice|Mozirje|Murska Sobota|Muta|Naklo|Nazarje|Nova Gorica|Novo Mesto|Odranci|Ormoz|Osilnica|Pesnica|Piran|Pivka|Podcetrtek|Podvelka-Ribnica|Postojna|Preddvor|Ptuj|Puconci|Race-Fram|Radece|Radenci|Radlje ob Dravi|Radovljica|Ravne-Prevalje|Ribnica|Rogasevci|Rogaska Slatina|Rogatec|Ruse|Semic|Sencur|Sentilj|Sentjernej|Sentjur pri Celju|Sevnica|Sezana|Skocjan|Skofja Loka|Skofljica|Slovenj Gradec|Slovenska Bistrica|Slovenske Konjice|Smarje pri Jelsah|Smartno ob Paki|Sostanj|Starse|Store|Sveti Jurij|Tolmin|Trbovlje|Trebnje|Trzic|Turnisce|Velenje|Velike Lasce|Videm|Vipava|Vitanje|Vodice|Vojnik|Vrhnika|Vuzenica|Zagorje ob Savi|Zalec|Zavrc|Zelezniki|Ziri|Zrece",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+386"
+    },
+    {
+      "continent": "Oceania",
+      "code": "SB",
+      "group": "secondary",
+      "name": "Solomon Islands",
+      "states": "Bellona|Central|Choiseul (Lauru)|Guadalcanal|Honiara|Isabel|Makira|Malaita|Rennell|Temotu|Western",
+      "currency": {
+        "code": "SBD",
+        "decimal_digits": 0,
+        "name": "Solomon Islands dollar",
+        "name_plural": "Solomon Islands dollars",
+        "symbol_native": "Si$",
+        "rounding": 0.0,
+        "symbol": "Si$"
+      },
+      "currency_code": "SBD",
+      "dial_code": "+677"
+    },
+    {
+      "continent": "Africa",
+      "code": "SO",
+      "group": "secondary",
+      "name": "Somalia",
+      "states": "Awdal|Bakool|Banaadir|Bari|Bay|Galguduud|Gedo|Hiiraan|Jubbada Dhexe|Jubbada Hoose|Mudug|Nugaal|Sanaag|Shabeellaha Dhexe|Shabeellaha Hoose|Sool|Togdheer|Woqooyi Galbeed",
+      "currency": {
+        "code": "SOS",
+        "decimal_digits": 0,
+        "name": "Somali Shilling",
+        "name_plural": "Somali shillings",
+        "symbol_native": "Ssh",
+        "rounding": 0.0,
+        "symbol": "Ssh"
+      },
+      "currency_code": "SOS",
+      "dial_code": "+252"
+    },
+    {
+      "continent": "Africa",
+      "code": "ZA",
+      "group": "secondary",
+      "name": "South Africa",
+      "states": "Eastern Cape|Free State|Gauteng|KwaZulu-Natal|Mpumalanga|North-West|Northern Cape|Northern Province|Western Cape",
+      "currency": {
+        "code": "ZAR",
+        "decimal_digits": 2,
+        "name": "South African Rand",
+        "name_plural": "South African rand",
+        "symbol_native": "R",
+        "rounding": 0.0,
+        "symbol": "R"
+      },
+      "currency_code": "ZAR",
+      "dial_code": "+27"
+    },
+    {
+      "continent": "Antarctica",
+      "code": "GS",
+      "group": "secondary",
+      "name": "South Georgia And Sandwich Isl.",
+      "states": "Bird Island|Bristol Island|Clerke Rocks|Montagu Island|Saunders Island|South Georgia|Southern Thule|Traversay Islands",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "British Pound Sterling",
+        "name_plural": "British pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+500"
+    },
+    {
+      "continent": "Europe",
+      "code": "ES",
+      "group": "secondary",
+      "name": "Spain",
+      "states": "Andalucia|Aragon|Asturias|Baleares (Balearic Islands)|Canarias (Canary Islands)|Cantabria|Castilla y Leon|Castilla-La Mancha|Cataluna|Ceuta|Communidad Valencian|Extremadura|Galicia|Islas Chafarinas|La Rioja|Madrid|Melilla|Murcia|Navarra|Pais Vasco (Basque Country)|Penon de Alhucemas|Penon de Velez de la Gomera",
+      "currency": {
+        "code": "EUR",
+        "decimal_digits": 2,
+        "name": "Euro",
+        "name_plural": "euros",
+        "symbol_native": "€",
+        "rounding": 0.0,
+        "symbol": "€"
+      },
+      "currency_code": "EUR",
+      "dial_code": "+34"
+    },
+    {
+      "continent": "Asia",
+      "code": "PS",
+      "group": "secondary",
+      "name": "Spratly Islands",
+      "states": "Spratly Islands",
+      "currency": {
+        "code": "ILS",
+        "decimal_digits": 2,
+        "name": "Israeli New Sheqel",
+        "name_plural": "Israeli new sheqels",
+        "symbol_native": "₪",
+        "rounding": 0.0,
+        "symbol": "₪"
+      },
+      "currency_code": "ILS",
+      "dial_code": "+970"
+    },
+    {
+      "continent": "Asia",
+      "code": "LK",
+      "group": "secondary",
+      "name": "Sri Lanka",
+      "states": "Central|Eastern|North Central|North Eastern|North Western|Northern|Sabaragamuwa|Southern|Uva|Western",
+      "currency": {
+        "code": "LKR",
+        "decimal_digits": 2,
+        "name": "Sri Lankan Rupee",
+        "name_plural": "Sri Lankan rupees",
+        "symbol_native": "SL Re",
+        "rounding": 0.0,
+        "symbol": "SLRs"
+      },
+      "currency_code": "LKR",
+      "dial_code": "+94"
+    },
+    {
+      "continent": "Africa",
+      "code": "SD",
+      "group": "secondary",
+      "name": "Sudan",
+      "states": "A\u0027ali an Nil|Al Bahr al Ahmar|Al Buhayrat|Al Jazirah|Al Khartum|Al Qadarif|Al Wahdah|An Nil al Abyad|An Nil al Azraq|Ash Shamaliyah|Bahr al Jabal|Gharb al Istiwa\u0027iyah|Gharb Bahr al Ghazal|Gharb Darfur|Gharb Kurdufan|Janub Darfur|Janub Kurdufan|Junqali|Kassala|Nahr an Nil|Shamal Bahr al Ghazal|Shamal Darfur|Shamal Kurdufan|Sharq al Istiwa\u0027iyah|Sinnar|Warab",
+      "currency": {
+        "code": "SDG",
+        "decimal_digits": 2,
+        "name": "Sudanese Pound",
+        "name_plural": "Sudanese pounds",
+        "symbol_native": "SDG",
+        "rounding": 0.0,
+        "symbol": "SDG"
+      },
+      "currency_code": "SDG",
+      "dial_code": "+249"
+    },
+    {
+      "continent": "South America",
+      "code": "SR",
+      "group": "secondary",
+      "name": "Suriname",
+      "states": "Brokopondo|Commewijne|Coronie|Marowijne|Nickerie|Para|Paramaribo|Saramacca|Sipaliwini|Wanica",
+      "currency": {
+        "code": "SRD",
+        "decimal_digits": 0,
+        "name": "Suriname Dollar",
+        "name_plural": "Suriname Dollar",
+        "symbol_native": "Sr$",
+        "rounding": 0.0,
+        "symbol": "Sr$"
+      },
+      "currency_code": "SRD",
+      "dial_code": "+597"
+    },
+    {
+      "continent": "Europe",
+      "code": "SJ",
+      "group": "secondary",
+      "name": "Svalbard",
+      "states": "Barentsoya|Bjornoya|Edgeoya|Hopen|Kvitoya|Nordaustandet|Prins Karls Forland|Spitsbergen",
+      "currency": {
+        "code": "NOK",
+        "decimal_digits": 2,
+        "name": "Norwegian Krone",
+        "name_plural": "Norwegian kroner",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Nkr"
+      },
+      "currency_code": "NOK",
+      "dial_code": "+47"
+    },
+    {
+      "continent": "Africa",
+      "code": "SZ",
+      "group": "secondary",
+      "name": "Swaziland",
+      "states": "Hhohho|Lubombo|Manzini|Shiselweni",
+      "currency": {
+        "code": "SZL",
+        "decimal_digits": 0,
+        "name": "Swazi lilangeni",
+        "name_plural": "Swazi lilangeni",
+        "symbol_native": "E",
+        "rounding": 0.0,
+        "symbol": "E"
+      },
+      "currency_code": "SZL",
+      "dial_code": "+268"
+    },
+    {
+      "continent": "Europe",
+      "code": "SE",
+      "group": "secondary",
+      "name": "Sweden",
+      "states": "Blekinge|Dalarnas|Gavleborgs|Gotlands|Hallands|Jamtlands|Jonkopings|Kalmar|Kronobergs|Norrbottens|Orebro|Ostergotlands|Skane|Sodermanlands|Stockholms|Uppsala|Varmlands|Vasterbottens|Vasternorrlands|Vastmanlands|Vastra Gotalands",
+      "currency": {
+        "code": "SEK",
+        "decimal_digits": 2,
+        "name": "Swedish Krona",
+        "name_plural": "Swedish kronor",
+        "symbol_native": "kr",
+        "rounding": 0.0,
+        "symbol": "Skr"
+      },
+      "currency_code": "SEK",
+      "dial_code": "+46"
+    },
+    {
+      "continent": "Europe",
+      "code": "CH",
+      "group": "secondary",
+      "name": "Switzerland",
+      "states": "Aargau|Ausser-Rhoden|Basel-Landschaft|Basel-Stadt|Bern|Fribourg|Geneve|Glarus|Graubunden|Inner-Rhoden|Jura|Luzern|Neuchatel|Nidwalden|Obwalden|Sankt Gallen|Schaffhausen|Schwyz|Solothurn|Thurgau|Ticino|Uri|Valais|Vaud|Zug|Zurich",
+      "currency": {
+        "code": "CHF",
+        "decimal_digits": 2,
+        "name": "Swiss Franc",
+        "name_plural": "Swiss francs",
+        "symbol_native": "CHF",
+        "rounding": 0.05,
+        "symbol": "CHF"
+      },
+      "currency_code": "CHF",
+      "dial_code": "+41"
+    },
+    {
+      "continent": "Asia",
+      "code": "SY",
+      "group": "secondary",
+      "name": "Syria",
+      "states": "Al Hasakah|Al Ladhiqiyah|Al Qunaytirah|Ar Raqqah|As Suwayda\u0027|Dar\u0027a|Dayr az Zawr|Dimashq|Halab|Hamah|Hims|Idlib|Rif Dimashq|Tartus",
+      "currency": {
+        "code": "SYP",
+        "decimal_digits": 0,
+        "name": "Syrian Pound",
+        "name_plural": "Syrian pounds",
+        "symbol_native": "ل.س.‏",
+        "rounding": 0.0,
+        "symbol": "SY£"
+      },
+      "currency_code": "SYP",
+      "dial_code": "+963"
+    },
+    {
+      "continent": "Africa",
+      "code": "ST",
+      "group": "secondary",
+      "name": "São Tomé and Príncipe",
+      "states": "Principe|Sao Tome",
+      "currency": {
+        "code": "STD",
+        "decimal_digits": 2,
+        "name": "São Tomé and Príncipe dobra",
+        "name_plural": "São Tomé and Príncipe dobras",
+        "symbol_native": "Db",
+        "rounding": 0.0,
+        "symbol": "Db"
+      },
+      "currency_code": "STD",
+      "dial_code": "+239"
+    },
+    {
+      "continent": "Asia",
+      "code": "TW",
+      "group": "secondary",
+      "name": "Taiwan",
+      "states": "Chang-hua|Chi-lung|Chia-i|Chia-i|Chung-hsing-hsin-ts\u0027un|Hsin-chu|Hsin-chu|Hua-lien|I-lan|Kao-hsiung|Kao-hsiung|Miao-li|Nan-t\u0027ou|P\u0027eng-hu|P\u0027ing-tung|T\u0027ai-chung|T\u0027ai-chung|T\u0027ai-nan|T\u0027ai-nan|T\u0027ai-pei|T\u0027ai-pei|T\u0027ai-tung|T\u0027ao-yuan|Yun-lin",
+      "currency": {
+        "code": "TWD",
+        "decimal_digits": 2,
+        "name": "New Taiwan Dollar",
+        "name_plural": "New Taiwan dollars",
+        "symbol_native": "NT$",
+        "rounding": 0.0,
+        "symbol": "NT$"
+      },
+      "currency_code": "TWD",
+      "dial_code": "+886"
+    },
+    {
+      "continent": "Asia",
+      "code": "TJ",
+      "group": "secondary",
+      "name": "Tajikistan",
+      "states": "Viloyati Khatlon|Viloyati Leninobod|Viloyati Mukhtori Kuhistoni Badakhshon",
+      "currency": {
+        "code": "TJS",
+        "decimal_digits": 2,
+        "name": "Tajikistani somoni",
+        "name_plural": "Tajikistani somoni",
+        "symbol_native": "ЅM",
+        "rounding": 0.0,
+        "symbol": "ЅM"
+      },
+      "currency_code": "TJS",
+      "dial_code": "+992"
+    },
+    {
+      "continent": "Africa",
+      "code": "TZ",
+      "group": "secondary",
+      "name": "Tanzania",
+      "states": "Arusha|Dar es Salaam|Dodoma|Iringa|Kagera|Kigoma|Kilimanjaro|Lindi|Mara|Mbeya|Morogoro|Mtwara|Mwanza|Pemba North|Pemba South|Pwani|Rukwa|Ruvuma|Shinyanga|Singida|Tabora|Tanga|Zanzibar Central/South|Zanzibar North|Zanzibar Urban/West",
+      "currency": {
+        "code": "TZS",
+        "decimal_digits": 0,
+        "name": "Tanzanian Shilling",
+        "name_plural": "Tanzanian shillings",
+        "symbol_native": "TSh",
+        "rounding": 0.0,
+        "symbol": "TSh"
+      },
+      "currency_code": "TZS",
+      "dial_code": "+255"
+    },
+    {
+      "continent": "Asia",
+      "code": "TH",
+      "group": "secondary",
+      "name": "Thailand",
+      "states": "Amnat Charoen|Ang Thong|Buriram|Chachoengsao|Chai Nat|Chaiyaphum|Chanthaburi|Chiang Mai|Chiang Rai|Chon Buri|Chumphon|Kalasin|Kamphaeng Phet|Kanchanaburi|Khon Kaen|Krabi|Krung Thep Mahanakhon (Bangkok)|Lampang|Lamphun|Loei|Lop Buri|Mae Hong Son|Maha Sarakham|Mukdahan|Nakhon Nayok|Nakhon Pathom|Nakhon Phanom|Nakhon Ratchasima|Nakhon Sawan|Nakhon Si Thammarat|Nan|Narathiwat|Nong Bua Lamphu|Nong Khai|Nonthaburi|Pathum Thani|Pattani|Phangnga|Phatthalung|Phayao|Phetchabun|Phetchaburi|Phichit|Phitsanulok|Phra Nakhon Si Ayutthaya|Phrae|Phuket|Prachin Buri|Prachuap Khiri Khan|Ranong|Ratchaburi|Rayong|Roi Et|Sa Kaeo|Sakon Nakhon|Samut Prakan|Samut Sakhon|Samut Songkhram|Sara Buri|Satun|Sing Buri|Sisaket|Songkhla|Sukhothai|Suphan Buri|Surat Thani|Surin|Tak|Trang|Trat|Ubon Ratchathani|Udon Thani|Uthai Thani|Uttaradit|Yala|Yasothon",
+      "currency": {
+        "code": "THB",
+        "decimal_digits": 2,
+        "name": "Thai Baht",
+        "name_plural": "Thai baht",
+        "symbol_native": "฿",
+        "rounding": 0.0,
+        "symbol": "฿"
+      },
+      "currency_code": "THB",
+      "dial_code": "+66"
+    },
+    {
+      "continent": "Oceania",
+      "code": "TL",
+      "group": "secondary",
+      "name": "Timor-Leste",
+      "states": "Timor-Leste",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+670"
+    },
+    {
+      "continent": "Africa",
+      "code": "TG",
+      "group": "secondary",
+      "name": "Togo",
+      "states": "De La Kara|Des Plateaux|Des Savanes|Du Centre|Maritime",
+      "currency": {
+        "code": "XOF",
+        "decimal_digits": 0,
+        "name": "CFA Franc BCEAO",
+        "name_plural": "CFA francs BCEAO",
+        "symbol_native": "CFA",
+        "rounding": 0.0,
+        "symbol": "CFA"
+      },
+      "currency_code": "XOF",
+      "dial_code": "+228"
+    },
+    {
+      "continent": "Oceania",
+      "code": "TK",
+      "group": "secondary",
+      "name": "Tokelau",
+      "states": "Atafu|Fakaofo|Nukunonu",
+      "currency": {
+        "code": "NZD",
+        "decimal_digits": 2,
+        "name": "New Zealand Dollar",
+        "name_plural": "New Zealand dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "NZ$"
+      },
+      "currency_code": "NZD",
+      "dial_code": "+690"
+    },
+    {
+      "continent": "Oceania",
+      "code": "TO",
+      "group": "secondary",
+      "name": "Tonga",
+      "states": "Ha\u0027apai|Tongatapu|Vava\u0027u",
+      "currency": {
+        "code": "TOP",
+        "decimal_digits": 2,
+        "name": "Tongan Paʻanga",
+        "name_plural": "Tongan paʻanga",
+        "symbol_native": "T$",
+        "rounding": 0.0,
+        "symbol": "T$"
+      },
+      "currency_code": "TOP",
+      "dial_code": "+676"
+    },
+    {
+      "continent": "North America",
+      "code": "TT",
+      "group": "secondary",
+      "name": "Trinidad And Tobago",
+      "states": "Tobag",
+      "currency": {
+        "code": "TTD",
+        "decimal_digits": 2,
+        "name": "Trinidad and Tobago Dollar",
+        "name_plural": "Trinidad and Tobago dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "TT$"
+      },
+      "currency_code": "TTD",
+      "dial_code": "+1 868"
+    },
+    {
+      "continent": "Africa",
+      "code": "TN",
+      "group": "secondary",
+      "name": "Tunisia",
+      "states": "Arima|Caroni|Mayaro|Nariva|Port-of-Spain|Saint Andrew|Saint David|Saint George|Saint Patrick|San Fernando|Victoria",
+      "currency": {
+        "code": "TND",
+        "decimal_digits": 3,
+        "name": "Tunisian Dinar",
+        "name_plural": "Tunisian dinars",
+        "symbol_native": "د.ت.‏",
+        "rounding": 0.0,
+        "symbol": "DT"
+      },
+      "currency_code": "TND",
+      "dial_code": "+216"
+    },
+    {
+      "continent": "Asia",
+      "code": "TR",
+      "group": "secondary",
+      "name": "Turkey",
+      "states": "Ariana|Beja|Ben Arous|Bizerte|El Kef|Gabes|Gafsa|Jendouba|Kairouan|Kasserine|Kebili|Mahdia|Medenine|Monastir|Nabeul|Sfax|Sidi Bou Zid|Siliana|Sousse|Tataouine|Tozeur|Tunis|Zaghouan",
+      "currency": {
+        "code": "TRY",
+        "decimal_digits": 2,
+        "name": "Turkish Lira",
+        "name_plural": "Turkish Lira",
+        "symbol_native": "TL",
+        "rounding": 0.0,
+        "symbol": "TL"
+      },
+      "currency_code": "TRY",
+      "dial_code": "+90"
+    },
+    {
+      "continent": "Asia",
+      "code": "TM",
+      "group": "secondary",
+      "name": "Turkmenistan",
+      "states": "Adana|Adiyaman|Afyon|Agri|Aksaray|Amasya|Ankara|Antalya|Ardahan|Artvin|Aydin|Balikesir|Bartin|Batman|Bayburt|Bilecik|Bingol|Bitlis|Bolu|Burdur|Bursa|Canakkale|Cankiri|Corum|Denizli|Diyarbakir|Duzce|Edirne|Elazig|Erzincan|Erzurum|Eskisehir|Gaziantep|Giresun|Gumushane|Hakkari|Hatay|Icel|Igdir|Isparta|Istanbul|Izmir|Kahramanmaras|Karabuk|Karaman|Kars|Kastamonu|Kayseri|Kilis|Kirikkale|Kirklareli|Kirsehir|Kocaeli|Konya|Kutahya|Malatya|Manisa|Mardin|Mugla|Mus|Nevsehir|Nigde|Ordu|Osmaniye|Rize|Sakarya|Samsun|Sanliurfa|Siirt|Sinop|Sirnak|Sivas|Tekirdag|Tokat|Trabzon|Tunceli|Usak|Van|Yalova|Yozgat|Zonguldak",
+      "currency": {
+        "code": "TMT",
+        "decimal_digits": 2,
+        "name": "Turkmenistan manat",
+        "name_plural": "Turkmenistan manat",
+        "symbol_native": "T",
+        "rounding": 0.0,
+        "symbol": "T"
+      },
+      "currency_code": "TMT",
+      "dial_code": "+993"
+    },
+    {
+      "continent": "North America",
+      "code": "TC",
+      "group": "secondary",
+      "name": "Turks And Caicos Islands",
+      "states": "Ahal Welayaty|Balkan Welayaty|Dashhowuz Welayaty|Lebap Welayaty|Mary Welayaty",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1 649"
+    },
+    {
+      "continent": "Oceania",
+      "code": "TV",
+      "group": "secondary",
+      "name": "Tuvalu",
+      "states": "Tuvalu",
+      "currency": {
+        "code": "AUD",
+        "decimal_digits": 2,
+        "name": "Australian Dollar",
+        "name_plural": "Australian dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "AU$"
+      },
+      "currency_code": "AUD",
+      "dial_code": "+688"
+    },
+    {
+      "continent": "Africa",
+      "code": "UG",
+      "group": "secondary",
+      "name": "Uganda",
+      "states": "Adjumani|Apac|Arua|Bugiri|Bundibugyo|Bushenyi|Busia|Gulu|Hoima|Iganga|Jinja|Kabale|Kabarole|Kalangala|Kampala|Kamuli|Kapchorwa|Kasese|Katakwi|Kibale|Kiboga|Kisoro|Kitgum|Kotido|Kumi|Lira|Luwero|Masaka|Masindi|Mbale|Mbarara|Moroto|Moyo|Mpigi|Mubende|Mukono|Nakasongola|Nebbi|Ntungamo|Pallisa|Rakai|Rukungiri|Sembabule|Soroti|Tororo",
+      "currency": {
+        "code": "UGX",
+        "decimal_digits": 0,
+        "name": "Ugandan Shilling",
+        "name_plural": "Ugandan shillings",
+        "symbol_native": "USh",
+        "rounding": 0.0,
+        "symbol": "USh"
+      },
+      "currency_code": "UGX",
+      "dial_code": "+256"
+    },
+    {
+      "continent": "Europe",
+      "code": "UA",
+      "group": "secondary",
+      "name": "Ukraine",
+      "states": "Avtonomna Respublika Krym (Simferopol\u0027)|Cherkas\u0027ka (Cherkasy)|Chernihivs\u0027ka (Chernihiv)|Chernivets\u0027ka (Chernivtsi)|Dnipropetrovs\u0027ka (Dnipropetrovs\u0027k)|Donets\u0027ka (Donets\u0027k)|Ivano-Frankivs\u0027ka (Ivano-Frankivs\u0027k)|Kharkivs\u0027ka (Kharkiv)|Khersons\u0027ka (Kherson)|Khmel\u0027nyts\u0027ka (Khmel\u0027nyts\u0027kyy)|Kirovohrads\u0027ka (Kirovohrad)|Kyyiv|Kyyivs\u0027ka (Kiev)|L\u0027vivs\u0027ka (L\u0027viv)|Luhans\u0027ka (Luhans\u0027k)|Mykolayivs\u0027ka (Mykolayiv)|Odes\u0027ka (Odesa)|Poltavs\u0027ka (Poltava)|Rivnens\u0027ka (Rivne)|Sevastopol\u0027|Sums\u0027ka (Sumy)|Ternopil\u0027s\u0027ka (Ternopil\u0027)|Vinnyts\u0027ka (Vinnytsya)|Volyns\u0027ka (Luts\u0027k)|Zakarpats\u0027ka (Uzhhorod)|Zaporiz\u0027ka (Zaporizhzhya)|Zhytomyrs\u0027ka (Zhytomyr)",
+      "currency": {
+        "code": "UAH",
+        "decimal_digits": 2,
+        "name": "Ukrainian Hryvnia",
+        "name_plural": "Ukrainian hryvnias",
+        "symbol_native": "₴",
+        "rounding": 0.0,
+        "symbol": "₴"
+      },
+      "currency_code": "UAH",
+      "dial_code": "+380"
+    },
+    {
+      "continent": "Asia",
+      "code": "AE",
+      "group": "secondary",
+      "name": "United Arab Emirates",
+      "states": "\u0027Ajman|Abu Zaby (Abu Dhabi)|Al Fujayrah|Ash Shariqah (Sharjah)|Dubayy (Dubai)|Ra\u0027s al Khaymah|Umm al Qaywayn",
+      "currency": {
+        "code": "AED",
+        "decimal_digits": 2,
+        "name": "United Arab Emirates Dirham",
+        "name_plural": "UAE dirhams",
+        "symbol_native": "د.إ.‏",
+        "rounding": 0.0,
+        "symbol": "AED"
+      },
+      "currency_code": "AED",
+      "dial_code": "+971"
+    },
+    {
+      "continent": "Europe",
+      "code": "GB",
+      "group": "primary",
+      "name": "United Kingdom",
+      "states": "Anglesey|Barking and Dagenham|Barnet|Barnsley|Bath and North East Somerset|Bedfordshire|Bexley|Birmingham|Blackburn with Darwen|Blackpool|Bolton|Bournemouth|Bracknell Forest|Bradford|Brent|Brighton and Hove|Bromley|Buckinghamshire|Bury|Calderdale|Cambridgeshire|Camden|Cheshire|City of Bristol|City of Kingston upon Hull|City of London|Cornwall|Coventry|Croydon|Cumbria|Darlington|Derby|Derbyshire|Devon|Doncaster|Dorset|Dudley|Durham|Ealing|East Riding of Yorkshire|East Sussex|Enfield|Essex|Gateshead|Gloucestershire|Greenwich|Hackney|Halton|Hammersmith and Fulham|Hampshire|Haringey|Harrow|Hartlepool|Havering|Herefordshire|Hertfordshire|Hillingdon|Hounslow|Isle of Wight|Islington|Kensington and Chelsea|Kent|Kingston upon Thames|Kirklees|Knowsley|Lambeth|Lancashire|Leeds|Leicester|Leicestershire|Lewisham|Lincolnshire|Liverpool|Luton|Manchester|Medway|Merton|Middlesbrough|Milton Keynes|Newcastle upon Tyne|Newham|Norfolk|North East Lincolnshire|North Lincolnshire|North Somerset|North Tyneside|North Yorkshire|Northamptonshire|Northumberland|Nottingham|Nottinghamshire|Oldham|Oxfordshire|Peterborough|Plymouth|Poole|Portsmouth|Reading|Redbridge|Redcar and Cleveland|Richmond upon Thames|Rochdale|Rotherham|Rutland|Salford|Sandwell|Sefton|Sheffield|Shropshire|Slough|Solihull|Somerset|South Gloucestershire|South Tyneside|Southampton|Southend-on-Sea|Southwark|St. Helens|Staffordshire|Stockport|Stockton-on-Tees|Stoke-on-Trent|Suffolk|Sunderland|Surrey|Sutton|Swindon|Tameside|Telford and Wrekin|Thurrock|Torbay|Tower Hamlets|Trafford|Wakefield|Walsall|Waltham Forest|Wandsworth|Warrington|Warwickshire|West Berkshire|West Sussex|Westminster|Wigan|Wiltshire|Windsor and Maidenhead|Wirral|Wokingham|Wolverhampton|Worcestershire|York",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "British Pound Sterling",
+        "name_plural": "British pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "North America",
+      "code": "US",
+      "group": "primary",
+      "name": "United States",
+      "states": "Alabama|Alaska|Arizona|Arkansas|California|Colorado|Connecticut|Delaware|District of Columbia|Florida|Georgia|Hawaii|Idaho|Illinois|Indiana|Iowa|Kansas|Kentucky|Louisiana|Maine|Maryland|Massachusetts|Michigan|Minnesota|Mississippi|Missouri|Montana|Nebraska|Nevada|New Hampshire|New Jersey|New Mexico|New York|North Carolina|North Dakota|Ohio|Oklahoma|Oregon|Pennsylvania|Rhode Island|South Carolina|South Dakota|Tennessee|Texas|Utah|Vermont|Virginia|Washington|West Virginia|Wisconsin|Wyoming",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1"
+    },
+    {
+      "continent": "South America",
+      "code": "UY",
+      "group": "secondary",
+      "name": "Uruguay",
+      "states": "Andijon Wiloyati|Bukhoro Wiloyati|Farghona Wiloyati|Jizzakh Wiloyati|Khorazm Wiloyati (Urganch)|Namangan Wiloyati|Nawoiy Wiloyati|Qashqadaryo Wiloyati (Qarshi)|Qoraqalpoghiston (Nukus)|Samarqand Wiloyati|Sirdaryo Wiloyati (Guliston)|Surkhondaryo Wiloyati (Termiz)|Toshkent Shahri|Toshkent Wiloyati",
+      "currency": {
+        "code": "UYU",
+        "decimal_digits": 2,
+        "name": "Uruguayan Peso",
+        "name_plural": "Uruguayan pesos",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$U"
+      },
+      "currency_code": "UYU",
+      "dial_code": "+598"
+    },
+    {
+      "continent": "Asia",
+      "code": "UZ",
+      "group": "secondary",
+      "name": "Uzbekistan",
+      "states": "Malampa|Penama|Sanma|Shefa|Tafea|Torba",
+      "currency": {
+        "code": "UZS",
+        "decimal_digits": 0,
+        "name": "Uzbekistan Som",
+        "name_plural": "Uzbekistan som",
+        "symbol_native": "UZS",
+        "rounding": 0.0,
+        "symbol": "UZS"
+      },
+      "currency_code": "UZS",
+      "dial_code": "+998"
+    },
+    {
+      "continent": "Oceania",
+      "code": "VU",
+      "group": "secondary",
+      "name": "Vanuatu",
+      "states": "Amazonas|Anzoategui|Apure|Aragua|Barinas|Bolivar|Carabobo|Cojedes|Delta Amacuro|Dependencias Federales|Distrito Federal|Falcon|Guarico|Lara|Merida|Miranda|Monagas|Nueva Esparta|Portuguesa|Sucre|Tachira|Trujillo|Vargas|Yaracuy|Zulia",
+      "currency": {
+        "code": "VEF",
+        "decimal_digits": 2,
+        "name": "Vanuatu vatu",
+        "name_plural": "Vanuatu vatu",
+        "symbol_native": "VT",
+        "rounding": 0.0,
+        "symbol": "VT"
+      },
+      "currency_code": "VUV",
+      "dial_code": "+678"
+    },
+    {
+      "continent": "South America",
+      "code": "VE",
+      "group": "secondary",
+      "name": "Venezuela",
+      "states": "An Giang|Ba Ria-Vung Tau|Bac Giang|Bac Kan|Bac Lieu|Bac Ninh|Ben Tre|Binh Dinh|Binh Duong|Binh Phuoc|Binh Thuan|Ca Mau|Can Tho|Cao Bang|Da Nang|Dac Lak|Dong Nai|Dong Thap|Gia Lai|Ha Giang|Ha Nam|Ha Noi|Ha Tay|Ha Tinh|Hai Duong|Hai Phong|Ho Chi Minh|Hoa Binh|Hung Yen|Khanh Hoa|Kien Giang|Kon Tum|Lai Chau|Lam Dong|Lang Son|Lao Cai|Long An|Nam Dinh|Nghe An|Ninh Binh|Ninh Thuan|Phu Tho|Phu Yen|Quang Binh|Quang Nam|Quang Ngai|Quang Ninh|Quang Tri|Soc Trang|Son La|Tay Ninh|Thai Binh|Thai Nguyen|Thanh Hoa|Thua Thien-Hue|Tien Giang|Tra Vinh|Tuyen Quang|Vinh Long|Vinh Phuc|Yen Bai",
+      "currency": {
+        "code": "VEF",
+        "decimal_digits": 2,
+        "name": "Venezuelan Bolívar",
+        "name_plural": "Venezuelan bolívars",
+        "symbol_native": "Bs.F.",
+        "rounding": 0.0,
+        "symbol": "Bs.F."
+      },
+      "currency_code": "VEF",
+      "dial_code": "+58"
+    },
+    {
+      "continent": "Asia",
+      "code": "VN",
+      "group": "secondary",
+      "name": "Vietnam",
+      "states": "Saint Croix|Saint John|Saint Thomas",
+      "currency": {
+        "code": "VND",
+        "decimal_digits": 0,
+        "name": "Vietnamese Dong",
+        "name_plural": "Vietnamese dong",
+        "symbol_native": "₫",
+        "rounding": 0.0,
+        "symbol": "₫"
+      },
+      "currency_code": "VND",
+      "dial_code": "+84"
+    },
+    {
+      "continent": "North America",
+      "code": "VG",
+      "group": "secondary",
+      "name": "Virgin Islands, British",
+      "states": "Blaenau Gwent|Bridgend|Caerphilly|Cardiff|Carmarthenshire|Ceredigion|Conwy|Denbighshire|Flintshire|Gwynedd|Isle of Anglesey|Merthyr Tydfil|Monmouthshire|Neath Port Talbot|Newport|Pembrokeshire|Powys|Rhondda Cynon Taff|Swansea|The Vale of Glamorgan|Torfaen|Wrexham",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1 284"
+    },
+    {
+      "continent": "North America",
+      "code": "VI",
+      "group": "secondary",
+      "name": "Virgin Islands, U.S.",
+      "states": "Blaenau Gwent|Bridgend|Caerphilly|Cardiff|Carmarthenshire|Ceredigion|Conwy|Denbighshire|Flintshire|Gwynedd|Isle of Anglesey|Merthyr Tydfil|Monmouthshire|Neath Port Talbot|Newport|Pembrokeshire|Powys|Rhondda Cynon Taff|Swansea|The Vale of Glamorgan|Torfaen|Wrexham",
+      "currency": {
+        "code": "USD",
+        "decimal_digits": 2,
+        "name": "US Dollar",
+        "name_plural": "US dollars",
+        "symbol_native": "$",
+        "rounding": 0.0,
+        "symbol": "$"
+      },
+      "currency_code": "USD",
+      "dial_code": "+1 340"
+    },
+    {
+      "continent": "Europe",
+      "code": "GB-WLS",
+      "group": "secondary",
+      "name": "Wales",
+      "states": "",
+      "currency": {
+        "code": "GBP",
+        "decimal_digits": 2,
+        "name": "Pound Sterling",
+        "name_plural": "Pounds sterling",
+        "symbol_native": "£",
+        "rounding": 0.0,
+        "symbol": "£"
+      },
+      "currency_code": "GBP",
+      "dial_code": "+44"
+    },
+    {
+      "continent": "Oceania",
+      "code": "WF",
+      "group": "secondary",
+      "name": "Wallis And Futuna",
+      "states": "Alo|Sigave|Wallis",
+      "currency": {
+        "code": "XPF",
+        "decimal_digits": 2,
+        "name": "CFP franc",
+        "name_plural": "CFP francs",
+        "symbol_native": "₣",
+        "rounding": 0.0,
+        "symbol": "₣"
+      },
+      "currency_code": "XPF",
+      "dial_code": "+681"
+    },
+    {
+      "continent": "Asia",
+      "code": "YE",
+      "group": "secondary",
+      "name": "Yemen",
+      "states": "\u0027Adan|\u0027Ataq|Abyan|Al Bayda\u0027|Al Hudaydah|Al Jawf|Al Mahrah|Al Mahwit|Dhamar|Hadhramawt|Hajjah|Ibb|Lahij|Ma\u0027rib|Sa\u0027dah|San\u0027a\u0027|Ta\u0027izz",
+      "currency": {
+        "code": "YER",
+        "decimal_digits": 0,
+        "name": "Yemeni Rial",
+        "name_plural": "Yemeni rials",
+        "symbol_native": "ر.ي.‏",
+        "rounding": 0.0,
+        "symbol": "YR"
+      },
+      "currency_code": "YER",
+      "dial_code": "+967"
+    },
+    {
+      "continent": "Africa",
+      "code": "ZM",
+      "group": "secondary",
+      "name": "Zambia",
+      "states": "Central|Copperbelt|Eastern|Luapula|Lusaka|North-Western|Northern|Southern|Western",
+      "currency": {
+        "code": "ZMW",
+        "decimal_digits": 0,
+        "name": "Zambian kwacha",
+        "name_plural": "Zambian kwacha",
+        "symbol_native": "ZK",
+        "rounding": 0.0,
+        "symbol": "ZK"
+      },
+      "currency_code": "ZMW",
+      "dial_code": "+260"
+    },
+    {
+      "continent": "Africa",
+      "code": "ZW",
+      "group": "secondary",
+      "name": "Zimbabwe",
+      "states": "Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Mashonaland West|Masvingo|Matabeleland North|Matabeleland South|Midlands",
+      "currency": {
+        "code": "ZWL",
+        "decimal_digits": 0,
+        "name": "Zimbabwean Dollar",
+        "name_plural": "Zimbabwean Dollar",
+        "symbol_native": "ZWL$",
+        "rounding": 0.0,
+        "symbol": "ZWL$"
+      },
+      "currency_code": "ZWL",
+      "dial_code": "+263"
+    }
+  ]
+}

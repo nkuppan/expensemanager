@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.widget.Toast
 import com.naveenapps.expensemanager.core.designsystem.R
 
 @SuppressLint("DiscouragedApi")
@@ -68,4 +67,11 @@ fun Context.getAppVersionName(): String {
         e.printStackTrace()
         ""
     }
+}
+
+
+fun Context.convertFileToString(fileName: String): String? {
+    return kotlin.runCatching {
+        return this.assets.open(fileName).reader().readText()
+    }.getOrNull()
 }

@@ -169,8 +169,8 @@ truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
-country-compose = { group = "com.github.nkuppan.country", name = "countrycompose", version.ref = "country-compose" }
 backup-restore = { group = "de.raphaelebner", name = "roomdatabasebackup", version.ref = "backup-restore" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

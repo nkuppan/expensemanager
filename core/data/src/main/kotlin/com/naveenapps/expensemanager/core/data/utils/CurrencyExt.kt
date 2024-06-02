@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.data.utils
 
+import android.content.Context
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFormat
@@ -46,4 +47,11 @@ fun getCurrency(
             )
         }
     }
+}
+
+
+fun Context.convertFileToString(fileName: String): String? {
+    return kotlin.runCatching {
+        return this.assets.open(fileName).reader().readText()
+    }.getOrNull()
 }

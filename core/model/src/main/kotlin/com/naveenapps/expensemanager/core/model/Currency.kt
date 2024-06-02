@@ -5,6 +5,8 @@ data class Currency(
     val name: String,
     val position: TextPosition = TextPosition.PREFIX,
     val format: TextFormat = TextFormat.NONE,
+    val namePlural: String = "",
+    val nativeSymbol: String = "",
 )
 
 enum class TextPosition {

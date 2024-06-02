@@ -58,6 +58,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                 modifier = Modifier
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
+                currency = "$",
                 selectedCurrencyPositionType = TextPosition.PREFIX,
                 onCurrencyPositionTypeChange = {},
             )
@@ -65,6 +66,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
+                currency = "$",
                 selectedCurrencyPositionType = TextPosition.SUFFIX,
                 onCurrencyPositionTypeChange = {},
             )

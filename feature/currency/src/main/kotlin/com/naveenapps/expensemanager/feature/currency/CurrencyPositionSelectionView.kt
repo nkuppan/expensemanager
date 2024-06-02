@@ -18,6 +18,7 @@ import com.naveenapps.expensemanager.core.model.TextPosition
 @Composable
 fun TextFormatSelectionView(
     selectedCurrencyPositionType: TextPosition,
+    currency: String,
     onCurrencyPositionTypeChange: ((TextPosition) -> Unit),
     modifier: Modifier = Modifier,
 ) {
@@ -29,7 +30,7 @@ fun TextFormatSelectionView(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.prefix_amount),
+            filterName = stringResource(id = R.string.prefix_amount, currency),
             isSelected = selectedCurrencyPositionType == TextPosition.PREFIX,
             onClick = {
                 onCurrencyPositionTypeChange.invoke(TextPosition.PREFIX)
@@ -39,7 +40,7 @@ fun TextFormatSelectionView(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.suffix_amount),
+            filterName = stringResource(id = R.string.suffix_amount, currency),
             isSelected = selectedCurrencyPositionType == TextPosition.SUFFIX,
             onClick = {
                 onCurrencyPositionTypeChange.invoke(TextPosition.SUFFIX)
@@ -58,6 +59,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 selectedCurrencyPositionType = TextPosition.PREFIX,
+                currency = "$",
                 onCurrencyPositionTypeChange = {},
             )
             TextFormatSelectionView(
@@ -65,6 +67,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                     .padding(16.dp)
                     .fillMaxWidth(),
                 selectedCurrencyPositionType = TextPosition.SUFFIX,
+                currency = "$",
                 onCurrencyPositionTypeChange = {},
             )
         }

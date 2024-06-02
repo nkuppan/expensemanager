@@ -22,6 +22,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.opencsv)
+    implementation(libs.gson)
 
     implementation(libs.androidx.dataStore.preference)
     implementation(libs.backup.restore)
