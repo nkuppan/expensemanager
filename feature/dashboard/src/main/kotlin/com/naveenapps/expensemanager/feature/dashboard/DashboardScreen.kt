@@ -38,14 +38,11 @@ import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
-import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.core.model.AmountUiState
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
-import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
@@ -62,43 +59,19 @@ fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel(),
 ) {
 
-    val amountUiState by viewModel.amountUiState.collectAsState()
-    val accounts by viewModel.accounts.collectAsState()
-    val transactions by viewModel.transactions.collectAsState()
-    val budgets by viewModel.budgets.collectAsState()
-    val categoryTransaction by viewModel.categoryTransaction.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     DashboardScaffoldContent(
-        amountUiState = amountUiState,
-        accounts = accounts,
-        categoryTransaction = categoryTransaction,
-        budgets = budgets,
-        transactions = transactions,
-        openTransactionCreate = viewModel::openTransactionCreate,
-        openTransactionList = viewModel::openTransactionList,
-        openBudgetCreate = viewModel::openBudgetCreate,
-        openBudgetList = viewModel::openBudgetList,
-        openAccountCreate = viewModel::openAccountCreate,
-        openAccountList = viewModel::openAccountList,
-        openSettings = viewModel::openSettings,
+        state = state,
+        onAction = viewModel::processAction
     )
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
 private fun DashboardScaffoldContent(
-    amountUiState: AmountUiState,
-    accounts: List<AccountUiModel>,
-    categoryTransaction: CategoryTransactionState,
-    budgets: List<BudgetUiModel>,
-    transactions: List<TransactionUiItem>,
-    openTransactionCreate: (String?) -> Unit,
-    openTransactionList: () -> Unit,
-    openBudgetCreate: (String?) -> Unit,
-    openBudgetList: () -> Unit,
-    openAccountCreate: (String?) -> Unit,
-    openAccountList: () -> Unit,
-    openSettings: () -> Unit,
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -108,7 +81,11 @@ private fun DashboardScaffoldContent(
                     style = MaterialTheme.typography.titleLarge,
                 )
             }, actions = {
-                IconButton(onClick = openSettings) {
+                IconButton(
+                    onClick = {
+                        onAction.invoke(DashboardAction.OpenSettings)
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(id = R.string.settings),
@@ -117,7 +94,13 @@ private fun DashboardScaffoldContent(
             })
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { openTransactionCreate.invoke(null) }) {
+            FloatingActionButton(onClick = {
+                onAction.invoke(
+                    DashboardAction.OpenTransactionEdit(
+                        null
+                    )
+                )
+            }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -129,17 +112,8 @@ private fun DashboardScaffoldContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
-            amountUiState = amountUiState,
-            accounts = accounts,
-            categoryTransaction = categoryTransaction,
-            budgets = budgets,
-            transactions = transactions,
-            openTransactionCreate = openTransactionCreate,
-            openTransactionList = openTransactionList,
-            openBudgetCreate = openBudgetCreate,
-            openBudgetList = openBudgetList,
-            openAccountCreate = openAccountCreate,
-            openAccountList = openAccountList
+            state = state,
+            onAction = onAction
         )
     }
 }
@@ -147,22 +121,10 @@ private fun DashboardScaffoldContent(
 @Composable
 private fun DashboardScreenContent(
     modifier: Modifier = Modifier,
-    amountUiState: AmountUiState,
-    accounts: List<AccountUiModel>,
-    categoryTransaction: CategoryTransactionState,
-    budgets: List<BudgetUiModel>,
-    transactions: List<TransactionUiItem>,
-    openTransactionCreate: (String?) -> Unit,
-    openTransactionList: () -> Unit,
-    openBudgetCreate: (String?) -> Unit,
-    openBudgetList: () -> Unit,
-    openAccountCreate: (String?) -> Unit,
-    openAccountList: () -> Unit,
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
 ) {
-
-    LazyColumn(
-        modifier = modifier,
-    ) {
+    LazyColumn(modifier = modifier) {
         item {
             FilterView(
                 modifier = Modifier
@@ -172,7 +134,7 @@ private fun DashboardScreenContent(
         }
         item {
             IncomeExpenseBalanceView(
-                amountUiState = amountUiState,
+                expenseFlowState = state.expenseFlowState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
@@ -185,11 +147,11 @@ private fun DashboardScreenContent(
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
                 onViewAllClick = {
-                    openAccountList()
+                    onAction.invoke(DashboardAction.OpenAccountList)
                 },
             )
         }
-        if (accounts.isNotEmpty()) {
+        if (state.accounts.isNotEmpty()) {
             item {
                 LazyRow(
                     modifier = Modifier
@@ -198,12 +160,12 @@ private fun DashboardScreenContent(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(accounts, key = { it.id }) {
+                    items(state.accounts, key = { it.id }) {
                         DashBoardAccountItem(
                             modifier = Modifier
                                 .wrapContentWidth()
                                 .clickable {
-                                    openAccountCreate(it.id)
+                                    onAction.invoke(DashboardAction.OpenAccountEdit(it))
                                 },
                             name = it.name,
                             icon = it.storedIcon.name,
@@ -231,7 +193,7 @@ private fun DashboardScreenContent(
             CategoryAmountView(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                categoryTransactionState = categoryTransaction,
+                categoryTransactionState = state.categoryTransaction,
             )
         }
         item {
@@ -241,11 +203,11 @@ private fun DashboardScreenContent(
                     .padding(16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
                 onViewAllClick = {
-                    openBudgetList()
+                    onAction.invoke(DashboardAction.OpenBudgetList)
                 },
             )
         }
-        if (budgets.isNotEmpty()) {
+        if (state.budgets.isNotEmpty()) {
             item {
                 LazyRow(
                     modifier = Modifier
@@ -253,11 +215,11 @@ private fun DashboardScreenContent(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    items(budgets, key = { it.id }) { budget ->
+                    items(state.budgets, key = { it.id }) { budget ->
                         DashBoardBudgetItem(
                             modifier = Modifier
                                 .clickable {
-                                    openBudgetCreate(budget.id)
+                                    onAction.invoke(DashboardAction.OpenBudgetDetails(budget))
                                 },
                             name = budget.name,
                             backgroundColor = budget.iconBackgroundColor.toColor()
@@ -288,17 +250,17 @@ private fun DashboardScreenContent(
                     .padding(16.dp),
                 title = stringResource(id = R.string.transaction),
                 onViewAllClick = {
-                    openTransactionList.invoke()
+                    onAction.invoke(DashboardAction.OpenTransactionList)
                 },
             )
         }
-        if (transactions.isNotEmpty()) {
-            items(transactions, key = { it.id }) { transaction ->
+        if (state.transactions.isNotEmpty()) {
+            items(state.transactions, key = { it.id }) { transaction ->
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            openTransactionCreate(transaction.id)
+                            onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
                         }
                         .then(ItemSpecModifier),
                     categoryName = transaction.categoryName,
@@ -335,15 +297,15 @@ private fun DashboardScreenContent(
 
 @Composable
 fun IncomeExpenseBalanceView(
-    amountUiState: AmountUiState,
+    expenseFlowState: ExpenseFlowState,
     modifier: Modifier = Modifier,
     showBalance: Boolean = false,
 ) {
     AmountStatusView(
         modifier = modifier,
-        expenseAmount = amountUiState.expense,
-        incomeAmount = amountUiState.income,
-        balanceAmount = amountUiState.balance,
+        expenseAmount = expenseFlowState.expense,
+        incomeAmount = expenseFlowState.income,
+        balanceAmount = expenseFlowState.balance,
         showBalance = showBalance,
     )
 }
@@ -353,40 +315,36 @@ fun IncomeExpenseBalanceView(
 fun DashboardScaffoldContentPreview() {
     ExpenseManagerTheme {
         DashboardScaffoldContent(
-            amountUiState = AmountUiState(),
-            accounts = getRandomAccountUiModel(5),
-            categoryTransaction = CategoryTransactionState(
-                pieChartData = listOf(
-                    getDummyPieChartData("", 25.0f),
-                    getDummyPieChartData("", 25.0f),
-                    getDummyPieChartData("", 25.0f),
-                    getDummyPieChartData("", 25.0f)
-                ),
-                totalAmount = Amount(0.0, "Expenses"),
-                categoryTransactions = buildList {
-                    repeat(15) {
-                        add(
-                            CategoryTransaction(
-                                category = getCategoryData(
-                                    it, CategoryType.EXPENSE
-                                ),
-                                amount = Amount(0.0, "100.00$"),
-                                percent = Random(100).nextFloat(),
-                                transaction = emptyList()
+            state = DashboardState(
+                expenseFlowState = ExpenseFlowState(),
+                accounts = getRandomAccountUiModel(5),
+                categoryTransaction = CategoryTransactionState(
+                    pieChartData = listOf(
+                        getDummyPieChartData("", 25.0f),
+                        getDummyPieChartData("", 25.0f),
+                        getDummyPieChartData("", 25.0f),
+                        getDummyPieChartData("", 25.0f)
+                    ),
+                    totalAmount = Amount(0.0, "Expenses"),
+                    categoryTransactions = buildList {
+                        repeat(15) {
+                            add(
+                                CategoryTransaction(
+                                    category = getCategoryData(
+                                        it, CategoryType.EXPENSE
+                                    ),
+                                    amount = Amount(0.0, "100.00$"),
+                                    percent = Random(100).nextFloat(),
+                                    transaction = emptyList()
+                                )
                             )
-                        )
-                    }
-                }.take(5)
+                        }
+                    }.take(5)
+                ),
+                budgets = getRandomBudgetUiModel(5),
+                transactions = listOf(getTransactionItem()),
             ),
-            budgets = getRandomBudgetUiModel(5),
-            transactions = listOf(getTransactionItem()),
-            openTransactionCreate = {},
-            openTransactionList = {},
-            openBudgetCreate = {},
-            openBudgetList = {},
-            openAccountList = {},
-            openAccountCreate = {},
-            openSettings = {}
+            onAction = {},
         )
     }
 }

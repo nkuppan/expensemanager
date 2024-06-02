@@ -36,7 +36,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
-import com.naveenapps.expensemanager.core.model.AmountUiState
+import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
@@ -85,7 +85,7 @@ fun AnalysisGraphScreen(
         }
 
         IncomeExpenseBalanceView(
-            amountUiState = amountUiState,
+            expenseFlowState = amountUiState,
             transactionPeriod = transactionPeriod,
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,14 +101,14 @@ fun AnalysisGraphScreen(
 
 @Composable
 fun IncomeExpenseBalanceView(
-    amountUiState: AmountUiState,
+    expenseFlowState: ExpenseFlowState,
     transactionPeriod: String,
     modifier: Modifier = Modifier,
 ) {
     AmountInfoWidget(
-        expenseAmount = amountUiState.expense,
-        incomeAmount = amountUiState.income,
-        balanceAmount = amountUiState.balance,
+        expenseAmount = expenseFlowState.expense,
+        incomeAmount = expenseFlowState.income,
+        balanceAmount = expenseFlowState.balance,
         transactionPeriod = transactionPeriod,
         modifier = modifier,
     )

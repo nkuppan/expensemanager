@@ -7,7 +7,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurre
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageDataUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDataUseCase
-import com.naveenapps.expensemanager.core.model.AmountUiState
+import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
@@ -38,8 +38,8 @@ class AnalysisScreenViewModel @Inject constructor(
     )
     val currentTheme = _currentTheme.asStateFlow()
 
-    private val _amountUiState = MutableStateFlow(AmountUiState())
-    val amountUiState = _amountUiState.asStateFlow()
+    private val _expenseFlowState = MutableStateFlow(ExpenseFlowState())
+    val amountUiState = _expenseFlowState.asStateFlow()
 
     private val _transactionPeriod = MutableStateFlow("")
     val transactionPeriod = _transactionPeriod.asStateFlow()
@@ -90,7 +90,7 @@ class AnalysisScreenViewModel @Inject constructor(
         }.launchIn(viewModelScope)
 
         getAmountStateUseCase.invoke().onEach { response ->
-            _amountUiState.value = response
+            _expenseFlowState.value = response
         }.launchIn(viewModelScope)
 
         getCurrentThemeUseCase.invoke().onEach {

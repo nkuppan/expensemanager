@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.transaction
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.core.model.AmountUiState
+import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -16,7 +16,7 @@ class GetAmountStateUseCase @Inject constructor(
     private val getExpenseAmountUseCase: GetExpenseAmountUseCase,
     private val dispatcher: AppCoroutineDispatchers,
 ) {
-    fun invoke(): Flow<AmountUiState> {
+    fun invoke(): Flow<ExpenseFlowState> {
         return combine(
             getCurrencyUseCase.invoke(),
             getIncomeAmountUseCase.invoke(),
@@ -25,7 +25,7 @@ class GetAmountStateUseCase @Inject constructor(
 
             val incomeValue = income ?: 0.0
             val expenseValue = expense ?: 0.0
-            AmountUiState(
+            ExpenseFlowState(
                 income = getFormattedAmountUseCase.invoke(
                     incomeValue,
                     currency,

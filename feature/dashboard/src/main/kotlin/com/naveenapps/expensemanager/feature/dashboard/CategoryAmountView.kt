@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
@@ -31,7 +32,11 @@ fun CategoryAmountView(
             modifier = Modifier.fillMaxWidth(),
             title = stringResource(id = R.string.categories),
         )
-        Row(modifier = Modifier.padding(top = 16.dp)) {
+        Row(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth()
+        ) {
             PieChartView(
                 totalAmountText = categoryTransactionState.totalAmount.amountString ?: "",
                 chartData = categoryTransactionState.pieChartData.map {
@@ -68,7 +73,7 @@ fun CategoryAmountView(
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 fun CategoryAmountViewPreview() {
     ExpenseManagerTheme {

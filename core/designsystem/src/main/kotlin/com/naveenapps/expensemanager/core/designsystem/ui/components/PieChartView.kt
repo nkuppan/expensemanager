@@ -21,9 +21,9 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.ValueFormatter
 
 data class PieChartUiData(
-    var name: String,
-    var value: Float,
-    @ColorInt var color: Int,
+    val name: String,
+    val value: Float,
+    @ColorInt val color: Int,
 )
 
 @Composable

@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
+import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -11,6 +12,7 @@ import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class GetTransactionGroupByCategoryUseCase @Inject constructor(
@@ -18,6 +20,7 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
+    private val appCoroutineDispatchers: AppCoroutineDispatchers
 ) {
     fun invoke(categoryType: CategoryType): Flow<CategoryTransactionState> {
         return combine(
@@ -103,7 +106,7 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                 categoryTransactions = newCategoryTransaction,
                 hideValues = categoryTransactions.isEmpty(),
             )
-        }
+        }.flowOn(appCoroutineDispatchers.computation)
     }
 }
 
