@@ -41,3 +41,10 @@
 -dontwarn kotlinx.serialization.KSerializer
 -dontwarn kotlinx.serialization.Serializable
 -dontwarn kotlinx.serialization.internal.AbstractPolymorphicSerializer
+
+##---------------Begin: proguard configuration for Pusher Java Client  ----------
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+##---------------End: proguard configuration for Pusher Java Client  ----------
+
+-keep class com.naveenapps.expensemanager.** { *; }
+-keep interface com.naveenapps.expensemanager.** { *; }
