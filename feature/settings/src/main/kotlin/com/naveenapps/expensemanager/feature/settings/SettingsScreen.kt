@@ -1,10 +1,5 @@
 package com.naveenapps.expensemanager.feature.settings
 
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
-import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,7 +17,6 @@ import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.SettingsApplications
 import androidx.compose.material.icons.outlined.Upload
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -30,17 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
@@ -48,54 +38,26 @@ import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
 
 @Composable
-fun SettingsScreen() {
-    val viewModel: SettingsViewModel = hiltViewModel()
-    val currency by viewModel.currency.collectAsState()
-    val theme by viewModel.theme.collectAsState()
-    SettingsScreenScaffoldView(currency, theme) {
-        when (it) {
-            SettingOption.BACK -> {
-                viewModel.closePage()
-            }
+fun SettingsScreen(
+    viewModel: SettingsViewModel = hiltViewModel()
+) {
 
-            SettingOption.CURRENCY -> {
-                viewModel.openCurrencyCustomiseScreen()
-            }
+    val state by viewModel.state.collectAsState()
 
-            SettingOption.EXPORT -> {
-                viewModel.openExportScreen()
-            }
-
-            SettingOption.REMINDER -> {
-                viewModel.openReminderScreen()
-            }
-
-            SettingOption.ABOUT_US -> {
-                viewModel.openAboutUs()
-            }
-
-            SettingOption.ADVANCED -> {
-                viewModel.openAdvancedSettings()
-            }
-
-            else -> Unit
-        }
-    }
+    SettingsScreenScaffoldView(
+        state = state,
+        onAction = viewModel::processAction
+    )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsScreenScaffoldView(
-    currency: Currency,
-    theme: Theme? = null,
-    settingOptionSelected: ((SettingOption) -> Unit)? = null,
+    state: SettingState,
+    onAction: (SettingAction) -> Unit,
 ) {
-    val context = LocalContext.current
-
-    var showThemeSelection by remember { mutableStateOf(false) }
-    if (showThemeSelection) {
+    if (state.showThemeSelection) {
         ThemeDialogView {
-            showThemeSelection = false
+            onAction.invoke(SettingAction.DismissThemeSelection)
         }
     }
 
@@ -103,7 +65,7 @@ private fun SettingsScreenScaffoldView(
         topBar = {
             TopNavigationBar(
                 onClick = {
-                    settingOptionSelected?.invoke(SettingOption.BACK)
+                    onAction.invoke(SettingAction.ClosePage)
                 },
                 title = stringResource(R.string.settings),
             )
@@ -114,23 +76,10 @@ private fun SettingsScreenScaffoldView(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding),
-            selectedCurrency = currency,
-            theme = theme,
-        ) {
-            when (it) {
-                SettingOption.THEME -> {
-                    showThemeSelection = true
-                }
-
-                SettingOption.RATE_US -> {
-                    launchReviewWorkflow(context)
-                }
-
-                else -> {
-                    settingOptionSelected?.invoke(it)
-                }
-            }
-        }
+            selectedCurrency = state.currency,
+            theme = state.theme,
+            onAction = onAction
+        )
     }
 }
 
@@ -139,13 +88,13 @@ private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     selectedCurrency: Currency,
     theme: Theme? = null,
-    settingOptionSelected: ((SettingOption) -> Unit)? = null,
+    onAction: (SettingAction) -> Unit,
 ) {
     Column(modifier = modifier) {
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.THEME)
+                    onAction.invoke(SettingAction.ShowThemeSelection)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -160,7 +109,7 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.CURRENCY)
+                    onAction.invoke(SettingAction.OpenCurrencyEdit)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -171,7 +120,7 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.REMINDER)
+                    onAction.invoke(SettingAction.OpenNotification)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -182,7 +131,7 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.EXPORT)
+                    onAction.invoke(SettingAction.OpenExport)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -193,7 +142,7 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.RATE_US)
+                    onAction.invoke(SettingAction.OpenRateUs)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -204,7 +153,7 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.ADVANCED)
+                    onAction.invoke(SettingAction.OpenAdvancedSettings)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -215,7 +164,7 @@ private fun SettingsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(SettingOption.ABOUT_US)
+                    onAction.invoke(SettingAction.OpenAboutUs)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -252,19 +201,7 @@ private fun SettingsItem(
     }
 }
 
-private enum class SettingOption {
-    BACK,
-    THEME,
-    CURRENCY,
-    REMINDER,
-    EXPORT,
-    ABOUT_US,
-    RATE_US,
-    ADVANCED,
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@AppPreviewsLightAndDarkMode
 @Composable
 fun SettingsScreenItemPreview() {
     ExpenseManagerTheme {
@@ -279,22 +216,17 @@ fun SettingsScreenItemPreview() {
     }
 }
 
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@AppPreviewsLightAndDarkMode
 @Composable
 fun SettingsScreenPreview() {
     ExpenseManagerTheme {
         SettingsScreenScaffoldView(
-            currency = Currency("$", "US Dollar"),
+            state = SettingState(
+                currency = Currency("$", "US Dollar"),
+                theme = null,
+                showThemeSelection = false
+            ),
+            onAction = {}
         )
-    }
-}
-
-fun launchReviewWorkflow(context: Context) {
-    val packageName = context.packageName
-    try {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-    } catch (e: ActivityNotFoundException) {
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
     }
 }

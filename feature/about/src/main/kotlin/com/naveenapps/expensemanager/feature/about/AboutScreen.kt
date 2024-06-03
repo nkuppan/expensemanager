@@ -30,36 +30,30 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getAppVersionName
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openEmailToOption
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
 @Composable
-fun AboutScreen(viewModel: AboutUsViewModel = hiltViewModel()) {
-    AboutUsScreenScaffoldView {
-        when (it) {
-            AboutUsOption.BACK -> {
-                viewModel.closePage()
-            }
-
-            else -> Unit
-        }
-    }
+fun AboutScreen(
+    viewModel: AboutUsViewModel = hiltViewModel()
+) {
+    AboutUsScreenScaffoldView(viewModel::processAction)
 }
 
 @Composable
 private fun AboutUsScreenScaffoldView(
-    settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
+    onAction: (AboutAction) -> Unit,
 ) {
     val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopNavigationBar(
-                onClick = {
-                    settingOptionSelected?.invoke(AboutUsOption.BACK)
-                },
+                onClick = { onAction.invoke(AboutAction.ClosePage) },
                 title = stringResource(R.string.about_us),
             )
         },
@@ -71,40 +65,40 @@ private fun AboutUsScreenScaffoldView(
                 .padding(innerPadding),
         ) {
             when (it) {
-                AboutUsOption.ABOUT_US -> {
+                AboutAction.OpenAboutUsPage -> {
                     openWebPage(context, "https://expensemanager.naveenapps.com/")
                 }
 
-                AboutUsOption.TERMS -> {
+                AboutAction.OpenTerms -> {
                     openWebPage(context, "https://expensemanager.naveenapps.com/terms")
                 }
 
-                AboutUsOption.PRIVACY_POLICY -> {
+                AboutAction.OpenPrivacy -> {
                     openWebPage(context, "https://expensemanager.naveenapps.com/privacy-policy")
                 }
 
-                AboutUsOption.GITHUB -> {
+                AboutAction.Github -> {
                     openWebPage(context, "https://www.github.com/nkuppan")
                 }
 
-                AboutUsOption.TWITTER -> {
+                AboutAction.Twitter -> {
                     openWebPage(context, "https://www.twitter.com/naveenkumarn27")
                 }
 
-                AboutUsOption.INSTAGRAM -> {
+                AboutAction.Instagram -> {
                     openWebPage(context, "https://www.instagram.com/naveenkumar_kup")
                 }
 
-                AboutUsOption.MAIL -> {
+                AboutAction.Mail -> {
                     openEmailToOption(context, "naveenkumar@naveenapps.com")
                 }
 
-                AboutUsOption.LICENSES -> {
+                AboutAction.OpenLicense -> {
                     context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
                 }
 
                 else -> {
-                    settingOptionSelected?.invoke(it)
+                    onAction.invoke(it)
                 }
             }
         }
@@ -114,13 +108,13 @@ private fun AboutUsScreenScaffoldView(
 @Composable
 private fun AboutUsScreenContent(
     modifier: Modifier = Modifier,
-    settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
+    onAction: (AboutAction) -> Unit,
 ) {
     Column(modifier = modifier) {
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(AboutUsOption.ABOUT_US)
+                    onAction.invoke(AboutAction.OpenAboutUsPage)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -130,7 +124,7 @@ private fun AboutUsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(AboutUsOption.TERMS)
+                    onAction.invoke(AboutAction.OpenTerms)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -140,7 +134,7 @@ private fun AboutUsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(AboutUsOption.PRIVACY_POLICY)
+                    onAction.invoke(AboutAction.OpenPrivacy)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -150,7 +144,7 @@ private fun AboutUsScreenContent(
         SettingsItem(
             modifier = Modifier
                 .clickable {
-                    settingOptionSelected?.invoke(AboutUsOption.LICENSES)
+                    onAction.invoke(AboutAction.OpenLicense)
                 }
                 .padding(top = 8.dp, bottom = 8.dp)
                 .fillMaxWidth(),
@@ -158,13 +152,13 @@ private fun AboutUsScreenContent(
             icon = Icons.Outlined.FolderOpen,
         )
 
-        DeveloperInfoView(settingOptionSelected)
+        DeveloperInfoView(onAction)
     }
 }
 
 @Composable
 private fun DeveloperInfoView(
-    settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
+    onAction: (AboutAction) -> Unit,
 ) {
     val context = LocalContext.current
 
@@ -186,7 +180,7 @@ private fun DeveloperInfoView(
                 .padding(top = 16.dp),
         ) {
             IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.GITHUB)
+                onAction.invoke(AboutAction.Github)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_github),
@@ -194,7 +188,7 @@ private fun DeveloperInfoView(
                 )
             }
             IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.TWITTER)
+                onAction.invoke(AboutAction.Twitter)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_twitter),
@@ -202,7 +196,7 @@ private fun DeveloperInfoView(
                 )
             }
             IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.INSTAGRAM)
+                onAction.invoke(AboutAction.Instagram)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_instagram),
@@ -210,7 +204,7 @@ private fun DeveloperInfoView(
                 )
             }
             IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.MAIL)
+                onAction.invoke(AboutAction.Mail)
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_mail),
@@ -259,14 +253,12 @@ private fun SettingsItem(
     }
 }
 
-private enum class AboutUsOption {
-    BACK,
-    ABOUT_US,
-    TERMS,
-    PRIVACY_POLICY,
-    LICENSES,
-    GITHUB,
-    TWITTER,
-    INSTAGRAM,
-    MAIL,
+@AppPreviewsLightAndDarkMode
+@Composable
+fun AboutUsPreview() {
+    ExpenseManagerTheme {
+        AboutUsScreenScaffoldView {
+
+        }
+    }
 }

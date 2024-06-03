@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.settings
+package com.naveenapps.expensemanager.feature.settings.advanced
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

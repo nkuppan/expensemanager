@@ -10,7 +10,14 @@ class AboutUsViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
+    }
+
+    fun processAction(action: AboutAction) {
+        when (action) {
+            AboutAction.ClosePage -> closePage()
+            else -> Unit
+        }
     }
 }

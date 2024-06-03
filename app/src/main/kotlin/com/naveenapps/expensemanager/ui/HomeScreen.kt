@@ -48,7 +48,7 @@ import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
-import com.naveenapps.expensemanager.feature.settings.AdvancedSettingsScreen
+import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen

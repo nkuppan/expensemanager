@@ -9,4 +9,6 @@ interface ShareRepository {
     fun share(file: File?)
 
     fun openPrinter(file: File?)
+
+    fun openRateUs()
 }

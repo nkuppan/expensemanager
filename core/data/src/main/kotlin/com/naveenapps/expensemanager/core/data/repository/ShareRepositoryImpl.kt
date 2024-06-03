@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.data.repository
 import android.content.Context
 import com.naveenapps.expensemanager.core.common.utils.openEmailOption
 import com.naveenapps.expensemanager.core.common.utils.openPrintOption
+import com.naveenapps.expensemanager.core.common.utils.openRateUs
 import com.naveenapps.expensemanager.core.common.utils.openShareOption
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import dagger.hilt.android.qualifiers.ActivityContext
@@ -28,5 +29,9 @@ class ShareRepositoryImpl @Inject constructor(
         file?.let {
             context.openPrintOption(it)
         }
+    }
+
+    override fun openRateUs() {
+        context.openRateUs()
     }
 }
