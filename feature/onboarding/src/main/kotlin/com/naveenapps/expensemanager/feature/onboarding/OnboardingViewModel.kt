@@ -8,7 +8,6 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDe
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
-import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,40 +31,82 @@ class OnboardingViewModel @Inject constructor(
     private val composeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _accounts = MutableStateFlow<List<AccountUiModel>>(emptyList())
-    val accounts = _accounts.asStateFlow()
-
-    private val _currency = MutableStateFlow(getDefaultCurrencyUseCase())
-    val currency = _currency.asStateFlow()
+    private val _state = MutableStateFlow(
+        OnboardingState(
+            currency = getDefaultCurrencyUseCase.invoke(),
+            accounts = emptyList(),
+            showCurrencySelection = false
+        )
+    )
+    val state = _state.asStateFlow()
 
     init {
         viewModelScope.launch {
             if (getOnboardingStatusUseCase.invoke()) {
                 openHome()
+            } else {
+                combine(
+                    getCurrencyUseCase.invoke(),
+                    getAllAccountsUseCase.invoke(),
+                ) { currency, accounts ->
+                    _state.update {
+                        it.copy(
+                            currency = currency,
+                            accounts = accounts.map {
+                                it.toAccountUiModel(
+                                    getFormattedAmountUseCase.invoke(it.amount, currency),
+                                )
+                            }
+                        )
+                    }
+                }.launchIn(viewModelScope)
             }
         }
-
-        combine(
-            getCurrencyUseCase.invoke(),
-            getAllAccountsUseCase.invoke(),
-        ) { currency, accounts ->
-            _currency.value = currency
-            _accounts.value = accounts.map { account ->
-                account.toAccountUiModel(
-                    getFormattedAmountUseCase.invoke(account.amount, currency),
-                )
-            }
-        }.launchIn(viewModelScope)
     }
 
-    fun openHome() {
+    private fun openHome() {
         viewModelScope.launch {
             setOnboardingStatusUseCase.invoke(true)
             composeNavigator.navigateAndClearBackStack(ExpenseManagerScreens.Home)
         }
     }
 
-    fun openAccountCreateScreen(accountId: String?) {
+    private fun openAccountCreateScreen(accountId: String?) {
         composeNavigator.navigate(ExpenseManagerScreens.AccountCreate(accountId))
+    }
+
+    fun processAction(action: OnboardingAction) {
+        when (action) {
+            OnboardingAction.Next -> openHome()
+            is OnboardingAction.AccountCreate -> openAccountCreateScreen(action.account?.id)
+            OnboardingAction.DismissCurrencySelection -> {
+                dismissCurrencySelection()
+            }
+
+            OnboardingAction.ShowCurrencySelection -> {
+                showCurrencySelection()
+            }
+
+            is OnboardingAction.SelectCurrency -> {
+                if (action.currency != null) {
+                    _state.update {
+                        it.copy(
+                            currency = action.currency,
+                            showCurrencySelection = false
+                        )
+                    }
+                } else {
+                    dismissCurrencySelection()
+                }
+            }
+        }
+    }
+
+    private fun showCurrencySelection() {
+        _state.update { it.copy(showCurrencySelection = true) }
+    }
+
+    private fun dismissCurrencySelection() {
+        _state.update { it.copy(showCurrencySelection = false) }
     }
 }

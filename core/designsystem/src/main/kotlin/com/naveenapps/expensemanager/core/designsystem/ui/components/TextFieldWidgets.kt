@@ -30,6 +30,7 @@ fun ClickableTextField(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
+    trailingIcon: ImageVector? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -71,6 +72,16 @@ fun ClickableTextField(
             {
                 Icon(
                     imageVector = leadingIcon,
+                    contentDescription = "",
+                )
+            }
+        } else {
+            null
+        },
+        trailingIcon = if (trailingIcon != null) {
+            {
+                Icon(
+                    imageVector = trailingIcon,
                     contentDescription = "",
                 )
             }

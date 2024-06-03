@@ -35,10 +35,12 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigati
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
+import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
 
 @Composable
 fun SettingsScreen(
+    shareRepository: ShareRepository,
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
 
@@ -46,7 +48,13 @@ fun SettingsScreen(
 
     SettingsScreenScaffoldView(
         state = state,
-        onAction = viewModel::processAction
+        onAction = {
+            if (it is SettingAction.OpenRateUs) {
+                shareRepository.openRateUs()
+            } else {
+                viewModel.processAction(it)
+            }
+        }
     )
 }
 

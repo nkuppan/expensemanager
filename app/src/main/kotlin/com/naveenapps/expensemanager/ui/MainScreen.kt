@@ -7,11 +7,13 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.BackupRepository
+import com.naveenapps.expensemanager.core.repository.ShareRepository
 
 @Composable
 fun MainScreen(
     composeNavigator: AppComposeNavigator,
     backupRepository: BackupRepository,
+    shareRepository: ShareRepository,
     isDarkTheme: Boolean,
     landingScreen: ExpenseManagerScreens,
 ) {
@@ -24,6 +26,7 @@ fun MainScreen(
 
         HomePageNavHostContainer(
             backupRepository,
+            shareRepository,
             navHostController,
             landingScreen
         )

@@ -31,6 +31,7 @@ import androidx.navigation.compose.composable
 import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.BackupRepository
+import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.about.AboutScreen
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
@@ -48,14 +49,15 @@ import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
-import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
+import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
 
 @Composable
 fun HomePageNavHostContainer(
     backupRepository: BackupRepository,
+    shareRepository: ShareRepository,
     navHostController: NavHostController,
     landingScreen: ExpenseManagerScreens,
 ) {
@@ -64,13 +66,15 @@ fun HomePageNavHostContainer(
         startDestination = landingScreen,
     ) {
         this.expenseManagerNavigation(
-            backupRepository
+            backupRepository,
+            shareRepository
         )
     }
 }
 
 fun NavGraphBuilder.expenseManagerNavigation(
-    backupRepository: BackupRepository
+    backupRepository: BackupRepository,
+    shareRepository: ShareRepository,
 ) {
     composable<ExpenseManagerScreens.Onboarding> {
         OnboardingScreen()
@@ -112,7 +116,7 @@ fun NavGraphBuilder.expenseManagerNavigation(
         AnalysisScreen()
     }
     composable<ExpenseManagerScreens.Settings> {
-        SettingsScreen()
+        SettingsScreen(shareRepository)
     }
     composable<ExpenseManagerScreens.ExportScreen> {
         ExportScreen()

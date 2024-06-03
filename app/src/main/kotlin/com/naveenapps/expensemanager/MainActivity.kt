@@ -25,6 +25,7 @@ import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.BackupRepository
+import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.ui.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,6 +40,9 @@ internal class MainActivity : ComponentActivity() {
 
     @Inject
     internal lateinit var backupRepository: BackupRepository
+
+    @Inject
+    internal lateinit var shareRepository: ShareRepository
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -68,7 +72,6 @@ internal class MainActivity : ComponentActivity() {
         setContent {
             val currentTheme by viewModel.currentTheme.collectAsState()
             val onBoardingStatus by viewModel.onboardingStatus.collectAsState()
-
             val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
             val systemUiController = rememberSystemUiController()
@@ -85,13 +88,13 @@ internal class MainActivity : ComponentActivity() {
                 MainScreen(
                     appComposeNavigator,
                     backupRepository,
+                    shareRepository,
                     isDarkTheme,
-                    ExpenseManagerScreens.Home,
-                    /*if (onBoardingStatus == true) {
-                        ExpenseManagerScreens.Home.name
+                    if (onBoardingStatus == true) {
+                        ExpenseManagerScreens.Home
                     } else {
-                        ExpenseManagerScreens.Onboarding.name
-                    }*/
+                        ExpenseManagerScreens.Onboarding
+                    }
                 )
             }
         }

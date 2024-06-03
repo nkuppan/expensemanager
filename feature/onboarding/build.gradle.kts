@@ -10,6 +10,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":feature:country"))
     implementation(project(":feature:currency"))
     implementation(project(":feature:account"))
 }
