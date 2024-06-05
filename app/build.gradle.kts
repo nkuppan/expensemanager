@@ -78,11 +78,11 @@ if (playStorePublisher.exists()) {
             )
         }.getOrNull() ?: ReleaseStatus.DRAFT
 
-    println("----- $playStoreTrack -----")
+    println("----- $playStoreTrack & $playStoreReleaseStatus-----")
 
     android {
         play {
-            serviceAccountCredentials.set(playStorePublisher)
+            serviceAccountCredentials = playStorePublisher
             track.set(playStoreTrack)
             releaseStatus.set(playStoreReleaseStatus)
         }
