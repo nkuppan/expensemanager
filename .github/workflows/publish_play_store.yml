@@ -39,7 +39,7 @@ jobs:
       - name: Load Google Play Distribution File
         env:
           PLAY_STORE: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_BASE64 }}
-        run: echo PLAY_STORE | base64 -di > play_publish.json
+        run: echo $PLAY_STORE | base64 -di > play_publish.json
 
       - name: Load Firebase Distribution File
         env:
