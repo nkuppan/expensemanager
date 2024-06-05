@@ -52,9 +52,9 @@ jobs:
         run: echo $KEYSTORE | base64 -di > android_keystore.jks
 
       - name: Deploy Play Store Beta
-        if: always()
-        run: ./gradlew --no-configuration-cache publishReleaseBundle uploadCrashlyticsMappingFileRelease
         env:
           KEYS_PATH: 'Key Path'
           PLAYSTORE_TRACK: "beta"
           PLAYSTORE_RELEASE_STATUS: "completed"
+        if: always()
+        run: ./gradlew --no-configuration-cache publishReleaseBundle uploadCrashlyticsMappingFileRelease
