@@ -5,13 +5,14 @@ import com.naveenapps.expensemanager.core.common.utils.openEmailOption
 import com.naveenapps.expensemanager.core.common.utils.openPrintOption
 import com.naveenapps.expensemanager.core.common.utils.openRateUs
 import com.naveenapps.expensemanager.core.common.utils.openShareOption
+import com.naveenapps.expensemanager.core.common.utils.openWebPage
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import dagger.hilt.android.qualifiers.ActivityContext
 import java.io.File
 import javax.inject.Inject
 
 class ShareRepositoryImpl @Inject constructor(
-    @ActivityContext val context: Context
+    @ActivityContext val context: Context,
 ) : ShareRepository {
     override fun sendEmail(file: File?) {
         file?.let {
@@ -33,5 +34,9 @@ class ShareRepositoryImpl @Inject constructor(
 
     override fun openRateUs() {
         context.openRateUs()
+    }
+
+    override fun openPrivacy() {
+        context.openWebPage("https://expensemanager.naveenapps.com/privacy-policy")
     }
 }

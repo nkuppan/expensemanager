@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.onboarding
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
@@ -88,7 +89,7 @@ private fun OnboardingContentView(
                     modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth(),
-                    text = stringResource(id = R.string.welcome_message),
+                    text = stringResource(id = R.string.setup),
                     style = MaterialTheme.typography.titleLarge,
                 )
 
@@ -96,21 +97,22 @@ private fun OnboardingContentView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
-                    label = R.string.select_currency,
+                    label = R.string.select_main_currency,
                     value = state.currency.name.ifBlank { stringResource(id = R.string.currency) },
                     onClick = { onAction.invoke(OnboardingAction.ShowCurrencySelection) },
                     trailingIcon = Icons.AutoMirrored.Filled.ArrowRight
                 )
 
-                DashboardWidgetTitle(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                    title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
-                    onViewAllClick = {
-                        onAction.invoke(OnboardingAction.AccountCreate(null))
-                    },
-                )
+                        .padding(16.dp),
+                ) {
+                    Text(
+                        text = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
+                        style = MaterialTheme.typography.headlineSmall,
+                    )
+                }
                 state.accounts.forEach { account ->
                     AccountItem(
                         name = account.name,
@@ -125,6 +127,17 @@ private fun OnboardingContentView(
                             }
                             .padding(16.dp),
                     )
+                }
+
+                OutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    onClick = {
+                        onAction.invoke(OnboardingAction.AccountCreate(null))
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.create_new).uppercase())
                 }
             }
 

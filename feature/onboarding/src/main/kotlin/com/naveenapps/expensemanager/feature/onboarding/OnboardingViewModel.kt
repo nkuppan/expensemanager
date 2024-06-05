@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsU
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
@@ -26,6 +27,7 @@ class OnboardingViewModel @Inject constructor(
     getAllAccountsUseCase: GetAllAccountsUseCase,
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
+    private val saveCurrencyUseCase: SaveCurrencyUseCase,
     private val setOnboardingStatusUseCase: SetOnboardingStatusUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val composeNavigator: AppComposeNavigator,
@@ -56,7 +58,8 @@ class OnboardingViewModel @Inject constructor(
                                 it.toAccountUiModel(
                                     getFormattedAmountUseCase.invoke(it.amount, currency),
                                 )
-                            }
+                            },
+                            showCurrencySelection = false
                         )
                     }
                 }.launchIn(viewModelScope)
@@ -88,15 +91,12 @@ class OnboardingViewModel @Inject constructor(
             }
 
             is OnboardingAction.SelectCurrency -> {
-                if (action.currency != null) {
-                    _state.update {
-                        it.copy(
-                            currency = action.currency,
-                            showCurrencySelection = false
-                        )
+                viewModelScope.launch {
+                    if (action.currency != null) {
+                        saveCurrencyUseCase.invoke(action.currency)
+                    } else {
+                        dismissCurrencySelection()
                     }
-                } else {
-                    dismissCurrencySelection()
                 }
             }
         }

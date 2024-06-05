@@ -9,6 +9,7 @@ androidxBrowser = "1.7.0"
 androidxComposeBom = "2024.05.00"
 androidxComposeCompiler = "1.5.13"
 androidxComposeRuntimeTracing = "1.0.0-beta01"
+lottieCompose = "6.4.0"
 material3 = "1.2.1"
 androidxCore = "1.13.1"
 androidxCoreSplashscreen = "1.0.1"
@@ -138,6 +139,7 @@ firebase-performance-gradle = { group = "com.google.firebase", name = "perf-plug
 google-android-play-review = { group = "com.google.android.play", name = "review-ktx", version.ref = "review" }
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
 spotless = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }

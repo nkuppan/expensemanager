@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="welcome_message">Welcome to the Expense Manager!</string>
-    <string name="message_one">• Keep your finances on your packet</string>
-    <string name="message_two">• Set reminder to not miss to add your expenses</string>
-    <string name="message_three">• Set a budget</string>
+    <string name="welcome_message_title">Track your spending</string>
+    <string name="welcome_message_description">Be informed and have a record of your spending</string>
+    <string name="privacy_text">All of your data is stored on your device with option external backup. By continuing, you agree to our privacy policy.</string>
     <string name="currency">Currency</string>
-    <string name="select_currency">Selected Currency</string>
+    <string name="select_main_currency">Select Main Currency</string>
     <string name="add_new">Add New</string>
     <string name="proceed">Proceed</string>
+    <string name="get_started">Get Started</string>
+    <string name="setup">Setup App Settings</string>
+    <string name="create_new">Create New</string>
 </resources>

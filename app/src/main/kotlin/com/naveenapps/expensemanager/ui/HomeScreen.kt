@@ -48,6 +48,7 @@ import com.naveenapps.expensemanager.feature.currency.CurrencyCustomiseScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
+import com.naveenapps.expensemanager.feature.onboarding.into.IntroScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
@@ -76,6 +77,9 @@ fun NavGraphBuilder.expenseManagerNavigation(
     backupRepository: BackupRepository,
     shareRepository: ShareRepository,
 ) {
+    composable<ExpenseManagerScreens.IntroScreen> {
+        IntroScreen(shareRepository)
+    }
     composable<ExpenseManagerScreens.Onboarding> {
         OnboardingScreen()
     }

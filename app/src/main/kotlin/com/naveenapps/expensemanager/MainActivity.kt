@@ -93,7 +93,7 @@ internal class MainActivity : ComponentActivity() {
                     if (onBoardingStatus == true) {
                         ExpenseManagerScreens.Home
                     } else {
-                        ExpenseManagerScreens.Onboarding
+                        ExpenseManagerScreens.IntroScreen
                     }
                 )
             }

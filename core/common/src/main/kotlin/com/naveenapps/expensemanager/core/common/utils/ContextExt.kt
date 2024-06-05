@@ -22,16 +22,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-fun openWebPage(context: Context, webpage: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpage))
-    Intent.createChooser(intent, context.getString(R.string.choose_web_browser))
-    try {
-        context.startActivity(intent)
-    } catch (e: ActivityNotFoundException) {
-        // Define what your app should do if no activity can handle the intent.
-    }
-}
-
 fun openEmailToOption(context: Context, emailId: String) {
     try {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:$emailId"))
@@ -199,5 +189,15 @@ fun Context.openRateUs() {
                 Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
             )
         )
+    }
+}
+
+fun Context.openWebPage(webpage: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpage))
+    Intent.createChooser(intent, this.getString(R.string.choose_web_browser))
+    try {
+        this.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        // Define what your app should do if no activity can handle the intent.
     }
 }

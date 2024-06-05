@@ -3,6 +3,8 @@ package com.naveenapps.expensemanager.core.navigation
 import kotlinx.serialization.Serializable
 
 sealed class ExpenseManagerScreens {
+    @Serializable
+    data object IntroScreen : ExpenseManagerScreens()
 
     @Serializable
     data object Onboarding : ExpenseManagerScreens()
