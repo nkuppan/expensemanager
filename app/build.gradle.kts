@@ -47,6 +47,7 @@ val credentials = getCredentialsFile()
 val keystore = getKeystoreFile()
 if (credentials.exists() && keystore.exists()) {
     println("----- Both Keystore & Credentials available -----")
+    println("----- ${credentials.absolutePath} -----")
     val properties = Properties().apply {
         load(FileInputStream(credentials))
     }
@@ -68,7 +69,7 @@ if (credentials.exists() && keystore.exists()) {
 val playStorePublisher = getPlayStorePublisherFile()
 if (playStorePublisher.exists()) {
     println("----- Play Store Publisher available -----")
-
+    println("----- ${playStorePublisher.absolutePath} -----")
     val playStoreTrack = System.getenv()["PLAYSTORE_TRACK"] ?: "beta"
     val playStoreReleaseStatus =
         runCatching {
@@ -76,6 +77,8 @@ if (playStorePublisher.exists()) {
                 System.getenv()["PLAYSTORE_RELEASE_STATUS".uppercase()] ?: ReleaseStatus.DRAFT.name
             )
         }.getOrNull() ?: ReleaseStatus.DRAFT
+
+    println("----- $playStoreTrack -----")
 
     android {
         play {
@@ -91,7 +94,7 @@ if (playStorePublisher.exists()) {
 val firebasePublisher = getFirebasePublisherFile()
 if (firebasePublisher.exists()) {
     println("----- Firebase Distribution Publisher available -----")
-
+    println("----- ${firebasePublisher.absolutePath} -----")
     var firebaseDistGroups = System.getenv()["FIREBASE_DISTRIBUTION_GROUPS"]
     if (firebaseDistGroups.isNullOrBlank()) {
         firebaseDistGroups = "testers"
