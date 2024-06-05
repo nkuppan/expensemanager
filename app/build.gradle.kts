@@ -17,8 +17,7 @@ plugins {
 }
 
 
-
-val keysFolderPath: String = if (System.getenv()["KEYS_PATH"].isNullOrBlank()) {
+val keysFolderPath: String = if (File("${rootDir.absolutePath}/keys").exists()) {
     "${rootDir.absolutePath}/keys"
 } else {
     rootDir.absolutePath
@@ -165,8 +164,8 @@ android {
                 "proguard-rules.pro"
             )
 
-            val keyStore = runCatching { signingConfigs.getByName("release") }.getOrNull() ?:
-                signingConfigs.getByName("debug")
+            val keyStore = runCatching { signingConfigs.getByName("release") }.getOrNull()
+                ?: signingConfigs.getByName("debug")
 
             signingConfig = keyStore
         }
