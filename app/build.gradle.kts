@@ -71,7 +71,7 @@ if (playStorePublisher.exists()) {
     println("----- Play Store Publisher available -----")
     println("----- ${playStorePublisher.absolutePath} -----")
     val track = System.getenv()["PLAYSTORE_TRACK"]
-    val status = System.getenv()["PLAYSTORE_RELEASE_STATUS".uppercase()]
+    val status = System.getenv()["PLAYSTORE_RELEASE_STATUS"]?.uppercase()
     println("----- ENV: $track & $status -----")
     val playStoreTrack = track ?: "beta"
     val playStoreReleaseStatus =
