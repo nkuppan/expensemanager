@@ -55,6 +55,9 @@ jobs:
         env:
           PLAYSTORE_TRACK: "production"
           PLAYSTORE_RELEASE_STATUS: "completed"
+        run: |
+          echo ${{ env.PLAYSTORE_TRACK}}
+          echo ${{ env.PLAYSTORE_RELEASE_STATUS}}
 
       - name: Deploy Play Store Beta
         run: |
