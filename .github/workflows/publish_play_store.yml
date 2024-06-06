@@ -50,11 +50,12 @@ jobs:
         env:
           KEYSTORE: ${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}
         run: echo $KEYSTORE | base64 -di > android_keystore.jks
+        
+      - name: Setting environment values
+        env:
+          PLAYSTORE_TRACK: "production"
+          PLAYSTORE_RELEASE_STATUS: "completed"
 
       - name: Deploy Play Store Beta
-        env:
-          KEYS_PATH: "Key Path"
-          PLAYSTORE_TRACK: "beta"
-          PLAYSTORE_RELEASE_STATUS: "completed"
-        if: always()
-        run: ./gradlew --no-configuration-cache publishReleaseBundle uploadCrashlyticsMappingFileRelease
+        run: |
+            ./gradlew --no-configuration-cache publishReleaseBundle uploadCrashlyticsMappingFileRelease
