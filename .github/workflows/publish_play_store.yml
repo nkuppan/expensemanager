@@ -53,7 +53,7 @@ jobs:
 
       - name: Deploy Play Store Beta
         env:
-          KEYS_PATH: 'Key Path'
+          KEYS_PATH: "Key Path"
           PLAYSTORE_TRACK: "beta"
           PLAYSTORE_RELEASE_STATUS: "completed"
         if: always()
