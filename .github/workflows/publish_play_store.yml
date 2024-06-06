@@ -42,7 +42,7 @@ jobs:
           echo "${{ secrets.SIGNING_PROPERTIES_FILE_BASE64 }}" | base64 -d > ./credentials.properties;
           echo "${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}" | base64 -d > ./android_keystore.jks;
 
-      - name: Deploy
+      - name: Deploy Play Store
         run: ./gradlew publishReleaseBundle uploadCrashlyticsMappingFileRelease
         env:
           PLAYSTORE_TRACK: "beta"

@@ -70,20 +70,21 @@ val playStorePublisher = getPlayStorePublisherFile()
 if (playStorePublisher.exists()) {
     println("----- Play Store Publisher available -----")
     println("----- ${playStorePublisher.absolutePath} -----")
-    val playStoreTrack = System.getenv()["PLAYSTORE_TRACK"] ?: "beta"
+    val track = System.getenv()["PLAYSTORE_TRACK"]
+    val status = System.getenv()["PLAYSTORE_RELEASE_STATUS".uppercase()]
+    println("----- ENV: $track & $status -----")
+    val playStoreTrack = track ?: "beta"
     val playStoreReleaseStatus =
-        runCatching {
-            ReleaseStatus.valueOf(System.getenv()["PLAYSTORE_RELEASE_STATUS".uppercase()] ?: "")
-        }.getOrNull() ?: ReleaseStatus.DRAFT
+        runCatching { ReleaseStatus.valueOf(status!!) }.getOrNull() ?: ReleaseStatus.DRAFT
 
     println("----- $playStoreTrack & $playStoreReleaseStatus-----")
 
     android {
         play {
-            serviceAccountCredentials.set(playStorePublisher)
-            track.set(playStoreTrack)
-            releaseStatus.set(playStoreReleaseStatus)
-            println(serviceAccountCredentials.get().asFile.absolutePath)
+            this.serviceAccountCredentials.set(playStorePublisher)
+            this.track.set(playStoreTrack)
+            this.releaseStatus.set(playStoreReleaseStatus)
+            println(this.serviceAccountCredentials.get().asFile.absolutePath)
         }
     }
 } else {
