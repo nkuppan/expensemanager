@@ -36,29 +36,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Load Google Play Distribution File
-        env:
-          PLAY_STORE_KEY: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_BASE64 }}
-        run: echo $PLAY_STORE_KEY | base64 -di > play_publish.json
+      - name: Set up environment
+        run: |
+          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_BASE64 }}" | base64 -d > ./play_publish.json;
+          echo "${{ secrets.SIGNING_PROPERTIES_FILE_BASE64 }}" | base64 -d > ./credentials.properties;
+          echo "${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}" | base64 -d > ./android_keystore.jks;
 
-      - name: Load Firebase Distribution File
+      - name: Deploy
+        run: ./gradlew publishReleaseBundle uploadCrashlyticsMappingFileRelease
         env:
-          SIGNING: ${{ secrets.SIGNING_PROPERTIES_FILE_BASE64 }}
-        run: echo $SIGNING | base64 -di > credentials.properties
-
-      - name: Load Keystore
-        env:
-          KEYSTORE: ${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}
-        run: echo $KEYSTORE | base64 -di > android_keystore.jks
-        
-      - name: Setting environment values
-        env:
-          PLAYSTORE_TRACK: "production"
+          PLAYSTORE_TRACK: "beta"
           PLAYSTORE_RELEASE_STATUS: "completed"
-        run: |
-          echo ${{ env.PLAYSTORE_TRACK}}
-          echo ${{ env.PLAYSTORE_RELEASE_STATUS}}
-
-      - name: Deploy Play Store Beta
-        run: |
-            ./gradlew --no-configuration-cache publishReleaseBundle uploadCrashlyticsMappingFileRelease
