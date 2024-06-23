@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -112,7 +113,7 @@ private fun ScaffoldContent(
                             linkInteractionListener = {
                                 shareRepository?.openPrivacy()
                             },
-                            style = SpanStyle(color = MaterialTheme.colorScheme.secondary)
+                            styles = TextLinkStyles(style = SpanStyle(color = MaterialTheme.colorScheme.secondary))
                         ),
                         start = text.indexOf("privacy policy"),
                         end = text.length - 1,
