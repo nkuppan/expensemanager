@@ -44,7 +44,7 @@ jobs:
           echo "${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}" | base64 -d > ./android_keystore.jks;
 
       - name: Deploy Play Store
-        run: ./gradlew publishReleaseBundle uploadCrashlyticsMappingFileRelease
+        run: ./gradlew --no-configuration-cache publishReleaseBundle uploadCrashlyticsMappingFileRelease
         env:
           PLAYSTORE_TRACK: "beta"
           PLAYSTORE_RELEASE_STATUS: "completed"
