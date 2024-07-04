@@ -17,11 +17,12 @@ plugins {
 }
 
 
-val keysFolderPath: String = if (File("${rootDir.absolutePath}/keys").exists()) {
-    "${rootDir.absolutePath}/keys"
-} else {
-    rootDir.absolutePath
-}
+val keysFolderPath: String =
+    if (File("${rootDir.absolutePath}/keys/credentials.properties").exists()) {
+        "${rootDir.absolutePath}/keys"
+    } else {
+        rootDir.absolutePath
+    }
 
 fun getCredentialsFile(): File {
     val credentialFilePath = "$keysFolderPath/credentials.properties"
