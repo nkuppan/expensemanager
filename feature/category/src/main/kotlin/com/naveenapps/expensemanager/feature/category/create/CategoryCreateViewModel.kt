@@ -96,7 +96,7 @@ class CategoryCreateViewModel @Inject constructor(
         }
     }
 
-    fun deleteCategory() {
+    private fun deleteCategory() {
         viewModelScope.launch {
             category?.let { category ->
                 when (deleteCategoryUseCase.invoke(category)) {
