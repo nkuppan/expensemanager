@@ -30,8 +30,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.repository.BackupRepository
-import com.naveenapps.expensemanager.core.repository.ShareRepository
+import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 import com.naveenapps.expensemanager.feature.about.AboutScreen
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
@@ -57,8 +56,7 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScr
 
 @Composable
 fun HomePageNavHostContainer(
-    backupRepository: BackupRepository,
-    shareRepository: ShareRepository,
+    backupRepository: ActivityComponentProvider,
     navHostController: NavHostController,
     landingScreen: ExpenseManagerScreens,
 ) {
@@ -66,19 +64,15 @@ fun HomePageNavHostContainer(
         navController = navHostController,
         startDestination = landingScreen,
     ) {
-        this.expenseManagerNavigation(
-            backupRepository,
-            shareRepository
-        )
+        this.expenseManagerNavigation(backupRepository)
     }
 }
 
 fun NavGraphBuilder.expenseManagerNavigation(
-    backupRepository: BackupRepository,
-    shareRepository: ShareRepository,
+    componentProvider: ActivityComponentProvider,
 ) {
     composable<ExpenseManagerScreens.IntroScreen> {
-        IntroScreen(shareRepository)
+        IntroScreen(componentProvider.getShareRepository())
     }
     composable<ExpenseManagerScreens.Onboarding> {
         OnboardingScreen()
@@ -120,7 +114,7 @@ fun NavGraphBuilder.expenseManagerNavigation(
         AnalysisScreen()
     }
     composable<ExpenseManagerScreens.Settings> {
-        SettingsScreen(shareRepository)
+        SettingsScreen(componentProvider.getShareRepository())
     }
     composable<ExpenseManagerScreens.ExportScreen> {
         ExportScreen()
@@ -135,10 +129,10 @@ fun NavGraphBuilder.expenseManagerNavigation(
         CategoryTransactionTabScreen()
     }
     composable<ExpenseManagerScreens.AboutUsScreen> {
-        AboutScreen()
+        AboutScreen(componentProvider.getShareRepository())
     }
     composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
-        AdvancedSettingsScreen(backupRepository = backupRepository)
+        AdvancedSettingsScreen(componentProvider.getBackupRepository())
     }
     composable<ExpenseManagerScreens.AccountReOrderScreen> {
         AccountReOrderScreen()

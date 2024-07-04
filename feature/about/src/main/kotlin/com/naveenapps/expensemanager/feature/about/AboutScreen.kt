@@ -33,22 +33,63 @@ import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getAppVersionName
-import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openEmailToOption
-import com.naveenapps.expensemanager.core.designsystem.ui.extensions.openWebPage
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.repository.ShareRepository
 
 @Composable
 fun AboutScreen(
+    shareRepository: ShareRepository,
     viewModel: AboutUsViewModel = hiltViewModel()
 ) {
-    AboutUsScreenScaffoldView(viewModel::processAction)
+    val context = LocalContext.current
+
+    AboutUsScreenScaffoldView(
+        onAction = {
+            when (it) {
+                AboutAction.OpenAboutUsPage -> {
+                    shareRepository.openAboutUs()
+                }
+
+                AboutAction.OpenTerms -> {
+                    shareRepository.openTerms()
+                }
+
+                AboutAction.OpenPrivacy -> {
+                    shareRepository.openPrivacy()
+                }
+
+                AboutAction.Github -> {
+                    shareRepository.openGithub()
+                }
+
+                AboutAction.Twitter -> {
+                    shareRepository.openTwitter()
+                }
+
+                AboutAction.Instagram -> {
+                    shareRepository.openInstagram()
+                }
+
+                AboutAction.Mail -> {
+                    shareRepository.sendEmail(null)
+                }
+
+                AboutAction.OpenLicense -> {
+                    context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                }
+
+                else -> {
+                    viewModel.processAction(it)
+                }
+            }
+        }
+    )
 }
 
 @Composable
 private fun AboutUsScreenScaffoldView(
     onAction: (AboutAction) -> Unit,
 ) {
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -63,45 +104,8 @@ private fun AboutUsScreenScaffoldView(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding),
-        ) {
-            when (it) {
-                AboutAction.OpenAboutUsPage -> {
-                    openWebPage(context, "https://expensemanager.naveenapps.com/")
-                }
-
-                AboutAction.OpenTerms -> {
-                    openWebPage(context, "https://expensemanager.naveenapps.com/terms")
-                }
-
-                AboutAction.OpenPrivacy -> {
-                    openWebPage(context, "https://expensemanager.naveenapps.com/privacy-policy")
-                }
-
-                AboutAction.Github -> {
-                    openWebPage(context, "https://www.github.com/nkuppan")
-                }
-
-                AboutAction.Twitter -> {
-                    openWebPage(context, "https://www.twitter.com/naveenkumarn27")
-                }
-
-                AboutAction.Instagram -> {
-                    openWebPage(context, "https://www.instagram.com/naveenkumar_kup")
-                }
-
-                AboutAction.Mail -> {
-                    openEmailToOption(context, "naveenkumar@naveenapps.com")
-                }
-
-                AboutAction.OpenLicense -> {
-                    context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
-                }
-
-                else -> {
-                    onAction.invoke(it)
-                }
-            }
-        }
+            onAction
+        )
     }
 }
 

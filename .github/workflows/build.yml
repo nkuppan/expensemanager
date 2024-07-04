@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
 
 concurrency:
   group: build-${{ github.ref }}
@@ -37,7 +36,7 @@ jobs:
 
       - name: Run local tests
         if: always()
-        run: ./gradlew bundleRelease
+        run: ./gradlew --no-configuration-cache bundleRelease
 
   unit-test:
     runs-on: ubuntu-latest
@@ -68,12 +67,6 @@ jobs:
 
       - name: Run coverage merge
         run: ./gradlew allDebugCoverage
-
-      - name: generate report
-        uses: actions/upload-artifact@v3
-        with:
-          name: report
-          path: '**/build/reports/'
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

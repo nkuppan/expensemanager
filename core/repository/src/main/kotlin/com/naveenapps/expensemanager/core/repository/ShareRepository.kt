@@ -8,9 +8,19 @@ interface ShareRepository {
 
     fun share(file: File?)
 
-    fun openPrinter(file: File?)
+    fun print(file: File?)
 
     fun openRateUs()
 
     fun openPrivacy()
+
+    fun openTerms()
+
+    fun openAboutUs()
+
+    fun openGithub()
+
+    fun openInstagram()
+
+    fun openTwitter()
 }

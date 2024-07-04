@@ -57,8 +57,8 @@ import java.util.Date
 
 @Composable
 fun AdvancedSettingsScreen(
-    viewModel: AdvancedSettingsViewModel = hiltViewModel(),
     backupRepository: BackupRepository,
+    viewModel: AdvancedSettingsViewModel = hiltViewModel(),
 ) {
     val accounts by viewModel.accounts.collectAsState()
     val selectedAccount by viewModel.selectedAccount.collectAsState()

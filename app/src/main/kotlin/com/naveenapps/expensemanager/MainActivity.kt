@@ -24,8 +24,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import com.naveenapps.expensemanager.core.repository.BackupRepository
-import com.naveenapps.expensemanager.core.repository.ShareRepository
+import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 import com.naveenapps.expensemanager.ui.MainScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,10 +38,7 @@ internal class MainActivity : ComponentActivity() {
     internal lateinit var appComposeNavigator: AppComposeNavigator
 
     @Inject
-    internal lateinit var backupRepository: BackupRepository
-
-    @Inject
-    internal lateinit var shareRepository: ShareRepository
+    internal lateinit var activityComponentProvider: ActivityComponentProvider
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -87,8 +83,7 @@ internal class MainActivity : ComponentActivity() {
             if (onBoardingStatus != null) {
                 MainScreen(
                     appComposeNavigator,
-                    backupRepository,
-                    shareRepository,
+                    activityComponentProvider,
                     isDarkTheme,
                     if (onBoardingStatus == true) {
                         ExpenseManagerScreens.Home

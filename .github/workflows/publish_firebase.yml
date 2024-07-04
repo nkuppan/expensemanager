@@ -44,25 +44,14 @@ jobs:
           distribution: 'zulu'
           java-version: 17
 
-      - name: Load Firebase Distribution File
-        env:
-          FIREBASE: ${{ secrets.FIREBASE_DISTRIBUTION_SERVICE_ACCOUNT_BASE64 }}
-        run: echo $FIREBASE | base64 -di > firebase_distribution_service_account.json
-
-      - name: Load Firebase Distribution File
-        env:
-          SIGNING: ${{ secrets.SIGNING_PROPERTIES_FILE_BASE64 }}
-        run: echo $SIGNING | base64 -di > credentials.properties
-
-      - name: Load Keystore
-        env:
-          KEYSTORE: ${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}
-        run: echo $KEYSTORE | base64 -di > android_keystore.jks
+      - name: Set up environment
+        run: |
+          echo "${{ secrets.FIREBASE_DISTRIBUTION_SERVICE_ACCOUNT_BASE64 }}" | base64 -d > ./firebase_distribution_service_account.json;
+          echo "${{ secrets.SIGNING_PROPERTIES_FILE_BASE64 }}" | base64 -d > ./credentials.properties;
+          echo "${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}" | base64 -d > ./android_keystore.jks;
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
-        with:
-          cache-read-only: ${{ github.ref != 'refs/heads/master' }}
 
       - name: Deploy Firebase
         run: |

@@ -3,6 +3,10 @@ name: Publish - Play store
 on:
   workflow_call:
   workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version Name'
+        required: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -16,9 +20,6 @@ jobs:
       contents: write
 
     timeout-minutes: 60
-
-    env:
-      BUILD_NUMBER: ${{ github.run_number }}
 
     steps:
       - name: Checkout
@@ -34,7 +35,7 @@ jobs:
           java-version: 17
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
 
       - name: Set up environment
         run: |
@@ -47,3 +48,20 @@ jobs:
         env:
           PLAYSTORE_TRACK: "beta"
           PLAYSTORE_RELEASE_STATUS: "completed"
+
+  create-tag:
+    runs-on: ubuntu-latest
+    needs: publish-play-store
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Release Tag
+        run: |
+          gh release create ${{ github.event.inputs.version }} \
+            --latest \
+            --title "${{ github.event.inputs.version }}" \
+            --target ${{ github.ref }}
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+

@@ -1,0 +1,33 @@
+name: Create Release Tag
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version Name'
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Release Tag
+        run: |
+          gh release create ${{ github.event.inputs.version }} \
+            --latest \
+            --title "${{ github.event.inputs.version }}" \
+            --target ${{ github.ref }}
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
+

@@ -3,8 +3,6 @@ package com.naveenapps.expensemanager.core.common.utils
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
@@ -15,6 +13,7 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
 import android.print.PrintManager
+import android.util.Log
 import androidx.core.content.FileProvider
 import com.naveenapps.expensemanager.core.common.R
 import java.io.File
@@ -29,7 +28,7 @@ fun openEmailToOption(context: Context, emailId: String) {
         intent.putExtra(Intent.EXTRA_TEXT, "email_body")
         context.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
-        // Define what your app should do if no activity can handle the intent.
+        Log.e("Share", e.message ?: "")
     }
 }
 
@@ -43,17 +42,7 @@ fun Context.shareThisFile(fileUri: Uri) {
         }
         startActivity(Intent.createChooser(shareIntent, null))
     } catch (e: ActivityNotFoundException) {
-        // Define what your app should do if no activity can handle the intent.
-    }
-}
-
-fun Context.getAppVersionName(): String {
-    return try {
-        val pInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
-        pInfo.versionName
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
-        ""
+        Log.e("Share", e.message ?: "")
     }
 }
 
