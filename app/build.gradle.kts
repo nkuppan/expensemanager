@@ -193,10 +193,6 @@ android {
             }
         }
     }
-
-    play {
-        serviceAccountCredentials.set(file("../keys/play_publish.json"))
-    }
 }
 
 dependencies {
