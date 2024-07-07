@@ -30,15 +30,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -64,6 +59,7 @@ import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -74,71 +70,49 @@ import com.naveenapps.expensemanager.feature.category.list.CategoryItem
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 fun TransactionCreateScreen(
     viewModel: TransactionCreateViewModel = hiltViewModel()
 ) {
 
-    val scope = rememberCoroutineScope()
+    val state by viewModel.state.collectAsState()
 
-    val showDeleteDialog by viewModel.showDeleteDialog.collectAsState()
-    val isDeleteEnabled by viewModel.isDeleteEnabled.collectAsState()
+    TransactionCreateScreenContent(
+        state = state,
+        onAction = viewModel::processAction
+    )
+}
 
-    var showBottomSheet by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+@Composable
+private fun TransactionCreateScreenContent(
+    state: TransactionCreateState,
+    onAction: (TransactionCreateAction) -> Unit,
+) {
+
     val snackbarHostState = remember { SnackbarHostState() }
 
-    var sheetSelection by remember { mutableIntStateOf(1) }
-    var showNumberPadDialog by remember { mutableStateOf(false) }
-
-    if (showDeleteDialog) {
+    if (state.showDeleteDialog) {
         DeleteDialogItem(
-            confirm = viewModel::deleteTransaction,
-            dismiss = viewModel::closeDeleteDialog
+            confirm = {
+                onAction.invoke(TransactionCreateAction.Delete)
+            },
+            dismiss = {
+                onAction.invoke(TransactionCreateAction.DismissDeleteDialog)
+            }
         )
-    }
-
-    if (showNumberPadDialog) {
+    } else if (state.showNumberPad) {
         NumberPadDialogView(
             onConfirm = { amount ->
-                showNumberPadDialog = false
-                amount ?: return@NumberPadDialogView
-                scope.launch {
-                    viewModel.setAmountOnChange(amount)
-                    showBottomSheet = false
-                }
+                onAction.invoke(TransactionCreateAction.SetNumberPadValue(amount))
             },
         )
-    }
-
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                scope.launch {
-                    showBottomSheet = false
-                    bottomSheetState.hide()
-                }
-            },
-            sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp),
-            containerColor = MaterialTheme.colorScheme.background,
-            tonalElevation = 0.dp,
-        ) {
-            TransactionCreateBottomSheetContent(
-                sheetSelection,
-                viewModel,
-            ) {
-                scope.launch {
-                    showBottomSheet = false
-                    bottomSheetState.hide()
-                }
-            }
-        }
+    } else if (state.showCategorySelection) {
+        CategorySelectionView(state, onAction)
+    } else if (state.showAccountSelection) {
+        AccountSelectionView(state, onAction)
     }
 
     Scaffold(
@@ -148,13 +122,21 @@ fun TransactionCreateScreen(
         topBar = {
             TopNavigationBarWithDeleteAction(
                 title = stringResource(id = R.string.transaction),
-                isDeleteEnabled = isDeleteEnabled,
-                onNavigationIconClick = viewModel::closePage,
-                onDeleteActionClick = viewModel::openDeleteDialog,
+                isDeleteEnabled = state.showDeleteButton,
+                onNavigationIconClick = {
+                    onAction.invoke(TransactionCreateAction.ClosePage)
+                },
+                onDeleteActionClick = {
+                    onAction.invoke(TransactionCreateAction.ShowDeleteDialog)
+                },
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::doSave) {
+            FloatingActionButton(
+                onClick = {
+                    onAction.invoke(TransactionCreateAction.Save)
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Done,
                     contentDescription = "",
@@ -163,131 +145,111 @@ fun TransactionCreateScreen(
         },
     ) { innerPadding ->
 
-        val amountField by viewModel.amount.collectAsState()
-
-        val currencyIcon by viewModel.currencyIcon.collectAsState()
-        val selectedDate by viewModel.date.collectAsState()
-        val selectedTransactionType by viewModel.selectedTransactionType.collectAsState()
-        val notes by viewModel.notes.collectAsState()
-
-        val category by viewModel.selectedCategory.collectAsState()
-        val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
-        val selectedToAccount by viewModel.selectedToAccount.collectAsState()
-
         TransactionCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            selectedCategory = category,
-            selectedFromAccount = selectedFromAccount,
-            selectedToAccount = selectedToAccount,
-            currencyIcon = currencyIcon,
-            amountField = amountField,
-            selectedDate = selectedDate,
-            onDateChange = viewModel::setDate,
-            selectedTransactionType = selectedTransactionType,
-            onTransactionTypeChange = viewModel::setTransactionType,
-            notes = notes,
-            onNotesChange = viewModel::setNotes,
-            openSelection = { type ->
-                if (type == 4) {
-                    showNumberPadDialog = true
-                } else {
-                    sheetSelection = type
-                    showBottomSheet = true
-                }
-            },
+            state = state,
+            onAction = onAction
         )
     }
 }
 
 @Composable
-private fun TransactionCreateBottomSheetContent(
-    sheetSelection: Int,
-    viewModel: TransactionCreateViewModel,
-    hideBottomSheet: () -> Unit,
+@OptIn(ExperimentalMaterial3Api::class)
+private fun AccountSelectionView(
+    state: TransactionCreateState,
+    onAction: (TransactionCreateAction) -> Unit,
 ) {
-    if (sheetSelection == 1) {
-        val categories by viewModel.categories.collectAsState()
-        val selectedCategory by viewModel.selectedCategory.collectAsState()
-        CategorySelectionScreen(
-            categories = categories,
-            selectedCategory = selectedCategory,
-            createNewCallback = {
-                viewModel.openCategoryCreate()
-                hideBottomSheet.invoke()
-            },
-        ) { category ->
-            viewModel.setCategorySelection(category)
-            hideBottomSheet.invoke()
-        }
-    } else {
-        val accounts by viewModel.accounts.collectAsState()
-        val selectedFromAccount by viewModel.selectedFromAccount.collectAsState()
-        val selectedToAccount by viewModel.selectedToAccount.collectAsState()
+    ModalBottomSheet(
+        onDismissRequest = {
+            onAction.invoke(TransactionCreateAction.DismissCategorySelection)
+        },
+        windowInsets = WindowInsets(0.dp),
+        containerColor = MaterialTheme.colorScheme.background,
+        tonalElevation = 0.dp,
+    ) {
         AccountSelectionScreen(
-            accounts = accounts,
-            selectedAccount = if (sheetSelection == 2) {
-                selectedFromAccount
-            } else {
-                selectedToAccount
+            accounts = state.accounts,
+            selectedAccount = when (state.accountSelection) {
+                AccountSelection.FROM_ACCOUNT -> state.selectedFromAccount
+                AccountSelection.TO_ACCOUNT -> state.selectedToAccount
             },
             createNewCallback = {
-                viewModel.openAccountCreate()
-                hideBottomSheet.invoke()
+                onAction.invoke(TransactionCreateAction.OpenCategoryCreate(null))
             },
-        ) { account ->
-            viewModel.setAccountSelection(sheetSelection, account)
-            hideBottomSheet.invoke()
-        }
+            onItemSelection = {
+                onAction.invoke(TransactionCreateAction.SelectAccount(it))
+            }
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun CategorySelectionView(
+    state: TransactionCreateState,
+    onAction: (TransactionCreateAction) -> Unit
+) {
+    ModalBottomSheet(
+        onDismissRequest = {
+            onAction.invoke(TransactionCreateAction.DismissCategorySelection)
+        },
+        windowInsets = WindowInsets(0.dp),
+        containerColor = MaterialTheme.colorScheme.background,
+        tonalElevation = 0.dp,
+    ) {
+        CategorySelectionScreen(
+            categories = state.categories,
+            selectedCategory = state.selectedCategory,
+            createNewCallback = {
+                onAction.invoke(TransactionCreateAction.OpenCategoryCreate(null))
+            },
+            onItemSelection = {
+                onAction.invoke(TransactionCreateAction.SelectCategory(it))
+            }
+        )
     }
 }
 
 @Composable
 private fun TransactionCreateScreen(
+    state: TransactionCreateState,
+    onAction: (TransactionCreateAction) -> Unit,
     modifier: Modifier = Modifier,
-    amountField: TextFieldValue<String>,
-    currencyIcon: String? = null,
-    selectedDate: Date? = null,
-    onDateChange: ((Date) -> Unit)? = null,
-    selectedTransactionType: TransactionType = TransactionType.EXPENSE,
-    onTransactionTypeChange: ((TransactionType) -> Unit)? = null,
-    selectedCategory: Category,
-    selectedFromAccount: AccountUiModel,
-    selectedToAccount: AccountUiModel,
-    notes: String? = null,
-    onNotesChange: ((String) -> Unit)? = null,
-    openSelection: ((Int) -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
 
-    var showDatePicker by remember { mutableStateOf(false) }
-
-    if (showDatePicker) {
+    if (state.showDateSelection) {
         AppDatePickerDialog(
-            selectedDate = selectedDate ?: Date(),
+            selectedDate = state.dateTime,
             onDateSelected = {
-                onDateChange?.invoke(it)
-                showDatePicker = false
+                onAction.invoke(TransactionCreateAction.SelectDate(it))
             },
-        ) {
-            showDatePicker = false
-        }
+            onDismiss = {
+                onAction.invoke(TransactionCreateAction.DismissDateSelection)
+            }
+        )
     }
-    var showTimePicker by remember { mutableStateOf(false) }
 
-    if (showTimePicker) {
-        val reminder = (selectedDate ?: Date()).toTime()
+    if (state.showTimeSelection) {
+        val reminder = state.dateTime.toTime()
         AppTimePickerDialog(
             reminderTimeState = Triple(reminder.hour, reminder.minute, reminder.is24Hour),
             onTimeSelected = {
                 val reminderTimeState = ReminderTimeState(it.first, it.second, it.third)
-                onDateChange?.invoke((selectedDate ?: Date()).toTime(reminderTimeState))
-                showTimePicker = false
+                onAction.invoke(
+                    TransactionCreateAction.SelectDate(
+                        state.dateTime.toTime(
+                            reminderTimeState
+                        )
+                    )
+                )
             },
-        ) {
-            showTimePicker = false
-        }
+            onDismiss = {
+                onAction.invoke(TransactionCreateAction.DismissDateSelection)
+            }
+        )
     }
 
     Column(
@@ -298,8 +260,10 @@ private fun TransactionCreateScreen(
                 .wrapContentSize()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .align(Alignment.CenterHorizontally),
-            selectedTransactionType = selectedTransactionType,
-            onTransactionTypeChange = onTransactionTypeChange ?: {},
+            selectedTransactionType = state.transactionType,
+            onTransactionTypeChange = {
+                onAction.invoke(TransactionCreateAction.ChangeTransactionType(it))
+            },
         )
         Row(
             modifier = Modifier
@@ -310,24 +274,23 @@ private fun TransactionCreateScreen(
                 modifier = Modifier
                     .weight(1f)
                     .padding(end = 8.dp),
-                value = selectedDate?.toCompleteDateWithDate() ?: "",
+                value = state.dateTime.toCompleteDateWithDate(),
                 label = R.string.select_date,
                 leadingIcon = Icons.Outlined.EditCalendar,
                 onClick = {
                     focusManager.clearFocus(force = true)
-                    showDatePicker = true
+                    onAction.invoke(TransactionCreateAction.ShowDateSelection)
                 },
             )
             ClickableTextField(
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 8.dp),
-                value = selectedDate?.toTimeAndMinutes() ?: "",
+                value = state.dateTime.toTimeAndMinutes(),
                 label = R.string.select_time,
                 leadingIcon = Icons.Outlined.AccessTime,
                 onClick = {
-                    focusManager.clearFocus(force = true)
-                    showTimePicker = true
+                    onAction.invoke(TransactionCreateAction.ShowTimeSelection)
                 },
             )
         }
@@ -336,16 +299,16 @@ private fun TransactionCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp)
                 .fillMaxWidth(),
-            value = amountField.value,
-            isError = amountField.valueError,
-            onValueChange = amountField.onValueChange,
-            leadingIconText = currencyIcon,
+            value = state.amount.value,
+            isError = state.amount.valueError,
+            onValueChange = state.amount.onValueChange,
+            leadingIconText = state.currency.symbol,
             label = R.string.amount,
             errorMessage = stringResource(id = R.string.amount_error_message),
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        openSelection?.invoke(4)
+                        onAction.invoke(TransactionCreateAction.ShowNumberPad)
                     },
                 ) {
                     Icon(
@@ -356,7 +319,7 @@ private fun TransactionCreateScreen(
             },
         )
 
-        if (selectedTransactionType != TransactionType.TRANSFER) {
+        if (state.transactionType != TransactionType.TRANSFER) {
             Text(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
@@ -367,15 +330,15 @@ private fun TransactionCreateScreen(
                 color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500),
             )
             CategoryItem(
-                name = selectedCategory.name,
-                icon = selectedCategory.storedIcon.name,
-                iconBackgroundColor = selectedCategory.storedIcon.backgroundColor,
+                name = state.selectedCategory.name,
+                icon = state.selectedCategory.storedIcon.name,
+                iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
                 endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
                         focusManager.clearFocus(force = true)
-                        openSelection?.invoke(1)
+                        onAction.invoke(TransactionCreateAction.ShowCategorySelection)
                     }
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
             )
@@ -386,7 +349,7 @@ private fun TransactionCreateScreen(
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             text = stringResource(
-                id = if (selectedTransactionType == TransactionType.TRANSFER) {
+                id = if (state.transactionType == TransactionType.TRANSFER) {
                     R.string.from_account
                 } else {
                     R.string.select_account
@@ -398,21 +361,25 @@ private fun TransactionCreateScreen(
         )
 
         AccountItem(
-            name = selectedFromAccount.name,
-            icon = selectedFromAccount.storedIcon.name,
-            iconBackgroundColor = selectedFromAccount.storedIcon.backgroundColor,
+            name = state.selectedFromAccount.name,
+            icon = state.selectedFromAccount.storedIcon.name,
+            iconBackgroundColor = state.selectedFromAccount.storedIcon.backgroundColor,
             endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            amount = selectedFromAccount.amount.amountString,
-            amountTextColor = selectedFromAccount.amountTextColor,
+            amount = state.selectedFromAccount.amount.amountString,
+            amountTextColor = state.selectedFromAccount.amountTextColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
                     focusManager.clearFocus(force = true)
-                    openSelection?.invoke(2)
+                    onAction.invoke(
+                        TransactionCreateAction.ShowAccountSelection(
+                            AccountSelection.FROM_ACCOUNT
+                        )
+                    )
                 }
                 .then(ItemSpecModifier),
         )
-        if (selectedTransactionType == TransactionType.TRANSFER) {
+        if (state.transactionType == TransactionType.TRANSFER) {
             Text(
                 modifier = Modifier
                     .then(ItemSpecModifier)
@@ -424,17 +391,21 @@ private fun TransactionCreateScreen(
             )
 
             AccountItem(
-                name = selectedToAccount.name,
-                icon = selectedToAccount.storedIcon.name,
-                iconBackgroundColor = selectedToAccount.storedIcon.backgroundColor,
+                name = state.selectedToAccount.name,
+                icon = state.selectedToAccount.storedIcon.name,
+                iconBackgroundColor = state.selectedToAccount.storedIcon.backgroundColor,
                 endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                amount = selectedToAccount.amount.amountString,
-                amountTextColor = selectedFromAccount.amountTextColor,
+                amount = state.selectedToAccount.amount.amountString,
+                amountTextColor = state.selectedFromAccount.amountTextColor,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
                         focusManager.clearFocus(force = true)
-                        openSelection?.invoke(3)
+                        onAction.invoke(
+                            TransactionCreateAction.ShowAccountSelection(
+                                AccountSelection.TO_ACCOUNT
+                            )
+                        )
                     }
                     .padding(16.dp),
             )
@@ -444,7 +415,7 @@ private fun TransactionCreateScreen(
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 12.dp)
                 .fillMaxWidth(),
-            value = notes ?: "",
+            value = state.notes.value,
             singleLine = true,
             leadingIcon =
             {
@@ -457,7 +428,7 @@ private fun TransactionCreateScreen(
                 Text(text = stringResource(id = R.string.notes))
             },
             onValueChange = {
-                onNotesChange?.invoke(it)
+                state.notes.onValueChange?.invoke(it)
             },
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -504,42 +475,58 @@ private fun TransactionCreateStatePreview() {
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
 
     ExpenseManagerTheme {
-        TransactionCreateScreen(
-            amountField = amountField,
-            currencyIcon = "$",
-            selectedCategory = Category(
-                id = "1",
-                name = "Shopping",
-                type = CategoryType.EXPENSE,
-                StoredIcon(
-                    name = "ic_calendar",
-                    backgroundColor = "#000000",
+        TransactionCreateScreenContent(
+            state = TransactionCreateState(
+                amount = amountField,
+                currency = Currency(symbol = "$", name = ""),
+                dateTime = Date(),
+                notes = amountField,
+                selectedCategory = Category(
+                    id = "1",
+                    name = "Shopping",
+                    type = CategoryType.EXPENSE,
+                    StoredIcon(
+                        name = "ic_calendar",
+                        backgroundColor = "#000000",
+                    ),
+                    createdOn = Date(),
+                    updatedOn = Date(),
                 ),
-                createdOn = Date(),
-                updatedOn = Date(),
-            ),
-            selectedFromAccount = AccountUiModel(
-                id = "1",
-                name = "Shopping",
-                type = AccountType.REGULAR,
-                storedIcon = StoredIcon(
-                    name = "ic_calendar",
-                    backgroundColor = "#000000",
+                selectedFromAccount = AccountUiModel(
+                    id = "1",
+                    name = "Shopping",
+                    type = AccountType.REGULAR,
+                    storedIcon = StoredIcon(
+                        name = "ic_calendar",
+                        backgroundColor = "#000000",
+                    ),
+                    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
+                    amount = Amount(0.0, "$ 0.00"),
                 ),
-                amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
-                amount = Amount(0.0, "$ 0.00"),
-            ),
-            selectedToAccount = AccountUiModel(
-                id = "1",
-                name = "Shopping",
-                type = AccountType.REGULAR,
-                storedIcon = StoredIcon(
-                    name = "ic_calendar",
-                    backgroundColor = "#000000",
+                selectedToAccount = AccountUiModel(
+                    id = "1",
+                    name = "Shopping",
+                    type = AccountType.REGULAR,
+                    storedIcon = StoredIcon(
+                        name = "ic_calendar",
+                        backgroundColor = "#000000",
+                    ),
+                    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+                    amount = Amount(0.0, "$ 0.00"),
                 ),
-                amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-                amount = Amount(0.0, "$ 0.00"),
+                accounts = emptyList(),
+                categories = emptyList(),
+                showDeleteButton = false,
+                showDeleteDialog = false,
+                showCategorySelection = false,
+                showAccountSelection = false,
+                showNumberPad = false,
+                transactionType = TransactionType.TRANSFER,
+                accountSelection = AccountSelection.FROM_ACCOUNT,
+                showTimeSelection = false,
+                showDateSelection = false
             ),
+            onAction = {}
         )
     }
 }

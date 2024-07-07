@@ -1,18 +1,17 @@
 package com.naveenapps.expensemanager.core.navigation
 
-import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.navOptions
 import javax.inject.Inject
 
 class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator() {
 
     override fun navigate(route: Any) {
-        navigationCommands.tryEmit(ComposeNavigationCommand.NavigateTo(route))
+        navigationCommands.tryEmit(NavigationCommand.NavigateTo(route))
     }
 
     override fun navigateAndClearBackStack(route: Any) {
         navigationCommands.tryEmit(
-            ComposeNavigationCommand.NavigateToRoute(
+            NavigationCommand.NavigateToRoute(
                 route,
                 navOptions {
                     popUpTo(0)
@@ -22,11 +21,11 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
     }
 
     override fun popBackStack() {
-        navigationCommands.tryEmit(ComposeNavigationCommand.PopBackStack)
+        navigationCommands.tryEmit(NavigationCommand.PopBackStack)
     }
 
     override fun popUpTo(route: String, inclusive: Boolean) {
-        navigationCommands.tryEmit(ComposeNavigationCommand.PopUpToRoute(route, inclusive))
+        navigationCommands.tryEmit(NavigationCommand.PopUpToRoute(route, inclusive))
     }
 
     override fun <T> navigateUpWithResult(
@@ -35,7 +34,7 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
         route: String?,
     ) {
         navigationCommands.tryEmit(
-            ComposeNavigationCommand.NavigateUpWithResult(
+            NavigationCommand.NavigateUpWithResult(
                 key = key,
                 result = result,
                 route = route,
@@ -45,7 +44,7 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
 
     override fun <T> navigateBackWithResult(key: String, result: T) {
         navigationCommands.tryEmit(
-            ComposeNavigationCommand.NavigateBackWithResult(
+            NavigationCommand.NavigateBackWithResult(
                 key = key,
                 result = result,
             ),
@@ -54,7 +53,7 @@ class ExpenseManagerComposeNavigator @Inject constructor() : AppComposeNavigator
 
     override fun navigateBackWithMultipleResult(values: MutableMap<String, Any>) {
         navigationCommands.tryEmit(
-            ComposeNavigationCommand.NavigateBackWithMultipleResult(values = values)
+            NavigationCommand.NavigateBackWithMultipleResult(values = values)
         )
     }
 }
