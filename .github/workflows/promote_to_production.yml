@@ -1,0 +1,48 @@
+name: Publish - Play store
+
+on:
+  workflow_call:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version Name'
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish-play-store:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Set up environment
+        run: |
+          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_BASE64 }}" | base64 -d > ./play_publish.json;
+          echo "${{ secrets.SIGNING_PROPERTIES_FILE_BASE64 }}" | base64 -d > ./credentials.properties;
+          echo "${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}" | base64 -d > ./android_keystore.jks;
+
+      - name: Deploy Play Store
+        run: ./gradlew --no-configuration-cache promoteArtifact --from-track beta --promote-track production --release-status completed --user-fraction 1
+
