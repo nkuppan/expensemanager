@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val JAVA_VERSION = JavaVersion.VERSION_17
+val JAVA_VERSION = JavaVersion.VERSION_19
 
 fun CommonExtension<*, *, *, *, *, *>.configureJVM() {
     this.compileOptions {
