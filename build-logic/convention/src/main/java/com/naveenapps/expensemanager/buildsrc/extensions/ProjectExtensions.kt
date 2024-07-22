@@ -6,6 +6,7 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.tasks.testing.Test
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.register
 import org.gradle.kotlin.dsl.withType
 import org.gradle.testing.jacoco.plugins.JacocoPluginExtension
 import org.gradle.testing.jacoco.plugins.JacocoTaskExtension
@@ -62,13 +63,17 @@ private val coverageExclusions = listOf(
 )
 
 internal fun Project.configureJacoco() {
+
     configure<JacocoPluginExtension> {
         toolVersion = libs.findVersion("jacoco").get().toString()
     }
 
-    tasks.create("debugCoverage", JacocoReport::class.java) {
+    tasks.register<JacocoReport>("debugCoverage") {
+
         dependsOn("testDebugUnitTest")
+
         group = "Reporting"
+
         description = "Generate Jacoco coverage reports for the debug build."
 
         reports {
@@ -76,27 +81,29 @@ internal fun Project.configureJacoco() {
             html.required.set(true)
         }
 
-        val jClasses = "${project.buildDir}/intermediates/javac/debug/classes"
-        val kClasses = "${project.buildDir}/tmp/kotlin-classes/debug"
+        val jClasses = "${buildDir}/intermediates/javac/debug/classes"
+        val kClasses = "${buildDir}/tmp/kotlin-classes/debug"
         val javaClasses = fileTree(jClasses) { exclude(coverageExclusions) }
         val kotlinClasses = fileTree(kClasses) { exclude(coverageExclusions) }
 
         classDirectories.setFrom(files(javaClasses, kotlinClasses))
 
         val sourceDirs = listOf(
-            "${project.projectDir}/src/main/java",
-            "${project.projectDir}/src/main/kotlin",
-            "${project.projectDir}/src/debug/java",
-            "${project.projectDir}/src/debug/kotlin",
+            "${projectDir}/src/main/java",
+            "${projectDir}/src/main/kotlin",
+            "${projectDir}/src/debug/java",
+            "${projectDir}/src/debug/kotlin",
         )
 
         sourceDirectories.setFrom(files(sourceDirs))
 
+/*
         executionData.setFrom(
             files(
-                listOf("${project.buildDir}/jacoco/testDebugUnitTest.exec"),
+                listOf("${buildDir}/jacoco/testDebugUnitTest.exec"),
             ),
         )
+*/
     }
 
     tasks.withType<Test>().configureEach {

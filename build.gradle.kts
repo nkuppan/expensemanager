@@ -112,7 +112,7 @@ tasks.withType<Test>().configureEach {
     }
 }
 
-tasks.create("allDebugCoverage", JacocoReport::class) {
+tasks.create<JacocoReport>("allDebugCoverage") {
 
     group = "Reporting"
     description = "Generate overall Jacoco coverage report for the debug build."
