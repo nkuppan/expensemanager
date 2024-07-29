@@ -1,4 +1,4 @@
-name: Create Release Tag
+name: Github - Release Tag Create
 
 on:
   workflow_call:

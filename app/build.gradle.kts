@@ -4,8 +4,8 @@ import java.util.Locale
 import java.util.Properties
 
 plugins {
-    id("naveenapps.plugin.android.app")
-    id("naveenapps.plugin.kotlin.basic")
+    alias(libs.plugins.naveenapps.android.app)
+    alias(libs.plugins.naveenapps.kotlin.basic)
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
     id("com.github.triplet.play")
@@ -13,7 +13,7 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.appdistribution")
     id("com.google.android.gms.oss-licenses-plugin")
-    id("jacoco")
+    alias(libs.plugins.compose.compiler)
 }
 
 

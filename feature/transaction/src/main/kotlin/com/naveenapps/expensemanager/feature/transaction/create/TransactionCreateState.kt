@@ -32,3 +32,8 @@ enum class AccountSelection {
     FROM_ACCOUNT,
     TO_ACCOUNT
 }
+
+data class TransactionCreateInitSetupState(
+    val isCategorySyncCompleted: Boolean,
+    val isAccountSyncCompleted: Boolean,
+)

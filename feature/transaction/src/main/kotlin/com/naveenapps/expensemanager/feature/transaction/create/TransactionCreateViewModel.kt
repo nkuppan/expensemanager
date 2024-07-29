@@ -36,8 +36,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -62,6 +64,13 @@ class TransactionCreateViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val transactionType = MutableStateFlow(TransactionType.EXPENSE)
+
+    private val isInitialSyncCompleted = MutableStateFlow(
+        TransactionCreateInitSetupState(
+            isCategorySyncCompleted = false,
+            isAccountSyncCompleted = false
+        )
+    )
 
     private val _state = MutableStateFlow(
         TransactionCreateState(
@@ -137,6 +146,9 @@ class TransactionCreateViewModel @Inject constructor(
                     selectedToAccount = account ?: mappedAccounts.firstOrNull() ?: defaultAccount
                 )
             }
+            isInitialSyncCompleted.update {
+                it.copy(isAccountSyncCompleted = true)
+            }
         }.launchIn(viewModelScope)
 
         combine(
@@ -178,9 +190,17 @@ class TransactionCreateViewModel @Inject constructor(
                     categories = filteredCategories
                 )
             }
+
+            isInitialSyncCompleted.update {
+                it.copy(isCategorySyncCompleted = true)
+            }
         }.launchIn(viewModelScope)
 
-        readInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
+        isInitialSyncCompleted.onEach {
+            if (it.isAccountSyncCompleted && it.isCategorySyncCompleted) {
+                readInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
+            }
+        }.distinctUntilChanged().launchIn(viewModelScope)
     }
 
     private fun readInfo(transactionId: String?) {
@@ -191,9 +211,11 @@ class TransactionCreateViewModel @Inject constructor(
                 is Resource.Success -> {
                     val transaction = response.data
                     this@TransactionCreateViewModel.transaction = transaction
+                    this@TransactionCreateViewModel.transactionType.value = transaction.type
                     _state.update {
                         it.copy(
                             amount = it.amount.copy(value = transaction.amount.amount.toStringWithLocale()),
+                            transactionType = transaction.type,
                             dateTime = transaction.createdOn,
                             notes = it.notes.copy(value = transaction.notes),
                             selectedFromAccount = transaction.fromAccount.toAccountUiModel(

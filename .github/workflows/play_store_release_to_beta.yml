@@ -1,4 +1,4 @@
-name: Publish - Play store
+name: Play Store - Release to Beta
 
 on:
   workflow_call:
@@ -44,5 +44,24 @@ jobs:
           echo "${{ secrets.SIGNING_KEYSTORE_FILE_BASE64 }}" | base64 -d > ./android_keystore.jks;
 
       - name: Deploy Play Store
-        run: ./gradlew --no-configuration-cache promoteArtifact --from-track beta --promote-track production --release-status completed --user-fraction 1
+        run: ./gradlew --no-configuration-cache publishReleaseBundle uploadCrashlyticsMappingFileRelease
+        env:
+          PLAYSTORE_TRACK: "beta"
+          PLAYSTORE_RELEASE_STATUS: "completed"
+
+  create-tag:
+    runs-on: ubuntu-latest
+    needs: publish-play-store
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Release Tag
+        run: |
+          gh release create ${{ github.event.inputs.version }} \
+            --latest \
+            --title "${{ github.event.inputs.version }}" \
+            --target ${{ github.ref }}
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN }}
 

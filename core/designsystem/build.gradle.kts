@@ -3,6 +3,7 @@ plugins {
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.hilt")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
