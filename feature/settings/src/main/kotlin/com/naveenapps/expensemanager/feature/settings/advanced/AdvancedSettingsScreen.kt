@@ -115,7 +115,6 @@ private fun AdvancedSettingsScaffoldView(
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp),
             containerColor = MaterialTheme.colorScheme.background,
             tonalElevation = 0.dp,
         ) {

@@ -10,7 +10,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -167,7 +166,6 @@ fun ExportScreen() {
                 }
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp),
             containerColor = MaterialTheme.colorScheme.background,
             tonalElevation = 0.dp,
         ) {
@@ -261,7 +259,6 @@ private fun ExportScreenContent(
                 showBottomSheet = false
             },
             sheetState = bottomSheetState,
-            windowInsets = WindowInsets(0.dp),
             containerColor = MaterialTheme.colorScheme.background,
             tonalElevation = 0.dp,
         ) {

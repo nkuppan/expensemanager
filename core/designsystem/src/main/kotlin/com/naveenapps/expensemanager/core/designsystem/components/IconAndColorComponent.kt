@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.core.designsystem.components
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -73,7 +72,6 @@ fun IconAndColorComponent(
             onDismissRequest = {
                 sheetSelection = SelectionType.NONE
             },
-            windowInsets = WindowInsets(0.dp),
             containerColor = MaterialTheme.colorScheme.background,
             tonalElevation = 0.dp,
         ) {
