@@ -20,25 +20,27 @@ class CategorySelectionViewModel @Inject constructor(
     private val _categories = MutableStateFlow<List<Category>>(emptyList())
     val categories = _categories.asStateFlow()
 
-    private val _selectedCategory = MutableStateFlow<List<Category>>(emptyList())
-    val selectedCategories = _selectedCategory.asStateFlow()
+    private val _selectedCategories = MutableStateFlow<List<Category>>(emptyList())
+    val selectedCategories = _selectedCategories.asStateFlow()
 
     init {
-        getCategoriesUseCase.invoke().map { categories ->
-            _categories.value = categories
-            if (_selectedCategory.value.isEmpty()) {
-                _selectedCategory.value = categories
-            }
-        }.launchIn(viewModelScope)
+        getCategoriesUseCase.invoke()
+                .map { categories ->
+                    _categories.value = categories
+                    if (_selectedCategories.value.isEmpty()) {
+                        _selectedCategories.value = categories
+                    }
+                }
+                .launchIn(viewModelScope)
     }
 
     fun clearChanges() {
-        _selectedCategory.value = emptyList()
+        _selectedCategories.value = emptyList()
     }
 
     fun selectThisCategory(category: Category, selected: Boolean) {
         viewModelScope.launch {
-            val selectedCategories = _selectedCategory.value.toMutableList()
+            val selectedCategories = _selectedCategories.value.toMutableList()
 
             val selectedCategory = selectedCategories.firstOrNull {
                 category.id == it.id
@@ -54,33 +56,17 @@ class CategorySelectionViewModel @Inject constructor(
                 }
             }
 
-            _selectedCategory.value = selectedCategories
+            _selectedCategories.value = selectedCategories
         }
     }
 
-    fun selectAllThisCategory(categories: List<Category>) {
-        if (categories.isEmpty()) {
-            return
-        }
+    fun selectAllTheseCategories(categories: List<Category>) {
+        categories.ifEmpty { return }
 
         viewModelScope.launch {
             clearChanges()
-
-            val selectedCategories = _selectedCategory.value.toMutableList()
-
-            repeat(categories.size) {
-                val category = categories[it]
-
-                val selectedCategory = selectedCategories.firstOrNull {
-                    category.id == it.id
-                }
-
-                if (selectedCategory == null) {
-                    selectedCategories.add(category)
-                }
-            }
-
-            _selectedCategory.value = selectedCategories
+            _selectedCategories.value = categories
         }
+
     }
 }
