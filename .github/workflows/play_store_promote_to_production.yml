@@ -3,10 +3,6 @@ name: Play Store - Promote to Production
 on:
   workflow_call:
   workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version Name'
-        required: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
