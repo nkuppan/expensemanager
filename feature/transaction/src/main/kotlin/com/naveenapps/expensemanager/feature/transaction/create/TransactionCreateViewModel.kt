@@ -154,7 +154,9 @@ class TransactionCreateViewModel @Inject constructor(
         combine(
             transactionType,
             getAllCategoryUseCase.invoke(),
-        ) { transactionType, categories ->
+            settingsRepository.getDefaultIncomeCategory(),
+            settingsRepository.getDefaultExpenseCategory()
+        ) { transactionType, categories, defaultIncomeCategory, defaultExpenseCategory ->
             val filteredCategories = categories.filter { category ->
                 if (transactionType.isIncome()) {
                     category.type.isIncome()
@@ -165,11 +167,11 @@ class TransactionCreateViewModel @Inject constructor(
 
             val categoryId = when (transactionType) {
                 TransactionType.INCOME -> {
-                    settingsRepository.getDefaultIncomeCategory().firstOrNull()
+                    defaultIncomeCategory
                 }
 
                 TransactionType.EXPENSE -> {
-                    settingsRepository.getDefaultExpenseCategory().firstOrNull()
+                    defaultExpenseCategory
                 }
 
                 else -> {
@@ -185,7 +187,7 @@ class TransactionCreateViewModel @Inject constructor(
                     selectedCategory = if (transaction != null) {
                         expenseCategory ?: filteredCategories.firstOrNull() ?: defaultCategory
                     } else {
-                        defaultCategory
+                        filteredCategories.firstOrNull() ?: defaultCategory
                     },
                     categories = filteredCategories
                 )
