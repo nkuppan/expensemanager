@@ -37,7 +37,7 @@ fun MultipleCategoriesSelectionScreen(
     selectedCategories: List<Category> = emptyList(),
     onItemSelection: ((List<Category>, Boolean) -> Unit)? = null,
 ) {
-    viewModel.selectAllThisCategory(selectedCategories)
+    viewModel.selectAllTheseCategories(selectedCategories)
 
     CategorySelectionView(viewModel, onItemSelection)
 }
