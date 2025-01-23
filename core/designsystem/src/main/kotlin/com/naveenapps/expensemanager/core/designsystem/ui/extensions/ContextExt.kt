@@ -62,7 +62,7 @@ fun Context.shareThisFile(fileUri: Uri) {
 fun Context.getAppVersionName(): String {
     return try {
         val pInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
-        pInfo.versionName
+        pInfo.versionName ?: ""
     } catch (e: PackageManager.NameNotFoundException) {
         e.printStackTrace()
         ""

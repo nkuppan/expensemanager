@@ -7,8 +7,8 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
-const val TARGET_SDK = 34
-const val COMPILE_SDK: Int = 34
+const val TARGET_SDK = 35
+const val COMPILE_SDK: Int = 35
 const val MIN_SDK = 21
 
 const val VERSION_NAME = "1.2.7"

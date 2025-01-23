@@ -162,7 +162,7 @@ private fun AccountSelectionView(
 ) {
     ModalBottomSheet(
         onDismissRequest = {
-            onAction.invoke(TransactionCreateAction.DismissCategorySelection)
+            onAction.invoke(TransactionCreateAction.DismissAccountSelection)
         },
         containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp,
@@ -483,7 +483,7 @@ private fun TransactionCreateStatePreview() {
                     name = "Shopping",
                     type = CategoryType.EXPENSE,
                     StoredIcon(
-                        name = "ic_calendar",
+                        name = "account_balance_wallet",
                         backgroundColor = "#000000",
                     ),
                     createdOn = Date(),
@@ -494,7 +494,7 @@ private fun TransactionCreateStatePreview() {
                     name = "Shopping",
                     type = AccountType.REGULAR,
                     storedIcon = StoredIcon(
-                        name = "ic_calendar",
+                        name = "account_balance_wallet",
                         backgroundColor = "#000000",
                     ),
                     amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
@@ -505,7 +505,7 @@ private fun TransactionCreateStatePreview() {
                     name = "Shopping",
                     type = AccountType.REGULAR,
                     storedIcon = StoredIcon(
-                        name = "ic_calendar",
+                        name = "account_balance_wallet",
                         backgroundColor = "#000000",
                     ),
                     amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
