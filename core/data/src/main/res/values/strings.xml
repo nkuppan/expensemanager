@@ -18,6 +18,7 @@
     <string name="month">Month</string>
     <string name="from_account">From Account</string>
     <string name="to_account">To Account</string>
+    <string name="transaction_type">Transaction Type</string>
 
     <string name="light">Light</string>
     <string name="dark">Dark</string>

@@ -6,6 +6,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.data.R
@@ -45,6 +46,7 @@ class ExportRepositoryImpl @Inject constructor(
                             context.getString(R.string.category),
                             context.getString(R.string.from_account),
                             context.getString(R.string.to_account),
+                            context.getString(R.string.transaction_type),
                             context.getString(R.string.notes),
                             context.getString(R.string.amount),
                         ),
@@ -58,6 +60,7 @@ class ExportRepositoryImpl @Inject constructor(
                                     transaction.category.name,
                                     transaction.fromAccount.name,
                                     transaction.toAccount?.name ?: "",
+                                    transaction.type.toCapitalize(),
                                     transaction.notes,
                                     transaction.amount.amount.toTrimAmount(),
                                 ),
