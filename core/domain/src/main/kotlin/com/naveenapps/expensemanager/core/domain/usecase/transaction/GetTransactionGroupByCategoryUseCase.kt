@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
+import com.naveenapps.expensemanager.core.model.isTransfer
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
@@ -29,7 +30,7 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
         ) { currency, transactions ->
 
             val maps = if (transactions?.isNotEmpty() == true) {
-                transactions.groupBy { it.categoryId }
+                transactions.filterNot { it.type.isTransfer() }.groupBy { it.categoryId }
                     .map { it.value[0].category to it.value }.toMap()
             } else {
                 emptyMap()
