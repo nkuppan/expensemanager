@@ -26,45 +26,78 @@ class CurrencyViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _currentCurrency = MutableStateFlow(getDefaultCurrencyUseCase())
-    val currentCurrency = _currentCurrency.asStateFlow()
+    private val _state = MutableStateFlow(
+        CurrencyState(
+            showCurrencySelection = false,
+            currency = getDefaultCurrencyUseCase()
+        )
+    )
+    val state = _state.asStateFlow()
 
     init {
-        getCurrencyUseCase.invoke().onEach {
-            _currentCurrency.value = it
+        getCurrencyUseCase.invoke().onEach { currency ->
+            _state.update { it.copy(currency = currency) }
         }.launchIn(viewModelScope)
     }
 
-    fun selectThisCurrency(currency: Currency?) {
+    private fun selectThisCurrency(currency: Currency?) {
         currency ?: return
         viewModelScope.launch {
-            _currentCurrency.update { it.copy(name = currency.name, symbol = currency.symbol) }
+            _state.update {
+                it.copy(
+                    currency = it.currency.copy(
+                        name = currency.name,
+                        symbol = currency.symbol
+                    )
+                )
+            }
             saveSelectedCurrency()
         }
     }
 
-    fun setCurrencyPositionType(textPosition: TextPosition) {
+    private fun setCurrencyPositionType(textPosition: TextPosition) {
         viewModelScope.launch {
-            _currentCurrency.update { it.copy(position = textPosition) }
+            _state.update { it.copy(currency = it.currency.copy(position = textPosition)) }
             saveSelectedCurrency()
         }
     }
 
-    fun setTextFormatChange(textFormat: TextFormat) {
+    private fun setTextFormatChange(textFormat: TextFormat) {
         viewModelScope.launch {
-            _currentCurrency.update { it.copy(format = textFormat) }
+            _state.update { it.copy(currency = it.currency.copy(format = textFormat)) }
             saveSelectedCurrency()
         }
     }
 
     private fun saveSelectedCurrency() {
         viewModelScope.launch {
-            val currency = _currentCurrency.value
+            val currency = _state.value.currency
             saveCurrencyUseCase.invoke(currency)
         }
     }
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
+    }
+
+    fun processAction(action: CurrencyAction) {
+        when (action) {
+            CurrencyAction.ClosePage -> closePage()
+            CurrencyAction.OpenCurrencySelection -> {
+                _state.update { it.copy(showCurrencySelection = true) }
+            }
+
+            is CurrencyAction.ChangeCurrencyNumberFormat -> {
+                setTextFormatChange(action.textFormat)
+            }
+
+            is CurrencyAction.ChangeCurrencyType -> {
+                setCurrencyPositionType(action.textPosition)
+            }
+
+            is CurrencyAction.SelectCurrency -> {
+                selectThisCurrency(action.currency)
+            }
+        }
     }
 }

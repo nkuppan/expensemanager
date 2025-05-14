@@ -15,9 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,48 +25,38 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.TextFormat
-import com.naveenapps.expensemanager.core.model.TextPosition
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
 
 @Composable
 fun CurrencyCustomiseScreen(
     viewModel: CurrencyViewModel = hiltViewModel(),
 ) {
-    var showCurrencyPage by remember { mutableStateOf(false) }
-    val selectedCurrency by viewModel.currentCurrency.collectAsState()
 
-    if (showCurrencyPage) {
-        CountryCurrencySelectionDialog { country ->
-            viewModel.selectThisCurrency(country?.currency)
-            showCurrencyPage = false
-        }
-    }
+    val state by viewModel.state.collectAsState()
 
     CurrencyScreen(
-        selectedCurrency = selectedCurrency,
-        onTextPositionChange = viewModel::setCurrencyPositionType,
-        onTextFormatChange = viewModel::setTextFormatChange,
-        openCurrencySelection = {
-            showCurrencyPage = true
-        },
-        closePage = viewModel::closePage,
+        state = state,
+        onAction = viewModel::processAction,
     )
 }
 
 @Composable
 private fun CurrencyScreen(
-    selectedCurrency: Currency,
-    onTextPositionChange: (TextPosition) -> Unit,
-    onTextFormatChange: (TextFormat) -> Unit,
-    openCurrencySelection: () -> Unit,
-    closePage: () -> Unit,
+    state: CurrencyState,
+    onAction: (CurrencyAction) -> Unit,
 ) {
+
+    if (state.showCurrencySelection) {
+        CountryCurrencySelectionDialog { country ->
+            onAction.invoke(CurrencyAction.SelectCurrency(country?.currency))
+        }
+    }
+
     Scaffold(
         topBar = {
             TopNavigationBar(
                 onClick = {
-                    closePage.invoke()
+                    onAction.invoke(CurrencyAction.ClosePage)
                 },
                 title = stringResource(R.string.currency),
             )
@@ -83,12 +70,12 @@ private fun CurrencyScreen(
             CurrencyItem(
                 modifier = Modifier
                     .clickable {
-                        openCurrencySelection.invoke()
+                        onAction.invoke(CurrencyAction.OpenCurrencySelection)
                     }
                     .padding(top = 8.dp, bottom = 8.dp)
                     .fillMaxWidth(),
                 title = stringResource(id = R.string.select_currency),
-                description = "${selectedCurrency.name}(${selectedCurrency.symbol})",
+                description = "${state.currency.name}(${state.currency.symbol})",
                 icon = Icons.Default.CurrencyExchange,
             )
 
@@ -104,9 +91,11 @@ private fun CurrencyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 14.dp, end = 14.dp),
-                currency = selectedCurrency.symbol,
-                selectedCurrencyPositionType = selectedCurrency.position,
-                onCurrencyPositionTypeChange = onTextPositionChange,
+                currency = state.currency.symbol,
+                selectedCurrencyPositionType = state.currency.position,
+                onCurrencyPositionTypeChange = {
+                    onAction.invoke(CurrencyAction.ChangeCurrencyType(it))
+                },
             )
 
             Text(
@@ -121,8 +110,10 @@ private fun CurrencyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 14.dp, end = 14.dp),
-                textFormat = selectedCurrency.format,
-                onTextFormatChange = onTextFormatChange,
+                textFormat = state.currency.format,
+                onTextFormatChange = {
+                    onAction.invoke(CurrencyAction.ChangeCurrencyNumberFormat(it))
+                },
             )
         }
     }
@@ -159,11 +150,11 @@ private fun CurrencyItem(
 fun CurrencyCustomiseScreenPreview() {
     ExpenseManagerTheme {
         CurrencyScreen(
-            selectedCurrency = Currency("$", "Dollar"),
-            onTextPositionChange = {},
-            onTextFormatChange = {},
-            openCurrencySelection = {},
-            closePage = {},
+            state = CurrencyState(
+                showCurrencySelection = false,
+                currency = Currency("$", "Dollar")
+            ),
+            onAction = {}
         )
     }
 }

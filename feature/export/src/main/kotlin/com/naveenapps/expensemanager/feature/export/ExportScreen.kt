@@ -79,7 +79,9 @@ private fun createFile(fileType: ExportFileType): Intent? {
 
 @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun ExportScreen() {
+fun ExportScreen(
+    viewModel: ExportViewModel = hiltViewModel()
+) {
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -96,7 +98,6 @@ fun ExportScreen() {
         }
     }
 
-    val viewModel: ExportViewModel = hiltViewModel()
     val selectedDateRange by viewModel.selectedDateRange.collectAsState()
     val exportFileType by viewModel.exportFileType.collectAsState()
     val accountCount by viewModel.accountCount.collectAsState()
@@ -153,7 +154,6 @@ fun ExportScreen() {
     }
 
     val scope = rememberCoroutineScope()
-
     var showBottomSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
