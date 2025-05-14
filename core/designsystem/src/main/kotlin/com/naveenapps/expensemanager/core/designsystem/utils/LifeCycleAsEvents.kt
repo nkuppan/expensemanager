@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.core.common.utils
+package com.naveenapps.expensemanager.core.designsystem.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
