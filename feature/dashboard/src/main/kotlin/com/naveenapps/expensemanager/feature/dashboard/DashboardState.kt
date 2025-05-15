@@ -11,5 +11,5 @@ data class DashboardState(
     val transactions: List<TransactionUiItem>,
     val budgets: List<BudgetUiModel>,
     val accounts: List<AccountUiModel>,
-    val categoryTransaction: CategoryTransactionState
+    val categoryTransactionState: CategoryTransactionState
 )

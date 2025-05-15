@@ -5,4 +5,5 @@ data class CategoryTransactionState(
     val pieChartData: List<PieChartData>,
     val categoryTransactions: List<CategoryTransaction>,
     val hideValues: Boolean = false,
+    val categoryType: CategoryType,
 )

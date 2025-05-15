@@ -106,6 +106,7 @@ class GetTransactionGroupByCategoryUseCase @Inject constructor(
                 ),
                 categoryTransactions = newCategoryTransaction,
                 hideValues = categoryTransactions.isEmpty(),
+                categoryType = categoryType
             )
         }.flowOn(appCoroutineDispatchers.computation)
     }

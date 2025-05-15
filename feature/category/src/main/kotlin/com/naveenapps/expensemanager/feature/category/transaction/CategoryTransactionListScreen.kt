@@ -67,28 +67,19 @@ import kotlin.random.Random
 fun CategoryTransactionTabScreen(
     viewModel: CategoryTransactionListViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.categoryTransaction.collectAsState()
-    val categoryType by viewModel.categoryType.collectAsState()
+    val state by viewModel.state.collectAsState()
 
-    CategoryTransactionTabScreen(
-        uiState = uiState,
-        categoryType = categoryType,
-        openCategoryList = viewModel::openCategoryList,
-        openTransactionCreatePage = viewModel::openTransactionCreatePage,
-        changeChart = viewModel::switchCategory,
-        onItemClick = viewModel::openCategoryDetailsPage
+    CategoryTransactionTabScreenContent(
+        state = state,
+        onAction = viewModel::processAction
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoryTransactionTabScreen(
-    uiState: UiState<CategoryTransactionState>,
-    categoryType: CategoryType,
-    openCategoryList: () -> Unit,
-    openTransactionCreatePage: () -> Unit,
-    changeChart: (() -> Unit)? = null,
-    onItemClick: ((CategoryTransaction) -> Unit)? = null
+fun CategoryTransactionTabScreenContent(
+    state: UiState<CategoryTransactionState>,
+    onAction: (CategoryTransactionAction) -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -100,7 +91,9 @@ fun CategoryTransactionTabScreen(
                     )
                 },
                 actions = {
-                    IconButton(onClick = openCategoryList) {
+                    IconButton(onClick = {
+                        onAction.invoke(CategoryTransactionAction.OpenCategoryList)
+                    }) {
                         Icon(
                             imageVector = Icons.Outlined.Edit,
                             contentDescription = stringResource(id = R.string.edit),
@@ -110,7 +103,9 @@ fun CategoryTransactionTabScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = openTransactionCreatePage) {
+            FloatingActionButton(onClick = {
+                onAction.invoke(CategoryTransactionAction.OpenTransactionCreate)
+            }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -124,10 +119,13 @@ fun CategoryTransactionTabScreen(
                 .fillMaxSize(),
         ) {
             CategoryTransactionListScreenContent(
-                uiState = uiState,
-                categoryType = categoryType,
-                changeChart = changeChart,
-                onItemClick = onItemClick
+                state = state,
+                changeChart = {
+                    onAction.invoke(CategoryTransactionAction.SwitchCategoryType)
+                },
+                onItemClick = {
+                    onAction.invoke(CategoryTransactionAction.OpenCategoryDetails(it))
+                }
             )
         }
     }
@@ -135,12 +133,11 @@ fun CategoryTransactionTabScreen(
 
 @Composable
 private fun CategoryTransactionListScreenContent(
-    uiState: UiState<CategoryTransactionState>,
-    categoryType: CategoryType,
-    changeChart: (() -> Unit)? = null,
-    onItemClick: ((CategoryTransaction) -> Unit)? = null,
+    state: UiState<CategoryTransactionState>,
+    changeChart: () -> Unit,
+    onItemClick: (CategoryTransaction) -> Unit,
 ) {
-    when (uiState) {
+    when (state) {
         UiState.Empty -> {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
@@ -176,12 +173,12 @@ private fun CategoryTransactionListScreenContent(
                 }
                 item {
                     PieChartView(
-                        if (categoryType.isExpense()) {
+                        if (state.data.categoryType.isExpense()) {
                             stringResource(id = R.string.expense)
                         } else {
                             stringResource(id = R.string.income)
-                        } + "\n" + uiState.data.totalAmount.amountString,
-                        chartData = uiState.data.pieChartData.map {
+                        } + "\n" + state.data.totalAmount.amountString,
+                        chartData = state.data.pieChartData.map {
                             PieChartUiData(
                                 it.name,
                                 it.value,
@@ -189,16 +186,16 @@ private fun CategoryTransactionListScreenContent(
                             )
                         },
                         chartHeight = 600,
-                        hideValues = uiState.data.hideValues,
+                        hideValues = state.data.hideValues,
                         modifier = Modifier
                             .padding(top = 16.dp, bottom = 16.dp)
                             .clickable(indicationSource, null) {
-                                changeChart?.invoke()
+                                changeChart.invoke()
                             },
                     )
                 }
 
-                if (uiState.data.categoryTransactions.isEmpty()) {
+                if (state.data.categoryTransactions.isEmpty()) {
                     item {
                         EmptyItem(
                             modifier = Modifier.fillMaxSize(),
@@ -208,13 +205,13 @@ private fun CategoryTransactionListScreenContent(
                     }
                 } else {
                     items(
-                        uiState.data.categoryTransactions,
+                        state.data.categoryTransactions,
                         key = { it.category.id }
                     ) { categoryTransaction ->
                         CategoryTransactionItem(
                             modifier = Modifier
                                 .clickable {
-                                    onItemClick?.invoke(categoryTransaction)
+                                    onItemClick.invoke(categoryTransaction)
                                 }
                                 .then(ItemSpecModifier),
                             name = categoryTransaction.category.name,
@@ -350,6 +347,7 @@ fun getRandomCategoryTransactionData(): CategoryTransactionState {
                 )
             }
         },
+        categoryType = CategoryType.EXPENSE
     )
 }
 
@@ -394,16 +392,9 @@ private fun CategoryTransactionItemPreview() {
 @Composable
 private fun CategoryTransactionTabScreenPreview() {
     ExpenseManagerTheme {
-
-        val uiState = getUiState()
-        val categoryType = CategoryType.INCOME
-        CategoryTransactionTabScreen(
-            uiState = uiState,
-            categoryType = categoryType,
-            openCategoryList = {},
-            openTransactionCreatePage = {},
-            changeChart = {},
-            onItemClick = {}
+        CategoryTransactionTabScreenContent(
+            state = getUiState(),
+            onAction = {}
         )
     }
 }

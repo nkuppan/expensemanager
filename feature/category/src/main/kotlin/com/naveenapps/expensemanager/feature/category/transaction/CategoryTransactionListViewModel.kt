@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,19 +24,19 @@ class CategoryTransactionListViewModel @Inject constructor(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
-    private val _categoryTransaction = MutableStateFlow<UiState<CategoryTransactionState>>(
+
+    private val _state = MutableStateFlow<UiState<CategoryTransactionState>>(
         UiState.Loading,
     )
-    val categoryTransaction = _categoryTransaction.asStateFlow()
+    val state = _state.asStateFlow()
 
-    private val _categoryType = MutableStateFlow(CategoryType.EXPENSE)
-    val categoryType = _categoryType.asStateFlow()
+    private val categoryType = MutableStateFlow(CategoryType.EXPENSE)
 
     init {
         categoryType.flatMapLatest {
             getTransactionGroupByCategoryUseCase.invoke(it)
         }.onEach { model ->
-            _categoryTransaction.value = UiState.Success(
+            _state.value = UiState.Success(
                 if (model.hideValues) {
                     model.copy(categoryTransactions = emptyList())
                 } else {
@@ -45,31 +46,49 @@ class CategoryTransactionListViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun switchCategory() {
-        this._categoryType.value = if (_categoryType.value.isExpense()) {
-            CategoryType.INCOME
-        } else {
-            CategoryType.EXPENSE
+    private fun switchCategory() {
+        this.categoryType.update {
+            if (categoryType.value.isExpense()) {
+                CategoryType.INCOME
+            } else {
+                CategoryType.EXPENSE
+            }
         }
     }
 
-    fun openTransactionCreatePage() {
+    private fun openTransactionCreatePage() {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.TransactionCreate(null),
         )
     }
 
-    fun openCategoryDetailsPage(categoryTransaction: CategoryTransaction) {
+    private fun openCategoryDetailsPage(categoryTransaction: CategoryTransaction) {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.CategoryDetails(categoryTransaction.category.id),
         )
     }
 
-    fun closePage() {
-        appComposeNavigator.popBackStack()
+    private fun openCategoryList() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryList)
     }
 
-    fun openCategoryList() {
-        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryList)
+    fun processAction(action: CategoryTransactionAction) {
+        when (action) {
+            CategoryTransactionAction.SwitchCategoryType -> {
+                switchCategory()
+            }
+
+            CategoryTransactionAction.OpenCategoryList -> {
+                openCategoryList()
+            }
+
+            CategoryTransactionAction.OpenTransactionCreate -> {
+                openTransactionCreatePage()
+            }
+
+            is CategoryTransactionAction.OpenCategoryDetails -> {
+                openCategoryDetailsPage(action.transaction)
+            }
+        }
     }
 }

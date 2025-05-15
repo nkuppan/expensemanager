@@ -141,7 +141,7 @@ fun NavGraphBuilder.expenseManagerNavigation(
 
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
-    val context = LocalContext.current
+    val context = LocalContext.current as? Activity
 
     val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsState()
 
@@ -171,7 +171,7 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
         if (homeScreenBottomBarItems != HomeScreenBottomBarItems.Home) {
             viewModel.setUISystem(HomeScreenBottomBarItems.Home)
         } else {
-            (context as? Activity)?.finish()
+            context?.finish()
         }
     }
 

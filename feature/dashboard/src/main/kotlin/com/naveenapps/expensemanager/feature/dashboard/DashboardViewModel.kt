@@ -48,10 +48,11 @@ class DashboardViewModel @Inject constructor(
             transactions = emptyList(),
             budgets = emptyList(),
             accounts = emptyList(),
-            categoryTransaction = CategoryTransactionState(
+            categoryTransactionState = CategoryTransactionState(
                 pieChartData = listOf(),
                 totalAmount = Amount(0.0),
                 categoryTransactions = emptyList(),
+                categoryType = CategoryType.EXPENSE,
             ),
         )
     )
@@ -127,7 +128,7 @@ class DashboardViewModel @Inject constructor(
                 pieChartData = it.pieChartData.take(4),
                 categoryTransactions = it.categoryTransactions.take(4),
             )
-            _state.update { it.copy(categoryTransaction = categoryTransaction) }
+            _state.update { it.copy(categoryTransactionState = categoryTransaction) }
         }.launchIn(viewModelScope)
 
         getBudgetsUseCase.invoke().onEach { budgets ->

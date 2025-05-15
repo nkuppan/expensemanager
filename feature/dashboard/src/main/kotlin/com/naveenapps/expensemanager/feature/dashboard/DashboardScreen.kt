@@ -193,7 +193,7 @@ private fun DashboardScreenContent(
             CategoryAmountView(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                categoryTransactionState = state.categoryTransaction,
+                categoryTransactionState = state.categoryTransactionState,
             )
         }
         item {
@@ -318,7 +318,7 @@ fun DashboardScaffoldContentPreview() {
             state = DashboardState(
                 expenseFlowState = ExpenseFlowState(),
                 accounts = getRandomAccountUiModel(5),
-                categoryTransaction = CategoryTransactionState(
+                categoryTransactionState = CategoryTransactionState(
                     pieChartData = listOf(
                         getDummyPieChartData("", 25.0f),
                         getDummyPieChartData("", 25.0f),
@@ -339,7 +339,8 @@ fun DashboardScaffoldContentPreview() {
                                 )
                             )
                         }
-                    }.take(5)
+                    }.take(5),
+                    categoryType = CategoryType.EXPENSE,
                 ),
                 budgets = getRandomBudgetUiModel(5),
                 transactions = listOf(getTransactionItem()),
