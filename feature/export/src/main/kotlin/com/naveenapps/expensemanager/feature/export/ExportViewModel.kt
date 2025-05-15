@@ -37,7 +37,7 @@ class ExportViewModel @Inject constructor(
         ExportState(
             isLoading = true,
             selectedDateRange = DateRangeType.TODAY,
-            selectedDateRangeText = UiText.StringResource(com.naveenapps.expensemanager.core.data.R.string.today),
+            selectedDateRangeText = UiText.StringResource(R.string.today),
             fileType = ExportFileType.CSV,
             accountCount = UiText.StringResource(R.string.all),
             isAllAccountSelected = true,

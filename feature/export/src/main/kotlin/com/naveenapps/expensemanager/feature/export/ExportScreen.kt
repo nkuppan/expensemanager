@@ -201,7 +201,9 @@ private fun ExportScreenContent(
             }
 
             is ExportEvent.Error -> {
-
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(message = event.message.asString(context))
+                }
             }
         }
     }

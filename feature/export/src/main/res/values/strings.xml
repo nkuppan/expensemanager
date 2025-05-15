@@ -11,4 +11,5 @@
     <string name="export_disabled_message"><b>Note:</b> We are yet to support the PDF export feature. We will add them as soon as possible.</string>
     <string name="all_time">All Time</string>
     <string name="all">All</string>
+    <string name="today">Today</string>
 </resources>
