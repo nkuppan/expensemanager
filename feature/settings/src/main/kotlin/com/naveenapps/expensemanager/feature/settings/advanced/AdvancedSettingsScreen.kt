@@ -4,7 +4,6 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,13 +25,11 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
@@ -52,7 +50,6 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.settings.R
-import kotlinx.coroutines.launch
 import java.util.Date
 
 @Composable
@@ -60,70 +57,46 @@ fun AdvancedSettingsScreen(
     backupRepository: BackupRepository,
     viewModel: AdvancedSettingsViewModel = hiltViewModel(),
 ) {
-    val accounts by viewModel.accounts.collectAsState()
-    val selectedAccount by viewModel.selectedAccount.collectAsState()
-    val expenseCategories by viewModel.expenseCategories.collectAsState()
-    val selectedExpenseCategory by viewModel.selectedExpenseCategory.collectAsState()
-    val incomeCategories by viewModel.incomeCategories.collectAsState()
-    val selectedIncomeCategory by viewModel.selectedIncomeCategory.collectAsState()
+    val state by viewModel.state.collectAsState()
+
+
+    ObserveAsEvents(viewModel.event) {
+        when (it) {
+            AdvancedSettingEvent.Backup -> {
+                backupRepository.backupData(null)
+            }
+
+            AdvancedSettingEvent.Restore -> {
+                backupRepository.restoreData(null)
+            }
+        }
+    }
 
     AdvancedSettingsScaffoldView(
-        accounts = accounts,
-        selectedAccount = selectedAccount,
-        expenseCategories = expenseCategories,
-        selectedExpenseCategory = selectedExpenseCategory,
-        incomeCategories = incomeCategories,
-        selectedIncomeCategory = selectedIncomeCategory,
-        onItemSelection = viewModel::onItemSelection,
-        backup = {
-            backupRepository.backupData(null)
-        },
-        restore = {
-            backupRepository.restoreData(null)
-        },
-        accountsReOrder = viewModel::openAccountsReOrder,
-        backPress = viewModel::closePage,
+        state = state,
+        onAction = viewModel::processAction
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AdvancedSettingsScaffoldView(
-    accounts: List<Account>,
-    selectedAccount: Account?,
-    expenseCategories: List<Category>,
-    selectedExpenseCategory: Category?,
-    incomeCategories: List<Category>,
-    selectedIncomeCategory: Category?,
-    onItemSelection: (Any) -> Unit,
-    backup: () -> Unit,
-    restore: () -> Unit,
-    accountsReOrder: () -> Unit,
-    backPress: () -> Unit,
+    state: AdvancedSettingState,
+    onAction: (AdvancedSettingAction) -> Unit,
 ) {
 
-    val scope = rememberCoroutineScope()
-    var showDateFilter by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    if (showDateFilter) {
+    if (state.showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
-                scope.launch {
-                    showDateFilter = false
-                    bottomSheetState.hide()
-                }
+                onAction.invoke(AdvancedSettingAction.DismissDateFilterDialog)
             },
-            sheetState = bottomSheetState,
             containerColor = MaterialTheme.colorScheme.background,
             tonalElevation = 0.dp,
         ) {
             DateFilterSelectionView(
                 onComplete = {
-                    scope.launch {
-                        showDateFilter = false
-                        bottomSheetState.hide()
-                    }
+                    onAction.invoke(AdvancedSettingAction.DismissDateFilterDialog)
                 }
             )
         }
@@ -132,7 +105,9 @@ private fun AdvancedSettingsScaffoldView(
     Scaffold(
         topBar = {
             TopNavigationBar(
-                onClick = backPress,
+                onClick = {
+                    onAction.invoke(AdvancedSettingAction.ClosePage)
+                },
                 title = stringResource(R.string.advanced),
             )
         },
@@ -149,36 +124,42 @@ private fun AdvancedSettingsScaffoldView(
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.secondary,
             )
-            if (accounts.isNotEmpty() && selectedAccount != null) {
+            if (state.accounts.isNotEmpty() && state.selectedAccount != null) {
                 AccountPreSelectionView(
-                    accounts = accounts,
-                    selectedAccount = selectedAccount,
+                    accounts = state.accounts,
+                    selectedAccount = state.selectedAccount,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    onItemSelection = onItemSelection,
+                    onItemSelection = {
+                        onAction.invoke(AdvancedSettingAction.SelectAccount(it))
+                    },
                 )
             }
-            if (expenseCategories.isNotEmpty() && selectedExpenseCategory != null) {
+            if (state.expenseCategories.isNotEmpty() && state.selectedExpenseCategory != null) {
                 CategoryPreSelectionView(
-                    expenseCategories,
-                    selectedExpenseCategory,
+                    state.expenseCategories,
+                    state.selectedExpenseCategory,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
                     label = R.string.default_expense_category,
-                    onItemSelection = onItemSelection,
+                    onItemSelection = {
+                        onAction.invoke(AdvancedSettingAction.SelectExpenseCategory(it))
+                    },
                 )
             }
-            if (incomeCategories.isNotEmpty() && selectedIncomeCategory != null) {
+            if (state.incomeCategories.isNotEmpty() && state.selectedIncomeCategory != null) {
                 CategoryPreSelectionView(
-                    incomeCategories,
-                    selectedIncomeCategory,
+                    state.incomeCategories,
+                    state.selectedIncomeCategory,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
                     label = R.string.default_income_category,
-                    onItemSelection = onItemSelection,
+                    onItemSelection = {
+                        onAction.invoke(AdvancedSettingAction.SelectIncomeCategory(it))
+                    },
                 )
             }
 
@@ -192,7 +173,7 @@ private fun AdvancedSettingsScaffoldView(
             SettingsItem(
                 modifier = Modifier
                     .clickable {
-                        backup.invoke()
+                        onAction.invoke(AdvancedSettingAction.Backup)
                     }
                     .padding(top = 8.dp, bottom = 8.dp)
                     .fillMaxWidth(),
@@ -204,7 +185,7 @@ private fun AdvancedSettingsScaffoldView(
             SettingsItem(
                 modifier = Modifier
                     .clickable {
-                        restore.invoke()
+                        onAction.invoke(AdvancedSettingAction.Restore)
                     }
                     .padding(top = 8.dp, bottom = 8.dp)
                     .fillMaxWidth(),
@@ -223,10 +204,7 @@ private fun AdvancedSettingsScaffoldView(
             SettingsItem(
                 modifier = Modifier
                     .clickable {
-                        scope.launch {
-                            bottomSheetState.show()
-                            showDateFilter = true
-                        }
+                        onAction.invoke(AdvancedSettingAction.ShowDateFilterDialog)
                     }
                     .padding(top = 8.dp, bottom = 8.dp)
                     .fillMaxWidth(),
@@ -238,7 +216,7 @@ private fun AdvancedSettingsScaffoldView(
             SettingsItem(
                 modifier = Modifier
                     .clickable {
-                        accountsReOrder.invoke()
+                        onAction.invoke(AdvancedSettingAction.OpenAccountReOrder)
                     }
                     .padding(top = 8.dp, bottom = 8.dp)
                     .fillMaxWidth(),
@@ -282,8 +260,8 @@ private fun SettingsItem(
 private fun AccountPreSelectionView(
     accounts: List<Account>,
     selectedAccount: Account,
+    onItemSelection: (Account) -> Unit,
     modifier: Modifier = Modifier,
-    onItemSelection: ((Any) -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -324,7 +302,7 @@ private fun AccountPreSelectionView(
                         Text(text = item.name)
                     },
                     onClick = {
-                        onItemSelection?.invoke(item)
+                        onItemSelection.invoke(item)
                         expanded = false
                     },
                 )
@@ -339,8 +317,8 @@ private fun CategoryPreSelectionView(
     categories: List<Category>,
     selectedCategory: Category,
     @StringRes label: Int,
+    onItemSelection: (Category) -> Unit,
     modifier: Modifier = Modifier,
-    onItemSelection: ((Any) -> Unit)? = null,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -381,7 +359,7 @@ private fun CategoryPreSelectionView(
                         Text(text = item.name)
                     },
                     onClick = {
-                        onItemSelection?.invoke(item)
+                        onItemSelection.invoke(item)
                         expanded = false
                     },
                 )
@@ -447,16 +425,16 @@ fun getCategoryData(
 fun AdvancedSettingsPreview() {
     ExpenseManagerTheme {
         AdvancedSettingsScaffoldView(
-            accounts = getRandomAccountData(5),
-            selectedAccount = getRandomAccountData(5).firstOrNull(),
-            expenseCategories = getRandomCategoryData(5),
-            selectedExpenseCategory = getRandomCategoryData(5).firstOrNull(),
-            incomeCategories = getRandomCategoryData(5),
-            selectedIncomeCategory = getRandomCategoryData(5).firstOrNull(),
-            onItemSelection = {},
-            backup = {},
-            restore = {},
-            accountsReOrder = {}
-        ) {}
+            state = AdvancedSettingState(
+                accounts = getRandomAccountData(5),
+                selectedAccount = getRandomAccountData(5).firstOrNull(),
+                expenseCategories = getRandomCategoryData(5),
+                selectedExpenseCategory = getRandomCategoryData(5).firstOrNull(),
+                incomeCategories = getRandomCategoryData(5),
+                selectedIncomeCategory = getRandomCategoryData(5).firstOrNull(),
+                showDateFilter = false
+            ),
+            onAction = {}
+        )
     }
 }

@@ -11,11 +11,13 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,6 +28,22 @@ class AdvancedSettingsViewModel @Inject constructor(
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
+
+    private val _event = Channel<AdvancedSettingEvent>()
+    val event = _event.receiveAsFlow()
+
+    private val _state = MutableStateFlow(
+        AdvancedSettingState(
+            accounts = emptyList(),
+            selectedAccount = null,
+            incomeCategories = emptyList(),
+            selectedIncomeCategory = null,
+            expenseCategories = emptyList(),
+            selectedExpenseCategory = null,
+            showDateFilter = false,
+        )
+    )
+    val state = _state.asStateFlow()
 
     private val _accounts = MutableStateFlow<List<Account>>(emptyList())
     val accounts = _accounts.asStateFlow()
@@ -96,7 +114,7 @@ class AdvancedSettingsViewModel @Inject constructor(
         }
     }
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
     }
 
@@ -116,7 +134,28 @@ class AdvancedSettingsViewModel @Inject constructor(
         }
     }
 
-    fun openAccountsReOrder() {
+    private fun openAccountsReOrder() {
         appComposeNavigator.navigate(ExpenseManagerScreens.AccountReOrderScreen)
+    }
+
+    fun processAction(action: AdvancedSettingAction) {
+        when (action) {
+            AdvancedSettingAction.Backup -> TODO()
+            AdvancedSettingAction.ClosePage -> {
+                closePage()
+            }
+
+            AdvancedSettingAction.OpenAccountReOrder -> {
+                openAccountsReOrder()
+            }
+
+            AdvancedSettingAction.Restore -> {
+
+            }
+
+            is AdvancedSettingAction.SelectAccount -> TODO()
+            is AdvancedSettingAction.SelectExpenseCategory -> TODO()
+            is AdvancedSettingAction.SelectIncomeCategory -> TODO()
+        }
     }
 }
