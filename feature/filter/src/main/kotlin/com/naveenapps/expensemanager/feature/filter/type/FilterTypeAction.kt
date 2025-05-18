@@ -11,4 +11,6 @@ sealed class FilterTypeAction {
     data class SelectCategory(val category: Category) : FilterTypeAction()
 
     data class SelectTransactionType(val transactionType: TransactionType) : FilterTypeAction()
+
+    data object SaveChanges : FilterTypeAction()
 }

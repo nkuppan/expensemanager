@@ -33,8 +33,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.DateRangeType
+import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
-import com.naveenapps.expensemanager.feature.filter.type.FilterTypeSelection
+import com.naveenapps.expensemanager.feature.filter.type.FilterTypeSelectionView
 import com.naveenapps.expensemanager.feature.filter.type.InputChipView
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,7 +74,7 @@ fun FilterView(
             containerColor = MaterialTheme.colorScheme.background,
             tonalElevation = 0.dp,
         ) {
-            FilterTypeSelection(
+            FilterTypeSelectionView(
                 applyChanges = {
                     viewModel.processAction(FilterAction.DismissTypeFilter)
                 },
@@ -219,7 +220,7 @@ fun FilterViewPreview() {
                     date = "This Month (11/2023)",
                     showBackward = false,
                     showForward = false,
-                    selectedTransactionTypes = emptyList(),
+                    selectedTransactionTypes = listOf(TransactionType.TRANSFER, TransactionType.INCOME),
                     selectedAccounts = emptyList(),
                     selectedCategories = emptyList(),
                     showDateFilter = false,

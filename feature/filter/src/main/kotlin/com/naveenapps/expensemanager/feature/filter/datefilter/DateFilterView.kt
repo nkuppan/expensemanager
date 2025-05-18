@@ -21,9 +21,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -37,16 +34,12 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePick
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.filter.R
 import java.util.Date
-
-enum class DateTypeSelection {
-    FROM_DATE,
-    TO_DATE,
-}
 
 @Composable
 fun DateFilterSelectionView(
@@ -54,49 +47,36 @@ fun DateFilterSelectionView(
     viewModel: DateFilterViewModel = hiltViewModel()
 ) {
 
-    var showDatePicker by remember { mutableStateOf(false) }
-    var dateTypeSelection by remember { mutableStateOf(DateTypeSelection.FROM_DATE) }
-
-    val fromDate by viewModel.fromDate.collectAsState()
-    val toDate by viewModel.toDate.collectAsState()
-    val dateRangeFilterTypes by viewModel.dateRangeFilterTypes.collectAsState()
-    val dateRangeType by viewModel.dateRangeType.collectAsState()
-    val showCustomRangeSelection by viewModel.showCustomRangeSelection.collectAsState()
-
-    if (showDatePicker) {
-        AppDatePickerDialog(
-            selectedDate = if (dateTypeSelection == DateTypeSelection.FROM_DATE) {
-                fromDate.value
-            } else {
-                toDate.value
-            },
-            onDateSelected = { date ->
-                showDatePicker = false
-                if (dateTypeSelection == DateTypeSelection.FROM_DATE) {
-                    viewModel.setFromDate(date)
-                } else {
-                    viewModel.setToDate(date)
-                }
-            },
-        ) {
-            showDatePicker = false
+    ObserveAsEvents(viewModel.event) {
+        when (it) {
+            DateFilterEvent.Saved -> onComplete.invoke()
         }
     }
 
-    FilterTypesAndView(
-        filterTypes = dateRangeFilterTypes,
-        selectedFilterType = dateRangeType,
-        fromDate = fromDate,
-        toDate = toDate,
-        showCustomRangeSelection = showCustomRangeSelection,
-        complete = {
-            viewModel.save()
-            onComplete.invoke()
-        },
-        onDateSelection = {
-            dateTypeSelection = it
-            showDatePicker = true
-        },
+    val state by viewModel.state.collectAsState()
+
+    if (state.showDateFilter) {
+        AppDatePickerDialog(
+            selectedDate = if (state.dateFilterType == DateFilterType.FROM_DATE) {
+                state.fromDate.value
+            } else {
+                state.toDate.value
+            },
+            onDateSelected = { date ->
+                if (state.dateFilterType == DateFilterType.FROM_DATE) {
+                    viewModel.processAction(DateFilterAction.SaveFromDate(date))
+                } else {
+                    viewModel.processAction(DateFilterAction.SaveToDate(date))
+                }
+            },
+        ) {
+            viewModel.processAction(DateFilterAction.DismissDateSelection)
+        }
+    }
+
+    FilterTypesAndViewContent(
+        state = state,
+        onAction = viewModel::processAction,
         modifier = Modifier
             .wrapContentSize()
             .padding(16.dp)
@@ -104,14 +84,9 @@ fun DateFilterSelectionView(
 }
 
 @Composable
-private fun FilterTypesAndView(
-    filterTypes: List<DateRangeModel>,
-    selectedFilterType: TextFieldValue<DateRangeType>,
-    fromDate: TextFieldValue<Date>,
-    toDate: TextFieldValue<Date>,
-    showCustomRangeSelection: Boolean,
-    complete: () -> Unit,
-    onDateSelection: (DateTypeSelection) -> Unit,
+private fun FilterTypesAndViewContent(
+    state: DateFilterState,
+    onAction: (DateFilterAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier = modifier) {
@@ -123,8 +98,8 @@ private fun FilterTypesAndView(
                 fontWeight = FontWeight.Black,
             )
         }
-        items(filterTypes) { filter ->
-            val isSelected = selectedFilterType.value == filter.type
+        items(state.dateRangeTypeList) { filter ->
+            val isSelected = state.dateRangeType.value == filter.type
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -142,7 +117,7 @@ private fun FilterTypesAndView(
                         },
                     )
                     .clickable {
-                        selectedFilterType.onValueChange?.invoke(filter.type)
+                        state.dateRangeType.onValueChange?.invoke(filter.type)
                     }
                     .padding(12.dp),
             ) {
@@ -172,7 +147,7 @@ private fun FilterTypesAndView(
             }
         }
         item {
-            if (showCustomRangeSelection) {
+            if (state.showCustomRangeSelection) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -185,20 +160,20 @@ private fun FilterTypesAndView(
                     ) {
                         ClickableTextField(
                             modifier = Modifier.weight(1f),
-                            value = fromDate.value.toCompleteDateWithDate(),
+                            value = state.fromDate.value.toCompleteDateWithDate(),
                             label = R.string.from_date,
                             leadingIcon = Icons.Default.EditCalendar,
                             onClick = {
-                                onDateSelection.invoke(DateTypeSelection.FROM_DATE)
+                                onAction.invoke(DateFilterAction.ShowFromDateSelection)
                             },
                         )
                         ClickableTextField(
                             modifier = Modifier.weight(1f),
-                            value = toDate.value.toCompleteDateWithDate(),
+                            value = state.toDate.value.toCompleteDateWithDate(),
                             label = R.string.to_date,
                             leadingIcon = Icons.Default.EditCalendar,
                             onClick = {
-                                onDateSelection.invoke(DateTypeSelection.TO_DATE)
+                                onAction.invoke(DateFilterAction.ShowToDateSelection)
                             },
                         )
                     }
@@ -210,10 +185,10 @@ private fun FilterTypesAndView(
                 Row(
                     modifier = modifier.align(Alignment.End),
                 ) {
-                    TextButton(onClick = complete) {
+                    TextButton(onClick = { onAction.invoke(DateFilterAction.Save) }) {
                         Text(text = stringResource(id = R.string.cancel).uppercase())
                     }
-                    TextButton(onClick = { complete.invoke() }) {
+                    TextButton(onClick = { onAction.invoke(DateFilterAction.Save) }) {
                         Text(text = stringResource(id = R.string.select).uppercase())
                     }
                 }
@@ -228,21 +203,24 @@ private fun FilterNormalViewPreview() {
     ExpenseManagerTheme {
         val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
         val dateFilter = TextFieldValue(Date(), false, {})
-        FilterTypesAndView(
-            filterTypes = DateRangeType.entries.map {
-                DateRangeModel(
-                    name = it.toCapitalize(),
-                    description = "Sample",
-                    type = it,
-                    listOf(Date().time, Date().time)
-                )
-            },
-            selectedFilterType = dateRange,
-            fromDate = dateFilter,
-            toDate = dateFilter,
-            showCustomRangeSelection = true,
-            complete = { },
-            onDateSelection = {}
+        FilterTypesAndViewContent(
+            state = DateFilterState(
+                dateFilterType = DateFilterType.FROM_DATE,
+                showCustomRangeSelection = false,
+                showDateFilter = false,
+                dateRangeTypeList = DateRangeType.entries.map {
+                    DateRangeModel(
+                        name = it.toCapitalize(),
+                        description = "Sample",
+                        type = it,
+                        listOf(Date().time, Date().time)
+                    )
+                },
+                dateRangeType = dateRange,
+                fromDate = dateFilter,
+                toDate = dateFilter
+            ),
+            onAction = {}
         )
     }
 }

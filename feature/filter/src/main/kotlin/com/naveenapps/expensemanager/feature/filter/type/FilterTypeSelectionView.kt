@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.filter.type
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +34,7 @@ import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
@@ -45,53 +45,31 @@ import com.naveenapps.expensemanager.feature.filter.R
 import java.util.Date
 
 @Composable
-fun FilterTypeSelection(
-    modifier: Modifier = Modifier,
+fun FilterTypeSelectionView(
     applyChanges: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: FilterTypeSelectionViewModel = hiltViewModel(),
 ) {
-    val saved by viewModel.saved.collectAsState(false)
-
-    if (saved) {
-        applyChanges.invoke()
+    ObserveAsEvents(viewModel.event) {
+        when (it) {
+            FilterTypeEvent.Saved -> applyChanges.invoke()
+        }
     }
 
     val state by viewModel.state.collectAsState()
 
     FilterSelectionView(
-        modifier,
-        transactionTypes = state.transactionTypes,
-        selectedTransactionTypes = state.selectedTransactionTypes,
-        accounts = state.accounts,
-        selectedAccounts = state.selectedAccounts,
-        categories = state.categories,
-        selectedCategories = state.selectedCategories,
-        onTransactionTypeSelection = {
-            viewModel.processAction(FilterTypeAction.SelectTransactionType(it))
-        },
-        onAccountSelection = {
-            viewModel.processAction(FilterTypeAction.SelectAccount(it))
-        },
-        onCategorySelection = {
-            viewModel.processAction(FilterTypeAction.SelectCategory(it))
-        },
-        applyChanges = viewModel::saveChanges,
+        modifier = modifier,
+        state = state,
+        onAction = viewModel::processAction
     )
 }
 
 @Composable
 private fun FilterSelectionView(
     modifier: Modifier,
-    transactionTypes: List<TransactionType>,
-    selectedTransactionTypes: List<TransactionType>,
-    accounts: List<AccountUiModel>,
-    selectedAccounts: List<AccountUiModel>,
-    categories: List<Category>,
-    selectedCategories: List<Category>,
-    onTransactionTypeSelection: (TransactionType) -> Unit,
-    onAccountSelection: (AccountUiModel) -> Unit,
-    onCategorySelection: (Category) -> Unit,
-    applyChanges: () -> Unit,
+    state: FilterTypeState,
+    onAction: (FilterTypeAction) -> Unit
 ) {
     Column(modifier = modifier) {
         Text(
@@ -102,9 +80,11 @@ private fun FilterSelectionView(
         )
         Row(modifier = Modifier.fillMaxWidth()) {
             TransactionTypeFilter(
-                transactionTypes,
-                selectedTransactionTypes,
-                onTransactionTypeSelection,
+                transactionTypes = state.transactionTypes,
+                selectedTransactionType = state.selectedTransactionTypes,
+                onSelection = {
+                    onAction.invoke(FilterTypeAction.SelectTransactionType(it))
+                }
             )
         }
         Text(
@@ -114,7 +94,13 @@ private fun FilterSelectionView(
             fontWeight = FontWeight.Black,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
-            AccountFilter(accounts, selectedAccounts, onAccountSelection)
+            AccountFilter(
+                accounts = state.accounts,
+                selectedAccounts = state.selectedAccounts,
+                onSelection = {
+                    onAction.invoke(FilterTypeAction.SelectAccount(it))
+                }
+            )
         }
         Text(
             modifier = Modifier.padding(16.dp),
@@ -123,7 +109,13 @@ private fun FilterSelectionView(
             fontWeight = FontWeight.Black,
         )
         Row(modifier = Modifier.fillMaxWidth()) {
-            CategoryFilter(categories, selectedCategories, onCategorySelection)
+            CategoryFilter(
+                categories = state.categories,
+                selectedCategories = state.selectedCategories,
+                onSelection = {
+                    onAction.invoke(FilterTypeAction.SelectCategory(it))
+                }
+            )
         }
         Box(
             modifier = Modifier
@@ -132,7 +124,7 @@ private fun FilterSelectionView(
         ) {
             TextButton(
                 modifier = Modifier.align(Alignment.CenterEnd),
-                onClick = applyChanges,
+                onClick = { onAction.invoke(FilterTypeAction.SaveChanges) }
             ) {
                 Text(text = stringResource(id = R.string.apply))
             }
@@ -140,7 +132,6 @@ private fun FilterSelectionView(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TransactionTypeFilter(
     transactionTypes: List<TransactionType>,
@@ -161,7 +152,6 @@ fun TransactionTypeFilter(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AccountFilter(
     accounts: List<AccountUiModel>,
@@ -182,7 +172,6 @@ fun AccountFilter(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun CategoryFilter(
     categories: List<Category>,
@@ -272,16 +261,15 @@ fun FilterTypeSelectionPreview() {
     ExpenseManagerTheme {
         FilterSelectionView(
             modifier = Modifier.fillMaxSize(),
-            transactionTypes = TransactionType.entries,
-            selectedTransactionTypes = emptyList(),
-            accounts = listOf(getAccount(1), getAccount(2)),
-            selectedAccounts = listOf(),
-            categories = listOf(getCategory(1), getCategory(2)),
-            selectedCategories = listOf(),
-            onTransactionTypeSelection = {},
-            onAccountSelection = {},
-            onCategorySelection = {},
-            applyChanges = {},
+            state = FilterTypeState(
+                categories = listOf(getCategory(1), getCategory(2)),
+                selectedCategories = listOf(getCategory(1)),
+                accounts = listOf(getAccount(1), getAccount(2)),
+                selectedAccounts = listOf(getAccount(1)),
+                transactionTypes = TransactionType.entries,
+                selectedTransactionTypes = listOf(TransactionType.INCOME),
+            ),
+            onAction = {},
         )
     }
 }

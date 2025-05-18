@@ -8,3 +8,7 @@ enum class DateRangeType {
     ALL,
     CUSTOM,
 }
+
+fun DateRangeType.isCustom(): Boolean {
+    return this == DateRangeType.CUSTOM
+}

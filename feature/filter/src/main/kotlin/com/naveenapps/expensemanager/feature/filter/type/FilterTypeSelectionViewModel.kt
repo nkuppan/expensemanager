@@ -17,12 +17,12 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,8 +39,8 @@ class FilterTypeSelectionViewModel @Inject constructor(
     private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase,
 ) : ViewModel() {
 
-    private val _saved = MutableSharedFlow<Boolean>()
-    val saved = _saved.asSharedFlow()
+    private val _event = Channel<FilterTypeEvent>()
+    val event = _event.receiveAsFlow()
 
     private val _state = MutableStateFlow(
         FilterTypeState(
@@ -88,25 +88,25 @@ class FilterTypeSelectionViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun setTransactionTypes(type: TransactionType) {
+    private fun setTransactionTypes(type: TransactionType) {
         _state.update {
             it.copy(selectedTransactionTypes = it.selectedTransactionTypes.addOrRemove(type))
         }
     }
 
-    fun setAccount(account: AccountUiModel) {
+    private fun setAccount(account: AccountUiModel) {
         _state.update {
             it.copy(selectedAccounts = it.selectedAccounts.addOrRemove(account))
         }
     }
 
-    fun setCategory(category: Category) {
+    private fun setCategory(category: Category) {
         _state.update {
             it.copy(selectedCategories = it.selectedCategories.addOrRemove(category))
         }
     }
 
-    fun saveChanges() {
+    private fun saveChanges() {
         viewModelScope.launch {
             val transactionTypes = state.value.selectedTransactionTypes
             val selectedAccount = state.value.selectedAccounts.map { it.id }
@@ -116,7 +116,7 @@ class FilterTypeSelectionViewModel @Inject constructor(
             updateSelectedAccountUseCase(selectedAccount)
             updateSelectedCategoryUseCase(selectedCategories)
 
-            _saved.emit(true)
+            _event.send(FilterTypeEvent.Saved)
         }
     }
 
@@ -125,6 +125,7 @@ class FilterTypeSelectionViewModel @Inject constructor(
             is FilterTypeAction.SelectAccount -> setAccount(action.account)
             is FilterTypeAction.SelectCategory -> setCategory(action.category)
             is FilterTypeAction.SelectTransactionType -> setTransactionTypes(action.transactionType)
+            FilterTypeAction.SaveChanges -> saveChanges()
         }
     }
 }

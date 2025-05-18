@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.export
+package com.naveenapps.expensemanager.feature.export.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.ExportFileType
+import com.naveenapps.expensemanager.feature.export.R
 
 @Composable
 fun ExportFileTypeSelectionView(
