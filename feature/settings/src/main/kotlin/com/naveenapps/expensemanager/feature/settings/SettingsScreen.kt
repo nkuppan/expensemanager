@@ -33,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
@@ -46,15 +47,17 @@ fun SettingsScreen(
 
     val state by viewModel.state.collectAsState()
 
-    SettingsScreenScaffoldView(
-        state = state,
-        onAction = {
-            if (it is SettingAction.OpenRateUs) {
+    ObserveAsEvents(viewModel.event) {
+        when (it) {
+            SettingEvent.RateUs -> {
                 shareRepository.openRateUs()
-            } else {
-                viewModel.processAction(it)
             }
         }
+    }
+
+    SettingsScreenScaffoldView(
+        state = state,
+        onAction = viewModel::processAction
     )
 }
 

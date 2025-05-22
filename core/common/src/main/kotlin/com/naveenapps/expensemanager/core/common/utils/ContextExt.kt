@@ -15,6 +15,7 @@ import android.print.PrintDocumentInfo
 import android.print.PrintManager
 import android.util.Log
 import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.naveenapps.expensemanager.core.common.R
 import java.io.File
 import java.io.FileInputStream
@@ -23,7 +24,7 @@ import java.io.IOException
 
 fun openEmailToOption(context: Context, emailId: String) {
     try {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("mailto:$emailId"))
+        val intent = Intent(Intent.ACTION_VIEW, "mailto:$emailId".toUri())
         intent.putExtra(Intent.EXTRA_SUBJECT, "email_subject")
         intent.putExtra(Intent.EXTRA_TEXT, "email_body")
         context.startActivity(intent)
@@ -155,7 +156,6 @@ fun Context.isNightModeOn(): Boolean {
     return this.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 }
 
-
 fun Context.convertFileToString(fileName: String): String? {
     return kotlin.runCatching {
         return this.assets.open(fileName).reader().readText()
@@ -163,28 +163,28 @@ fun Context.convertFileToString(fileName: String): String? {
 }
 
 fun Context.openRateUs() {
-    val packageName = this.packageName
     try {
+        val packageName = this.packageName
         this.startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("market://details?id=$packageName")
+                "market://details?id=$packageName".toUri()
             )
         )
     } catch (e: ActivityNotFoundException) {
         this.startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                "https://play.google.com/store/apps/details?id=$packageName".toUri()
             )
         )
     }
 }
 
 fun Context.openWebPage(webpage: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(webpage))
-    Intent.createChooser(intent, this.getString(R.string.choose_web_browser))
     try {
+        val intent = Intent(Intent.ACTION_VIEW, webpage.toUri())
+        Intent.createChooser(intent, this.getString(R.string.choose_web_browser))
         this.startActivity(intent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.

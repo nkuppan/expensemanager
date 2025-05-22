@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.budget.list
 import android.annotation.SuppressLint
 import androidx.annotation.ColorRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -42,7 +41,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
@@ -59,20 +57,18 @@ import com.naveenapps.expensemanager.feature.budget.R
 fun BudgetListScreen(
     viewModel: BudgetListViewModel = hiltViewModel(),
 ) {
-    val budgetUiState by viewModel.budgets.collectAsState()
+    val state by viewModel.state.collectAsState()
 
     BudgetListScreenContent(
-        budgetUiState = budgetUiState,
-        closePage = viewModel::closePage,
-        openCreatePage = viewModel::openCreateScreen
+        state = state,
+        onAction = viewModel::processAction,
     )
 }
 
 @Composable
 private fun BudgetListScreenContent(
-    budgetUiState: UiState<List<BudgetUiModel>>,
-    closePage: () -> Unit,
-    openCreatePage: (BudgetUiModel?) -> Unit,
+    state: BudgetState,
+    onAction: (BudgetListAction) -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -82,12 +78,18 @@ private fun BudgetListScreenContent(
         },
         topBar = {
             TopNavigationBar(
-                onClick = closePage,
+                onClick = {
+                    onAction.invoke(BudgetListAction.ClosePage)
+                },
                 title = stringResource(R.string.budgets),
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { openCreatePage.invoke(null) }) {
+            FloatingActionButton(
+                onClick = {
+                    onAction.invoke(BudgetListAction.OpenBudgetCreate)
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -99,65 +101,62 @@ private fun BudgetListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-            budgetUiState = budgetUiState,
-            onItemClick = openCreatePage
+            state = state,
+            onItemClick = {
+                onAction.invoke(BudgetListAction.EditBudget(it.id))
+            }
         )
     }
 }
 
 @Composable
 private fun BudgetListScreenContent(
-    budgetUiState: UiState<List<BudgetUiModel>>,
+    state: BudgetState,
     onItemClick: ((BudgetUiModel) -> Unit),
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberLazyListState()
 
-    Box(modifier = modifier) {
-        when (budgetUiState) {
-            UiState.Empty -> {
-                EmptyItem(
-                    emptyItemText = stringResource(id = R.string.no_budget_available),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
-                    modifier = Modifier.fillMaxSize()
+    if (state.isLoading) {
+        LoadingItem(modifier)
+        return
+    }
+
+    if (state.budgets.isNotEmpty()) {
+        LazyColumn(state = scrollState) {
+            items(
+                state.budgets,
+                key = { it.id }
+            ) { budget ->
+                BudgetItem(
+                    name = budget.name,
+                    icon = budget.icon,
+                    iconBackgroundColor = budget.iconBackgroundColor,
+                    progressBarColor = budget.progressBarColor,
+                    amount = budget.amount,
+                    transactionAmount = budget.transactionAmount,
+                    percentage = budget.percent,
+                    modifier = Modifier
+                        .clickable {
+                            onItemClick.invoke(budget)
+                        }
+                        .then(ItemSpecModifier),
                 )
             }
-
-            UiState.Loading -> {
-                LoadingItem()
-            }
-
-            is UiState.Success -> {
-                LazyColumn(state = scrollState) {
-                    items(
-                        budgetUiState.data,
-                        key = { it.id }
-                    ) { budget ->
-                        BudgetItem(
-                            name = budget.name,
-                            icon = budget.icon,
-                            iconBackgroundColor = budget.iconBackgroundColor,
-                            progressBarColor = budget.progressBarColor,
-                            amount = budget.amount,
-                            transactionAmount = budget.transactionAmount,
-                            percentage = budget.percent,
-                            modifier = Modifier
-                                .clickable {
-                                    onItemClick.invoke(budget)
-                                }
-                                .then(ItemSpecModifier),
-                        )
-                    }
-                    item {
-                        Spacer(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(36.dp),
-                        )
-                    }
-                }
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(36.dp),
+                )
             }
         }
+    } else {
+        EmptyItem(
+            emptyItemText = stringResource(id = R.string.no_budget_available),
+            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
+            modifier = Modifier.fillMaxSize()
+        )
     }
 }
 
@@ -355,9 +354,8 @@ private fun DashboardBudgetItemPreview() {
 private fun BudgetListItemLoadingStatePreview() {
     ExpenseManagerTheme {
         BudgetListScreenContent(
-            budgetUiState = UiState.Loading,
-            closePage = {},
-            openCreatePage = {}
+            state = BudgetState(isLoading = true, budgets = emptyList()),
+            onAction = {},
         )
     }
 }
@@ -367,9 +365,8 @@ private fun BudgetListItemLoadingStatePreview() {
 private fun BudgetListItemEmptyStatePreview() {
     ExpenseManagerTheme {
         BudgetListScreenContent(
-            budgetUiState = UiState.Empty,
-            closePage = {},
-            openCreatePage = {}
+            state = BudgetState(isLoading = false, budgets = emptyList()),
+            onAction = {},
         )
     }
 }
@@ -379,11 +376,8 @@ private fun BudgetListItemEmptyStatePreview() {
 private fun BudgetListItemSuccessStatePreview() {
     ExpenseManagerTheme {
         BudgetListScreenContent(
-            budgetUiState = UiState.Success(
-                getRandomBudgetUiModel(5),
-            ),
-            closePage = {},
-            openCreatePage = {}
+            state = BudgetState(isLoading = false, budgets = getRandomBudgetUiModel(5)),
+            onAction = {},
         )
     }
 }

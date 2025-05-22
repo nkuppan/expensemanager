@@ -53,9 +53,11 @@ fun EmptyItem(
 }
 
 @Composable
-fun LoadingItem() {
+fun LoadingItem(
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .testTag("LoadingItem")
     ) {

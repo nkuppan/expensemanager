@@ -71,14 +71,22 @@ class TransactionListViewModel @Inject constructor(
         }.flowOn(appCoroutineDispatchers.computation).launchIn(viewModelScope)
     }
 
-    fun openCreateScreen(transactionId: String? = null) {
+    private fun openCreateScreen(transactionId: String? = null) {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.TransactionCreate(transactionId),
         )
     }
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
+    }
+
+    fun processAction(action: TransactionListAction) {
+        when (action) {
+            TransactionListAction.ClosePage -> closePage()
+            TransactionListAction.OpenCreateTransaction -> openCreateScreen()
+            is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
+        }
     }
 }
 

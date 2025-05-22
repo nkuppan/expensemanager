@@ -67,16 +67,35 @@ fun TransactionListScreen(
 
     val state by viewModel.state.collectAsState()
 
+    TransactionListScreenContent(
+        showBackNavigationIcon,
+        state,
+        viewModel::processAction
+    )
+}
+
+@Composable
+private fun TransactionListScreenContent(
+    showBackNavigationIcon: Boolean,
+    state: TransactionListState,
+    onAction: (TransactionListAction) -> Unit
+) {
     Scaffold(
         topBar = {
             AppTopNavigationBar(
                 title = stringResource(R.string.transaction),
                 navigationIcon = if (showBackNavigationIcon) Icons.AutoMirrored.Default.ArrowBack else null,
-                navigationBackClick = viewModel::closePage
+                navigationBackClick = {
+                    onAction.invoke(TransactionListAction.ClosePage)
+                }
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = viewModel::openCreateScreen) {
+            FloatingActionButton(
+                onClick = {
+                    onAction.invoke(TransactionListAction.OpenCreateTransaction)
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -90,7 +109,7 @@ fun TransactionListScreen(
                 .padding(top = innerPadding.calculateTopPadding()),
             state = state,
         ) { transaction ->
-            viewModel.openCreateScreen(transaction.id)
+            onAction.invoke(TransactionListAction.OpenEdiTransaction(transaction.id))
         }
     }
 }
@@ -226,12 +245,12 @@ fun TransactionItem(
     amount: Amount,
     date: String,
     notes: String?,
+    categoryColor: String,
+    categoryIcon: String,
     modifier: Modifier = Modifier,
     toAccountName: String? = null,
     toAccountIcon: String? = null,
     toAccountColor: String? = null,
-    categoryColor: String = "#000000",
-    categoryIcon: String = "ic_calendar",
     transactionType: TransactionType = TransactionType.EXPENSE,
 ) {
     val isTransfer = toAccountName?.isNotBlank()
@@ -245,11 +264,11 @@ fun TransactionItem(
                 categoryIcon
             },
             iconBackgroundColor =
-            if (isTransfer == true) {
-                "#166EF7"
-            } else {
-                categoryColor
-            },
+                if (isTransfer == true) {
+                    "#166EF7"
+                } else {
+                    categoryColor
+                },
             name = categoryName,
         )
         Column(
@@ -352,10 +371,11 @@ fun TransactionUiStatePreview() {
     ExpenseManagerTheme {
         TransactionItem(
             categoryName = "Utilities",
+            categoryIcon = "agriculture",
             categoryColor = "#A65A56",
             fromAccountName = "Card-xxx",
             fromAccountIcon = "account_balance",
-            fromAccountColor = "#A65A56x",
+            fromAccountColor = "#A65A56",
             amount = Amount(amount = 300.0, amountString = "300 ₹"),
             date = "15/11/2019",
             notes = "Sample notes given as per transaction",
@@ -391,7 +411,7 @@ fun getTransactionItem() = TransactionUiItem(
     categoryName = "Clothing",
     transactionType = TransactionType.EXPENSE,
     categoryIcon = StoredIcon(
-        name = "ic_calendar",
+        name = "agriculture",
         backgroundColor = "#000000",
     ),
     fromAccountName = "DB Bank xxxx",
@@ -417,9 +437,10 @@ private fun getTransactionUiState() = TransactionGroup(
 @Composable
 fun TransactionListItemSuccessStatePreview() {
     ExpenseManagerTheme {
-        TransactionListScreen(
+        TransactionListScreenContent(
             state = TransactionListState(DUMMY_DATA.convertGroupToTransactionListItems()),
-            modifier = Modifier.fillMaxSize(),
+            showBackNavigationIcon = true,
+            onAction = {}
         )
     }
 }

@@ -2,15 +2,15 @@ package com.naveenapps.expensemanager.feature.budget.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,26 +19,40 @@ class BudgetListViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    var budgets = MutableStateFlow<UiState<List<BudgetUiModel>>>(UiState.Loading)
-        private set
+    private val _state = MutableStateFlow(
+        BudgetState(
+            isLoading = true,
+            budgets = emptyList()
+        )
+    )
+    val state = _state.asStateFlow()
 
     init {
-        getBudgetsUseCase.invoke().onEach {
-            budgets.value = if (it.isEmpty()) {
-                UiState.Empty
-            } else {
-                UiState.Success(it)
+        getBudgetsUseCase.invoke().onEach { budgets ->
+            _state.update {
+                it.copy(
+                    isLoading = false,
+                    budgets = budgets
+                )
             }
         }.launchIn(viewModelScope)
     }
 
-    fun openCreateScreen(model: BudgetUiModel? = null) {
+    private fun openCreateScreen(budgetId: String? = null) {
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetCreate(model?.id),
+            ExpenseManagerScreens.BudgetCreate(budgetId),
         )
     }
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
+    }
+
+    fun processAction(action: BudgetListAction) {
+        when (action) {
+            BudgetListAction.ClosePage -> closePage()
+            is BudgetListAction.EditBudget -> openCreateScreen(action.budgetId)
+            BudgetListAction.OpenBudgetCreate -> openCreateScreen()
+        }
     }
 }

@@ -50,7 +50,7 @@ class CategoryListViewModel @Inject constructor(
         }
     }
 
-    private fun openCreateScreen(categoryId: String?) {
+    private fun openCreateScreen(categoryId: String? = null) {
         appComposeNavigator.navigate(
             ExpenseManagerScreens.CategoryCreate(categoryId),
         )
@@ -67,7 +67,7 @@ class CategoryListViewModel @Inject constructor(
     fun processAction(action: CategoryListAction) {
         when (action) {
             CategoryListAction.ClosePage -> closePage()
-            CategoryListAction.Create -> openCreateScreen(null)
+            CategoryListAction.Create -> openCreateScreen()
             is CategoryListAction.Edit -> openCreateScreen(action.item.id)
             is CategoryListAction.ChangeCategory -> setCategoryType(action.type)
         }

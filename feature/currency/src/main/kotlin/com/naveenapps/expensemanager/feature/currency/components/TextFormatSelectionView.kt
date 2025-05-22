@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.currency
+package com.naveenapps.expensemanager.feature.currency.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,13 +13,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.feature.currency.R
 
 @Composable
 fun TextFormatSelectionView(
-    selectedCurrencyPositionType: TextPosition,
-    currency: String,
-    onCurrencyPositionTypeChange: ((TextPosition) -> Unit),
+    textFormat: TextFormat,
+    onTextFormatChange: ((TextFormat) -> Unit),
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -30,20 +31,20 @@ fun TextFormatSelectionView(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.prefix_amount, currency),
-            isSelected = selectedCurrencyPositionType == TextPosition.PREFIX,
+            filterName = stringResource(id = R.string.none),
+            isSelected = textFormat == TextFormat.NONE,
             onClick = {
-                onCurrencyPositionTypeChange.invoke(TextPosition.PREFIX)
+                onTextFormatChange.invoke(TextFormat.NONE)
             },
         )
         AppFilterChip(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.suffix_amount, currency),
-            isSelected = selectedCurrencyPositionType == TextPosition.SUFFIX,
+            filterName = stringResource(id = R.string.number_format),
+            isSelected = textFormat == TextFormat.NUMBER_FORMAT,
             onClick = {
-                onCurrencyPositionTypeChange.invoke(TextPosition.SUFFIX)
+                onTextFormatChange.invoke(TextFormat.NUMBER_FORMAT)
             },
         )
     }
@@ -58,16 +59,16 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                 modifier = Modifier
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
-                selectedCurrencyPositionType = TextPosition.PREFIX,
                 currency = "$",
+                selectedCurrencyPositionType = TextPosition.PREFIX,
                 onCurrencyPositionTypeChange = {},
             )
             TextFormatSelectionView(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                selectedCurrencyPositionType = TextPosition.SUFFIX,
                 currency = "$",
+                selectedCurrencyPositionType = TextPosition.SUFFIX,
                 onCurrencyPositionTypeChange = {},
             )
         }

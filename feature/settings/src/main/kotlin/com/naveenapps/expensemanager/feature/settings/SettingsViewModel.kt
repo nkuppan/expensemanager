@@ -8,11 +8,14 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurre
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +25,9 @@ class SettingsViewModel @Inject constructor(
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
+
+    private val _event = Channel<SettingEvent>()
+    val event = _event.receiveAsFlow()
 
     private val _state = MutableStateFlow(
         SettingState(
@@ -74,7 +80,12 @@ class SettingsViewModel @Inject constructor(
             SettingAction.OpenCurrencyEdit -> openCurrencyCustomiseScreen()
             SettingAction.OpenExport -> openExportScreen()
             SettingAction.OpenNotification -> openNotificationScreen()
-            SettingAction.OpenRateUs -> TODO()
+            SettingAction.OpenRateUs -> {
+                viewModelScope.launch {
+                    _event.send(SettingEvent.RateUs)
+                }
+            }
+
             SettingAction.DismissThemeSelection -> {
                 _state.update { it.copy(showThemeSelection = false) }
             }

@@ -1,4 +1,4 @@
-package com.naveenapps.expensemanager.feature.country
+package com.naveenapps.expensemanager.feature.country.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
