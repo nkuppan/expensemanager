@@ -7,7 +7,6 @@ import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseCase
@@ -15,18 +14,17 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.FindBudgetByIdUs
 import com.naveenapps.expensemanager.core.domain.usecase.budget.UpdateBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.FindCategoryByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
-import com.naveenapps.expensemanager.feature.budget.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,6 +41,7 @@ import javax.inject.Inject
 class BudgetCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
+    getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     private val findBudgetByIdUseCase: FindBudgetByIdUseCase,
     private val findAccountByIdUseCase: FindAccountByIdUseCase,
     private val findCategoryByIdUseCase: FindCategoryByIdUseCase,
@@ -52,131 +51,103 @@ class BudgetCreateViewModel @Inject constructor(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
-    private val _isDeleteEnabled = MutableStateFlow(false)
-    val isDeleteEnabled = _isDeleteEnabled.asStateFlow()
-
-    private val _showDeleteDialog = MutableStateFlow(false)
-    val showDeleteDialog = _showDeleteDialog.asStateFlow()
-
-    var bottomSheetSelection = MutableStateFlow(BottomSheetSelection.NONE)
-        private set
-
-    var nameField = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = this::setNameChange
+    private val _state = MutableStateFlow(
+        BudgetCreateState(
+            isLoading = true,
+            name = TextFieldValue(
+                value = "",
+                valueError = false,
+                onValueChange = this::setNameChange
+            ),
+            amount = TextFieldValue(
+                value = "",
+                valueError = false,
+                onValueChange = this::setAmountChange
+            ),
+            color = TextFieldValue(
+                value = DEFAULT_COLOR,
+                valueError = false,
+                onValueChange = this::setColorValue
+            ),
+            icon = TextFieldValue(
+                value = DEFAULT_ICON,
+                valueError = false,
+                onValueChange = this::setIconValue
+            ),
+            month = TextFieldValue(
+                value = Date(),
+                valueError = false,
+                onValueChange = this::setDateChange
+            ),
+            currency = getDefaultCurrencyUseCase.invoke(),
+            isAllAccountSelected = false,
+            selectedAccounts = emptyList(),
+            isAllCategorySelected = false,
+            selectedCategories = emptyList(),
+            showDeleteButton = false,
+            showDeleteDialog = false,
+            showAccountSelectionDialog = false,
+            showCategorySelectionDialog = false,
         )
     )
-        private set
-
-    var amountField = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = this::setAmountChange
-        )
-    )
-        private set
-
-    var currencyIcon = MutableStateFlow(
-        TextFieldValue(
-            value = "",
-            valueError = false,
-            onValueChange = null
-        )
-    )
-        private set
-
-    var selectedColorField = MutableStateFlow(
-        TextFieldValue(
-            value = DEFAULT_COLOR,
-            valueError = false,
-            onValueChange = this::setColorValue
-        )
-    )
-        private set
-
-    var selectedIconField = MutableStateFlow(
-        TextFieldValue(
-            value = DEFAULT_ICON,
-            valueError = false,
-            onValueChange = this::setIconValue
-        )
-    )
-        private set
-
-    var selectedDate = MutableStateFlow(
-        TextFieldValue(
-            value = Date(),
-            valueError = false,
-            onValueChange = this::setDateChange
-        )
-    )
-        private set
-
-    private val _accountCount = MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
-    val accountCount = _accountCount.asStateFlow()
-
-    private val _categoriesCount =
-        MutableStateFlow<UiText>(UiText.StringResource(R.string.all))
-    val categoriesCount = _categoriesCount.asStateFlow()
-
-    private var selectedAccounts = emptyList<AccountUiModel>()
-    private var isAllAccountsSelected = true
-    private var selectedCategories = emptyList<Category>()
-    private var isAllCategoriesSelected = true
+    val state = _state.asStateFlow()
 
     private var budget: Budget? = null
-    private var currency: Currency? = null
 
     init {
-        readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
-
         getCurrencyUseCase.invoke().onEach { updatedCurrency ->
-            currency = updatedCurrency
-            currencyIcon.update { it.copy(value = updatedCurrency.symbol) }
+            _state.update {
+                it.copy(currency = updatedCurrency)
+            }
         }.launchIn(viewModelScope)
+
+        readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
     }
 
-    private suspend fun updateBudgetInfo(budget: Budget?) {
+    private suspend fun updateBudgetInfo(budget: Budget) {
         this.budget = budget
 
-        this.budget?.let { budgetItem ->
-            nameField.update { it.copy(value = budgetItem.name) }
-            amountField.update { it.copy(value = budgetItem.amount.toStringWithLocale()) }
-            selectedColorField.update { it.copy(value = budgetItem.storedIcon.backgroundColor) }
-            selectedIconField.update { it.copy(value = budgetItem.storedIcon.name) }
-            budgetItem.selectedMonth.fromMonthAndYear()?.let { setDateChange(it) }
-
-            val accounts = budgetItem.accounts.map {
-                return@map when (val response = findAccountByIdUseCase.invoke(it)) {
-                    is Resource.Error -> null
-                    is Resource.Success -> {
-                        val data = response.data
-                        data.toAccountUiModel(
-                            Amount(data.amount, currency = currency),
-                        )
-                    }
+        val accounts = budget.accounts.map {
+            return@map when (val response = findAccountByIdUseCase.invoke(it)) {
+                is Resource.Error -> null
+                is Resource.Success -> {
+                    val data = response.data
+                    data.toAccountUiModel(
+                        Amount(data.amount, currency = _state.value.currency),
+                    )
                 }
-            }.filterNotNull()
-
-            if (accounts.isNotEmpty()) {
-                setAccounts(accounts, budgetItem.isAllAccountsSelected)
             }
+        }.filterNotNull()
 
-            val categories = budgetItem.categories.map {
-                return@map when (val response = findCategoryByIdUseCase.invoke(it)) {
-                    is Resource.Error -> null
-                    is Resource.Success -> response.data
-                }
-            }.filterNotNull()
+        if (accounts.isNotEmpty()) {
+            setAccounts(accounts, budget.isAllAccountsSelected)
+        }
 
-            if (categories.isNotEmpty()) {
-                setCategories(categories, budgetItem.isAllAccountsSelected)
+        val categories = budget.categories.map {
+            return@map when (val response = findCategoryByIdUseCase.invoke(it)) {
+                is Resource.Error -> null
+                is Resource.Success -> response.data
             }
+        }.filterNotNull()
 
-            _isDeleteEnabled.value = true
+        if (categories.isNotEmpty()) {
+            setCategories(categories, budget.isAllAccountsSelected)
+        }
+
+        _state.update {
+            it.copy(
+                isLoading = false,
+                name = it.name.copy(budget.name),
+                amount = it.amount.copy(budget.amount.toStringWithLocale()),
+                icon = it.icon.copy(budget.storedIcon.name),
+                color = it.color.copy(budget.storedIcon.backgroundColor),
+                month = it.month.copy(budget.selectedMonth.fromMonthAndYear() ?: Date()),
+                isAllAccountSelected = budget.isAllAccountsSelected,
+                selectedAccounts = emptyList(),
+                isAllCategorySelected = budget.isAllCategoriesSelected,
+                selectedCategories = emptyList(),
+                showDeleteButton = true,
+            )
         }
     }
 
@@ -192,7 +163,7 @@ class BudgetCreateViewModel @Inject constructor(
         }
     }
 
-    fun deleteBudget() {
+    private fun deleteBudget() {
         viewModelScope.launch {
             budget?.let { budget ->
                 when (deleteBudgetUseCase.invoke(budget)) {
@@ -205,30 +176,22 @@ class BudgetCreateViewModel @Inject constructor(
         }
     }
 
-    fun closeDeleteDialog() {
-        _showDeleteDialog.value = false
-    }
-
-    fun openDeleteDialog() {
-        _showDeleteDialog.value = true
-    }
-
-    fun saveOrUpdateBudget() {
-        val name: String = nameField.value.value
-        val color: String = selectedColorField.value.value
-        val icon: String = selectedIconField.value.value
-        val date: Date = selectedDate.value.value
-        val amount: Double? = amountField.value.value.toDoubleOrNullWithLocale()
+    private fun saveOrUpdateBudget() {
+        val name: String = _state.value.name.value
+        val color: String = _state.value.color.value
+        val icon: String = _state.value.icon.value
+        val date: Date = _state.value.month.value
+        val amount: Double? = _state.value.amount.value.toDoubleOrNullWithLocale()
 
         var isError = false
 
         if (name.isBlank()) {
-            nameField.update { it.copy(valueError = true) }
+            _state.update { it.copy(name = it.name.copy(valueError = true)) }
             isError = true
         }
 
         if (amount == null || amount == 0.0) {
-            amountField.update { it.copy(valueError = true) }
+            _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
             isError = true
         }
 
@@ -236,9 +199,9 @@ class BudgetCreateViewModel @Inject constructor(
             return
         }
 
-        val categories = selectedCategories.map { it.id }
+        val categories = _state.value.selectedCategories.map { it.id }
 
-        val accounts = selectedAccounts.map { it.id }
+        val accounts = _state.value.selectedAccounts.map { it.id }
 
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
@@ -251,8 +214,8 @@ class BudgetCreateViewModel @Inject constructor(
             selectedMonth = date.toMonthAndYear(),
             categories = categories,
             accounts = accounts,
-            isAllCategoriesSelected = isAllCategoriesSelected,
-            isAllAccountsSelected = isAllAccountsSelected,
+            isAllCategoriesSelected = _state.value.isAllCategorySelected,
+            isAllAccountsSelected = _state.value.isAllAccountSelected,
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time,
         )
@@ -273,78 +236,126 @@ class BudgetCreateViewModel @Inject constructor(
     }
 
     private fun setColorValue(colorValue: String) {
-        selectedColorField.update { it.copy(value = colorValue) }
+        _state.update { it.copy(color = it.color.copy(value = colorValue)) }
     }
 
     private fun setIconValue(icon: String) {
-        selectedIconField.update { it.copy(value = icon) }
+        _state.update { it.copy(icon = it.icon.copy(value = icon)) }
     }
 
     private fun setNameChange(name: String) {
-        nameField.update {
+        _state.update {
             it.copy(
-                value = name,
-                valueError = name.isBlank()
+                name = it.name.copy(
+                    value = name,
+                    valueError = name.isBlank()
+                )
             )
         }
     }
 
     private fun setAmountChange(amount: String) {
         val amountValue = amount.toDoubleOrNullWithLocale()
-        amountField.update {
+        _state.update {
             it.copy(
-                value = amount,
-                valueError = amountValue == null || amountValue == 0.0
+                amount = it.amount.copy(
+                    value = amount,
+                    valueError = amountValue == null || amountValue == 0.0
+                )
             )
         }
     }
 
     private fun setDateChange(date: Date) {
-        selectedDate.update { it.copy(value = date) }
+        _state.update { it.copy(month = it.month.copy(value = date)) }
     }
 
-    fun setAccounts(selectedAccounts: List<AccountUiModel>, isAllSelected: Boolean) {
-        this.selectedAccounts = selectedAccounts
-        this.isAllAccountsSelected = isAllSelected
-        _accountCount.value = if (isAllSelected) {
-            UiText.StringResource(R.string.all_time)
-        } else {
-            UiText.DynamicString(selectedAccounts.size.toString())
+    private fun setAccounts(selectedAccounts: List<AccountUiModel>, isAllSelected: Boolean) {
+        _state.update {
+            it.copy(
+                isAllAccountSelected = isAllSelected,
+                selectedAccounts = selectedAccounts,
+                showAccountSelectionDialog = false
+            )
         }
     }
 
-    fun setCategories(selectedCategories: List<Category>, isAllSelected: Boolean) {
-        this.selectedCategories = selectedCategories
-        this.isAllCategoriesSelected = isAllSelected
-        _categoriesCount.value = if (isAllSelected) {
-            UiText.StringResource(R.string.all_time)
-        } else {
-            UiText.DynamicString(selectedCategories.size.toString())
+    private fun setCategories(selectedCategories: List<Category>, isAllSelected: Boolean) {
+        _state.update {
+            it.copy(
+                isAllCategorySelected = isAllSelected,
+                selectedCategories = selectedCategories,
+                showCategorySelectionDialog = false
+            )
         }
     }
 
-    fun closePage() {
+    private fun closePage() {
         appComposeNavigator.popBackStack()
     }
 
-    fun getSelectedAccounts(): List<AccountUiModel> {
-        return this.selectedAccounts
+    private fun closeAccountSelection() {
+        _state.update {
+            it.copy(
+                showAccountSelectionDialog = false
+            )
+        }
     }
 
-    fun getSelectedCategories(): List<Category> {
-        return this.selectedCategories
+    private fun openAccountSelection() {
+        _state.update {
+            it.copy(
+                showAccountSelectionDialog = true
+            )
+        }
     }
 
-    fun hideBottomSheet() {
-        bottomSheetSelection.value = BottomSheetSelection.NONE
+    private fun closeCategorySelection() {
+        _state.update {
+            it.copy(
+                showCategorySelectionDialog = false,
+            )
+        }
     }
 
-    fun openAccountSelection() {
-        bottomSheetSelection.value = BottomSheetSelection.ACCOUNT_SELECTION
+    private fun openCategorySelection() {
+        _state.update {
+            it.copy(
+                showCategorySelectionDialog = true,
+            )
+        }
     }
 
-    fun openCategorySelection() {
-        bottomSheetSelection.value = BottomSheetSelection.CATEGORY_SELECTION
+    private fun closeDeleteDialog() {
+        _state.update { it.copy(showDeleteDialog = false) }
+    }
+
+    private fun openDeleteDialog() {
+        _state.update { it.copy(showDeleteDialog = true) }
+    }
+
+    fun processAction(action: BudgetCreateAction) {
+        when (action) {
+            BudgetCreateAction.ClosePage -> closePage()
+            BudgetCreateAction.OpenAccountSelectionDialog -> openAccountSelection()
+            BudgetCreateAction.CloseAccountSelectionDialog -> closeAccountSelection()
+            BudgetCreateAction.OpenCategorySelectionDialog -> openCategorySelection()
+            BudgetCreateAction.CloseCategorySelectionDialog -> closeCategorySelection()
+
+            BudgetCreateAction.CloseDeleteDialog -> closeDeleteDialog()
+            BudgetCreateAction.OpenDeleteDialog -> openDeleteDialog()
+            BudgetCreateAction.Save -> saveOrUpdateBudget()
+            BudgetCreateAction.Delete -> deleteBudget()
+            is BudgetCreateAction.SelectAccounts -> setAccounts(
+                action.accounts,
+                action.isAllSelected
+            )
+
+            is BudgetCreateAction.SelectCategories -> setCategories(
+                action.categories,
+                action.isAllSelected
+            )
+        }
     }
 
     companion object {

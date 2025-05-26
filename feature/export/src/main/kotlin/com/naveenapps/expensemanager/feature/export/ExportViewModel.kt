@@ -53,7 +53,7 @@ class ExportViewModel @Inject constructor(
                 it.copy(
                     selectedDateRange = dateRange.type,
                     selectedDateRangeText = if (dateRange.description.isBlank()) {
-                        UiText.StringResource(R.string.all_time)
+                        UiText.StringResource(R.string.all)
                     } else {
                         UiText.DynamicString(dateRange.description)
                     }
