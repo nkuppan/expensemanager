@@ -15,6 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -23,42 +24,43 @@ import com.naveenapps.expensemanager.feature.country.components.CountryWithCurre
 
 @Composable
 internal fun CountryCurrencyListAndSearchView(
-    modifier: Modifier = Modifier,
-    countryListViewModel: CountryListViewModel,
-    selection: ((Country?) -> Unit)?
+    viewModel: CountryListViewModel,
+    onEvent: (CountrySelectionEvent) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
-    val countryState by countryListViewModel.countryState.collectAsState()
+    val countryState by viewModel.countryState.collectAsState()
+
+    ObserveAsEvents(viewModel.event) {
+        onEvent.invoke(it)
+    }
 
     CountryCurrencyListAndSearchView(
         modifier = modifier,
         countryState = countryState,
-        selection = {
-            selection?.invoke(it)
-            countryState.searchText.onValueChange?.invoke("")
-        },
+        onAction = viewModel::processAction,
     )
 }
 
 @Composable
 internal fun CountryCurrencyListAndSearchView(
     countryState: CountryState,
-    selection: ((Country?) -> Unit)?,
+    onAction: ((CountrySelectionAction) -> Unit),
     modifier: Modifier = Modifier
 ) {
     Scaffold(
         topBar = {
             CountrySearchView(
-                searchText = countryState.searchText,
-                dismiss = {
-                    selection?.invoke(null)
-                }
+                state = countryState,
+                onAction = onAction
             )
         },
     ) {
         CountryCurrencyListView(
             countries = countryState.countries,
-            selection = selection,
+            selection = {
+                onAction.invoke(CountrySelectionAction.SelectCountry(it))
+            },
             modifier = modifier
                 .fillMaxSize()
                 .padding(it)
@@ -115,9 +117,10 @@ private fun CountryDetailsPreview() {
                         )
                     ),
                 ),
-                searchText = TextFieldValue("", false, onValueChange = {})
+                searchText = TextFieldValue("", false, onValueChange = {}),
+                showClearButton = true
             ),
-            selection = {
+            onAction = {
 
             }
         )

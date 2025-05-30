@@ -48,7 +48,8 @@ class CurrencyViewModel @Inject constructor(
                     currency = it.currency.copy(
                         name = currency.name,
                         symbol = currency.symbol
-                    )
+                    ),
+                    showCurrencySelection = false
                 )
             }
             saveSelectedCurrency()
@@ -82,9 +83,15 @@ class CurrencyViewModel @Inject constructor(
 
     fun processAction(action: CurrencyAction) {
         when (action) {
+
             CurrencyAction.ClosePage -> closePage()
+
             CurrencyAction.OpenCurrencySelection -> {
                 _state.update { it.copy(showCurrencySelection = true) }
+            }
+
+            CurrencyAction.DismissCurrencySelection -> {
+                _state.update { it.copy(showCurrencySelection = false) }
             }
 
             is CurrencyAction.ChangeCurrencyNumberFormat -> {
@@ -96,7 +103,7 @@ class CurrencyViewModel @Inject constructor(
             }
 
             is CurrencyAction.SelectCurrency -> {
-                selectThisCurrency(action.currency)
+                selectThisCurrency(action.country.currency)
             }
         }
     }

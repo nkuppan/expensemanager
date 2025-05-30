@@ -4,23 +4,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.naveenapps.expensemanager.core.model.Country
 
 @Composable
 fun CountryCurrencySelectionDialog(
     modifier: Modifier = Modifier,
-    countryListViewModel: CountryListViewModel = hiltViewModel(),
-    selection: ((Country?) -> Unit)? = null
+    onEvent: (CountrySelectionEvent) -> Unit,
+    countryListViewModel: CountryListViewModel = hiltViewModel()
 ) {
     Dialog(
         onDismissRequest = {
-            selection?.invoke(null)
+            onEvent.invoke(CountrySelectionEvent.Dismiss)
         }
     ) {
         CountryCurrencyListAndSearchView(
             modifier = modifier,
-            countryListViewModel = countryListViewModel,
-            selection = selection
+            viewModel = countryListViewModel,
+            onEvent = onEvent
         )
     }
 }

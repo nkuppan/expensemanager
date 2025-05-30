@@ -13,38 +13,31 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.model.TextFieldValue
+import com.naveenapps.expensemanager.feature.country.CountrySelectionAction
+import com.naveenapps.expensemanager.feature.country.CountryState
 import com.naveenapps.expensemanager.feature.country.R
 
 
 @Composable
 internal fun CountrySearchView(
-    searchText: TextFieldValue<String>,
-    dismiss: (() -> Unit)? = null
+    state: CountryState,
+    onAction: (CountrySelectionAction) -> Unit
 ) {
-
-    var showClear by remember { mutableStateOf(false) }
-
     Surface(shadowElevation = 8.dp) {
         Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 4.dp)) {
             OutlinedTextField(
                 modifier = Modifier
                     .background(color = Color.Transparent)
                     .weight(1f),
-                value = searchText.value,
+                value = state.searchText.value,
                 onValueChange = {
-                    searchText.onValueChange?.invoke(it)
-                    showClear = it.isNotBlank()
+                    state.searchText.onValueChange?.invoke(it)
                 },
                 label = {
                     Text(
@@ -64,22 +57,21 @@ internal fun CountrySearchView(
                             .size(24.dp)
                             .align(Alignment.CenterVertically)
                             .clickable {
-                                dismiss?.invoke()
+                                onAction.invoke(CountrySelectionAction.ClosePage)
                             },
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = ""
                     )
                 },
                 trailingIcon = {
-                    if (showClear) {
+                    if (state.showClearButton) {
                         Icon(
                             modifier = Modifier
                                 .padding(8.dp)
                                 .size(24.dp)
                                 .align(Alignment.CenterVertically)
                                 .clickable {
-                                    searchText.onValueChange?.invoke("")
-                                    showClear = false
+                                    onAction.invoke(CountrySelectionAction.ClearText)
                                 },
                             imageVector = Icons.Default.Close,
                             contentDescription = ""

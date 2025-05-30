@@ -92,8 +92,9 @@ class OnboardingViewModel @Inject constructor(
 
             is OnboardingAction.SelectCurrency -> {
                 viewModelScope.launch {
-                    if (action.currency != null) {
-                        saveCurrencyUseCase.invoke(action.currency)
+                    val currency = action.country.currency
+                    if (currency != null) {
+                        saveCurrencyUseCase.invoke(currency)
                     } else {
                         dismissCurrencySelection()
                     }

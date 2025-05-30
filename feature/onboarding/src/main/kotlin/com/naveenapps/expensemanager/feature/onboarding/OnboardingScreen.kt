@@ -40,6 +40,7 @@ import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
+import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 
 @Composable
 fun OnboardingScreen(
@@ -60,9 +61,19 @@ private fun OnboardingContentView(
 ) {
 
     if (state.showCurrencySelection) {
-        CountryCurrencySelectionDialog { country ->
-            onAction.invoke(OnboardingAction.SelectCurrency(country?.currency))
-        }
+        CountryCurrencySelectionDialog(
+            onEvent = { event ->
+                when (event) {
+                    CountrySelectionEvent.Dismiss -> {
+                        onAction.invoke(OnboardingAction.DismissCurrencySelection)
+                    }
+
+                    is CountrySelectionEvent.CountrySelected -> {
+                        onAction.invoke(OnboardingAction.SelectCurrency(event.country))
+                    }
+                }
+            }
+        )
     }
     Scaffold(
         topBar = {

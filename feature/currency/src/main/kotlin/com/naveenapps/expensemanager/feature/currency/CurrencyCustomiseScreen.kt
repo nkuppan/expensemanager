@@ -26,6 +26,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigati
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
+import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import com.naveenapps.expensemanager.feature.currency.components.TextFormatSelectionView
 
 @Composable
@@ -48,9 +49,19 @@ private fun CurrencyScreen(
 ) {
 
     if (state.showCurrencySelection) {
-        CountryCurrencySelectionDialog { country ->
-            onAction.invoke(CurrencyAction.SelectCurrency(country?.currency))
-        }
+        CountryCurrencySelectionDialog(
+            onEvent = { event ->
+                when (event) {
+                    CountrySelectionEvent.Dismiss -> {
+                        onAction.invoke(CurrencyAction.DismissCurrencySelection)
+                    }
+
+                    is CountrySelectionEvent.CountrySelected -> {
+                        onAction.invoke(CurrencyAction.SelectCurrency(event.country))
+                    }
+                }
+            }
+        )
     }
 
     Scaffold(
