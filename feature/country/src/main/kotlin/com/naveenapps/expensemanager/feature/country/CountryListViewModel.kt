@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.feature.country
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.feature.country.CountrySelectionAction
 import com.naveenapps.expensemanager.core.domain.usecase.country.GetCountiesUseCase
 import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.model.TextFieldValue
