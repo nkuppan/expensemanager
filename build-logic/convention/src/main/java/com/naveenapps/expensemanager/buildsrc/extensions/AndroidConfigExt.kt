@@ -7,9 +7,9 @@ import com.android.build.gradle.LibraryExtension
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.dependencies
 
-const val TARGET_SDK = 35
-const val COMPILE_SDK: Int = 35
-const val MIN_SDK = 21
+const val TARGET_SDK = 36
+const val COMPILE_SDK: Int = 36
+const val MIN_SDK = 23
 
 const val VERSION_NAME = "1.3.2"
 val versions = VERSION_NAME.split(".")

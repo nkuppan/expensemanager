@@ -7,16 +7,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
@@ -69,16 +66,6 @@ internal class MainActivity : ComponentActivity() {
             val currentTheme by viewModel.currentTheme.collectAsState()
             val onBoardingStatus by viewModel.onboardingStatus.collectAsState()
             val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
-
-            val systemUiController = rememberSystemUiController()
-            val useDarkIcons = isDarkTheme.not()
-            SideEffect {
-                systemUiController.setSystemBarsColor(
-                    color = Color.Transparent,
-                    darkIcons = useDarkIcons,
-                    isNavigationBarContrastEnforced = false,
-                )
-            }
 
             if (onBoardingStatus != null) {
                 MainScreen(

@@ -24,6 +24,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import java.util.Date
 import javax.inject.Inject
+import kotlin.time.ExperimentalTime
 
 class GetChartDataUseCase @Inject constructor(
     private val getCurrencyUseCase: GetCurrencyUseCase,
@@ -33,6 +34,7 @@ class GetChartDataUseCase @Inject constructor(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val dispatcher: AppCoroutineDispatchers,
 ) {
+    @OptIn(ExperimentalTime::class)
     fun invoke(): Flow<AnalysisData> {
         return combine(
             getDateRangeUseCase.invoke(),
@@ -118,6 +120,7 @@ class GetChartDataUseCase @Inject constructor(
         }.flowOn(dispatcher.computation)
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun getAdjustedDateTime(
         groupType: GroupType,
         fromDate: Instant,

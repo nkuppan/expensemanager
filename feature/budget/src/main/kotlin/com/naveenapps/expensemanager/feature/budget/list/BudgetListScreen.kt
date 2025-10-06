@@ -123,7 +123,10 @@ private fun BudgetListScreenContent(
     }
 
     if (state.budgets.isNotEmpty()) {
-        LazyColumn(state = scrollState) {
+        LazyColumn(
+            modifier = modifier,
+            state = scrollState
+        ) {
             items(
                 state.budgets,
                 key = { it.id }
@@ -155,7 +158,7 @@ private fun BudgetListScreenContent(
         EmptyItem(
             emptyItemText = stringResource(id = R.string.no_budget_available),
             icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
-            modifier = Modifier.fillMaxSize()
+            modifier = modifier
         )
     }
 }

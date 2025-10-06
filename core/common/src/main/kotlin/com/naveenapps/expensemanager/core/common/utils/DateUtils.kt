@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.common.utils
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
@@ -13,9 +12,11 @@ import kotlinx.datetime.toLocalDateTime
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
-    val clock = Clock.System.now()
+    val clock = kotlin.time.Clock.System.now()
     val todayStartTime = clock.toLocalDateTime(timeZone).date
     val nextDateStartTime = todayStartTime.plus(1, DateTimeUnit.DAY)
     return listOf(
@@ -24,8 +25,9 @@ fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Lo
     )
 }
 
+@OptIn(ExperimentalTime::class)
 fun getThisWeekRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
-    val clock = Clock.System.now()
+    val clock = kotlin.time.Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
     val startOfTheWeekDay =
         todayDateTime.date.minus(todayDateTime.dayOfWeek.isoDayNumber, DateTimeUnit.DAY)
@@ -36,8 +38,9 @@ fun getThisWeekRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
     )
 }
 
+@OptIn(ExperimentalTime::class)
 fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
-    val clock = Clock.System.now()
+    val clock = kotlin.time.Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
     val startOfTheWeekDay = todayDateTime.date.minus(todayDateTime.dayOfMonth - 1, DateTimeUnit.DAY)
     val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.MONTH)
@@ -47,8 +50,9 @@ fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): Lis
     )
 }
 
+@OptIn(ExperimentalTime::class)
 fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
-    val clock = Clock.System.now()
+    val clock = kotlin.time.Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
     val startOfTheWeekDay = todayDateTime.date.minus(todayDateTime.dayOfYear - 1, DateTimeUnit.DAY)
     val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.YEAR)
@@ -58,6 +62,7 @@ fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
     )
 }
 
+@OptIn(ExperimentalTime::class)
 fun Long.fromLocalToUTCTimeStamp(): Long {
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.currentSystemDefault())
@@ -65,6 +70,7 @@ fun Long.fromLocalToUTCTimeStamp(): Long {
         .toEpochMilliseconds()
 }
 
+@OptIn(ExperimentalTime::class)
 fun Long.fromUTCToLocalTimeStamp(): Long {
     return Instant.fromEpochMilliseconds(this)
         .toLocalDateTime(TimeZone.UTC)
@@ -76,11 +82,13 @@ fun Long.fromUTCToLocalDate(): Date {
     return Date(this.fromUTCToLocalTimeStamp())
 }
 
+@OptIn(ExperimentalTime::class)
 fun Long.toExactStartOfTheDay(): Date {
     val dateTime = Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.UTC)
     return Date(dateTime.date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds())
 }
 
+@OptIn(ExperimentalTime::class)
 fun Date.getStartOfTheMonth(): Long {
     val dateTime =
         Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
@@ -89,6 +97,7 @@ fun Date.getStartOfTheMonth(): Long {
         .toEpochMilliseconds()
 }
 
+@OptIn(ExperimentalTime::class)
 fun Date.getEndOfTheMonth(): Long {
     val dateTime =
         Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())

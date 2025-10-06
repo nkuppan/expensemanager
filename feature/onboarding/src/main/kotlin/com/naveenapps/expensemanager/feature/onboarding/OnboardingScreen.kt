@@ -2,14 +2,15 @@ package com.naveenapps.expensemanager.feature.onboarding
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.filled.Close
@@ -96,59 +97,63 @@ private fun OnboardingContentView(
                     .fillMaxWidth()
                     .weight(1f),
             ) {
-                Text(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    text = stringResource(id = R.string.setup),
-                    style = MaterialTheme.typography.titleLarge,
-                )
-
-                ClickableTextField(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
-                    label = R.string.select_main_currency,
-                    value = state.currency.name.ifBlank { stringResource(id = R.string.currency) },
-                    onClick = { onAction.invoke(OnboardingAction.ShowCurrencySelection) },
-                    trailingIcon = Icons.AutoMirrored.Filled.ArrowRight
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                        .verticalScroll(rememberScrollState()),
                 ) {
                     Text(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        text = stringResource(id = R.string.setup),
+                        style = MaterialTheme.typography.titleLarge,
+                    )
+
+                    ClickableTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp),
+                        label = R.string.select_main_currency,
+                        value = state.currency.name.ifBlank { stringResource(id = R.string.currency) },
+                        onClick = { onAction.invoke(OnboardingAction.ShowCurrencySelection) },
+                        trailingIcon = Icons.AutoMirrored.Filled.ArrowRight
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
                         text = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
                         style = MaterialTheme.typography.headlineSmall,
                     )
-                }
-                state.accounts.forEach { account ->
-                    AccountItem(
-                        name = account.name,
-                        icon = account.storedIcon.name,
-                        iconBackgroundColor = account.storedIcon.backgroundColor,
-                        amount = account.amount.amountString,
-                        amountTextColor = account.amountTextColor,
+
+                    state.accounts.forEach { account ->
+                        AccountItem(
+                            name = account.name,
+                            icon = account.storedIcon.name,
+                            iconBackgroundColor = account.storedIcon.backgroundColor,
+                            amount = account.amount.amountString,
+                            amountTextColor = account.amountTextColor,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clickable {
+                                    onAction.invoke(OnboardingAction.AccountCreate(account))
+                                }
+                                .padding(16.dp),
+                        )
+                    }
+
+                    OutlinedButton(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {
-                                onAction.invoke(OnboardingAction.AccountCreate(account))
-                            }
                             .padding(16.dp),
-                    )
-                }
-
-                OutlinedButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    onClick = {
-                        onAction.invoke(OnboardingAction.AccountCreate(null))
+                        onClick = {
+                            onAction.invoke(OnboardingAction.AccountCreate(null))
+                        }
+                    ) {
+                        Text(text = stringResource(id = R.string.create_new).uppercase())
                     }
-                ) {
-                    Text(text = stringResource(id = R.string.create_new).uppercase())
                 }
             }
 

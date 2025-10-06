@@ -6,11 +6,13 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.datetime.Instant
 import javax.inject.Inject
+import kotlin.time.ExperimentalTime
 
 class MoveDateRangeBackwardUseCase @Inject constructor(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
+    @OptIn(ExperimentalTime::class)
     suspend operator fun invoke(type: DateRangeType): Resource<Boolean> {
         val dateRangeModel = dateRangeFilterRepository.getDateRangeFilterTypeString(type)
         var startTime = Instant.fromEpochMilliseconds(dateRangeModel.dateRanges[0])

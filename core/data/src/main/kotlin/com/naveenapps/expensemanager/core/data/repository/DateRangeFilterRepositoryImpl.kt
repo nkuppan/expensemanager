@@ -24,6 +24,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.util.Date
 import javax.inject.Inject
+import kotlin.time.ExperimentalTime
 
 class DateRangeFilterRepositoryImpl @Inject constructor(
     private val dataStore: DateRangeDataStore,
@@ -136,6 +137,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     private fun getFormattedDateRangeString(fromDate: Date, toDate: Date): String {
         val fromDateTime =
             Instant.fromEpochMilliseconds(fromDate.time).toLocalDateTime(TimeZone.UTC)
@@ -152,6 +154,7 @@ class DateRangeFilterRepositoryImpl @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun getTransactionGroupType(
         dateRangeType: DateRangeType,
     ): GroupType = withContext(dispatcher.computation) {

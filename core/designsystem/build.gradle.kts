@@ -32,7 +32,6 @@ dependencies {
     api(libs.androidx.navigation.compose)
     api(libs.androidx.hilt.navigation.compose)
     api(libs.accompanist.permissions)
-    api(libs.accompanist.systemUIController)
 
     debugApi(libs.androidx.compose.ui.tooling)
 
