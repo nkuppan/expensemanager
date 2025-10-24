@@ -9,9 +9,8 @@ import androidx.datastore.preferences.core.stringSetPreferencesKey
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class SettingsDataStore @Inject constructor(private val dataStore: DataStore<Preferences>) {
+class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
 
     suspend fun setTransactionType(transactionTypes: List<TransactionType>?) =
         dataStore.edit { preferences ->

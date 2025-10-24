@@ -4,22 +4,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.core.context.GlobalContext
 
 const val DESTINATION_CLASS = "com.naveenapps.expensemanager.MainActivity"
 
-@AndroidEntryPoint
 open class BootAlarmReceiver : BroadcastReceiver() {
 
-    @Inject
-    lateinit var notificationScheduler: NotificationScheduler
-
     override fun onReceive(context: Context, intent: Intent) {
+
+        val notificationScheduler: NotificationScheduler =  GlobalContext.get().get()
+
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             if (Intent.ACTION_BOOT_COMPLETED == intent.action) {
                 Log.d(TAG, "onReceive: BOOT_COMPLETED")

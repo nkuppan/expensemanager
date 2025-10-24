@@ -12,17 +12,15 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.Set
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class OnboardingViewModel @Inject constructor(
+
+class OnboardingViewModel(
     getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,

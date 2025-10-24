@@ -15,9 +15,8 @@ import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class GetBudgetsUseCase @Inject constructor(
+class GetBudgetsUseCase(
     private val budgetRepository: BudgetRepository,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,

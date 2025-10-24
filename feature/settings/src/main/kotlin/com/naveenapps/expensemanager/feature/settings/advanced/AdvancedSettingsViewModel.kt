@@ -11,7 +11,6 @@ import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,10 +20,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AdvancedSettingsViewModel @Inject constructor(
+
+class AdvancedSettingsViewModel(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,
     private val settingsRepository: SettingsRepository,

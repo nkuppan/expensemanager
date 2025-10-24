@@ -22,7 +22,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
 import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDay
 import com.naveenapps.expensemanager.core.designsystem.R
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerPreviewTheme
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,7 +74,7 @@ fun AppDatePickerDialog(
 @Composable
 @Preview
 fun AppDatePickerDialogPreview() {
-    ExpenseManagerTheme {
+    ExpenseManagerPreviewTheme {
         AppDatePickerDialog(
             selectedDate = Date(),
             onDateSelected = {},

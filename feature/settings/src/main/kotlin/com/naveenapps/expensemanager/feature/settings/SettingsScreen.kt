@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
@@ -42,7 +42,7 @@ import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
 @Composable
 fun SettingsScreen(
     shareRepository: ShareRepository,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()

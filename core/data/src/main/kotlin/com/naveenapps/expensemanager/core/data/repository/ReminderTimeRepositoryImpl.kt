@@ -7,11 +7,10 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 private const val DEFAULT_REMINDER_TIMER = "10:00:false"
 
-class ReminderTimeRepositoryImpl @Inject constructor(
+class ReminderTimeRepositoryImpl(
     private val dataStore: ReminderTimeDataStore,
     private val dispatchers: AppCoroutineDispatchers,
 ) : ReminderTimeRepository {

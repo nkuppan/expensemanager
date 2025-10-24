@@ -2,9 +2,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.budget
 
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
-import javax.inject.Inject
 
-class CheckBudgetValidateUseCase @Inject constructor() {
+class CheckBudgetValidateUseCase() {
 
     operator fun invoke(budget: Budget): Resource<Boolean> {
         if (budget.id.isBlank()) {

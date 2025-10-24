@@ -5,10 +5,9 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.datetime.Instant
-import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
-class MoveDateRangeBackwardUseCase @Inject constructor(
+class MoveDateRangeBackwardUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 

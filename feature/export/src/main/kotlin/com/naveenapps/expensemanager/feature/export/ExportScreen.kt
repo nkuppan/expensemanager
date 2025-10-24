@@ -45,7 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -84,7 +84,7 @@ private fun getFileCreateIntent(fileType: ExportFileType): Intent? {
 
 @Composable
 fun ExportScreen(
-    viewModel: ExportViewModel = hiltViewModel()
+    viewModel: ExportViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()

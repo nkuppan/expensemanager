@@ -9,16 +9,14 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AccountSelectionViewModel @Inject constructor(
+
+class AccountSelectionViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,

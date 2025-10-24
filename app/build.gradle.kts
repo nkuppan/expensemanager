@@ -1,13 +1,14 @@
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 import java.io.FileInputStream
 import java.util.Locale
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.naveenapps.android.app)
-    alias(libs.plugins.naveenapps.kotlin.basic)
+    id("naveenapps.plugin.android.app")
+    id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
-    id("naveenapps.plugin.hilt")
+    id("naveenapps.plugin.di")
     id("com.github.triplet.play")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
@@ -199,7 +200,10 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:database"))
     implementation(project(":core:domain"))
+    implementation(project(":core:data"))
+    implementation(project(":core:datastore"))
     implementation(project(":core:navigation"))
     implementation(project(":core:notification"))
     implementation(project(":core:repository"))
@@ -211,6 +215,9 @@ dependencies {
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:transaction"))
     implementation(project(":feature:onboarding"))
+    implementation(project(":feature:filter"))
+    implementation(project(":feature:country"))
+    implementation(project(":feature:currency"))
 
     implementation(project(":feature:settings"))
     implementation(project(":feature:theme"))
@@ -230,7 +237,6 @@ dependencies {
     implementation(libs.androidx.profileinstaller)
 
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.hilt.ext.work)
 
     implementation(libs.google.oss.licenses)
 

@@ -3,9 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.budget
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
-import javax.inject.Inject
 
-class AddBudgetUseCase @Inject constructor(
+class AddBudgetUseCase(
     private val repository: BudgetRepository,
     private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase,
 ) {

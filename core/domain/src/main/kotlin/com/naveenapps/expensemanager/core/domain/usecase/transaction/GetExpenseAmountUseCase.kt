@@ -3,9 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetExpenseAmountUseCase @Inject constructor(
+class GetExpenseAmountUseCase(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
 ) {
 

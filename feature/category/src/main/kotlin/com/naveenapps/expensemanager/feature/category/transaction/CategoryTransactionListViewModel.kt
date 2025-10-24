@@ -10,17 +10,15 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import javax.inject.Inject
 
-@HiltViewModel
-class CategoryTransactionListViewModel @Inject constructor(
+
+class CategoryTransactionListViewModel(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {

@@ -7,18 +7,17 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class SettingsRepositoryImpl @Inject constructor(
+class SettingsRepositoryImpl(
     private val dataStore: SettingsDataStore,
-    private val dispatcher: AppCoroutineDispatchers,
+    private val dispatchers: AppCoroutineDispatchers,
 ) : SettingsRepository {
     override fun getTransactionTypes(): Flow<List<TransactionType>?> {
         return dataStore.getTransactionType()
     }
 
     override suspend fun setTransactionTypes(transactionTypes: List<TransactionType>?): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setTransactionType(transactionTypes)
             return@withContext Resource.Success(true)
         }
@@ -28,7 +27,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setAccounts(accounts: List<String>?): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setAccounts(accounts)
             return@withContext Resource.Success(true)
         }
@@ -38,7 +37,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setCategories(categories: List<String>?): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setCategories(categories)
             return@withContext Resource.Success(true)
         }
@@ -48,7 +47,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setPreloaded(preloaded: Boolean): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setPreloaded(preloaded)
             return@withContext Resource.Success(true)
         }
@@ -58,7 +57,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setOnboardingCompleted(isOnboardingCompleted: Boolean): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setOnboardingCompleted(isOnboardingCompleted)
             return@withContext Resource.Success(true)
         }
@@ -68,7 +67,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setDefaultAccount(accountId: String): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setDefaultAccount(accountId)
             return@withContext Resource.Success(true)
         }
@@ -78,7 +77,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setDefaultExpenseCategory(categoryId: String): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setDefaultExpenseCategory(categoryId)
             return@withContext Resource.Success(true)
         }
@@ -88,7 +87,7 @@ class SettingsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setDefaultIncomeCategory(categoryId: String): Resource<Boolean> =
-        withContext(dispatcher.io) {
+        withContext(dispatchers.io) {
             dataStore.setDefaultIncomeCategory(categoryId)
             return@withContext Resource.Success(true)
         }

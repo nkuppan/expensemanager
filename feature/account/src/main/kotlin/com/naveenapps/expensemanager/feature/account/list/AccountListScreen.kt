@@ -46,7 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -65,7 +65,7 @@ import java.util.Random
 
 @Composable
 fun AccountListScreen(
-    viewModel: AccountListViewModel = hiltViewModel(),
+    viewModel: AccountListViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 

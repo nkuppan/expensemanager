@@ -7,16 +7,14 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.Get
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.feature.theme.R
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+
+class MainViewModel(
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
     getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
 ) : ViewModel() {

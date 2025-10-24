@@ -8,21 +8,19 @@ import com.naveenapps.expensemanager.core.data.utils.convertFileToString
 import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.repository.CountryRepository
 import com.naveenapps.expensemanager.core.repository.JsonConverterRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /**
  * Repository Implementation. Which carries the information about how we are reading the countries
  * information from the json files.
  */
-class CountryRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+class CountryRepositoryImpl(
+    private val context: Context,
     private val jsonConverterRepository: JsonConverterRepository,
-    private val appCoroutineDispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers
 ) : CountryRepository {
 
-    override suspend fun readCountries(): List<Country> = withContext(appCoroutineDispatchers.io) {
+    override suspend fun readCountries(): List<Country> = withContext(dispatchers.io) {
         return@withContext context.convertFileToString(fileName = "countries.json")
             ?.let { jsonString ->
                 return@let (jsonConverterRepository.fromJsonToObject(

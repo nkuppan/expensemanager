@@ -13,7 +13,6 @@ import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.util.Locale
-import javax.inject.Inject
 
 private const val MINUS_SYMBOL = "-"
 private const val DEFAULT_CURRENCY_SYMBOL = "$"
@@ -27,7 +26,7 @@ val defaultCurrency = Currency(
     format = TextFormat.NONE,
 )
 
-class CurrencyRepositoryImpl @Inject constructor(
+class CurrencyRepositoryImpl(
     private val dataStore: CurrencyDataStore,
     private val dispatchers: AppCoroutineDispatchers,
 ) : CurrencyRepository {

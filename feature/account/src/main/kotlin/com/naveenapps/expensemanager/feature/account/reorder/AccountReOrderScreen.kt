@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
@@ -44,7 +44,7 @@ import kotlinx.coroutines.Job
 
 @Composable
 fun AccountReOrderScreen(
-    viewModel: AccountReOrderViewModel = hiltViewModel(),
+    viewModel: AccountReOrderViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 

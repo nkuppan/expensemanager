@@ -2,9 +2,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.accoun
 
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
-import javax.inject.Inject
 
-class UpdateSelectedAccountUseCase @Inject constructor(
+class UpdateSelectedAccountUseCase(
     private val settingsRepository: SettingsRepository,
 ) {
 

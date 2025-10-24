@@ -42,7 +42,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.NavigationButton
@@ -53,7 +53,7 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 
 @Composable
 fun BudgetDetailScreen(
-    viewModel: BudgetDetailViewModel = hiltViewModel(),
+    viewModel: BudgetDetailViewModel = koinViewModel(),
 ) {
 
     val budget by viewModel.budget.collectAsState()

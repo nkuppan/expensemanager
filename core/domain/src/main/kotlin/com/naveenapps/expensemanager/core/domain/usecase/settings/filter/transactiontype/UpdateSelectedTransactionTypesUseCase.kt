@@ -3,9 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.transa
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
-import javax.inject.Inject
 
-class UpdateSelectedTransactionTypesUseCase @Inject constructor(
+class UpdateSelectedTransactionTypesUseCase(
     private val settingsRepository: SettingsRepository,
 ) {
 

@@ -16,7 +16,6 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.repository.ExportRepository
 import com.opencsv.CSVWriter
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileNotFoundException
@@ -24,10 +23,9 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Date
 import java.util.Locale
-import javax.inject.Inject
 
-class ExportRepositoryImpl @Inject constructor(
-    @ApplicationContext private val context: Context,
+class ExportRepositoryImpl(
+    private val context: Context,
     private val dispatchers: AppCoroutineDispatchers,
 ) : ExportRepository {
     override suspend fun createCsvFile(

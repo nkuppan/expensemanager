@@ -6,17 +6,15 @@ import com.naveenapps.expensemanager.core.designsystem.components.swap
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.UpdateAllAccountUseCase
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AccountReOrderViewModel @Inject constructor(
+
+class AccountReOrderViewModel(
     getAllAccountsUseCase: GetAllAccountsUseCase,
     private val updateAllAccountUseCase: UpdateAllAccountUseCase,
     private val appComposeNavigator: AppComposeNavigator,

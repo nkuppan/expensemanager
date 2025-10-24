@@ -13,9 +13,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
-import javax.inject.Inject
 
-class GetTransactionWithFilterUseCase @Inject constructor(
+class GetTransactionWithFilterUseCase(
     private val accountRepository: AccountRepository,
     private val categoryRepository: CategoryRepository,
     private val settingsRepository: SettingsRepository,

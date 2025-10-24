@@ -2,10 +2,8 @@ package com.naveenapps.expensemanager.core.designsystem.components
 
 import androidx.lifecycle.ViewModel
 import com.naveenapps.expensemanager.core.designsystem.R
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 
 // TODO Modify this with categories and icons in future
 private val iconSelectionList = listOf(
@@ -60,8 +58,8 @@ private val iconSelectionList = listOf(
     R.drawable.wallet,
 )
 
-@HiltViewModel
-class IconSelectionViewModel @Inject constructor() : ViewModel() {
+
+class IconSelectionViewModel() : ViewModel() {
 
     private val _icons = MutableStateFlow(iconSelectionList)
     val icons = _icons.asStateFlow()

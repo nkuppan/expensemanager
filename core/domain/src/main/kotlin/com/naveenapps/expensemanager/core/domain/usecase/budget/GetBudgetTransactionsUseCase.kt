@@ -12,9 +12,8 @@ import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.flow.firstOrNull
-import javax.inject.Inject
 
-class GetBudgetTransactionsUseCase @Inject constructor(
+class GetBudgetTransactionsUseCase(
     private val categoryRepository: CategoryRepository,
     private val accountRepository: AccountRepository,
     private val transactionRepository: TransactionRepository,

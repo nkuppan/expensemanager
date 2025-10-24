@@ -6,9 +6,8 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetSelectedAccountUseCase @Inject constructor(
+class GetSelectedAccountUseCase(
     private val settingsRepository: SettingsRepository,
     private val findAccountByIdUseCase: FindAccountByIdUseCase,
 ) {

@@ -11,9 +11,8 @@ import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class BudgetRepositoryImpl @Inject constructor(
+class BudgetRepositoryImpl(
     private val budgetDao: BudgetDao,
     private val dispatchers: AppCoroutineDispatchers,
 ) : BudgetRepository {

@@ -42,7 +42,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
@@ -74,7 +74,7 @@ import java.util.Date
 
 @Composable
 fun TransactionCreateScreen(
-    viewModel: TransactionCreateViewModel = hiltViewModel()
+    viewModel: TransactionCreateViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()

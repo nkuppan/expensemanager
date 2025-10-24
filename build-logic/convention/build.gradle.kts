@@ -1,10 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     `kotlin-dsl`
 }
 
-group = "com.naveenapps.expensemanager.buildlogic"
+group = "com.naveenapps.buildlogic"
 
 // Configure the build-logic plugins to target JDK 19
 // This matches the JDK used to build the project, and is not related to what is running on device.
@@ -14,8 +15,8 @@ java {
 }
 
 tasks.withType<KotlinCompile>().configureEach {
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_19.toString()
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_19
     }
 }
 
@@ -32,37 +33,37 @@ gradlePlugin {
         create("AndroidLibraryBasicConfigPlugin") {
             id = "naveenapps.plugin.android.library"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidLibraryBasicConfigPlugin"
+                "com.naveenapps.buildsrc.plugins.AndroidLibraryBasicConfigPlugin"
         }
         create("AndroidAppBasicConfigPlugin") {
             id = "naveenapps.plugin.android.app"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidAppBasicConfigPlugin"
+                "com.naveenapps.buildsrc.plugins.AndroidAppBasicConfigPlugin"
         }
         create("AndroidFeatureModuleConfigPlugin") {
             id = "naveenapps.plugin.android.feature"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidFeatureModuleConfigPlugin"
+                "com.naveenapps.buildsrc.plugins.AndroidFeatureModuleConfigPlugin"
         }
         create("KotlinBasicConfigPlugin") {
             id = "naveenapps.plugin.kotlin.basic"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.KotlinBasicConfigPlugin"
+                "com.naveenapps.buildsrc.plugins.KotlinBasicConfigPlugin"
         }
-        create("AndroidHiltPlugin") {
-            id = "naveenapps.plugin.hilt"
+        create("AndroidKoinPlugin") {
+            id = "naveenapps.plugin.di"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidHiltPlugin"
+                "com.naveenapps.buildsrc.plugins.AndroidKoinPlugin"
         }
         create("AndroidComposeConfigPlugin") {
             id = "naveenapps.plugin.compose"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidComposeConfigPlugin"
+                "com.naveenapps.buildsrc.plugins.AndroidComposeConfigPlugin"
         }
         create("AndroidRoomPlugin") {
             id = "naveenapps.plugin.room"
             implementationClass =
-                "com.naveenapps.expensemanager.buildsrc.plugins.AndroidRoomPlugin"
+                "com.naveenapps.buildsrc.plugins.AndroidRoomPlugin"
         }
     }
 }

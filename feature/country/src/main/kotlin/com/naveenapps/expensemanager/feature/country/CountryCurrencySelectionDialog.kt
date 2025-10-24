@@ -3,13 +3,13 @@ package com.naveenapps.expensemanager.feature.country
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CountryCurrencySelectionDialog(
     modifier: Modifier = Modifier,
     onEvent: (CountrySelectionEvent) -> Unit,
-    countryListViewModel: CountryListViewModel = hiltViewModel()
+    countryListViewModel: CountryListViewModel = koinViewModel()
 ) {
     Dialog(
         onDismissRequest = {

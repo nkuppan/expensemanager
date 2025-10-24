@@ -3,9 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.datera
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
-import javax.inject.Inject
 
-class GetTransactionGroupTypeUseCase @Inject constructor(
+class GetTransactionGroupTypeUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 

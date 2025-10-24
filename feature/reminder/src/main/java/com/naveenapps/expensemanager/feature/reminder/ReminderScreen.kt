@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -43,7 +43,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTh
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ReminderScreen(
-    viewModel: ReminderViewModel = hiltViewModel(),
+    viewModel: ReminderViewModel = koinViewModel(),
 ) {
     var showMessageLayout by remember { mutableIntStateOf(0) }
 

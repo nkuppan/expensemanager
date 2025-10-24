@@ -2,7 +2,7 @@ plugins {
     id("naveenapps.plugin.android.library")
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
-    id("naveenapps.plugin.hilt")
+    id("naveenapps.plugin.di")
 }
 
 android {
@@ -18,7 +18,6 @@ dependencies {
     api(libs.androidx.test.runner)
     api(libs.mockito)
     api(libs.truth)
-    api(libs.hilt.android.testing)
     api(libs.junit4)
     api(libs.kotlinx.coroutines.test)
     api(libs.turbine)

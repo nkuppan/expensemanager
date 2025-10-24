@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.country.GetCountiesUseCase
 import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.model.TextFieldValue
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,10 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class CountryListViewModel @Inject constructor(
+
+class CountryListViewModel(
     private val getCountiesUseCase: GetCountiesUseCase
 ) : ViewModel() {
 

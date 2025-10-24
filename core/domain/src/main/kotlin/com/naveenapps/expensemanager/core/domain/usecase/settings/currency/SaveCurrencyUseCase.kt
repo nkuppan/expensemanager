@@ -3,9 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings.currency
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
-import javax.inject.Inject
 
-class SaveCurrencyUseCase @Inject constructor(
+class SaveCurrencyUseCase(
     private val repository: CurrencyRepository,
 ) {
     suspend operator fun invoke(currency: Currency): Resource<Boolean> {

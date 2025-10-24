@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -23,21 +22,23 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 import com.naveenapps.expensemanager.ui.MainScreen
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
+import org.koin.android.scope.AndroidScopeComponent
+import org.koin.androidx.scope.activityScope
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.scope.Scope
 
-@AndroidEntryPoint
-internal class MainActivity : ComponentActivity() {
+internal class MainActivity : ComponentActivity(), AndroidScopeComponent {
 
-    @Inject
-    internal lateinit var appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator by inject()
 
-    @Inject
-    internal lateinit var activityComponentProvider: ActivityComponentProvider
+    override val scope: Scope by activityScope()
 
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by viewModel()
+
+    private val activityComponentProvider: ActivityComponentProvider by scope.inject()
 
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartIntentSenderForResult(),
@@ -48,9 +49,13 @@ internal class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        enableEdgeToEdge()
+
+        activityComponentProvider.getBackupRepository()
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -69,10 +74,10 @@ internal class MainActivity : ComponentActivity() {
 
             if (onBoardingStatus != null) {
                 MainScreen(
-                    appComposeNavigator,
-                    activityComponentProvider,
-                    isDarkTheme,
-                    if (onBoardingStatus == true) {
+                    composeNavigator = appComposeNavigator,
+                    componentProvider = activityComponentProvider,
+                    isDarkTheme = isDarkTheme,
+                    landingScreen = if (onBoardingStatus == true) {
                         ExpenseManagerScreens.Home
                     } else {
                         ExpenseManagerScreens.IntroScreen

@@ -23,10 +23,9 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import java.util.Date
-import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
-class GetChartDataUseCase @Inject constructor(
+class GetChartDataUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getDateRangeUseCase: GetDateRangeUseCase,

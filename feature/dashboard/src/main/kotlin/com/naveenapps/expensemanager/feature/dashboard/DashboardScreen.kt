@@ -3,11 +3,13 @@ package com.naveenapps.expensemanager.feature.dashboard
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -30,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AmountStatusView
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
@@ -52,11 +53,12 @@ import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.random.Random
 
 @Composable
 fun DashboardScreen(
-    viewModel: DashboardViewModel = hiltViewModel(),
+    viewModel: DashboardViewModel = koinViewModel(),
 ) {
 
     val state by viewModel.state.collectAsState()
@@ -74,6 +76,8 @@ private fun DashboardScaffoldContent(
     onAction: (DashboardAction) -> Unit,
 ) {
     Scaffold(
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.safeDrawing),
         topBar = {
             TopAppBar(title = {
                 Text(
@@ -288,9 +292,6 @@ private fun DashboardScreenContent(
                         .height(200.dp)
                 )
             }
-        }
-        item {
-            Spacer(modifier = Modifier.padding(64.dp))
         }
     }
 }

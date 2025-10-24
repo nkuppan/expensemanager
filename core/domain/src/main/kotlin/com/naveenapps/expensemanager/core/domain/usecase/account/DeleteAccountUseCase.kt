@@ -3,9 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.account
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.AccountRepository
-import javax.inject.Inject
 
-class DeleteAccountUseCase @Inject constructor(
+class DeleteAccountUseCase(
     private val repository: AccountRepository,
     private val checkAccountValidationUseCase: CheckAccountValidationUseCase,
 ) {

@@ -33,7 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
@@ -58,7 +58,7 @@ import java.util.Locale
 
 @Composable
 fun BudgetCreateScreen(
-    viewModel: BudgetCreateViewModel = hiltViewModel()
+    viewModel: BudgetCreateViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()

@@ -39,7 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
@@ -65,7 +65,7 @@ import kotlin.random.Random
 
 @Composable
 fun CategoryTransactionTabScreen(
-    viewModel: CategoryTransactionListViewModel = hiltViewModel()
+    viewModel: CategoryTransactionListViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 

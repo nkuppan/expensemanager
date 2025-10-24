@@ -9,16 +9,14 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.GetRe
 import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.UpdateReminderStatusUseCase
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.notification.NotificationScheduler
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ReminderViewModel @Inject constructor(
+
+class ReminderViewModel(
     getReminderTimeUseCase: GetReminderTimeUseCase,
     getReminderStatusUseCase: GetReminderStatusUseCase,
     private val updateReminderStatusUseCase: UpdateReminderStatusUseCase,

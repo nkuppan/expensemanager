@@ -5,18 +5,15 @@ import android.util.Log
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.BackupRepository
-import dagger.hilt.android.scopes.ActivityScoped
 import de.raphaelebner.roomdatabasebackup.core.RoomBackup
-import javax.inject.Inject
 
-@ActivityScoped
-class BackupRepositoryImpl @Inject constructor(
-    private val backup: RoomBackup,
+class BackupRepositoryImpl(
+    private val roomBackup: RoomBackup,
     private val database: ExpenseManagerDatabase
 ) : BackupRepository {
 
     override fun backupData(uri: String?): Resource<Boolean> {
-        backup
+        roomBackup
             .database(database)
             .enableLogDebug(true)
             .backupIsEncrypted(true)
@@ -37,7 +34,7 @@ class BackupRepositoryImpl @Inject constructor(
     }
 
     override fun restoreData(uri: String?): Resource<Boolean> {
-        backup
+        roomBackup
             .database(database)
             .enableLogDebug(true)
             .backupIsEncrypted(true)

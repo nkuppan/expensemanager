@@ -9,10 +9,9 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
-class MoveDateRangeForwardUseCase @Inject constructor(
+class MoveDateRangeForwardUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 

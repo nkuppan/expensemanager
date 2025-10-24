@@ -7,16 +7,14 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurre
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetThemesUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.SaveThemeUseCase
 import com.naveenapps.expensemanager.core.model.Theme
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class ThemeViewModel @Inject constructor(
+
+class ThemeViewModel(
     getSelectedTheme: GetCurrentThemeUseCase,
     getThemesUseCase: GetThemesUseCase,
     private val saveThemeUseCase: SaveThemeUseCase,

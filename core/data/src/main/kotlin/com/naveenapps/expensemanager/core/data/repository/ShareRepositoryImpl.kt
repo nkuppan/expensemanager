@@ -9,12 +9,10 @@ import com.naveenapps.expensemanager.core.common.utils.openShareOption
 import com.naveenapps.expensemanager.core.common.utils.openWebPage
 import com.naveenapps.expensemanager.core.repository.FirebaseSettingsRepository
 import com.naveenapps.expensemanager.core.repository.ShareRepository
-import dagger.hilt.android.qualifiers.ActivityContext
 import java.io.File
-import javax.inject.Inject
 
-class ShareRepositoryImpl @Inject constructor(
-    @ActivityContext val context: Context,
+class ShareRepositoryImpl(
+    val context: Context,
     private val firebaseSettingsRepository: FirebaseSettingsRepository
 ) : ShareRepository {
 

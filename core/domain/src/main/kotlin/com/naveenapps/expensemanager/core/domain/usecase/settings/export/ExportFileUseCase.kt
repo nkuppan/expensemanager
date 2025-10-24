@@ -7,9 +7,8 @@ import com.naveenapps.expensemanager.core.model.ExportData
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.ExportRepository
-import javax.inject.Inject
 
-class ExportFileUseCase @Inject constructor(
+class ExportFileUseCase(
     private val exportRepository: ExportRepository,
     private val getExportTransactionsUseCase: GetExportTransactionsUseCase,
 ) {

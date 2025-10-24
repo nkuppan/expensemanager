@@ -15,16 +15,4 @@ interface FirebaseSettingsRepository {
     fun getTwitterURL(): String
 
     fun getFeedbackEmail(): String
-
-    fun getMaxBusinessProfileCount(): Long
-
-    fun getMaxInvoicesCount(): Long
-
-    fun getMaxClientsCount(): Long
-
-    fun getMaxItemsCount(): Long
-
-    fun getMaxPaymentMethodCount(): Long
-
-    fun getMaxTermsAndConditionCount(): Long
 }

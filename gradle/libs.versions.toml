@@ -1,24 +1,19 @@
 [versions]
 accompanist = "0.37.3"
-androidDesugarJdkLibs = "2.0.4"
 androidGradlePlugin = "8.13.0"
 androidxActivity = "1.11.0"
 androidxAppCompat = "1.7.1"
 androidxMaterial = "1.13.0"
-androidxBrowser = "1.7.0"
-androidxComposeBom = "2025.09.01"
-androidxComposeRuntimeTracing = "1.9.2"
-billingKtx = "8.0.0"
+androidxComposeBom = "2025.10.01"
+androidxComposeRuntimeTracing = "1.9.4"
 material3 = "1.4.0"
 androidxCore = "1.17.0"
-androidxCoreSplashscreen = "1.0.1"
 androidxDataStore = "1.1.7"
 androidxEspresso = "3.7.0"
-androidxHiltNavigationCompose = "1.3.0"
 androidxLifecycle = "2.9.4"
 androidxMacroBenchmark = "1.4.1"
 benchmark = "1.4.1"
-androidxMetrics = "1.0.0-rc01"
+androidxMetrics = "1.0.0"
 androidxNavigation = "2.9.5"
 androidxProfileinstaller = "1.4.1"
 androidxSplashScreen = "1.0.1"
@@ -31,8 +26,8 @@ androidxTestRunner = "1.7.0"
 androidxTracing = "1.3.0"
 androidxUiAutomator = "2.3.0"
 androidxWindowManager = "1.5.0"
-androidxWork = "2.10.5"
-firebaseBom = "34.3.0"
+androidxWork = "2.11.0"
+firebaseBom = "34.4.0"
 firebaseCrashlyticsPlugin = "3.0.6"
 firebasePerfPlugin = "2.0.1"
 firebaseDistribution = "5.1.1"
@@ -40,21 +35,19 @@ googleOss = "17.3.0"
 review = "2.0.2"
 googleOssPlugin = "0.10.9"
 spotless = "8.0.0"
-hilt = "2.57.2"
-hiltExt = "1.3.0"
-jacoco = "0.8.13"
+jacoco = "0.8.14"
 junit4 = "4.13.2"
 kotlin = "2.2.20"
 kotlinxCoroutines = "1.10.2"
 kotlinxDatetime = "0.7.1"
 kotlinxSerializationJson = "1.9.0"
-ksp = "2.2.20-2.0.2"
+ksp = "2.2.20-2.0.4"
 lint = "31.13.0"
-okhttp = "5.1.0"
+okhttp = "5.2.1"
 retrofit = "3.0.0"
 retrofitKotlinxSerializationJson = "1.0.0"
 robolectric = "4.16"
-room = "2.8.1"
+room = "2.8.3"
 secrets = "2.0.1"
 turbine = "1.2.1"
 ossLicense = "0.10.9"
@@ -64,15 +57,15 @@ jxl = "2.6.12"
 truth = "1.4.5"
 vico = "1.11.1"
 play-publish = "3.12.1"
-google-services = "4.4.3"
+google-services = "4.4.4"
 backup-restore = "1.1.0"
-baselineprofile = "1.2.2"
 gson = "2.13.2"
-uiGraphicsAndroid = "1.9.1"
-dependency-analysis = "3.0.4"
+dependency-analysis = "3.3.0"
 lottieCompose = "6.6.10"
 opencsv = "5.12.0"
 coil = "2.7.0"
+koin-bom = "4.1.1"
+
 
 [libraries]
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
@@ -101,7 +94,6 @@ androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
 androidx-dataStore-core = { group = "androidx.datastore", name = "datastore", version.ref = "androidxDataStore" }
 androidx-dataStore-preference = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "androidxDataStore" }
-androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHiltNavigationCompose" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
 androidx-lifecycle-runtimeCompose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
 androidx-lifecycle-viewModelCompose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
@@ -136,11 +128,6 @@ google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-lic
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
 spotless = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
-hilt-ext-compiler = { group = "androidx.hilt", name = "hilt-compiler", version.ref = "hiltExt" }
-hilt-ext-work = { group = "androidx.hilt", name = "hilt-work", version.ref = "hiltExt" }
 junit4 = { group = "junit", name = "junit", version.ref = "junit4" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
@@ -170,6 +157,12 @@ backup-restore = { group = "de.raphaelebner", name = "roomdatabasebackup", versi
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-core = { module = "io.insert-koin:koin-core" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager" }
+koin-android-compose = { module = "io.insert-koin:koin-androidx-compose" }
+
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
@@ -177,7 +170,6 @@ firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "per
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
 app-update-ktx = { group = "com.google.android.play", name = "app-update-ktx", version = "2.1.0" }
-androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version = "hiltExt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -186,7 +178,6 @@ android-test = { id = "com.android.test", version.ref = "androidGradlePlugin" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }
 firebase-distribution = { id = "com.google.firebase.appdistribution", version.ref = "firebaseDistribution" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -201,8 +192,8 @@ spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 
 
-naveenapps-android-app = { id = "naveenapps.plugin.android.app", version = "unspecified" }
 naveenapps-kotlin-basic = { id = "naveenapps.plugin.kotlin.basic", version = "unspecified" }
+naveenapps-android-application = { id = "naveenapps.plugin.android.app", version = "unspecified" }
 naveenapps-android-application-compose = { id = "naveenapps.android.application.compose", version = "unspecified" }
 naveenapps-android-application-firebase = { id = "naveenapps.android.application.firebase", version = "unspecified" }
 naveenapps-android-application-flavors = { id = "naveenapps.android.application.flavors", version = "unspecified" }
@@ -214,5 +205,5 @@ naveenapps-android-library-jacoco = { id = "naveenapps.android.library.jacoco", 
 naveenapps-android-lint = { id = "naveenapps.android.lint", version = "unspecified" }
 naveenapps-android-room = { id = "naveenapps.android.room", version = "unspecified" }
 naveenapps-android-test = { id = "naveenapps.android.test", version = "unspecified" }
-naveenapps-hilt = { id = "naveenapps.hilt", version = "unspecified" }
+naveenapps-di = { id = "naveenapps.di", version = "unspecified" }
 naveenapps-jvm-library = { id = "naveenapps.jvm.library", version = "unspecified" }

@@ -37,7 +37,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -60,7 +60,7 @@ enum class CategoryTabItems(
 }
 
 @Composable
-fun CategoryListScreen(viewModel: CategoryListViewModel = hiltViewModel()) {
+fun CategoryListScreen(viewModel: CategoryListViewModel = koinViewModel()) {
 
     val state by viewModel.state.collectAsState()
 

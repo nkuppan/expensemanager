@@ -16,7 +16,6 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,10 +24,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class FilterTypeSelectionViewModel @Inject constructor(
+
+class FilterTypeSelectionViewModel(
     getSelectedTransactionTypesUseCase: GetSelectedTransactionTypesUseCase,
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
     getSelectedCategoriesUseCase: GetSelectedCategoriesUseCase,

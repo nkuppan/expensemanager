@@ -2,11 +2,11 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.datera
 
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import java.util.Date
-import javax.inject.Inject
 
-class SaveDateRangeUseCase @Inject constructor(
-    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository,
+class SaveDateRangeUseCase(
+    private val dateRangeFilterRepository: DateRangeFilterRepository,
     private val setDateRangesUseCase: SetDateRangesUseCase,
 ) {
 

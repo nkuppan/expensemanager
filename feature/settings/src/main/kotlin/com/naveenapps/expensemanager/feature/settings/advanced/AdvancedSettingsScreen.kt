@@ -37,7 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -55,7 +55,7 @@ import java.util.Date
 @Composable
 fun AdvancedSettingsScreen(
     backupRepository: BackupRepository,
-    viewModel: AdvancedSettingsViewModel = hiltViewModel(),
+    viewModel: AdvancedSettingsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 

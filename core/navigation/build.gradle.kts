@@ -2,7 +2,7 @@ plugins {
     id("naveenapps.plugin.android.library")
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
-    id("naveenapps.plugin.hilt")
+    id("naveenapps.plugin.di")
     kotlin("plugin.serialization")
 }
 

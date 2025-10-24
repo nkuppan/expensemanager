@@ -18,18 +18,15 @@ import androidx.core.content.ContextCompat
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.abs
 
-@Singleton
-class NotificationScheduler @Inject constructor(
-    @ApplicationContext private val context: Context,
+class NotificationScheduler(
+    private val context: Context,
     private val reminderTimeRepository: ReminderTimeRepository,
 ) {
 
@@ -116,7 +113,7 @@ class NotificationScheduler @Inject constructor(
 
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE)
-                as NotificationManager
+                    as NotificationManager
 
         notificationManager.notify(
             NotificationId.DAILY_REMINDER_REQUEST_CODE,
@@ -160,7 +157,6 @@ class NotificationScheduler @Inject constructor(
         channelName: String,
         channelDescription: String,
     ) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
         val channel = NotificationChannel(
             channelId,

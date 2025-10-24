@@ -59,6 +59,15 @@
             android:authorities="${applicationId}.androidx-startup"
             android:exported="false"
             tools:node="merge">
+
+            <meta-data
+                android:name="com.naveenapps.expensemanager.initializer.KoinInitializer"
+                android:value="androidx.startup" />
+
+            <meta-data
+                android:name="com.naveenapps.expensemanager.initializer.WorkManagerInitializer"
+                android:value="androidx.startup" />
+
             <meta-data
                 android:name="com.naveenapps.expensemanager.initializer.PreloadDatabaseInitializer"
                 android:value="androidx.startup" />

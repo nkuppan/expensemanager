@@ -4,9 +4,8 @@ import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import javax.inject.Inject
 
-class GetDateRangeUseCase @Inject constructor(
+class GetDateRangeUseCase(
     private val getDateRangeByTypeUseCase: GetDateRangeByTypeUseCase,
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {

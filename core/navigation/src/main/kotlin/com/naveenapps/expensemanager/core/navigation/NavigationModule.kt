@@ -1,18 +1,9 @@
 package com.naveenapps.expensemanager.core.navigation
 
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-internal abstract class NavigationModule {
+import org.koin.dsl.module
 
-    @Binds
-    @Singleton
-    abstract fun provideComposeNavigator(
-        expenseManagerComposeNavigator: ExpenseManagerComposeNavigator,
-    ): AppComposeNavigator
+val NavigationModule = module {
+    single<AppComposeNavigator> { ExpenseManagerComposeNavigator() }
 }
+

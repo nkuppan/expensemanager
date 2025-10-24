@@ -10,14 +10,13 @@ import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 val defaultTheme = Theme(
     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
     R.string.system_default,
 )
 
-class ThemeRepositoryImpl @Inject constructor(
+class ThemeRepositoryImpl(
     private val dataStore: ThemeDataStore,
     private val versionCheckerRepository: VersionCheckerRepository,
     private val dispatchers: AppCoroutineDispatchers,

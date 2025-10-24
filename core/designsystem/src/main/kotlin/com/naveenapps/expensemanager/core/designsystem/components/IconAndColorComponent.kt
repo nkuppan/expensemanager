@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,6 +53,7 @@ fun IconAndColorComponent(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val focusManager = LocalFocusManager.current
 
     val sheetState = rememberModalBottomSheetState(
@@ -89,7 +91,7 @@ fun IconAndColorComponent(
 
                 SelectionType.ICON_SELECTION -> {
                     IconSelectionScreen {
-                        onIconSelection?.invoke(context.resources.getResourceName(it))
+                        onIconSelection?.invoke(resources.getResourceName(it))
                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
                                 sheetSelection = SelectionType.NONE
@@ -134,7 +136,7 @@ fun IconAndColorComponent(
             },
         ) {
             Icon(
-                painter = painterResource(context.getDrawable(selectedIcon)),
+                painter = painterResource(context.getDrawable(iconName = selectedIcon)),
                 contentDescription = "",
             )
         }
@@ -156,7 +158,7 @@ fun IconAndColorComponent(
             ),
         ) {
             Icon(
-                painter = painterResource(context.getDrawable(selectedIcon)),
+                painter = painterResource(context.getDrawable(iconName = selectedIcon)),
                 contentDescription = "",
             )
         }
@@ -169,7 +171,7 @@ private fun IconAndColorComponentPreview() {
     ExpenseManagerTheme {
         IconAndColorComponent(
             selectedColor = "#000000",
-            selectedIcon = "ic_add",
+            selectedIcon = "account_balance",
             onColorSelection = {},
             onIconSelection = {},
         )

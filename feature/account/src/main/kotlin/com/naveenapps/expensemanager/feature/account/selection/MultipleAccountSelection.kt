@@ -23,7 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -33,7 +33,7 @@ import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiMode
 
 @Composable
 fun MultipleAccountSelectionScreen(
-    viewModel: AccountSelectionViewModel = hiltViewModel(),
+    viewModel: AccountSelectionViewModel = koinViewModel(),
     selectedAccounts: List<AccountUiModel> = emptyList(),
     onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)? = null,
 ) {

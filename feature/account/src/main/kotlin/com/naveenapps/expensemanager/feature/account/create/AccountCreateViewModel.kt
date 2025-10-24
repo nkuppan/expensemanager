@@ -22,7 +22,6 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -31,10 +30,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
-import javax.inject.Inject
 
-@HiltViewModel
-class AccountCreateViewModel @Inject constructor(
+
+class AccountCreateViewModel(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,

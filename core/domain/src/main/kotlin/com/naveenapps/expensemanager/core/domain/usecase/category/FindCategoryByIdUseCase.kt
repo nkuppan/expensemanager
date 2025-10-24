@@ -3,9 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.category
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
-import javax.inject.Inject
 
-class FindCategoryByIdUseCase @Inject constructor(private val repository: CategoryRepository) {
+class FindCategoryByIdUseCase(private val repository: CategoryRepository) {
 
     suspend operator fun invoke(categoryId: String?): Resource<Category> {
         if (categoryId.isNullOrBlank()) {

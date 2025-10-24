@@ -41,7 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.NavigationButton
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
@@ -55,7 +55,7 @@ import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransa
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryDetailScreen(
-    viewModel: CategoryDetailViewModel = hiltViewModel(),
+    viewModel: CategoryDetailViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 

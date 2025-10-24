@@ -1,12 +1,15 @@
 package com.naveenapps.expensemanager.ui
 
 import android.Manifest
-import android.app.Activity
 import android.os.Build
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -20,10 +23,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -53,6 +54,7 @@ import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomePageNavHostContainer(
@@ -140,8 +142,11 @@ fun NavGraphBuilder.expenseManagerNavigation(
 }
 
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
-    val context = LocalContext.current as? Activity
+fun HomeScreen(
+    viewModel: HomeViewModel = koinViewModel()
+) {
+
+    val context = LocalActivity.current
 
     val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsState()
 
@@ -176,6 +181,8 @@ fun HomeScreen(viewModel: HomeViewModel = hiltViewModel()) {
     }
 
     Scaffold(
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.safeDrawing),
         bottomBar = {
             BottomAppBar {
                 HomeScreenBottomBarItems.entries.forEach { uiSystem ->

@@ -4,9 +4,8 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class GetTransactionByNameUseCase @Inject constructor(
+class GetTransactionByNameUseCase(
     private val repository: TransactionRepository,
 ) {
     fun invoke(searchText: String?): Flow<List<Transaction>> {

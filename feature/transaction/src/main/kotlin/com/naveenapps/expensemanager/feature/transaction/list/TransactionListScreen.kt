@@ -36,7 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
@@ -62,7 +62,7 @@ import java.util.Date
 @Composable
 fun TransactionListScreen(
     showBackNavigationIcon: Boolean = false,
-    viewModel: TransactionListViewModel = hiltViewModel()
+    viewModel: TransactionListViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()

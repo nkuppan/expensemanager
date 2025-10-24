@@ -8,18 +8,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import javax.inject.Inject
+import org.koin.core.context.GlobalContext
 
 class AppInitializer : Initializer<Unit> {
 
-    @Inject
-    lateinit var applyThemeUseCase: ApplyThemeUseCase
-
-    @Inject
-    lateinit var notificationScheduler: NotificationScheduler
-
     override fun create(context: Context) {
-        InitializerEntryPoint.resolve(context).inject(this)
+
+        val applyThemeUseCase: ApplyThemeUseCase = GlobalContext.get().get()
+        val notificationScheduler: NotificationScheduler = GlobalContext.get().get()
 
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
             applyThemeUseCase.invoke()
@@ -28,6 +24,9 @@ class AppInitializer : Initializer<Unit> {
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(DependencyGraphInitializer::class.java)
+        return listOf(
+            KoinInitializer::class.java,
+            WorkManagerInitializer::class.java
+        )
     }
 }

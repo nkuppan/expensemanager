@@ -23,10 +23,9 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import java.util.Date
-import javax.inject.Inject
 import kotlin.time.ExperimentalTime
 
-class DateRangeFilterRepositoryImpl @Inject constructor(
+class DateRangeFilterRepositoryImpl(
     private val dataStore: DateRangeDataStore,
     private val dispatcher: AppCoroutineDispatchers,
 ) : DateRangeFilterRepository {

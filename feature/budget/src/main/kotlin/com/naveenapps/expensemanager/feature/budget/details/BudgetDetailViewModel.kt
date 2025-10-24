@@ -8,14 +8,12 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetDetailU
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
-@HiltViewModel
-class BudgetDetailViewModel @Inject constructor(
+
+class BudgetDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getBudgetDetailUseCase: GetBudgetDetailUseCase,
     private val appComposeNavigator: AppComposeNavigator,

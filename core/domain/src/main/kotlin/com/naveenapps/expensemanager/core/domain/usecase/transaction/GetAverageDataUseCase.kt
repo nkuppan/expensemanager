@@ -13,9 +13,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import java.util.Calendar
-import javax.inject.Inject
 
-class GetAverageDataUseCase @Inject constructor(
+class GetAverageDataUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
@@ -64,7 +63,7 @@ class GetAverageDataUseCase @Inject constructor(
                 DateRangeType.THIS_YEAR,
                 DateRangeType.CUSTOM,
                 DateRangeType.ALL,
-                -> {
+                    -> {
                     daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
                     weeksMultiplier = 1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
                     monthMultiplier = 1.0 / 12

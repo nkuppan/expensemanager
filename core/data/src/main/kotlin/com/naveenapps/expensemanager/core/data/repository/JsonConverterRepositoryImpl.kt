@@ -6,9 +6,8 @@ import com.google.gson.Gson
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.repository.JsonConverterRepository
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class JsonConverterRepositoryImpl @Inject constructor(
+class JsonConverterRepositoryImpl(
     private val gson: Gson,
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
 ) : JsonConverterRepository {

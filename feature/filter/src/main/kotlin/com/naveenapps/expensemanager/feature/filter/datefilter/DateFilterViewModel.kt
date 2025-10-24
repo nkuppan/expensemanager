@@ -9,7 +9,6 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.isCustom
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,10 +18,9 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
-import javax.inject.Inject
 
-@HiltViewModel
-class DateFilterViewModel @Inject constructor(
+
+class DateFilterViewModel(
     getDateRangeUseCase: GetDateRangeUseCase,
     private val getAllDateRangeUseCase: GetAllDateRangeUseCase,
     private val saveDateRangeUseCase: SaveDateRangeUseCase,

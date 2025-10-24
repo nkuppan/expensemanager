@@ -7,7 +7,6 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDe
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,10 +15,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class SettingsViewModel @Inject constructor(
+
+class SettingsViewModel(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getCurrentThemeUseCase: GetCurrentThemeUseCase,

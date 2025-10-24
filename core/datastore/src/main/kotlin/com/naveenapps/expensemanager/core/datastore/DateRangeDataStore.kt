@@ -10,9 +10,8 @@ import com.naveenapps.expensemanager.core.common.utils.fromUTCToLocalTimeStamp
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class DateRangeDataStore @Inject constructor(private val dataStore: DataStore<Preferences>) {
+class DateRangeDataStore(private val dataStore: DataStore<Preferences>) {
 
     suspend fun setFilterType(dateRangeType: DateRangeType) =
         dataStore.edit { preferences ->

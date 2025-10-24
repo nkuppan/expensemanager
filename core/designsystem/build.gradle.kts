@@ -2,7 +2,7 @@ plugins {
     id("naveenapps.plugin.android.library")
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
-    id("naveenapps.plugin.hilt")
+    id("naveenapps.plugin.di")
     alias(libs.plugins.compose.compiler)
 }
 
@@ -30,7 +30,6 @@ dependencies {
     api(libs.androidx.metrics)
     api(libs.androidx.tracing.ktx)
     api(libs.androidx.navigation.compose)
-    api(libs.androidx.hilt.navigation.compose)
     api(libs.accompanist.permissions)
 
     debugApi(libs.androidx.compose.ui.tooling)

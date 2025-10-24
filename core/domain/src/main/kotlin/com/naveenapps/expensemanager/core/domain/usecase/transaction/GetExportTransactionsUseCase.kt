@@ -6,9 +6,8 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.firstOrNull
-import javax.inject.Inject
 
-class GetExportTransactionsUseCase @Inject constructor(
+class GetExportTransactionsUseCase(
     private val accountRepository: com.naveenapps.expensemanager.core.repository.AccountRepository,
     private val categoryRepository: com.naveenapps.expensemanager.core.repository.CategoryRepository,
     private val transactionRepository: com.naveenapps.expensemanager.core.repository.TransactionRepository,

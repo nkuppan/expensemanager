@@ -10,9 +10,8 @@ import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class CategoryRepositoryImpl @Inject constructor(
+class CategoryRepositoryImpl(
     private val categoryDao: CategoryDao,
     private val dispatchers: AppCoroutineDispatchers,
 ) : CategoryRepository {

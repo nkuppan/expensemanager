@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
@@ -48,7 +48,7 @@ import java.util.Date
 fun FilterTypeSelectionView(
     applyChanges: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: FilterTypeSelectionViewModel = hiltViewModel(),
+    viewModel: FilterTypeSelectionViewModel = koinViewModel(),
 ) {
     ObserveAsEvents(viewModel.event) {
         when (it) {

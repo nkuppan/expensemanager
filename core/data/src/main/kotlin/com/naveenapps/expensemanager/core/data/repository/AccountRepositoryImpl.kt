@@ -10,9 +10,8 @@ import com.naveenapps.expensemanager.core.repository.AccountRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class AccountRepositoryImpl @Inject constructor(
+class AccountRepositoryImpl(
     private val accountDao: AccountDao,
     private val dispatchers: AppCoroutineDispatchers,
 ) : AccountRepository {

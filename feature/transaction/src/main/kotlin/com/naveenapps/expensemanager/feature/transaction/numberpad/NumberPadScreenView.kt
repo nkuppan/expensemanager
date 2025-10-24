@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.feature.transaction.R
@@ -65,7 +65,7 @@ fun NumberPadDialogView(
 fun NumberPadScreen(
     onConfirm: ((String?) -> Unit),
 ) {
-    val viewModel: NumberPadViewModel = hiltViewModel()
+    val viewModel: NumberPadViewModel = koinViewModel()
     val calculatedAmount by viewModel.calculatedAmount.collectAsState()
     val calculatedAmountString by viewModel.calculatedAmountString.collectAsState()
 

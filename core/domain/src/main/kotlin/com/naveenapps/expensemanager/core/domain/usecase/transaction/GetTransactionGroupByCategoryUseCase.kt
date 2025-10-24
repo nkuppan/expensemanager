@@ -14,9 +14,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
-import javax.inject.Inject
 
-class GetTransactionGroupByCategoryUseCase @Inject constructor(
+class GetTransactionGroupByCategoryUseCase(
     private val getAllCategoryUseCase: GetAllCategoryUseCase,
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,

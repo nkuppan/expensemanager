@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
@@ -42,10 +41,11 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.account.list.AccountItem
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
 import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun OnboardingScreen(
-    viewModel: OnboardingViewModel = hiltViewModel()
+    viewModel: OnboardingViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 

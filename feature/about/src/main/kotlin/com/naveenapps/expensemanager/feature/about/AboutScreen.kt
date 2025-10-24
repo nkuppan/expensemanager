@@ -28,7 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
@@ -39,7 +39,7 @@ import com.naveenapps.expensemanager.core.repository.ShareRepository
 @Composable
 fun AboutScreen(
     shareRepository: ShareRepository,
-    viewModel: AboutUsViewModel = hiltViewModel()
+    viewModel: AboutUsViewModel = koinViewModel()
 ) {
     val context = LocalContext.current
 

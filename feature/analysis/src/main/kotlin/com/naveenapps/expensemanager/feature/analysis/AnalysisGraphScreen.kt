@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AMOUNT_VALUE
@@ -53,7 +53,7 @@ import com.patrykandpatrick.vico.core.entry.entryOf
 
 @Composable
 fun AnalysisGraphScreen(
-    viewModel: AnalysisScreenViewModel = hiltViewModel()
+    viewModel: AnalysisScreenViewModel = koinViewModel()
 ) {
 
     val graphData by viewModel.graphItems.collectAsState()

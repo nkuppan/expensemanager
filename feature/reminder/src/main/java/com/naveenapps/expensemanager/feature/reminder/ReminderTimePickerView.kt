@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.feature.reminder
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 
@@ -11,7 +11,7 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 fun ReminderTimePickerView(
     complete: (Boolean) -> Unit,
 ) {
-    val viewModel: ReminderTimePickerViewModel = hiltViewModel()
+    val viewModel: ReminderTimePickerViewModel = koinViewModel()
     val reminderTimeState by viewModel.currentReminderTime.collectAsState()
 
     AppTimePickerDialog(

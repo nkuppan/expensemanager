@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
@@ -31,7 +31,7 @@ import com.naveenapps.expensemanager.feature.category.R
 
 @Composable
 fun CategoryCreateScreen(
-    viewModel: CategoryCreateViewModel = hiltViewModel()
+    viewModel: CategoryCreateViewModel = koinViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 

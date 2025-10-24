@@ -29,7 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.DateRangeType
@@ -42,7 +42,7 @@ import com.naveenapps.expensemanager.feature.filter.type.InputChipView
 @Composable
 fun FilterView(
     modifier: Modifier = Modifier,
-    viewModel: FilterViewModel = hiltViewModel()
+    viewModel: FilterViewModel = koinViewModel()
 ) {
     val filterState by viewModel.filterState.collectAsState()
 

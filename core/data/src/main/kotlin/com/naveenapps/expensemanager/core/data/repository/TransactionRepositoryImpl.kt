@@ -18,9 +18,8 @@ import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class TransactionRepositoryImpl @Inject constructor(
+class TransactionRepositoryImpl(
     private val transactionDao: TransactionDao,
     private val accountDao: AccountDao,
     private val categoryDao: CategoryDao,

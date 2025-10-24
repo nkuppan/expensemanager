@@ -21,7 +21,6 @@ import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
@@ -29,11 +28,12 @@ import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMo
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.onboarding.R
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun IntroScreen(
     shareRepository: ShareRepository?,
-    viewModel: IntroViewModel = hiltViewModel()
+    viewModel: IntroViewModel = koinViewModel()
 ) {
     ScaffoldContent(viewModel::navigate, shareRepository)
 }

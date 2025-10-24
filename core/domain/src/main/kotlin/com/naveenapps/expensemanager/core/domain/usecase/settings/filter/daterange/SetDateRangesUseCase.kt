@@ -1,11 +1,11 @@
 package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange
 
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import java.util.Date
-import javax.inject.Inject
 
-class SetDateRangesUseCase @Inject constructor(
-    private val dateRangeFilterRepository: com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository,
+class SetDateRangesUseCase(
+    private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
     suspend operator fun invoke(customDateRange: List<Date>): Resource<Boolean> {

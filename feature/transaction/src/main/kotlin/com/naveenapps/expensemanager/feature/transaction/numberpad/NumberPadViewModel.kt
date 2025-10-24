@@ -2,19 +2,17 @@ package com.naveenapps.expensemanager.feature.transaction.numberpad
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
 
-@HiltViewModel
-class NumberPadViewModel @Inject constructor() : ViewModel() {
+
+class NumberPadViewModel() : ViewModel() {
 
     private val _calculatedAmount = MutableStateFlow("0")
     val calculatedAmount = _calculatedAmount.asStateFlow()

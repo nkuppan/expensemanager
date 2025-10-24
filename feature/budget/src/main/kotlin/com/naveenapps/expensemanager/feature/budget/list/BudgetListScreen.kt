@@ -40,7 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
@@ -55,7 +55,7 @@ import com.naveenapps.expensemanager.feature.budget.R
 
 @Composable
 fun BudgetListScreen(
-    viewModel: BudgetListViewModel = hiltViewModel(),
+    viewModel: BudgetListViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 

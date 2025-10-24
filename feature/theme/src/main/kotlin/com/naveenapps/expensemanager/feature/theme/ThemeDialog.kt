@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import androidx.hilt.navigation.compose.hiltViewModel
+import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 import com.naveenapps.expensemanager.core.model.Theme
@@ -36,7 +36,7 @@ import com.naveenapps.expensemanager.core.model.Theme
 fun ThemeDialogView(
     complete: () -> Unit,
 ) {
-    val viewModel: ThemeViewModel = hiltViewModel()
+    val viewModel: ThemeViewModel = koinViewModel()
 
     val selectedTheme by viewModel.currentTheme.collectAsState()
     val themes by viewModel.themes.collectAsState()

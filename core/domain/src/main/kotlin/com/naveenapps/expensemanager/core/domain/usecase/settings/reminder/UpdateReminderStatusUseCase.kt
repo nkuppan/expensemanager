@@ -1,9 +1,8 @@
 package com.naveenapps.expensemanager.core.domain.usecase.settings.reminder
 
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
-import javax.inject.Inject
 
-class UpdateReminderStatusUseCase @Inject constructor(
+class UpdateReminderStatusUseCase(
     private val repository: ReminderTimeRepository,
 ) {
 
