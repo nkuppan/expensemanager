@@ -6,10 +6,7 @@ import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -122,7 +119,9 @@ fun NavGraphBuilder.expenseManagerNavigation(
         ExportScreen()
     }
     composable<ExpenseManagerScreens.ReminderScreen> {
-        ReminderScreen()
+        ReminderScreen(
+            shareRepository = componentProvider.getShareRepository()
+        )
     }
     composable<ExpenseManagerScreens.CurrencyCustomiseScreen> {
         CurrencyCustomiseScreen()
@@ -181,8 +180,6 @@ fun HomeScreen(
     }
 
     Scaffold(
-        modifier = Modifier
-            .windowInsetsPadding(WindowInsets.safeDrawing),
         bottomBar = {
             BottomAppBar {
                 HomeScreenBottomBarItems.entries.forEach { uiSystem ->

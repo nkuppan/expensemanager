@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CancellationSignal
 import android.os.ParcelFileDescriptor
@@ -13,6 +14,7 @@ import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
 import android.print.PrintDocumentInfo
 import android.print.PrintManager
+import android.provider.Settings
 import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
@@ -21,6 +23,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
+
 
 fun openEmailToOption(context: Context, emailId: String) {
     try {
@@ -186,6 +189,27 @@ fun Context.openWebPage(webpage: String) {
         val intent = Intent(Intent.ACTION_VIEW, webpage.toUri())
         Intent.createChooser(intent, this.getString(R.string.choose_web_browser))
         this.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        // Define what your app should do if no activity can handle the intent.
+    }
+}
+
+fun Context.openAppSettings() {
+    try {
+        val settingsIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+
+        } else {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.setData(uri)
+            intent
+        }
+
+        startActivity(settingsIntent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.
     }

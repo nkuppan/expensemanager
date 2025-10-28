@@ -23,4 +23,6 @@ interface ShareRepository {
     fun openInstagram()
 
     fun openTwitter()
+
+    fun openAppSettings()
 }

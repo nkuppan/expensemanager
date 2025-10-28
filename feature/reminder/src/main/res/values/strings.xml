@@ -6,4 +6,6 @@
     <string name="notification_time">Reminder Notification Time</string>
     <string name="notification_permission_message">The notification permission is important for this app. Please grant the permission.</string>
     <string name="permission_disabled">Notification permission is disabled</string>
+    <string name="request_permission">Request permission</string>
+    <string name="open_settings">Open Settings</string>
 </resources>

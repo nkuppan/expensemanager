@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import android.content.Context
+import com.naveenapps.expensemanager.core.common.utils.openAppSettings
 import com.naveenapps.expensemanager.core.common.utils.openEmailOption
 import com.naveenapps.expensemanager.core.common.utils.openEmailToOption
 import com.naveenapps.expensemanager.core.common.utils.openPrintOption
@@ -62,5 +63,9 @@ class ShareRepositoryImpl(
 
     override fun openTwitter() {
         context.openWebPage(firebaseSettingsRepository.getTwitterURL())
+    }
+
+    override fun openAppSettings() {
+        context.openAppSettings()
     }
 }

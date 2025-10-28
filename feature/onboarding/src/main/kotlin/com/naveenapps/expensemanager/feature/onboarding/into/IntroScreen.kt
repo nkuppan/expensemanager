@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,6 +23,7 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.ui.components.PrimaryButton
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.onboarding.R
@@ -88,14 +87,13 @@ private fun ScaffoldContent(
                 )
             }
 
-            Button(
+            PrimaryButton(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
                 onClick = {
                     navigate.invoke()
                 },
-                shape = RoundedCornerShape(8.dp),
             ) {
                 Text(text = stringResource(id = R.string.get_started).uppercase())
             }
