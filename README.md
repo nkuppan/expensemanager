@@ -47,7 +47,7 @@ Expense Manager attempts to make use of the latest Android libraries and best pr
 * Makes use of [Android Jetpack:](https://developer.android.com/jetpack/):
     * [Architecture Components](https://developer.android.com/jetpack/arch/) including **ViewModel**, **Room**, **Navigation**, **WorkManager** and **DataStore**
     * [Android KTX](https://developer.android.com/kotlin/ktx) for more fluent use of Android APIs
-* [Hilt](https://dagger.dev/hilt/) for dependency injection
+* [Koin]([https://dagger.dev/hilt/](https://insert-koin.io/)) for dependency injection
 * Designed and built using Material 3 Design [components](https://m3.material.io/)
   and [theming](https://m3.material.io/theme-builder)
 * Full [Dark Theme](https://m3.material.io/styles/color/choosing-a-scheme) support
