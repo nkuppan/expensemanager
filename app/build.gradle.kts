@@ -6,6 +6,7 @@ import java.util.Properties
 
 plugins {
     id("naveenapps.plugin.android.app")
+    id("com.google.android.gms.oss-licenses-plugin")
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.compose")
     id("naveenapps.plugin.di")
@@ -13,7 +14,6 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.appdistribution")
-    id("com.google.android.gms.oss-licenses-plugin")
     alias(libs.plugins.compose.compiler)
 }
 

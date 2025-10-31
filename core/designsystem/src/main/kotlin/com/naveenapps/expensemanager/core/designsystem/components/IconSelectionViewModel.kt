@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 // TODO Modify this with categories and icons in future
-private val iconSelectionList = listOf(
+internal val iconSelectionList = listOf(
     R.drawable.account_balance,
     R.drawable.account_balance_wallet,
     R.drawable.agriculture,

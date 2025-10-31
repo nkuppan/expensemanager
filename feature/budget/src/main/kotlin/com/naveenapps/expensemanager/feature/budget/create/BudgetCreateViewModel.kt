@@ -78,9 +78,9 @@ class BudgetCreateViewModel(
                 onValueChange = this::setDateChange
             ),
             currency = getDefaultCurrencyUseCase.invoke(),
-            isAllAccountSelected = false,
+            isAllAccountSelected = true,
             selectedAccounts = emptyList(),
-            isAllCategorySelected = false,
+            isAllCategorySelected = true,
             selectedCategories = emptyList(),
             showDeleteButton = false,
             showDeleteDialog = false,
@@ -132,14 +132,14 @@ class BudgetCreateViewModel(
             setCategories(categories, budget.isAllAccountsSelected)
         }
 
-        _state.update {
-            it.copy(
+        _state.update { state ->
+            state.copy(
                 isLoading = false,
-                name = it.name.copy(budget.name),
-                amount = it.amount.copy(budget.amount.toStringWithLocale()),
-                icon = it.icon.copy(budget.storedIcon.name),
-                color = it.color.copy(budget.storedIcon.backgroundColor),
-                month = it.month.copy(budget.selectedMonth.fromMonthAndYear() ?: Date()),
+                name = state.name.copy(budget.name),
+                amount = state.amount.copy(budget.amount.toStringWithLocale()),
+                icon = state.icon.copy(budget.storedIcon.name),
+                color = state.color.copy(budget.storedIcon.backgroundColor),
+                month = state.month.copy(budget.selectedMonth.fromMonthAndYear() ?: Date()),
                 isAllAccountSelected = budget.isAllAccountsSelected,
                 selectedAccounts = emptyList(),
                 isAllCategorySelected = budget.isAllCategoriesSelected,

@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.about
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,13 +29,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getAppVersionName
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AboutScreen(
@@ -75,7 +76,11 @@ fun AboutScreen(
                 }
 
                 AboutAction.OpenLicense -> {
-                    context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                    try {
+                        context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                    } catch (_: Exception) {
+                        Toast.makeText(context, "Open source licenses are unavailable.", Toast.LENGTH_SHORT).show()
+                    }
                 }
 
                 else -> {
