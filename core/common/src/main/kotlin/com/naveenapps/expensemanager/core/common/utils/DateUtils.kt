@@ -14,6 +14,51 @@ import java.util.Date
 import java.util.Locale
 import kotlin.time.ExperimentalTime
 
+private val YearDataFormat by lazy {
+    SimpleDateFormat("yyyy", Locale.getDefault())
+}
+
+private val HourAndMinutesIn24HoursFormat by lazy {
+    SimpleDateFormat("HH:mm", Locale.getDefault())
+}
+
+private val HourAndMinutesIn12HoursFormat by lazy {
+    SimpleDateFormat("hh:mm a", Locale.getDefault())
+}
+
+private val MonthFormat by lazy {
+    SimpleDateFormat("MM", Locale.getDefault())
+}
+
+private val MonthAndYearFormat by lazy {
+    SimpleDateFormat("MMMM yyyy", Locale.getDefault())
+}
+
+private val DateMonthAndYearFormat by lazy {
+    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+}
+
+private val DateFormat by lazy {
+    SimpleDateFormat("dd", Locale.getDefault())
+}
+
+private val DateAndMonthFormat by lazy {
+    SimpleDateFormat("dd/MM", Locale.getDefault())
+}
+
+private val ElabratedMonthDataFormat by lazy {
+    SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
+}
+
+private val DayFormat by lazy {
+    SimpleDateFormat("EEEE", Locale.getDefault())
+}
+
+private val ShortMontAndYearFormat by lazy {
+    SimpleDateFormat("MM-yyyy", Locale.getDefault())
+}
+
+
 @OptIn(ExperimentalTime::class)
 fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = kotlin.time.Clock.System.now()
@@ -112,37 +157,37 @@ fun Long.toCompleteDate(): Date {
 }
 
 fun Date.toDate(): String {
-    return SimpleDateFormat("dd", Locale.getDefault()).format(this)
+    return DateFormat.format(this)
 }
 
 fun Date.toDateAndMonth(): String {
-    return SimpleDateFormat("dd/MM", Locale.getDefault()).format(this)
+    return DateAndMonthFormat.format(this)
 }
 
 fun Date.toCompleteDate(): String {
-    return SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault()).format(this)
+    return ElabratedMonthDataFormat.format(this)
 }
 
 fun Date.toCompleteDateWithDate(): String {
-    return SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
+    return DateMonthAndYearFormat.format(this)
 }
 
 fun String.fromCompleteDate(): Date {
     return kotlin.runCatching {
-        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(this)
+        DateMonthAndYearFormat.parse(this)
     }.getOrNull() ?: Date()
 }
 
 fun Date.toMonthAndYear(): String {
-    return SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(this)
+    return MonthAndYearFormat.format(this)
 }
 
 fun String.fromMonthAndYear(): Date? {
-    return SimpleDateFormat("MMMM yyyy", Locale.getDefault()).parse(this)
+    return MonthAndYearFormat.parse(this)
 }
 
 fun Date.toMonth(): Int {
-    return SimpleDateFormat("MM", Locale.getDefault()).format(this).toInt()
+    return MonthFormat.format(this).toInt()
 }
 
 fun Date.toYearInt(): Int {
@@ -150,27 +195,33 @@ fun Date.toYearInt(): Int {
 }
 
 fun Date.toYear(): String {
-    return SimpleDateFormat("yyyy", Locale.getDefault()).format(this)
+    return YearDataFormat.format(this)
 }
 
 fun Date.toTimeAndMinutes(): String {
-    return SimpleDateFormat("HH:mm", Locale.getDefault()).format(this)
+    return HourAndMinutesIn24HoursFormat.format(this)
 }
 
 fun Date.toMonthYear(): String {
-    return SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(this)
+    return MonthAndYearFormat.format(this)
 }
 
 fun Date.toDay(): String {
-    return SimpleDateFormat("EEEE", Locale.getDefault()).format(this)
+    return DayFormat.format(this)
 }
 
 fun String.fromTimeAndHour(): Date {
     return kotlin.runCatching {
-        SimpleDateFormat("HH:mm", Locale.getDefault()).parse(this)
+        HourAndMinutesIn24HoursFormat.parse(this)
     }.getOrNull() ?: Date()
 }
 
 fun Date.toTimeAndMinutesWithAMPM(): String {
-    return SimpleDateFormat("hh:mm a", Locale.getDefault()).format(this)
+    return HourAndMinutesIn12HoursFormat.format(this)
+}
+
+fun String.fromShortMonthAndYearToDate(): Date? {
+    return kotlin.runCatching {
+        ShortMontAndYearFormat.parse(this)
+    }.getOrNull()
 }

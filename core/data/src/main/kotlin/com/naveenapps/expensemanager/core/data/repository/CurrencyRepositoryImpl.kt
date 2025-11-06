@@ -12,7 +12,6 @@ import com.naveenapps.expensemanager.core.model.isPrefix
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
-import java.util.Locale
 
 private const val MINUS_SYMBOL = "-"
 private const val DEFAULT_CURRENCY_SYMBOL = "$"
@@ -55,7 +54,6 @@ class CurrencyRepositoryImpl(
             amountString = getCurrency(
                 currency = currency,
                 amount = amount.amount,
-                locale = Locale.getDefault(),
             ).let {
                 return@let if (currency.position.isPrefix() && it.contains(MINUS_SYMBOL)) {
                     "${MINUS_SYMBOL}${it.replace(MINUS_SYMBOL, "")}"

@@ -86,6 +86,7 @@ class BudgetCreateViewModel(
             showDeleteDialog = false,
             showAccountSelectionDialog = false,
             showCategorySelectionDialog = false,
+            showMonthSelection = false
         )
     )
     val state = _state.asStateFlow()
@@ -265,7 +266,12 @@ class BudgetCreateViewModel(
     }
 
     private fun setDateChange(date: Date) {
-        _state.update { it.copy(month = it.month.copy(value = date)) }
+        _state.update {
+            it.copy(
+                month = it.month.copy(value = date),
+                showMonthSelection = false
+            )
+        }
     }
 
     private fun setAccounts(selectedAccounts: List<AccountUiModel>, isAllSelected: Boolean) {
@@ -332,6 +338,14 @@ class BudgetCreateViewModel(
         _state.update { it.copy(showDeleteDialog = true) }
     }
 
+    private fun closeMonthSelection() {
+        _state.update { it.copy(showMonthSelection = false) }
+    }
+
+    private fun openMonthSelection() {
+        _state.update { it.copy(showMonthSelection = true) }
+    }
+
     fun processAction(action: BudgetCreateAction) {
         when (action) {
             BudgetCreateAction.ClosePage -> closePage()
@@ -353,6 +367,9 @@ class BudgetCreateViewModel(
                 action.categories,
                 action.isAllSelected
             )
+
+            BudgetCreateAction.CloseMonthSelection -> closeMonthSelection()
+            BudgetCreateAction.ShowMonthSelection -> openMonthSelection()
         }
     }
 

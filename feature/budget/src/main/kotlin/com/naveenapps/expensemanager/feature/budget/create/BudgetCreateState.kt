@@ -22,4 +22,5 @@ data class BudgetCreateState(
     val showDeleteDialog: Boolean,
     val showAccountSelectionDialog: Boolean,
     val showCategorySelectionDialog: Boolean,
+    val showMonthSelection: Boolean,
 )

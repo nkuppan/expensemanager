@@ -7,6 +7,10 @@ sealed class BudgetCreateAction {
 
     data object ClosePage : BudgetCreateAction()
 
+    data object ShowMonthSelection : BudgetCreateAction()
+
+    data object CloseMonthSelection : BudgetCreateAction()
+
     data object OpenAccountSelectionDialog : BudgetCreateAction()
 
     data object CloseAccountSelectionDialog : BudgetCreateAction()

@@ -26,14 +26,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDate
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
@@ -52,9 +50,8 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
-import java.text.SimpleDateFormat
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
-import java.util.Locale
 
 @Composable
 fun BudgetCreateScreen(
@@ -118,6 +115,33 @@ private fun BudgetCreateScreenContentView(
                 onAction.invoke(BudgetCreateAction.SelectCategories(selected, items))
             }
         }
+    }
+
+
+    if (state.showMonthSelection) {
+        MonthPicker(
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(16.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(8.dp),
+                ),
+            currentMonth = state.month.value.toMonth(),
+            currentYear = state.month.value.toYearInt(),
+            confirmButtonCLicked = { month, year ->
+                ("$month-$year").fromShortMonthAndYearToDate()?.let {
+                    state.month.onValueChange?.invoke(
+                        it,
+                    )
+                } ?: run {
+                    onAction.invoke(BudgetCreateAction.CloseMonthSelection)
+                }
+            },
+            cancelClicked = {
+                onAction.invoke(BudgetCreateAction.CloseMonthSelection)
+            },
+        )
     }
 
     Scaffold(
@@ -188,33 +212,6 @@ fun BudgetCreateScreen(
 ) {
     val focusManager = LocalFocusManager.current
 
-    var showDatePicker by remember { mutableStateOf(false) }
-
-    if (showDatePicker) {
-        MonthPicker(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp),
-                ),
-            currentMonth = selectedDate.value.toMonth(),
-            currentYear = selectedDate.value.toYearInt(),
-            confirmButtonCLicked = { month, year ->
-                SimpleDateFormat("MM-yyyy", Locale.getDefault()).parse("$month-$year")?.let {
-                    selectedDate.onValueChange?.invoke(
-                        it,
-                    )
-                }
-                showDatePicker = false
-            },
-            cancelClicked = {
-                showDatePicker = false
-            },
-        )
-    }
-
     Column(modifier = modifier) {
         ClickableTextField(
             modifier = Modifier
@@ -225,7 +222,7 @@ fun BudgetCreateScreen(
             leadingIcon = Icons.Default.EditCalendar,
             onClick = {
                 focusManager.clearFocus(force = true)
-                showDatePicker = true
+                onAction.invoke(BudgetCreateAction.ShowMonthSelection)
             },
         )
 
@@ -337,7 +334,8 @@ private fun BudgetCreateStatePreview() {
                 showAccountSelectionDialog = false,
                 showCategorySelectionDialog = false,
                 selectedCategories = emptyList(),
-                selectedAccounts = emptyList()
+                selectedAccounts = emptyList(),
+                showMonthSelection = false
             ),
             onAction = {},
         )

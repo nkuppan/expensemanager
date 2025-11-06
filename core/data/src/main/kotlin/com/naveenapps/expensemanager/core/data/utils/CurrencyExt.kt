@@ -8,20 +8,21 @@ import com.naveenapps.expensemanager.core.model.TextPosition
 import java.text.NumberFormat
 import java.util.Locale
 
+
+private val CustomNumberFormat by lazy {
+    NumberFormat.getNumberInstance(Locale.getDefault())
+}
+
 fun getCurrency(
     currency: Currency,
     amount: Double,
-    locale: Locale = Locale.getDefault(),
 ): String {
     val reduceDigitFormat = "%.1f"
     val currencyFormatted = when (currency.format) {
-        TextFormat.NONE -> reduceDigitFormat.format(locale, amount)
+        TextFormat.NONE -> reduceDigitFormat.format(amount)
         TextFormat.NUMBER_FORMAT -> {
-            NumberFormat.getNumberInstance(
-                locale,
-            ).format(
+            CustomNumberFormat.format(
                 reduceDigitFormat.format(
-                    locale,
                     amount,
                 ).toDoubleOrNullWithLocale(),
             )
@@ -30,21 +31,11 @@ fun getCurrency(
 
     return when (currency.position) {
         TextPosition.PREFIX -> {
-            String.format(
-                locale,
-                "%s%s",
-                currency.symbol,
-                currencyFormatted,
-            )
+            "${currency.symbol}${currencyFormatted}"
         }
 
         TextPosition.SUFFIX -> {
-            String.format(
-                locale,
-                "%s%s",
-                currencyFormatted,
-                currency.symbol,
-            )
+            "${currencyFormatted}${currency.symbol}"
         }
     }
 }
