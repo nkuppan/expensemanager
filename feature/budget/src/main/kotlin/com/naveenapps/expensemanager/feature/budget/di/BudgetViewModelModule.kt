@@ -18,7 +18,8 @@ val BudgetViewModelModule = module {
             addBudgetUseCase = get(),
             updateBudgetUseCase = get(),
             deleteBudgetUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
+            numberFormatRepository = get(),
         )
     }
     viewModel {

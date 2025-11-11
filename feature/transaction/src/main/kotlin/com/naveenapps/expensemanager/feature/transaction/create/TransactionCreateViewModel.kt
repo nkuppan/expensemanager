@@ -3,8 +3,6 @@ package com.naveenapps.expensemanager.feature.transaction.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
-import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -32,6 +30,7 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
+import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -59,6 +58,7 @@ class TransactionCreateViewModel(
     private val deleteTransactionUseCase: DeleteTransactionUseCase,
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
+    private val numberFormatRepository: NumberFormatRepository,
 ) : ViewModel() {
 
     private val transactionType = MutableStateFlow(TransactionType.EXPENSE)
@@ -73,7 +73,7 @@ class TransactionCreateViewModel(
     private val _state = MutableStateFlow(
         TransactionCreateState(
             amount = TextFieldValue(
-                value = 0.0.toStringWithLocale(),
+                value = numberFormatRepository.formatForEditing(0.0),
                 valueError = false,
                 onValueChange = this::setAmountOnChange
             ),
@@ -214,7 +214,11 @@ class TransactionCreateViewModel(
                     this@TransactionCreateViewModel.transactionType.value = transaction.type
                     _state.update {
                         it.copy(
-                            amount = it.amount.copy(value = transaction.amount.amount.toStringWithLocale()),
+                            amount = it.amount.copy(
+                                value = numberFormatRepository.formatForEditing(
+                                    transaction.amount.amount
+                                )
+                            ),
                             transactionType = transaction.type,
                             dateTime = transaction.createdOn,
                             notes = it.notes.copy(value = transaction.notes),
@@ -251,7 +255,10 @@ class TransactionCreateViewModel(
             isError = true
         }
 
-        val amountValue = amount.toDoubleOrNullWithLocale()
+
+        val amountValue = numberFormatRepository.parseToDouble(
+            amount
+        )
 
         if (amountValue == null || amountValue <= 0.0) {
             _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
@@ -275,11 +282,11 @@ class TransactionCreateViewModel(
             categoryId = _state.value.selectedCategory.id,
             fromAccountId = _state.value.selectedFromAccount.id,
             toAccountId =
-            if (_state.value.transactionType == TransactionType.TRANSFER) {
-                _state.value.selectedToAccount.id
-            } else {
-                null
-            },
+                if (_state.value.transactionType == TransactionType.TRANSFER) {
+                    _state.value.selectedToAccount.id
+                } else {
+                    null
+                },
             type = _state.value.transactionType,
             amount = Amount(amountValue!!),
             imagePath = "",
@@ -303,7 +310,7 @@ class TransactionCreateViewModel(
     }
 
     private fun setAmountOnChange(amount: String) {
-        val amountValue = amount.toDoubleOrNullWithLocale()
+        val amountValue = numberFormatRepository.parseToDouble(amount)
         _state.update {
             it.copy(
                 amount = it.amount.copy(

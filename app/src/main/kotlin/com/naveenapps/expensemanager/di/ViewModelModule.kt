@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.di
 
 import com.naveenapps.expensemanager.MainViewModel
 import com.naveenapps.expensemanager.core.designsystem.components.CommonViewModelModule
+import com.naveenapps.expensemanager.core.settings.di.CoreSettingsModule
 import com.naveenapps.expensemanager.feature.about.di.AboutViewModelModule
 import com.naveenapps.expensemanager.feature.account.di.AccountViewModelModule
 import com.naveenapps.expensemanager.feature.analysis.di.AnalysisViewModelModule
@@ -56,5 +57,6 @@ val ViewModelModule = module {
         FilterViewModelModule,
         CountryViewModelModule,
         CommonViewModelModule,
+        CoreSettingsModule,
     )
 }

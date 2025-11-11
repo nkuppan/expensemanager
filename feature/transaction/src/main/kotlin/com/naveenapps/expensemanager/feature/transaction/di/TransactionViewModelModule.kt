@@ -20,7 +20,8 @@ val TransactionViewModelModule = module {
             updateTransactionUseCase = get(),
             deleteTransactionUseCase = get(),
             settingsRepository = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
+            numberFormatRepository = get(),
         )
     }
     viewModel {

@@ -69,7 +69,8 @@ val RepositoryModule = module {
     single<CurrencyRepository> {
         CurrencyRepositoryImpl(
             dispatchers = get(),
-            dataStore = get()
+            dataStore = get(),
+            numberFormatRepository = get(),
         )
     }
     single<DevicePropertyRepository> { DevicePropertyRepositoryImpl() }

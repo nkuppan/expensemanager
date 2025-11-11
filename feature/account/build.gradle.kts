@@ -17,6 +17,9 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":core:settings"))
+
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.test.espresso.core)
     debugImplementation(libs.androidx.compose.ui.testManifest)

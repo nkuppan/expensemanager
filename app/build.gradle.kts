@@ -207,6 +207,7 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:notification"))
     implementation(project(":core:repository"))
+    implementation(project(":core:settings"))
 
     implementation(project(":feature:account"))
     implementation(project(":feature:analysis"))

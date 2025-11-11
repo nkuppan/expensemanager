@@ -15,6 +15,7 @@ dependencies {
     implementation(project(":core:repository"))
     implementation(project(":core:datastore"))
     implementation(project(":core:database"))
+    implementation(project(":core:settings"))
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)

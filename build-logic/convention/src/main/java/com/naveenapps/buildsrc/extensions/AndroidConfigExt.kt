@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.dependencies
 
 const val TARGET_SDK = 36
 const val COMPILE_SDK: Int = 36
-const val MIN_SDK = 23
+const val MIN_SDK = 26
 
 const val VERSION_NAME = "1.3.7"
 val versions = VERSION_NAME.split(".")

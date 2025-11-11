@@ -6,9 +6,10 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCu
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
+import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatSettingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -21,12 +22,14 @@ class CurrencyViewModel(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     private val saveCurrencyUseCase: SaveCurrencyUseCase,
+    private val numberFormatSettingRepository: NumberFormatSettingRepository,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
         CurrencyState(
             showCurrencySelection = false,
+            numberFormatType = NumberFormatType.WITHOUT_ANY_SEPARATOR,
             currency = getDefaultCurrencyUseCase()
         )
     )
@@ -35,6 +38,10 @@ class CurrencyViewModel(
     init {
         getCurrencyUseCase.invoke().onEach { currency ->
             _state.update { it.copy(currency = currency) }
+        }.launchIn(viewModelScope)
+
+        numberFormatSettingRepository.getNumberFormatType().onEach { numberFormatType ->
+            _state.update { it.copy(numberFormatType = numberFormatType) }
         }.launchIn(viewModelScope)
     }
 
@@ -55,23 +62,20 @@ class CurrencyViewModel(
     }
 
     private fun setCurrencyPositionType(textPosition: TextPosition) {
-        viewModelScope.launch {
-            _state.update { it.copy(currency = it.currency.copy(position = textPosition)) }
-            saveSelectedCurrency()
-        }
+        _state.update { it.copy(currency = it.currency.copy(position = textPosition)) }
+        saveSelectedCurrency()
     }
 
-    private fun setTextFormatChange(textFormat: TextFormat) {
-        viewModelScope.launch {
-            _state.update { it.copy(currency = it.currency.copy(format = textFormat)) }
-            saveSelectedCurrency()
-        }
+    private fun setTextFormatChange(textFormat: NumberFormatType) {
+        _state.update { it.copy(numberFormatType = textFormat) }
+        saveSelectedCurrency()
     }
 
     private fun saveSelectedCurrency() {
         viewModelScope.launch {
             val currency = _state.value.currency
             saveCurrencyUseCase.invoke(currency)
+            numberFormatSettingRepository.saveNumberFormatType(_state.value.numberFormatType)
         }
     }
 
@@ -93,7 +97,7 @@ class CurrencyViewModel(
             }
 
             is CurrencyAction.ChangeCurrencyNumberFormat -> {
-                setTextFormatChange(action.textFormat)
+                setTextFormatChange(action.numberFormatType)
             }
 
             is CurrencyAction.ChangeCurrencyType -> {

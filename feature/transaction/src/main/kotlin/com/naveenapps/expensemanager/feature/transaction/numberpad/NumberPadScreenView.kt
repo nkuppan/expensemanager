@@ -33,10 +33,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import org.koin.compose.viewmodel.koinViewModel
-import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
+import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.feature.transaction.R
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NumberPadDialogView(
@@ -91,7 +91,7 @@ fun NumberPadScreen(
 @Composable
 private fun NumberPadScreenView(
     modifier: Modifier = Modifier,
-    value: String = 0.0.toStringWithLocale(),
+    value: String = "0.0",
     amountString: String = "",
     onChange: ((String) -> Unit),
     confirm: (() -> Unit),
@@ -315,7 +315,7 @@ fun RowScope.NumberPadActionText(
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenPreview() {
     ExpenseManagerTheme {
@@ -331,11 +331,10 @@ fun NumberPadScreenPreview() {
     }
 }
 
-@com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+@AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenDialogPreview() {
     ExpenseManagerTheme {
-        NumberPadDialogView {
-        }
+        NumberPadDialogView {}
     }
 }

@@ -4,9 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
-import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
-import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseCase
@@ -25,6 +23,7 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
+import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -47,6 +46,7 @@ class BudgetCreateViewModel(
     private val updateBudgetUseCase: UpdateBudgetUseCase,
     private val deleteBudgetUseCase: DeleteBudgetUseCase,
     private val appComposeNavigator: AppComposeNavigator,
+    private val numberFormatRepository: NumberFormatRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -136,11 +136,11 @@ class BudgetCreateViewModel(
         _state.update { state ->
             state.copy(
                 isLoading = false,
-                name = state.name.copy(budget.name),
-                amount = state.amount.copy(budget.amount.toStringWithLocale()),
-                icon = state.icon.copy(budget.storedIcon.name),
-                color = state.color.copy(budget.storedIcon.backgroundColor),
-                month = state.month.copy(budget.selectedMonth.fromMonthAndYear() ?: Date()),
+                name = state.name.copy(value = budget.name),
+                amount = state.amount.copy(value = numberFormatRepository.formatForEditing(budget.amount)),
+                icon = state.icon.copy(value = budget.storedIcon.name),
+                color = state.color.copy(value = budget.storedIcon.backgroundColor),
+                month = state.month.copy(value = budget.selectedMonth.fromMonthAndYear() ?: Date()),
                 isAllAccountSelected = budget.isAllAccountsSelected,
                 selectedAccounts = emptyList(),
                 isAllCategorySelected = budget.isAllCategoriesSelected,
@@ -180,7 +180,7 @@ class BudgetCreateViewModel(
         val color: String = _state.value.color.value
         val icon: String = _state.value.icon.value
         val date: Date = _state.value.month.value
-        val amount: Double? = _state.value.amount.value.toDoubleOrNullWithLocale()
+        val amount: Double? = numberFormatRepository.parseToDouble(_state.value.amount.value)
 
         var isError = false
 
@@ -254,7 +254,7 @@ class BudgetCreateViewModel(
     }
 
     private fun setAmountChange(amount: String) {
-        val amountValue = amount.toDoubleOrNullWithLocale()
+        val amountValue = numberFormatRepository.parseToDouble(amount)
         _state.update {
             it.copy(
                 amount = it.amount.copy(

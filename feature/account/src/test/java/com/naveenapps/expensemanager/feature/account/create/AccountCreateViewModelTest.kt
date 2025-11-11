@@ -19,9 +19,13 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
+import com.naveenapps.expensemanager.core.settings.data.repository.NumberFormatRepositoryImpl
+import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -47,6 +51,12 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     private val addAccountUseCase = AddAccountUseCase(accountRepository, validate)
     private val deleteAccountUseCase = DeleteAccountUseCase(accountRepository, validate)
     private val updateAccountUseCase = UpdateAccountUseCase(accountRepository, validate)
+    private val numberFormatRepository = NumberFormatRepositoryImpl(
+        coroutineScope = CoroutineScope(testCoroutineDispatcher.dispatcher),
+        numberFormatSettingRepository = mock {
+            whenever(it.getNumberFormatType()).thenReturn(flowOf(NumberFormatType.WITHOUT_ANY_SEPARATOR))
+        }
+    )
 
     private lateinit var accountCreateViewModel: AccountCreateViewModel
 
@@ -74,15 +84,16 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         }
 
         accountCreateViewModel = AccountCreateViewModel(
-            SavedStateHandle(),
-            getCurrencyUseCase,
-            getDefaultCurrencyUseCase,
-            getFormattedAmountUseCase,
-            findAccountByIdUseCase,
-            addAccountUseCase,
-            updateAccountUseCase,
-            deleteAccountUseCase,
-            appComposeNavigator,
+            savedStateHandle = SavedStateHandle(),
+            getCurrencyUseCase = getCurrencyUseCase,
+            getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
+            getFormattedAmountUseCase = getFormattedAmountUseCase,
+            findAccountByIdUseCase = findAccountByIdUseCase,
+            addAccountUseCase = addAccountUseCase,
+            updateAccountUseCase = updateAccountUseCase,
+            deleteAccountUseCase = deleteAccountUseCase,
+            composeNavigator = appComposeNavigator,
+            numberFormatRepository = numberFormatRepository,
         )
     }
 
@@ -207,13 +218,16 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
                 val creditLimitChange = "30.0"
                 val totalValueExpected = "30.0".toDouble() + newNegativeAmount.toDouble()
-                accountCreateViewModel.state.value.creditLimit.onValueChange?.invoke(creditLimitChange)
+                accountCreateViewModel.state.value.creditLimit.onValueChange?.invoke(
+                    creditLimitChange
+                )
                 val fourthState = awaitItem()
                 Truth.assertThat(fourthState).isNotNull()
                 Truth.assertThat(fourthState.totalAmount).isNotEmpty()
                 Truth.assertThat(fourthState.totalAmount)
                     .isEqualTo("${newCurrency.symbol} ${(totalValueExpected)}")
-                Truth.assertThat(fourthState.totalAmountBackgroundColor).isEqualTo(R.color.green_500)
+                Truth.assertThat(fourthState.totalAmountBackgroundColor)
+                    .isEqualTo(R.color.green_500)
             }
         }
 
@@ -274,15 +288,16 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             whenever(accountRepository.deleteAccount(any())).thenReturn(Resource.Success(true))
 
             accountCreateViewModel = AccountCreateViewModel(
-                SavedStateHandle(mapOf(ExpenseManagerArgsNames.ID to accountId)),
-                getCurrencyUseCase,
-                getDefaultCurrencyUseCase,
-                getFormattedAmountUseCase,
-                findAccountByIdUseCase,
-                addAccountUseCase,
-                updateAccountUseCase,
-                deleteAccountUseCase,
-                appComposeNavigator,
+                savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
+                getCurrencyUseCase = getCurrencyUseCase,
+                getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
+                getFormattedAmountUseCase = getFormattedAmountUseCase,
+                findAccountByIdUseCase = findAccountByIdUseCase,
+                addAccountUseCase = addAccountUseCase,
+                updateAccountUseCase = updateAccountUseCase,
+                deleteAccountUseCase = deleteAccountUseCase,
+                composeNavigator = appComposeNavigator,
+                numberFormatRepository = numberFormatRepository,
             )
 
             advanceUntilIdle()

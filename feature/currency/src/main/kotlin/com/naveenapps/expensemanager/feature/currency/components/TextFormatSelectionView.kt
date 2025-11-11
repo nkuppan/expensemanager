@@ -13,14 +13,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
-import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.feature.currency.R
 
 @Composable
 fun TextFormatSelectionView(
-    textFormat: TextFormat,
-    onTextFormatChange: ((TextFormat) -> Unit),
+    textFormat: NumberFormatType,
+    onTextFormatChange: ((NumberFormatType) -> Unit),
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -32,9 +32,9 @@ fun TextFormatSelectionView(
                 .align(Alignment.CenterVertically)
                 .weight(1f),
             filterName = stringResource(id = R.string.none),
-            isSelected = textFormat == TextFormat.NONE,
+            isSelected = textFormat == NumberFormatType.WITHOUT_ANY_SEPARATOR,
             onClick = {
-                onTextFormatChange.invoke(TextFormat.NONE)
+                onTextFormatChange.invoke(NumberFormatType.WITHOUT_ANY_SEPARATOR)
             },
         )
         AppFilterChip(
@@ -42,9 +42,9 @@ fun TextFormatSelectionView(
                 .align(Alignment.CenterVertically)
                 .weight(1f),
             filterName = stringResource(id = R.string.number_format),
-            isSelected = textFormat == TextFormat.NUMBER_FORMAT,
+            isSelected = textFormat == NumberFormatType.WITH_COMMA_SEPARATOR,
             onClick = {
-                onTextFormatChange.invoke(TextFormat.NUMBER_FORMAT)
+                onTextFormatChange.invoke(NumberFormatType.WITH_COMMA_SEPARATOR)
             },
         )
     }

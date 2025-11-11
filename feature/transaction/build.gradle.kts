@@ -10,6 +10,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":core:settings"))
+
     implementation(project(":feature:category"))
     implementation(project(":feature:account"))
     implementation(project(":feature:filter"))

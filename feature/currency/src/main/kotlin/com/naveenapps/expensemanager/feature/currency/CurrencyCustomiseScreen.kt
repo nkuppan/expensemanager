@@ -21,13 +21,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
 import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
 import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import com.naveenapps.expensemanager.feature.currency.components.TextFormatSelectionView
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CurrencyCustomiseScreen(
@@ -122,7 +123,7 @@ private fun CurrencyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 14.dp, end = 14.dp),
-                textFormat = state.currency.format,
+                textFormat = state.numberFormatType,
                 onTextFormatChange = {
                     onAction.invoke(CurrencyAction.ChangeCurrencyNumberFormat(it))
                 },
@@ -164,6 +165,7 @@ fun CurrencyCustomiseScreenPreview() {
         CurrencyScreen(
             state = CurrencyState(
                 showCurrencySelection = false,
+                numberFormatType = NumberFormatType.WITHOUT_ANY_SEPARATOR,
                 currency = Currency("$", "Dollar")
             ),
             onAction = {}

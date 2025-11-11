@@ -18,7 +18,8 @@ val AccountViewModelModule = module {
             addAccountUseCase = get(),
             updateAccountUseCase = get(),
             deleteAccountUseCase = get(),
-            composeNavigator = get()
+            composeNavigator = get(),
+            numberFormatRepository = get(),
         )
     }
     viewModel {

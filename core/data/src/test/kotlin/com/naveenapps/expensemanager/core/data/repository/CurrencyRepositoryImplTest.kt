@@ -12,14 +12,21 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
+import com.naveenapps.expensemanager.core.settings.data.repository.NumberFormatRepositoryImpl
+import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
+import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatSettingRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 class CurrencyRepositoryImplTest : BaseCoroutineTest() {
@@ -39,9 +46,22 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             },
         )
 
+
+    val formatTypeFlow = MutableStateFlow(NumberFormatType.WITHOUT_ANY_SEPARATOR)
+
+    private val numberFormatSettingRepository = mock<NumberFormatSettingRepository> {
+        whenever(it.getNumberFormatType()).thenReturn(formatTypeFlow)
+    }
+
+    private val numberFormatRepository = NumberFormatRepositoryImpl(
+        coroutineScope = CoroutineScope(testCoroutineDispatcher.dispatcher),
+        numberFormatSettingRepository = numberFormatSettingRepository
+    )
+
     private val repository: CurrencyRepository = CurrencyRepositoryImpl(
-        CurrencyDataStore(testDataStore),
-        AppCoroutineDispatchers(
+        dataStore = CurrencyDataStore(dataStore = testDataStore),
+        numberFormatRepository = numberFormatRepository,
+        dispatchers = AppCoroutineDispatchers(
             testCoroutineDispatcher.dispatcher,
             testCoroutineDispatcher.dispatcher,
             testCoroutineDispatcher.dispatcher,
@@ -49,14 +69,14 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     )
 
     @Test
-    fun getDefaultCurrencyShouldReturnDefaultCurrency() = runTest {
+    fun `Given default currency when getting a default currency will return the same`() = runTest {
         val currency = repository.getDefaultCurrency()
         Truth.assertThat(currency).isNotNull()
         Truth.assertThat(currency).isEqualTo(defaultCurrency)
     }
 
     @Test
-    fun getSelectedCurrencyShouldReturnDefaultCurrency() = runTest {
+    fun `Given no selected currency when getting a selected currency will return the default currency`() = runTest {
         repository.getSelectedCurrency().test {
             val currency = awaitItem()
             Truth.assertThat(currency).isNotNull()
@@ -65,7 +85,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getSelectedCurrencyShouldReturnAfterUpdate() = runTest {
+    fun `Given new currency and saving when reading the selected currency will return the saved currency`() = runTest {
         repository.getSelectedCurrency().test {
             val currency = awaitItem()
             Truth.assertThat(currency).isNotNull()
@@ -84,7 +104,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getFormattedAmountWithoutCurrencyShouldReturnAmountWithDefaultCurrency() = runTest {
+    fun `Given default currency when reading a formatted will return the amount with default currency`() = runTest {
         val formattedAmount = repository.getFormattedCurrency(amount)
         Truth.assertThat(formattedAmount).isNotNull()
         Truth.assertThat(formattedAmount.amount).isEqualTo(amount.amount)
@@ -92,7 +112,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getFormattedAmountWithCurrencyShouldReturnAmountWithPassedCurrency() = runTest {
+    fun `Given new currency when reading a formatted will return the amount with new currency`() = runTest {
         val passedAmount = amount.copy(amount = 120.0, currency = defaultCurrency.copy(symbol = "€"))
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
         Truth.assertThat(formattedAmount).isNotNull()
@@ -101,7 +121,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getFormattedAmountWithPrefix() = runTest {
+    fun `Given new currency and prefix when reading a formatted will return the amount with new currency in prefix`() = runTest {
         val passedAmount = amount.copy(
             amount = 120.0,
             currency = defaultCurrency.copy(
@@ -116,13 +136,16 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getFormattedAmountWithPrefixAndNumberFormatOne() = runTest {
+    fun `Given new currency and prefix and number format with grouping when reading a formatted will return the amount with new currency in prefix and number grouping`() = runTest {
+
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
         val passedAmount = amount.copy(
             amount = 1200.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
                 position = TextPosition.PREFIX,
-                format = TextFormat.NUMBER_FORMAT,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
@@ -132,13 +155,16 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getFormattedAmountWithNegativePrefixAndNumberFormatOne() = runTest {
+    fun `Given new currency and prefix and number format and negative number with grouping when reading a formatted will return the amount with new currency in prefix and number grouping`() = runTest {
+
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
         val passedAmount = amount.copy(
             amount = -1200.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
                 position = TextPosition.PREFIX,
-                format = TextFormat.NUMBER_FORMAT,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
@@ -148,13 +174,16 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getFormattedAmountWithBigNumberAndTextFormatOne() = runTest {
+    fun `Given new currency and prefix and number format and big negative number with grouping when reading a formatted will return the amount with new currency in prefix and number grouping`() = runTest {
+
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
         val passedAmount = amount.copy(
             amount = -1200000000.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
                 position = TextPosition.PREFIX,
-                format = TextFormat.NUMBER_FORMAT,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
@@ -164,13 +193,16 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun getFormattedAmountWithBigNumberAndSuffixTextFormatOne() = runTest {
+    fun `Given new currency and suffix and number format and big negative number with grouping when reading a formatted will return the amount with new currency in suffix and number grouping`() = runTest {
+
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+        
         val passedAmount = amount.copy(
             amount = -1200000000.44,
             currency = defaultCurrency.copy(
                 symbol = "€",
                 position = TextPosition.SUFFIX,
-                format = TextFormat.NUMBER_FORMAT,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)

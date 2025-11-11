@@ -4,8 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.R
-import com.naveenapps.expensemanager.core.common.utils.toDoubleOrNullWithLocale
-import com.naveenapps.expensemanager.core.common.utils.toStringWithLocale
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
@@ -22,6 +20,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
+import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -42,6 +41,7 @@ class AccountCreateViewModel(
     private val updateAccountUseCase: UpdateAccountUseCase,
     private val deleteAccountUseCase: DeleteAccountUseCase,
     private val composeNavigator: AppComposeNavigator,
+    private val numberFormatRepository: NumberFormatRepository,
 ) : ViewModel() {
 
     private var _state = MutableStateFlow(
@@ -133,8 +133,12 @@ class AccountCreateViewModel(
                     type = it.type.copy(value = accountItem.type),
                     color = it.color.copy(value = accountItem.storedIcon.backgroundColor),
                     icon = it.icon.copy(value = accountItem.storedIcon.name),
-                    amount = it.amount.copy(value = accountItem.amount.toStringWithLocale()),
-                    creditLimit = it.creditLimit.copy(value = accountItem.creditLimit.toStringWithLocale()),
+                    amount = it.amount.copy(
+                        value = numberFormatRepository.formatForEditing(accountItem.amount)
+                    ),
+                    creditLimit = it.creditLimit.copy(
+                        value = numberFormatRepository.formatForEditing(accountItem.creditLimit)
+                    ),
                     totalAmount = getAmountValue(totalAmount, _state.value.currency).amountString
                         ?: "",
                     totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
@@ -192,12 +196,15 @@ class AccountCreateViewModel(
             isError = true
         }
 
-        if (currentBalance.isBlank() || currentBalance.toDoubleOrNullWithLocale() == null) {
+        if (currentBalance.isBlank() || numberFormatRepository.parseToDouble(currentBalance) == null) {
             _state.update { it.copy(name = it.amount.copy(valueError = true)) }
             isError = true
         }
 
-        if (accountType == AccountType.CREDIT && (creditLimit.isBlank() || creditLimit.toDoubleOrNullWithLocale() == null)) {
+        if (accountType == AccountType.CREDIT && (creditLimit.isBlank() || numberFormatRepository.parseToDouble(
+                creditLimit
+            ) == null)
+        ) {
             _state.update { it.copy(name = it.creditLimit.copy(valueError = true)) }
             isError = true
         }
@@ -214,9 +221,9 @@ class AccountCreateViewModel(
                 name = icon,
                 backgroundColor = color,
             ),
-            amount = currentBalance.toDoubleOrNullWithLocale() ?: 0.0,
+            amount = numberFormatRepository.parseToDouble(currentBalance) ?: 0.0,
             creditLimit = if (accountType == AccountType.CREDIT) {
-                creditLimit.toDoubleOrNullWithLocale() ?: 0.0
+                numberFormatRepository.parseToDouble(creditLimit) ?: 0.0
             } else {
                 0.0
             },
@@ -262,7 +269,7 @@ class AccountCreateViewModel(
 
     private fun setAmount(amount: String) {
 
-        val totalAmount = (amount.toDoubleOrNullWithLocale() ?: 0.0) + getCreditAmount()
+        val totalAmount = (numberFormatRepository.parseToDouble(amount) ?: 0.0) + getCreditAmount()
 
         _state.update {
             it.copy(
@@ -275,7 +282,7 @@ class AccountCreateViewModel(
 
     private fun getCreditAmount(): Double {
         return if (_state.value.type.value == AccountType.CREDIT) {
-            _state.value.creditLimit.value.toDoubleOrNullWithLocale() ?: 0.0
+            numberFormatRepository.parseToDouble(_state.value.creditLimit.value) ?: 0.0
         } else {
             0.0
         }
@@ -298,8 +305,8 @@ class AccountCreateViewModel(
     }
 
     private fun getTotalAmount(creditLimit: String, accountAmount: String): Double {
-        return (creditLimit.toDoubleOrNullWithLocale()
-            ?: 0.0) + (accountAmount.toDoubleOrNullWithLocale() ?: 0.0)
+        return (numberFormatRepository.parseToDouble(creditLimit) ?: 0.0) +
+                (numberFormatRepository.parseToDouble(accountAmount) ?: 0.0)
     }
 
     private fun dismissDeleteDialog() {

@@ -2,14 +2,13 @@ package com.naveenapps.expensemanager.core.data.repository
 
 import androidx.annotation.VisibleForTesting
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.data.utils.getCurrency
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.TextFormat
 import com.naveenapps.expensemanager.core.model.TextPosition
 import com.naveenapps.expensemanager.core.model.isPrefix
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
+import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
@@ -22,12 +21,12 @@ val defaultCurrency = Currency(
     name = DEFAULT_CURRENCY_NAME,
     symbol = DEFAULT_CURRENCY_SYMBOL,
     position = TextPosition.SUFFIX,
-    format = TextFormat.NONE,
 )
 
 class CurrencyRepositoryImpl(
     private val dataStore: CurrencyDataStore,
     private val dispatchers: AppCoroutineDispatchers,
+    private val numberFormatRepository: NumberFormatRepository,
 ) : CurrencyRepository {
 
     override fun getDefaultCurrency(): Currency {
@@ -39,7 +38,6 @@ class CurrencyRepositoryImpl(
             name = currency.name,
             symbol = currency.symbol,
             position = currency.position.ordinal,
-            format = currency.format.ordinal,
         )
         true
     }
@@ -63,4 +61,23 @@ class CurrencyRepositoryImpl(
             },
         )
     }
+
+    private fun getCurrency(
+        currency: Currency,
+        amount: Double
+    ): String {
+
+        val currencyFormatted = numberFormatRepository.formatForDisplay(amount)
+
+        return when (currency.position) {
+            TextPosition.PREFIX -> {
+                "${currency.symbol}${currencyFormatted}"
+            }
+
+            TextPosition.SUFFIX -> {
+                "${currencyFormatted}${currency.symbol}"
+            }
+        }
+    }
+
 }
