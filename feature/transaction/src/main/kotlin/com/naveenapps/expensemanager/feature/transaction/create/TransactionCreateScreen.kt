@@ -42,7 +42,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
@@ -69,6 +68,7 @@ import com.naveenapps.expensemanager.feature.category.list.CategoryItem
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Calendar
 import java.util.Date
 
@@ -174,7 +174,7 @@ private fun AccountSelectionView(
                 AccountSelection.TO_ACCOUNT -> state.selectedToAccount
             },
             createNewCallback = {
-                onAction.invoke(TransactionCreateAction.OpenCategoryCreate(null))
+                onAction.invoke(TransactionCreateAction.OpenAccountCreate(null))
             },
             onItemSelection = {
                 onAction.invoke(TransactionCreateAction.SelectAccount(it))

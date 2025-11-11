@@ -103,17 +103,18 @@ class TransactionRepositoryImpl(
 
         if (transactionWithCategory?.isNotEmpty() == true) {
             transactionWithCategory.forEach {
-                val transaction = convertTransactionCategoryRelation(it)
-                outputTransactions.add(transaction)
+                convertTransactionCategoryRelation(it)?.let { transaction ->
+                    outputTransactions.add(transaction)
+                }
             }
         }
         return outputTransactions
     }
 
-    private fun convertTransactionCategoryRelation(relation: TransactionRelation): Transaction {
+    private fun convertTransactionCategoryRelation(relation: TransactionRelation): Transaction? {
         return relation.transactionEntity.toDomainModel().apply {
             category = relation.categoryEntity.toDomainModel()
-            fromAccount = relation.fromAccountEntity.toDomainModel()
+            fromAccount = relation.fromAccountEntity?.toDomainModel() ?: return null
             toAccount = relation.toAccountEntity?.toDomainModel()
         }
     }

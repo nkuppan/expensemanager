@@ -14,7 +14,7 @@ data class TransactionRelation(
         parentColumn = "from_account_id",
         entityColumn = "id",
     )
-    val fromAccountEntity: AccountEntity,
+    val fromAccountEntity: AccountEntity?,
     @Relation(
         parentColumn = "to_account_id",
         entityColumn = "id",
