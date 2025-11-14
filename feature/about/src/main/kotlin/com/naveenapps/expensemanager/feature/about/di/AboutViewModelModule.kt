@@ -7,7 +7,8 @@ import org.koin.dsl.module
 val AboutViewModelModule = module {
     viewModel {
         AboutUsViewModel(
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
+            devicePropertyRepository = get()
         )
     }
 }

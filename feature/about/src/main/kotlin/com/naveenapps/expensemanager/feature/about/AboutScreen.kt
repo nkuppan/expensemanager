@@ -22,6 +22,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -32,8 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getAppVersionName
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -44,7 +45,10 @@ fun AboutScreen(
 ) {
     val context = LocalContext.current
 
+    val state by viewModel.state.collectAsState()
+
     AboutUsScreenScaffoldView(
+        state = state,
         onAction = {
             when (it) {
                 AboutAction.OpenAboutUsPage -> {
@@ -79,7 +83,11 @@ fun AboutScreen(
                     try {
                         context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
                     } catch (_: Exception) {
-                        Toast.makeText(context, "Open source licenses are unavailable.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Open source licenses are unavailable.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -93,6 +101,7 @@ fun AboutScreen(
 
 @Composable
 private fun AboutUsScreenScaffoldView(
+    state: AboutUsState,
     onAction: (AboutAction) -> Unit,
 ) {
 
@@ -109,15 +118,17 @@ private fun AboutUsScreenScaffoldView(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding),
-            onAction
+            state = state,
+            onAction = onAction,
         )
     }
 }
 
 @Composable
 private fun AboutUsScreenContent(
-    modifier: Modifier = Modifier,
+    state: AboutUsState,
     onAction: (AboutAction) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         SettingsItem(
@@ -161,16 +172,15 @@ private fun AboutUsScreenContent(
             icon = Icons.Outlined.FolderOpen,
         )
 
-        DeveloperInfoView(onAction)
+        DeveloperInfoView(state = state, onAction = onAction)
     }
 }
 
 @Composable
 private fun DeveloperInfoView(
+    state: AboutUsState,
     onAction: (AboutAction) -> Unit,
 ) {
-    val context = LocalContext.current
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -228,7 +238,7 @@ private fun DeveloperInfoView(
                 .padding(top = 16.dp),
             text = stringResource(
                 id = R.string.app_version,
-                context.getAppVersionName(),
+                state.appVersion,
             ),
         )
     }
@@ -265,9 +275,10 @@ private fun SettingsItem(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun AboutUsPreview() {
-    ExpenseManagerTheme {
-        AboutUsScreenScaffoldView {
-
-        }
+    ExpenseManagerPreviewTheme {
+        AboutUsScreenScaffoldView(
+            state = AboutUsState("1.0.0"),
+            onAction = {}
+        )
     }
 }

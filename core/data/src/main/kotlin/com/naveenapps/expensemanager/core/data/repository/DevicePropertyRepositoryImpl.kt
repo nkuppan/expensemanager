@@ -1,10 +1,15 @@
 package com.naveenapps.expensemanager.core.data.repository
 
+import android.content.Context
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import com.naveenapps.expensemanager.core.repository.DevicePropertyRepository
 import java.util.Locale
 
-class DevicePropertyRepositoryImpl() : DevicePropertyRepository {
+class DevicePropertyRepositoryImpl(
+    private val context: Context
+) : DevicePropertyRepository {
 
     override fun getDeviceName(): String {
         val manufacturer = Build.MANUFACTURER.lowercase(Locale.getDefault())
@@ -28,6 +33,16 @@ class DevicePropertyRepositoryImpl() : DevicePropertyRepository {
         return Build.VERSION.SDK_INT.toString()
     }
 
+    override fun getAppVersion(): String {
+        return try {
+            val pInfo: PackageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            pInfo.versionName ?: ""
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+            ""
+        }
+    }
+
     private fun getOsVersionName(): String {
         return when (val sdkInt = Build.VERSION.SDK_INT) {
             34 -> "Upside Down Cake"
@@ -41,4 +56,6 @@ class DevicePropertyRepositoryImpl() : DevicePropertyRepository {
             else -> sdkInt.toString()
         }
     }
+
+
 }

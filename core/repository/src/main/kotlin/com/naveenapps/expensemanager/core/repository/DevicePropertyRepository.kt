@@ -9,4 +9,6 @@ interface DevicePropertyRepository {
     fun getDeviceOsVersion(): String
 
     fun getDeviceOsVersionNumber(): String
+
+    fun getAppVersion(): String
 }

@@ -73,7 +73,7 @@ val RepositoryModule = module {
             numberFormatRepository = get(),
         )
     }
-    single<DevicePropertyRepository> { DevicePropertyRepositoryImpl() }
+    single<DevicePropertyRepository> { DevicePropertyRepositoryImpl(androidContext()) }
     single<FeedbackRepository> { FeedbackRepositoryImpl(feedbackDataStore = get()) }
     single<FirebaseSettingsRepository> { FirebaseSettingsRepositoryImpl(firebaseRemoteConfig = get()) }
     single<VersionCheckerRepository> { VersionCheckerRepositoryImpl() }
