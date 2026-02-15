@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -19,21 +19,25 @@ class CurrencyDataStore(private val dataStore: DataStore<Preferences>) {
             Currency(
                 name = preferences[KEY_CURRENCY_NAME] ?: defaultCurrency.name,
                 symbol = preferences[KEY_CURRENCY_SYMBOL] ?: defaultCurrency.symbol,
-                position = TextPosition.entries[position],
+                code = preferences[KEY_CURRENCY_CODE] ?: defaultCurrency.code,
+                position = CurrencyPosition.entries[position],
             )
         }
 
     suspend fun setCurrency(
         name: String,
         symbol: String,
+        code: String,
         position: Int,
     ) = dataStore.edit { preferences ->
         preferences[KEY_CURRENCY_NAME] = name
         preferences[KEY_CURRENCY_SYMBOL] = symbol
+        preferences[KEY_CURRENCY_CODE] = code
         preferences[KEY_CURRENCY_SYMBOL_POSITION] = position
     }
 
     companion object {
+        private val KEY_CURRENCY_CODE = stringPreferencesKey("currency_symbol_code_string")
         private val KEY_CURRENCY_SYMBOL = stringPreferencesKey("currency_symbol_string")
         private val KEY_CURRENCY_NAME = stringPreferencesKey("currency_name")
         private val KEY_CURRENCY_SYMBOL_POSITION = intPreferencesKey("currency_symbol_position")

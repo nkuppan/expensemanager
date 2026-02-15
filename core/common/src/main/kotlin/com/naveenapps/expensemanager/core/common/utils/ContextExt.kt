@@ -3,6 +3,8 @@ package com.naveenapps.expensemanager.core.common.utils
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
@@ -212,5 +214,15 @@ fun Context.openAppSettings() {
         startActivity(settingsIntent)
     } catch (e: ActivityNotFoundException) {
         // Define what your app should do if no activity can handle the intent.
+    }
+}
+
+fun Context.getAppVersionName(): String {
+    return try {
+        val pInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
+        pInfo.versionName ?: ""
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+        ""
     }
 }

@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.core.model
 
+import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 
+@Stable
 data class AccountUiModel(
     val id: String,
     val name: String,

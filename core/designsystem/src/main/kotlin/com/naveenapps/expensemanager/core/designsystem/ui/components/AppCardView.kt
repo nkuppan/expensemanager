@@ -1,30 +1,42 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-
-private val roundedCornerShape = RoundedCornerShape(8.dp)
 
 @Composable
 fun AppCardView(
     modifier: Modifier = Modifier,
-    isPrimary: Boolean = false,
-    content: @Composable () -> Unit,
+    elevation: Dp = 0.dp,
+    cornerSize: Dp = 8.dp,
+    border: BorderStroke = CardDefaults.outlinedCardBorder(),
+    onClick: (() -> Unit)? = null,
+    shape: Shape = RoundedCornerShape(cornerSize),
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    val backgroundBubbleColor = if (isPrimary) {
-        MaterialTheme.colorScheme.primary
+    if (onClick != null) {
+        OutlinedCard(
+            modifier = modifier,
+            onClick = onClick,
+            shape = shape,
+            border = border,
+            content = content,
+            elevation = CardDefaults.outlinedCardElevation(elevation),
+        )
     } else {
-        MaterialTheme.colorScheme.surfaceVariant
+        OutlinedCard(
+            modifier = modifier,
+            shape = shape,
+            border = border,
+            content = content,
+            elevation = CardDefaults.outlinedCardElevation(elevation),
+        )
     }
-
-    Surface(
-        modifier = modifier,
-        color = backgroundBubbleColor,
-        shape = roundedCornerShape,
-        content = content,
-    )
 }

@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.core.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 enum class TransactionType {
     INCOME,
     EXPENSE,

@@ -54,7 +54,10 @@ fun IntroScreen(
     shareRepository: ShareRepository?,
     viewModel: IntroViewModel = koinViewModel()
 ) {
-    ScaffoldContent(viewModel::navigate, shareRepository)
+    ScaffoldContent(
+        viewModel::navigate,
+        shareRepository
+    )
 }
 
 @Composable
@@ -111,9 +114,18 @@ private fun ScaffoldContent(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.padding(horizontal = 24.dp),
                 ) {
-                    FeatureChip(icon = Icons.Rounded.BarChart, label = stringResource(R.string.track))
-                    FeatureChip(icon = Icons.Rounded.Category, label = stringResource(R.string.organize))
-                    FeatureChip(icon = Icons.Rounded.TrendingUp, label = stringResource(R.string.grow))
+                    FeatureChip(
+                        icon = Icons.Rounded.BarChart,
+                        label = stringResource(R.string.track)
+                    )
+                    FeatureChip(
+                        icon = Icons.Rounded.Category,
+                        label = stringResource(R.string.organize)
+                    )
+                    FeatureChip(
+                        icon = Icons.Rounded.TrendingUp,
+                        label = stringResource(R.string.grow)
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(24.dp))

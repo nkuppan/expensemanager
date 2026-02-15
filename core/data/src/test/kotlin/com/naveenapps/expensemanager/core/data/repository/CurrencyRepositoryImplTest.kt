@@ -12,7 +12,7 @@ import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
-import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.settings.data.repository.NumberFormatRepositoryImpl
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
@@ -126,7 +126,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             amount = 120.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
-                position = TextPosition.PREFIX,
+                position = CurrencyPosition.PREFIX,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
@@ -145,7 +145,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             amount = 1200.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
-                position = TextPosition.PREFIX,
+                position = CurrencyPosition.PREFIX,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
@@ -164,7 +164,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             amount = -1200.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
-                position = TextPosition.PREFIX,
+                position = CurrencyPosition.PREFIX,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
@@ -183,7 +183,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             amount = -1200000000.0,
             currency = defaultCurrency.copy(
                 symbol = "€",
-                position = TextPosition.PREFIX,
+                position = CurrencyPosition.PREFIX,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
@@ -202,7 +202,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             amount = -1200000000.44,
             currency = defaultCurrency.copy(
                 symbol = "€",
-                position = TextPosition.SUFFIX,
+                position = CurrencyPosition.SUFFIX,
             ),
         )
         val formattedAmount = repository.getFormattedCurrency(passedAmount)

@@ -13,7 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
-import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.feature.currency.R
 
@@ -60,7 +60,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp)
                     .fillMaxWidth(),
                 currency = "$",
-                selectedCurrencyPositionType = TextPosition.PREFIX,
+                selectedCurrencyPositionType = CurrencyPosition.PREFIX,
                 onCurrencyPositionTypeChange = {},
             )
             TextFormatSelectionView(
@@ -68,7 +68,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
                     .padding(16.dp)
                     .fillMaxWidth(),
                 currency = "$",
-                selectedCurrencyPositionType = TextPosition.SUFFIX,
+                selectedCurrencyPositionType = CurrencyPosition.SUFFIX,
                 onCurrencyPositionTypeChange = {},
             )
         }

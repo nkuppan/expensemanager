@@ -74,7 +74,7 @@ internal fun CountrySearchView(
                                     onAction.invoke(CountrySelectionAction.ClearText)
                                 },
                             imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(R.string.clear_search_text)
+                            contentDescription = ""
                         )
                     }
                 }

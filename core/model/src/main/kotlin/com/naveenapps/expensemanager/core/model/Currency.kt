@@ -1,18 +1,30 @@
 package com.naveenapps.expensemanager.core.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class Currency(
     val symbol: String,
     val name: String,
-    val position: TextPosition = TextPosition.PREFIX,
+    val position: CurrencyPosition = CurrencyPosition.PREFIX,
     val namePlural: String = "",
     val nativeSymbol: String = "",
+    val code: String = "",
 )
 
-enum class TextPosition {
+fun CurrencyPosition.isPrefix(): Boolean {
+    return this == CurrencyPosition.PREFIX
+}
+
+enum class CurrencyPosition {
     PREFIX,
     SUFFIX,
 }
 
-fun TextPosition.isPrefix(): Boolean {
-    return this == TextPosition.PREFIX
+fun Currency.toDisplayValue(): String {
+    return if (code.isNotBlank()) {
+        "$code(${symbol})"
+    } else {
+        "(${symbol})"
+    }
 }

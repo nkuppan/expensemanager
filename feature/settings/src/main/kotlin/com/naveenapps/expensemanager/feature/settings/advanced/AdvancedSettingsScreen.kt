@@ -1,30 +1,39 @@
 package com.naveenapps.expensemanager.feature.settings.advanced
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.TrendingDown
+import androidx.compose.material.icons.automirrored.outlined.TrendingUp
+import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -36,11 +45,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -59,7 +72,6 @@ fun AdvancedSettingsScreen(
     viewModel: AdvancedSettingsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
-
 
     ObserveAsEvents(viewModel.event) {
         when (it) {
@@ -86,7 +98,6 @@ private fun AdvancedSettingsScaffoldView(
     onAction: (AdvancedSettingAction) -> Unit,
 ) {
 
-
     if (state.showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -98,7 +109,7 @@ private fun AdvancedSettingsScaffoldView(
             DateFilterSelectionView(
                 onComplete = {
                     onAction.invoke(AdvancedSettingAction.DismissDateFilterDialog)
-                }
+                },
             )
         }
     }
@@ -118,193 +129,207 @@ private fun AdvancedSettingsScaffoldView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Text(
-                modifier = Modifier.then(ItemSpecModifier),
-                text = stringResource(id = R.string.default_selected_items),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary,
-            )
-            if (state.accounts.isNotEmpty() && state.selectedAccount != null) {
-                AccountPreSelectionView(
-                    accounts = state.accounts,
-                    selectedAccount = state.selectedAccount,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    onItemSelection = {
-                        onAction.invoke(AdvancedSettingAction.SelectAccount(it))
-                    },
-                )
+            Spacer(modifier = Modifier.height(0.dp))
+
+            // Default selections
+            SettingsSection(
+                title = stringResource(id = R.string.default_selected_items),
+            ) {
+                AppCardView {
+                    if (state.accounts.isNotEmpty() && state.selectedAccount != null) {
+                        DropdownSettingItem(
+                            label = stringResource(id = R.string.default_account),
+                            selectedValue = state.selectedAccount.name,
+                            icon = Icons.Outlined.AccountBalance,
+                            items = state.accounts.map { it.name },
+                            onItemSelected = { index ->
+                                onAction.invoke(AdvancedSettingAction.SelectAccount(state.accounts[index]))
+                            },
+                        )
+                    }
+
+                    if (state.expenseCategories.isNotEmpty() && state.selectedExpenseCategory != null) {
+                        DropdownSettingItem(
+                            label = stringResource(id = R.string.default_expense_category),
+                            selectedValue = state.selectedExpenseCategory.name,
+                            icon = Icons.AutoMirrored.Outlined.TrendingUp,
+                            items = state.expenseCategories.map { it.name },
+                            onItemSelected = { index ->
+                                onAction.invoke(AdvancedSettingAction.SelectExpenseCategory(state.expenseCategories[index]))
+                            },
+                        )
+                    }
+
+                    if (state.incomeCategories.isNotEmpty() && state.selectedIncomeCategory != null) {
+                        DropdownSettingItem(
+                            label = stringResource(id = R.string.default_income_category),
+                            selectedValue = state.selectedIncomeCategory.name,
+                            icon = Icons.AutoMirrored.Outlined.TrendingDown,
+                            items = state.incomeCategories.map { it.name },
+                            onItemSelected = { index ->
+                                onAction.invoke(AdvancedSettingAction.SelectIncomeCategory(state.incomeCategories[index]))
+                            },
+                        )
+                    }
+                }
             }
-            if (state.expenseCategories.isNotEmpty() && state.selectedExpenseCategory != null) {
-                CategoryPreSelectionView(
-                    state.expenseCategories,
-                    state.selectedExpenseCategory,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    label = R.string.default_expense_category,
-                    onItemSelection = {
-                        onAction.invoke(AdvancedSettingAction.SelectExpenseCategory(it))
-                    },
-                )
-            }
-            if (state.incomeCategories.isNotEmpty() && state.selectedIncomeCategory != null) {
-                CategoryPreSelectionView(
-                    state.incomeCategories,
-                    state.selectedIncomeCategory,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    label = R.string.default_income_category,
-                    onItemSelection = {
-                        onAction.invoke(AdvancedSettingAction.SelectIncomeCategory(it))
-                    },
-                )
+
+            // Backup & Restore
+            SettingsSection(
+                title = stringResource(id = R.string.restore_and_backup),
+            ) {
+                AppCardView {
+                    SettingRow(
+                        title = stringResource(id = R.string.backup),
+                        subtitle = stringResource(id = R.string.backup_message),
+                        icon = Icons.Outlined.Backup,
+                        showDivider = true,
+                        onClick = { onAction.invoke(AdvancedSettingAction.Backup) },
+                    )
+                    SettingRow(
+                        title = stringResource(id = R.string.restore),
+                        subtitle = stringResource(id = R.string.restore_message),
+                        icon = Icons.Outlined.Restore,
+                        onClick = { onAction.invoke(AdvancedSettingAction.Restore) },
+                    )
+                }
             }
 
-            Text(
-                modifier = Modifier.then(ItemSpecModifier),
-                text = stringResource(id = R.string.restore_and_backup),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary,
-            )
+            // Others
+            SettingsSection(
+                title = stringResource(id = R.string.others),
+            ) {
+                AppCardView {
+                    SettingRow(
+                        title = stringResource(id = R.string.filter),
+                        subtitle = stringResource(id = R.string.filter_message),
+                        icon = Icons.Outlined.FilterAlt,
+                        showDivider = true,
+                        onClick = { onAction.invoke(AdvancedSettingAction.ShowDateFilterDialog) },
+                    )
+                    SettingRow(
+                        title = stringResource(id = R.string.accounts_re_order),
+                        subtitle = stringResource(id = R.string.accounts_re_order_message),
+                        icon = Icons.Outlined.Reorder,
+                        onClick = { onAction.invoke(AdvancedSettingAction.OpenAccountReOrder) },
+                    )
+                }
+            }
 
-            SettingsItem(
-                modifier = Modifier
-                    .clickable {
-                        onAction.invoke(AdvancedSettingAction.Backup)
-                    }
-                    .padding(top = 8.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                title = stringResource(id = R.string.backup),
-                description = stringResource(id = R.string.backup_message),
-                imageVector = Icons.Outlined.Backup,
-            )
-
-            SettingsItem(
-                modifier = Modifier
-                    .clickable {
-                        onAction.invoke(AdvancedSettingAction.Restore)
-                    }
-                    .padding(top = 8.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                title = stringResource(id = R.string.restore),
-                description = stringResource(id = R.string.restore_message),
-                imageVector = Icons.Outlined.Restore,
-            )
-
-            Text(
-                modifier = Modifier.then(ItemSpecModifier),
-                text = stringResource(id = R.string.others),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.secondary,
-            )
-
-            SettingsItem(
-                modifier = Modifier
-                    .clickable {
-                        onAction.invoke(AdvancedSettingAction.ShowDateFilterDialog)
-                    }
-                    .padding(top = 8.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                title = stringResource(id = R.string.filter),
-                description = stringResource(id = R.string.filter_message),
-                imageVector = Icons.Outlined.FilterAlt,
-            )
-
-            SettingsItem(
-                modifier = Modifier
-                    .clickable {
-                        onAction.invoke(AdvancedSettingAction.OpenAccountReOrder)
-                    }
-                    .padding(top = 8.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                title = stringResource(id = R.string.accounts_re_order),
-                description = stringResource(id = R.string.accounts_re_order_message),
-                imageVector = Icons.Outlined.Reorder,
-            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
+// ─── Reusable Components ────────────────────────────────────────────────────────
 
 @Composable
-private fun SettingsItem(
+private fun SettingsSection(
     title: String,
-    description: String,
-    imageVector: ImageVector,
     modifier: Modifier = Modifier,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    Row(modifier = modifier) {
-        Icon(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp),
-            imageVector = imageVector,
-            contentDescription = null,
+    Column(modifier = modifier) {
+        Text(
+            text = title.uppercase(),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            letterSpacing = 0.8.sp,
+            modifier = Modifier.padding(bottom = 8.dp, start = 4.dp),
         )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterVertically),
-        ) {
-            Text(text = title)
-            Text(text = description, style = MaterialTheme.typography.labelMedium)
-        }
+        content()
     }
 }
 
-@Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun AccountPreSelectionView(
-    accounts: List<Account>,
-    selectedAccount: Account,
-    onItemSelection: (Account) -> Unit,
+@Composable
+private fun DropdownSettingItem(
+    label: String,
+    selectedValue: String,
+    icon: ImageVector,
+    items: List<String>,
+    onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     ExposedDropdownMenuBox(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         expanded = expanded,
-        onExpandedChange = {
-            expanded = expanded.not()
-        },
+        onExpandedChange = { expanded = it },
     ) {
-        OutlinedTextField(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .menuAnchor(),
-            readOnly = true,
-            value = selectedAccount.name,
-            onValueChange = { },
-            label = {
-                Text(stringResource(id = R.string.default_account))
-            },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded,
-                )
-            },
-        )
-        ExposedDropdownMenu(
-            modifier = Modifier
-                .fillMaxWidth(),
-            expanded = expanded,
-            onDismissRequest = {
-                expanded = false
-            },
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
+                .clickable { expanded = true }
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
         ) {
-            accounts.forEach { item ->
+            Surface(
+                shape = MaterialTheme.shapes.medium,
+                color = MaterialTheme.colorScheme.primaryContainer,
+                modifier = Modifier.size(40.dp),
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = selectedValue,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+        }
+
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            shape = MaterialTheme.shapes.medium,
+        ) {
+            items.forEachIndexed { index, item ->
                 DropdownMenuItem(
                     text = {
-                        Text(text = item.name)
+                        Text(
+                            text = item,
+                            fontWeight = if (item == selectedValue) FontWeight.SemiBold else FontWeight.Normal,
+                        )
                     },
+                    leadingIcon = if (item == selectedValue) {
+                        {
+                            Icon(
+                                imageVector = Icons.Rounded.Check,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(18.dp),
+                            )
+                        }
+                    } else null,
                     onClick = {
-                        onItemSelection.invoke(item)
+                        onItemSelected(index)
                         expanded = false
                     },
                 )
@@ -313,62 +338,7 @@ private fun AccountPreSelectionView(
     }
 }
 
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun CategoryPreSelectionView(
-    categories: List<Category>,
-    selectedCategory: Category,
-    @StringRes label: Int,
-    onItemSelection: (Category) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    var expanded by remember { mutableStateOf(false) }
-
-    ExposedDropdownMenuBox(
-        modifier = modifier,
-        expanded = expanded,
-        onExpandedChange = {
-            expanded = expanded.not()
-        },
-    ) {
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .menuAnchor(),
-            readOnly = true,
-            value = selectedCategory.name,
-            onValueChange = { },
-            label = {
-                Text(stringResource(id = label))
-            },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded,
-                )
-            },
-        )
-        ExposedDropdownMenu(
-            modifier = Modifier
-                .fillMaxWidth(),
-            expanded = expanded,
-            onDismissRequest = {
-                expanded = false
-            },
-        ) {
-            categories.forEach { item ->
-                DropdownMenuItem(
-                    text = {
-                        Text(text = item.name)
-                    },
-                    onClick = {
-                        onItemSelection.invoke(item)
-                        expanded = false
-                    },
-                )
-            }
-        }
-    }
-}
+// ─── Preview helpers (unchanged) ────────────────────────────────────────────────
 
 fun getRandomAccountData(totalCount: Int = 10): List<Account> {
     return buildList {
@@ -434,9 +404,9 @@ fun AdvancedSettingsPreview() {
                 selectedExpenseCategory = getRandomCategoryData(5).firstOrNull(),
                 incomeCategories = getRandomCategoryData(5),
                 selectedIncomeCategory = getRandomCategoryData(5).firstOrNull(),
-                showDateFilter = false
+                showDateFilter = false,
             ),
-            onAction = {}
+            onAction = {},
         )
     }
 }

@@ -1,17 +1,30 @@
 package com.naveenapps.expensemanager.feature.account.reorder
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.outlined.Reorder
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material.icons.rounded.DragHandle
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -28,14 +41,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountData
@@ -75,31 +90,60 @@ private fun AccountReOrderScaffoldView(
             )
         },
         floatingActionButton = {
-            if (state.showSaveButton) {
-                FloatingActionButton(
-                    onClick = {
-                        onAction.invoke(AccountReOrderAction.Save)
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Done,
-                        contentDescription = "",
-                    )
-                }
+            AnimatedVisibility(
+                visible = state.showSaveButton,
+                enter = scaleIn(spring(dampingRatio = Spring.DampingRatioMediumBouncy)) + fadeIn(),
+                exit = scaleOut() + fadeOut(),
+            ) {
+                ExtendedFloatingActionButton(
+                    onClick = { onAction.invoke(AccountReOrderAction.Save) },
+                    icon = {
+                        Icon(
+                            imageVector = Icons.Default.Done,
+                            contentDescription = null,
+                        )
+                    },
+                    text = {
+                        Text(text = stringResource(R.string.save))
+                    },
+                )
             }
         },
     ) { innerPadding ->
-        ReOrderContent(
-            accounts = state.accounts,
-            onMove = { from, to ->
-                onAction.invoke(
-                    AccountReOrderAction.Swap(from, to)
-                )
-            },
+        Column(
             modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-        )
+                .fillMaxSize()
+                .padding(innerPadding),
+        ) {
+            // Hint banner
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Info,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(16.dp),
+                )
+                Text(
+                    text = stringResource(R.string.drag_to_reorder_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            ReOrderContent(
+                accounts = state.accounts,
+                onMove = { from, to ->
+                    onAction.invoke(AccountReOrderAction.Swap(from, to))
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
     }
 }
 
@@ -117,31 +161,64 @@ private fun ReOrderContent(
         modifier = modifier
             .dragGestureHandler(coroutineScope, dragDropListState, overscrollJob),
         state = dragDropListState.getLazyListState(),
+        contentPadding = PaddingValues(
+            start = 16.dp,
+            end = 16.dp,
+            top = 12.dp,
+            bottom = 88.dp,
+        ),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
     ) {
         itemsIndexed(accounts) { index, account ->
+            val isDragging = index == dragDropListState.getCurrentIndexOfDraggedListItem()
+
             val displacementOffset =
-                if (index == dragDropListState.getCurrentIndexOfDraggedListItem()) {
+                if (isDragging) {
                     dragDropListState.elementDisplacement.takeIf { it != 0f }
                 } else {
                     null
                 }
-            AccountReOrderItem(
+
+            val elevation by animateDpAsState(
+                targetValue = if (isDragging) 8.dp else 0.dp,
+                animationSpec = spring(stiffness = Spring.StiffnessMedium),
+                label = "elevation",
+            )
+
+            val shape = when {
+                accounts.size == 1 -> MaterialTheme.shapes.large
+                index == 0 -> RoundedCornerShape(
+                    topStart = 14.dp, topEnd = 14.dp,
+                    bottomStart = 4.dp, bottomEnd = 4.dp,
+                )
+
+                index == accounts.lastIndex -> RoundedCornerShape(
+                    topStart = 4.dp, topEnd = 4.dp,
+                    bottomStart = 14.dp, bottomEnd = 14.dp,
+                )
+
+                else -> RoundedCornerShape(4.dp)
+            }
+
+            AppCardView(
+                shape = shape,
                 modifier = Modifier
-                    .then(ItemSpecModifier)
+                    .fillMaxWidth()
                     .graphicsLayer {
                         translationY = displacementOffset ?: 0f
                     },
-                name = account.name,
-                icon = account.storedIcon.name,
-                iconBackgroundColor = account.storedIcon.backgroundColor,
-            )
-        }
-        item {
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(36.dp),
-            )
+            ) {
+                AccountReOrderItem(
+                    name = account.name,
+                    icon = account.storedIcon.name,
+                    iconBackgroundColor = account.storedIcon.backgroundColor,
+                    isDragging = isDragging,
+                    position = index + 1,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                )
+            }
         }
     }
 }
@@ -152,29 +229,44 @@ fun AccountReOrderItem(
     icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
+    isDragging: Boolean = false,
+    position: Int = 0,
 ) {
-    Row(modifier = modifier) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        // Drag handle
+        Icon(
+            imageVector = Icons.Rounded.DragHandle,
+            contentDescription = null,
+            tint = if (isDragging)
+                MaterialTheme.colorScheme.primary
+            else
+                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            modifier = Modifier.size(20.dp),
+        )
+
         IconAndBackgroundView(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
             name = name,
         )
+
         Text(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp, end = 16.dp)
-                .align(Alignment.CenterVertically),
+            modifier = Modifier.weight(1f),
             text = name,
             style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.Medium,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
-        Icon(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(start = 8.dp),
-            imageVector = Icons.Outlined.Reorder,
-            contentDescription = null,
+
+        Text(
+            text = "#$position",
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
         )
     }
 }
@@ -186,7 +278,7 @@ fun AccountReOrderScaffoldViewPreview() {
         AccountReOrderScaffoldView(
             state = AccountReOrderState(
                 accounts = getRandomAccountData(5),
-                showSaveButton = true
+                showSaveButton = true,
             ),
             onAction = {},
         )

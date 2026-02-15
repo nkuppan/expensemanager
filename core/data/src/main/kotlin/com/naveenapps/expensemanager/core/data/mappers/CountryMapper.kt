@@ -15,13 +15,14 @@ fun CountryResponseDto.toDomainModel(): Country? {
         name = name ?: "",
         countryCode = countryCode ?: "",
         currencyCode = currencyCode ?: "",
-        currency = currency
+        currency = currency,
     )
 }
 
 fun CurrencyResponseDto.toDomainModel(): Currency {
     return Currency(
         name = name ?: "",
-        symbol = symbol ?: ""
+        symbol = symbol ?: "",
+        code = code ?: ""
     )
 }

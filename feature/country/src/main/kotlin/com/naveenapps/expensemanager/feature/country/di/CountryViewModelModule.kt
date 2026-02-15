@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 val CountryViewModelModule = module {
     viewModel {
-        CountryListViewModel(getCountiesUseCase = get())
+        CountryListViewModel(getCountriesUseCase = get())
     }
 }

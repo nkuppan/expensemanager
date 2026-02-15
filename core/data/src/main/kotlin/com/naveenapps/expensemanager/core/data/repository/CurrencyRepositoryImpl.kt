@@ -5,7 +5,7 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.model.isPrefix
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
@@ -14,13 +14,15 @@ import kotlinx.coroutines.withContext
 
 private const val MINUS_SYMBOL = "-"
 private const val DEFAULT_CURRENCY_SYMBOL = "$"
+private const val DEFAULT_CURRENCY_CODE = "USD"
 private const val DEFAULT_CURRENCY_NAME = "US Dollars"
 
 @VisibleForTesting
 val defaultCurrency = Currency(
     name = DEFAULT_CURRENCY_NAME,
     symbol = DEFAULT_CURRENCY_SYMBOL,
-    position = TextPosition.SUFFIX,
+    position = CurrencyPosition.SUFFIX,
+    code = DEFAULT_CURRENCY_CODE
 )
 
 class CurrencyRepositoryImpl(
@@ -38,6 +40,7 @@ class CurrencyRepositoryImpl(
             name = currency.name,
             symbol = currency.symbol,
             position = currency.position.ordinal,
+            code = currency.code
         )
         true
     }
@@ -70,11 +73,11 @@ class CurrencyRepositoryImpl(
         val currencyFormatted = numberFormatRepository.formatForDisplay(amount)
 
         return when (currency.position) {
-            TextPosition.PREFIX -> {
+            CurrencyPosition.PREFIX -> {
                 "${currency.symbol}${currencyFormatted}"
             }
 
-            TextPosition.SUFFIX -> {
+            CurrencyPosition.SUFFIX -> {
                 "${currencyFormatted}${currency.symbol}"
             }
         }

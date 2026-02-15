@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
+import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -54,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
@@ -187,28 +189,34 @@ private fun CategoryListScreenContent(
                 )
             } else {
                 Column {
-                    // Category count summary
-                    Text(
-                        text = pluralStringResource(
-                            id = R.plurals.category_count,
-                            count = state.filteredCategories.size,
-                            state.filteredCategories.size,
-                        ),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = 12.dp,
-                            bottom = 4.dp,
-                        ),
-                    )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp, vertical = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Text(
+                            text = pluralStringResource(
+                                id = R.plurals.category_count,
+                                count = state.filteredCategories.size,
+                                state.filteredCategories.size,
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
 
                     LazyColumn(
                         contentPadding = PaddingValues(
-                            start = 12.dp,
-                            end = 12.dp,
-                            top = 4.dp,
+                            start = 16.dp,
+                            end = 16.dp,
                             bottom = 88.dp, // room for FAB
                         ),
                         verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -258,9 +266,8 @@ fun CategoryItem(
     shape: CornerBasedShape = MaterialTheme.shapes.large,
     endIcon: ImageVector? = null,
 ) {
-    Surface(
+    AppCardView(
         shape = shape,
-        tonalElevation = 1.dp,
         modifier = modifier,
     ) {
         Row(

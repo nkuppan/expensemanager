@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.core.model
 
+import androidx.compose.runtime.Stable
 import java.util.Date
 
+@Stable
 data class Account(
     val id: String,
     val name: String,

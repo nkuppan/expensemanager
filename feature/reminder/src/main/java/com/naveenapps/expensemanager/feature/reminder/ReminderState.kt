@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.feature.reminder
 
+import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 
+@Stable
 data class ReminderState(
     val reminderStatus: Boolean = false,
     val reminderTime: String = "06:00",

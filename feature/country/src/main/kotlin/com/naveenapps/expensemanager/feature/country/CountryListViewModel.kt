@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.feature.country
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.country.GetCountiesUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.country.GetCountriesUseCase
 import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import kotlinx.coroutines.Job
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 
 class CountryListViewModel(
-    private val getCountiesUseCase: GetCountiesUseCase
+    private val getCountriesUseCase: GetCountriesUseCase
 ) : ViewModel() {
 
     private val _event = Channel<CountrySelectionEvent>()
@@ -46,7 +46,7 @@ class CountryListViewModel(
 
         currentJob = viewModelScope.launch {
 
-            val countryList = getCountiesUseCase.invoke()
+            val countryList = getCountriesUseCase.invoke()
 
             val filteredList = mutableListOf<Country>()
 
@@ -56,7 +56,7 @@ class CountryListViewModel(
                         it.name.contains(
                             searchName,
                             ignoreCase = true
-                        ) || (it.currency?.name?.contains(searchName, ignoreCase = true) == true)
+                        ) || it.currency.name.contains(searchName, ignoreCase = true)
                     }
                 )
             } else {

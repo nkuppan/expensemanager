@@ -6,7 +6,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCu
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.TextPosition
+import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatSettingRepository
@@ -61,8 +61,8 @@ class CurrencyViewModel(
         }
     }
 
-    private fun setCurrencyPositionType(textPosition: TextPosition) {
-        _state.update { it.copy(currency = it.currency.copy(position = textPosition)) }
+    private fun setCurrencyPositionType(currencyPosition: CurrencyPosition) {
+        _state.update { it.copy(currency = it.currency.copy(position = currencyPosition)) }
         saveSelectedCurrency()
     }
 
@@ -101,7 +101,7 @@ class CurrencyViewModel(
             }
 
             is CurrencyAction.ChangeCurrencyType -> {
-                setCurrencyPositionType(action.textPosition)
+                setCurrencyPositionType(action.currencyPosition)
             }
 
             is CurrencyAction.SelectCurrency -> {
