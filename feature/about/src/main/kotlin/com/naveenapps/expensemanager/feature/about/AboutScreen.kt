@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Policy
@@ -32,9 +33,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -107,8 +108,9 @@ private fun AboutUsScreenScaffoldView(
 
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = { onAction.invoke(AboutAction.ClosePage) },
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = { onAction.invoke(AboutAction.ClosePage) },
                 title = stringResource(R.string.about_us),
             )
         },
@@ -275,7 +277,7 @@ private fun SettingsItem(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun AboutUsPreview() {
-    ExpenseManagerPreviewTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AboutUsScreenScaffoldView(
             state = AboutUsState("1.0.0"),
             onAction = {}

@@ -65,6 +65,8 @@ lottieCompose = "6.7.0"
 opencsv = "5.12.0"
 coil = "2.7.0"
 koin-bom = "4.1.1"
+naveenapps-designsystem = "1.0.7"
+naveenapps-settings = "1.0.4"
 
 
 [libraries]
@@ -162,6 +164,9 @@ koin-core = { module = "io.insert-koin:koin-core" }
 koin-android = { module = "io.insert-koin:koin-android" }
 koin-android-work-manager = { module = "io.insert-koin:koin-androidx-workmanager" }
 koin-android-compose = { module = "io.insert-koin:koin-androidx-compose" }
+
+naveenapps-designsystem = { module = "com.naveenapps:designsystem", version.ref = "naveenapps-designsystem" }
+naveenapps-settings = { module = "com.naveenapps:settings", version.ref = "naveenapps-settings" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

@@ -10,14 +10,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
@@ -31,20 +34,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDate
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
@@ -149,15 +152,22 @@ private fun BudgetCreateScreenContentView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopNavigationBarWithDeleteAction(
-                title = stringResource(id = R.string.budgets),
-                isDeleteEnabled = state.showDeleteButton,
-                onNavigationIconClick = {
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
                     onAction.invoke(BudgetCreateAction.ClosePage)
                 },
-                onDeleteActionClick = {
-                    onAction.invoke(BudgetCreateAction.OpenDeleteDialog)
-                },
+                title = stringResource(R.string.budgets),
+                actions = {
+                    if (state.showDeleteButton) {
+                        IconButton(onClick = { onAction.invoke(BudgetCreateAction.ShowDeleteDialog) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = "Delete"
+                            )
+                        }
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -317,7 +327,7 @@ private fun BudgetCreateStatePreview() {
         valueError = false,
         onValueChange = { }
     )
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         BudgetCreateScreenContentView(
             state = BudgetCreateState(
                 isLoading = false,

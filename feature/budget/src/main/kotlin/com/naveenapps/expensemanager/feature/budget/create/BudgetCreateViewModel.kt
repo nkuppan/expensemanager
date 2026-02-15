@@ -355,7 +355,7 @@ class BudgetCreateViewModel(
             BudgetCreateAction.CloseCategorySelectionDialog -> closeCategorySelection()
 
             BudgetCreateAction.CloseDeleteDialog -> closeDeleteDialog()
-            BudgetCreateAction.OpenDeleteDialog -> openDeleteDialog()
+            BudgetCreateAction.ShowDeleteDialog -> openDeleteDialog()
             BudgetCreateAction.Save -> saveOrUpdateBudget()
             BudgetCreateAction.Delete -> deleteBudget()
             is BudgetCreateAction.SelectAccounts -> setAccounts(

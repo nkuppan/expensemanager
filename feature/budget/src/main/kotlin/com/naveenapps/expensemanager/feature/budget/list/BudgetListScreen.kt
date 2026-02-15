@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -40,18 +41,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.feature.budget.R
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BudgetListScreen(
@@ -77,8 +78,9 @@ private fun BudgetListScreenContent(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopNavigationBar(
-                onClick = {
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
                     onAction.invoke(BudgetListAction.ClosePage)
                 },
                 title = stringResource(R.string.budgets),
@@ -322,7 +324,7 @@ private fun getBudgetUiModel(id: String) = BudgetUiModel(
 @Preview
 @Composable
 private fun BudgetItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         BudgetItem(
             name = "Utilities",
             icon = "account_balance",
@@ -339,7 +341,7 @@ private fun BudgetItemPreview() {
 @Preview
 @Composable
 private fun DashboardBudgetItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         DashBoardBudgetItem(
             name = "This Month Budget",
             progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
@@ -355,7 +357,7 @@ private fun DashboardBudgetItemPreview() {
 @Preview
 @Composable
 private fun BudgetListItemLoadingStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         BudgetListScreenContent(
             state = BudgetState(isLoading = true, budgets = emptyList()),
             onAction = {},
@@ -366,7 +368,7 @@ private fun BudgetListItemLoadingStatePreview() {
 @Preview
 @Composable
 private fun BudgetListItemEmptyStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         BudgetListScreenContent(
             state = BudgetState(isLoading = false, budgets = emptyList()),
             onAction = {},
@@ -377,7 +379,7 @@ private fun BudgetListItemEmptyStatePreview() {
 @Preview
 @Composable
 private fun BudgetListItemSuccessStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         BudgetListScreenContent(
             state = BudgetState(isLoading = false, budgets = getRandomBudgetUiModel(5)),
             onAction = {},

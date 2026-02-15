@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,8 +22,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionDialog
@@ -67,8 +68,9 @@ private fun CurrencyScreen(
 
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = {
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
                     onAction.invoke(CurrencyAction.ClosePage)
                 },
                 title = stringResource(R.string.currency),
@@ -161,7 +163,7 @@ private fun CurrencyItem(
 @Preview
 @Composable
 fun CurrencyCustomiseScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CurrencyScreen(
             state = CurrencyState(
                 showCurrencySelection = false,

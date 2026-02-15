@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.outlined.AccountBalance
@@ -53,7 +55,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.ExportFileType
@@ -233,8 +235,9 @@ private fun ExportScreenContent(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopNavigationBar(
-                onClick = { onAction.invoke(ExportAction.ClosePage) },
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = { onAction.invoke(ExportAction.ClosePage) },
                 title = null,
             )
         },

@@ -18,4 +18,8 @@
     <string name="delete_item_message">Are you sure want to delete this item? Deleted item cannot retrieved.</string>
     <string name="yes_delete">Yes, Delete</string>
     <string name="no_keep">No, Keep</string>
+
+    <string name="color">Color</string>
+    <string name="icon">Icon</string>
+    <string name="change">Change</string>
 </resources>

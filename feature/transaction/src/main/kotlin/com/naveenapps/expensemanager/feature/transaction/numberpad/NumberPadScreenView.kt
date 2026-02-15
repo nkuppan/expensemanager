@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.feature.transaction.R
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -318,7 +318,7 @@ fun RowScope.NumberPadActionText(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         NumberPadScreenView(
             modifier = Modifier.wrapContentHeight(),
             value = "0",
@@ -334,7 +334,7 @@ fun NumberPadScreenPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 fun NumberPadScreenDialogPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         NumberPadDialogView {}
     }
 }

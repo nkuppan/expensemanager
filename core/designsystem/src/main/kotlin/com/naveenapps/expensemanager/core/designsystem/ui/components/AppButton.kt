@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -14,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerPreviewTheme
 
 @Composable
 fun PrimaryButton(
@@ -75,35 +74,33 @@ fun SecondaryOutlinedButton(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun PrimaryButtonPreview() {
-    ExpenseManagerPreviewTheme {
-        Column {
-            PrimaryButton(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.choose_color),
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            PrimaryOutlinedButton(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.choose_color),
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            SecondaryOutlinedButton(
-                onClick = {},
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = stringResource(R.string.choose_color),
-                    fontWeight = FontWeight.Medium
-                )
-            }
+    NaveenAppsPreviewTheme {
+        PrimaryButton(
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.choose_color),
+                fontWeight = FontWeight.Medium
+            )
+        }
+        PrimaryOutlinedButton(
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.choose_color),
+                fontWeight = FontWeight.Medium
+            )
+        }
+        SecondaryOutlinedButton(
+            onClick = {},
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = stringResource(R.string.choose_color),
+                fontWeight = FontWeight.Medium
+            )
         }
     }
 }

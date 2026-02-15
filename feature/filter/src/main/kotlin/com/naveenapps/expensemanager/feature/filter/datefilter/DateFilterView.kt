@@ -27,18 +27,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.filter.R
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 
 @Composable
@@ -200,7 +200,7 @@ private fun FilterTypesAndViewContent(
 @Preview
 @Composable
 private fun FilterNormalViewPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
         val dateFilter = TextFieldValue(Date(), false, {})
         FilterTypesAndViewContent(

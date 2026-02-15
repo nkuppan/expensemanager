@@ -8,8 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 
 
 @Composable
@@ -34,7 +34,7 @@ internal fun CountryWithCurrencyItemView(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun CountryWithCurrencyItemViewPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CountryWithCurrencyItemView(
             modifier = Modifier.padding(16.dp),
             name = "India",

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Reorder
@@ -37,9 +38,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Account
@@ -50,6 +50,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.settings.R
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 
 @Composable
@@ -104,8 +105,9 @@ private fun AdvancedSettingsScaffoldView(
 
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = {
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
                     onAction.invoke(AdvancedSettingAction.ClosePage)
                 },
                 title = stringResource(R.string.advanced),
@@ -423,7 +425,7 @@ fun getCategoryData(
 @Preview
 @Composable
 fun AdvancedSettingsPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AdvancedSettingsScaffoldView(
             state = AdvancedSettingState(
                 accounts = getRandomAccountData(5),

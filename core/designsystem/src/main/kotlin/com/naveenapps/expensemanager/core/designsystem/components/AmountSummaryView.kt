@@ -30,9 +30,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 
 @Composable
 fun ColorIconAmountView(
@@ -176,7 +176,7 @@ fun WidgetHeader(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme {
         AmountInfoWidget(
             expenseAmount = AMOUNT_VALUE,
             incomeAmount = AMOUNT_VALUE,

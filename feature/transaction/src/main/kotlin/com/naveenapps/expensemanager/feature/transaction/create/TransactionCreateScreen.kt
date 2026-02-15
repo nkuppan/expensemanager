@@ -12,11 +12,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
@@ -49,8 +52,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePick
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -119,15 +121,23 @@ private fun TransactionCreateScreenContent(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopNavigationBarWithDeleteAction(
-                title = stringResource(id = R.string.transaction),
-                isDeleteEnabled = state.showDeleteButton,
-                onNavigationIconClick = {
+
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
                     onAction.invoke(TransactionCreateAction.ClosePage)
                 },
-                onDeleteActionClick = {
-                    onAction.invoke(TransactionCreateAction.ShowDeleteDialog)
-                },
+                title = stringResource(R.string.transaction),
+                actions = {
+                    if (state.showDeleteButton) {
+                        IconButton(onClick = { onAction.invoke(TransactionCreateAction.ShowDeleteDialog) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = "Delete"
+                            )
+                        }
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -415,12 +425,12 @@ private fun TransactionCreateScreen(
             value = state.notes.value,
             singleLine = true,
             leadingIcon =
-            {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Notes,
-                    contentDescription = "",
-                )
-            },
+                {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.Notes,
+                        contentDescription = "",
+                    )
+                },
             label = {
                 Text(text = stringResource(id = R.string.notes))
             },
@@ -471,7 +481,7 @@ private fun TransactionCreateStatePreview() {
 
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
 
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionCreateScreenContent(
             state = TransactionCreateState(
                 amount = amountField,

@@ -36,18 +36,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
@@ -57,6 +56,7 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.R
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 
 @Composable
@@ -82,7 +82,7 @@ private fun TransactionListScreenContent(
 ) {
     Scaffold(
         topBar = {
-            AppTopNavigationBar(
+            ExpenseManagerTopAppBar(
                 title = stringResource(R.string.transaction),
                 navigationIcon = if (showBackNavigationIcon) Icons.AutoMirrored.Default.ArrowBack else null,
                 navigationBackClick = {
@@ -368,7 +368,7 @@ private fun AccountNameWithIcon(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionUiStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionItem(
             categoryName = "Utilities",
             categoryIcon = "agriculture",
@@ -390,7 +390,7 @@ fun TransactionUiStatePreview() {
 @Preview
 @Composable
 fun TransactionListItemEmptyStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionListScreen(
             state = TransactionListState(emptyList()),
             modifier = Modifier.fillMaxSize(),
@@ -436,7 +436,7 @@ private fun getTransactionUiState() = TransactionGroup(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionListItemSuccessStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionListScreenContent(
             state = TransactionListState(DUMMY_DATA.convertGroupToTransactionListItems()),
             showBackNavigationIcon = true,

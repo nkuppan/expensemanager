@@ -26,7 +26,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,8 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
-import com.naveenapps.expensemanager.core.designsystem.ui.components.NavigationButton
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -51,6 +49,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionItem
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,17 +67,10 @@ fun CategoryDetailScreen(
         topBar = {
             Surface(shadowElevation = 4.dp) {
                 Column {
-                    TopAppBar(
-                        navigationIcon = {
-                            NavigationButton(
-                                onClick = {
-                                    viewModel.closePage()
-                                },
-                                Icons.Default.Close,
-                            )
-                        },
-                        title = {
-                        },
+                    ExpenseManagerTopAppBar(
+                        navigationIcon = Icons.Default.Close,
+                        navigationBackClick = viewModel::closePage,
+                        title = "",
                         actions = {
                             state.categoryTransaction?.let {
                                 IconButton(onClick = {

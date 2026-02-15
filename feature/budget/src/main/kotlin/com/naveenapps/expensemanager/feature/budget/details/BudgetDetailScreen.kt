@@ -30,7 +30,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,14 +41,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.ui.components.NavigationButton
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BudgetDetailScreen(
@@ -84,16 +83,10 @@ private fun BudgetDetailsScaffoldView(
         topBar = {
             Surface(shadowElevation = 4.dp) {
                 Column {
-                    TopAppBar(
-                        navigationIcon = {
-                            NavigationButton(
-                                onClick = closePage,
-                                Icons.Default.Close,
-                            )
-                        },
-                        title = {
-                            Text(text = stringResource(id = R.string.budgets))
-                        },
+                    ExpenseManagerTopAppBar(
+                        navigationIcon = Icons.Default.Close,
+                        navigationBackClick = closePage,
+                        title = stringResource(id = R.string.budgets),
                         actions = {
                             budget?.let {
                                 IconButton(onClick = openBudgetEditScreen) {

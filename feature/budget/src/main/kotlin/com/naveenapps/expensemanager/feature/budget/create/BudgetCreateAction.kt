@@ -29,7 +29,7 @@ sealed class BudgetCreateAction {
         val categories: List<Category>
     ) : BudgetCreateAction()
 
-    data object OpenDeleteDialog : BudgetCreateAction()
+    data object ShowDeleteDialog : BudgetCreateAction()
 
     data object CloseDeleteDialog : BudgetCreateAction()
 

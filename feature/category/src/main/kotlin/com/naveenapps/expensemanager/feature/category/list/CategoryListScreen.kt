@@ -1,57 +1,70 @@
 package com.naveenapps.expensemanager.feature.category.list
 
-import android.annotation.SuppressLint
-import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 
 enum class CategoryTabItems(
-    @StringRes val labelResourceID: Int,
+    val labelResourceID: Int,
     val categoryType: CategoryType,
     val index: Int,
 ) {
@@ -78,56 +91,74 @@ private fun CategoryListScreenContentView(
 ) {
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = { onAction.invoke(CategoryListAction.ClosePage) },
-                title = stringResource(R.string.category),
-                disableBackIcon = false,
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onAction.invoke(CategoryListAction.Create) },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "",
-                )
+            Surface {
+                Column {
+                    TopAppBar(
+                        navigationIcon = {
+                            IconButton(
+                                onClick = {
+                                    onAction.invoke(CategoryListAction.ClosePage)
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                        title = {
+                            Text(stringResource(R.string.category))
+                        },
+                    )
+                    PrimaryTabRow(selectedTabIndex = state.selectedTab.index) {
+                        state.tabs.forEach { item ->
+                            Tab(
+                                selected = state.selectedTab.categoryType == item.categoryType,
+                                onClick = {
+                                    onAction.invoke(
+                                        CategoryListAction.ChangeCategory(item)
+                                    )
+                                },
+                                text = {
+                                    Text(
+                                        text = stringResource(id = item.labelResourceID).uppercase(),
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis,
+                                        style = MaterialTheme.typography.labelLarge,
+                                        fontWeight = if (state.selectedTab.categoryType == item.categoryType)
+                                            FontWeight.Bold else FontWeight.Normal,
+                                    )
+                                },
+                            )
+                        }
+                    }
+                }
             }
         },
+        floatingActionButton = {
+            ExtendedFloatingActionButton(
+                onClick = { onAction.invoke(CategoryListAction.Create) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null,
+                    )
+                },
+                text = {
+                    Text(text = stringResource(R.string.add_category))
+                },
+            )
+        },
     ) { innerPadding ->
-        Column(
+        CategoryListScreenContent(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize(),
-        ) {
-            PrimaryTabRow(selectedTabIndex = state.selectedTab.index) {
-                state.tabs.forEach { item ->
-                    Tab(
-                        selected = state.selectedTab.categoryType == item.categoryType,
-                        onClick = {
-                            onAction.invoke(
-                                CategoryListAction.ChangeCategory(item)
-                            )
-                        },
-                        text = {
-                            Text(
-                                text = stringResource(id = item.labelResourceID).uppercase(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        },
-                    )
-                }
-            }
-
-            CategoryListScreenContent(
-                modifier = Modifier.fillMaxSize(),
-                state = state,
-                onItemClick = {
-                    onAction.invoke(CategoryListAction.Edit(it))
-                },
-            )
-        }
+            state = state,
+            onItemClick = {
+                onAction.invoke(CategoryListAction.Edit(it))
+            },
+        )
     }
 }
 
@@ -138,34 +169,80 @@ private fun CategoryListScreenContent(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
-        if (state.filteredCategories.isEmpty()) {
-            EmptyItem(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .align(Alignment.Center),
-                emptyItemText = stringResource(id = R.string.no_category_available),
-                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_category,
-            )
-        } else {
-            LazyColumn {
-                items(state.filteredCategories, key = { it.id }) { category ->
-                    CategoryItem(
-                        name = category.name,
-                        icon = category.storedIcon.name,
-                        iconBackgroundColor = category.storedIcon.backgroundColor,
-                        modifier = Modifier
-                            .clickable {
-                                onItemClick.invoke(category)
-                            }
-                            .then(ItemSpecModifier),
+        AnimatedContent(
+            targetState = state.filteredCategories.isEmpty(),
+            transitionSpec = {
+                fadeIn(animationSpec = tween(300)) togetherWith
+                        fadeOut(animationSpec = tween(300))
+            },
+            label = "category_list_transition",
+        ) { isEmpty ->
+            if (isEmpty) {
+                EmptyItem(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.Center),
+                    emptyItemText = stringResource(id = R.string.no_category_available),
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_category,
+                )
+            } else {
+                Column {
+                    // Category count summary
+                    Text(
+                        text = pluralStringResource(
+                            id = R.plurals.category_count,
+                            count = state.filteredCategories.size,
+                            state.filteredCategories.size,
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            top = 12.dp,
+                            bottom = 4.dp,
+                        ),
                     )
-                }
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(64.dp),
-                    )
+
+                    LazyColumn(
+                        contentPadding = PaddingValues(
+                            start = 12.dp,
+                            end = 12.dp,
+                            top = 4.dp,
+                            bottom = 88.dp, // room for FAB
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
+                    ) {
+                        itemsIndexed(
+                            items = state.filteredCategories,
+                            key = { _, item -> item.id },
+                        ) { index, category ->
+                            CategoryItem(
+                                name = category.name,
+                                icon = category.storedIcon.name,
+                                iconBackgroundColor = category.storedIcon.backgroundColor,
+                                shape = when {
+                                    state.filteredCategories.size == 1 -> MaterialTheme.shapes.large
+                                    index == 0 -> RoundedCornerShape(
+                                        topStart = 16.dp, topEnd = 16.dp,
+                                        bottomStart = 4.dp, bottomEnd = 4.dp,
+                                    )
+
+                                    index == state.filteredCategories.lastIndex -> RoundedCornerShape(
+                                        topStart = 4.dp, topEnd = 4.dp,
+                                        bottomStart = 16.dp, bottomEnd = 16.dp,
+                                    )
+
+                                    else -> RoundedCornerShape(4.dp)
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clip(MaterialTheme.shapes.medium)
+                                    .clickable { onItemClick.invoke(category) }
+                                    .animateItem(),
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -178,33 +255,54 @@ fun CategoryItem(
     icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
     endIcon: ImageVector? = null,
 ) {
-    Row(modifier = modifier) {
-        IconAndBackgroundView(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            icon = icon,
-            iconBackgroundColor = iconBackgroundColor,
-            name = name,
-        )
-        Text(
+    Surface(
+        shape = shape,
+        tonalElevation = 1.dp,
+        modifier = modifier,
+    ) {
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
-                .padding(start = 16.dp, end = 16.dp),
-            text = name,
-        )
-        if (endIcon != null) {
-            Icon(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                imageVector = endIcon,
-                contentDescription = null,
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconAndBackgroundView(
+                icon = icon,
+                iconBackgroundColor = iconBackgroundColor,
+                name = name,
             )
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp, end = 16.dp),
+                text = name,
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            if (endIcon != null) {
+                Icon(
+                    imageVector = endIcon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(20.dp),
+                )
+            } else {
+                // Subtle edit indicator
+                Icon(
+                    imageVector = Icons.Default.ChevronRight,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    modifier = Modifier.size(20.dp),
+                )
+            }
         }
     }
 }
 
-@SuppressLint("DiscouragedApi")
 @Composable
 fun CategoryCheckedItem(
     name: String,
@@ -214,28 +312,40 @@ fun CategoryCheckedItem(
     isSelected: Boolean = false,
     onCheckedChange: ((Boolean) -> Unit)? = null,
 ) {
-    Row(modifier = modifier) {
-        IconAndBackgroundView(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            icon = icon,
-            iconBackgroundColor = iconBackgroundColor,
-            name = name,
-        )
-        Text(
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        tonalElevation = if (isSelected) 3.dp else 1.dp,
+        color = if (isSelected)
+            MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
+        else
+            MaterialTheme.colorScheme.surface,
+        modifier = modifier,
+    ) {
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp, end = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = name,
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        Checkbox(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(start = 8.dp),
-            checked = isSelected,
-            onCheckedChange = onCheckedChange,
-        )
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconAndBackgroundView(
+                icon = icon,
+                iconBackgroundColor = iconBackgroundColor,
+                name = name,
+            )
+            Text(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 16.dp, end = 16.dp),
+                text = name,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
+            )
+            Checkbox(
+                modifier = Modifier.padding(start = 8.dp),
+                checked = isSelected,
+                onCheckedChange = onCheckedChange,
+            )
+        }
     }
 }
 
@@ -277,7 +387,7 @@ fun getRandomCategoryData(totalCount: Int = 10): List<Category> {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         Column {
             CategoryItem(
                 name = "Utilities",
@@ -296,7 +406,7 @@ private fun CategoryItemPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryListItemEmptyStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CategoryListScreenContentView(
             state = CategoryListState(
                 categories = emptyList(),
@@ -312,7 +422,7 @@ private fun CategoryListItemEmptyStatePreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryListItemSuccessStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CategoryListScreenContentView(
             state = CategoryListState(
                 categories = emptyList(),

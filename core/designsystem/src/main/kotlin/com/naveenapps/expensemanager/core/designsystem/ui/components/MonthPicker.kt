@@ -38,14 +38,14 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.R
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import java.util.Date
 
 @Composable
@@ -208,10 +208,10 @@ fun MonthPicker(
     )
 }
 
-@Preview
 @Composable
+@AppPreviewsLightAndDarkMode
 fun MonthPickerPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         MonthPicker(
             modifier = Modifier
                 .wrapContentSize()
@@ -222,12 +222,8 @@ fun MonthPickerPreview() {
                 ),
             currentMonth = Date().toMonth(),
             currentYear = Date().toYearInt(),
-            confirmButtonCLicked = { month, year ->
-
-            },
-            cancelClicked = {
-
-            },
+            confirmButtonCLicked = { _, _ -> },
+            cancelClicked = {},
         )
     }
 }

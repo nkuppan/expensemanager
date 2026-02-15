@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Palette
@@ -29,15 +31,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SettingsScreen(
@@ -74,8 +76,9 @@ private fun SettingsScreenScaffoldView(
 
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = {
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
                     onAction.invoke(SettingAction.ClosePage)
                 },
                 title = stringResource(R.string.settings),
@@ -215,7 +218,7 @@ private fun SettingsItem(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun SettingsScreenItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         SettingsItem(
             modifier = Modifier
                 .padding(top = 8.dp, bottom = 8.dp)
@@ -230,7 +233,7 @@ fun SettingsScreenItemPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 fun SettingsScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         SettingsScreenScaffoldView(
             state = SettingState(
                 currency = Currency("$", "US Dollar"),

@@ -7,7 +7,8 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 
 @Composable
 fun AppDialog(
@@ -57,7 +58,7 @@ fun AppDialog(
 @Preview
 @Composable
 private fun AppDialogPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AppDialog(
             onDismissRequest = {},
             onConfirmation = {},

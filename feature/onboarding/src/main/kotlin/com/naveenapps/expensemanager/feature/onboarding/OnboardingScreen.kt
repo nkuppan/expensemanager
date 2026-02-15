@@ -20,12 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PrimaryButton
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PrimaryOutlinedButton
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -71,7 +71,7 @@ private fun OnboardingContentView(
     }
     Scaffold(
         topBar = {
-            AppTopNavigationBar(
+            ExpenseManagerTopAppBar(
                 title = "",
                 navigationIcon = Icons.Default.Close,
                 navigationBackClick = {
@@ -172,7 +172,7 @@ private fun OnboardingContentView(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun OnboardingScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         OnboardingContentView(
             state = OnboardingState(
                 currency = Currency("1", "1"),

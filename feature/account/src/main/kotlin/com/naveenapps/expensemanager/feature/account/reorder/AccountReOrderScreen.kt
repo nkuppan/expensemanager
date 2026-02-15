@@ -29,18 +29,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountData
 import kotlinx.coroutines.Job
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountReOrderScreen(
@@ -66,7 +66,7 @@ private fun AccountReOrderScaffoldView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            AppTopNavigationBar(
+            ExpenseManagerTopAppBar(
                 title = stringResource(R.string.accounts_re_order),
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationBackClick = {
@@ -182,7 +182,7 @@ fun AccountReOrderItem(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun AccountReOrderScaffoldViewPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AccountReOrderScaffoldView(
             state = AccountReOrderState(
                 accounts = getRandomAccountData(5),

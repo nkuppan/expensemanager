@@ -25,19 +25,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AMOUNT_VALUE
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
-import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.AverageData
+import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
@@ -50,6 +49,7 @@ import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisItemPlacer
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AnalysisGraphScreen(
@@ -273,7 +273,7 @@ fun ChartScreen(
 @Preview
 @Composable
 fun ChartScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         ChartScreen(
             isDarkTheme = true,
             chart = AnalysisUiChartData(
@@ -325,7 +325,7 @@ fun ChartScreenPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionAverageItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionAverageItem(
             WholeAverageData(
                 AverageData(
@@ -346,7 +346,7 @@ fun TransactionAverageItemPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 fun AmountSummaryPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AmountInfoWidget(
             expenseAmount = AMOUNT_VALUE,
             incomeAmount = AMOUNT_VALUE,

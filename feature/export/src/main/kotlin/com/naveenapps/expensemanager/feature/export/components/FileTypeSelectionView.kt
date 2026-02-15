@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.feature.export.R
 
@@ -54,7 +54,7 @@ fun ExportFileTypeSelectionView(
 @Preview
 @Composable
 private fun ExportFileTypeSelectionViewPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         Column {
             ExportFileTypeSelectionView(
                 modifier = Modifier

@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -24,19 +27,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBarWithDeleteAction
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.R
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountCreateScreen(
@@ -71,11 +74,22 @@ private fun AccountCreateScaffoldView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            TopNavigationBarWithDeleteAction(
-                title = stringResource(id = R.string.accounts),
-                isDeleteEnabled = state.showDeleteButton,
-                onNavigationIconClick = { onAction.invoke(AccountCreateAction.ClosePage) },
-                onDeleteActionClick = { onAction.invoke(AccountCreateAction.ShowDeleteDialog) },
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
+                    onAction.invoke(AccountCreateAction.ClosePage)
+                },
+                title = stringResource(R.string.accounts),
+                actions = {
+                    if (state.showDeleteButton) {
+                        IconButton(onClick = { onAction.invoke(AccountCreateAction.ShowDeleteDialog) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = "Delete"
+                            )
+                        }
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -202,7 +216,7 @@ private fun AccountCreateScreen(
     }
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun AccountCreateStatePreview() {
     val nameField = TextFieldValue(
@@ -219,7 +233,7 @@ private fun AccountCreateStatePreview() {
         valueError = false,
         onValueChange = { }
     )
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AccountCreateScaffoldView(
             state = AccountCreateState(
                 name = nameField,

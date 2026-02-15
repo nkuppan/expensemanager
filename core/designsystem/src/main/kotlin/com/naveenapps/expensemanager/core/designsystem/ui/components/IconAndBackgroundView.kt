@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.core.designsystem.ui.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -17,9 +16,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.SmallIconSpecModifier
 
@@ -104,17 +103,15 @@ fun RoundIconView(
 @Preview
 @Composable
 fun IconAndBackgroundViewPreview() {
-    ExpenseManagerTheme {
-        Column {
-            IconAndBackgroundView(
-                icon = "account_balance_wallet",
-                iconBackgroundColor = "#000000",
-            )
-            SmallIconAndBackgroundView(
-                icon = "account_balance_wallet",
-                iconBackgroundColor = "#000000",
-                iconSize = 12.dp,
-            )
-        }
+    NaveenAppsPreviewTheme(padding = 0.dp) {
+        IconAndBackgroundView(
+            icon = "account_balance_wallet",
+            iconBackgroundColor = "#000000",
+        )
+        SmallIconAndBackgroundView(
+            icon = "account_balance_wallet",
+            iconBackgroundColor = "#000000",
+            iconSize = 12.dp,
+        )
     }
 }

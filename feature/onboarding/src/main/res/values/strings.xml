@@ -10,4 +10,8 @@
     <string name="get_started">Get Started</string>
     <string name="setup">Setup App Settings</string>
     <string name="create_new">Create New</string>
+
+    <string name="track">Track</string>
+    <string name="organize">Organize</string>
+    <string name="grow">Grow</string>
 </resources>

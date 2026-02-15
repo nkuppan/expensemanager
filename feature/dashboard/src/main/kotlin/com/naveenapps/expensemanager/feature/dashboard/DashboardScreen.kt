@@ -18,10 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,12 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AmountStatusView
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
@@ -74,23 +72,21 @@ private fun DashboardScaffoldContent(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text(
-                    text = stringResource(id = R.string.home),
-                    style = MaterialTheme.typography.titleLarge,
-                )
-            }, actions = {
-                IconButton(
-                    onClick = {
-                        onAction.invoke(DashboardAction.OpenSettings)
+            ExpenseManagerTopAppBar(
+                title = stringResource(id = R.string.home),
+                actions = {
+                    IconButton(
+                        onClick = {
+                            onAction.invoke(DashboardAction.OpenSettings)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = stringResource(id = R.string.settings),
+                        )
                     }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Settings,
-                        contentDescription = stringResource(id = R.string.settings),
-                    )
                 }
-            })
+            )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -309,7 +305,7 @@ fun IncomeExpenseBalanceView(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun DashboardScaffoldContentPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         DashboardScaffoldContent(
             state = DashboardState(
                 expenseFlowState = ExpenseFlowState(),

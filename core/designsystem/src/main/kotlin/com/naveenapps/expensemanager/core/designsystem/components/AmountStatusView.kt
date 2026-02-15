@@ -17,8 +17,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.R
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getBalanceBGColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseBGColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
@@ -112,25 +112,23 @@ const val AMOUNT_VALUE = "10000000.0$"
 @Preview
 @Composable
 private fun AmountStatusViewPreview() {
-    ExpenseManagerTheme {
-        Column {
-            AmountStatusView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                expenseAmount = AMOUNT_VALUE,
-                incomeAmount = AMOUNT_VALUE,
-                balanceAmount = AMOUNT_VALUE,
-            )
-            AmountStatusView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                expenseAmount = AMOUNT_VALUE,
-                incomeAmount = AMOUNT_VALUE,
-                balanceAmount = AMOUNT_VALUE,
-                showBalance = true,
-            )
-        }
+    NaveenAppsPreviewTheme(padding = 0.dp) {
+        AmountStatusView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            expenseAmount = AMOUNT_VALUE,
+            incomeAmount = AMOUNT_VALUE,
+            balanceAmount = AMOUNT_VALUE,
+        )
+        AmountStatusView(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            expenseAmount = AMOUNT_VALUE,
+            incomeAmount = AMOUNT_VALUE,
+            balanceAmount = AMOUNT_VALUE,
+            showBalance = true,
+        )
     }
 }

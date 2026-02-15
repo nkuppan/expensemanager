@@ -19,8 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
@@ -95,7 +95,7 @@ fun CategorySelectionScreen(
 @Preview
 @Composable
 private fun CategorySelectionScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CategorySelectionScreen(
             categories = getRandomCategoryData(),
             selectedCategory = getRandomCategoryData().firstOrNull(),

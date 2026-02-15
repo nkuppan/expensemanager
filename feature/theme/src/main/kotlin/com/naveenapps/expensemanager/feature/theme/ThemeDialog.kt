@@ -27,10 +27,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import org.koin.compose.viewmodel.koinViewModel
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 import com.naveenapps.expensemanager.core.model.Theme
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun ThemeDialogView(
@@ -126,7 +126,7 @@ fun ThemeDialogViewContent(
 @Preview
 @Composable
 fun ThemeDialogViewPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         ThemeDialogViewContent(
             onConfirm = {},
             selectedTheme = Theme(

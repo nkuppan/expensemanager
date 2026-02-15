@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material3.Icon
@@ -32,9 +33,9 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PrimaryButton
-import com.naveenapps.expensemanager.core.designsystem.ui.components.TopNavigationBar
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import org.koin.compose.viewmodel.koinViewModel
@@ -100,8 +101,9 @@ private fun ReminderScreenContent(
 ) {
     Scaffold(
         topBar = {
-            TopNavigationBar(
-                onClick = {
+            ExpenseManagerTopAppBar(
+                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                navigationBackClick = {
                     onAction.invoke(ReminderAction.ClosePage)
                 },
                 title = stringResource(R.string.reminder),
@@ -247,7 +249,7 @@ private fun SwitchSettingsItem(
 @Preview
 @Composable
 fun ReminderScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         ReminderScreenContent(
             state = ReminderState(),
             onAction = {},

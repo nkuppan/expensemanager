@@ -26,7 +26,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,17 +38,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
-import com.naveenapps.expensemanager.core.designsystem.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SmallIconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
@@ -60,6 +59,7 @@ import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
+import org.koin.compose.viewmodel.koinViewModel
 import kotlin.random.Random
 
 
@@ -83,13 +83,8 @@ fun CategoryTransactionTabScreenContent(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = stringResource(R.string.categories),
-                        style = MaterialTheme.typography.titleLarge,
-                    )
-                },
+            ExpenseManagerTopAppBar(
+                title = stringResource(R.string.categories),
                 actions = {
                     IconButton(onClick = {
                         onAction.invoke(CategoryTransactionAction.OpenCategoryList)
@@ -358,7 +353,7 @@ fun getUiState(): UiState<CategoryTransactionState> {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionSmallItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CategoryTransactionSmallItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -371,10 +366,10 @@ private fun CategoryTransactionSmallItemPreview() {
     }
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CategoryTransactionItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -391,7 +386,7 @@ private fun CategoryTransactionItemPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionTabScreenPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         CategoryTransactionTabScreenContent(
             state = getUiState(),
             onAction = {}

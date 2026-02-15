@@ -46,12 +46,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTopNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
-import com.naveenapps.expensemanager.core.designsystem.ui.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -60,6 +59,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
+import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 import java.util.Random
 
@@ -87,7 +87,7 @@ internal fun AccountListContentView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            AppTopNavigationBar(
+            ExpenseManagerTopAppBar(
                 title = stringResource(R.string.accounts),
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationBackClick = {
@@ -381,7 +381,7 @@ fun getRandomAccountUiModel(count: Int) = getRandomAccountData(count).map {
 @Preview
 @Composable
 private fun DashBoardAccountItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         DashBoardAccountItem(
             modifier = Modifier
                 .wrapContentWidth()
@@ -399,7 +399,7 @@ private fun DashBoardAccountItemPreview() {
 @Preview
 @Composable
 private fun AccountItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AccountItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -417,7 +417,7 @@ private fun AccountItemPreview() {
 @Preview
 @Composable
 private fun AccountCheckedItemPreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AccountCheckedItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -435,7 +435,7 @@ private fun AccountCheckedItemPreview() {
 @Composable
 private fun AccountListItemEmptyStatePreview() {
 
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AccountListContentView(
             state = AccountListState(
                 accounts = emptyList(),
@@ -449,7 +449,7 @@ private fun AccountListItemEmptyStatePreview() {
 @Preview
 @Composable
 private fun AccountListItemSuccessStatePreview() {
-    ExpenseManagerTheme {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
         AccountListContentView(
             state = AccountListState(
                 accounts = getRandomAccountUiModel(10),

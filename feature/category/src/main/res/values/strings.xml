@@ -11,7 +11,6 @@
     <string name="select">Select</string>
     <string name="select_category">Select Category</string>
 
-    <string name="delete">Delete</string>
     <string name="delete_item_message">Do you really want to delete this item?</string>
     <string name="cancel">Cancel</string>
     <string name="category">Category</string>
@@ -23,4 +22,21 @@
     <string name="category_delete_error_message">Unable to delete this category</string>
     <string name="edit">Edit</string>
     <string name="add_new">Add New</string>
+
+    <string name="edit_category">Edit Category</string>
+    <string name="create_category">Create Category</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="preview">Preview</string>
+    <string name="details">Details</string>
+    <string name="appearance">Appearance</string>
+    <string name="category_type">Category Type</string>
+    <string name="category_name_placeholder">Category Name</string>
+
+    <string name="add_category">Add Category</string>
+
+    <plurals name="category_count">
+        <item quantity="one">%d category</item>
+        <item quantity="other">%d categories</item>
+    </plurals>
 </resources>
