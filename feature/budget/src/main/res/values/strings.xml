@@ -18,4 +18,9 @@
     <string name="select_category">Select Category</string>
 
     <string name="all">All</string>
+
+    <string name="edit_budget">Edit Budget</string>
+    <string name="create_budget">Create Budget</string>
+    <string name="period">Period</string>
+    <string name="budget_scope">Budget Scope</string>
 </resources>

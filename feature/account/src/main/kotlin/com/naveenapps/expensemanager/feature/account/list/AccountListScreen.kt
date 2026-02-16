@@ -1,20 +1,25 @@
 package com.naveenapps.expensemanager.feature.account.list
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -28,7 +33,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -43,11 +47,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
@@ -276,60 +282,83 @@ fun AccountCheckedItem(
 @Composable
 fun DashBoardAccountItem(
     name: String,
-    icon: String,
-    modifier: Modifier = Modifier,
+    icon: String, // Suggestion: Use Int for Drawable Res or ImageVector
     amount: String,
     availableCreditLimit: String?,
     amountTextColor: Color,
-    backgroundColor: Color,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    Surface(
-        modifier = modifier,
-        color = backgroundColor,
-        shape = RoundedCornerShape(8.dp),
+
+    AppCardView(
+        modifier = modifier
+            .width(168.dp)
+            .padding(4.dp),
+        // Use a subtle surface color instead of full background color
+        shape = RoundedCornerShape(16.dp),
+        // Adding a thin border is a hallmark of "Professional" UI
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
     ) {
         Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .width(160.dp),
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Row {
-                Text(
+            // Header: Icon + Name
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Box(
                     modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
+                        .size(24.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                            shape = CircleShape
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource(id = context.getDrawable(icon)),
+                        contentDescription = null,
+                        modifier = Modifier.size(14.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
                     text = name,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                Icon(
-                    modifier = Modifier.padding(start = 8.dp),
-                    painter = painterResource(id = context.getDrawable(icon)),
-                    contentDescription = name,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
+
+            Spacer(modifier = Modifier.height(4.dp))
+
+            // The Main Amount
             Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(top = 8.dp)
-                    .basicMarquee(),
-                text = if (availableCreditLimit?.isNotBlank() == true) {
-                    stringResource(id = R.string.available_limit, availableCreditLimit)
-                } else {
-                    ""
-                },
-                style = MaterialTheme.typography.labelMedium,
-            )
-            Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(top = 8.dp),
-                color = amountTextColor,
                 text = amount,
-                style = MaterialTheme.typography.headlineSmall,
+                color = amountTextColor,
+                style = MaterialTheme.typography.titleLarge, // Increased size
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
+
+            // Credit Limit / Detail
+            if (!availableCreditLimit.isNullOrBlank()) {
+                Text(
+                    text = stringResource(id = R.string.available_limit, availableCreditLimit),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    maxLines = 1,
+                    modifier = Modifier.basicMarquee()
+                )
+            } else {
+                // Keep layout stable even if no limit exists
+                Spacer(modifier = Modifier.height(14.dp))
+            }
         }
     }
 }
@@ -391,7 +420,7 @@ private fun DashBoardAccountItemPreview() {
             amount = "100.00$",
             availableCreditLimit = "Available Limit 100.00$",
             amountTextColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
-            backgroundColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100),
+            //backgroundColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100),
         )
     }
 }

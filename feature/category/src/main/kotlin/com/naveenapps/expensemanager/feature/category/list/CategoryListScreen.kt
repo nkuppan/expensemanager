@@ -5,6 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,9 +25,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -246,8 +249,8 @@ private fun CategoryListScreenContent(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clip(MaterialTheme.shapes.medium)
-                                    .clickable { onItemClick.invoke(category) }
                                     .animateItem(),
+                                onItemClick = { onItemClick.invoke(category) }
                             )
                         }
                     }
@@ -265,13 +268,20 @@ fun CategoryItem(
     modifier: Modifier = Modifier,
     shape: CornerBasedShape = MaterialTheme.shapes.large,
     endIcon: ImageVector? = null,
+    border: BorderStroke = CardDefaults.outlinedCardBorder(),
+    isSelected: Boolean = false,
+    onItemClick: () -> Unit = {},
 ) {
     AppCardView(
         shape = shape,
+        border = border,
         modifier = modifier,
     ) {
         Row(
             modifier = Modifier
+                .clickable {
+                    onItemClick.invoke()
+                }
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -290,21 +300,32 @@ fun CategoryItem(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            if (endIcon != null) {
+
+
+            if (isSelected) {
                 Icon(
-                    imageVector = endIcon,
+                    imageVector = Icons.Default.CheckCircle,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(20.dp),
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp)
                 )
             } else {
-                // Subtle edit indicator
-                Icon(
-                    imageVector = Icons.Default.ChevronRight,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                    modifier = Modifier.size(20.dp),
-                )
+                if (endIcon != null) {
+                    Icon(
+                        imageVector = endIcon,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(20.dp),
+                    )
+                } else {
+                    // Subtle edit indicator
+                    Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        modifier = Modifier.size(20.dp),
+                    )
+                }
             }
         }
     }
@@ -330,6 +351,9 @@ fun CategoryCheckedItem(
     ) {
         Row(
             modifier = Modifier
+                .clickable {
+                    onCheckedChange?.invoke(isSelected.not())
+                }
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,

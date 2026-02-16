@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBalance
@@ -17,7 +20,7 @@ import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,13 +29,16 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -84,7 +90,7 @@ private fun BudgetCreateScreenContentView(
             },
             dismiss = {
                 onAction.invoke(BudgetCreateAction.ClosePage)
-            }
+            },
         )
     }
 
@@ -120,7 +126,6 @@ private fun BudgetCreateScreenContentView(
         }
     }
 
-
     if (state.showMonthSelection) {
         MonthPicker(
             modifier = Modifier
@@ -134,9 +139,7 @@ private fun BudgetCreateScreenContentView(
             currentYear = state.month.value.toYearInt(),
             confirmButtonCLicked = { month, year ->
                 ("$month-$year").fromShortMonthAndYearToDate()?.let {
-                    state.month.onValueChange?.invoke(
-                        it,
-                    )
+                    state.month.onValueChange?.invoke(it)
                 } ?: run {
                     onAction.invoke(BudgetCreateAction.CloseMonthSelection)
                 }
@@ -157,35 +160,43 @@ private fun BudgetCreateScreenContentView(
                 navigationBackClick = {
                     onAction.invoke(BudgetCreateAction.ClosePage)
                 },
-                title = stringResource(R.string.budgets),
+                title = if (state.showDeleteButton)
+                    stringResource(R.string.edit_budget)
+                else
+                    stringResource(R.string.create_budget),
                 actions = {
                     if (state.showDeleteButton) {
                         IconButton(onClick = { onAction.invoke(BudgetCreateAction.ShowDeleteDialog) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
-                                contentDescription = "Delete"
+                                contentDescription = stringResource(com.naveenapps.expensemanager.feature.category.R.string.delete),
+                                tint = MaterialTheme.colorScheme.error,
                             )
                         }
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                onAction.invoke(BudgetCreateAction.Save)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Done,
-                    contentDescription = "",
-                )
-            }
+            ExtendedFloatingActionButton(
+                onClick = { onAction.invoke(BudgetCreateAction.Save) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Done,
+                        contentDescription = null,
+                    )
+                },
+                text = {
+                    Text(text = stringResource(com.naveenapps.expensemanager.feature.account.R.string.save))
+                },
+            )
         },
     ) { innerPadding ->
-
         BudgetCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState()),
             nameField = state.name,
             amountField = state.amount,
             currencyIconField = state.currency.symbol,
@@ -218,15 +229,20 @@ fun BudgetCreateScreen(
     accountCount: String,
     categoriesCount: String,
     onAction: (BudgetCreateAction) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
 
-    Column(modifier = modifier) {
+    Column(
+        modifier = modifier.padding(horizontal = 16.dp),
+    ) {
+        // Period section
+        SectionHeader(
+            title = stringResource(R.string.period),
+            modifier = Modifier.padding(top = 16.dp, bottom = 6.dp),
+        )
         ClickableTextField(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             value = selectedDate.value.toMonthAndYear(),
             label = R.string.select_date,
             leadingIcon = Icons.Default.EditCalendar,
@@ -236,10 +252,13 @@ fun BudgetCreateScreen(
             },
         )
 
+        // Details section
+        SectionHeader(
+            title = stringResource(com.naveenapps.expensemanager.feature.category.R.string.details),
+            modifier = Modifier.padding(top = 20.dp, bottom = 6.dp),
+        )
         StringTextField(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 8.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             value = nameField.value,
             isError = nameField.valueError,
             errorMessage = stringResource(id = R.string.budget_name_error),
@@ -247,20 +266,10 @@ fun BudgetCreateScreen(
             label = R.string.budget_name,
         )
 
-        IconAndColorComponent(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .fillMaxWidth(),
-            selectedColor = selectedColorField.value,
-            selectedIcon = selectedIconField.value,
-            onColorSelection = selectedColorField.onValueChange,
-            onIconSelection = selectedIconField.onValueChange,
-        )
+        Spacer(modifier = Modifier.height(8.dp))
 
         DecimalTextField(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             value = amountField.value,
             isError = amountField.valueError,
             errorMessage = stringResource(id = R.string.budget_amount_error),
@@ -269,40 +278,72 @@ fun BudgetCreateScreen(
             label = R.string.budget_amount,
         )
 
-        HorizontalDivider(modifier = Modifier.padding(top = 16.dp))
+        // Appearance section
+        SectionHeader(
+            title = stringResource(com.naveenapps.expensemanager.feature.category.R.string.appearance),
+            modifier = Modifier.padding(top = 20.dp, bottom = 6.dp),
+        )
+        IconAndColorComponent(
+            modifier = Modifier.fillMaxWidth(),
+            selectedColor = selectedColorField.value,
+            selectedIcon = selectedIconField.value,
+            onColorSelection = selectedColorField.onValueChange,
+            onIconSelection = selectedIconField.onValueChange,
+        )
+
+        // Scope section
+        SectionHeader(
+            title = stringResource(R.string.budget_scope),
+            modifier = Modifier.padding(top = 20.dp, bottom = 6.dp),
+        )
 
         SelectedItemView(
             modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                 .clickable {
                     onAction.invoke(BudgetCreateAction.OpenAccountSelectionDialog)
                 }
-                .padding(16.dp)
-                .fillMaxWidth(),
+                .padding(vertical = 14.dp),
             title = stringResource(id = R.string.select_account),
             icon = Icons.Default.AccountBalance,
             selectedCount = accountCount,
         )
 
+        HorizontalDivider(
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
+        )
+
         SelectedItemView(
             modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
                 .clickable {
                     onAction.invoke(BudgetCreateAction.OpenCategorySelectionDialog)
                 }
-                .padding(16.dp)
-                .fillMaxWidth(),
+                .padding(vertical = 14.dp),
             title = stringResource(id = R.string.select_category),
             icon = Icons.Default.FilterList,
             selectedCount = categoriesCount,
         )
 
-        HorizontalDivider()
-
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-        )
+        // FAB clearance
+        Spacer(modifier = Modifier.height(72.dp))
     }
+}
+
+@Composable
+private fun SectionHeader(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
+    Text(
+        text = title,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.colorScheme.primary,
+        fontWeight = FontWeight.SemiBold,
+        modifier = modifier,
+    )
 }
 
 @AppPreviewsLightAndDarkMode
@@ -345,7 +386,7 @@ private fun BudgetCreateStatePreview() {
                 showCategorySelectionDialog = false,
                 selectedCategories = emptyList(),
                 selectedAccounts = emptyList(),
-                showMonthSelection = false
+                showMonthSelection = false,
             ),
             onAction = {},
         )

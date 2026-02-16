@@ -4,10 +4,14 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,11 +21,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.designsystem.R
+import java.util.Date
 
 @Composable
 fun ClickableTextField(
@@ -30,7 +40,6 @@ fun ClickableTextField(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
-    trailingIcon: ImageVector? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -78,21 +87,12 @@ fun ClickableTextField(
         } else {
             null
         },
-        trailingIcon = if (trailingIcon != null) {
-            {
-                Icon(
-                    imageVector = trailingIcon,
-                    contentDescription = "",
-                )
-            }
-        } else {
-            null
-        },
         label = {
             Text(text = stringResource(id = label))
         },
         onValueChange = {},
         keyboardOptions = keyboardOptions,
+        shape = RoundedCornerShape(8.dp)
     )
 }
 
@@ -104,26 +104,25 @@ fun StringTextField(
     label: Int,
     modifier: Modifier = Modifier,
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-    singleLine: Boolean = true,
+    minLines: Int = 1,
+    singleLine: Boolean = minLines == 1,
     errorMessage: String = "",
 ) {
-    OutlinedTextField(
-        modifier = modifier,
-        value = value,
-        singleLine = singleLine,
+    AutoSelectTextField(
+        text = value,
+        onTextChange = { onValueChange?.invoke(it) },
         label = {
-            Text(text = stringResource(id = label))
+            Text(
+                text = stringResource(id = label),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = if (singleLine) 1 else Int.MAX_VALUE,
+            )
         },
-        onValueChange = {
-            onValueChange?.invoke(it)
-        },
-        keyboardOptions = keyboardOptions,
+        singleLine = singleLine,
         isError = isError,
-        supportingText = if (isError) {
-            { Text(text = errorMessage) }
-        } else {
-            null
-        },
+        errorMessage = errorMessage,
+        modifier = modifier,
+        keyboardOptions = keyboardOptions
     )
 }
 
@@ -138,43 +137,111 @@ fun DecimalTextField(
     errorMessage: String = "",
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
-    val context = LocalContext.current
-    val focusManager = LocalFocusManager.current
-
-    OutlinedTextField(
-        modifier = modifier,
-        value = value,
-        singleLine = true,
-        leadingIcon = if (leadingIconText != null) {
-            {
-                Text(
-                    text = leadingIconText,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-            }
-        } else {
-            null
-        },
-        trailingIcon = trailingIcon,
+    AutoSelectTextField(
+        text = value,
+        onTextChange = { onValueChange?.invoke(it) },
         label = {
-            Text(text = stringResource(id = label))
+            Text(
+                text = stringResource(id = label),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
         },
-        onValueChange = {
-            onValueChange?.invoke(it)
-        },
+        singleLine = true,
+        isError = isError,
+        errorMessage = errorMessage,
+        modifier = modifier,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusManager.clearFocus(force = true)
-            },
-        ),
-        isError = isError,
-        supportingText = if (isError) {
-            { Text(text = errorMessage) }
-        } else {
-            null
-        },
+            imeAction = ImeAction.Next,
+        )
     )
+}
+
+@Composable
+fun NumberTextField(
+    value: String,
+    isError: Boolean,
+    onValueChange: ((String) -> Unit)?,
+    label: Int,
+    modifier: Modifier = Modifier,
+    errorMessage: String = "",
+    leadingIconText: String? = null,
+    placeholder: String? = null,
+    supportingText: String? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+) {
+    AutoSelectTextField(
+        trailingIcon = trailingIcon,
+        leadingIcon = leadingIcon,
+        text = value,
+        onTextChange = { onValueChange?.invoke(it) },
+        label = {
+            Text(
+                text = stringResource(id = label),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        },
+        placeholder = placeholder,
+        supportingText = supportingText,
+        singleLine = true,
+        isError = isError,
+        errorMessage = errorMessage,
+        modifier = modifier,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next,
+        )
+    )
+}
+
+@Preview
+@Composable
+private fun TextFieldPreviews() {
+    NaveenAppsPreviewTheme {
+        Column {
+            NumberTextField(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth(),
+                value = "Sample",
+                isError = true,
+                onValueChange = {},
+                label = R.string.choose_color,
+                errorMessage = "Should not add the value",
+            )
+            DecimalTextField(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth(),
+                value = "1.00",
+                isError = true,
+                onValueChange = { },
+                leadingIconText = "$",
+                label = R.string.choose_color,
+                errorMessage = "Should not add the value",
+            )
+            StringTextField(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth(),
+                value = "Sample",
+                isError = true,
+                onValueChange = { },
+                label = R.string.choose_color,
+                errorMessage = "Should not add the value",
+            )
+            ClickableTextField(
+                modifier = Modifier
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth(),
+                value = Date().toCompleteDateWithDate(),
+                label = R.string.choose_color,
+                leadingIcon = Icons.Default.EditCalendar,
+                onClick = {},
+            )
+        }
+    }
 }

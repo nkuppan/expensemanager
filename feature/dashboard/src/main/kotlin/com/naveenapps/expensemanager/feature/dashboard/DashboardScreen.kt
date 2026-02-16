@@ -28,9 +28,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.components.AmountStatusView
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.components.OverallStatusOverview
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
@@ -120,13 +120,13 @@ private fun DashboardScreenContent(
     onAction: (DashboardAction) -> Unit,
 ) {
     LazyColumn(modifier = modifier) {
-        item {
+        /*item {
             FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),
             )
-        }
+        }*/
         item {
             IncomeExpenseBalanceView(
                 expenseFlowState = state.expenseFlowState,
@@ -167,8 +167,8 @@ private fun DashboardScreenContent(
                             amount = it.amount.amountString ?: "",
                             availableCreditLimit = it.availableCreditLimit?.amountString ?: "",
                             amountTextColor = colorResource(id = it.amountTextColor),
-                            backgroundColor = it.storedIcon.backgroundColor.toColor()
-                                .copy(alpha = .1f),
+                            /*backgroundColor = it.storedIcon.backgroundColor.toColor()
+                                .copy(alpha = .1f),*/
                         )
                     }
                 }
@@ -293,7 +293,7 @@ fun IncomeExpenseBalanceView(
     modifier: Modifier = Modifier,
     showBalance: Boolean = false,
 ) {
-    AmountStatusView(
+    OverallStatusOverview(
         modifier = modifier,
         expenseAmount = expenseFlowState.expense,
         incomeAmount = expenseFlowState.income,

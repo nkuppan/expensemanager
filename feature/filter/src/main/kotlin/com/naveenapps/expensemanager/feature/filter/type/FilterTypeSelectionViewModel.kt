@@ -124,6 +124,17 @@ class FilterTypeSelectionViewModel(
             is FilterTypeAction.SelectCategory -> setCategory(action.category)
             is FilterTypeAction.SelectTransactionType -> setTransactionTypes(action.transactionType)
             FilterTypeAction.SaveChanges -> saveChanges()
+            FilterTypeAction.ClearAll -> clearAllSelection()
+        }
+    }
+
+    private fun clearAllSelection() {
+        _state.update {
+            it.copy(
+                selectedCategories = emptyList(),
+                selectedAccounts = emptyList(),
+                selectedTransactionTypes = emptyList()
+            )
         }
     }
 }

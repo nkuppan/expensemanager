@@ -13,4 +13,6 @@ sealed class FilterTypeAction {
     data class SelectTransactionType(val transactionType: TransactionType) : FilterTypeAction()
 
     data object SaveChanges : FilterTypeAction()
+
+    data object ClearAll : FilterTypeAction()
 }

@@ -59,14 +59,11 @@ fun FilterView(
 ) {
     val filterState by viewModel.filterState.collectAsState()
 
-    val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
     if (filterState.showDateFilter) {
         ModalBottomSheet(
             onDismissRequest = {
                 viewModel.processAction(FilterAction.DismissDateFilter)
             },
-            sheetState = bottomSheetState,
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
@@ -83,7 +80,6 @@ fun FilterView(
             onDismissRequest = {
                 viewModel.processAction(FilterAction.DismissTypeFilter)
             },
-            sheetState = bottomSheetState,
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {

@@ -1,30 +1,31 @@
 package com.naveenapps.expensemanager.feature.category.selection
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.getSelectedBGColor
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
-import com.naveenapps.expensemanager.feature.category.list.CategoryItem
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
 
 @Composable
@@ -35,59 +36,77 @@ fun CategorySelectionScreen(
     createNewCallback: (() -> Unit)? = null,
     onItemSelection: ((Category) -> Unit)? = null,
 ) {
-    LazyColumn(modifier = modifier) {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(
+            start = 16.dp,
+            end = 16.dp,
+            bottom = 48.dp,
+        ),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
         item {
-            Row(
+            SelectionHeader(
+                title = stringResource(id = R.string.select_category),
+                createNewCallback = createNewCallback,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
-            ) {
-                SelectionTitle(
-                    title = stringResource(id = R.string.select_category),
-                    modifier = Modifier.weight(1f),
-                )
-                Text(
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .clickable {
-                            createNewCallback?.invoke()
-                        },
-                    text = stringResource(id = R.string.add_new).uppercase(),
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
+                    .padding(vertical = 10.dp),
+            )
         }
+
         items(categories, key = { it.id }) { category ->
             val isSelected = selectedCategory?.id == category.id
-            Box(
+
+            CategoryItem(
+                name = category.name,
+                icon = category.storedIcon.name,
+                iconBackgroundColor = category.storedIcon.backgroundColor,
+                border = CategoryItemDefaults.border(isSelected),
                 modifier = Modifier
-                    .clickable {
-                        onItemSelection?.invoke(category)
-                    }
-                    .then(
-                        if (isSelected) {
-                            Modifier
-                                .padding(4.dp)
-                                .background(
-                                    color = getSelectedBGColor(),
-                                    shape = RoundedCornerShape(size = 12.dp),
-                                )
-                        } else {
-                            Modifier.padding(4.dp)
-                        },
-                    )
-                    .padding(12.dp),
+                    .fillMaxWidth(),
+                trailingContent = { CategoryItemDefaults.SingleCheckedTrailing(isSelected) },
+                onClick = {
+                    onItemSelection?.invoke(category)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun SelectionHeader(
+    title: String,
+    createNewCallback: (() -> Unit)?,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.weight(1f),
+        )
+        if (createNewCallback != null) {
+            TextButton(
+                onClick = { createNewCallback.invoke() },
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
             ) {
-                CategoryItem(
-                    modifier = Modifier,
-                    name = category.name,
-                    icon = category.storedIcon.name,
-                    iconBackgroundColor = category.storedIcon.backgroundColor,
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = stringResource(id = R.string.add_new),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium,
                 )
             }
-        }
-        item {
-            Spacer(modifier = Modifier.height(48.dp))
         }
     }
 }
@@ -99,6 +118,7 @@ private fun CategorySelectionScreenPreview() {
         CategorySelectionScreen(
             categories = getRandomCategoryData(),
             selectedCategory = getRandomCategoryData().firstOrNull(),
+            createNewCallback = {}
         )
     }
 }

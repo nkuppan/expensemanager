@@ -42,9 +42,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
@@ -343,11 +343,11 @@ private fun TransactionCreateScreen(
                 endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        focusManager.clearFocus(force = true)
-                        onAction.invoke(TransactionCreateAction.ShowCategorySelection)
-                    }
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+                onItemClick = {
+                    focusManager.clearFocus(force = true)
+                    onAction.invoke(TransactionCreateAction.ShowCategorySelection)
+                }
             )
         }
 
@@ -475,65 +475,85 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
     return calendar.time
 }
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
-private fun TransactionCreateStatePreview() {
+private fun TransactionCreateStateForTransferPreview() {
 
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
 
     NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionCreateScreenContent(
-            state = TransactionCreateState(
-                amount = amountField,
-                currency = Currency(symbol = "$", name = ""),
-                dateTime = Date(),
-                notes = amountField,
-                selectedCategory = Category(
-                    id = "1",
-                    name = "Shopping",
-                    type = CategoryType.EXPENSE,
-                    StoredIcon(
-                        name = "account_balance_wallet",
-                        backgroundColor = "#000000",
-                    ),
-                    createdOn = Date(),
-                    updatedOn = Date(),
-                ),
-                selectedFromAccount = AccountUiModel(
-                    id = "1",
-                    name = "Shopping",
-                    type = AccountType.REGULAR,
-                    storedIcon = StoredIcon(
-                        name = "account_balance_wallet",
-                        backgroundColor = "#000000",
-                    ),
-                    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
-                    amount = Amount(0.0, "$ 0.00"),
-                ),
-                selectedToAccount = AccountUiModel(
-                    id = "1",
-                    name = "Shopping",
-                    type = AccountType.REGULAR,
-                    storedIcon = StoredIcon(
-                        name = "account_balance_wallet",
-                        backgroundColor = "#000000",
-                    ),
-                    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-                    amount = Amount(0.0, "$ 0.00"),
-                ),
-                accounts = emptyList(),
-                categories = emptyList(),
-                showDeleteButton = false,
-                showDeleteDialog = false,
-                showCategorySelection = false,
-                showAccountSelection = false,
-                showNumberPad = false,
-                transactionType = TransactionType.TRANSFER,
-                accountSelection = AccountSelection.FROM_ACCOUNT,
-                showTimeSelection = false,
-                showDateSelection = false
-            ),
+            state = getTransactionState(amountField, TransactionType.TRANSFER),
             onAction = {}
         )
     }
 }
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun TransactionCreateStateForIncomePreview() {
+
+    val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
+
+    NaveenAppsPreviewTheme(padding = 0.dp) {
+        TransactionCreateScreenContent(
+            state = getTransactionState(amountField, TransactionType.INCOME),
+            onAction = {}
+        )
+    }
+}
+
+private fun getTransactionState(
+    amountField: TextFieldValue<String>,
+    transactionType: TransactionType
+): TransactionCreateState =
+    TransactionCreateState(
+        amount = amountField,
+        currency = Currency(symbol = "$", name = ""),
+        dateTime = Date(),
+        notes = amountField,
+        selectedCategory = Category(
+            id = "1",
+            name = "Shopping",
+            type = CategoryType.EXPENSE,
+            StoredIcon(
+                name = "account_balance_wallet",
+                backgroundColor = "#000000",
+            ),
+            createdOn = Date(),
+            updatedOn = Date(),
+        ),
+        selectedFromAccount = AccountUiModel(
+            id = "1",
+            name = "Shopping",
+            type = AccountType.REGULAR,
+            storedIcon = StoredIcon(
+                name = "account_balance_wallet",
+                backgroundColor = "#000000",
+            ),
+            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
+            amount = Amount(0.0, "$ 0.00"),
+        ),
+        selectedToAccount = AccountUiModel(
+            id = "1",
+            name = "Shopping",
+            type = AccountType.REGULAR,
+            storedIcon = StoredIcon(
+                name = "account_balance_wallet",
+                backgroundColor = "#000000",
+            ),
+            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+            amount = Amount(0.0, "$ 0.00"),
+        ),
+        accounts = emptyList(),
+        categories = emptyList(),
+        showDeleteButton = false,
+        showDeleteDialog = false,
+        showCategorySelection = false,
+        showAccountSelection = false,
+        showNumberPad = false,
+        transactionType = transactionType,
+        accountSelection = AccountSelection.FROM_ACCOUNT,
+        showTimeSelection = false,
+        showDateSelection = false
+    )

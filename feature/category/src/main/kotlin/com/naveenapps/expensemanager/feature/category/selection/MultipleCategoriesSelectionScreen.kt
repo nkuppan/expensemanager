@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.feature.category.selection
 
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,7 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.CategoryCheckedItem
@@ -85,24 +84,22 @@ fun MultipleCategoriesSelectionScreen(
 ) {
     LazyColumn(
         modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
-            SelectionTitle(
-                stringResource(id = R.string.select_account),
-                Modifier
+            SelectionHeader(
+                title = stringResource(id = R.string.select_category),
+                createNewCallback = null,
+                modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, bottom = 4.dp),
+                    .padding(vertical = 10.dp),
             )
         }
         items(categories, key = { it.id }) { category ->
             val isSelected = selectedCategories.fastAny { it.id == category.id }
             CategoryCheckedItem(
-                modifier = Modifier
-                    .clickable {
-                        onItemSelection?.invoke(category, isSelected.not())
-                    }
-                    .padding(start = 16.dp, end = 16.dp),
+                modifier = Modifier,
                 name = category.name,
                 icon = category.storedIcon.name,
                 iconBackgroundColor = category.storedIcon.backgroundColor,
