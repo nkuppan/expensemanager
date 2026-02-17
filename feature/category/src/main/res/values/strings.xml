@@ -39,4 +39,9 @@
         <item quantity="one">%d category</item>
         <item quantity="other">%d categories</item>
     </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d selected</item>
+        <item quantity="other">%d selected</item>
+    </plurals>
 </resources>

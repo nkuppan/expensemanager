@@ -99,8 +99,8 @@ private fun BudgetCreateScreenContentView(
             onDismissRequest = {
                 onAction.invoke(BudgetCreateAction.CloseAccountSelectionDialog)
             },
-            containerColor = MaterialTheme.colorScheme.background,
-            tonalElevation = 0.dp,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             MultipleAccountSelectionScreen(
                 selectedAccounts = state.selectedAccounts,
@@ -115,8 +115,8 @@ private fun BudgetCreateScreenContentView(
             onDismissRequest = {
                 onAction.invoke(BudgetCreateAction.CloseCategorySelectionDialog)
             },
-            containerColor = MaterialTheme.colorScheme.background,
-            tonalElevation = 0.dp,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             MultipleCategoriesSelectionScreen(
                 selectedCategories = state.selectedCategories,

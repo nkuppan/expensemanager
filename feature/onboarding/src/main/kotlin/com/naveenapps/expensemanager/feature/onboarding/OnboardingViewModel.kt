@@ -91,11 +91,7 @@ class OnboardingViewModel(
             is OnboardingAction.SelectCurrency -> {
                 viewModelScope.launch {
                     val currency = action.country.currency
-                    if (currency != null) {
-                        saveCurrencyUseCase.invoke(currency)
-                    } else {
-                        dismissCurrencySelection()
-                    }
+                    saveCurrencyUseCase.invoke(currency)
                 }
             }
         }

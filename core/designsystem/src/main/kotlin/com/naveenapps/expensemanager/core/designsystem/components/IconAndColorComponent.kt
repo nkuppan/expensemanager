@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.designsystem.components
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -21,12 +20,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +41,6 @@ import com.naveenapps.expensemanager.core.common.utils.toColorString
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
-import kotlinx.coroutines.launch
 
 enum class SelectionType {
     NONE,
@@ -64,22 +60,11 @@ fun IconAndColorComponent(
     val context = LocalContext.current
     val resources = LocalResources.current
     val focusManager = LocalFocusManager.current
-
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
-        confirmValueChange = {
-            Log.d("******", "IconAndColorComponent: $it")
-            true
-        },
-    )
-
-    val scope = rememberCoroutineScope()
     var sheetSelection by remember { mutableStateOf(SelectionType.NONE) }
 
     if (sheetSelection != SelectionType.NONE) {
         ModalBottomSheet(
             modifier = Modifier.wrapContentSize(),
-            sheetState = sheetState,
             onDismissRequest = {
                 sheetSelection = SelectionType.NONE
             },
@@ -90,22 +75,14 @@ fun IconAndColorComponent(
                 SelectionType.COLOR_SELECTION -> {
                     ColorSelectionScreen {
                         onColorSelection?.invoke(it.toColorString())
-                        scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) {
-                                sheetSelection = SelectionType.NONE
-                            }
-                        }
+                        sheetSelection = SelectionType.NONE
                     }
                 }
 
                 SelectionType.ICON_SELECTION -> {
                     IconSelectionScreen {
                         onIconSelection?.invoke(resources.getResourceName(it))
-                        scope.launch { sheetState.hide() }.invokeOnCompletion {
-                            if (!sheetState.isVisible) {
-                                sheetSelection = SelectionType.NONE
-                            }
-                        }
+                        sheetSelection = SelectionType.NONE
                     }
                 }
 

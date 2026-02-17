@@ -4,10 +4,10 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +25,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Shuffle
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,7 +40,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
@@ -55,9 +53,7 @@ import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -65,6 +61,8 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
+import com.naveenapps.expensemanager.feature.account.selection.AccountItem
+import com.naveenapps.expensemanager.feature.account.selection.AccountItemDefaults
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 import java.util.Random
@@ -156,21 +154,25 @@ private fun AccountListScreenContent(
                 modifier = Modifier.fillMaxSize()
             )
         } else {
-            LazyColumn {
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 items(state.accounts, key = { it.id }) { account ->
                     AccountItem(
-                        modifier = Modifier
-                            .clickable {
-                                onItemClick?.invoke(account)
-                            }
-                            .then(ItemSpecModifier)
-                            .testTag("Item"),
+                        modifier = Modifier.testTag("Item"),
+                        onClick = {
+                            onItemClick?.invoke(account)
+                        },
                         name = account.name,
                         icon = account.storedIcon.name,
                         iconBackgroundColor = account.storedIcon.backgroundColor,
                         amount = account.amount.amountString,
-                        availableCreditLimit = account.availableCreditLimit?.amountString,
+                        subtitle = account.availableCreditLimit?.amountString,
                         amountTextColor = account.amountTextColor,
+                        trailingContent = {
+                            AccountItemDefaults.ChevronTrailing()
+                        }
                     )
                 }
                 item {
@@ -182,99 +184,6 @@ private fun AccountListScreenContent(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun AccountItem(
-    name: String,
-    icon: String,
-    iconBackgroundColor: String,
-    amount: String?,
-    amountTextColor: Int?,
-    modifier: Modifier = Modifier,
-    endIcon: ImageVector? = null,
-    availableCreditLimit: String? = null,
-) {
-    Row(modifier = modifier) {
-        IconAndBackgroundView(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
-            icon = icon,
-            iconBackgroundColor = iconBackgroundColor,
-            name = name,
-        )
-        Column(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f)
-                .padding(start = 16.dp, end = 16.dp)
-        ) {
-            Text(
-                modifier = Modifier,
-                text = name,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-            if (availableCreditLimit != null) {
-                Text(
-                    text = stringResource(id = R.string.available_limit, availableCreditLimit),
-                    style = MaterialTheme.typography.labelMedium,
-                )
-            }
-        }
-        Column(modifier = Modifier.align(Alignment.CenterVertically)) {
-            if (amount != null && amountTextColor != null) {
-                Text(
-                    modifier = Modifier.align(Alignment.End),
-                    text = amount,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = colorResource(id = amountTextColor),
-                )
-            }
-        }
-        if (endIcon != null) {
-            Icon(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(start = 8.dp),
-                imageVector = endIcon,
-                contentDescription = null,
-            )
-        }
-    }
-}
-
-@Composable
-fun AccountCheckedItem(
-    name: String,
-    icon: String,
-    iconBackgroundColor: String,
-    modifier: Modifier = Modifier,
-    isSelected: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit)? = null,
-) {
-    Row(modifier = modifier) {
-        IconAndBackgroundView(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
-            icon = icon,
-            iconBackgroundColor = iconBackgroundColor,
-            name = name,
-        )
-        Text(
-            modifier = Modifier
-                .weight(1f)
-                .padding(start = 16.dp, end = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = name,
-            style = MaterialTheme.typography.bodyLarge,
-        )
-        Checkbox(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
-            checked = isSelected,
-            onCheckedChange = onCheckedChange,
-        )
     }
 }
 
@@ -437,28 +346,11 @@ private fun AccountItemPreview() {
             icon = "credit_card",
             iconBackgroundColor = "#000000",
             amount = "$100.00",
-            availableCreditLimit = "Available limit ₹ 5,14,000.00",
+            subtitle = "Available limit ₹ 5,14,000.00",
             amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
         )
     }
 }
-
-@Preview
-@Composable
-private fun AccountCheckedItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
-        AccountCheckedItem(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
-            name = "First Account",
-            icon = "savings",
-            iconBackgroundColor = "#000000",
-            isSelected = true,
-        )
-    }
-}
-
 
 @Preview
 @Composable

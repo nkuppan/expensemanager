@@ -53,7 +53,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.toDisplayValue
-import com.naveenapps.expensemanager.feature.account.list.AccountItem
+import com.naveenapps.expensemanager.feature.account.selection.AccountItem
 import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import com.naveenapps.invoicebuilder.feature.country.CountryCurrencySelectionBottomSheet
 import org.koin.compose.viewmodel.koinViewModel
@@ -268,20 +268,16 @@ private fun OnboardingContentView(
                             else -> RoundedCornerShape(4.dp)
                         }
 
-                        AppCardView(
+                        AccountItem(
                             onClick = { onAction.invoke(OnboardingAction.AccountCreate(account)) },
-                            shape = shape,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            AccountItem(
-                                name = account.name,
-                                icon = account.storedIcon.name,
-                                iconBackgroundColor = account.storedIcon.backgroundColor,
-                                amount = account.amount.amountString,
-                                amountTextColor = account.amountTextColor,
-                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
-                            )
-                        }
+                            name = account.name,
+                            icon = account.storedIcon.name,
+                            iconBackgroundColor = account.storedIcon.backgroundColor,
+                            amount = account.amount.amountString,
+                            amountTextColor = account.amountTextColor,
+                            modifier = Modifier,
+                            shape = shape
+                        )
                     }
                 }
 
@@ -350,6 +346,28 @@ fun OnboardingScreenPreview() {
                 accounts = listOf(
                     AccountUiModel(
                         id = "1",
+                        name = "Shopping",
+                        type = AccountType.REGULAR,
+                        storedIcon = StoredIcon(
+                            name = "account_balance",
+                            backgroundColor = "#000000",
+                        ),
+                        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+                        amount = Amount(0.0, "$ 0.00"),
+                    ),
+                    AccountUiModel(
+                        id = "2",
+                        name = "Shopping",
+                        type = AccountType.REGULAR,
+                        storedIcon = StoredIcon(
+                            name = "account_balance",
+                            backgroundColor = "#000000",
+                        ),
+                        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+                        amount = Amount(0.0, "$ 0.00"),
+                    ),
+                    AccountUiModel(
+                        id = "3",
                         name = "Shopping",
                         type = AccountType.REGULAR,
                         storedIcon = StoredIcon(

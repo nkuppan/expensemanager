@@ -26,4 +26,10 @@
     <string name="available_limit">Available limit %s</string>
     <string name="drag_to_reorder_hint">Hold and drag to reorder accounts</string>
     <string name="save">Save</string>
+    <string name="apply">Apply</string>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d selected</item>
+        <item quantity="other">%d selected</item>
+    </plurals>
 </resources>

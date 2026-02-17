@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 fun AppCardView(
     modifier: Modifier = Modifier,
     elevation: Dp = 0.dp,
-    cornerSize: Dp = 8.dp,
+    cornerSize: Dp = 12.dp,
     border: BorderStroke = CardDefaults.outlinedCardBorder(),
     onClick: (() -> Unit)? = null,
     shape: Shape = RoundedCornerShape(cornerSize),

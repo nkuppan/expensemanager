@@ -5,9 +5,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,17 +18,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -48,7 +41,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -58,13 +50,13 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
+import com.naveenapps.expensemanager.feature.category.selection.CategoryItem
+import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefaults
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 
@@ -228,154 +220,39 @@ private fun CategoryListScreenContent(
                             items = state.filteredCategories,
                             key = { _, item -> item.id },
                         ) { index, category ->
+                            val shape = when {
+                                state.filteredCategories.size == 1 -> MaterialTheme.shapes.large
+                                index == 0 -> RoundedCornerShape(
+                                    topStart = 16.dp, topEnd = 16.dp,
+                                    bottomStart = 4.dp, bottomEnd = 4.dp,
+                                )
+
+                                index == state.filteredCategories.lastIndex -> RoundedCornerShape(
+                                    topStart = 4.dp, topEnd = 4.dp,
+                                    bottomStart = 16.dp, bottomEnd = 16.dp,
+                                )
+
+                                else -> RoundedCornerShape(4.dp)
+                            }
+
                             CategoryItem(
                                 name = category.name,
                                 icon = category.storedIcon.name,
                                 iconBackgroundColor = category.storedIcon.backgroundColor,
-                                shape = when {
-                                    state.filteredCategories.size == 1 -> MaterialTheme.shapes.large
-                                    index == 0 -> RoundedCornerShape(
-                                        topStart = 16.dp, topEnd = 16.dp,
-                                        bottomStart = 4.dp, bottomEnd = 4.dp,
-                                    )
-
-                                    index == state.filteredCategories.lastIndex -> RoundedCornerShape(
-                                        topStart = 4.dp, topEnd = 4.dp,
-                                        bottomStart = 16.dp, bottomEnd = 16.dp,
-                                    )
-
-                                    else -> RoundedCornerShape(4.dp)
-                                },
+                                shape = shape,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clip(MaterialTheme.shapes.medium)
                                     .animateItem(),
-                                onItemClick = { onItemClick.invoke(category) }
+                                onClick = { onItemClick.invoke(category) },
+                                trailingContent = {
+                                    CategoryItemDefaults.ChevronTrailing()
+                                }
                             )
                         }
                     }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun CategoryItem(
-    name: String,
-    icon: String,
-    iconBackgroundColor: String,
-    modifier: Modifier = Modifier,
-    shape: CornerBasedShape = MaterialTheme.shapes.large,
-    endIcon: ImageVector? = null,
-    border: BorderStroke = CardDefaults.outlinedCardBorder(),
-    isSelected: Boolean = false,
-    onItemClick: () -> Unit = {},
-) {
-    AppCardView(
-        shape = shape,
-        border = border,
-        modifier = modifier,
-    ) {
-        Row(
-            modifier = Modifier
-                .clickable {
-                    onItemClick.invoke()
-                }
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            IconAndBackgroundView(
-                icon = icon,
-                iconBackgroundColor = iconBackgroundColor,
-                name = name,
-            )
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 16.dp, end = 16.dp),
-                text = name,
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-
-
-            if (isSelected) {
-                Icon(
-                    imageVector = Icons.Default.CheckCircle,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp)
-                )
-            } else {
-                if (endIcon != null) {
-                    Icon(
-                        imageVector = endIcon,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(20.dp),
-                    )
-                } else {
-                    // Subtle edit indicator
-                    Icon(
-                        imageVector = Icons.Default.ChevronRight,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                        modifier = Modifier.size(20.dp),
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CategoryCheckedItem(
-    name: String,
-    icon: String,
-    iconBackgroundColor: String,
-    modifier: Modifier = Modifier,
-    isSelected: Boolean = false,
-    onCheckedChange: ((Boolean) -> Unit)? = null,
-) {
-    Surface(
-        shape = MaterialTheme.shapes.medium,
-        tonalElevation = if (isSelected) 3.dp else 1.dp,
-        color = if (isSelected)
-            MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
-        else
-            MaterialTheme.colorScheme.surface,
-        modifier = modifier,
-    ) {
-        Row(
-            modifier = Modifier
-                .clickable {
-                    onCheckedChange?.invoke(isSelected.not())
-                }
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            IconAndBackgroundView(
-                icon = icon,
-                iconBackgroundColor = iconBackgroundColor,
-                name = name,
-            )
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 16.dp, end = 16.dp),
-                text = name,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
-            )
-            Checkbox(
-                modifier = Modifier.padding(start = 8.dp),
-                checked = isSelected,
-                onCheckedChange = onCheckedChange,
-            )
         }
     }
 }
@@ -424,11 +301,13 @@ private fun CategoryItemPreview() {
                 name = "Utilities",
                 icon = "account_balance_wallet",
                 iconBackgroundColor = "#000000",
-                endIcon = Icons.Default.KeyboardDoubleArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100))
                     .then(ItemSpecModifier),
+                trailingContent = {
+                    CategoryItemDefaults.ChevronTrailing()
+                }
             )
         }
     }

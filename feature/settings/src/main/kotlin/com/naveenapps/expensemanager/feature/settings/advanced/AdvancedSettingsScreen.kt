@@ -103,8 +103,8 @@ private fun AdvancedSettingsScaffoldView(
             onDismissRequest = {
                 onAction.invoke(AdvancedSettingAction.DismissDateFilterDialog)
             },
-            containerColor = MaterialTheme.colorScheme.background,
-            tonalElevation = 0.dp,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             DateFilterSelectionView(
                 onComplete = {

@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.AccessTime
@@ -64,9 +62,11 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.feature.account.list.AccountItem
+import com.naveenapps.expensemanager.feature.account.selection.AccountItem
+import com.naveenapps.expensemanager.feature.account.selection.AccountItemDefaults
 import com.naveenapps.expensemanager.feature.account.selection.AccountSelectionScreen
-import com.naveenapps.expensemanager.feature.category.list.CategoryItem
+import com.naveenapps.expensemanager.feature.category.selection.CategoryItem
+import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefaults
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
@@ -174,8 +174,8 @@ private fun AccountSelectionView(
         onDismissRequest = {
             onAction.invoke(TransactionCreateAction.DismissAccountSelection)
         },
-        containerColor = MaterialTheme.colorScheme.background,
-        tonalElevation = 0.dp,
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         AccountSelectionScreen(
             accounts = state.accounts,
@@ -340,13 +340,15 @@ private fun TransactionCreateScreen(
                 name = state.selectedCategory.name,
                 icon = state.selectedCategory.storedIcon.name,
                 iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
-                endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
-                onItemClick = {
+                    .padding(horizontal = 16.dp),
+                onClick = {
                     focusManager.clearFocus(force = true)
                     onAction.invoke(TransactionCreateAction.ShowCategorySelection)
+                },
+                trailingContent = {
+                    CategoryItemDefaults.ChevronTrailing()
                 }
             )
         }
@@ -371,20 +373,22 @@ private fun TransactionCreateScreen(
             name = state.selectedFromAccount.name,
             icon = state.selectedFromAccount.storedIcon.name,
             iconBackgroundColor = state.selectedFromAccount.storedIcon.backgroundColor,
-            endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             amount = state.selectedFromAccount.amount.amountString,
             amountTextColor = state.selectedFromAccount.amountTextColor,
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
-                    focusManager.clearFocus(force = true)
-                    onAction.invoke(
-                        TransactionCreateAction.ShowAccountSelection(
-                            AccountSelection.FROM_ACCOUNT
-                        )
+                .padding(horizontal = 16.dp),
+            onClick = {
+                focusManager.clearFocus(force = true)
+                onAction.invoke(
+                    TransactionCreateAction.ShowAccountSelection(
+                        AccountSelection.FROM_ACCOUNT
                     )
-                }
-                .then(ItemSpecModifier),
+                )
+            },
+            trailingContent = {
+                AccountItemDefaults.ChevronTrailing()
+            }
         )
         if (state.transactionType == TransactionType.TRANSFER) {
             Text(
@@ -401,20 +405,22 @@ private fun TransactionCreateScreen(
                 name = state.selectedToAccount.name,
                 icon = state.selectedToAccount.storedIcon.name,
                 iconBackgroundColor = state.selectedToAccount.storedIcon.backgroundColor,
-                endIcon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                trailingContent = {
+                    AccountItemDefaults.ChevronTrailing()
+                },
                 amount = state.selectedToAccount.amount.amountString,
                 amountTextColor = state.selectedFromAccount.amountTextColor,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        focusManager.clearFocus(force = true)
-                        onAction.invoke(
-                            TransactionCreateAction.ShowAccountSelection(
-                                AccountSelection.TO_ACCOUNT
-                            )
+                    .padding(horizontal = 16.dp),
+                onClick = {
+                    focusManager.clearFocus(force = true)
+                    onAction.invoke(
+                        TransactionCreateAction.ShowAccountSelection(
+                            AccountSelection.TO_ACCOUNT
                         )
-                    }
-                    .padding(16.dp),
+                    )
+                }
             )
         }
 

@@ -216,8 +216,8 @@ private fun ExportScreenContent(
             onDismissRequest = {
                 onAction.invoke(ExportAction.CloseAccountSelection)
             },
-            containerColor = MaterialTheme.colorScheme.background,
-            tonalElevation = 0.dp,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             MultipleAccountSelectionScreen { selectedAccounts, isAllSelected ->
                 onAction.invoke(
@@ -303,8 +303,8 @@ private fun ExportScreenContent(
             onDismissRequest = {
                 showBottomSheet = false
             },
-            containerColor = MaterialTheme.colorScheme.background,
-            tonalElevation = 0.dp,
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             DateFilterSelectionView(
                 onComplete = {
