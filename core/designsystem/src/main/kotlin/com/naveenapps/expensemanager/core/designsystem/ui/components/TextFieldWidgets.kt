@@ -154,7 +154,8 @@ fun DecimalTextField(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Decimal,
             imeAction = ImeAction.Next,
-        )
+        ),
+        trailingIcon = trailingIcon
     )
 }
 

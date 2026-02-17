@@ -248,7 +248,7 @@ fun BudgetCreateScreen(
                     ClickableTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = selectedDate.value.toMonthAndYear(),
-                        label = R.string.select_date,
+                        label = R.string.select_month,
                         leadingIcon = Icons.Default.EditCalendar,
                         onClick = {
                             focusManager.clearFocus(force = true)

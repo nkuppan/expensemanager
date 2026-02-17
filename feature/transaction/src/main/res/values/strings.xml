@@ -46,4 +46,15 @@
     <string name="amount">Amount</string>
     <string name="from_account">From Account</string>
     <string name="to_account">To Account</string>
+
+    <string name="edit_transaction">Edit Transaction</string>
+    <string name="create_transaction">New Transaction</string>
+    <string name="date_and_time">Date &amp; Time</string>
+    <string name="delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="transaction_type">Transaction Type</string>
+    <string name="details">Details</string>
+
+    <string name="done">Done</string>
+    <string name="backspace">Backspace</string>
 </resources>

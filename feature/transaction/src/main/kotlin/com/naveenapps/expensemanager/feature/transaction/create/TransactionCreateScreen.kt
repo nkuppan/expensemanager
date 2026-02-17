@@ -1,12 +1,19 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
@@ -19,7 +26,7 @@ import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,25 +40,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -92,17 +96,12 @@ private fun TransactionCreateScreenContent(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
 ) {
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     if (state.showDeleteDialog) {
         DeleteDialogItem(
-            confirm = {
-                onAction.invoke(TransactionCreateAction.Delete)
-            },
-            dismiss = {
-                onAction.invoke(TransactionCreateAction.DismissDeleteDialog)
-            }
+            confirm = { onAction.invoke(TransactionCreateAction.Delete) },
+            dismiss = { onAction.invoke(TransactionCreateAction.DismissDeleteDialog) },
         )
     } else if (state.showNumberPad) {
         NumberPadDialogView(
@@ -121,45 +120,50 @@ private fun TransactionCreateScreenContent(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-
             ExpenseManagerTopAppBar(
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationBackClick = {
                     onAction.invoke(TransactionCreateAction.ClosePage)
                 },
-                title = stringResource(R.string.transaction),
+                title = if (state.showDeleteButton)
+                    stringResource(R.string.edit_transaction)
+                else
+                    stringResource(R.string.create_transaction),
                 actions = {
                     if (state.showDeleteButton) {
                         IconButton(onClick = { onAction.invoke(TransactionCreateAction.ShowDeleteDialog) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
-                                contentDescription = "Delete"
+                                contentDescription = stringResource(R.string.delete),
+                                tint = MaterialTheme.colorScheme.error,
                             )
                         }
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    onAction.invoke(TransactionCreateAction.Save)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Done,
-                    contentDescription = "",
-                )
-            }
+            ExtendedFloatingActionButton(
+                onClick = { onAction.invoke(TransactionCreateAction.Save) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Done,
+                        contentDescription = null,
+                    )
+                },
+                text = {
+                    Text(text = stringResource(R.string.save))
+                },
+            )
         },
     ) { innerPadding ->
-
         TransactionCreateScreen(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState()),
             state = state,
-            onAction = onAction
+            onAction = onAction,
         )
     }
 }
@@ -188,7 +192,7 @@ private fun AccountSelectionView(
             },
             onItemSelection = {
                 onAction.invoke(TransactionCreateAction.SelectAccount(it))
-            }
+            },
         )
     }
 }
@@ -197,7 +201,7 @@ private fun AccountSelectionView(
 @OptIn(ExperimentalMaterial3Api::class)
 private fun CategorySelectionView(
     state: TransactionCreateState,
-    onAction: (TransactionCreateAction) -> Unit
+    onAction: (TransactionCreateAction) -> Unit,
 ) {
     ModalBottomSheet(
         onDismissRequest = {
@@ -214,7 +218,7 @@ private fun CategorySelectionView(
             },
             onItemSelection = {
                 onAction.invoke(TransactionCreateAction.SelectCategory(it))
-            }
+            },
         )
     }
 }
@@ -225,8 +229,6 @@ private fun TransactionCreateScreen(
     onAction: (TransactionCreateAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val focusManager = LocalFocusManager.current
-
     if (state.showDateSelection) {
         AppDatePickerDialog(
             selectedDate = state.dateTime,
@@ -235,7 +237,7 @@ private fun TransactionCreateScreen(
             },
             onDismiss = {
                 onAction.invoke(TransactionCreateAction.DismissDateSelection)
-            }
+            },
         )
     }
 
@@ -247,216 +249,216 @@ private fun TransactionCreateScreen(
                 val reminderTimeState = ReminderTimeState(it.first, it.second, it.third)
                 onAction.invoke(
                     TransactionCreateAction.SelectDate(
-                        state.dateTime.toTime(
-                            reminderTimeState
-                        )
-                    )
+                        state.dateTime.toTime(reminderTimeState)
+                    ),
                 )
             },
             onDismiss = {
                 onAction.invoke(TransactionCreateAction.DismissDateSelection)
-            }
+            },
         )
     }
 
+    TransactionCreateContent(
+        modifier = modifier,
+        state = state,
+        onAction = onAction
+    )
+}
+
+@Composable
+private fun TransactionCreateContent(
+    modifier: Modifier,
+    state: TransactionCreateState,
+    onAction: (TransactionCreateAction) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+
     Column(
-        modifier = modifier.verticalScroll(rememberScrollState()),
+        modifier = modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        TransactionTypeSelectionView(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .align(Alignment.CenterHorizontally),
-            selectedTransactionType = state.transactionType,
-            onTransactionTypeChange = {
-                onAction.invoke(TransactionCreateAction.ChangeTransactionType(it))
-            },
-        )
-        Row(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .fillMaxWidth(),
+        SettingsSection(
+            title = stringResource(R.string.transaction_type),
+            modifier = Modifier.padding(top = 8.dp),
         ) {
-            ClickableTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp),
-                value = state.dateTime.toCompleteDateWithDate(),
-                label = R.string.select_date,
-                leadingIcon = Icons.Outlined.EditCalendar,
-                onClick = {
-                    focusManager.clearFocus(force = true)
-                    onAction.invoke(TransactionCreateAction.ShowDateSelection)
-                },
-            )
-            ClickableTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp),
-                value = state.dateTime.toTimeAndMinutes(),
-                label = R.string.select_time,
-                leadingIcon = Icons.Outlined.AccessTime,
-                onClick = {
-                    onAction.invoke(TransactionCreateAction.ShowTimeSelection)
-                },
-            )
-        }
-
-        DecimalTextField(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)
-                .fillMaxWidth(),
-            value = state.amount.value,
-            isError = state.amount.valueError,
-            onValueChange = state.amount.onValueChange,
-            leadingIconText = state.currency.symbol,
-            label = R.string.amount,
-            errorMessage = stringResource(id = R.string.amount_error_message),
-            trailingIcon = {
-                IconButton(
-                    onClick = {
-                        onAction.invoke(TransactionCreateAction.ShowNumberPad)
-                    },
+            AppCardView {
+                Column(
+                    modifier = Modifier.padding(16.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Calculate,
-                        contentDescription = "",
+                    TransactionTypeSelectionView(
+                        modifier = Modifier.fillMaxWidth(),
+                        selectedTransactionType = state.transactionType,
+                        onTransactionTypeChange = {
+                            onAction.invoke(TransactionCreateAction.ChangeTransactionType(it))
+                        },
                     )
                 }
-            },
-        )
-
-        if (state.transactionType != TransactionType.TRANSFER) {
-            Text(
-                modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
-                    .fillMaxWidth(),
-                text = stringResource(id = R.string.select_category),
-                fontWeight = FontWeight.SemiBold,
-                fontStyle = FontStyle.Normal,
-                color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500),
-            )
-            CategoryItem(
-                name = state.selectedCategory.name,
-                icon = state.selectedCategory.storedIcon.name,
-                iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                onClick = {
-                    focusManager.clearFocus(force = true)
-                    onAction.invoke(TransactionCreateAction.ShowCategorySelection)
-                },
-                trailingContent = {
-                    CategoryItemDefaults.ChevronTrailing()
-                }
-            )
+            }
         }
 
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
-                .fillMaxWidth(),
-            text = stringResource(
-                id = if (state.transactionType == TransactionType.TRANSFER) {
-                    R.string.from_account
-                } else {
-                    R.string.select_account
-                },
-            ),
-            fontWeight = FontWeight.SemiBold,
-            fontStyle = FontStyle.Normal,
-            color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500),
-        )
-
-        AccountItem(
-            name = state.selectedFromAccount.name,
-            icon = state.selectedFromAccount.storedIcon.name,
-            iconBackgroundColor = state.selectedFromAccount.storedIcon.backgroundColor,
-            amount = state.selectedFromAccount.amount.amountString,
-            amountTextColor = state.selectedFromAccount.amountTextColor,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            onClick = {
-                focusManager.clearFocus(force = true)
-                onAction.invoke(
-                    TransactionCreateAction.ShowAccountSelection(
-                        AccountSelection.FROM_ACCOUNT
+        SettingsSection(title = stringResource(R.string.details)) {
+            AppCardView {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    DecimalTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.amount.value,
+                        isError = state.amount.valueError,
+                        onValueChange = state.amount.onValueChange,
+                        leadingIconText = state.currency.symbol,
+                        label = R.string.amount,
+                        errorMessage = stringResource(id = R.string.amount_error_message),
+                        trailingIcon = {
+                            IconButton(
+                                onClick = { onAction.invoke(TransactionCreateAction.ShowNumberPad) },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Calculate,
+                                    contentDescription = null,
+                                )
+                            }
+                        },
                     )
-                )
-            },
-            trailingContent = {
-                AccountItemDefaults.ChevronTrailing()
-            }
-        )
-        if (state.transactionType == TransactionType.TRANSFER) {
-            Text(
-                modifier = Modifier
-                    .then(ItemSpecModifier)
-                    .fillMaxWidth(),
-                text = stringResource(id = R.string.to_account),
-                fontWeight = FontWeight.SemiBold,
-                fontStyle = FontStyle.Normal,
-                color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.blue_500),
-            )
 
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        ClickableTextField(
+                            modifier = Modifier.weight(1f),
+                            value = state.dateTime.toCompleteDateWithDate(),
+                            label = R.string.select_date,
+                            leadingIcon = Icons.Outlined.EditCalendar,
+                            onClick = {
+                                focusManager.clearFocus(force = true)
+                                onAction.invoke(TransactionCreateAction.ShowDateSelection)
+                            },
+                        )
+                        ClickableTextField(
+                            modifier = Modifier.weight(1f),
+                            value = state.dateTime.toTimeAndMinutes(),
+                            label = R.string.select_time,
+                            leadingIcon = Icons.Outlined.AccessTime,
+                            onClick = {
+                                onAction.invoke(TransactionCreateAction.ShowTimeSelection)
+                            },
+                        )
+                    }
+
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = state.notes.value,
+                        singleLine = false,
+                        maxLines = 3,
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.Notes,
+                                contentDescription = null,
+                            )
+                        },
+                        placeholder = {
+                            Text(text = stringResource(id = R.string.optional_details))
+                        },
+                        label = {
+                            Text(text = stringResource(id = R.string.notes))
+                        },
+                        onValueChange = {
+                            state.notes.onValueChange?.invoke(it)
+                        },
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                focusManager.clearFocus(force = true)
+                            },
+                        ),
+                    )
+                }
+            }
+        }
+
+
+        // Category — only for non-transfer
+        AnimatedVisibility(
+            visible = state.transactionType != TransactionType.TRANSFER,
+            enter = fadeIn(tween(200)) + expandVertically(tween(250)),
+            exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
+        ) {
+            SettingsSection(title = stringResource(R.string.select_category)) {
+                CategoryItem(
+                    name = state.selectedCategory.name,
+                    icon = state.selectedCategory.storedIcon.name,
+                    iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        focusManager.clearFocus(force = true)
+                        onAction.invoke(TransactionCreateAction.ShowCategorySelection)
+                    },
+                    trailingContent = {
+                        CategoryItemDefaults.ChevronTrailing()
+                    },
+                )
+            }
+        }
+
+        SettingsSection(
+            title = stringResource(
+                id = if (state.transactionType == TransactionType.TRANSFER)
+                    R.string.from_account
+                else
+                    R.string.select_account,
+            )
+        ) {
             AccountItem(
-                name = state.selectedToAccount.name,
-                icon = state.selectedToAccount.storedIcon.name,
-                iconBackgroundColor = state.selectedToAccount.storedIcon.backgroundColor,
-                trailingContent = {
-                    AccountItemDefaults.ChevronTrailing()
-                },
-                amount = state.selectedToAccount.amount.amountString,
+                name = state.selectedFromAccount.name,
+                icon = state.selectedFromAccount.storedIcon.name,
+                iconBackgroundColor = state.selectedFromAccount.storedIcon.backgroundColor,
+                amount = state.selectedFromAccount.amount.amountString,
                 amountTextColor = state.selectedFromAccount.amountTextColor,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     focusManager.clearFocus(force = true)
                     onAction.invoke(
-                        TransactionCreateAction.ShowAccountSelection(
-                            AccountSelection.TO_ACCOUNT
-                        )
+                        TransactionCreateAction.ShowAccountSelection(AccountSelection.FROM_ACCOUNT),
                     )
-                }
+                },
+                trailingContent = {
+                    AccountItemDefaults.ChevronTrailing()
+                },
             )
         }
 
-        OutlinedTextField(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp)
-                .fillMaxWidth(),
-            value = state.notes.value,
-            singleLine = true,
-            leadingIcon =
-                {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.Notes,
-                        contentDescription = "",
-                    )
-                },
-            label = {
-                Text(text = stringResource(id = R.string.notes))
-            },
-            onValueChange = {
-                state.notes.onValueChange?.invoke(it)
-            },
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus(force = true)
-                },
-            ),
-            supportingText = {
-                Text(text = stringResource(id = R.string.optional_details))
-            },
-        )
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(36.dp),
-        )
+        // To Account — only for transfer
+        AnimatedVisibility(
+            visible = state.transactionType == TransactionType.TRANSFER,
+            enter = fadeIn(tween(200)) + expandVertically(tween(250)),
+            exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
+        ) {
+            SettingsSection(title = stringResource(R.string.to_account)) {
+                AccountItem(
+                    name = state.selectedToAccount.name,
+                    icon = state.selectedToAccount.storedIcon.name,
+                    iconBackgroundColor = state.selectedToAccount.storedIcon.backgroundColor,
+                    amount = state.selectedToAccount.amount.amountString,
+                    amountTextColor = state.selectedToAccount.amountTextColor,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        focusManager.clearFocus(force = true)
+                        onAction.invoke(
+                            TransactionCreateAction.ShowAccountSelection(AccountSelection.TO_ACCOUNT),
+                        )
+                    },
+                    trailingContent = {
+                        AccountItemDefaults.ChevronTrailing()
+                    },
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(72.dp))
     }
 }
 
@@ -465,7 +467,6 @@ fun Date.toTime(): ReminderTimeState {
     cal.time = this
     val hours = cal.get(Calendar.HOUR_OF_DAY)
     val minutes = cal.get(Calendar.MINUTE)
-
     return ReminderTimeState(
         hour = hours,
         minute = minutes,
@@ -484,13 +485,11 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun TransactionCreateStateForTransferPreview() {
-
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
-
     NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionCreateScreenContent(
             state = getTransactionState(amountField, TransactionType.TRANSFER),
-            onAction = {}
+            onAction = {},
         )
     }
 }
@@ -498,20 +497,18 @@ private fun TransactionCreateStateForTransferPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun TransactionCreateStateForIncomePreview() {
-
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
-
     NaveenAppsPreviewTheme(padding = 0.dp) {
         TransactionCreateScreenContent(
             state = getTransactionState(amountField, TransactionType.INCOME),
-            onAction = {}
+            onAction = {},
         )
     }
 }
 
 private fun getTransactionState(
     amountField: TextFieldValue<String>,
-    transactionType: TransactionType
+    transactionType: TransactionType,
 ): TransactionCreateState =
     TransactionCreateState(
         amount = amountField,
@@ -553,7 +550,7 @@ private fun getTransactionState(
         ),
         accounts = emptyList(),
         categories = emptyList(),
-        showDeleteButton = false,
+        showDeleteButton = true,
         showDeleteDialog = false,
         showCategorySelection = false,
         showAccountSelection = false,
@@ -561,5 +558,5 @@ private fun getTransactionState(
         transactionType = transactionType,
         accountSelection = AccountSelection.FROM_ACCOUNT,
         showTimeSelection = false,
-        showDateSelection = false
+        showDateSelection = false,
     )

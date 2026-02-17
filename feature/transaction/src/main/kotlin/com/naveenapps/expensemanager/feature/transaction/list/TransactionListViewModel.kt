@@ -129,7 +129,7 @@ sealed class TransactionListItem {
 
     data class HeaderItem(
         val date: String,
-        @DrawableRes val amountTextColor: Int,
+        val amountTextColor: Int,
         val totalAmount: String,
     ) : TransactionListItem()
 

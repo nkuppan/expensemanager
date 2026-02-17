@@ -1,36 +1,40 @@
 package com.naveenapps.expensemanager.feature.transaction.numberpad
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.Backspace
+import androidx.compose.material.icons.automirrored.rounded.Backspace
+import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
@@ -41,6 +45,27 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun NumberPadDialogView(
     onConfirm: ((String?) -> Unit),
+    viewModel: NumberPadViewModel = koinViewModel()
+) {
+    val calculatedAmount by viewModel.calculatedAmount.collectAsState()
+    val calculatedAmountString by viewModel.calculatedAmountString.collectAsState()
+
+    NumberPadDialog(
+        onConfirm = onConfirm,
+        onChange = viewModel::appendString,
+        calculatedAmount = calculatedAmount,
+        calculatedAmountString = calculatedAmountString,
+        clear = viewModel::clearAmount
+    )
+}
+
+@Composable
+private fun NumberPadDialog(
+    onConfirm: (String?) -> Unit,
+    onChange: (String) -> Unit,
+    clear: () -> Unit,
+    calculatedAmount: String,
+    calculatedAmountString: String,
 ) {
     Dialog(
         onDismissRequest = {
@@ -56,36 +81,25 @@ fun NumberPadDialogView(
                 .wrapContentSize(),
             shape = RoundedCornerShape(8.dp),
         ) {
-            NumberPadScreen(onConfirm)
+            NumberPadScreenView(
+                modifier = Modifier.wrapContentHeight(),
+                value = calculatedAmount,
+                amountString = calculatedAmountString,
+                onChange = {
+                    onChange.invoke(it)
+                },
+                confirm = {
+                    onConfirm.invoke(calculatedAmount)
+                },
+                cancel = {
+                    onConfirm.invoke("0")
+                },
+                clear = {
+                    clear.invoke()
+                },
+            )
         }
     }
-}
-
-@Composable
-fun NumberPadScreen(
-    onConfirm: ((String?) -> Unit),
-) {
-    val viewModel: NumberPadViewModel = koinViewModel()
-    val calculatedAmount by viewModel.calculatedAmount.collectAsState()
-    val calculatedAmountString by viewModel.calculatedAmountString.collectAsState()
-
-    NumberPadScreenView(
-        modifier = Modifier.wrapContentHeight(),
-        value = calculatedAmount,
-        amountString = calculatedAmountString,
-        onChange = {
-            viewModel.appendString(it)
-        },
-        confirm = {
-            onConfirm.invoke(calculatedAmount)
-        },
-        cancel = {
-            onConfirm.invoke("0")
-        },
-        clear = {
-            viewModel.clearAmount()
-        },
-    )
 }
 
 @Composable
@@ -98,220 +112,187 @@ private fun NumberPadScreenView(
     cancel: (() -> Unit),
     clear: (() -> Unit),
 ) {
-    Column(modifier) {
-        Row {
+    Column(modifier = modifier) {
+        // Display area
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 12.dp),
+            shape = MaterialTheme.shapes.large,
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        ) {
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 16.dp)
-                    .align(Alignment.CenterVertically),
+                modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+                horizontalAlignment = Alignment.End,
             ) {
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .alpha(0.7f),
-                    text = amountString,
-                    textAlign = TextAlign.Right,
-                    letterSpacing = 1.sp,
-                )
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = value,
-                    textAlign = TextAlign.Right,
-                    fontSize = 28.sp,
-                )
-            }
+                // Expression
+                if (amountString.isNotBlank()) {
+                    Text(
+                        text = amountString,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.End,
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
 
-            VerticalDivider(
-                modifier = Modifier
-                    .height(100.dp)
-                    .padding(horizontal = 12.dp, vertical = 16.dp),
+                // Current value
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    Text(
+                        text = value,
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
+                        textAlign = TextAlign.End,
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    IconButton(
+                        onClick = { onChange.invoke("") },
+                        modifier = Modifier.size(36.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Rounded.Backspace,
+                            contentDescription = stringResource(R.string.backspace),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(20.dp),
+                        )
+                    }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        // Number pad grid
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            val numberButtons = listOf(
+                listOf("1", "2", "3", "/"),
+                listOf("4", "5", "6", "×"),
+                listOf("7", "8", "9", "−"),
+                listOf(".", "0", "00", "+"),
             )
 
-            IconButton(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(end = 16.dp),
-                onClick = {
-                    onChange.invoke("")
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.Backspace,
-                    contentDescription = null,
-                )
-            }
-        }
-        Surface(shadowElevation = 2.dp) {
-            Column {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("1")
-                        },
-                        text = stringResource(id = R.string.number_one),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("2")
-                        },
-                        text = stringResource(id = R.string.number_two),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("3")
-                        },
-                        text = stringResource(id = R.string.number_three),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier
-                            .clickable {
-                                onChange.invoke("/")
-                            },
-                        text = stringResource(id = R.string.divide),
-                    )
-                }
+            val inputMap = mapOf(
+                "×" to "*",
+                "−" to "-",
+            )
 
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("4")
-                        },
-                        text = stringResource(id = R.string.number_four),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("5")
-                        },
-                        text = stringResource(id = R.string.number_five),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("6")
-                        },
-                        text = stringResource(id = R.string.number_six),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier
-                            .clickable {
-                                onChange.invoke("*")
-                            },
-                        text = stringResource(id = R.string.multiply),
-                    )
-                }
+            numberButtons.forEach { row ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    row.forEach { label ->
+                        val isOperator = label in listOf("/", "×", "−", "+")
+                        val inputValue = inputMap[label] ?: label
 
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("7")
-                        },
-                        text = stringResource(id = R.string.number_seven),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("8")
-                        },
-                        text = stringResource(id = R.string.number_eight),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("9")
-                        },
-                        text = stringResource(id = R.string.number_nine),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier
-                            .clickable {
-                                onChange.invoke("-")
-                            },
-                        text = stringResource(id = R.string.minus),
-                    )
-                }
-
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke(".")
-                        },
-                        text = stringResource(id = R.string.dot),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("0")
-                        },
-                        text = stringResource(id = R.string.zero),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier.clickable {
-                            onChange.invoke("00")
-                        },
-                        text = stringResource(id = R.string.double_zero),
-                    )
-                    NumberPadActionText(
-                        modifier = Modifier
-                            .clickable {
-                                onChange.invoke("+")
-                            },
-                        text = stringResource(id = R.string.plus),
-                    )
+                        NumberPadButton(
+                            text = label,
+                            isOperator = isOperator,
+                            onClick = { onChange.invoke(inputValue) },
+                            modifier = Modifier.weight(1f),
+                        )
+                    }
                 }
             }
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Bottom actions
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-            ) {
-                TextButton(
-                    modifier = modifier.fillMaxHeight(),
-                    onClick = {
-                        clear.invoke()
-                    },
-                ) {
-                    Text(text = stringResource(id = R.string.clear).uppercase())
-                }
-            }
             TextButton(
-                modifier = modifier.fillMaxHeight(),
-                onClick = {
-                    cancel.invoke()
-                },
+                onClick = { clear.invoke() },
             ) {
-                Text(text = stringResource(id = R.string.cancel).uppercase())
+                Text(
+                    text = stringResource(id = R.string.clear),
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.error,
+                )
             }
-            TextButton(
-                modifier = modifier.fillMaxHeight(),
-                onClick = {
-                    confirm.invoke()
-                },
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            OutlinedButton(
+                onClick = { cancel.invoke() },
+                shape = MaterialTheme.shapes.medium,
             ) {
-                Text(text = stringResource(id = R.string.ok).uppercase())
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    fontWeight = FontWeight.Medium,
+                )
+            }
+
+            Button(
+                onClick = { confirm.invoke() },
+                shape = MaterialTheme.shapes.medium,
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Check,
+                    contentDescription = null,
+                    modifier = Modifier.size(18.dp),
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = stringResource(id = R.string.done),
+                    fontWeight = FontWeight.SemiBold,
+                )
             }
         }
     }
 }
 
 @Composable
-fun RowScope.NumberPadActionText(
+private fun NumberPadButton(
     text: String,
+    isOperator: Boolean,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .weight(1f)
-            .height(96.dp),
-        contentAlignment = Alignment.Center,
+    Surface(
+        onClick = onClick,
+        modifier = modifier.height(64.dp),
+        shape = MaterialTheme.shapes.medium,
+        color = if (isOperator)
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+        else
+            Color.Transparent,
     ) {
-        Text(
-            text = text,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleLarge,
-        )
+        Box(contentAlignment = Alignment.Center) {
+            Text(
+                text = text,
+                style = if (isOperator)
+                    MaterialTheme.typography.titleLarge
+                else
+                    MaterialTheme.typography.titleMedium,
+                fontWeight = if (isOperator) FontWeight.Bold else FontWeight.Medium,
+                color = if (isOperator)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.onSurface,
+            )
+        }
     }
 }
 
@@ -321,12 +302,9 @@ fun NumberPadScreenPreview() {
     NaveenAppsPreviewTheme(padding = 0.dp) {
         NumberPadScreenView(
             modifier = Modifier.wrapContentHeight(),
-            value = "0",
-            amountString = "5697+2367*227",
-            {},
-            {},
-            {},
-            {},
+            value = "8,064",
+            amountString = "5697+2367",
+            {}, {}, {}, {},
         )
     }
 }
@@ -335,6 +313,12 @@ fun NumberPadScreenPreview() {
 @Composable
 fun NumberPadScreenDialogPreview() {
     NaveenAppsPreviewTheme(padding = 0.dp) {
-        NumberPadDialogView {}
+        NumberPadDialog(
+            onConfirm = {},
+            onChange = {},
+            clear = {},
+            calculatedAmount = "8,064",
+            calculatedAmountString = "5697+2367",
+        )
     }
 }
