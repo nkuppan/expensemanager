@@ -1,32 +1,30 @@
 package com.naveenapps.expensemanager.feature.category.create
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDownward
-import androidx.compose.material.icons.outlined.ArrowUpward
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material.icons.automirrored.rounded.TrendingDown
+import androidx.compose.material.icons.automirrored.rounded.TrendingUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SelectableChipColors
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.feature.category.R
 
@@ -36,124 +34,108 @@ fun CategoryTypeSelectionView(
     onCategoryTypeChange: ((CategoryType) -> Unit),
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        val stroke = if (selectedCategoryType == CategoryType.INCOME) {
-            FilterChipDefaults.filterChipBorder(
-                enabled = true,
-                selected = true,
-                borderColor = MaterialTheme.colorScheme.primary,
-                selectedBorderColor = MaterialTheme.colorScheme.primary,
-                borderWidth = 2.dp,
-                selectedBorderWidth = 2.dp
-            )
-        } else {
-            FilterChipDefaults.filterChipBorder(
-                enabled = true,
-                selected = false
-            )
-        }
-        AppFilterChip(
-            title = stringResource(id = R.string.income),
-            icon = Icons.Outlined.ArrowDownward,
-            isSelected = selectedCategoryType == CategoryType.INCOME,
-            onClick = { onCategoryTypeChange.invoke(CategoryType.INCOME) },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                selectedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+    val categoryTypes = remember {
+        listOf(
+            CategoryTypeUi(
+                type = CategoryType.INCOME,
+                labelRes = R.string.income,
+                icon = Icons.AutoMirrored.Rounded.TrendingDown,
             ),
-            stroke = stroke
+            CategoryTypeUi(
+                type = CategoryType.EXPENSE,
+                labelRes = R.string.expense,
+                icon = Icons.AutoMirrored.Rounded.TrendingUp,
+            ),
         )
-        AppFilterChip(
-            title = stringResource(id = R.string.expense),
-            icon = Icons.Outlined.ArrowUpward,
-            isSelected = selectedCategoryType == CategoryType.EXPENSE,
-            onClick = { onCategoryTypeChange.invoke(CategoryType.EXPENSE) },
-            colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = MaterialTheme.colorScheme.errorContainer,
-                selectedLabelColor = MaterialTheme.colorScheme.onErrorContainer,
-                selectedLeadingIconColor = MaterialTheme.colorScheme.onErrorContainer
-            ),
-            stroke = if (selectedCategoryType == CategoryType.EXPENSE) {
-                FilterChipDefaults.filterChipBorder(
-                    enabled = true,
-                    selected = true,
-                    borderColor = MaterialTheme.colorScheme.error,
-                    selectedBorderColor = MaterialTheme.colorScheme.error,
-                    borderWidth = 2.dp,
-                    selectedBorderWidth = 2.dp
+    }
+
+    val isExpenseSelected = selectedCategoryType == CategoryType.EXPENSE
+
+    val borderColor by animateColorAsState(
+        targetValue = if (isExpenseSelected)
+            MaterialTheme.colorScheme.error
+        else
+            MaterialTheme.colorScheme.primary,
+        animationSpec = tween(250),
+        label = "border_color",
+    )
+
+    SingleChoiceSegmentedButtonRow(
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        categoryTypes.forEachIndexed { index, item ->
+            val isSelected = selectedCategoryType == item.type
+
+            val colors = if (item.type == CategoryType.EXPENSE) {
+                SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.errorContainer,
+                    activeContentColor = MaterialTheme.colorScheme.onErrorContainer,
+                    activeBorderColor = MaterialTheme.colorScheme.error,
                 )
             } else {
-                FilterChipDefaults.filterChipBorder(
-                    enabled = true,
-                    selected = false
+                SegmentedButtonDefaults.colors(
+                    activeContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                    activeContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    activeBorderColor = MaterialTheme.colorScheme.primary,
                 )
             }
-        )
+
+            SegmentedButton(
+                selected = isSelected,
+                onClick = { onCategoryTypeChange.invoke(item.type) },
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = index,
+                    count = categoryTypes.size,
+                ),
+                colors = colors,
+                border = SegmentedButtonDefaults.borderStroke(
+                    color = borderColor,
+                ),
+                icon = {
+                    SegmentedButtonDefaults.Icon(active = isSelected) {
+                        Icon(
+                            imageVector = item.icon,
+                            contentDescription = null,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    }
+                },
+                label = {
+                    Text(
+                        text = stringResource(id = item.labelRes),
+                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                    )
+                },
+            )
+        }
     }
 }
 
-@Composable
-private fun RowScope.AppFilterChip(
-    title: String,
-    icon: ImageVector,
-    isSelected: Boolean,
-    colors: SelectableChipColors,
-    stroke: BorderStroke,
-    onClick: () -> Unit
-) {
-    FilterChip(
-        selected = isSelected,
-        onClick = { onClick.invoke() },
-        label = {
-            Text(
-                text = title,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleMedium, // Larger text
-                fontWeight = if (isSelected) {
-                    FontWeight.Bold
-                } else {
-                    FontWeight.Medium
-                }
-            )
-        },
-        leadingIcon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.size(24.dp) // Larger icon
-            )
-        },
-        modifier = Modifier
-            .weight(1f)
-            .height(48.dp), // Much taller
-        colors = colors,
-        border = stroke,
-        shape = RoundedCornerShape(12.dp) // More rounded
-    )
-}
+private data class CategoryTypeUi(
+    val type: CategoryType,
+    val labelRes: Int,
+    val icon: ImageVector,
+)
 
-@Preview
+@AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTypeSelectionViewPreview() {
     NaveenAppsPreviewTheme(padding = 0.dp) {
-        CategoryTypeSelectionView(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            selectedCategoryType = CategoryType.EXPENSE,
-            onCategoryTypeChange = {},
-        )
-        CategoryTypeSelectionView(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            selectedCategoryType = CategoryType.INCOME,
-            onCategoryTypeChange = {},
-        )
+        Column {
+            CategoryTypeSelectionView(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                selectedCategoryType = CategoryType.INCOME,
+                onCategoryTypeChange = {},
+            )
+            CategoryTypeSelectionView(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                selectedCategoryType = CategoryType.EXPENSE,
+                onCategoryTypeChange = {},
+            )
+        }
     }
 }

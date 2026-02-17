@@ -1,8 +1,6 @@
 package com.naveenapps.expensemanager.feature.account.list
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,16 +14,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Shuffle
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.SwapVert
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +43,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -102,29 +102,31 @@ internal fun AccountListContentView(
                         IconButton(
                             onClick = {
                                 onAction.invoke(AccountListAction.OpenReOrder)
-                            }
+                            },
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Shuffle,
-                                contentDescription = null
+                                imageVector = Icons.Rounded.SwapVert,
+                                contentDescription = stringResource(R.string.accounts_re_order),
                             )
                         }
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
+            ExtendedFloatingActionButton(
                 modifier = Modifier.testTag("Create"),
-                onClick = {
-                    onAction.invoke(AccountListAction.CreateAccount)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "",
-                )
-            }
+                onClick = { onAction.invoke(AccountListAction.CreateAccount) },
+                icon = {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = null,
+                    )
+                },
+                text = {
+                    Text(text = stringResource(R.string.add_account))
+                },
+            )
         },
     ) { innerPadding ->
         AccountListScreenContent(
@@ -146,40 +148,86 @@ private fun AccountListScreenContent(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
-
         if (state.accounts.isEmpty()) {
             EmptyItem(
                 emptyItemText = stringResource(id = R.string.no_account_available),
                 icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(Alignment.Center),
             )
         } else {
             LazyColumn(
-                contentPadding = PaddingValues(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 88.dp,
+                ),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
-                items(state.accounts, key = { it.id }) { account ->
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp, horizontal = 2.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Rounded.Info,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Text(
+                            text = pluralStringResource(
+                                id = R.plurals.account_count,
+                                count = state.accounts.size,
+                                state.accounts.size,
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+
+
+                itemsIndexed(
+                    items = state.accounts,
+                    key = { _, item -> item.id },
+                ) { index, account ->
+
+                    val shape = when {
+                        state.accounts.size == 1 -> MaterialTheme.shapes.large
+                        index == 0 -> RoundedCornerShape(
+                            topStart = 16.dp, topEnd = 16.dp,
+                            bottomStart = 4.dp, bottomEnd = 4.dp,
+                        )
+
+                        index == state.accounts.lastIndex -> RoundedCornerShape(
+                            topStart = 4.dp, topEnd = 4.dp,
+                            bottomStart = 16.dp, bottomEnd = 16.dp,
+                        )
+
+                        else -> RoundedCornerShape(4.dp)
+                    }
+
                     AccountItem(
-                        modifier = Modifier.testTag("Item"),
-                        onClick = {
-                            onItemClick?.invoke(account)
-                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("Item")
+                            .animateItem(),
+                        onClick = { onItemClick?.invoke(account) },
                         name = account.name,
                         icon = account.storedIcon.name,
                         iconBackgroundColor = account.storedIcon.backgroundColor,
                         amount = account.amount.amountString,
                         subtitle = account.availableCreditLimit?.amountString,
                         amountTextColor = account.amountTextColor,
+                        shape = shape,
                         trailingContent = {
                             AccountItemDefaults.ChevronTrailing()
-                        }
-                    )
-                }
-                item {
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(36.dp),
+                        },
                     )
                 }
             }
@@ -191,86 +239,66 @@ private fun AccountListScreenContent(
 @Composable
 fun DashBoardAccountItem(
     name: String,
-    icon: String, // Suggestion: Use Int for Drawable Res or ImageVector
+    icon: String,
     amount: String,
     availableCreditLimit: String?,
     amountTextColor: Color,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-
     AppCardView(
-        modifier = modifier
-            .width(168.dp)
-            .padding(4.dp),
-        // Use a subtle surface color instead of full background color
-        shape = RoundedCornerShape(16.dp),
-        // Adding a thin border is a hallmark of "Professional" UI
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+        modifier = modifier.width(160.dp),
+        shape = RoundedCornerShape(12.dp),
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            modifier = Modifier.padding(14.dp),
         ) {
-            // Header: Icon + Name
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(24.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
-                            shape = CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = context.getDrawable(icon)),
-                        contentDescription = null,
-                        modifier = Modifier.size(14.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                Icon(
+                    painter = painterResource(id = context.getDrawable(icon)),
+                    contentDescription = name,
+                    modifier = Modifier.size(16.dp),
+                )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = name,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.SemiBold,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-            // The Main Amount
             Text(
                 text = amount,
                 color = amountTextColor,
-                style = MaterialTheme.typography.titleLarge, // Increased size
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
 
-            // Credit Limit / Detail
-            if (!availableCreditLimit.isNullOrBlank()) {
-                Text(
-                    text = stringResource(id = R.string.available_limit, availableCreditLimit),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
-                    maxLines = 1,
-                    modifier = Modifier.basicMarquee()
-                )
-            } else {
-                // Keep layout stable even if no limit exists
-                Spacer(modifier = Modifier.height(14.dp))
-            }
+            Text(
+                text = if (!availableCreditLimit.isNullOrBlank())
+                    stringResource(id = R.string.available_limit, availableCreditLimit)
+                else
+                    " ",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                modifier = Modifier
+                    .padding(top = 2.dp)
+                    .basicMarquee(),
+            )
         }
     }
 }
+
+// ─── Preview helpers ────────────────────────────────────────────────────────
 
 fun getAccountData(
     index: Int,
@@ -294,17 +322,12 @@ fun getAccountData(
 fun getRandomAccountData(totalCount: Int = 10): List<Account> {
     return buildList {
         val random = Random()
-
         repeat(totalCount) {
             val isEven = random.nextInt() % 2 == 0
             add(
                 getAccountData(
                     it,
-                    if (isEven) {
-                        AccountType.CREDIT
-                    } else {
-                        AccountType.REGULAR
-                    },
+                    if (isEven) AccountType.CREDIT else AccountType.REGULAR,
                     amount = 100.0,
                 ),
             )
@@ -329,7 +352,6 @@ private fun DashBoardAccountItemPreview() {
             amount = "100.00$",
             availableCreditLimit = "Available Limit 100.00$",
             amountTextColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
-            //backgroundColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100),
         )
     }
 }
@@ -355,12 +377,11 @@ private fun AccountItemPreview() {
 @Preview
 @Composable
 private fun AccountListItemEmptyStatePreview() {
-
     NaveenAppsPreviewTheme(padding = 0.dp) {
         AccountListContentView(
             state = AccountListState(
                 accounts = emptyList(),
-                showReOrder = true
+                showReOrder = true,
             ),
             onAction = {},
         )
@@ -374,7 +395,7 @@ private fun AccountListItemSuccessStatePreview() {
         AccountListContentView(
             state = AccountListState(
                 accounts = getRandomAccountUiModel(10),
-                showReOrder = true
+                showReOrder = true,
             ),
             onAction = {},
         )

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.feature.budget.create
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,13 +15,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBalance
+import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,10 +35,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -48,11 +46,13 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
-import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -235,115 +235,104 @@ fun BudgetCreateScreen(
 
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Period section
-        SectionHeader(
+        SettingsSection(
             title = stringResource(R.string.period),
-            modifier = Modifier.padding(top = 16.dp, bottom = 6.dp),
-        )
-        ClickableTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = selectedDate.value.toMonthAndYear(),
-            label = R.string.select_date,
-            leadingIcon = Icons.Default.EditCalendar,
-            onClick = {
-                focusManager.clearFocus(force = true)
-                onAction.invoke(BudgetCreateAction.ShowMonthSelection)
-            },
-        )
-
-        // Details section
-        SectionHeader(
-            title = stringResource(com.naveenapps.expensemanager.feature.category.R.string.details),
-            modifier = Modifier.padding(top = 20.dp, bottom = 6.dp),
-        )
-        StringTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = nameField.value,
-            isError = nameField.valueError,
-            errorMessage = stringResource(id = R.string.budget_name_error),
-            onValueChange = nameField.onValueChange,
-            label = R.string.budget_name,
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        DecimalTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = amountField.value,
-            isError = amountField.valueError,
-            errorMessage = stringResource(id = R.string.budget_amount_error),
-            onValueChange = amountField.onValueChange,
-            leadingIconText = currencyIconField,
-            label = R.string.budget_amount,
-        )
-
-        // Appearance section
-        SectionHeader(
-            title = stringResource(com.naveenapps.expensemanager.feature.category.R.string.appearance),
-            modifier = Modifier.padding(top = 20.dp, bottom = 6.dp),
-        )
-        IconAndColorComponent(
-            modifier = Modifier.fillMaxWidth(),
-            selectedColor = selectedColorField.value,
-            selectedIcon = selectedIconField.value,
-            onColorSelection = selectedColorField.onValueChange,
-            onIconSelection = selectedIconField.onValueChange,
-        )
-
-        // Scope section
-        SectionHeader(
-            title = stringResource(R.string.budget_scope),
-            modifier = Modifier.padding(top = 20.dp, bottom = 6.dp),
-        )
-
-        SelectedItemView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-                .clickable {
-                    onAction.invoke(BudgetCreateAction.OpenAccountSelectionDialog)
+            modifier = Modifier.padding(top = 8.dp),
+        ) {
+            AppCardView {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    ClickableTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = selectedDate.value.toMonthAndYear(),
+                        label = R.string.select_date,
+                        leadingIcon = Icons.Default.EditCalendar,
+                        onClick = {
+                            focusManager.clearFocus(force = true)
+                            onAction.invoke(BudgetCreateAction.ShowMonthSelection)
+                        },
+                    )
                 }
-                .padding(vertical = 14.dp),
-            title = stringResource(id = R.string.select_account),
-            icon = Icons.Default.AccountBalance,
-            selectedCount = accountCount,
-        )
+            }
+        }
 
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-        )
+        SettingsSection(title = stringResource(R.string.details)) {
+            AppCardView {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    StringTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = nameField.value,
+                        isError = nameField.valueError,
+                        errorMessage = stringResource(id = R.string.budget_name_error),
+                        onValueChange = nameField.onValueChange,
+                        label = R.string.budget_name,
+                    )
 
-        SelectedItemView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp))
-                .clickable {
-                    onAction.invoke(BudgetCreateAction.OpenCategorySelectionDialog)
+                    DecimalTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = amountField.value,
+                        isError = amountField.valueError,
+                        errorMessage = stringResource(id = R.string.budget_amount_error),
+                        onValueChange = amountField.onValueChange,
+                        leadingIconText = currencyIconField,
+                        label = R.string.budget_amount,
+                    )
                 }
-                .padding(vertical = 14.dp),
-            title = stringResource(id = R.string.select_category),
-            icon = Icons.Default.FilterList,
-            selectedCount = categoriesCount,
-        )
+            }
+        }
+
+        SettingsSection(title = stringResource(R.string.appearance)) {
+            AppCardView {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    IconAndColorComponent(
+                        modifier = Modifier.fillMaxWidth(),
+                        selectedColor = selectedColorField.value,
+                        selectedIcon = selectedIconField.value,
+                        onColorSelection = selectedColorField.onValueChange,
+                        onIconSelection = selectedIconField.onValueChange,
+                    )
+                }
+            }
+        }
+
+        SettingsSection(title = stringResource(R.string.budget_scope)) {
+            AppCardView {
+                Column {
+                    SettingRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = stringResource(id = R.string.select_account),
+                        icon = Icons.Default.AccountBalance,
+                        value = accountCount,
+                        onClick = {
+                            onAction.invoke(BudgetCreateAction.OpenAccountSelectionDialog)
+                        },
+                        showDivider = true
+                    )
+                    SettingRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        title = stringResource(id = R.string.select_category),
+                        icon = Icons.Default.Category,
+                        value = categoriesCount,
+                        onClick = {
+                            onAction.invoke(BudgetCreateAction.OpenCategorySelectionDialog)
+                        }
+                    )
+                }
+            }
+        }
+
 
         // FAB clearance
         Spacer(modifier = Modifier.height(72.dp))
     }
-}
-
-@Composable
-private fun SectionHeader(
-    title: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.primary,
-        fontWeight = FontWeight.SemiBold,
-        modifier = modifier,
-    )
 }
 
 @AppPreviewsLightAndDarkMode

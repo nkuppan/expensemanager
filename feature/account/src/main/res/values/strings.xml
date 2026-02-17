@@ -32,4 +32,17 @@
         <item quantity="one">%d selected</item>
         <item quantity="other">%d selected</item>
     </plurals>
+    <plurals name="account_count">
+        <item quantity="one">%d account</item>
+        <item quantity="other">%d accounts</item>
+    </plurals>
+    <string name="add_account">Add Account</string>
+
+    <string name="details">Details</string>
+    <string name="delete">Delete</string>
+    <string name="appearance">Appearance</string>
+    <string name="edit_account">Edit Account</string>
+    <string name="create_account">Create Account</string>
+    <string name="account_type">Account Type</string>
+    <string name="balance">Balance</string>
 </resources>

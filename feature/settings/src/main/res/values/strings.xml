@@ -36,4 +36,8 @@
     <string name="default_selected_items">Default Selected Items</string>
     <string name="restore_and_backup"><![CDATA[Restore & Backup]]></string>
     <string name="others">Other Settings</string>
+
+    <string name="general">General</string>
+    <string name="data">Data</string>
+    <string name="support">Support</string>
 </resources>

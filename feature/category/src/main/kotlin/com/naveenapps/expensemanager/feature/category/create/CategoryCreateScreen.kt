@@ -27,13 +27,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -131,63 +132,62 @@ private fun CategoryCreateScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp)
+        modifier = modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // Category type section
-        SectionHeader(
+        SettingsSection(
             title = stringResource(R.string.category_type),
-            modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
-        )
-        CategoryTypeSelectionView(
-            modifier = Modifier.fillMaxWidth(),
-            selectedCategoryType = categoryTypeField.value,
-            onCategoryTypeChange = categoryTypeField.onValueChange!!,
-        )
+            modifier = Modifier.padding(top = 8.dp),
+        ) {
+            AppCardView {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    CategoryTypeSelectionView(
+                        modifier = Modifier.fillMaxWidth(),
+                        selectedCategoryType = categoryTypeField.value,
+                        onCategoryTypeChange = categoryTypeField.onValueChange!!,
+                    )
+                }
+            }
+        }
 
-        // Name section
-        SectionHeader(
-            title = stringResource(R.string.details),
-            modifier = Modifier.padding(top = 16.dp, bottom = 6.dp),
-        )
-        StringTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = nameField.value,
-            isError = nameField.valueError,
-            onValueChange = nameField.onValueChange,
-            label = R.string.category_name,
-            errorMessage = stringResource(id = R.string.category_name_error),
-        )
+        SettingsSection(title = stringResource(R.string.details)) {
+            AppCardView {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    StringTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = nameField.value,
+                        isError = nameField.valueError,
+                        onValueChange = nameField.onValueChange,
+                        label = R.string.category_name,
+                        errorMessage = stringResource(id = R.string.category_name_error),
+                    )
+                }
+            }
+        }
 
-        // Icon and color section
-        SectionHeader(
-            title = stringResource(R.string.appearance),
-            modifier = Modifier.padding(top = 16.dp, bottom = 12.dp),
-        )
-        IconAndColorComponent(
-            modifier = Modifier.fillMaxWidth(),
-            selectedColor = selectedColorField.value,
-            selectedIcon = selectedIconField.value,
-            onColorSelection = selectedColorField.onValueChange,
-            onIconSelection = selectedIconField.onValueChange,
-        )
+        SettingsSection(title = stringResource(R.string.appearance)) {
+            AppCardView {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    IconAndColorComponent(
+                        modifier = Modifier.fillMaxWidth(),
+                        selectedColor = selectedColorField.value,
+                        selectedIcon = selectedIconField.value,
+                        onColorSelection = selectedColorField.onValueChange,
+                        onIconSelection = selectedIconField.onValueChange,
+                    )
+                }
+            }
+        }
 
         // Bottom spacer for FAB clearance
         Spacer(modifier = Modifier.height(72.dp))
     }
-}
-
-@Composable
-private fun SectionHeader(
-    title: String,
-    modifier: Modifier = Modifier,
-) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.colorScheme.primary,
-        fontWeight = FontWeight.SemiBold,
-        modifier = modifier,
-    )
 }
 
 @AppPreviewsLightAndDarkMode

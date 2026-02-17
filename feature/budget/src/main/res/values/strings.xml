@@ -23,4 +23,6 @@
     <string name="create_budget">Create Budget</string>
     <string name="period">Period</string>
     <string name="budget_scope">Budget Scope</string>
+    <string name="details">Details</string>
+    <string name="appearance">Appearance</string>
 </resources>
