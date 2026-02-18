@@ -22,4 +22,5 @@
     <string name="color">Color</string>
     <string name="icon">Icon</string>
     <string name="change">Change</string>
+    <string name="add_new">Add New</string>
 </resources>

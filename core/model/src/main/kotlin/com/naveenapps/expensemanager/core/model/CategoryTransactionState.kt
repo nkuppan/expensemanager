@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.core.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class CategoryTransactionState(
     val totalAmount: Amount,
     val pieChartData: List<PieChartData>,

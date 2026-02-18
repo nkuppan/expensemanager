@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.feature.category.selection
 
+import android.annotation.SuppressLint
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +21,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,25 +35,26 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MultipleCategoriesSelectionScreen(
+    selectedCategories: List<Category>,
+    onItemSelection: ((List<Category>, Boolean) -> Unit),
     viewModel: CategorySelectionViewModel = koinViewModel(),
-    selectedCategories: List<Category> = emptyList(),
-    onItemSelection: ((List<Category>, Boolean) -> Unit)? = null,
 ) {
     viewModel.selectAllThisCategory(selectedCategories)
 
     CategorySelectionView(viewModel, onItemSelection)
 }
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 private fun CategorySelectionView(
     viewModel: CategorySelectionViewModel,
     onItemSelection: ((List<Category>, Boolean) -> Unit)?,
 ) {
-    val context = LocalContext.current
+    val activity = LocalActivity.current
     val categories by viewModel.categories.collectAsState()
     val selectedCategories by viewModel.selectedCategories.collectAsState()
 
-    MultipleCategoriesSelectionScreen(
+    MultipleCategorySelectionViewContent(
         modifier = Modifier,
         categories = categories,
         selectedCategories = selectedCategories,
@@ -63,11 +65,13 @@ private fun CategorySelectionView(
                     selectedCategories.size == categories.size,
                 )
             } else {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.category_selection_message),
-                    Toast.LENGTH_SHORT,
-                ).show()
+                if (activity != null && !activity.isFinishing) {
+                    Toast.makeText(
+                        activity,
+                        activity.getString(R.string.category_selection_message),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
             }
         },
         onClearChanges = viewModel::clearChanges,
@@ -76,12 +80,12 @@ private fun CategorySelectionView(
 }
 
 @Composable
-fun MultipleCategoriesSelectionScreen(
-    modifier: Modifier = Modifier,
+private fun MultipleCategorySelectionViewContent(
     categories: List<Category>,
     selectedCategories: List<Category>,
     onApplyChanges: (() -> Unit),
     onClearChanges: (() -> Unit),
+    modifier: Modifier = Modifier,
     onItemSelection: ((Category, Boolean) -> Unit)? = null,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -172,7 +176,7 @@ fun MultipleCategoriesSelectionScreen(
 @Composable
 private fun MultipleCategoriesSelectionScreenPreview() {
     NaveenAppsPreviewTheme(padding = 0.dp) {
-        MultipleCategoriesSelectionScreen(
+        MultipleCategorySelectionViewContent(
             categories = getRandomCategoryData(),
             selectedCategories = getRandomCategoryData(),
             onApplyChanges = {},

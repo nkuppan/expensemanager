@@ -3,11 +3,10 @@ package com.naveenapps.expensemanager.core.designsystem.components
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -17,58 +16,43 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
 
+
 @Composable
-fun DashboardWidgetTitle(
+fun SelectionHeader(
     title: String,
-    modifier: Modifier = Modifier,
-    onViewAllClick: (() -> Unit)? = null,
+    createNewCallback: (() -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f),
         )
-        if (onViewAllClick != null) {
+        if (createNewCallback != null) {
             TextButton(
-                onClick = onViewAllClick,
+                onClick = { createNewCallback.invoke() },
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
             ) {
-                Text(
-                    text = stringResource(id = R.string.view_all),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold,
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
                 )
                 Spacer(modifier = Modifier.width(4.dp))
-                Icon(
-                    imageVector = Icons.Rounded.ChevronRight,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
+                Text(
+                    text = stringResource(id = R.string.add_new),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Medium,
                 )
             }
         }
-    }
-}
-
-@AppPreviewsLightAndDarkMode
-@Composable
-fun DashboardWidgetTitlePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
-        DashboardWidgetTitle(
-            title = "Sample Title",
-            onViewAllClick = {}
-        )
     }
 }

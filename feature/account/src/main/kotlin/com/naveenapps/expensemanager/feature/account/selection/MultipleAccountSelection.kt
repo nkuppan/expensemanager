@@ -1,13 +1,13 @@
 package com.naveenapps.expensemanager.feature.account.selection
 
 import android.widget.Toast
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -20,7 +20,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SelectionTitle
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
@@ -50,7 +48,7 @@ private fun AccountSelectionView(
     viewModel: AccountSelectionViewModel,
     onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)?,
 ) {
-    val context = LocalContext.current
+    val activity = LocalActivity.current
     val accounts by viewModel.accounts.collectAsState()
     val selectedAccounts by viewModel.selectedAccounts.collectAsState()
 
@@ -65,11 +63,13 @@ private fun AccountSelectionView(
                     selectedAccounts.size == accounts.size,
                 )
             } else {
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.account_selection_message),
-                    Toast.LENGTH_SHORT,
-                ).show()
+                if (activity != null && !activity.isFinishing) {
+                    Toast.makeText(
+                        activity,
+                        activity.getString(R.string.account_selection_message),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                }
             }
         },
         onClearChanges = viewModel::clearChanges,

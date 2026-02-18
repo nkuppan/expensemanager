@@ -1,19 +1,23 @@
 package com.naveenapps.expensemanager.feature.transaction.list
 
-import androidx.compose.foundation.clickable
+
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,9 +30,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
@@ -68,27 +73,36 @@ fun TransactionListScreen(
 private fun TransactionListScreenContent(
     showBackNavigationIcon: Boolean,
     state: TransactionListState,
-    onAction: (TransactionListAction) -> Unit
+    onAction: (TransactionListAction) -> Unit,
 ) {
     Scaffold(
         topBar = {
             ExpenseManagerTopAppBar(
                 title = stringResource(R.string.transaction),
-                navigationIcon = if (showBackNavigationIcon) Icons.AutoMirrored.Default.ArrowBack else null,
+                navigationIcon = if (showBackNavigationIcon) {
+                    Icons.AutoMirrored.Default.ArrowBack
+                } else {
+                    null
+                },
                 navigationBackClick = {
-                    onAction.invoke(TransactionListAction.ClosePage)
-                }
+                    onAction(TransactionListAction.ClosePage)
+                },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {
-                    onAction.invoke(TransactionListAction.OpenCreateTransaction)
-                }
+                onClick = { onAction(TransactionListAction.OpenCreateTransaction) },
+                shape = RoundedCornerShape(16.dp),
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                elevation = FloatingActionButtonDefaults.elevation(
+                    defaultElevation = 6.dp,
+                    pressedElevation = 10.dp,
+                ),
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.add_transaction),
                 )
             }
         },
@@ -99,10 +113,14 @@ private fun TransactionListScreenContent(
                 .padding(top = innerPadding.calculateTopPadding()),
             state = state,
         ) { transaction ->
-            onAction.invoke(TransactionListAction.OpenEdiTransaction(transaction.id))
+            onAction(TransactionListAction.OpenEdiTransaction(transaction.id))
         }
     }
 }
+
+// ─────────────────────────────────────────────────────────────────────
+//  Main list
+// ─────────────────────────────────────────────────────────────────────
 
 @Composable
 private fun TransactionListScreen(
@@ -110,8 +128,10 @@ private fun TransactionListScreen(
     modifier: Modifier = Modifier,
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
-
-    LazyColumn(modifier = modifier.fillMaxWidth()) {
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(bottom = 88.dp), // clear the FAB
+    ) {
         item {
             FilterView(
                 modifier = Modifier
@@ -119,74 +139,130 @@ private fun TransactionListScreen(
                     .padding(end = 6.dp),
             )
         }
+
         if (state.transactionListItem.isEmpty()) {
             item {
                 EmptyItem(
                     modifier = Modifier
                         .fillMaxSize()
-                        .height(400.dp),
+                        .padding(top = 80.dp)
+                        .height(320.dp),
                     emptyItemText = stringResource(id = R.string.no_transactions_available),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
                 )
             }
         } else {
+            val sections = buildSections(state.transactionListItem)
 
-            items(state.transactionListItem) { transactionListItem ->
-                when (transactionListItem) {
-                    TransactionListItem.Divider -> {
-                        HorizontalDivider(
-                            modifier = Modifier.padding(
-                                top = 8.dp,
-                                bottom = 8.dp
+            sections.forEachIndexed { sectionIndex, section ->
+                when (section) {
+                    is Section.Header -> {
+                        item(key = "header_${section.item.date}") {
+                            TransactionHeaderItem(
+                                date = section.item.date,
+                                textColor = section.item.amountTextColor,
+                                totalAmount = section.item.totalAmount,
                             )
-                        )
+                        }
                     }
 
-                    is TransactionListItem.HeaderItem -> {
-                        TransactionHeaderItem(
-                            transactionListItem.date,
-                            transactionListItem.amountTextColor,
-                            transactionListItem.totalAmount,
-                        )
-                    }
-
-                    is TransactionListItem.TransactionItem -> {
-                        val item = transactionListItem.date
-                        AppCardView(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 2.dp)
-                        ) {
-                            TransactionItem(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        onItemClick?.invoke(item)
-                                    },
-                                categoryName = item.categoryName,
-                                categoryColor = item.categoryIcon.backgroundColor,
-                                categoryIcon = item.categoryIcon.name,
-                                amount = item.amount,
-                                date = item.date,
-                                notes = item.notes,
-                                transactionType = item.transactionType,
-                                fromAccountName = item.fromAccountName,
-                                fromAccountIcon = item.fromAccountIcon.name,
-                                fromAccountColor = item.fromAccountIcon.backgroundColor,
-                                toAccountName = item.toAccountName,
-                                toAccountIcon = item.toAccountIcon?.name,
-                                toAccountColor = item.toAccountIcon?.backgroundColor,
+                    is Section.TransactionGroup -> {
+                        item(key = "group_$sectionIndex") {
+                            TransactionGroupCard(
+                                transactions = section.items,
+                                onItemClick = onItemClick,
                             )
                         }
                     }
                 }
             }
-            item {
-                Spacer(modifier = Modifier.height(48.dp))
+        }
+    }
+}
+
+private sealed interface Section {
+    data class Header(val item: TransactionListItem.HeaderItem) : Section
+    data class TransactionGroup(val items: List<TransactionUiItem>) : Section
+}
+
+private fun buildSections(items: List<TransactionListItem>): List<Section> {
+    val sections = mutableListOf<Section>()
+    val pending = mutableListOf<TransactionUiItem>()
+
+    fun flush() {
+        if (pending.isNotEmpty()) {
+            sections.add(Section.TransactionGroup(pending.toList()))
+            pending.clear()
+        }
+    }
+
+    for (item in items) {
+        when (item) {
+            is TransactionListItem.HeaderItem -> {
+                flush()
+                sections.add(Section.Header(item))
+            }
+
+            is TransactionListItem.TransactionItem -> {
+                pending.add(item.date)
+            }
+
+            TransactionListItem.Divider -> {
+                flush()
+            }
+        }
+    }
+    flush()
+    return sections
+}
+
+@Composable
+private fun TransactionGroupCard(
+    transactions: List<TransactionUiItem>,
+    onItemClick: ((TransactionUiItem) -> Unit)?,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 2.dp),
+    ) {
+        AppCardView {
+            transactions.forEachIndexed { index, item ->
+                TransactionItem(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    categoryName = item.categoryName,
+                    categoryColor = item.categoryIcon.backgroundColor,
+                    categoryIcon = item.categoryIcon.name,
+                    amount = item.amount,
+                    date = item.date,
+                    notes = item.notes,
+                    transactionType = item.transactionType,
+                    fromAccountName = item.fromAccountName,
+                    fromAccountIcon = item.fromAccountIcon.name,
+                    fromAccountColor = item.fromAccountIcon.backgroundColor,
+                    toAccountName = item.toAccountName,
+                    toAccountIcon = item.toAccountIcon?.name,
+                    toAccountColor = item.toAccountIcon?.backgroundColor,
+                    onClick = {
+                        onItemClick?.invoke(item)
+                    }
+                )
+
+                // Thin inset divider between rows — not after the last one
+                if (index < transactions.lastIndex) {
+                    HorizontalDivider(
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+                    )
+                }
             }
         }
     }
 }
+
+// ─────────────────────────────────────────────────────────────────────
+//  Improved date header
+// ─────────────────────────────────────────────────────────────────────
 
 @Composable
 fun TransactionHeaderItem(
@@ -194,40 +270,54 @@ fun TransactionHeaderItem(
     textColor: Int,
     totalAmount: String,
 ) {
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, top = 12.dp, end = 16.dp, bottom = 4.dp),
+            .padding(horizontal = 20.dp, vertical = 16.dp),
     ) {
-        Text(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            text = date.fromCompleteDate().toDate(),
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center,
-        )
-        Column(
-            modifier = Modifier
-                .padding(start = 12.dp)
-                .weight(1f)
-                .align(Alignment.CenterVertically),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = date.fromCompleteDate().toMonthYear(),
-                style = MaterialTheme.typography.bodySmall,
+                text = date.fromCompleteDate().toDate(),
+                style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.5).sp,
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
             )
+
+            Spacer(Modifier.width(12.dp))
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(1.dp),
+            ) {
+                Text(
+                    text = date.fromCompleteDate().toMonthYear(),
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
+                )
+                Text(
+                    text = date.fromCompleteDate().toDay(),
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    ),
+                )
+            }
+
             Text(
-                text = date.fromCompleteDate().toDay(),
-                style = MaterialTheme.typography.bodySmall,
+                text = totalAmount,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = (-0.3).sp,
+                ),
+                color = colorResource(id = textColor),
             )
         }
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .align(Alignment.CenterVertically),
-            text = totalAmount,
-            color = colorResource(id = textColor),
-            style = MaterialTheme.typography.titleMedium,
-        )
     }
 }
 
@@ -243,9 +333,9 @@ fun TransactionListItemEmptyStatePreview() {
 }
 
 val DUMMY_DATA = listOf(
-    getTransactionUiState(),
-    getTransactionUiState(),
-    getTransactionUiState(),
+    getTransactionUiState("12/10/2023"),
+    getTransactionUiState("13/10/2023"),
+    getTransactionUiState("14/10/2023"),
 )
 
 fun getTransactionItem(id: String) = TransactionUiItem(
@@ -266,13 +356,13 @@ fun getTransactionItem(id: String) = TransactionUiItem(
     date = Date().toCompleteDateWithDate(),
 )
 
-private fun getTransactionUiState() = TransactionGroup(
-    date = "12/10/2023",
+private fun getTransactionUiState(date: String) = TransactionGroup(
+    date = date,
     amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
     totalAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactions = buildList {
         repeat(3) {
-            add(getTransactionItem("1"))
+            add(getTransactionItem(it.toString()))
         }
     },
 )

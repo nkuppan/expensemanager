@@ -123,7 +123,7 @@ private fun DashboardScreenContent(
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(bottom = 78.dp)
+        contentPadding = PaddingValues(bottom = 78.dp),
     ) {
         item {
             FilterView(

@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.core.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class PieChartData(
     val name: String,
     val value: Float,

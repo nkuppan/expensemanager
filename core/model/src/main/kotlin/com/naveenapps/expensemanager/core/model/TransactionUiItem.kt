@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.core.model
 
+import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 
+@Stable
 data class TransactionGroup(
     val date: String,
     val amountTextColor: Int,
@@ -10,6 +12,7 @@ data class TransactionGroup(
     val isLastItem: Boolean = false,
 )
 
+@Stable
 data class TransactionUiItem(
     val id: String,
     val amount: Amount = Amount(0.0),

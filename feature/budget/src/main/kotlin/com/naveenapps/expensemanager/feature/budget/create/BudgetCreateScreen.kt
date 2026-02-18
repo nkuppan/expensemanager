@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -120,9 +119,10 @@ private fun BudgetCreateScreenContentView(
         ) {
             MultipleCategoriesSelectionScreen(
                 selectedCategories = state.selectedCategories,
-            ) { items, selected ->
-                onAction.invoke(BudgetCreateAction.SelectCategories(selected, items))
-            }
+                onItemSelection = { items, selected ->
+                    onAction.invoke(BudgetCreateAction.SelectCategories(selected, items))
+                }
+            )
         }
     }
 
