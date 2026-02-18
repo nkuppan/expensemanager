@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Settings
@@ -20,7 +19,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -49,6 +47,7 @@ import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiMode
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
+import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import org.koin.compose.viewmodel.koinViewModel
@@ -122,14 +121,17 @@ private fun DashboardScreenContent(
     state: DashboardState,
     onAction: (DashboardAction) -> Unit,
 ) {
-    LazyColumn(modifier = modifier) {
-        /*item {
+    LazyColumn(
+        modifier = modifier,
+        contentPadding = PaddingValues(bottom = 78.dp)
+    ) {
+        item {
             FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),
             )
-        }*/
+        }
         item {
             IncomeExpenseBalanceView(
                 expenseFlowState = state.expenseFlowState,

@@ -44,6 +44,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.R
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
@@ -112,11 +113,11 @@ private fun TransactionListScreen(
 
     LazyColumn(modifier = modifier.fillMaxWidth()) {
         item {
-            /*FilterView(
+            FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),
-            )*/
+            )
         }
         if (state.transactionListItem.isEmpty()) {
             item {
