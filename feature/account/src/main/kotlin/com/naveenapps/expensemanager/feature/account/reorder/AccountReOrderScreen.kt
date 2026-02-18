@@ -49,6 +49,7 @@ import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.model.Account
@@ -179,29 +180,8 @@ private fun ReOrderContent(
                     null
                 }
 
-            val elevation by animateDpAsState(
-                targetValue = if (isDragging) 8.dp else 0.dp,
-                animationSpec = spring(stiffness = Spring.StiffnessMedium),
-                label = "elevation",
-            )
-
-            val shape = when {
-                accounts.size == 1 -> MaterialTheme.shapes.large
-                index == 0 -> RoundedCornerShape(
-                    topStart = 14.dp, topEnd = 14.dp,
-                    bottomStart = 4.dp, bottomEnd = 4.dp,
-                )
-
-                index == accounts.lastIndex -> RoundedCornerShape(
-                    topStart = 4.dp, topEnd = 4.dp,
-                    bottomStart = 14.dp, bottomEnd = 14.dp,
-                )
-
-                else -> RoundedCornerShape(4.dp)
-            }
-
             AppCardView(
-                shape = shape,
+                shape = AppCardViewDefaults.cardShape(index, accounts),
                 modifier = Modifier
                     .fillMaxWidth()
                     .graphicsLayer {

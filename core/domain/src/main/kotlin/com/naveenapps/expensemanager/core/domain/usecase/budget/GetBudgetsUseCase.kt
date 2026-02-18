@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
+import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -82,6 +83,7 @@ fun Budget.toBudgetUiModel(
     transactions = transactions,
 )
 
+@Stable
 data class BudgetUiModel(
     val id: String,
     val name: String,

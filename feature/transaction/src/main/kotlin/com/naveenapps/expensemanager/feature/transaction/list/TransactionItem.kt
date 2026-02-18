@@ -59,20 +59,6 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
-// ═══════════════════════════════════════════════════════════════════════
-//  Improved TransactionItem
-//
-//  Changes from the original:
-//    • Swipe-to-reveal Edit / Delete actions
-//    • Rounded category icon container with tinted background
-//    • Subtle separator dot between category and account
-//    • Colour-coded amount sign prefix (+/−) for quick scanning
-//    • Notes shown as a muted single-line beneath the subtitle
-//    • Transfer layout tightened with an arrow indicator
-//    • animateContentSize so expanding notes is smooth
-//    • Accessible – keeps contentDescription, touch targets ≥ 48 dp
-// ═══════════════════════════════════════════════════════════════════════
-
 @Composable
 fun TransactionItem(
     categoryName: String,
@@ -95,7 +81,6 @@ fun TransactionItem(
 ) {
     val isTransfer = toAccountName?.isNotBlank() == true
 
-    // ── Swipe state ────────────────────────────────────────────────
     val density = LocalDensity.current
     val swipeMax = with(density) { 140.dp.toPx() }
     val snapAt = with(density) { 60.dp.toPx() }

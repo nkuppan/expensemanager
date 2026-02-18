@@ -18,11 +18,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -40,7 +40,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -50,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
@@ -209,40 +209,22 @@ private fun CategoryListScreenContent(
                     }
 
                     LazyColumn(
-                        contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                            bottom = 88.dp, // room for FAB
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(2.dp),
+                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 78.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
+                        val categories = state.filteredCategories
+
                         itemsIndexed(
-                            items = state.filteredCategories,
+                            items = categories,
                             key = { _, item -> item.id },
                         ) { index, category ->
-                            val shape = when {
-                                state.filteredCategories.size == 1 -> MaterialTheme.shapes.large
-                                index == 0 -> RoundedCornerShape(
-                                    topStart = 16.dp, topEnd = 16.dp,
-                                    bottomStart = 4.dp, bottomEnd = 4.dp,
-                                )
-
-                                index == state.filteredCategories.lastIndex -> RoundedCornerShape(
-                                    topStart = 4.dp, topEnd = 4.dp,
-                                    bottomStart = 16.dp, bottomEnd = 16.dp,
-                                )
-
-                                else -> RoundedCornerShape(4.dp)
-                            }
-
                             CategoryItem(
                                 name = category.name,
                                 icon = category.storedIcon.name,
                                 iconBackgroundColor = category.storedIcon.backgroundColor,
-                                shape = shape,
+                                shape = AppCardViewDefaults.cardShape(index, categories),
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .clip(MaterialTheme.shapes.medium)
                                     .animateItem(),
                                 onClick = { onItemClick.invoke(category) },
                                 trailingContent = {

@@ -3,9 +3,10 @@
 package com.naveenapps.expensemanager.feature.budget.details
 
 import androidx.annotation.ColorRes
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -30,6 +32,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,13 +44,18 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
+import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -81,12 +89,20 @@ private fun BudgetDetailsScaffoldView(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            Surface(shadowElevation = 4.dp) {
+            Surface(shadowElevation = 2.dp) {
                 Column {
-                    ExpenseManagerTopAppBar(
-                        navigationIcon = Icons.Default.Close,
-                        navigationBackClick = closePage,
-                        title = stringResource(id = R.string.budgets),
+                    TopAppBar(
+                        navigationIcon = {
+                            IconButton(onClick = closePage) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                        title = {
+                            Text(stringResource(R.string.budgets))
+                        },
                         actions = {
                             budget?.let {
                                 IconButton(onClick = openBudgetEditScreen) {
@@ -96,7 +112,7 @@ private fun BudgetDetailsScaffoldView(
                                     )
                                 }
                             }
-                        },
+                        }
                     )
                     budget?.let {
                         BudgetHeaderItem(
@@ -141,29 +157,46 @@ private fun BudgetDetailContent(
     Box(modifier = modifier) {
         val transactions = budget?.transactions
         if (transactions?.isNotEmpty() == true) {
-            LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
-                items(transactions, key = { it.id }) { item ->
-                    TransactionItem(
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 78.dp,
+                    top = 16.dp
+                ),
+                verticalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+
+                itemsIndexed(
+                    items = transactions,
+                    key = { _, item -> item.id },
+                ) { index, item ->
+                    AppCardView(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
+                            .fillMaxWidth(),
+                        shape = AppCardViewDefaults.cardShape(index, transactions),
+                    ) {
+                        TransactionItem(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            categoryName = item.categoryName,
+                            categoryColor = item.categoryIcon.backgroundColor,
+                            categoryIcon = item.categoryIcon.name,
+                            amount = item.amount,
+                            date = item.date,
+                            notes = item.notes,
+                            transactionType = item.transactionType,
+                            fromAccountName = item.fromAccountName,
+                            fromAccountIcon = item.fromAccountIcon.name,
+                            fromAccountColor = item.fromAccountIcon.backgroundColor,
+                            toAccountName = item.toAccountName,
+                            toAccountIcon = item.toAccountIcon?.name,
+                            toAccountColor = item.toAccountIcon?.backgroundColor,
+                            onEdit = {
                                 onItemClick.invoke(item.id)
                             }
-                            .then(ItemSpecModifier),
-                        categoryName = item.categoryName,
-                        categoryColor = item.categoryIcon.backgroundColor,
-                        categoryIcon = item.categoryIcon.name,
-                        amount = item.amount,
-                        date = item.date,
-                        notes = item.notes,
-                        transactionType = item.transactionType,
-                        fromAccountName = item.fromAccountName,
-                        fromAccountIcon = item.fromAccountIcon.name,
-                        fromAccountColor = item.fromAccountIcon.backgroundColor,
-                        toAccountName = item.toAccountName,
-                        toAccountIcon = item.toAccountIcon?.name,
-                        toAccountColor = item.toAccountIcon?.backgroundColor,
-                    )
+                        )
+                    }
                 }
                 item {
                     Spacer(
@@ -237,5 +270,36 @@ fun BudgetHeaderItem(
             text = "$transactionAmount of $amount",
             style = MaterialTheme.typography.labelSmall,
         )
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+fun BudgetDetailsScaffoldViewPreview() {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
+        BudgetDetailsScaffoldView(
+            budget = BudgetUiModel(
+                id = "sample",
+                name = "My Own Budget",
+                icon = "account_wallet",
+                iconBackgroundColor = "#000000",
+                progressBarColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+                amount = Amount(100.0, "$100.00"),
+                transactionAmount = Amount(100.0, "$100.00"),
+                percent = 50.0f,
+                transactions = getTransactionItems()
+            ),
+            openBudgetEditScreen = {},
+            closePage = {},
+            openTransactionCreateScreen = {},
+        )
+    }
+}
+
+private fun getTransactionItems(total: Int = 10): List<TransactionUiItem> {
+    return buildList {
+        repeat(total) {
+            add(getTransactionItem(it.toString()))
+        }
     }
 }

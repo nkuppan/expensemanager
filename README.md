@@ -6,27 +6,31 @@
   </a>
 </p>
 
-Expense Manager
-==================
-[![API](https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=21)
-[![Build](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml/badge.svg)](https://github.com/nkuppan/expensemanager/actions/workflows/build.yml)
+<h1 align="center">Expense Manager</h1>
 
-This is the repository for the [Expense Manager](https://expensemanager.naveenapps.com/) app. It is
-a **work in progress** 🚧.
+<p align="center">
+  A beautifully crafted, open-source expense tracking app built entirely with Kotlin & Jetpack Compose.
+</p>
 
-**Expense Manager** is a fully functional Android app built entirely with Kotlin and Jetpack
-Compose. It follows Android design and development best practices and is intended to be a useful
-reference for developers. As a running app, it's intended to help developers keep up-to-date with
-the world of Android development by providing regular news updates.
+<p align="center">
+  <a href="https://android-arsenal.com/api?level=21"><img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat" alt="API 21+"></a>
+  <a href="https://github.com/nkuppan/expensemanager/actions/workflows/build.yml"><img src="https://github.com/nkuppan/expensemanager/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+  <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-100%25-7F52FF.svg?style=flat&logo=kotlin&logoColor=white" alt="Kotlin"></a>
+  <a href="https://developer.android.com/jetpack/compose"><img src="https://img.shields.io/badge/Jetpack%20Compose-UI-4285F4.svg?style=flat&logo=jetpackcompose&logoColor=white" alt="Compose"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
+</p>
 
-**Features**
+---
 
-* Users can create multiple accounts to group their transactions under specific accounts
-* Create monthly budgets and find extra budget customimizing options
-* Analyse and know the trends of your transactions on a day, week and monthly wise.
-* Interactive category grouping pie chart to understand where you are mostly spending your money.
-* Multiple currency switching in UI (Currency conversion is yet to be supported)
-* Export your transactions into csv format (pdf will be added soon)
+## About
+
+**Expense Manager** is a fully functional Android app for personal finance tracking. It follows modern Android design and development best practices, making it both a useful daily-driver and a reference project for developers looking to learn production-grade Compose architecture.
+
+> 🚧 **Work in progress** — actively maintained and accepting contributions.
+
+---
+
+## Screenshots
 
 |                    Home Screen                    |                  Analysis Screen                  |                Transaction Screen                 |               Category Chart Screen               |
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
@@ -34,30 +38,151 @@ the world of Android development by providing regular news updates.
 
 |                Transaction Create                 |                  Account Create                   |                   Budget Create                   |                    Dark Theme                     |
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
-| <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> | 
+| <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> |
 
-## Android development
-Expense Manager attempts to make use of the latest Android libraries and best practices:
+---
 
-* Completely written in [Jetpack Compose](https://developer.android.com/jetpack/compose)
-* Entirely written in [Kotlin](https://kotlinlang.org/) (
-  including [Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
-  and [Flow](https://kotlinlang.org/docs/reference/coroutines/flow.html))
-  with [Spotless](https://github.com/diffplug/spotless) for code style
-* Makes use of [Android Jetpack:](https://developer.android.com/jetpack/):
-    * [Architecture Components](https://developer.android.com/jetpack/arch/) including **ViewModel**, **Room**, **Navigation**, **WorkManager** and **DataStore**
-    * [Android KTX](https://developer.android.com/kotlin/ktx) for more fluent use of Android APIs
-* [Koin]([https://dagger.dev/hilt/](https://insert-koin.io/)) for dependency injection
-* Designed and built using Material 3 Design [components](https://m3.material.io/)
-  and [theming](https://m3.material.io/theme-builder)
-* Full [Dark Theme](https://m3.material.io/styles/color/choosing-a-scheme) support
+## Features
 
-## Contributions
+### Core Functionality
+- **Multi-account management** — create and organise transactions across Checking, Savings, Cash, Credit Card, and custom accounts
+- **Budget tracking** — set monthly budgets with flexible customisation options and track spending against your targets
+- **Transaction management** — log income, expenses, and transfers between accounts with category tagging, notes, and timestamps
+- **CSV export** — export your transaction data for use in spreadsheets or other tools (PDF export coming soon)
+- **Multi-currency support** — switch display currencies in the UI (full conversion support is planned)
 
-Please feel free to file an issue for errors, suggestions or feature requests. Pull requests are
-also encouraged.
+### Analytics & Insights
+- **Trend analysis** — visualise your spending patterns across daily, weekly, and monthly timeframes
+- **Category breakdown** — interactive pie chart showing where your money goes, grouped by category
+- **Income vs. Expense summaries** — at-a-glance totals with colour-coded indicators
 
-# License
+### Redesigned Transaction List Screen
+The transaction list has been rebuilt from the ground up with a focus on usability and polish:
 
-**Expense Manager** is distributed under the terms of the Apache License (Version 2.0). See the
-[license](LICENSE) for more information.
+- **Income / Expense summary cards** — gradient-backed cards at the top showing period totals with glowing accent indicators
+- **Account filter pills** — horizontally scrollable chips for quick filtering by account
+- **Type filter tabs** — segmented control (All / Expense / Income) with animated selection and count badges
+- **Collapsible search** — tap-to-reveal search bar with clear button for fast transaction lookup
+- **Date-grouped layout** — transactions grouped by date with daily net totals in each header
+- **Swipe-to-reveal actions** — gesture-driven Edit and Delete actions on each row (spring-animated, no external library)
+- **Staggered entrance animations** — header, cards, and groups animate in sequentially on load
+- **Empty state** — friendly messaging when filters return no results
+- **Floating Action Button** — quick-access button for adding new transactions
+
+### Improved Transaction Item Component
+Each transaction row has been refined for better visual hierarchy and interaction:
+
+- **Rounded icon container** — 44dp badge with category-tinted background and subtle border
+- **Colour-coded amount prefix** — `+` for income (green), `−` for expenses (red) for instant scanning
+- **Transfer arrow indicator** — clear `↓` flow between From → To accounts on transfer transactions
+- **Notes preview** — single-line muted note text beneath the subtitle
+- **Swipe actions** — integrated Edit / Delete reveal with spring physics animation
+- **Smooth content transitions** — `animateContentSize()` for expanding/collapsing notes
+- **Backward-compatible API** — all new callbacks (`onEdit`, `onDelete`, `onClick`) default to `null`, so existing call sites remain unchanged
+
+### Theming
+- Full **Material 3** design system with dynamic color support
+- Complete **Dark Theme** implementation
+
+---
+
+## Architecture & Tech Stack
+
+Expense Manager is structured as a multi-module project following clean architecture principles.
+
+| Layer | Libraries / Tools |
+|---|---|
+| **UI** | [Jetpack Compose](https://developer.android.com/jetpack/compose), [Material 3](https://m3.material.io/) |
+| **Navigation** | [Compose Navigation](https://developer.android.com/jetpack/compose/navigation) |
+| **State management** | [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel), [Kotlin Flow](https://kotlinlang.org/docs/flow.html), [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) |
+| **Persistence** | [Room](https://developer.android.com/training/data-storage/room), [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) |
+| **Background work** | [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) |
+| **Dependency injection** | [Koin](https://insert-koin.io/) |
+| **Code style** | [Spotless](https://github.com/diffplug/spotless) |
+| **Language** | 100% [Kotlin](https://kotlinlang.org/) |
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Android Studio Hedgehog (2023.1.1) or later
+- JDK 17+
+- Android SDK with minimum API 21
+
+### Build & Run
+
+```bash
+# Clone the repository
+git clone https://github.com/nkuppan/expensemanager.git
+cd expensemanager
+
+# Build the debug variant
+./gradlew assembleDebug
+
+# Install on a connected device
+./gradlew installDebug
+```
+
+---
+
+## Project Structure
+
+```
+expensemanager/
+├── app/                    # Application module (entry point)
+├── core/
+│   ├── common/             # Shared utilities, colour resources, extensions
+│   ├── data/               # Repository implementations, data sources
+│   ├── database/           # Room database, DAOs, entities
+│   ├── datastore/          # DataStore preferences
+│   └── model/              # Domain models
+├── feature/
+│   ├── transaction/        # Transaction list, create/edit, item components
+│   ├── account/            # Account management
+│   ├── budget/             # Budget tracking
+│   ├── analysis/           # Charts and analytics
+│   └── category/           # Category management
+└── docs/                   # Documentation and screenshots
+```
+
+---
+
+## Contributing
+
+Contributions are welcome and encouraged! Whether it's a bug fix, new feature, or documentation improvement — every PR helps.
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+Please feel free to [file an issue](https://github.com/nkuppan/expensemanager/issues) for bugs, suggestions, or feature requests.
+
+---
+
+## Roadmap
+
+- [ ] PDF export for transaction reports
+- [ ] Full multi-currency conversion with live exchange rates
+- [ ] Recurring transactions (auto-generated on schedule)
+- [ ] Biometric app lock
+- [ ] Widget for home screen balance overview
+- [ ] Cloud sync/backup
+
+---
+
+## License
+
+**Expense Manager** is distributed under the terms of the Apache License (Version 2.0). See the [LICENSE](LICENSE) file for details.
+
+```
+Copyright 2023 Naveen Kumar Kuppan
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+```

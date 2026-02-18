@@ -247,8 +247,8 @@ val DUMMY_DATA = listOf(
     getTransactionUiState(),
 )
 
-fun getTransactionItem() = TransactionUiItem(
-    id = "1",
+fun getTransactionItem(id: String) = TransactionUiItem(
+    id = id,
     notes = "Sample Description",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     categoryName = "Clothing",
@@ -271,7 +271,7 @@ private fun getTransactionUiState() = TransactionGroup(
     totalAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactions = buildList {
         repeat(3) {
-            add(getTransactionItem())
+            add(getTransactionItem("1"))
         }
     },
 )

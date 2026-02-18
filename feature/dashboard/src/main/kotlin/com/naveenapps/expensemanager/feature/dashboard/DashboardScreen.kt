@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Settings
@@ -18,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -31,9 +34,10 @@ import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.OverallStatusOverview
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
@@ -45,7 +49,6 @@ import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiMode
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
-import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import org.koin.compose.viewmodel.koinViewModel
@@ -250,28 +253,37 @@ private fun DashboardScreenContent(
             )
         }
         if (state.transactions.isNotEmpty()) {
-            items(state.transactions, key = { it.id }) { transaction ->
-                TransactionItem(
+            itemsIndexed(
+                items = state.transactions,
+                key = { _, item -> item.id },
+            ) { index, transaction ->
+                AppCardView(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
-                        }
-                        .then(ItemSpecModifier),
-                    categoryName = transaction.categoryName,
-                    categoryColor = transaction.categoryIcon.backgroundColor,
-                    categoryIcon = transaction.categoryIcon.name,
-                    amount = transaction.amount,
-                    date = transaction.date,
-                    notes = transaction.notes,
-                    transactionType = transaction.transactionType,
-                    fromAccountName = transaction.fromAccountName,
-                    fromAccountIcon = transaction.fromAccountIcon.name,
-                    fromAccountColor = transaction.fromAccountIcon.backgroundColor,
-                    toAccountName = transaction.toAccountName,
-                    toAccountIcon = transaction.toAccountIcon?.name,
-                    toAccountColor = transaction.toAccountIcon?.backgroundColor,
-                )
+                        .padding(horizontal = 16.dp, vertical = 2.dp),
+                    shape = AppCardViewDefaults.cardShape(index, state.transactions),
+                ) {
+                    TransactionItem(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
+                            },
+                        categoryName = transaction.categoryName,
+                        categoryColor = transaction.categoryIcon.backgroundColor,
+                        categoryIcon = transaction.categoryIcon.name,
+                        amount = transaction.amount,
+                        date = transaction.date,
+                        notes = transaction.notes,
+                        transactionType = transaction.transactionType,
+                        fromAccountName = transaction.fromAccountName,
+                        fromAccountIcon = transaction.fromAccountIcon.name,
+                        fromAccountColor = transaction.fromAccountIcon.backgroundColor,
+                        toAccountName = transaction.toAccountName,
+                        toAccountIcon = transaction.toAccountIcon?.name,
+                        toAccountColor = transaction.toAccountIcon?.backgroundColor,
+                    )
+                }
             }
         } else {
             item {
@@ -335,7 +347,11 @@ fun DashboardScaffoldContentPreview() {
                     categoryType = CategoryType.EXPENSE,
                 ),
                 budgets = getRandomBudgetUiModel(5),
-                transactions = listOf(getTransactionItem()),
+                transactions = listOf(
+                    getTransactionItem("1"),
+                    getTransactionItem("2"),
+                    getTransactionItem("3")
+                ),
             ),
             onAction = {},
         )

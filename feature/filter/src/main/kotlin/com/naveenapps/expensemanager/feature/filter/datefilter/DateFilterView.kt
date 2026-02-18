@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.DateRangeModel
@@ -128,22 +129,6 @@ private fun FilterTypesAndViewContent(
         ) {
             itemsIndexed(state.dateRangeTypeList) { index, filter ->
                 val isSelected = state.dateRangeType.value == filter.type
-                val itemCount = state.dateRangeTypeList.size
-
-                val shape = when {
-                    itemCount == 1 -> MaterialTheme.shapes.large
-                    index == 0 -> RoundedCornerShape(
-                        topStart = 14.dp, topEnd = 14.dp,
-                        bottomStart = 4.dp, bottomEnd = 4.dp,
-                    )
-
-                    index == itemCount - 1 -> RoundedCornerShape(
-                        topStart = 4.dp, topEnd = 4.dp,
-                        bottomStart = 14.dp, bottomEnd = 14.dp,
-                    )
-
-                    else -> RoundedCornerShape(4.dp)
-                }
 
                 val bgColor by animateColorAsState(
                     targetValue = if (isSelected)
@@ -158,7 +143,7 @@ private fun FilterTypesAndViewContent(
                     onClick = {
                         state.dateRangeType.onValueChange?.invoke(filter.type)
                     },
-                    shape = shape,
+                    shape = AppCardViewDefaults.cardShape(index, state.dateRangeTypeList),
                     color = bgColor,
                     modifier = Modifier.fillMaxWidth(),
                 ) {

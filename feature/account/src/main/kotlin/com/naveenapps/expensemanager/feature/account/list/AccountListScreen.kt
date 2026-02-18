@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.model.Account
@@ -196,22 +197,6 @@ private fun AccountListScreenContent(
                     items = state.accounts,
                     key = { _, item -> item.id },
                 ) { index, account ->
-
-                    val shape = when {
-                        state.accounts.size == 1 -> MaterialTheme.shapes.large
-                        index == 0 -> RoundedCornerShape(
-                            topStart = 16.dp, topEnd = 16.dp,
-                            bottomStart = 4.dp, bottomEnd = 4.dp,
-                        )
-
-                        index == state.accounts.lastIndex -> RoundedCornerShape(
-                            topStart = 4.dp, topEnd = 4.dp,
-                            bottomStart = 16.dp, bottomEnd = 16.dp,
-                        )
-
-                        else -> RoundedCornerShape(4.dp)
-                    }
-
                     AccountItem(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -224,7 +209,7 @@ private fun AccountListScreenContent(
                         amount = account.amount.amountString,
                         subtitle = account.availableCreditLimit?.amountString,
                         amountTextColor = account.amountTextColor,
-                        shape = shape,
+                        shape = AppCardViewDefaults.cardShape(index, state.accounts),
                         trailingContent = {
                             AccountItemDefaults.ChevronTrailing()
                         },
