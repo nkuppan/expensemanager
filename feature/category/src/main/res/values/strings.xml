@@ -34,6 +34,7 @@
     <string name="category_name_placeholder">Category Name</string>
 
     <string name="add_category">Add Category</string>
+    <string name="add_transaction">Add Transaction</string>
 
     <plurals name="category_count">
         <item quantity="one">%d category</item>

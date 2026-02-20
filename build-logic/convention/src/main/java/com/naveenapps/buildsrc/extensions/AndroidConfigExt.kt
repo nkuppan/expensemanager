@@ -10,7 +10,7 @@ const val TARGET_SDK = 36
 const val COMPILE_SDK: Int = 36
 const val MIN_SDK = 26
 
-const val VERSION_NAME = "1.3.8"
+const val VERSION_NAME = "1.3.9"
 val versions = VERSION_NAME.split(".")
 val VERSION_CODE = 1000000 * versions[0].toInt() + 1000 * versions[1].toInt() + versions[2].toInt()
 
