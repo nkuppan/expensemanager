@@ -113,7 +113,7 @@ class TransactionRepositoryImpl(
 
     private fun convertTransactionCategoryRelation(relation: TransactionRelation): Transaction? {
         return relation.transactionEntity.toDomainModel().apply {
-            category = relation.categoryEntity.toDomainModel()
+            category = relation.categoryEntity?.toDomainModel() ?: return null
             fromAccount = relation.fromAccountEntity?.toDomainModel() ?: return null
             toAccount = relation.toAccountEntity?.toDomainModel()
         }
