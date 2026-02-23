@@ -5,11 +5,11 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class MoveDateRangeForwardUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,

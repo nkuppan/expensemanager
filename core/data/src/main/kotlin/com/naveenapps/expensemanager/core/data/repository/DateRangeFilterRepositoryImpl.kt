@@ -19,11 +19,12 @@ import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.toLocalDateTime
 import java.util.Date
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 class DateRangeFilterRepositoryImpl(
     private val dataStore: DateRangeDataStore,
@@ -132,7 +133,7 @@ class DateRangeFilterRepositoryImpl(
             DateRangeType.ALL -> ""
             DateRangeType.THIS_WEEK,
             DateRangeType.CUSTOM,
-            -> getFormattedDateRangeString(fromDate, toDate)
+                -> getFormattedDateRangeString(fromDate, toDate)
         }
     }
 
@@ -143,7 +144,7 @@ class DateRangeFilterRepositoryImpl(
         val toDateTime = Instant.fromEpochMilliseconds(toDate.time).toLocalDateTime(TimeZone.UTC)
 
         return if (fromDateTime.year == toDateTime.year) {
-            if (fromDateTime.monthNumber == toDateTime.monthNumber) {
+            if (fromDateTime.month.number == toDateTime.month.number) {
                 "${fromDate.toDate()} - ${toDate.toCompleteDate()}"
             } else {
                 "${fromDate.toDateAndMonth()} - ${toDate.toCompleteDate()}"
@@ -166,7 +167,7 @@ class DateRangeFilterRepositoryImpl(
         var isCrossingMonths = false
 
         if (fromDateTime.year == toDateTime.year) {
-            if (fromDateTime.monthNumber != toDateTime.monthNumber) {
+            if (fromDateTime.month.number != toDateTime.month.number) {
                 isCrossingMonths = true
             }
         } else {
@@ -181,13 +182,13 @@ class DateRangeFilterRepositoryImpl(
             DateRangeType.THIS_MONTH,
             DateRangeType.THIS_WEEK,
             DateRangeType.TODAY,
-            -> {
+                -> {
                 GroupType.DATE
             }
 
             DateRangeType.ALL,
             DateRangeType.CUSTOM,
-            -> {
+                -> {
                 if (isCrossingYears) {
                     GroupType.YEAR
                 } else if (isCrossingMonths) {

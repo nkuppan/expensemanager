@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import java.util.Date
@@ -48,8 +47,8 @@ class GetChartDataUseCase(
             } ?: emptyMap()
 
             val ranges = dateRangeModel.dateRanges
-            var fromDate = Instant.fromEpochMilliseconds(ranges[0])
-            val toDate = Instant.fromEpochMilliseconds(ranges[1])
+            var fromDate = kotlin.time.Instant.fromEpochMilliseconds(ranges[0])
+            val toDate = kotlin.time.Instant.fromEpochMilliseconds(ranges[1])
 
             val transaction = mutableListOf<TransactionUiItem>()
             val dates = mutableListOf<String>()
@@ -122,7 +121,7 @@ class GetChartDataUseCase(
     @OptIn(ExperimentalTime::class)
     private fun getAdjustedDateTime(
         groupType: GroupType,
-        fromDate: Instant,
+        fromDate: kotlin.time.Instant,
     ) = when (groupType) {
         GroupType.YEAR -> {
             fromDate.plus(1, DateTimeUnit.YEAR, TimeZone.UTC)
