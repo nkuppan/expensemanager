@@ -42,78 +42,81 @@ class GetChartDataUseCase(
 
             val groupType = getTransactionGroupTypeUseCase.invoke(dateRangeModel.type)
 
-            val transactionGroupByDate = transactions?.groupBy { transaction ->
-                return@groupBy groupValue(groupType, transaction.createdOn)
+            val transactionGroupByDate = transactions?.groupBy {
+                groupValue(groupType, it.createdOn)
             } ?: emptyMap()
 
             val ranges = dateRangeModel.dateRanges
             var fromDate = kotlin.time.Instant.fromEpochMilliseconds(ranges[0])
             val toDate = kotlin.time.Instant.fromEpochMilliseconds(ranges[1])
 
-            val transaction = mutableListOf<TransactionUiItem>()
+            val transactionItems = ArrayList<TransactionUiItem>(transactions?.size ?: 0)
             val dates = mutableListOf<String>()
             val expenses = mutableListOf<FloatEntryModel>()
             val incomes = mutableListOf<FloatEntryModel>()
             var index = 0
 
+            val zeroFormatted = getFormattedAmountUseCase.invoke(0.0, currency)
+
             while (fromDate < toDate) {
                 val key = groupValue(groupType, fromDate.toEpochMilliseconds().toCompleteDate())
-                val values = transactionGroupByDate[key]
+                val currentValues = transactionGroupByDate[key]
+
                 dates.add(key)
 
-                if (values != null) {
-                    transaction.addAll(
-                        values.map {
-                            it.toTransactionUIModel(
-                                getFormattedAmountUseCase.invoke(
-                                    it.amount.amount,
-                                    currency,
-                                ),
-                            )
-                        },
+                var totalExpense = 0.0
+                var totalIncome = 0.0
+
+                // 5. SINGLE PASS: Calculate totals and map UI items at the same time
+                currentValues?.forEach { item ->
+                    val amount = item.amount.amount
+
+                    // Accumulate totals
+                    if (item.category.type.isExpense()) {
+                        totalExpense += amount
+                    } else if (item.category.type.isIncome()) {
+                        totalIncome += amount
+                    }
+
+                    // Add to the main transaction list
+                    transactionItems.add(
+                        item.toTransactionUIModel(
+                            getFormattedAmountUseCase.invoke(amount, currency)
+                        )
                     )
                 }
 
-                val totalExpense = values?.sumOf {
-                    if (it.category.type.isExpense()) it.amount.amount else 0.0
-                } ?: 0.0
+                // 6. Add to chart data (Only format final totals)
                 expenses.add(
                     FloatEntryModel(
                         index,
                         totalExpense,
-                        getFormattedAmountUseCase.invoke(
+                        if (totalExpense == 0.0) zeroFormatted else getFormattedAmountUseCase.invoke(
                             totalExpense,
-                            currency,
-                        ),
-                    ),
+                            currency
+                        )
+                    )
                 )
-                val totalIncome = values?.sumOf {
-                    if (it.category.type.isIncome()) it.amount.amount else 0.0
-                } ?: 0.0
                 incomes.add(
                     FloatEntryModel(
                         index,
                         totalIncome,
-                        getFormattedAmountUseCase.invoke(
+                        if (totalIncome == 0.0) zeroFormatted else getFormattedAmountUseCase.invoke(
                             totalIncome,
-                            currency,
-                        ),
-                    ),
+                            currency
+                        )
+                    )
                 )
+
+                // Move to next period
                 fromDate = getAdjustedDateTime(groupType, fromDate)
                 index++
             }
 
             return@combine AnalysisData(
-                transaction,
-                if (transactionGroupByDate.isEmpty()) {
-                    null
-                } else {
-                    AnalysisChartData(
-                        listOf(expenses, incomes),
-                        dates,
-                    )
-                },
+                transactionItems,
+                if (transactionGroupByDate.isEmpty()) null
+                else AnalysisChartData(listOf(expenses, incomes), dates)
             )
         }.flowOn(dispatcher.computation)
     }
