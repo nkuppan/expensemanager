@@ -108,4 +108,18 @@ class CategoryDetailViewModel(
     fun closePage() {
         appComposeNavigator.popBackStack()
     }
+
+    fun processAction(action: CategoryDetailsAction) {
+        when (action) {
+            CategoryDetailsAction.ClosePage -> closePage()
+            CategoryDetailsAction.OpenCategoryEdit -> openCategoryEditScreen()
+            CategoryDetailsAction.OpenTransactionCreate -> {
+                openTransactionCreateScreen(null)
+            }
+
+            is CategoryDetailsAction.OpenTransactionEdit -> {
+                openTransactionCreateScreen(action.id)
+            }
+        }
+    }
 }

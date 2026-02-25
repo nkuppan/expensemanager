@@ -26,6 +26,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,16 +41,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.CategoryTransaction
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionItem
+import com.naveenapps.expensemanager.feature.filter.type.getCategory
 import org.koin.compose.viewmodel.koinViewModel
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,6 +66,15 @@ fun CategoryDetailScreen(
 ) {
     val state by viewModel.state.collectAsState()
 
+    CategoryDetailsContent(state, viewModel::processAction)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun CategoryDetailsContent(
+    state: CategoryDetailsState,
+    onAction: (CategoryDetailsAction) -> Unit,
+) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -65,24 +82,34 @@ fun CategoryDetailScreen(
             SnackbarHost(hostState = snackbarHostState)
         },
         topBar = {
-            Surface(shadowElevation = 4.dp) {
+            Surface(shadowElevation = 2.dp) {
                 Column {
-                    ExpenseManagerTopAppBar(
-                        navigationIcon = Icons.Default.Close,
-                        navigationBackClick = viewModel::closePage,
-                        title = "",
+                    TopAppBar(
+                        navigationIcon = {
+                            IconButton(onClick = {
+                                onAction.invoke(CategoryDetailsAction.ClosePage)
+                            }) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                        title = {},
                         actions = {
                             state.categoryTransaction?.let {
-                                IconButton(onClick = {
-                                    viewModel.openCategoryEditScreen()
-                                }) {
+                                IconButton(
+                                    onClick = {
+                                        onAction.invoke(CategoryDetailsAction.OpenCategoryEdit)
+                                    }
+                                ) {
                                     Icon(
                                         imageVector = Icons.Outlined.Edit,
                                         contentDescription = "",
                                     )
                                 }
                             }
-                        },
+                        }
                     )
                     state.categoryTransaction?.let { categoryTransaction ->
                         CategoryTransactionItem(
@@ -98,9 +125,13 @@ fun CategoryDetailScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.openTransactionCreateScreen(null)
-            }) {
+            FloatingActionButton(
+                onClick = {
+                    onAction.invoke(
+                        CategoryDetailsAction.OpenTransactionCreate
+                    )
+                }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -136,7 +167,7 @@ fun CategoryDetailScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    viewModel.openTransactionCreateScreen(item.id)
+                                    onAction.invoke(CategoryDetailsAction.OpenTransactionEdit(item.id))
                                 }
                                 .then(ItemSpecModifier),
                             toAccountName = item.toAccountName,
@@ -177,11 +208,6 @@ fun TransactionItem(
     val isTransfer = toAccountName?.isNotBlank()
 
     Row(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .then(IconSpecModifier),
-        )
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -272,6 +298,47 @@ private fun AccountNameWithIcon(
             text = fromAccountName,
             color = Color(getColorValue(fromAccountColor)),
             style = MaterialTheme.typography.labelMedium,
+        )
+    }
+}
+
+fun getTransactionItem(id: String) = TransactionUiItem(
+    id = id,
+    notes = "Sample Description",
+    amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
+    categoryName = "Clothing",
+    transactionType = TransactionType.EXPENSE,
+    categoryIcon = StoredIcon(
+        name = "agriculture",
+        backgroundColor = "#000000",
+    ),
+    fromAccountName = "DB Bank xxxx",
+    fromAccountIcon = StoredIcon(
+        name = "account_balance",
+        backgroundColor = "#000000",
+    ),
+    date = Date().toCompleteDateWithDate(),
+)
+
+@AppPreviewsLightAndDarkMode
+@Composable
+fun CategoryDetailsPreview() {
+    NaveenAppsPreviewTheme(padding = 0.dp) {
+        CategoryDetailsContent(
+            state = CategoryDetailsState(
+                categoryTransaction = CategoryTransaction(
+                    category = getCategory(0),
+                    amount = Amount(100.0, amountString = "$100.00"),
+                    percent = 50.0f,
+                    transaction = emptyList()
+                ),
+                transactions = buildList {
+                    repeat(5) { index ->
+                        add(getTransactionItem(index.toString()))
+                    }
+                }
+            ),
+            onAction = {}
         )
     }
 }

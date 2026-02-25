@@ -47,7 +47,6 @@ import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiMode
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
-import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import org.koin.compose.viewmodel.koinViewModel
@@ -126,11 +125,11 @@ private fun DashboardScreenContent(
         contentPadding = PaddingValues(bottom = 78.dp),
     ) {
         item {
-            FilterView(
+            /*FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),
-            )
+            )*/
         }
         item {
             IncomeExpenseBalanceView(
@@ -144,7 +143,7 @@ private fun DashboardScreenContent(
             DashboardWidgetTitle(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenAccountList)
@@ -190,17 +189,29 @@ private fun DashboardScreenContent(
             }
         }
         item {
-            CategoryAmountView(
+            DashboardWidgetTitle(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
+                title = stringResource(id = R.string.categories),
+            )
+        }
+        item {
+            AppCardView(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-                categoryTransactionState = state.categoryTransactionState,
-            )
+            ) {
+                CategoryAmountView(
+                    modifier = Modifier.padding(16.dp),
+                    categoryTransactionState = state.categoryTransactionState,
+                )
+            }
         }
         item {
             DashboardWidgetTitle(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenBudgetList)
@@ -247,7 +258,7 @@ private fun DashboardScreenContent(
             DashboardWidgetTitle(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
                 title = stringResource(id = R.string.transaction),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenTransactionList)
@@ -295,6 +306,7 @@ private fun DashboardScreenContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .height(200.dp)
+                        .padding(horizontal = 16.dp)
                 )
             }
         }

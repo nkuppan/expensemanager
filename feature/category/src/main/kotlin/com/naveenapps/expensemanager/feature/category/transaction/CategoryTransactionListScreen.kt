@@ -101,8 +101,8 @@ fun CategoryTransactionTabScreenContent(
     ) { innerPadding ->
         Box(
             modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding()),
         ) {
             CategoryTransactionListScreenContent(
                 state = state,

@@ -10,12 +10,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
@@ -27,46 +25,40 @@ fun CategoryAmountView(
     modifier: Modifier = Modifier,
     categoryTransactionState: CategoryTransactionState,
 ) {
-    Column(modifier = modifier) {
-        DashboardWidgetTitle(
-            modifier = Modifier.fillMaxWidth(),
-            title = stringResource(id = R.string.categories),
+    Row(
+        modifier = modifier
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        PieChartView(
+            totalAmountText = categoryTransactionState.totalAmount.amountString ?: "",
+            chartData = categoryTransactionState.pieChartData.map {
+                PieChartUiData(
+                    it.name,
+                    it.value,
+                    it.color.toColorInt(),
+                )
+            },
+            hideValues = true,
+            chartHeight = 300,
+            chartWidth = 300,
         )
-        Row(
+        Column(
             modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(start = 16.dp)
+                .align(Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            PieChartView(
-                totalAmountText = categoryTransactionState.totalAmount.amountString ?: "",
-                chartData = categoryTransactionState.pieChartData.map {
-                    PieChartUiData(
-                        it.name,
-                        it.value,
-                        it.color.toColorInt(),
+            repeat(categoryTransactionState.categoryTransactions.size) {
+                if (it < 4) {
+                    val item = categoryTransactionState.categoryTransactions[it]
+                    CategoryTransactionSmallItem(
+                        name = item.category.name,
+                        icon = item.category.storedIcon.name,
+                        iconBackgroundColor = item.category.storedIcon.backgroundColor,
+                        amount = item.amount.amountString ?: "",
                     )
-                },
-                hideValues = true,
-                chartHeight = 300,
-                chartWidth = 300,
-            )
-            Column(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .padding(start = 16.dp)
-                    .align(Alignment.CenterVertically),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                repeat(categoryTransactionState.categoryTransactions.size) {
-                    if (it < 4) {
-                        val item = categoryTransactionState.categoryTransactions[it]
-                        CategoryTransactionSmallItem(
-                            name = item.category.name,
-                            icon = item.category.storedIcon.name,
-                            iconBackgroundColor = item.category.storedIcon.backgroundColor,
-                            amount = item.amount.amountString ?: "",
-                        )
-                    }
                 }
             }
         }

@@ -124,8 +124,7 @@ fun CategoryTransactionSmallItem(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         SmallIconAndBackgroundView(
