@@ -3,12 +3,13 @@ package com.naveenapps.expensemanager.feature.analysis
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageDataUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDataUseCase
-import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.AverageData
+import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.WholeAverageData
@@ -26,6 +27,7 @@ class AnalysisScreenViewModel(
     getChartDataUseCase: GetChartDataUseCase,
     getAverageDataUseCase: GetAverageDataUseCase,
     getAmountStateUseCase: GetAmountStateUseCase,
+    getDateRangeUseCase: GetDateRangeUseCase,
 ) : ViewModel() {
 
     private val _currentTheme = MutableStateFlow(
@@ -93,6 +95,10 @@ class AnalysisScreenViewModel(
 
         getCurrentThemeUseCase.invoke().onEach {
             _currentTheme.value = it
+        }.launchIn(viewModelScope)
+
+        getDateRangeUseCase.invoke().onEach {
+            _transactionPeriod.value = "${it.name} (${it.description})"
         }.launchIn(viewModelScope)
     }
 }

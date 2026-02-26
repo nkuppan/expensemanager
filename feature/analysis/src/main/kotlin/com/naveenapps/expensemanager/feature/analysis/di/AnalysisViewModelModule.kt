@@ -10,7 +10,8 @@ val AnalysisViewModelModule = module {
             getCurrentThemeUseCase = get(),
             getChartDataUseCase = get(),
             getAverageDataUseCase = get(),
-            getAmountStateUseCase = get()
+            getAmountStateUseCase = get(),
+            getDateRangeUseCase = get()
         )
     }
 }

@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 
 @Stable
 data class DashboardState(
+    val transactionPeriod: String,
     val expenseFlowState: ExpenseFlowState,
     val transactions: List<TransactionUiItem>,
     val budgets: List<BudgetUiModel>,

@@ -2,11 +2,13 @@ package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -29,13 +31,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.components.OverallStatusOverview
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
@@ -131,72 +132,70 @@ private fun DashboardScreenContent(
                     .padding(end = 6.dp),
             )*/
         }
-        item {
+        item("summary") {
             IncomeExpenseBalanceView(
+                transactionPeriod = state.transactionPeriod,
                 expenseFlowState = state.expenseFlowState,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
             )
         }
-        item {
-            DashboardWidgetTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
-                title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
-                onViewAllClick = {
-                    onAction.invoke(DashboardAction.OpenAccountList)
-                },
-            )
-        }
-        if (state.accounts.isNotEmpty()) {
-            item {
-                LazyRow(
+
+        item("account_item") {
+            Column {
+                DashboardWidgetTitle(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    items(state.accounts, key = { it.id }) {
-                        DashBoardAccountItem(
-                            modifier = Modifier
-                                .wrapContentWidth()
-                                .clickable {
-                                    onAction.invoke(DashboardAction.OpenAccountEdit(it))
-                                },
-                            name = it.name,
-                            icon = it.storedIcon.name,
-                            amount = it.amount.amountString ?: "",
-                            availableCreditLimit = it.availableCreditLimit?.amountString ?: "",
-                            amountTextColor = colorResource(id = it.amountTextColor),
-                            /*backgroundColor = it.storedIcon.backgroundColor.toColor()
-                                .copy(alpha = .1f),*/
-                        )
+                        .padding(start = 16.dp),
+                    title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
+                    onViewAllClick = {
+                        onAction.invoke(DashboardAction.OpenAccountList)
+                    },
+                )
+                if (state.accounts.isNotEmpty()) {
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        items(state.accounts, key = { it.id }) {
+                            DashBoardAccountItem(
+                                modifier = Modifier
+                                    .wrapContentWidth()
+                                    .clickable {
+                                        onAction.invoke(DashboardAction.OpenAccountEdit(it))
+                                    },
+                                name = it.name,
+                                icon = it.storedIcon.name,
+                                amount = it.amount.amountString ?: "",
+                                availableCreditLimit = it.availableCreditLimit?.amountString
+                                    ?: "",
+                                amountTextColor = colorResource(id = it.amountTextColor),
+                            )
+                        }
                     }
+                } else {
+                    EmptyItem(
+                        emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
+                        icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(200.dp)
+                    )
                 }
             }
-        } else {
-            item {
-                EmptyItem(
-                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .height(200.dp)
-                )
-            }
         }
-        item {
+
+        item("category_item") {
             DashboardWidgetTitle(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
+                    .padding(start = 16.dp, top = 16.dp),
                 title = stringResource(id = R.string.categories),
             )
-        }
-        item {
             AppCardView(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
@@ -207,53 +206,50 @@ private fun DashboardScreenContent(
                 )
             }
         }
-        item {
-            DashboardWidgetTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
-                title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
-                onViewAllClick = {
-                    onAction.invoke(DashboardAction.OpenBudgetList)
-                },
-            )
-        }
-        if (state.budgets.isNotEmpty()) {
-            item {
-                LazyRow(
+        item("budget_item") {
+            Column {
+                DashboardWidgetTitle(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    items(state.budgets, key = { it.id }) { budget ->
-                        DashBoardBudgetItem(
-                            modifier = Modifier
-                                .clickable {
-                                    onAction.invoke(DashboardAction.OpenBudgetDetails(budget))
-                                },
-                            name = budget.name,
-                            backgroundColor = budget.iconBackgroundColor.toColor()
-                                .copy(alpha = .1f),
-                            progressBarColor = budget.progressBarColor,
-                            amount = budget.amount.amountString,
-                            transactionAmount = budget.transactionAmount.amountString,
-                            percentage = budget.percent,
-                        )
+                        .fillMaxWidth()
+                        .padding(start = 16.dp),
+                    title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.budgets),
+                    onViewAllClick = {
+                        onAction.invoke(DashboardAction.OpenBudgetList)
+                    },
+                )
+                if (state.budgets.isNotEmpty()) {
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        items(state.budgets, key = { it.id }) { budget ->
+                            DashBoardBudgetItem(
+                                modifier = Modifier
+                                    .clickable {
+                                        onAction.invoke(DashboardAction.OpenBudgetDetails(budget))
+                                    },
+                                name = budget.name,
+                                progressBarColor = budget.progressBarColor,
+                                amount = budget.amount.amountString,
+                                transactionAmount = budget.transactionAmount.amountString,
+                                percentage = budget.percent,
+                            )
+                        }
                     }
+                } else {
+                    EmptyItem(
+                        emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available_short),
+                        icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .height(200.dp)
+                    )
                 }
             }
-        } else {
-            item {
-                EmptyItem(
-                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available_short),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .height(200.dp)
-                )
-            }
         }
+
         item {
             DashboardWidgetTitle(
                 modifier = Modifier
@@ -316,15 +312,15 @@ private fun DashboardScreenContent(
 @Composable
 fun IncomeExpenseBalanceView(
     expenseFlowState: ExpenseFlowState,
+    transactionPeriod: String,
     modifier: Modifier = Modifier,
-    showBalance: Boolean = false,
 ) {
-    OverallStatusOverview(
+    AmountInfoWidget(
         modifier = modifier,
         expenseAmount = expenseFlowState.expense,
         incomeAmount = expenseFlowState.income,
         balanceAmount = expenseFlowState.balance,
-        showBalance = showBalance,
+        transactionPeriod = transactionPeriod
     )
 }
 
@@ -366,6 +362,7 @@ fun DashboardScaffoldContentPreview() {
                     getTransactionItem("2"),
                     getTransactionItem("3")
                 ),
+                transactionPeriod = "This month (Feb 2026)"
             ),
             onAction = {},
         )

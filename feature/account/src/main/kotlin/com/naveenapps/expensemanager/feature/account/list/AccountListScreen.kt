@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.account.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -38,6 +39,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -49,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -167,10 +170,11 @@ private fun AccountListScreenContent(
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
                 item {
+                    // Hint banner
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 8.dp, horizontal = 2.dp),
+                            .padding(start = 4.dp, end = 4.dp, top = 10.dp, bottom = 22.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
@@ -231,53 +235,79 @@ fun DashBoardAccountItem(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val hasCreditLimit = !availableCreditLimit.isNullOrBlank()
+
     AppCardView(
-        modifier = modifier.width(160.dp),
-        shape = RoundedCornerShape(12.dp),
+        modifier = modifier.width(170.dp),
+        shape = RoundedCornerShape(14.dp),
     ) {
         Column(
             modifier = Modifier.padding(14.dp),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(id = context.getDrawable(icon)),
-                    contentDescription = name,
-                    modifier = Modifier.size(16.dp),
-                )
-                Spacer(modifier = Modifier.width(8.dp))
+            // ── Icon in tinted container + name ────────────────────
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(
+                            MaterialTheme.colorScheme.surfaceContainerHighest
+                                .copy(alpha = 0.6f),
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(id = context.getDrawable(icon)),
+                        contentDescription = name,
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                Spacer(Modifier.width(8.dp))
                 Text(
                     text = name,
                     maxLines = 1,
-                    style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.SemiBold,
                     overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.SemiBold,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(Modifier.height(12.dp))
 
+            // ── Amount ─────────────────────────────────────────────
             Text(
                 text = amount,
                 color = amountTextColor,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = (-0.3).sp,
+                ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
 
+            Spacer(Modifier.height(4.dp))
+
+            // ── Credit limit / placeholder ─────────────────────────
+            // Always rendered so all cards keep the same height
+            // in a horizontal scroll row.
             Text(
-                text = if (!availableCreditLimit.isNullOrBlank())
-                    stringResource(id = R.string.available_limit, availableCreditLimit)
-                else
-                    " ",
+                text = if (hasCreditLimit) {
+                    stringResource(
+                        id = R.string.available_limit,
+                        availableCreditLimit,
+                    )
+                } else {
+                    " "
+                },
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+                    .copy(alpha = 0.55f),
                 maxLines = 1,
-                modifier = Modifier
-                    .padding(top = 2.dp)
-                    .basicMarquee(),
+                modifier = Modifier.basicMarquee(),
             )
         }
     }
@@ -289,6 +319,7 @@ fun getAccountData(
     index: Int,
     accountType: AccountType,
     amount: Double,
+    creditLimit: Double,
 ): Account {
     return Account(
         id = "$index",
@@ -299,6 +330,7 @@ fun getAccountData(
             backgroundColor = "#000000",
         ),
         amount = amount,
+        creditLimit = creditLimit,
         createdOn = Date(),
         updatedOn = Date(),
     )
@@ -307,13 +339,14 @@ fun getAccountData(
 fun getRandomAccountData(totalCount: Int = 10): List<Account> {
     return buildList {
         val random = Random()
-        repeat(totalCount) {
+        repeat(totalCount) { index ->
             val isEven = random.nextInt() % 2 == 0
             add(
                 getAccountData(
-                    it,
-                    if (isEven) AccountType.CREDIT else AccountType.REGULAR,
+                    index = index,
+                    accountType = if (isEven) AccountType.CREDIT else AccountType.REGULAR,
                     amount = 100.0,
+                    creditLimit = if (isEven) 2000.0 else 0.0
                 ),
             )
         }
@@ -321,7 +354,10 @@ fun getRandomAccountData(totalCount: Int = 10): List<Account> {
 }
 
 fun getRandomAccountUiModel(count: Int) = getRandomAccountData(count).map {
-    it.toAccountUiModel(Amount(it.amount, "${it.amount}$"))
+    it.toAccountUiModel(
+        amount = Amount(amount = it.amount, amountString = "${it.amount}$"),
+        availableCreditLimit = Amount(amount = it.creditLimit, amountString = "${it.creditLimit}$"),
+    )
 }
 
 @Preview

@@ -2,16 +2,13 @@
 
 package com.naveenapps.expensemanager.feature.budget.details
 
-import androidx.annotation.ColorRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,8 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -38,14 +33,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
@@ -53,6 +44,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.budget.R
+import com.naveenapps.expensemanager.feature.budget.list.BudgetItem
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import org.koin.compose.viewmodel.koinViewModel
@@ -114,15 +106,17 @@ private fun BudgetDetailsScaffoldView(
                         }
                     )
                     budget?.let {
-                        BudgetHeaderItem(
+                        BudgetItem(
+                            name = budget.name,
+                            icon = budget.icon,
+                            iconBackgroundColor = budget.iconBackgroundColor,
+                            progressBarColor = budget.progressBarColor,
+                            amount = budget.amount,
+                            transactionAmount = budget.transactionAmount,
+                            percentage = budget.percent,
                             modifier = Modifier
                                 .padding(16.dp)
                                 .fillMaxWidth(),
-                            name = it.name,
-                            progressBarColor = it.progressBarColor,
-                            amount = it.amount.amountString,
-                            transactionAmount = it.transactionAmount.amountString,
-                            percentage = it.percent,
                         )
                     }
                 }
@@ -217,61 +211,6 @@ private fun BudgetDetailContent(
     }
 }
 
-@Composable
-fun BudgetHeaderItem(
-    name: String,
-    @ColorRes progressBarColor: Int,
-    amount: String?,
-    transactionAmount: String?,
-    modifier: Modifier = Modifier,
-    percentage: Float = 0.0f,
-) {
-    Column(modifier = modifier) {
-        Row {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
-                text = name,
-                maxLines = 1,
-                style = MaterialTheme.typography.titleMedium,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(start = 4.dp),
-                text = transactionAmount ?: "",
-                style = MaterialTheme.typography.headlineSmall,
-            )
-        }
-        Row(modifier = Modifier.padding(top = 4.dp)) {
-            LinearProgressIndicator(
-                progress = { percentage / 100 },
-                modifier = Modifier
-                    .weight(1f)
-                    .height(8.dp)
-                    .align(Alignment.CenterVertically),
-                color = colorResource(id = progressBarColor),
-                strokeCap = StrokeCap.Round,
-            )
-            Text(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .align(Alignment.CenterVertically),
-                text = percentage.toPercentString(),
-                style = MaterialTheme.typography.labelSmall,
-            )
-        }
-
-        Text(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            text = "$transactionAmount of $amount",
-            style = MaterialTheme.typography.labelSmall,
-        )
-    }
-}
-
 @AppPreviewsLightAndDarkMode
 @Composable
 fun BudgetDetailsScaffoldViewPreview() {
@@ -280,7 +219,7 @@ fun BudgetDetailsScaffoldViewPreview() {
             budget = BudgetUiModel(
                 id = "sample",
                 name = "My Own Budget",
-                icon = "account_wallet",
+                icon = "account_balance_wallet",
                 iconBackgroundColor = "#000000",
                 progressBarColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = Amount(100.0, "$100.00"),

@@ -35,6 +35,7 @@
 
     <string name="add_category">Add Category</string>
     <string name="add_transaction">Add Transaction</string>
+    <string name="tap_chart_to_switch_to">"Tap chart to switch to "</string>
 
     <plurals name="category_count">
         <item quantity="one">%d category</item>

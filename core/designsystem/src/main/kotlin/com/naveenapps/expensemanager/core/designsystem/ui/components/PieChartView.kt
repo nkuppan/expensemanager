@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import android.widget.LinearLayout
-import androidx.annotation.ColorInt
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
@@ -11,8 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.text.buildSpannedString
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
@@ -23,7 +22,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter
 data class PieChartUiData(
     val name: String,
     val value: Float,
-    @ColorInt val color: Int,
+    val color: Int,
 )
 
 @Composable
@@ -37,117 +36,135 @@ fun PieChartView(
 ) {
     var isAnimated by remember { mutableStateOf(false) }
 
-    val colorCode = MaterialTheme.colorScheme.onBackground.hashCode()
-    val holeColor = MaterialTheme.colorScheme.background.hashCode()
+    val onBackgroundColor = MaterialTheme.colorScheme.onBackground.toArgb()
+    val holeColor = MaterialTheme.colorScheme.background.toArgb()
+    val surfaceVariantColor = MaterialTheme.colorScheme.onSurfaceVariant
+        .copy(alpha = 0.5f).toArgb()
 
-    Crossfade(targetState = chartData, label = "") { pieChartData ->
-        // on below line we are creating an
-        // android view for pie chart.
+    Crossfade(targetState = chartData, label = "pie_chart") { pieChartData ->
         AndroidView(
             modifier = modifier.wrapContentSize(),
             factory = { context ->
-                // on below line we are creating a pie chart
-                // and specifying layout params.
                 PieChart(context).apply {
-                    layoutParams = LinearLayout.LayoutParams(
-                        // on below line we are specifying layout
-                        // params as MATCH PARENT for height and width.
-                        chartWidth,
-                        chartHeight,
-                    )
-                    // on below line we are setting description
-                    // enables for our pie chart.
-                    this.description.isEnabled = false
+                    layoutParams = LinearLayout.LayoutParams(chartWidth, chartHeight)
 
-                    // on below line we are setting draw hole
-                    // to false not to draw hole in pie chart
-                    this.isHighlightPerTapEnabled = false
-                    this.isDragDecelerationEnabled = false
-                    this.isDrawHoleEnabled = true
-                    this.holeRadius = 80f
-                    this.setHoleColor(holeColor)
-                    this.setTouchEnabled(false)
-                    this.setUsePercentValues(true)
-                    this.setDrawSlicesUnderHole(true)
-                    if (hideValues) {
-                        this.setCenterTextSize(12f)
+                    // ── Disable chrome ──────────────────────────────
+                    description.isEnabled = false
+                    legend.isEnabled = false
+                    isHighlightPerTapEnabled = false
+                    isDragDecelerationEnabled = false
+                    setTouchEnabled(false)
+
+                    // ── Donut hole ──────────────────────────────────
+                    // Slightly smaller hole radius + a translucent outer
+                    // ring creates a softer, more modern donut look.
+                    isDrawHoleEnabled = true
+                    holeRadius = 76f
+                    transparentCircleRadius = 80f
+                    setTransparentCircleAlpha(40)
+                    setTransparentCircleColor(holeColor)
+                    setHoleColor(holeColor)
+                    setDrawSlicesUnderHole(false)
+
+                    // ── Centre text ─────────────────────────────────
+                    // Bold typeface + slightly smaller size for a cleaner
+                    // look than the default regular-weight text.
+                    setDrawCenterText(true)
+                    setCenterTextColor(onBackgroundColor)
+                    setCenterTextSize(if (hideValues) 12f else 15f)
+                    setCenterTextTypeface(android.graphics.Typeface.DEFAULT_BOLD)
+                    centerText = totalAmountText
+
+                    // ── Entry labels (on-slice text) off ────────────
+                    // Removes the cramped text drawn directly on thin
+                    // slices — outer value lines handle labelling.
+                    setDrawEntryLabels(false)
+
+                    // ── Percent mode ────────────────────────────────
+                    setUsePercentValues(true)
+
+                    // ── Start at 12 o'clock ─────────────────────────
+                    rotationAngle = 270f
+                    isRotationEnabled = false
+
+                    // ── Extra offsets for outer label breathing room ─
+                    if (!hideValues) {
+                        setExtraOffsets(24f, 12f, 24f, 12f)
                     } else {
-                        this.setCenterTextSize(16f)
+                        setExtraOffsets(8f, 8f, 8f, 8f)
                     }
 
-                    this.setCenterTextColor(colorCode)
-                    this.centerText = buildSpannedString {
-                        append(totalAmountText)
-                    }
-
-                    // on below line we are enabling legend.
-                    this.legend.isEnabled = false
-
-                    if (isAnimated.not()) {
+                    // ── Animate only on first composition ───────────
+                    if (!isAnimated) {
                         isAnimated = true
-                        this.animateY(1000, Easing.EaseInOutQuad)
-                    } else {
-                        this.animateY(0, Easing.EaseInOutQuad)
+                        animateY(900, Easing.EaseInOutCubic)
                     }
                 }
             },
-            update = {
-                // on below line we are calling update pie chart
-                // method and passing pie chart and list of data.
-                updatePieChartWithData(it, pieChartData, hideValues)
+            update = { chart ->
+                // Re-apply theme colours on recomposition (e.g. dark mode toggle)
+                chart.setCenterTextColor(onBackgroundColor)
+                chart.setHoleColor(holeColor)
+                chart.setTransparentCircleColor(holeColor)
+                chart.centerText = totalAmountText
+                updatePieChartWithData(chart, pieChartData, hideValues, surfaceVariantColor)
             },
         )
     }
 }
 
-fun updatePieChartWithData(
+// ═══════════════════════════════════════════════════════════════════════
+//  Data binding
+// ═══════════════════════════════════════════════════════════════════════
+
+private fun updatePieChartWithData(
     chart: PieChart,
     data: List<PieChartUiData>,
     hideValues: Boolean,
+    labelFallbackColor: Int,
 ) {
-    val entries = mutableListOf<PieEntry>()
-    val colors = mutableListOf<Int>()
+    val entries = data.map { PieEntry(it.value, "", it.name) }
+    val colors = data.map { it.color }
 
-    for (i in data.indices) {
-        val item = data[i]
-        entries.add(
-            PieEntry(item.value, "", item.name),
-        )
-        colors.add(item.color)
-    }
+    val dataSet = PieDataSet(entries, "").apply {
+        isHighlightEnabled = false
+        this.colors = colors
 
-    val pieDataSet = PieDataSet(entries, "")
+        // ── Slice gap ──────────────────────────────────────────
+        // Slightly wider than default for cleaner separation.
+        sliceSpace = if (data.size > 1) 3f else 0f
+        selectionShift = 0f
 
-    pieDataSet.isHighlightEnabled = false
-    pieDataSet.colors = colors
-    pieDataSet.setValueTextColors(colors)
-    pieDataSet.sliceSpace = 3f
-    if (hideValues) {
-        pieDataSet.valueTextSize = 6f
-    } else {
-        pieDataSet.valueTextSize = 10f
-    }
-    pieDataSet.isUsingSliceColorAsValueLineColor = true
-    pieDataSet.valueLinePart1Length = .2f
-    pieDataSet.valueLineWidth = 2f
+        // ── Value lines + outer labels ─────────────────────────
+        if (!hideValues) {
+            setDrawValues(true)
 
-    if (hideValues.not()) {
-        pieDataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        pieDataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        pieDataSet.valueFormatter = object : ValueFormatter() {
-            override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
-                return pieEntry?.data?.toString() ?: ""
+            // Connecting lines from slice to label
+            valueLinePart1Length = 0.3f
+            valueLinePart1OffsetPercentage = 85f
+            valueLinePart2Length = 0.4f
+            valueLineWidth = 1.5f
+            valueLineColor = labelFallbackColor
+            isUsingSliceColorAsValueLineColor = true
+
+            // Labels sit outside the donut
+            xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+            yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+
+            valueTextSize = 11f
+            setValueTextColors(colors)
+
+            // Show category name instead of raw value
+            valueFormatter = object : ValueFormatter() {
+                override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
+                    return pieEntry?.data?.toString() ?: ""
+                }
             }
-        }
-    } else {
-        pieDataSet.valueFormatter = object : ValueFormatter() {
-            override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
-                return ""
-            }
+        } else {
+            setDrawValues(false)
         }
     }
 
-    val pieData = PieData(pieDataSet)
-    chart.data = pieData
+    chart.data = PieData(dataSet)
     chart.invalidate()
 }

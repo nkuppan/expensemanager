@@ -1,8 +1,9 @@
 package com.naveenapps.expensemanager.feature.budget.list
 
-import android.annotation.SuppressLint
 import androidx.annotation.ColorRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -26,7 +26,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,21 +33,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeBGColor
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.feature.budget.R
@@ -165,7 +166,6 @@ private fun BudgetListScreenContent(
     }
 }
 
-@SuppressLint("DiscouragedApi")
 @Composable
 fun BudgetItem(
     name: String,
@@ -177,61 +177,117 @@ fun BudgetItem(
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
 ) {
-    Row(modifier = modifier) {
+    val barColor = colorResource(id = progressBarColor)
+    val isOverBudget = percentage > 100f
+    val clampedProgress = (percentage / 100f).coerceIn(0f, 1f)
+
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        // ── Category icon ──────────────────────────────────────────
         IconAndBackgroundView(
-            modifier = Modifier
-                .align(Alignment.CenterVertically),
+            modifier = Modifier,
             icon = icon,
             iconBackgroundColor = iconBackgroundColor,
             name = name,
         )
-        Column(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(start = 16.dp),
-        ) {
-            Row {
+
+        Spacer(Modifier.width(14.dp))
+
+        // ── Content ────────────────────────────────────────────────
+        Column(modifier = Modifier.weight(1f)) {
+
+            // ── Row 1: Name + Budget amount ────────────────────────
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
                     text = name,
-                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.weight(1f),
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontWeight = FontWeight.Medium,
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
+
                 if (amount != null) {
+                    Spacer(Modifier.width(12.dp))
                     Text(
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .align(Alignment.CenterVertically),
                         text = amount.amountString ?: "",
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            letterSpacing = (-0.3).sp,
+                        ),
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
-            Row(modifier = Modifier.padding(top = 4.dp)) {
-                LinearProgressIndicator(
-                    progress = { percentage / 100 },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(8.dp)
-                        .align(Alignment.CenterVertically),
-                    color = colorResource(id = progressBarColor),
-                    strokeCap = StrokeCap.Round,
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .align(Alignment.CenterVertically),
-                    text = percentage.toPercentString(),
-                    style = MaterialTheme.typography.labelSmall,
-                )
-            }
 
-            Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "${transactionAmount?.amountString} of ${amount?.amountString}",
-                style = MaterialTheme.typography.labelSmall,
+            Spacer(Modifier.height(8.dp))
+
+            // ── Row 2: Progress bar ────────────────────────────────
+            LinearProgressIndicator(
+                progress = { clampedProgress },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(3.dp)),
+                color = if (isOverBudget) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    barColor
+                },
+                trackColor = barColor.copy(alpha = 0.10f),
+                strokeCap = StrokeCap.Round,
             )
+
+            Spacer(Modifier.height(6.dp))
+
+            // ── Row 3: Spent of Total + Percentage badge ───────────
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "${transactionAmount?.amountString ?: "—"} of ${amount?.amountString ?: "—"}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                        .copy(alpha = 0.6f),
+                )
+
+                Spacer(Modifier.weight(1f))
+
+                // Percentage badge
+                val badgeBg = if (isOverBudget) {
+                    MaterialTheme.colorScheme.errorContainer
+                } else {
+                    barColor.copy(alpha = 0.12f)
+                }
+                val badgeText = if (isOverBudget) {
+                    MaterialTheme.colorScheme.onErrorContainer
+                } else {
+                    barColor
+                }
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(6.dp))
+                        .background(badgeBg)
+                        .padding(horizontal = 7.dp, vertical = 2.dp),
+                ) {
+                    Text(
+                        text = percentage.toPercentString(),
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontWeight = FontWeight.SemiBold,
+                        ),
+                        color = badgeText,
+                    )
+                }
+            }
         }
     }
 }
@@ -244,59 +300,107 @@ fun DashBoardBudgetItem(
     transactionAmount: String?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
-    backgroundColor: Color,
 ) {
-    Surface(
-        modifier = modifier,
-        color = backgroundColor,
-        shape = RoundedCornerShape(8.dp),
-    ) {
+    val barColor = colorResource(id = progressBarColor)
+    val isOverBudget = percentage > 100f
+    val clampedProgress = (percentage / 100f).coerceIn(0f, 1f)
+
+    AppCardView(modifier = modifier) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 18.dp, vertical = 16.dp)
                 .width(260.dp),
         ) {
-            Row {
+            // ── Budget name ────────────────────────────────────────
+            Text(
+                text = name,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    letterSpacing = (-0.2).sp,
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+
+            Spacer(Modifier.height(14.dp))
+
+            // ── Spent vs Budget row ────────────────────────────────
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                // Spent amount — large and prominent
                 Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .align(Alignment.CenterVertically),
-                    text = name,
-                    maxLines = 1,
-                    style = MaterialTheme.typography.titleMedium,
-                    overflow = TextOverflow.Ellipsis,
+                    text = transactionAmount ?: "—",
+                    style = MaterialTheme.typography.headlineSmall.copy(
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = (-0.5).sp,
+                    ),
+                    color = if (isOverBudget) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    },
                 )
+
+                // "of $amount" — smaller, muted, baseline-aligned
                 Text(
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(start = 4.dp),
-                    text = transactionAmount ?: "",
-                    style = MaterialTheme.typography.headlineSmall,
+                    text = " of ${amount ?: "—"}",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontWeight = FontWeight.Normal,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                        .copy(alpha = 0.6f),
+                    modifier = Modifier.padding(bottom = 2.dp),
                 )
-            }
-            Row(modifier = Modifier.padding(top = 4.dp)) {
-                LinearProgressIndicator(
-                    progress = { percentage / 100 },
+
+                Spacer(Modifier.weight(1f))
+
+                // Percentage badge
+                val badgeBg = if (isOverBudget) {
+                    MaterialTheme.colorScheme.errorContainer
+                } else {
+                    barColor.copy(alpha = 0.12f)
+                }
+                val badgeText = if (isOverBudget) {
+                    MaterialTheme.colorScheme.onErrorContainer
+                } else {
+                    barColor
+                }
+
+                Box(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(8.dp)
-                        .align(Alignment.CenterVertically),
-                    color = colorResource(id = progressBarColor),
-                    strokeCap = StrokeCap.Round,
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .align(Alignment.CenterVertically),
-                    text = percentage.toPercentString(),
-                    style = MaterialTheme.typography.labelSmall,
-                )
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(badgeBg)
+                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                ) {
+                    Text(
+                        text = percentage.toPercentString(),
+                        style = MaterialTheme.typography.labelMedium.copy(
+                            fontWeight = FontWeight.SemiBold,
+                        ),
+                        color = badgeText,
+                    )
+                }
             }
 
-            Text(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = "$transactionAmount of $amount",
-                style = MaterialTheme.typography.labelSmall,
+            Spacer(Modifier.height(12.dp))
+
+            // ── Progress bar ───────────────────────────────────────
+            LinearProgressIndicator(
+                progress = { clampedProgress },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(6.dp)
+                    .clip(RoundedCornerShape(3.dp)),
+                color = if (isOverBudget) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    barColor
+                },
+                trackColor = barColor.copy(alpha = 0.10f),
+                strokeCap = StrokeCap.Round,
             )
         }
     }
@@ -349,7 +453,6 @@ private fun DashboardBudgetItemPreview() {
             transactionAmount = "$78.00",
             modifier = ItemSpecModifier,
             percentage = 78.8f,
-            backgroundColor = getIncomeBGColor(),
         )
     }
 }

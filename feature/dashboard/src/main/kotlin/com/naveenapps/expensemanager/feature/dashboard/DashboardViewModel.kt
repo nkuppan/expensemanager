@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsU
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -37,6 +38,7 @@ class DashboardViewModel(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     getBudgetsUseCase: GetBudgetsUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
+    getDateRangeUseCase: GetDateRangeUseCase,
     private val appComposeNavigator: AppComposeNavigator
 ) : ViewModel() {
 
@@ -52,6 +54,7 @@ class DashboardViewModel(
                 categoryTransactions = emptyList(),
                 categoryType = CategoryType.EXPENSE,
             ),
+            transactionPeriod = ""
         )
     )
     val state = _state.asStateFlow()
@@ -61,7 +64,8 @@ class DashboardViewModel(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(),
             getAllAccountsUseCase.invoke(),
-        ) { currency, transactions, accounts ->
+            getDateRangeUseCase.invoke(),
+        ) { currency, transactions, accounts, dateRange ->
 
             val filteredTransactions = (transactions?.map {
                 it.toTransactionUIModel(
@@ -115,7 +119,8 @@ class DashboardViewModel(
                         ).amountString.orEmpty(),
                     ),
                     transactions = filteredTransactions,
-                    accounts = accountsConverted
+                    accounts = accountsConverted,
+                    transactionPeriod = "${dateRange.name} (${dateRange.description})"
                 )
             }
         }.flowOn(appCoroutineDispatchers.computation)

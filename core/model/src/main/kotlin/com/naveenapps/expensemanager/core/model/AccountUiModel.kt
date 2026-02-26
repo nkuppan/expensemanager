@@ -14,7 +14,10 @@ data class AccountUiModel(
     val availableCreditLimit: Amount? = null,
 )
 
-fun Account.toAccountUiModel(amount: Amount, availableCreditLimit: Amount? = null) = AccountUiModel(
+fun Account.toAccountUiModel(
+    amount: Amount,
+    availableCreditLimit: Amount? = null
+) = AccountUiModel(
     id = this.id,
     name = this.name,
     storedIcon = this.storedIcon,
