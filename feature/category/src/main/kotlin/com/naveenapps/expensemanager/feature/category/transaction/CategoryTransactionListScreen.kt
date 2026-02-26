@@ -178,8 +178,6 @@ private fun CategoryTransactionListScreenContent(
             LazyColumn(
                 modifier = modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp,
                     bottom = 88.dp,
                 ),
             ) {
@@ -195,7 +193,7 @@ private fun CategoryTransactionListScreenContent(
                     AppCardView(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp),
+                            .padding(vertical = 12.dp, horizontal = 16.dp),
                     ) {
                         Column(
                             modifier = Modifier.fillMaxWidth(),
@@ -236,7 +234,7 @@ private fun CategoryTransactionListScreenContent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 6.dp, bottom = 10.dp),
+                            .padding(top = 6.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
@@ -266,7 +264,7 @@ private fun CategoryTransactionListScreenContent(
                         EmptyItem(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(top = 32.dp),
+                                .padding(top = 32.dp, start = 16.dp, end = 16.dp),
                             emptyItemText = stringResource(
                                 id = R.string.no_transactions_available,
                             ),
@@ -287,7 +285,9 @@ private fun CategoryTransactionListScreenContent(
                         ) {
                             categoryTransactions.forEachIndexed { index, categoryTransaction ->
                                 AppCardView(
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 16.dp, end = 16.dp, bottom = 2.dp),
                                     shape = AppCardViewDefaults.cardShape(
                                         index,
                                         categoryTransactions

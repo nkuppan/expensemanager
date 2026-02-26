@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.category.details
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -44,8 +45,9 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
@@ -113,7 +115,7 @@ private fun CategoryDetailsContent(
                     )
                     state.categoryTransaction?.let { categoryTransaction ->
                         CategoryTransactionItem(
-                            modifier = Modifier.padding(16.dp),
+                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                             name = categoryTransaction.category.name,
                             icon = categoryTransaction.category.storedIcon.name,
                             iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
@@ -154,27 +156,48 @@ private fun CategoryDetailsContent(
                     textAlign = TextAlign.Center,
                 )
             } else {
-                LazyColumn(modifier = Modifier.padding(top = 16.dp)) {
-                    items(state.transactions, key = { it.id }) { item ->
-                        TransactionItem(
-                            categoryName = item.categoryName,
-                            fromAccountName = item.fromAccountName,
-                            fromAccountIcon = item.fromAccountIcon.name,
-                            fromAccountColor = item.fromAccountIcon.backgroundColor,
-                            amount = item.amount,
-                            date = item.date,
-                            notes = item.notes,
+                LazyColumn(
+                    modifier = Modifier.padding(top = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                ) {
+
+                    itemsIndexed(
+                        items = state.transactions,
+                        key = { _, item -> item.id },
+                    ) { index, item ->
+                        AppCardView(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable {
-                                    onAction.invoke(CategoryDetailsAction.OpenTransactionEdit(item.id))
-                                }
-                                .then(ItemSpecModifier),
-                            toAccountName = item.toAccountName,
-                            toAccountIcon = item.toAccountIcon?.name,
-                            toAccountColor = item.toAccountIcon?.backgroundColor,
-                            transactionType = item.transactionType,
-                        )
+                                .padding(start = 16.dp, end = 16.dp),
+                            shape = AppCardViewDefaults.cardShape(
+                                index,
+                                state.transactions
+                            )
+                        ) {
+                            TransactionItem(
+                                categoryName = item.categoryName,
+                                fromAccountName = item.fromAccountName,
+                                fromAccountIcon = item.fromAccountIcon.name,
+                                fromAccountColor = item.fromAccountIcon.backgroundColor,
+                                amount = item.amount,
+                                date = item.date,
+                                notes = item.notes,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        onAction.invoke(
+                                            CategoryDetailsAction.OpenTransactionEdit(
+                                                item.id
+                                            )
+                                        )
+                                    }
+                                    .then(ItemSpecModifier),
+                                toAccountName = item.toAccountName,
+                                toAccountIcon = item.toAccountIcon?.name,
+                                toAccountColor = item.toAccountIcon?.backgroundColor,
+                                transactionType = item.transactionType,
+                            )
+                        }
                     }
 
                     item {
