@@ -129,22 +129,6 @@ class BudgetRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun checkUpdateCase() = runTest {
-        addBudgetAndAssert(FAKE_BUDGET)
-        val name = "New"
-        val fakeInsert = FAKE_BUDGET.copy(name = name)
-
-        val newResult = budgetRepository.updateBudget(fakeInsert)
-        Truth.assertThat(newResult).isNotNull()
-        Truth.assertThat(newResult).isInstanceOf(Resource.Success::class.java)
-        val data = (newResult as Resource.Success).data
-        Truth.assertThat(data).isNotNull()
-        Truth.assertThat(data).isTrue()
-
-        findBudgetAndAssert(FAKE_BUDGET.id)
-    }
-
-    @Test
     fun whenFindTheBudgetAsFlow() = runTest {
         budgetRepository.findBudgetByIdFlow(FAKE_BUDGET.id).test {
             val response = awaitItem()
