@@ -67,9 +67,6 @@ fun Budget.toBudgetUiModel(
     transactions: List<TransactionUiItem>? = null,
 ) = BudgetUiModel(
     id = this.id,
-    name = this.name,
-    icon = this.storedIcon.name,
-    iconBackgroundColor = this.storedIcon.backgroundColor,
     progressBarColor = when {
         percent < 0f -> R.color.green_500
         percent in 0f..35f -> R.color.green_500
@@ -86,9 +83,6 @@ fun Budget.toBudgetUiModel(
 @Stable
 data class BudgetUiModel(
     val id: String,
-    val name: String,
-    val icon: String,
-    val iconBackgroundColor: String,
     val progressBarColor: Int,
     val amount: Amount,
     val transactionAmount: Amount,

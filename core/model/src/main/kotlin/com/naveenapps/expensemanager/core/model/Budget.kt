@@ -4,8 +4,6 @@ import java.util.Date
 
 data class Budget(
     val id: String,
-    val name: String,
-    val storedIcon: StoredIcon,
     val amount: Double = 0.0,
     val selectedMonth: String,
     val categories: List<String>,

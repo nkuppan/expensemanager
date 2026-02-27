@@ -48,7 +48,6 @@ import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -135,9 +134,6 @@ private fun BudgetListScreenContent(
                 key = { it.id }
             ) { budget ->
                 BudgetItem(
-                    name = budget.name,
-                    icon = budget.icon,
-                    iconBackgroundColor = budget.iconBackgroundColor,
                     progressBarColor = budget.progressBarColor,
                     amount = budget.amount,
                     transactionAmount = budget.transactionAmount,
@@ -168,9 +164,6 @@ private fun BudgetListScreenContent(
 
 @Composable
 fun BudgetItem(
-    name: String,
-    icon: String,
-    iconBackgroundColor: String,
     @ColorRes progressBarColor: Int,
     amount: Amount?,
     transactionAmount: Amount?,
@@ -185,17 +178,6 @@ fun BudgetItem(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // ── Category icon ──────────────────────────────────────────
-        IconAndBackgroundView(
-            modifier = Modifier,
-            icon = icon,
-            iconBackgroundColor = iconBackgroundColor,
-            name = name,
-        )
-
-        Spacer(Modifier.width(14.dp))
-
-        // ── Content ────────────────────────────────────────────────
         Column(modifier = Modifier.weight(1f)) {
 
             // ── Row 1: Name + Budget amount ────────────────────────
@@ -203,19 +185,7 @@ fun BudgetItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = name,
-                    modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Medium,
-                    ),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
                 if (amount != null) {
-                    Spacer(Modifier.width(12.dp))
                     Text(
                         text = amount.amountString ?: "",
                         style = MaterialTheme.typography.titleMedium.copy(
@@ -416,9 +386,6 @@ fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> {
 
 private fun getBudgetUiModel(id: String) = BudgetUiModel(
     id = id,
-    name = "Cash",
-    icon = "account_balance",
-    iconBackgroundColor = "#000000",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
@@ -430,9 +397,6 @@ private fun getBudgetUiModel(id: String) = BudgetUiModel(
 private fun BudgetItemPreview() {
     NaveenAppsPreviewTheme(padding = 0.dp) {
         BudgetItem(
-            name = "Utilities",
-            icon = "account_balance",
-            iconBackgroundColor = "#000000",
             amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             modifier = ItemSpecModifier,

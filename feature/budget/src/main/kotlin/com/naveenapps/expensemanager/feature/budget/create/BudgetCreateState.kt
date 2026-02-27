@@ -10,11 +10,8 @@ import java.util.Date
 @Stable
 data class BudgetCreateState(
     val isLoading: Boolean,
-    val name: TextFieldValue<String>,
     val amount: TextFieldValue<String>,
     val month: TextFieldValue<Date>,
-    val icon: TextFieldValue<String>,
-    val color: TextFieldValue<String>,
     val isAllAccountSelected: Boolean,
     val selectedAccounts: List<AccountUiModel>,
     val isAllCategorySelected: Boolean,

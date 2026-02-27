@@ -30,7 +30,7 @@ fun SettingsSection(
             text = title.uppercase(),
             style = MaterialTheme.typography.labelMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurface,
             letterSpacing = 0.8.sp,
             modifier = Modifier.padding(bottom = 8.dp, start = 4.dp),
         )

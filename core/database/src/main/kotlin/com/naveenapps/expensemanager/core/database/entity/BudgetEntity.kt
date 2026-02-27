@@ -10,15 +10,6 @@ data class BudgetEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
     val id: String,
-    @ColumnInfo(name = "name")
-    val name: String,
-    @ColumnInfo(name = "icon_background_color")
-    val iconBackgroundColor: String,
-    @ColumnInfo(name = "icon_name")
-    val iconName: String,
-    /**
-     * Selected month format will MM yyyy  e-x: 07 2023
-     */
     @ColumnInfo(name = "selected_month")
     val selectedMonth: String,
     @ColumnInfo(name = "amount")

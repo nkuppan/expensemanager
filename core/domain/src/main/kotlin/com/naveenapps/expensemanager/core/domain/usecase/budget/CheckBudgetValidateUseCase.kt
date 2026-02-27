@@ -3,15 +3,11 @@ package com.naveenapps.expensemanager.core.domain.usecase.budget
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
 
-class CheckBudgetValidateUseCase() {
+class CheckBudgetValidateUseCase {
 
     operator fun invoke(budget: Budget): Resource<Boolean> {
         if (budget.id.isBlank()) {
             return Resource.Error(Exception("Please specify the budget id"))
-        }
-
-        if (budget.name.isBlank()) {
-            return Resource.Error(Exception("Budget name shouldn't be empty"))
         }
 
         if (budget.isAllAccountsSelected.not() && budget.accounts.isEmpty()) {
@@ -20,18 +16,6 @@ class CheckBudgetValidateUseCase() {
 
         if (budget.isAllCategoriesSelected.not() && budget.categories.isEmpty()) {
             return Resource.Error(Exception("Categories shouldn't be empty"))
-        }
-
-        if (budget.storedIcon.name.isBlank()) {
-            return Resource.Error(Exception("Background name is not available"))
-        }
-
-        if (budget.storedIcon.backgroundColor.isBlank()) {
-            return Resource.Error(Exception("Background color is not available"))
-        }
-
-        if (!budget.storedIcon.backgroundColor.startsWith("#")) {
-            return Resource.Error(Exception("Background color is not valid"))
         }
 
         if (budget.amount <= 0.0) {

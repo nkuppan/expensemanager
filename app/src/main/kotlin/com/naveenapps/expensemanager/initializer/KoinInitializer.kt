@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.initializer
 
-import DatabaseModule
+import com.naveenapps.expensemanager.core.database.di.DatabaseModule
 import DatastoreModule
 import DispatcherModule
 import android.content.Context

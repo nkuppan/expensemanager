@@ -26,4 +26,6 @@
     <string name="details">Details</string>
     <string name="appearance">Appearance</string>
     <string name="select_month">Select Month</string>
+    <string name="budget_for">Budget for</string>
+    <string name="what_is_your_budget_limit">What is your total budget limit</string>
 </resources>

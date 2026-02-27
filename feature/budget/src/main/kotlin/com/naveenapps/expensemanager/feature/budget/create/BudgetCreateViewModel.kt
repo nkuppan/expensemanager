@@ -18,7 +18,6 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -52,25 +51,10 @@ class BudgetCreateViewModel(
     private val _state = MutableStateFlow(
         BudgetCreateState(
             isLoading = true,
-            name = TextFieldValue(
-                value = "",
-                valueError = false,
-                onValueChange = this::setNameChange
-            ),
             amount = TextFieldValue(
                 value = "",
                 valueError = false,
                 onValueChange = this::setAmountChange
-            ),
-            color = TextFieldValue(
-                value = DEFAULT_COLOR,
-                valueError = false,
-                onValueChange = this::setColorValue
-            ),
-            icon = TextFieldValue(
-                value = DEFAULT_ICON,
-                valueError = false,
-                onValueChange = this::setIconValue
             ),
             month = TextFieldValue(
                 value = Date(),
@@ -136,10 +120,7 @@ class BudgetCreateViewModel(
         _state.update { state ->
             state.copy(
                 isLoading = false,
-                name = state.name.copy(value = budget.name),
                 amount = state.amount.copy(value = numberFormatRepository.formatForEditing(budget.amount)),
-                icon = state.icon.copy(value = budget.storedIcon.name),
-                color = state.color.copy(value = budget.storedIcon.backgroundColor),
                 month = state.month.copy(value = budget.selectedMonth.fromMonthAndYear() ?: Date()),
                 isAllAccountSelected = budget.isAllAccountsSelected,
                 selectedAccounts = emptyList(),
@@ -176,18 +157,10 @@ class BudgetCreateViewModel(
     }
 
     private fun saveOrUpdateBudget() {
-        val name: String = _state.value.name.value
-        val color: String = _state.value.color.value
-        val icon: String = _state.value.icon.value
         val date: Date = _state.value.month.value
         val amount: Double? = numberFormatRepository.parseToDouble(_state.value.amount.value)
 
         var isError = false
-
-        if (name.isBlank()) {
-            _state.update { it.copy(name = it.name.copy(valueError = true)) }
-            isError = true
-        }
 
         if (amount == null || amount == 0.0) {
             _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
@@ -204,11 +177,6 @@ class BudgetCreateViewModel(
 
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
-            name = name,
-            storedIcon = StoredIcon(
-                name = icon,
-                backgroundColor = color,
-            ),
             amount = amount ?: 0.0,
             selectedMonth = date.toMonthAndYear(),
             categories = categories,
@@ -231,25 +199,6 @@ class BudgetCreateViewModel(
                     closePage()
                 }
             }
-        }
-    }
-
-    private fun setColorValue(colorValue: String) {
-        _state.update { it.copy(color = it.color.copy(value = colorValue)) }
-    }
-
-    private fun setIconValue(icon: String) {
-        _state.update { it.copy(icon = it.icon.copy(value = icon)) }
-    }
-
-    private fun setNameChange(name: String) {
-        _state.update {
-            it.copy(
-                name = it.name.copy(
-                    value = name,
-                    valueError = name.isBlank()
-                )
-            )
         }
     }
 

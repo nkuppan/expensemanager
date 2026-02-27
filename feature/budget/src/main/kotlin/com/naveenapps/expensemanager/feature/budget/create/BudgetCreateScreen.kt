@@ -44,7 +44,6 @@ import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
-import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
@@ -52,7 +51,6 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseMana
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
-import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
@@ -197,11 +195,8 @@ private fun BudgetCreateScreenContentView(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
-            nameField = state.name,
             amountField = state.amount,
             currencyIconField = state.currency.symbol,
-            selectedColorField = state.color,
-            selectedIconField = state.icon,
             selectedDate = state.month,
             accountCount = if (state.isAllAccountSelected) {
                 stringResource(R.string.all)
@@ -220,11 +215,8 @@ private fun BudgetCreateScreenContentView(
 
 @Composable
 fun BudgetCreateScreen(
-    nameField: TextFieldValue<String>,
     amountField: TextFieldValue<String>,
     currencyIconField: String,
-    selectedColorField: TextFieldValue<String>,
-    selectedIconField: TextFieldValue<String>,
     selectedDate: TextFieldValue<Date>,
     accountCount: String,
     categoriesCount: String,
@@ -238,7 +230,7 @@ fun BudgetCreateScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SettingsSection(
-            title = stringResource(R.string.period),
+            title = stringResource(R.string.budget_for),
             modifier = Modifier.padding(top = 8.dp),
         ) {
             AppCardView {
@@ -259,21 +251,12 @@ fun BudgetCreateScreen(
             }
         }
 
-        SettingsSection(title = stringResource(R.string.details)) {
+        SettingsSection(title = stringResource(R.string.what_is_your_budget_limit)) {
             AppCardView {
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    StringTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = nameField.value,
-                        isError = nameField.valueError,
-                        errorMessage = stringResource(id = R.string.budget_name_error),
-                        onValueChange = nameField.onValueChange,
-                        label = R.string.budget_name,
-                    )
-
                     DecimalTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = amountField.value,
@@ -282,22 +265,6 @@ fun BudgetCreateScreen(
                         onValueChange = amountField.onValueChange,
                         leadingIconText = currencyIconField,
                         label = R.string.budget_amount,
-                    )
-                }
-            }
-        }
-
-        SettingsSection(title = stringResource(R.string.appearance)) {
-            AppCardView {
-                Column(
-                    modifier = Modifier.padding(16.dp)
-                ) {
-                    IconAndColorComponent(
-                        modifier = Modifier.fillMaxWidth(),
-                        selectedColor = selectedColorField.value,
-                        selectedIcon = selectedIconField.value,
-                        onColorSelection = selectedColorField.onValueChange,
-                        onIconSelection = selectedIconField.onValueChange,
                     )
                 }
             }
@@ -338,15 +305,6 @@ fun BudgetCreateScreen(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun BudgetCreateStatePreview() {
-    val nameField = TextFieldValue(
-        value = "", valueError = false, onValueChange = { }
-    )
-    val selectedColorField = TextFieldValue(
-        value = "#000000", valueError = false, onValueChange = { }
-    )
-    val selectedIconField = TextFieldValue(
-        value = "account_balance_wallet", valueError = false, onValueChange = { }
-    )
     val amountField = TextFieldValue(
         value = "0.0",
         valueError = false,
@@ -361,10 +319,7 @@ private fun BudgetCreateStatePreview() {
         BudgetCreateScreenContentView(
             state = BudgetCreateState(
                 isLoading = false,
-                name = nameField,
                 amount = amountField,
-                icon = selectedIconField,
-                color = selectedColorField,
                 month = dateField,
                 isAllCategorySelected = true,
                 isAllAccountSelected = true,
