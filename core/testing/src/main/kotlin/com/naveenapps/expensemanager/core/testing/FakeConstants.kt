@@ -114,14 +114,12 @@ val FAKE_TRANSFER_TRANSACTION = Transaction(
 
 val FAKE_BUDGET = Budget(
     id = "1",
-    name = "Sample",
     amount = 5000.0,
     selectedMonth = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(Date()),
     accounts = emptyList(),
     categories = emptyList(),
     isAllAccountsSelected = true,
     isAllCategoriesSelected = true,
-    storedIcon = StoredIcon("ic_account", "#ffffff"),
     createdOn = Date(),
     updatedOn = Date(),
 )
