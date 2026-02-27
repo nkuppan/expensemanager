@@ -88,4 +88,8 @@ data class BudgetUiModel(
     val transactionAmount: Amount,
     val percent: Float,
     val transactions: List<TransactionUiItem>? = null,
-)
+) {
+    fun getName(): String {
+        return "This month"
+    }
+}

@@ -14,7 +14,7 @@ private val MIGRATION_2_3 = object : Migration(2, 3) {
     }
 }
 
-private val MIGRATION_3_4 = object : Migration(2, 3) {
+private val MIGRATION_3_4 = object : Migration(3, 4) {
     override fun migrate(db: SupportSQLiteDatabase) {
         db.execSQL("ALTER TABLE budget DROP COLUMN name")
         db.execSQL("ALTER TABLE budget DROP COLUMN icon_background_color")

@@ -230,7 +230,7 @@ private fun DashboardScreenContent(
                                     .clickable {
                                         onAction.invoke(DashboardAction.OpenBudgetDetails(budget))
                                     },
-                                name = budget.name,
+                                name = budget.getName(),
                                 progressBarColor = budget.progressBarColor,
                                 amount = budget.amount.amountString,
                                 transactionAmount = budget.transactionAmount.amountString,
