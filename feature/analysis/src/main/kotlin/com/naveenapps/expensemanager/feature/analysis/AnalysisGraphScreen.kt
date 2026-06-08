@@ -99,7 +99,7 @@ private fun ChartScreenContent(
             EmptyItem(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp),
+                    .height(320.dp),
                 emptyItemText = stringResource(id = R.string.no_chart_available),
                 icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_analysis
             )

@@ -70,7 +70,7 @@ class AdvancedSettingsViewModel(
                 it.copy(
                     expenseCategories = expenses,
                     selectedExpenseCategory = expenseCategory ?: expenses.firstOrNull(),
-                    incomeCategories = expenses,
+                    incomeCategories = incomes,
                     selectedIncomeCategory = incomeCategory ?: incomes.firstOrNull(),
                 )
             }

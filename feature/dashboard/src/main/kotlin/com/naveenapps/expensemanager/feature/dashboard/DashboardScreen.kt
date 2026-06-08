@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -183,7 +184,8 @@ private fun DashboardScreenContent(
                         icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
                         modifier = Modifier
                             .fillMaxSize()
-                            .height(200.dp)
+                            .height(320.dp)
+                            .align(Alignment.CenterHorizontally)
                     )
                 }
             }
@@ -244,7 +246,8 @@ private fun DashboardScreenContent(
                         icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
                         modifier = Modifier
                             .fillMaxSize()
-                            .height(200.dp)
+                            .height(320.dp)
+                            .align(Alignment.CenterHorizontally)
                     )
                 }
             }
@@ -301,7 +304,7 @@ private fun DashboardScreenContent(
                     icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
                     modifier = Modifier
                         .fillMaxSize()
-                        .height(200.dp)
+                        .height(320.dp)
                         .padding(horizontal = 16.dp)
                 )
             }

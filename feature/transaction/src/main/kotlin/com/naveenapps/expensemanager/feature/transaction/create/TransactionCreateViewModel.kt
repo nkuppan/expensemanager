@@ -12,11 +12,13 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransact
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
+import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -25,6 +27,7 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isTransfer
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
@@ -34,10 +37,9 @@ import com.naveenapps.expensemanager.core.settings.domain.repository.NumberForma
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -63,10 +65,12 @@ class TransactionCreateViewModel(
 
     private val transactionType = MutableStateFlow(TransactionType.EXPENSE)
 
-    private val isInitialSyncCompleted = MutableStateFlow(
+    // Tracks whether both the accounts and categories flows have emitted their first value,
+    // so we only populate an editing transaction once both are ready.
+    private val syncState = MutableStateFlow(
         TransactionCreateInitSetupState(
             isCategorySyncCompleted = false,
-            isAccountSyncCompleted = false
+            isAccountSyncCompleted = false,
         )
     )
 
@@ -102,210 +106,199 @@ class TransactionCreateViewModel(
     )
     var state = _state.asStateFlow()
 
-    private var transaction: Transaction? = null
+    // Non-null only when editing an existing transaction.
+    private var editingTransaction: Transaction? = null
 
     init {
+        observeAccountsAndCurrency(getCurrencyUseCase, getAllAccountsUseCase)
+        observeCategories(getAllCategoryUseCase)
+        loadTransactionWhenReady(savedStateHandle)
+    }
 
-        setDate(Date())
+    // region Observers
 
+    private fun observeAccountsAndCurrency(
+        getCurrencyUseCase: GetCurrencyUseCase,
+        getAllAccountsUseCase: GetAllAccountsUseCase,
+    ) {
         combine(
             getCurrencyUseCase.invoke(),
             getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
-            val mappedAccounts = if (accounts.isEmpty()) {
-                emptyList()
-            } else {
-                accounts.map {
-                    it.toAccountUiModel(
-                        getFormattedAmountUseCase.invoke(
-                            it.amount,
-                            currency,
-                        ),
-                        if (it.type == AccountType.CREDIT) {
-                            getFormattedAmountUseCase.invoke(
-                                it.getAvailableCreditLimit(),
-                                currency
-                            )
-                        } else {
-                            null
-                        }
-                    )
-                }
-            }
-
-            val accountId = settingsRepository.getDefaultAccount().firstOrNull()
-            val account = mappedAccounts.find { it.id == accountId }
-
+            val mappedAccounts = mapAccountsToUiModels(accounts, currency)
+            val defaultAccountId = settingsRepository.getDefaultAccount().firstOrNull()
+            val selectedAccount = mappedAccounts.find { it.id == defaultAccountId }
+                ?: mappedAccounts.firstOrNull()
+                ?: defaultAccount
             _state.update {
                 it.copy(
                     currency = currency,
                     accounts = mappedAccounts,
-                    selectedFromAccount = account ?: mappedAccounts.firstOrNull() ?: defaultAccount,
-                    selectedToAccount = account ?: mappedAccounts.firstOrNull() ?: defaultAccount
+                    selectedFromAccount = selectedAccount,
+                    selectedToAccount = selectedAccount,
                 )
             }
-            isInitialSyncCompleted.update {
-                it.copy(isAccountSyncCompleted = true)
-            }
+            syncState.update { it.copy(isAccountSyncCompleted = true) }
         }.launchIn(viewModelScope)
+    }
 
+    private fun observeCategories(getAllCategoryUseCase: GetAllCategoryUseCase) {
         combine(
             transactionType,
             getAllCategoryUseCase.invoke(),
             settingsRepository.getDefaultIncomeCategory(),
             settingsRepository.getDefaultExpenseCategory()
-        ) { transactionType, categories, defaultIncomeCategory, defaultExpenseCategory ->
+        ) { type, categories, defaultIncomeCategory, defaultExpenseCategory ->
             val filteredCategories = categories.filter { category ->
-                if (transactionType.isIncome()) {
-                    category.type.isIncome()
-                } else {
-                    category.type.isExpense()
-                }
+                if (type.isIncome()) category.type.isIncome() else category.type.isExpense()
             }
-
-            val categoryId = when (transactionType) {
-                TransactionType.INCOME -> {
-                    defaultIncomeCategory
-                }
-
-                TransactionType.EXPENSE -> {
-                    defaultExpenseCategory
-                }
-
-                else -> {
-                    null
-                }
+            val preferredCategoryId = when (type) {
+                TransactionType.INCOME -> defaultIncomeCategory
+                TransactionType.EXPENSE -> defaultExpenseCategory
+                TransactionType.TRANSFER -> null
             }
-
-            val expenseCategory = filteredCategories.find { it.id == categoryId }
+            val matchedCategory = filteredCategories.find { it.id == preferredCategoryId }
 
             _state.update {
                 it.copy(
-                    transactionType = transactionType,
-                    selectedCategory = if (transaction != null) {
-                        expenseCategory ?: filteredCategories.firstOrNull() ?: defaultCategory
-                    } else {
-                        filteredCategories.firstOrNull() ?: defaultCategory
-                    },
-                    categories = filteredCategories
+                    transactionType = type,
+                    categories = filteredCategories,
+                    selectedCategory = matchedCategory ?: filteredCategories.firstOrNull()
+                    ?: defaultCategory,
                 )
             }
-
-            isInitialSyncCompleted.update {
-                it.copy(isCategorySyncCompleted = true)
-            }
+            syncState.update { it.copy(isCategorySyncCompleted = true) }
         }.launchIn(viewModelScope)
-
-        isInitialSyncCompleted.onEach {
-            if (it.isAccountSyncCompleted && it.isCategorySyncCompleted) {
-                readInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
-            }
-        }.distinctUntilChanged().launchIn(viewModelScope)
     }
 
-    private fun readInfo(transactionId: String?) {
-        transactionId ?: return
+    private fun loadTransactionWhenReady(savedStateHandle: SavedStateHandle) {
+        val transactionId = savedStateHandle.get<String>(ExpenseManagerArgsNames.ID) ?: return
         viewModelScope.launch {
-            when (val response = findTransactionByIdUseCase.invoke(transactionId)) {
-                is Resource.Error -> Unit
-                is Resource.Success -> {
-                    val transaction = response.data
-                    this@TransactionCreateViewModel.transaction = transaction
-                    this@TransactionCreateViewModel.transactionType.value = transaction.type
-                    _state.update {
-                        it.copy(
-                            amount = it.amount.copy(
-                                value = numberFormatRepository.formatForEditing(
-                                    transaction.amount.amount
-                                )
+            syncState.first { it.isAccountSyncCompleted && it.isCategorySyncCompleted }
+            loadEditingTransaction(transactionId)
+        }
+    }
+
+    // endregion
+
+    // region Transaction load (edit mode)
+
+    private suspend fun loadEditingTransaction(transactionId: String) {
+        when (val response = findTransactionByIdUseCase.invoke(transactionId)) {
+            is Resource.Error -> Unit
+            is Resource.Success -> {
+                val transaction = response.data
+                editingTransaction = transaction
+                transactionType.value = transaction.type
+                _state.update { current ->
+                    current.copy(
+                        amount = current.amount.copy(
+                            value = numberFormatRepository.formatForEditing(transaction.amount.amount)
+                        ),
+                        transactionType = transaction.type,
+                        dateTime = transaction.createdOn,
+                        notes = current.notes.copy(value = transaction.notes),
+                        selectedCategory = transaction.category,
+                        selectedFromAccount = transaction.fromAccount.toAccountUiModel(
+                            getFormattedAmountUseCase.invoke(
+                                transaction.fromAccount.amount,
+                                current.currency
                             ),
-                            transactionType = transaction.type,
-                            dateTime = transaction.createdOn,
-                            notes = it.notes.copy(value = transaction.notes),
-                            selectedFromAccount = transaction.fromAccount.toAccountUiModel(
+                        ),
+                        selectedToAccount = transaction.toAccount?.let { toAccount ->
+                            toAccount.toAccountUiModel(
                                 getFormattedAmountUseCase.invoke(
-                                    transaction.fromAccount.amount,
-                                    it.currency,
+                                    toAccount.amount,
+                                    current.currency
                                 ),
-                            ),
-                            selectedToAccount = transaction.toAccount?.let { account ->
-                                account.toAccountUiModel(
-                                    getFormattedAmountUseCase.invoke(
-                                        account.amount,
-                                        it.currency,
-                                    ),
-                                )
-                            } ?: defaultAccount,
-                            selectedCategory = transaction.category,
-                            showDeleteButton = true,
-                        )
-                    }
+                            )
+                        } ?: defaultAccount,
+                        showDeleteButton = true,
+                    )
                 }
             }
         }
     }
 
+    // endregion
+
+    // region Save / Delete
+
     private fun save() {
-        val amount: String = this.state.value.amount.value
+        val currentState = _state.value
+        val amountText = currentState.amount.value
+        val amountValue = numberFormatRepository.parseToDouble(amountText)
 
-        var isError = false
-
-        if (amount.isBlank()) {
+        if (amountText.isBlank() || amountValue == null || amountValue <= 0.0) {
             _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
-            isError = true
-        }
-
-
-        val amountValue = numberFormatRepository.parseToDouble(
-            amount
-        )
-
-        if (amountValue == null || amountValue <= 0.0) {
-            _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
-            isError = true
-        }
-
-        if (_state.value.transactionType == TransactionType.TRANSFER &&
-            _state.value.selectedFromAccount.id == _state.value.selectedToAccount.id
-        ) {
-            //_message.tryEmit(UiText.StringResource(R.string.select_different_account))
-            isError = true
-        }
-
-        if (isError) {
             return
         }
 
-        val transaction = Transaction(
-            id = this.transaction?.id ?: UUID.randomUUID().toString(),
-            notes = _state.value.notes.value,
-            categoryId = _state.value.selectedCategory.id,
-            fromAccountId = _state.value.selectedFromAccount.id,
-            toAccountId =
-                if (_state.value.transactionType == TransactionType.TRANSFER) {
-                    _state.value.selectedToAccount.id
-                } else {
-                    null
-                },
-            type = _state.value.transactionType,
-            amount = Amount(amountValue!!),
+        if (currentState.transactionType.isTransfer() &&
+            currentState.selectedFromAccount.id == currentState.selectedToAccount.id
+        ) return
+
+        // amountValue is smart-cast to Double after the null check above
+        persistTransaction(buildTransactionFromState(currentState, amountValue))
+    }
+
+    internal fun buildTransactionFromState(
+        state: TransactionCreateState,
+        amountValue: Double
+    ): Transaction {
+        return Transaction(
+            id = editingTransaction?.id ?: UUID.randomUUID().toString(),
+            notes = state.notes.value,
+            categoryId = state.selectedCategory.id,
+            fromAccountId = state.selectedFromAccount.id,
+            toAccountId = if (state.transactionType.isTransfer()) state.selectedToAccount.id else null,
+            type = state.transactionType,
+            amount = Amount(amountValue),
             imagePath = "",
-            createdOn = _state.value.dateTime,
+            createdOn = state.dateTime,
             updatedOn = Calendar.getInstance().time,
         )
+    }
 
+    private fun persistTransaction(transaction: Transaction) {
         viewModelScope.launch {
-            val response = if (this@TransactionCreateViewModel.transaction != null) {
+            val response = if (editingTransaction != null) {
                 updateTransactionUseCase.invoke(transaction)
             } else {
                 addTransactionUseCase.invoke(transaction)
             }
-            when (response) {
-                is Resource.Error -> Unit
-                is Resource.Success -> {
-                    closePage()
-                }
+            if (response is Resource.Success) {
+                closePage()
             }
+        }
+    }
+
+    private fun deleteTransaction() {
+        val transaction = editingTransaction ?: return
+        viewModelScope.launch {
+            if (deleteTransactionUseCase.invoke(transaction) is Resource.Success) {
+                closePage()
+            }
+        }
+    }
+
+    // endregion
+
+    // region State helpers
+
+    private fun mapAccountsToUiModels(
+        accounts: List<Account>,
+        currency: Currency
+    ): List<AccountUiModel> {
+        return accounts.map { account ->
+            account.toAccountUiModel(
+                getFormattedAmountUseCase.invoke(account.amount, currency),
+                if (account.type == AccountType.CREDIT) {
+                    getFormattedAmountUseCase.invoke(account.getAvailableCreditLimit(), currency)
+                } else {
+                    null
+                }
+            )
         }
     }
 
@@ -322,25 +315,13 @@ class TransactionCreateViewModel(
         }
     }
 
-    private fun setDate(date: Date) {
-        _state.update { it.copy(dateTime = date) }
-    }
-
     private fun setNotes(notes: String) {
         _state.update { it.copy(notes = it.notes.copy(value = notes)) }
     }
 
-    private fun deleteTransaction() {
-        viewModelScope.launch {
-            transaction?.let {
-                when (deleteTransactionUseCase.invoke(it)) {
-                    is Resource.Error -> Unit
-                    is Resource.Success -> {
-                        closePage()
-                    }
-                }
-            }
-        }
+    private fun changeTransactionType(type: TransactionType) {
+        transactionType.update { type }
+        _state.update { it.copy(transactionType = type) }
     }
 
     private fun closePage() {
@@ -348,15 +329,11 @@ class TransactionCreateViewModel(
     }
 
     private fun openCategoryCreate() {
-        appComposeNavigator.navigate(
-            ExpenseManagerScreens.CategoryCreate(null),
-        )
+        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryCreate(null))
     }
 
     private fun openAccountCreate() {
-        appComposeNavigator.navigate(
-            ExpenseManagerScreens.AccountCreate(null),
-        )
+        appComposeNavigator.navigate(ExpenseManagerScreens.AccountCreate(null))
     }
 
     private fun dismissDeleteDialog() {
@@ -367,115 +344,82 @@ class TransactionCreateViewModel(
         _state.update { it.copy(showDeleteDialog = true) }
     }
 
+    // endregion
+
     fun processAction(action: TransactionCreateAction) {
         when (action) {
             TransactionCreateAction.ClosePage -> closePage()
-            TransactionCreateAction.DismissDeleteDialog -> dismissDeleteDialog()
             TransactionCreateAction.ShowDeleteDialog -> showDeleteDialog()
-            is TransactionCreateAction.OpenAccountCreate -> {
-                openAccountCreate()
-            }
-
-            is TransactionCreateAction.OpenCategoryCreate -> {
-                openCategoryCreate()
-            }
-
+            TransactionCreateAction.DismissDeleteDialog -> dismissDeleteDialog()
             TransactionCreateAction.Delete -> deleteTransaction()
-            is TransactionCreateAction.SetNumberPadValue -> {
-                action.amount?.let {
-                    setAmountOnChange(it)
-                }
-            }
-
             TransactionCreateAction.Save -> save()
-            TransactionCreateAction.DismissCategorySelection -> {
-                _state.update { it.copy(showCategorySelection = false) }
+
+            is TransactionCreateAction.OpenAccountCreate -> openAccountCreate()
+            is TransactionCreateAction.OpenCategoryCreate -> openCategoryCreate()
+
+            is TransactionCreateAction.ChangeTransactionType -> changeTransactionType(action.type)
+
+            is TransactionCreateAction.SetNumberPadValue -> action.amount?.let {
+                setAmountOnChange(
+                    it
+                )
             }
 
-            TransactionCreateAction.ShowCategorySelection -> {
-                _state.update { it.copy(showCategorySelection = true) }
+            TransactionCreateAction.ShowCategorySelection -> _state.update {
+                it.copy(
+                    showCategorySelection = true
+                )
             }
 
-            is TransactionCreateAction.SelectCategory -> {
-                _state.update {
-                    it.copy(
-                        selectedCategory = action.category,
-                        showCategorySelection = false
+            TransactionCreateAction.DismissCategorySelection -> _state.update {
+                it.copy(
+                    showCategorySelection = false
+                )
+            }
+
+            is TransactionCreateAction.SelectCategory -> _state.update {
+                it.copy(selectedCategory = action.category, showCategorySelection = false)
+            }
+
+            is TransactionCreateAction.ShowAccountSelection -> _state.update {
+                it.copy(showAccountSelection = true, accountSelection = action.type)
+            }
+
+            TransactionCreateAction.DismissAccountSelection -> _state.update {
+                it.copy(
+                    showAccountSelection = false
+                )
+            }
+
+            is TransactionCreateAction.SelectAccount -> _state.update {
+                when (it.accountSelection) {
+                    AccountSelection.FROM_ACCOUNT -> it.copy(
+                        selectedFromAccount = action.account,
+                        showAccountSelection = false
+                    )
+
+                    AccountSelection.TO_ACCOUNT -> it.copy(
+                        selectedToAccount = action.account,
+                        showAccountSelection = false
                     )
                 }
             }
 
-            TransactionCreateAction.DismissAccountSelection -> {
-                _state.update { it.copy(showAccountSelection = false) }
+            TransactionCreateAction.ShowNumberPad -> _state.update { it.copy(showNumberPad = true) }
+            TransactionCreateAction.DismissNumberPad -> _state.update { it.copy(showNumberPad = false) }
+
+            TransactionCreateAction.ShowDateSelection -> _state.update { it.copy(showDateSelection = true) }
+            TransactionCreateAction.ShowTimeSelection -> _state.update { it.copy(showTimeSelection = true) }
+            TransactionCreateAction.DismissDateSelection -> _state.update {
+                it.copy(showDateSelection = false, showTimeSelection = false)
             }
 
-            is TransactionCreateAction.SelectAccount -> {
-                _state.update {
-                    when (it.accountSelection) {
-                        AccountSelection.FROM_ACCOUNT -> {
-                            it.copy(
-                                selectedFromAccount = action.account,
-                                showAccountSelection = false
-                            )
-                        }
-
-                        AccountSelection.TO_ACCOUNT -> {
-                            it.copy(
-                                selectedToAccount = action.account,
-                                showAccountSelection = false
-                            )
-                        }
-                    }
-                }
-            }
-
-            is TransactionCreateAction.ShowAccountSelection -> {
-                _state.update {
-                    it.copy(
-                        showAccountSelection = true,
-                        accountSelection = action.type
-                    )
-                }
-            }
-
-            is TransactionCreateAction.ChangeTransactionType -> {
-                transactionType.update { action.type }
-                _state.update { it.copy(transactionType = action.type) }
-            }
-
-            TransactionCreateAction.DismissNumberPad -> {
-                _state.update { it.copy(showNumberPad = false) }
-            }
-
-            TransactionCreateAction.ShowNumberPad -> {
-                _state.update { it.copy(showNumberPad = true) }
-            }
-
-            TransactionCreateAction.DismissDateSelection -> {
-                _state.update {
-                    it.copy(
-                        showDateSelection = false,
-                        showTimeSelection = false
-                    )
-                }
-            }
-
-            is TransactionCreateAction.SelectDate -> {
-                _state.update {
-                    it.copy(
-                        dateTime = action.date,
-                        showDateSelection = false,
-                        showTimeSelection = false
-                    )
-                }
-            }
-
-            TransactionCreateAction.ShowDateSelection -> {
-                _state.update { it.copy(showDateSelection = true) }
-            }
-
-            TransactionCreateAction.ShowTimeSelection -> {
-                _state.update { it.copy(showTimeSelection = true) }
+            is TransactionCreateAction.SelectDate -> _state.update {
+                it.copy(
+                    dateTime = action.date,
+                    showDateSelection = false,
+                    showTimeSelection = false
+                )
             }
         }
     }
