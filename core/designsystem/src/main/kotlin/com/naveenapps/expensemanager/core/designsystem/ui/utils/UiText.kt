@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.utils
 
 import android.content.Context
+import androidx.compose.runtime.Stable
 
+@Stable
 sealed class UiText {
     /**
      * It can be send from server side to the app

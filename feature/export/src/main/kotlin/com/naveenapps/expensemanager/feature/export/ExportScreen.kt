@@ -15,10 +15,10 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material.icons.outlined.AccountBalance
@@ -38,6 +38,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +48,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import org.koin.compose.viewmodel.koinViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
@@ -56,7 +56,6 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.utils.UiText
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
@@ -65,18 +64,19 @@ import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelecti
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.util.Date
+import org.koin.compose.viewmodel.koinViewModel
 
 private fun getFileCreateIntent(fileType: ExportFileType): Intent? {
     return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
+        val timestamp = System.currentTimeMillis()
         Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             if (fileType == ExportFileType.PDF) {
                 type = "application/pdf"
-                putExtra(Intent.EXTRA_TITLE, "export_file_${Date().time}.pdf")
+                putExtra(Intent.EXTRA_TITLE, "export_file_$timestamp.pdf")
             } else {
                 type = "application/csv"
-                putExtra(Intent.EXTRA_TITLE, "export_file_${Date().time}.csv")
+                putExtra(Intent.EXTRA_TITLE, "export_file_$timestamp.csv")
             }
         }
     } else {
@@ -88,17 +88,25 @@ private fun getFileCreateIntent(fileType: ExportFileType): Intent? {
 fun ExportScreen(
     viewModel: ExportViewModel = koinViewModel()
 ) {
-
+    val context = LocalContext.current
     val state by viewModel.state.collectAsState()
 
     ExportScreenContent(
         state = state,
         onAction = viewModel::processAction,
         eventFlow = viewModel.event,
-        shareWithUri = {}
+        shareWithUri = { uri ->
+            if (uri != null) {
+                val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                    type = "*/*"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+                context.startActivity(Intent.createChooser(shareIntent, null))
+            }
+        }
     )
 }
-
 
 @OptIn(ExperimentalPermissionsApi::class)
 private fun createFileEvent(
@@ -122,7 +130,6 @@ private fun createFileEvent(
     }
 }
 
-
 private fun fileExportedProcess(
     coroutineScope: CoroutineScope,
     snackbarHostState: SnackbarHostState,
@@ -131,28 +138,22 @@ private fun fileExportedProcess(
     shareWithUri: (Uri?) -> Unit,
 ) {
     coroutineScope.launch {
-        snackbarHostState.showSnackbar(
-            message = event.message.asString(context),
-            actionLabel = context.getString(R.string.share),
-            withDismissAction = true,
-        ).run {
-            when (this) {
-                SnackbarResult.Dismissed -> Unit
-                SnackbarResult.ActionPerformed -> {
-                    event.exportData.let {
-                        val uri = it.uri?.toUri()
-                        val file = it.file
-                        if (uri != null) {
-                            shareWithUri.invoke(uri)
-                        } else if (file != null) {
-                            val fileUri = FileProvider.getUriForFile(
-                                context,
-                                context.packageName + ".fileprovider",
-                                file
-                            )
-                            shareWithUri.invoke(fileUri)
-                        }
-                    }
+        when (
+            snackbarHostState.showSnackbar(
+                message = event.message.asString(context),
+                actionLabel = context.getString(R.string.share),
+                withDismissAction = true,
+            )
+        ) {
+            SnackbarResult.Dismissed -> Unit
+            SnackbarResult.ActionPerformed -> {
+                val uri = event.exportData.uri?.toUri()
+                val file = event.exportData.file
+                when {
+                    uri != null -> shareWithUri(uri)
+                    file != null -> shareWithUri(
+                        FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                    )
                 }
             }
         }
@@ -168,11 +169,8 @@ private fun ExportScreenContent(
     shareWithUri: (Uri?) -> Unit,
 ) {
     val context = LocalContext.current
-
     val coroutineScope = rememberCoroutineScope()
-
     val snackbarHostState = remember { SnackbarHostState() }
-
     val writePermission = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     val fileCreatorIntent = rememberLauncherForActivityResult(
@@ -185,59 +183,46 @@ private fun ExportScreenContent(
 
     ObserveAsEvents(eventFlow) { event ->
         when (event) {
-            ExportEvent.CreateFile -> {
-                createFileEvent(
-                    fileCreatorIntent,
-                    writePermission,
-                    onAction
-                )
-            }
-
-            is ExportEvent.FileExported -> {
-                fileExportedProcess(
-                    coroutineScope,
-                    snackbarHostState,
-                    event,
-                    context,
-                    shareWithUri
-                )
-            }
-
-            is ExportEvent.Error -> {
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar(message = event.message.asString(context))
-                }
+            ExportEvent.CreateFile -> createFileEvent(fileCreatorIntent, writePermission, onAction)
+            is ExportEvent.FileExported -> fileExportedProcess(coroutineScope, snackbarHostState, event, context, shareWithUri)
+            is ExportEvent.Error -> coroutineScope.launch {
+                snackbarHostState.showSnackbar(message = event.message.asString(context))
             }
         }
     }
 
     if (state.showAccountSelection) {
         ModalBottomSheet(
-            onDismissRequest = {
-                onAction.invoke(ExportAction.CloseAccountSelection)
-            },
+            onDismissRequest = { onAction(ExportAction.CloseAccountSelection) },
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             MultipleAccountSelectionScreen { selectedAccounts, isAllSelected ->
-                onAction.invoke(
-                    ExportAction.AccountSelection(
-                        selectedAccounts,
-                        isAllSelected
-                    )
-                )
+                onAction(ExportAction.AccountSelection(selectedAccounts, isAllSelected))
             }
         }
     }
 
+    // Stable lambda references — prevents child composables from recomposing when the
+    // parent recomposes for unrelated state changes (e.g. loading indicator).
+    val currentOnAction by rememberUpdatedState(onAction)
+    val onNavigateBack = remember { { currentOnAction(ExportAction.ClosePage) } }
+    val onExportFileTypeChange = remember<(ExportFileType) -> Unit> {
+        { fileType -> currentOnAction(ExportAction.ChangeFileType(fileType)) }
+    }
+    val openAccountSelection = remember { { currentOnAction(ExportAction.OpenAccountSelection) } }
+
+    // Resolved here so the inner composable receives stable String params and can skip
+    // recomposition when date/account text hasn't changed.
+    val selectedDateText = state.selectedDateRangeText.asString(context)
+    val accountCountText = state.accountCount.asString(context)
+
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             ExpenseManagerTopAppBar(
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction.invoke(ExportAction.ClosePage) },
+                navigationBackClick = onNavigateBack,
                 title = null,
             )
         },
@@ -246,9 +231,7 @@ private fun ExportScreenContent(
                 onClick = {
                     getFileCreateIntent(fileType = state.fileType)?.let {
                         fileCreatorIntent.launch(it)
-                    } ?: run {
-                        onAction.invoke(ExportAction.StartExport(null))
-                    }
+                    } ?: onAction(ExportAction.StartExport(null))
                 },
             ) {
                 Row {
@@ -270,15 +253,11 @@ private fun ExportScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            selectedDate = state.selectedDateRangeText,
+            selectedDate = selectedDateText,
             exportFileType = state.fileType,
-            accountCount = state.accountCount,
-            onExportFileTypeChange = {
-                onAction.invoke(ExportAction.ChangeFileType(it))
-            },
-            openAccountSelection = {
-                onAction.invoke(ExportAction.OpenAccountSelection)
-            }
+            accountCount = accountCountText,
+            onExportFileTypeChange = onExportFileTypeChange,
+            openAccountSelection = openAccountSelection,
         )
     }
 }
@@ -286,30 +265,25 @@ private fun ExportScreenContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenContent(
-    selectedDate: UiText,
+    selectedDate: String,
     exportFileType: ExportFileType,
-    accountCount: UiText,
+    accountCount: String,
     onExportFileTypeChange: (ExportFileType) -> Unit,
     openAccountSelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     val focusManager = LocalFocusManager.current
 
     var showBottomSheet by remember { mutableStateOf(false) }
 
     if (showBottomSheet) {
         ModalBottomSheet(
-            onDismissRequest = {
-                showBottomSheet = false
-            },
+            onDismissRequest = { showBottomSheet = false },
             containerColor = MaterialTheme.colorScheme.surface,
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             DateFilterSelectionView(
-                onComplete = {
-                    showBottomSheet = false
-                }
+                onComplete = { showBottomSheet = false }
             )
         }
     }
@@ -333,7 +307,7 @@ private fun ExportScreenContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-            value = selectedDate.asString(context),
+            value = selectedDate,
             label = R.string.select_range,
             leadingIcon = Icons.Default.EditCalendar,
             onClick = {
@@ -342,19 +316,18 @@ private fun ExportScreenContent(
             },
         )
 
-        Spacer(modifier = Modifier.padding(8.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         SelectedItemView(
             modifier = Modifier
-                .clickable {
-                    openAccountSelection.invoke()
-                }
+                .clickable { openAccountSelection() }
                 .padding(16.dp)
                 .fillMaxWidth(),
             title = stringResource(id = R.string.select_account),
             icon = Icons.Outlined.AccountBalance,
-            selectedCount = accountCount.asString(context),
+            selectedCount = accountCount,
         )
+
         if (exportFileType == ExportFileType.PDF) {
             Text(
                 modifier = Modifier
