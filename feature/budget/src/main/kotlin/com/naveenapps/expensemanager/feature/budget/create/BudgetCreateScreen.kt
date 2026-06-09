@@ -24,7 +24,6 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -49,6 +48,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTe
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.model.Currency
@@ -92,12 +92,10 @@ private fun BudgetCreateScreenContentView(
     }
 
     if (state.showAccountSelectionDialog) {
-        ModalBottomSheet(
+        SafeModalBottomSheet(
             onDismissRequest = {
                 onAction.invoke(BudgetCreateAction.CloseAccountSelectionDialog)
             },
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             MultipleAccountSelectionScreen(
                 selectedAccounts = state.selectedAccounts,
@@ -108,12 +106,10 @@ private fun BudgetCreateScreenContentView(
     }
 
     if (state.showCategorySelectionDialog) {
-        ModalBottomSheet(
+        SafeModalBottomSheet(
             onDismissRequest = {
                 onAction.invoke(BudgetCreateAction.CloseCategorySelectionDialog)
             },
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             MultipleCategoriesSelectionScreen(
                 selectedCategories = state.selectedCategories,

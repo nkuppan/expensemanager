@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,10 +29,8 @@ fun DeleteDialogItem(
     confirm: () -> Unit,
     dismiss: () -> Unit,
 ) {
-    ModalBottomSheet(
-        onDismissRequest = { dismiss.invoke() },
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface,
+    SafeModalBottomSheet(
+        onDismissRequest = { dismiss.invoke() }
     ) {
         DeleteDialogContent(confirm, dismiss)
     }

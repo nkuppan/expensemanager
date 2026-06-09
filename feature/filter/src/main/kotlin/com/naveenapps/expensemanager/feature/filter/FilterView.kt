@@ -29,9 +29,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -44,6 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
@@ -60,12 +59,10 @@ fun FilterView(
     val filterState by viewModel.filterState.collectAsState()
 
     if (filterState.showDateFilter) {
-        ModalBottomSheet(
+        SafeModalBottomSheet(
             onDismissRequest = {
                 viewModel.processAction(FilterAction.DismissDateFilter)
             },
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             DateFilterSelectionView(
                 onComplete = {
@@ -76,12 +73,10 @@ fun FilterView(
     }
 
     if (filterState.showTypeFilter) {
-        ModalBottomSheet(
+        SafeModalBottomSheet(
             onDismissRequest = {
                 viewModel.processAction(FilterAction.DismissTypeFilter)
             },
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             FilterTypeSelectionView(
                 applyChanges = {

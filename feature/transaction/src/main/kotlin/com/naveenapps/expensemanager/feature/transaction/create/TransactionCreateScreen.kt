@@ -30,7 +30,6 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -55,6 +54,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePick
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -174,12 +174,10 @@ private fun AccountSelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
 ) {
-    ModalBottomSheet(
+    SafeModalBottomSheet(
         onDismissRequest = {
             onAction.invoke(TransactionCreateAction.DismissAccountSelection)
         },
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.onSurface,
     ) {
         AccountSelectionScreen(
             accounts = state.accounts,
@@ -203,12 +201,10 @@ private fun CategorySelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
 ) {
-    ModalBottomSheet(
+    SafeModalBottomSheet(
         onDismissRequest = {
             onAction.invoke(TransactionCreateAction.DismissCategorySelection)
         },
-        containerColor = MaterialTheme.colorScheme.background,
-        tonalElevation = 0.dp,
     ) {
         CategorySelectionScreen(
             categories = state.categories,

@@ -26,7 +26,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -56,6 +55,7 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
@@ -192,10 +192,8 @@ private fun ExportScreenContent(
     }
 
     if (state.showAccountSelection) {
-        ModalBottomSheet(
+        SafeModalBottomSheet(
             onDismissRequest = { onAction(ExportAction.CloseAccountSelection) },
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             MultipleAccountSelectionScreen { selectedAccounts, isAllSelected ->
                 onAction(ExportAction.AccountSelection(selectedAccounts, isAllSelected))
@@ -277,10 +275,8 @@ private fun ExportScreenContent(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     if (showBottomSheet) {
-        ModalBottomSheet(
+        SafeModalBottomSheet(
             onDismissRequest = { showBottomSheet = false },
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             DateFilterSelectionView(
                 onComplete = { showBottomSheet = false }
