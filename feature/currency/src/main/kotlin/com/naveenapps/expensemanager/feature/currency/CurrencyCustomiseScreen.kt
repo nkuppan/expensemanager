@@ -41,7 +41,7 @@ import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.model.toDisplayValue
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
-import com.naveenapps.invoicebuilder.feature.country.CountryCurrencySelectionBottomSheet
+import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionBottomSheet
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

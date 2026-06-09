@@ -1,12 +1,9 @@
-package com.naveenapps.invoicebuilder.feature.country
+package com.naveenapps.expensemanager.feature.country
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
-import com.naveenapps.expensemanager.feature.country.CountryCurrencyListAndSearchView
-import com.naveenapps.expensemanager.feature.country.CountryListViewModel
-import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -48,3 +48,7 @@
 
 -keep class com.naveenapps.expensemanager.** { *; }
 -keep interface com.naveenapps.expensemanager.** { *; }
+
+# OSS Licenses: R8 obfuscates the internal data classes that OssLicensesActivity reads
+# at runtime, making the license metadata object null and causing a NullPointerException.
+-keep class com.google.android.gms.oss.licenses.** { *; }
