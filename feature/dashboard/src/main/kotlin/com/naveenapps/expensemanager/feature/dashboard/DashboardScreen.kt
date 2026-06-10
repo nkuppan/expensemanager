@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
+import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -137,6 +138,7 @@ private fun DashboardScreenContent(
             IncomeExpenseBalanceView(
                 transactionPeriod = state.transactionPeriod,
                 expenseFlowState = state.expenseFlowState,
+                isCompact = state.isCompactSummary,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp),
@@ -317,14 +319,25 @@ fun IncomeExpenseBalanceView(
     expenseFlowState: ExpenseFlowState,
     transactionPeriod: String,
     modifier: Modifier = Modifier,
+    isCompact: Boolean = false,
 ) {
-    AmountInfoWidget(
-        modifier = modifier,
-        expenseAmount = expenseFlowState.expense,
-        incomeAmount = expenseFlowState.income,
-        balanceAmount = expenseFlowState.balance,
-        transactionPeriod = transactionPeriod
-    )
+    if (isCompact) {
+        AmountInfoWidgetCompact(
+            modifier = modifier,
+            expenseAmount = expenseFlowState.expense,
+            incomeAmount = expenseFlowState.income,
+            balanceAmount = expenseFlowState.balance,
+            transactionPeriod = transactionPeriod,
+        )
+    } else {
+        AmountInfoWidget(
+            modifier = modifier,
+            expenseAmount = expenseFlowState.expense,
+            incomeAmount = expenseFlowState.income,
+            balanceAmount = expenseFlowState.balance,
+            transactionPeriod = transactionPeriod,
+        )
+    }
 }
 
 @AppPreviewsLightAndDarkMode

@@ -27,6 +27,7 @@ import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
+import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -58,6 +59,7 @@ fun AnalysisGraphScreen(
     val averageData by viewModel.averageData.collectAsState()
     val amountUiState by viewModel.amountUiState.collectAsState()
     val transactionPeriod by viewModel.transactionPeriod.collectAsState()
+    val isCompactSummary by viewModel.isCompactSummary.collectAsState()
 
     val currentTheme by viewModel.currentTheme.collectAsState()
     val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
@@ -67,7 +69,8 @@ fun AnalysisGraphScreen(
         isDarkTheme = isDarkTheme,
         amountUiState = amountUiState,
         transactionPeriod = transactionPeriod,
-        averageData = averageData
+        averageData = averageData,
+        isCompactSummary = isCompactSummary,
     )
 }
 
@@ -77,7 +80,8 @@ private fun ChartScreenContent(
     isDarkTheme: Boolean,
     amountUiState: ExpenseFlowState,
     transactionPeriod: String,
-    averageData: WholeAverageData
+    averageData: WholeAverageData,
+    isCompactSummary: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -108,6 +112,7 @@ private fun ChartScreenContent(
         IncomeExpenseBalanceView(
             expenseFlowState = amountUiState,
             transactionPeriod = transactionPeriod,
+            isCompact = isCompactSummary,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -125,14 +130,25 @@ fun IncomeExpenseBalanceView(
     expenseFlowState: ExpenseFlowState,
     transactionPeriod: String,
     modifier: Modifier = Modifier,
+    isCompact: Boolean = false,
 ) {
-    AmountInfoWidget(
-        expenseAmount = expenseFlowState.expense,
-        incomeAmount = expenseFlowState.income,
-        balanceAmount = expenseFlowState.balance,
-        transactionPeriod = transactionPeriod,
-        modifier = modifier,
-    )
+    if (isCompact) {
+        AmountInfoWidgetCompact(
+            expenseAmount = expenseFlowState.expense,
+            incomeAmount = expenseFlowState.income,
+            balanceAmount = expenseFlowState.balance,
+            transactionPeriod = transactionPeriod,
+            modifier = modifier,
+        )
+    } else {
+        AmountInfoWidget(
+            expenseAmount = expenseFlowState.expense,
+            incomeAmount = expenseFlowState.income,
+            balanceAmount = expenseFlowState.balance,
+            transactionPeriod = transactionPeriod,
+            modifier = modifier,
+        )
+    }
 }
 
 @Composable

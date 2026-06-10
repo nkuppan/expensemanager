@@ -46,6 +46,10 @@ class AdvancedSettingsViewModel(
     val state = _state.asStateFlow()
 
     init {
+        settingsRepository.getHomeSummaryCompact().onEach { compact ->
+            _state.update { it.copy(isCompactSummary = compact) }
+        }.launchIn(viewModelScope)
+
         getAllAccountsUseCase.invoke().onEach { accounts ->
             val accountId = settingsRepository.getDefaultAccount().firstOrNull()
             val account = accounts.find { it.id == accountId }
@@ -161,6 +165,12 @@ class AdvancedSettingsViewModel(
 
                 AdvancedSettingAction.ShowDateFilterDialog -> {
                     _state.update { it.copy(showDateFilter = true) }
+                }
+
+                AdvancedSettingAction.ToggleCompactSummary -> {
+                    val newValue = !_state.value.isCompactSummary
+                    settingsRepository.setHomeSummaryCompact(newValue)
+                    _state.update { it.copy(isCompactSummary = newValue) }
                 }
             }
         }

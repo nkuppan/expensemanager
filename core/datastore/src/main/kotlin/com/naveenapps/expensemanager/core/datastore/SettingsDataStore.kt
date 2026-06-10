@@ -80,6 +80,14 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_DEFAULT_INCOME_CATEGORY]
     }
 
+    suspend fun setHomeSummaryCompact(compact: Boolean) = dataStore.edit { preferences ->
+        preferences[KEY_HOME_SUMMARY_COMPACT] = compact
+    }
+
+    fun getHomeSummaryCompact(): Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[KEY_HOME_SUMMARY_COMPACT] ?: false
+    }
+
     companion object {
         private val KEY_IS_PRELOAD = booleanPreferencesKey("is_preloaded")
         private val KEY_IS_ON_BOARDING_COMPLETED = booleanPreferencesKey("is_on_boarding_completed")
@@ -91,5 +99,6 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         private val KEY_DEFAULT_ACCOUNT = stringPreferencesKey("default_account")
         private val KEY_DEFAULT_EXPENSE_CATEGORY = stringPreferencesKey("default_expense_category")
         private val KEY_DEFAULT_INCOME_CATEGORY = stringPreferencesKey("default_income_category")
+        private val KEY_HOME_SUMMARY_COMPACT = booleanPreferencesKey("home_summary_compact")
     }
 }

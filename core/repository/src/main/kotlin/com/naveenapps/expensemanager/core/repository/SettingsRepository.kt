@@ -37,4 +37,8 @@ interface SettingsRepository {
     fun getDefaultIncomeCategory(): Flow<String?>
 
     suspend fun setDefaultIncomeCategory(categoryId: String): Resource<Boolean>
+
+    fun getHomeSummaryCompact(): Flow<Boolean>
+
+    suspend fun setHomeSummaryCompact(compact: Boolean): Resource<Boolean>
 }

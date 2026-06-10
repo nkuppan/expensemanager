@@ -40,4 +40,7 @@
     <string name="general">General</string>
     <string name="data">Data</string>
     <string name="support">Support</string>
+
+    <string name="compact_summary">Compact Summary</string>
+    <string name="compact_summary_message">Show a smaller summary widget on the home screen</string>
 </resources>

@@ -10,5 +10,6 @@ data class AdvancedSettingState(
     val incomeCategories: List<Category>,
     val selectedExpenseCategory: Category?,
     val expenseCategories: List<Category>,
-    val showDateFilter: Boolean
+    val showDateFilter: Boolean,
+    val isCompactSummary: Boolean = false,
 )

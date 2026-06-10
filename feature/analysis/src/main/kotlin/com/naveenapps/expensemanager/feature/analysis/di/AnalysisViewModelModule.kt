@@ -11,7 +11,8 @@ val AnalysisViewModelModule = module {
             getChartDataUseCase = get(),
             getAverageDataUseCase = get(),
             getAmountStateUseCase = get(),
-            getDateRangeUseCase = get()
+            getDateRangeUseCase = get(),
+            settingsRepository = get(),
         )
     }
 }

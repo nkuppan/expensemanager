@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Backup
+import androidx.compose.material.icons.outlined.DashboardCustomize
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.Restore
@@ -52,6 +53,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingToggleRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Account
@@ -212,7 +214,15 @@ private fun AdvancedSettingsScaffoldView(
                         title = stringResource(id = R.string.accounts_re_order),
                         subtitle = stringResource(id = R.string.accounts_re_order_message),
                         icon = Icons.Outlined.Reorder,
+                        showDivider = true,
                         onClick = { onAction.invoke(AdvancedSettingAction.OpenAccountReOrder) },
+                    )
+                    SettingToggleRow(
+                        title = stringResource(id = R.string.compact_summary),
+                        subtitle = stringResource(id = R.string.compact_summary_message),
+                        icon = Icons.Outlined.DashboardCustomize,
+                        checked = state.isCompactSummary,
+                        onCheckedChange = { onAction.invoke(AdvancedSettingAction.ToggleCompactSummary) },
                     )
                 }
             }

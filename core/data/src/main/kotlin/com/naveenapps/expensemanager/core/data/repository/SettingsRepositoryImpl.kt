@@ -91,4 +91,14 @@ class SettingsRepositoryImpl(
             dataStore.setDefaultIncomeCategory(categoryId)
             return@withContext Resource.Success(true)
         }
+
+    override fun getHomeSummaryCompact(): Flow<Boolean> {
+        return dataStore.getHomeSummaryCompact()
+    }
+
+    override suspend fun setHomeSummaryCompact(compact: Boolean): Resource<Boolean> =
+        withContext(dispatchers.io) {
+            dataStore.setHomeSummaryCompact(compact)
+            return@withContext Resource.Success(true)
+        }
 }

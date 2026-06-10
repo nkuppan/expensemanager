@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageDataUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDataUseCase
@@ -28,6 +29,7 @@ class AnalysisScreenViewModel(
     getAverageDataUseCase: GetAverageDataUseCase,
     getAmountStateUseCase: GetAmountStateUseCase,
     getDateRangeUseCase: GetDateRangeUseCase,
+    settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
     private val _currentTheme = MutableStateFlow(
@@ -43,6 +45,9 @@ class AnalysisScreenViewModel(
 
     private val _transactionPeriod = MutableStateFlow("")
     val transactionPeriod = _transactionPeriod.asStateFlow()
+
+    private val _isCompactSummary = MutableStateFlow(false)
+    val isCompactSummary = _isCompactSummary.asStateFlow()
 
     private val _graphItems = MutableStateFlow<AnalysisUiData?>(null)
     val graphItems = _graphItems.asStateFlow()
@@ -98,7 +103,15 @@ class AnalysisScreenViewModel(
         }.launchIn(viewModelScope)
 
         getDateRangeUseCase.invoke().onEach {
-            _transactionPeriod.value = "${it.name} (${it.description})"
+            _transactionPeriod.value = if (it.description.isNotEmpty()) {
+                "${it.name} (${it.description})"
+            } else {
+                it.name
+            }
+        }.launchIn(viewModelScope)
+
+        settingsRepository.getHomeSummaryCompact().onEach {
+            _isCompactSummary.value = it
         }.launchIn(viewModelScope)
     }
 }

@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCas
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -39,6 +40,7 @@ class DashboardViewModel(
     getBudgetsUseCase: GetBudgetsUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
     getDateRangeUseCase: GetDateRangeUseCase,
+    settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator
 ) : ViewModel() {
 
@@ -120,7 +122,11 @@ class DashboardViewModel(
                     ),
                     transactions = filteredTransactions,
                     accounts = accountsConverted,
-                    transactionPeriod = "${dateRange.name} (${dateRange.description})"
+                    transactionPeriod = if (dateRange.description.isNotEmpty()) {
+                        "${dateRange.name} (${dateRange.description})"
+                    } else {
+                        dateRange.name
+                    }
                 )
             }
         }.flowOn(appCoroutineDispatchers.computation)
@@ -136,6 +142,10 @@ class DashboardViewModel(
 
         getBudgetsUseCase.invoke().onEach { budgets ->
             _state.update { it.copy(budgets = budgets) }
+        }.launchIn(viewModelScope)
+
+        settingsRepository.getHomeSummaryCompact().onEach { compact ->
+            _state.update { it.copy(isCompactSummary = compact) }
         }.launchIn(viewModelScope)
     }
 
