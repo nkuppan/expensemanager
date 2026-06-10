@@ -16,6 +16,10 @@ android {
             arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
+
+    sourceSets {
+        getByName("androidTest").assets.srcDir("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -23,4 +27,9 @@ dependencies {
     implementation(project(":core:common"))
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
+
+    androidTestImplementation(libs.room.testing)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.truth)
 }
