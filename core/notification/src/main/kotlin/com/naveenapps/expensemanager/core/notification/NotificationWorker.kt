@@ -17,7 +17,7 @@ class NotificationWorker(
             context.getString(R.string.notification_title),
         )
 
-        notificationScheduler.setReminder()
+        notificationScheduler.checkAndRestartReminder()
 
         return Result.success()
     }

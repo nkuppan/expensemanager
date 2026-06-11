@@ -10,11 +10,11 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
+import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
-import kotlin.math.abs
 
 class NotificationScheduler(
     private val context: Context,
@@ -39,22 +38,19 @@ class NotificationScheduler(
     }
 
     suspend fun setReminder() {
-        cancelReminder()
-
         val calendar = getTimeInMillis()
-        val timeDelay = abs(Date().time - calendar.timeInMillis)
+        val timeDelay = calendar.timeInMillis - Date().time
 
         val request = OneTimeWorkRequestBuilder<NotificationWorker>()
-            .setInitialDelay(
-                timeDelay,
-                TimeUnit.MILLISECONDS,
-            ).build()
+            .setInitialDelay(timeDelay, TimeUnit.MILLISECONDS)
+            .build()
 
-        WorkManager.getInstance(context).enqueue(request)
+        WorkManager.getInstance(context)
+            .enqueueUniqueWork(REMINDER_WORK_NAME, ExistingWorkPolicy.REPLACE, request)
     }
 
     fun cancelReminder() {
-        WorkManager.getInstance(context).cancelAllWork()
+        WorkManager.getInstance(context).cancelUniqueWork(REMINDER_WORK_NAME)
     }
 
     private suspend fun getTimeInMillis(): Calendar {
@@ -151,7 +147,6 @@ class NotificationScheduler(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(
         channelId: String,
         channelName: String,
@@ -176,6 +171,8 @@ class NotificationScheduler(
 object NotificationId {
     const val DAILY_REMINDER_REQUEST_CODE = 101
 }
+
+private const val REMINDER_WORK_NAME = "daily_reminder"
 
 object NotificationChannelId {
     const val CHANNEL_GENERAL = "General"

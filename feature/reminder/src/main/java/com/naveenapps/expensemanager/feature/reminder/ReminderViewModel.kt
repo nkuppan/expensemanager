@@ -84,6 +84,7 @@ class ReminderViewModel(
         reminderTimeState ?: return
         viewModelScope.launch {
             saveReminderTimeUseCase.invoke(reminderTimeState)
+            notificationScheduler.setReminder()
         }
     }
 
