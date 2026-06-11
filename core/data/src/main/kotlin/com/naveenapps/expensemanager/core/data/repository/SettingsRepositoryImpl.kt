@@ -101,4 +101,14 @@ class SettingsRepositoryImpl(
             dataStore.setHomeSummaryCompact(compact)
             return@withContext Resource.Success(true)
         }
+
+    override fun isAppLockEnabled(): Flow<Boolean> {
+        return dataStore.isAppLockEnabled()
+    }
+
+    override suspend fun setAppLockEnabled(enabled: Boolean): Resource<Boolean> =
+        withContext(dispatchers.io) {
+            dataStore.setAppLockEnabled(enabled)
+            return@withContext Resource.Success(true)
+        }
 }

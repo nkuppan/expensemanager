@@ -27,7 +27,8 @@ val MainViewModelModule = module {
     viewModel {
         MainViewModel(
             getCurrentThemeUseCase = get(),
-            getOnboardingStatusUseCase = get()
+            getOnboardingStatusUseCase = get(),
+            settingsRepository = get(),
         )
     }
     viewModel {

@@ -88,6 +88,14 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_HOME_SUMMARY_COMPACT] ?: false
     }
 
+    suspend fun setAppLockEnabled(enabled: Boolean) = dataStore.edit { preferences ->
+        preferences[KEY_APP_LOCK_ENABLED] = enabled
+    }
+
+    fun isAppLockEnabled(): Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[KEY_APP_LOCK_ENABLED] ?: false
+    }
+
     companion object {
         private val KEY_IS_PRELOAD = booleanPreferencesKey("is_preloaded")
         private val KEY_IS_ON_BOARDING_COMPLETED = booleanPreferencesKey("is_on_boarding_completed")
@@ -100,5 +108,6 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         private val KEY_DEFAULT_EXPENSE_CATEGORY = stringPreferencesKey("default_expense_category")
         private val KEY_DEFAULT_INCOME_CATEGORY = stringPreferencesKey("default_income_category")
         private val KEY_HOME_SUMMARY_COMPACT = booleanPreferencesKey("home_summary_compact")
+        private val KEY_APP_LOCK_ENABLED = booleanPreferencesKey("app_lock_enabled")
     }
 }

@@ -242,6 +242,7 @@ dependencies {
     implementation(libs.google.oss.licenses)
 
     implementation(libs.app.update.ktx)
+    implementation(libs.androidx.biometric)
 
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))

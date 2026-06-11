@@ -41,4 +41,8 @@ interface SettingsRepository {
     fun getHomeSummaryCompact(): Flow<Boolean>
 
     suspend fun setHomeSummaryCompact(compact: Boolean): Resource<Boolean>
+
+    fun isAppLockEnabled(): Flow<Boolean>
+
+    suspend fun setAppLockEnabled(enabled: Boolean): Resource<Boolean>
 }

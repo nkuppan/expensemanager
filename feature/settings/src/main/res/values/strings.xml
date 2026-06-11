@@ -43,4 +43,7 @@
 
     <string name="compact_summary">Compact Summary</string>
     <string name="compact_summary_message">Show a smaller summary widget on the home screen</string>
+
+    <string name="app_lock">App Lock</string>
+    <string name="app_lock_message">Require biometric or device credentials when opening the app</string>
 </resources>

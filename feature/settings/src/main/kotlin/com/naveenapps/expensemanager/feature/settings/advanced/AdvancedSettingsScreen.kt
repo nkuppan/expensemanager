@@ -20,6 +20,7 @@ import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.DashboardCustomize
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material.icons.outlined.Restore
@@ -216,6 +217,14 @@ private fun AdvancedSettingsScaffoldView(
                         icon = Icons.Outlined.Reorder,
                         showDivider = true,
                         onClick = { onAction.invoke(AdvancedSettingAction.OpenAccountReOrder) },
+                    )
+                    SettingToggleRow(
+                        title = stringResource(id = R.string.app_lock),
+                        subtitle = stringResource(id = R.string.app_lock_message),
+                        icon = Icons.Outlined.Lock,
+                        checked = state.isAppLockEnabled,
+                        showDivider = true,
+                        onCheckedChange = { onAction.invoke(AdvancedSettingAction.ToggleAppLock) },
                     )
                     SettingToggleRow(
                         title = stringResource(id = R.string.compact_summary),

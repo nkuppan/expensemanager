@@ -12,4 +12,5 @@ data class AdvancedSettingState(
     val expenseCategories: List<Category>,
     val showDateFilter: Boolean,
     val isCompactSummary: Boolean = false,
+    val isAppLockEnabled: Boolean = false,
 )

@@ -24,4 +24,6 @@ sealed class AdvancedSettingAction {
     data object DismissDateFilterDialog : AdvancedSettingAction()
 
     data object ToggleCompactSummary : AdvancedSettingAction()
+
+    data object ToggleAppLock : AdvancedSettingAction()
 }

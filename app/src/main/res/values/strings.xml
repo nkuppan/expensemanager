@@ -39,4 +39,8 @@
     <string name="settings">Settings</string>
     <string name="analysis">Analysis</string>
     <string name="transaction">Transaction</string>
+
+    <string name="app_lock_title">Unlock Expense Manager</string>
+    <string name="app_lock_description">Verify your identity to continue</string>
+    <string name="app_lock_unlock">Unlock</string>
 </resources>

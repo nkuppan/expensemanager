@@ -50,6 +50,10 @@ class AdvancedSettingsViewModel(
             _state.update { it.copy(isCompactSummary = compact) }
         }.launchIn(viewModelScope)
 
+        settingsRepository.isAppLockEnabled().onEach { enabled ->
+            _state.update { it.copy(isAppLockEnabled = enabled) }
+        }.launchIn(viewModelScope)
+
         getAllAccountsUseCase.invoke().onEach { accounts ->
             val accountId = settingsRepository.getDefaultAccount().firstOrNull()
             val account = accounts.find { it.id == accountId }
@@ -171,6 +175,12 @@ class AdvancedSettingsViewModel(
                     val newValue = !_state.value.isCompactSummary
                     settingsRepository.setHomeSummaryCompact(newValue)
                     _state.update { it.copy(isCompactSummary = newValue) }
+                }
+
+                AdvancedSettingAction.ToggleAppLock -> {
+                    val newValue = !_state.value.isAppLockEnabled
+                    settingsRepository.setAppLockEnabled(newValue)
+                    _state.update { it.copy(isAppLockEnabled = newValue) }
                 }
             }
         }
