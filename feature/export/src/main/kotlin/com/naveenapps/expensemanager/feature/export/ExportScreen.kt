@@ -73,10 +73,10 @@ private fun getFileCreateIntent(fileType: ExportFileType): Intent? {
             addCategory(Intent.CATEGORY_OPENABLE)
             if (fileType == ExportFileType.PDF) {
                 type = "application/pdf"
-                putExtra(Intent.EXTRA_TITLE, "export_file_$timestamp.pdf")
+                putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.pdf")
             } else {
                 type = "application/csv"
-                putExtra(Intent.EXTRA_TITLE, "export_file_$timestamp.csv")
+                putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.csv")
             }
         }
     } else {
@@ -324,13 +324,5 @@ private fun ExportScreenContent(
             selectedCount = accountCount,
         )
 
-        if (exportFileType == ExportFileType.PDF) {
-            Text(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                text = stringResource(id = R.string.export_disabled_message),
-            )
-        }
     }
 }

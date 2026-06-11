@@ -19,6 +19,13 @@
     <string name="from_account">From Account</string>
     <string name="to_account">To Account</string>
     <string name="transaction_type">Transaction Type</string>
+    <string name="category_type">Category Type</string>
+    <string name="account_type">Account Type</string>
+    <string name="exported_on">Exported On</string>
+    <string name="total_transactions">Total Transactions</string>
+    <string name="total_income">Total Income</string>
+    <string name="total_expense">Total Expense</string>
+    <string name="net_balance">Net Balance</string>
 
     <string name="light">Light</string>
     <string name="dark">Dark</string>
