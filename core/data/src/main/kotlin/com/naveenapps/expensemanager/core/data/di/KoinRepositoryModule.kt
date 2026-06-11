@@ -9,6 +9,8 @@ import com.naveenapps.expensemanager.core.data.repository.CurrencyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DateRangeFilterRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DevicePropertyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ExportRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.export.CsvExportStrategy
+import com.naveenapps.expensemanager.core.data.repository.export.PdfExportStrategy
 import com.naveenapps.expensemanager.core.data.repository.FeedbackRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.FirebaseSettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.JsonConverterRepositoryImpl
@@ -98,8 +100,11 @@ val RepositoryModule = module {
     }
     single<ExportRepository> {
         ExportRepositoryImpl(
-            context = androidContext(),
-            dispatchers = get()
+            dispatchers = get(),
+            strategies = listOf(
+                CsvExportStrategy(context = androidContext()),
+                PdfExportStrategy(context = androidContext()),
+            )
         )
     }
     single<ReminderTimeRepository> {

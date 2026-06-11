@@ -21,7 +21,7 @@ open class BootAlarmReceiver : BroadcastReceiver() {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             if (Intent.ACTION_BOOT_COMPLETED == intent.action) {
                 Log.d(TAG, "onReceive: BOOT_COMPLETED")
-                notificationScheduler.setReminder()
+                notificationScheduler.checkAndRestartReminder()
                 return@launch
             }
 
