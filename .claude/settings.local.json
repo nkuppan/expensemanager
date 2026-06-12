@@ -9,7 +9,8 @@
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(t['tableName'], ':', [c['name'] for c in t['fields']]\\) for t in d['database']['entities']]\")",
       "Bash(./gradlew :core:database:compileDebugKotlin)",
       "Bash(xargs cat)",
-      "Bash(xargs cat -n)"
+      "Bash(xargs cat -n)",
+      "Bash(grep \"\\\\.kt$\")"
     ]
   }
 }

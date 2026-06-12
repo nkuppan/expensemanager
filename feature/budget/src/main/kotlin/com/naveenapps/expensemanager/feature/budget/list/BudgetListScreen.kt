@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.budget.list
 
 import androidx.annotation.ColorRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,12 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -46,6 +49,7 @@ import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
@@ -128,20 +132,22 @@ private fun BudgetListScreenContent(
             modifier = modifier,
             state = scrollState
         ) {
-            items(
-                state.budgets,
-                key = { it.id }
-            ) { budget ->
-                BudgetItem(
+            itemsIndexed(
+                items = state.budgets,
+                key = { _, item -> item.id },
+            ) { index, budget ->
+                BudgetItemWithCard(
                     progressBarColor = budget.progressBarColor,
                     amount = budget.amount,
                     transactionAmount = budget.transactionAmount,
                     percentage = budget.percent,
                     modifier = Modifier
+                        .fillMaxWidth()
                         .clickable {
                             onItemClick.invoke(budget)
                         }
-                        .then(ItemSpecModifier),
+                        .padding(horizontal = 16.dp, vertical = 2.dp),
+                    shape = AppCardViewDefaults.cardShape(index, state.budgets),
                 )
             }
             item {
@@ -157,6 +163,32 @@ private fun BudgetListScreenContent(
             emptyItemText = stringResource(id = R.string.no_budget_available),
             icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
             modifier = modifier
+        )
+    }
+}
+
+@Composable
+fun BudgetItemWithCard(
+    @ColorRes progressBarColor: Int,
+    amount: Amount?,
+    transactionAmount: Amount?,
+    modifier: Modifier = Modifier,
+    percentage: Float = 0.0f,
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
+    border: BorderStroke = CardDefaults.outlinedCardBorder(),
+) {
+
+    AppCardView(
+        shape = shape,
+        border = border,
+        modifier = modifier,
+    ) {
+        BudgetItem(
+            progressBarColor = progressBarColor,
+            amount = amount,
+            transactionAmount = transactionAmount,
+            percentage = percentage,
+            modifier = Modifier.then(ItemSpecModifier),
         )
     }
 }

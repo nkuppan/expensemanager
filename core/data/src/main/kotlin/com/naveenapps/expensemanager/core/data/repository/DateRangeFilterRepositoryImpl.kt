@@ -90,13 +90,11 @@ class DateRangeFilterRepositoryImpl(
         }
 
     private suspend fun getOriginalDateRangeValues(dateRangeType: DateRangeType): List<Long> {
-        val dateRanges = getDateRange()
-
-        if (dateRanges != null) {
-            return dateRanges
+        // Dynamic types recalculate on every call — stored timestamps go stale across boundaries
+        if (dateRangeType != DateRangeType.ALL && dateRangeType != DateRangeType.CUSTOM) {
+            return getCurrentDateRanges(dateRangeType)
         }
-
-        return getCurrentDateRanges(dateRangeType)
+        return getDateRange() ?: getCurrentDateRanges(dateRangeType)
     }
 
     private fun getCurrentDateRanges(dateRangeType: DateRangeType): List<Long> {
