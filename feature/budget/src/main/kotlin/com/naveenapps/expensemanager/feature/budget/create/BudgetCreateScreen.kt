@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -35,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -259,8 +261,8 @@ fun BudgetCreateScreen(
                         isError = amountField.valueError,
                         errorMessage = stringResource(id = R.string.budget_amount_error),
                         onValueChange = amountField.onValueChange,
-                        leadingIconText = currencyIconField,
                         label = R.string.budget_amount,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     )
                 }
             }

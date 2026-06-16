@@ -50,6 +50,7 @@ import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiMode
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
+import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import org.koin.compose.viewmodel.koinViewModel
@@ -128,11 +129,11 @@ private fun DashboardScreenContent(
         contentPadding = PaddingValues(bottom = 78.dp),
     ) {
         item {
-            /*FilterView(
+            FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(end = 6.dp),
-            )*/
+            )
         }
         item("summary") {
             IncomeExpenseBalanceView(
@@ -186,7 +187,6 @@ private fun DashboardScreenContent(
                         icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
                         modifier = Modifier
                             .fillMaxSize()
-                            .height(320.dp)
                             .align(Alignment.CenterHorizontally)
                     )
                 }
@@ -248,7 +248,6 @@ private fun DashboardScreenContent(
                         icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
                         modifier = Modifier
                             .fillMaxSize()
-                            .height(320.dp)
                             .align(Alignment.CenterHorizontally)
                     )
                 }
@@ -259,7 +258,7 @@ private fun DashboardScreenContent(
             DashboardWidgetTitle(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 8.dp, top = 16.dp),
+                    .padding(start = 16.dp, top = 16.dp),
                 title = stringResource(id = R.string.transaction),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenTransactionList)

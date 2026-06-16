@@ -131,10 +131,10 @@ fun DecimalTextField(
     value: String,
     isError: Boolean,
     onValueChange: ((String) -> Unit)?,
-    leadingIconText: String?,
     label: Int,
     modifier: Modifier = Modifier,
     errorMessage: String = "",
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     AutoSelectTextField(
@@ -151,9 +151,8 @@ fun DecimalTextField(
         isError = isError,
         errorMessage = errorMessage,
         modifier = modifier,
-        keyboardOptions = KeyboardOptions(
+        keyboardOptions = keyboardOptions.copy(
             keyboardType = KeyboardType.Decimal,
-            imeAction = ImeAction.Next,
         ),
         trailingIcon = trailingIcon
     )
@@ -167,7 +166,6 @@ fun NumberTextField(
     label: Int,
     modifier: Modifier = Modifier,
     errorMessage: String = "",
-    leadingIconText: String? = null,
     placeholder: String? = null,
     supportingText: String? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -220,7 +218,6 @@ private fun TextFieldPreviews() {
                 value = "1.00",
                 isError = true,
                 onValueChange = { },
-                leadingIconText = "$",
                 label = R.string.choose_color,
                 errorMessage = "Should not add the value",
             )

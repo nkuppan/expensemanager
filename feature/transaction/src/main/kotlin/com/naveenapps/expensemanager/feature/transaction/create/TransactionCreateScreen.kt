@@ -306,7 +306,6 @@ private fun TransactionCreateContent(
                         value = state.amount.value,
                         isError = state.amount.valueError,
                         onValueChange = state.amount.onValueChange,
-                        leadingIconText = state.currency.symbol,
                         label = R.string.amount,
                         errorMessage = stringResource(id = R.string.amount_error_message),
                         trailingIcon = {

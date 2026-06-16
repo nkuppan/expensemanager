@@ -145,8 +145,7 @@ private fun TransactionListScreen(
                 EmptyItem(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(top = 80.dp)
-                        .height(320.dp),
+                        .padding(top = 80.dp),
                     emptyItemText = stringResource(id = R.string.no_transactions_available),
                     icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
                 )

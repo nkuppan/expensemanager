@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -42,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -135,7 +137,6 @@ private fun AccountCreateScaffoldView(
             name = state.name,
             amount = state.amount,
             type = state.type,
-            currency = state.currency,
             color = state.color,
             icon = state.icon,
             creditLimit = state.creditLimit,
@@ -151,7 +152,6 @@ private fun AccountCreateScreen(
     name: TextFieldValue<String>,
     amount: TextFieldValue<String>,
     type: TextFieldValue<AccountType>,
-    currency: Currency,
     color: TextFieldValue<String>,
     icon: TextFieldValue<String>,
     creditLimit: TextFieldValue<String>,
@@ -194,14 +194,14 @@ private fun AccountCreateScreen(
                         onValueChange = name.onValueChange,
                         label = R.string.account_name,
                         errorMessage = stringResource(id = R.string.account_name_error),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                     )
                     BalanceSectionContent(
                         amount = amount,
-                        currency = currency,
                         type = type,
                         creditLimit = creditLimit,
                         totalAmount = totalAmount,
-                        totalAmountBackgroundColor = totalAmountBackgroundColor
+                        totalAmountBackgroundColor = totalAmountBackgroundColor,
                     )
                 }
             }
@@ -231,7 +231,6 @@ private fun AccountCreateScreen(
 @Composable
 private fun ColumnScope.BalanceSectionContent(
     amount: TextFieldValue<String>,
-    currency: Currency,
     type: TextFieldValue<AccountType>,
     creditLimit: TextFieldValue<String>,
     totalAmount: String,
@@ -243,8 +242,12 @@ private fun ColumnScope.BalanceSectionContent(
         isError = amount.valueError,
         errorMessage = stringResource(id = R.string.current_balance_error),
         onValueChange = amount.onValueChange,
-        leadingIconText = currency.symbol,
         label = R.string.current_balance,
+        keyboardOptions = if (type.value == AccountType.CREDIT) {
+            KeyboardOptions(imeAction = ImeAction.Next)
+        } else {
+            KeyboardOptions(imeAction = ImeAction.Done)
+        },
     )
 
     // Credit limit — only for credit accounts
@@ -259,8 +262,8 @@ private fun ColumnScope.BalanceSectionContent(
             isError = creditLimit.valueError,
             errorMessage = stringResource(id = R.string.credit_limit_error),
             onValueChange = creditLimit.onValueChange,
-            leadingIconText = currency.symbol,
             label = R.string.credit_limit,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         )
     }
 

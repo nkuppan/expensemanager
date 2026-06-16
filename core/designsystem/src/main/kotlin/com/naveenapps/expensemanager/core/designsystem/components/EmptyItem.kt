@@ -40,8 +40,7 @@ fun EmptyItem(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .padding(top = 80.dp)
-            .height(320.dp)
+            .height(280.dp)
             .testTag("EmptyItem"),
         contentAlignment = Alignment.Center,
     ) {
@@ -71,6 +70,7 @@ fun EmptyItem(
 
             // ── Primary message ────────────────────────────────────
             Text(
+                modifier = Modifier.fillMaxWidth(),
                 text = emptyItemText,
                 style = MaterialTheme.typography.bodyLarge.copy(
                     fontWeight = FontWeight.Medium,
