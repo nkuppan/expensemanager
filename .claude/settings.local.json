@@ -10,7 +10,12 @@
       "Bash(./gradlew :core:database:compileDebugKotlin)",
       "Bash(xargs cat)",
       "Bash(xargs cat -n)",
-      "Bash(grep \"\\\\.kt$\")"
+      "Bash(grep \"\\\\.kt$\")",
+      "Read(//private/tmp/glance_sources/androidx/glance/appwidget/unit/**)",
+      "Read(//private/tmp/glance_sources/**)",
+      "Read(//private/tmp/glance_core/androidx/glance/unit/**)",
+      "Read(//private/tmp/glance_core/androidx/glance/color/**)",
+      "Bash(xargs -I{} basename {})"
     ]
   }
 }

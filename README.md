@@ -164,11 +164,11 @@ Please feel free to [file an issue](https://github.com/nkuppan/expensemanager/is
 
 ## Roadmap
 
-- [ ] PDF export for transaction reports
+- [x] PDF export for transaction reports
 - [ ] Full multi-currency conversion with live exchange rates
 - [ ] Recurring transactions (auto-generated on schedule)
-- [ ] Biometric app lock
-- [ ] Widget for home screen balance overview
+- [x] Biometric app lock
+- [x] Widget for home screen balance overview
 - [ ] Cloud sync/backup
 
 ---

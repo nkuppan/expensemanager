@@ -243,6 +243,8 @@ dependencies {
 
     implementation(libs.app.update.ktx)
     implementation(libs.androidx.biometric)
+    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.material3)
 
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))
