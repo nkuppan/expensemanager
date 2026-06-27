@@ -217,6 +217,7 @@ fun BudgetDetailsScaffoldViewPreview() {
             budget = BudgetUiModel(
                 id = "sample",
                 name = "Jun 2026 Budget",
+                selectedMonth = "June 2026",
                 progressBarColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = Amount(100.0, "$100.00"),
                 transactionAmount = Amount(100.0, "$100.00"),

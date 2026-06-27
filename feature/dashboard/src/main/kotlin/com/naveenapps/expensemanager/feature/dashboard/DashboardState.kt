@@ -16,4 +16,5 @@ data class DashboardState(
     val accounts: List<AccountUiModel>,
     val categoryTransactionState: CategoryTransactionState,
     val isCompactSummary: Boolean = false,
+    val showCreateBudgetForMonth: String? = null,
 )

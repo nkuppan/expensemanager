@@ -15,7 +15,12 @@
       "Read(//private/tmp/glance_sources/**)",
       "Read(//private/tmp/glance_core/androidx/glance/unit/**)",
       "Read(//private/tmp/glance_core/androidx/glance/color/**)",
-      "Bash(xargs -I{} basename {})"
+      "Bash(xargs -I{} basename {})",
+      "Bash(./gradlew :core:domain:compileDebugKotlin :core:data:compileDebugKotlin :core:datastore:compileDebugKotlin)",
+      "Bash(./gradlew :feature:budget:compileDebugKotlin :feature:dashboard:compileDebugKotlin)",
+      "Bash(./gradlew :core:datastore:compileDebugKotlin :core:data:compileDebugKotlin :core:domain:compileDebugKotlin)",
+      "Bash(./gradlew :core:domain:compileDebugKotlin :feature:budget:compileDebugKotlin :feature:dashboard:compileDebugKotlin)",
+      "Bash(./gradlew :feature:dashboard:compileDebugKotlin)"
     ]
   }
 }

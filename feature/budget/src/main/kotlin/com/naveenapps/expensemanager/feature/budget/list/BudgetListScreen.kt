@@ -437,6 +437,7 @@ fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> {
 private fun getBudgetUiModel(id: String) = BudgetUiModel(
     id = id,
     name = "Jun 2026 Budget",
+    selectedMonth = "June 2026",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,

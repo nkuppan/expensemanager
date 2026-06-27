@@ -31,6 +31,10 @@ class DateRangeFilterRepositoryImpl(
     private val dispatcher: AppCoroutineDispatchers,
 ) : DateRangeFilterRepository {
 
+    // In-memory flag: resets to false on every app launch so dynamic filters always
+    // start fresh. Set to true only while the user navigates forward/backward.
+    private var isNavigated = false
+
     override suspend fun getAllDateRanges(): Resource<List<DateRangeModel>> {
         return Resource.Success(
             buildList {
@@ -80,18 +84,19 @@ class DateRangeFilterRepositoryImpl(
     override suspend fun setDateRangeFilterType(dateRangeType: DateRangeType): Resource<Boolean> =
         withContext(dispatcher.io) {
             dataStore.setFilterType(dateRangeType)
+            isNavigated = false
             return@withContext Resource.Success(true)
         }
 
     override suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean> =
         withContext(dispatcher.io) {
             dataStore.setDateRanges(dateRanges[0].time, dateRanges[1].time)
+            isNavigated = true
             return@withContext Resource.Success(true)
         }
 
     private suspend fun getOriginalDateRangeValues(dateRangeType: DateRangeType): List<Long> {
-        // Dynamic types recalculate on every call — stored timestamps go stale across boundaries
-        if (dateRangeType != DateRangeType.ALL && dateRangeType != DateRangeType.CUSTOM) {
+        if (!isNavigated && dateRangeType != DateRangeType.ALL && dateRangeType != DateRangeType.CUSTOM) {
             return getCurrentDateRanges(dateRangeType)
         }
         return getDateRange() ?: getCurrentDateRanges(dateRangeType)

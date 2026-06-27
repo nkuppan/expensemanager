@@ -80,6 +80,7 @@ fun Budget.toBudgetUiModel(
 ) = BudgetUiModel(
     id = this.id,
     name = name,
+    selectedMonth = this.selectedMonth,
     progressBarColor = when {
         percent < 0f -> R.color.green_500
         percent in 0f..35f -> R.color.green_500
@@ -97,6 +98,7 @@ fun Budget.toBudgetUiModel(
 data class BudgetUiModel(
     val id: String,
     val name: String,
+    val selectedMonth: String,
     val progressBarColor: Int,
     val amount: Amount,
     val transactionAmount: Amount,

@@ -3,18 +3,20 @@ package com.naveenapps.expensemanager.feature.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetName
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
-import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
@@ -22,6 +24,7 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -29,6 +32,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import java.util.Date
 
 
 class DashboardViewModel(
@@ -140,9 +144,28 @@ class DashboardViewModel(
             _state.update { it.copy(categoryTransactionState = categoryTransaction) }
         }.launchIn(viewModelScope)
 
-        getBudgetsUseCase.invoke().onEach { budgets ->
-            _state.update { it.copy(budgets = budgets) }
-        }.launchIn(viewModelScope)
+        combine(
+            getBudgetsUseCase.invoke(),
+            getDateRangeUseCase.invoke(),
+        ) { allBudgets, dateRange ->
+            val activeMonth = when (dateRange.type) {
+                DateRangeType.TODAY, DateRangeType.THIS_WEEK, DateRangeType.THIS_MONTH ->
+                    Date(dateRange.dateRanges[0]).toMonthAndYear()
+                else -> null
+            }
+            val filtered = if (activeMonth != null) {
+                allBudgets.filter { budget -> budget.selectedMonth == activeMonth }
+            } else {
+                allBudgets
+            }
+            val showCreateBudgetForMonth = if (activeMonth != null && filtered.isEmpty()) {
+                budgetName(activeMonth)
+            } else {
+                null
+            }
+            _state.update { it.copy(budgets = filtered, showCreateBudgetForMonth = showCreateBudgetForMonth) }
+        }.flowOn(appCoroutineDispatchers.computation)
+            .launchIn(viewModelScope)
 
         settingsRepository.getHomeSummaryCompact().onEach { compact ->
             _state.update { it.copy(isCompactSummary = compact) }
@@ -165,6 +188,10 @@ class DashboardViewModel(
         appComposeNavigator.navigate(ExpenseManagerScreens.BudgetList)
     }
 
+    private fun openBudgetCreate() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.BudgetCreate(null))
+    }
+
     private fun openBudgetDetails(budgetId: String?) {
         appComposeNavigator.navigate(ExpenseManagerScreens.BudgetDetails(budgetId))
     }
@@ -183,6 +210,7 @@ class DashboardViewModel(
             DashboardAction.OpenAccountList -> openAccountList()
             is DashboardAction.OpenBudgetDetails -> openBudgetDetails(action.budgetUiModel.id)
             DashboardAction.OpenBudgetList -> openBudgetList()
+            DashboardAction.OpenBudgetCreate -> openBudgetCreate()
             DashboardAction.OpenSettings -> openSettings()
             is DashboardAction.OpenTransactionEdit -> openTransactionCreate(action.transaction?.id)
             DashboardAction.OpenTransactionList -> openTransactionList()

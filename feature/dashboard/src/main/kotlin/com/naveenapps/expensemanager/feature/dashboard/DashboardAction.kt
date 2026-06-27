@@ -14,6 +14,8 @@ sealed class DashboardAction {
 
     data object OpenBudgetList : DashboardAction()
 
+    data object OpenBudgetCreate : DashboardAction()
+
     data class OpenBudgetDetails(val budgetUiModel: BudgetUiModel) : DashboardAction()
 
     data class OpenAccountEdit(val account: AccountUiModel) : DashboardAction()
