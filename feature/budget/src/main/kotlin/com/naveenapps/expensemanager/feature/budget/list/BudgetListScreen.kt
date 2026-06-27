@@ -137,17 +137,16 @@ private fun BudgetListScreenContent(
                 key = { _, item -> item.id },
             ) { index, budget ->
                 BudgetItemWithCard(
+                    name = budget.name,
                     progressBarColor = budget.progressBarColor,
                     amount = budget.amount,
                     transactionAmount = budget.transactionAmount,
                     percentage = budget.percent,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable {
-                            onItemClick.invoke(budget)
-                        }
                         .padding(horizontal = 16.dp, vertical = 2.dp),
                     shape = AppCardViewDefaults.cardShape(index, state.budgets),
+                    onItemClick = { onItemClick.invoke(budget) }
                 )
             }
             item {
@@ -169,6 +168,7 @@ private fun BudgetListScreenContent(
 
 @Composable
 fun BudgetItemWithCard(
+    name: String,
     @ColorRes progressBarColor: Int,
     amount: Amount?,
     transactionAmount: Amount?,
@@ -176,25 +176,31 @@ fun BudgetItemWithCard(
     percentage: Float = 0.0f,
     shape: CornerBasedShape = MaterialTheme.shapes.large,
     border: BorderStroke = CardDefaults.outlinedCardBorder(),
+    onItemClick: () -> Unit = {},
 ) {
-
     AppCardView(
         shape = shape,
         border = border,
         modifier = modifier,
     ) {
         BudgetItem(
+            name = name,
             progressBarColor = progressBarColor,
             amount = amount,
             transactionAmount = transactionAmount,
             percentage = percentage,
-            modifier = Modifier.then(ItemSpecModifier),
+            modifier = Modifier
+                .clickable {
+                    onItemClick.invoke()
+                }
+                .then(ItemSpecModifier),
         )
     }
 }
 
 @Composable
 fun BudgetItem(
+    name: String,
     @ColorRes progressBarColor: Int,
     amount: Amount?,
     transactionAmount: Amount?,
@@ -211,11 +217,21 @@ fun BudgetItem(
     ) {
         Column(modifier = Modifier.weight(1f)) {
 
-            // ── Row 1: Name + Budget amount ────────────────────────
+            // ── Row 1: Month label + Budget amount ─────────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.labelMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
                 if (amount != null) {
                     Text(
                         text = amount.amountString ?: "",
@@ -262,7 +278,6 @@ fun BudgetItem(
 
                 Spacer(Modifier.weight(1f))
 
-                // Percentage badge
                 val badgeBg = if (isOverBudget) {
                     MaterialTheme.colorScheme.errorContainer
                 } else {
@@ -301,6 +316,7 @@ fun DashBoardBudgetItem(
     transactionAmount: String?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
+    onItemClick: () -> Unit = {},
 ) {
     val barColor = colorResource(id = progressBarColor)
     val isOverBudget = percentage > 100f
@@ -309,6 +325,9 @@ fun DashBoardBudgetItem(
     AppCardView(modifier = modifier) {
         Column(
             modifier = Modifier
+                .clickable {
+                    onItemClick.invoke()
+                }
                 .padding(horizontal = 18.dp, vertical = 16.dp)
                 .fillMaxWidth(),
         ) {
@@ -417,6 +436,7 @@ fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> {
 
 private fun getBudgetUiModel(id: String) = BudgetUiModel(
     id = id,
+    name = "Jun 2026 Budget",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
@@ -428,6 +448,7 @@ private fun getBudgetUiModel(id: String) = BudgetUiModel(
 private fun BudgetItemPreview() {
     NaveenAppsPreviewTheme(padding = 0.dp) {
         BudgetItem(
+            name = "Jun 2026 Budget",
             amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             modifier = ItemSpecModifier,

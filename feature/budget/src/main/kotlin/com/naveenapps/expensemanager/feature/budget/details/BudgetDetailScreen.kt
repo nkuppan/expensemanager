@@ -107,6 +107,7 @@ private fun BudgetDetailsScaffoldView(
                     )
                     budget?.let {
                         BudgetItem(
+                            name = budget.name,
                             progressBarColor = budget.progressBarColor,
                             amount = budget.amount,
                             transactionAmount = budget.transactionAmount,
@@ -215,6 +216,7 @@ fun BudgetDetailsScaffoldViewPreview() {
         BudgetDetailsScaffoldView(
             budget = BudgetUiModel(
                 id = "sample",
+                name = "Jun 2026 Budget",
                 progressBarColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = Amount(100.0, "$100.00"),
                 transactionAmount = Amount(100.0, "$100.00"),

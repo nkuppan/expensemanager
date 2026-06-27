@@ -168,16 +168,16 @@ private fun DashboardScreenContent(
                         items(state.accounts, key = { it.id }) {
                             DashBoardAccountItem(
                                 modifier = Modifier
-                                    .wrapContentWidth()
-                                    .clickable {
-                                        onAction.invoke(DashboardAction.OpenAccountEdit(it))
-                                    },
+                                    .wrapContentWidth(),
                                 name = it.name,
                                 icon = it.storedIcon.name,
                                 amount = it.amount.amountString ?: "",
                                 availableCreditLimit = it.availableCreditLimit?.amountString
                                     ?: "",
                                 amountTextColor = colorResource(id = it.amountTextColor),
+                                onItemClick = {
+                                    onAction.invoke(DashboardAction.OpenAccountEdit(it))
+                                }
                             )
                         }
                     }
@@ -230,15 +230,15 @@ private fun DashboardScreenContent(
                     ) {
                         items(state.budgets, key = { it.id }) { budget ->
                             DashBoardBudgetItem(
-                                modifier = Modifier
-                                    .clickable {
-                                        onAction.invoke(DashboardAction.OpenBudgetDetails(budget))
-                                    },
-                                name = budget.getName(),
+                                modifier = Modifier,
+                                name = budget.name,
                                 progressBarColor = budget.progressBarColor,
                                 amount = budget.amount.amountString,
                                 transactionAmount = budget.transactionAmount.amountString,
                                 percentage = budget.percent,
+                                onItemClick = {
+                                    onAction.invoke(DashboardAction.OpenBudgetDetails(budget))
+                                }
                             )
                         }
                     }

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.account.list
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -233,6 +234,7 @@ fun DashBoardAccountItem(
     availableCreditLimit: String?,
     amountTextColor: Color,
     modifier: Modifier = Modifier,
+    onItemClick: (() -> Unit) = {}
 ) {
     val context = LocalContext.current
     val hasCreditLimit = !availableCreditLimit.isNullOrBlank()
@@ -242,7 +244,12 @@ fun DashBoardAccountItem(
         shape = RoundedCornerShape(14.dp),
     ) {
         Column(
-            modifier = Modifier.padding(14.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    onItemClick.invoke()
+                }
+                .padding(14.dp),
         ) {
             // ── Icon in tinted container + name ────────────────────
             Row(verticalAlignment = Alignment.CenterVertically) {
