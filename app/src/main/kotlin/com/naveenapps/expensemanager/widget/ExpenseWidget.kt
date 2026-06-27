@@ -59,6 +59,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
+import androidx.core.graphics.toColorInt
 
 internal fun fixedColor(color: Color): ColorProvider =
     androidx.glance.color.ColorProvider(day = color, night = color)
@@ -662,7 +663,7 @@ private fun MiniStatBox(
 private fun TransactionRow(tx: WidgetTransaction) {
     val iconRes = iconResForName(tx.iconName)
     val bgColor = try {
-        Color(android.graphics.Color.parseColor(tx.iconBgColor))
+        Color(tx.iconBgColor.toColorInt())
     } catch (_: Exception) {
         Color(0xFF252B50)
     }
