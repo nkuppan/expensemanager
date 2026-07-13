@@ -11,5 +11,9 @@
     <string name="currency_format">Currency Format</string>
     <string name="none">None(1234.23)</string>
     <string name="number_format">Format(1,23,423.13)</string>
+    <string name="selected_currency">Selected Currency</string>
+    <string name="choose_preferred_currency">Choose your preferred currency</string>
+    <string name="where_symbol_appears">Where the symbol appears</string>
+    <string name="number_formatting_style">Number formatting style</string>
 
 </resources>

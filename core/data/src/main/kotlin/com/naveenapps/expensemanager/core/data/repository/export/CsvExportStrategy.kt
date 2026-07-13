@@ -89,7 +89,8 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
                             transaction.createdOn.toCompleteDate(),
                             transaction.createdOn.toTimeAndMinutes(),
                             transaction.type.toCapitalize(),
-                            transaction.category.name,
+                            transaction.category.titleResId?.let { context.getString(it) }
+                                ?: transaction.category.name,
                             transaction.category.type.toCapitalize(),
                             transaction.fromAccount.name,
                             transaction.fromAccount.type.toCapitalize(),

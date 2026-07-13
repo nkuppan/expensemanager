@@ -23,4 +23,6 @@ data class CategoryEntity(
     val updatedOn: Date,
     @ColumnInfo(name = "created_on")
     val createdOn: Date,
+    @ColumnInfo(name = "default_category_key", defaultValue = "NULL")
+    val defaultCategoryKey: String? = null,
 )

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">सेटिंग्स</string>
+    <string name="theme">थीम</string>
+    <string name="analysis">विश्लेषण</string>
+    <string name="select_currency">मुद्रा चुनें</string>
+    <string name="reminder_notification">नोटिफिकेशन</string>
+    <string name="info">जानकारी</string>
+    <string name="about_the_app_information">ऐप की जानकारी के बारे में</string>
+    <string name="rate_us_message">इससे हमें बेहतर बनने में मदद मिलेगी</string>
+    <string name="currency">मुद्रा कस्टमाइज़ करें</string>
+    <string name="selected_daily_reminder_time">हम आपको हर बार सही समय पर अपना खर्च जोड़ने के लिए याद दिलाएंगे</string>
+    <string name="rate_us">हमें रेट करें</string>
+    <string name="choose_web_browser">वेब ब्राउज़र चुनें</string>
+
+    <string name="export">एक्सपोर्ट करें</string>
+    <string name="export_message">अपना डेटा एक्सपोर्ट करें और अपने पसंदीदा फॉर्मेट में विश्लेषण करें</string>
+
+    <string name="filter">फ़िल्टर</string>
+    <string name="filter_message">खर्च देखने के लिए तारीख फ़िल्टर चुन सकते हैं</string>
+
+    <string name="developed_by">नवीन कुमार कुप्पन द्वारा बनाया गया</string>
+    <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
+    <string name="app_version">वर्शन: %s</string>
+    <string name="advanced">एडवांस्ड</string>
+    <string name="advanced_config_message">ऐप के लिए एडवांस्ड कॉन्फ़िगरेशन मैनेज करें</string>
+    <string name="default_account">डिफ़ॉल्ट खाता</string>
+    <string name="default_expense_category">डिफ़ॉल्ट खर्च श्रेणी</string>
+    <string name="default_income_category">डिफ़ॉल्ट आय श्रेणी</string>
+    <string name="accounts_re_order">खाते फिर से व्यवस्थित करें</string>
+    <string name="accounts_re_order_message">डैशबोर्ड पर खातों की लिस्ट का क्रम बदल सकते हैं।</string>
+    <string name="backup">बैकअप</string>
+    <string name="backup_message">अपने डेटा का बैकअप बनाएं और उसे किसी भी डिवाइस में वापस पा सकें।</string>
+    <string name="restore">रिस्टोर</string>
+    <string name="restore_message">अपना डेटा वापस पाने के लिए उसे डिवाइस में रिस्टोर करें।</string>
+    <string name="default_selected_items">डिफ़ॉल्ट चुनी गई चीज़ें</string>
+    <string name="restore_and_backup"><![CDATA[रिस्टोर और बैकअप]]></string>
+    <string name="others">अन्य सेटिंग्स</string>
+
+    <string name="general">सामान्य</string>
+    <string name="data">डेटा</string>
+    <string name="support">सहायता</string>
+
+    <string name="compact_summary">कॉम्पैक्ट सारांश</string>
+    <string name="compact_summary_message">होम स्क्रीन पर एक छोटा सारांश विजेट दिखाएं</string>
+
+    <string name="app_lock">ऐप लॉक</string>
+    <string name="app_lock_message">ऐप खोलते समय बायोमेट्रिक या डिवाइस क्रेडेंशियल की जरूरत रखें</string>
+</resources>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.GetCurrentLocaleUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -21,6 +22,7 @@ class SettingsViewModel(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
+    getCurrentLocaleUseCase: GetCurrentLocaleUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
@@ -43,6 +45,10 @@ class SettingsViewModel(
 
         getCurrentThemeUseCase.invoke().onEach { theme ->
             _state.update { it.copy(theme = theme) }
+        }.launchIn(viewModelScope)
+
+        getCurrentLocaleUseCase.invoke().onEach { locale ->
+            _state.update { it.copy(locale = locale) }
         }.launchIn(viewModelScope)
     }
 
@@ -90,6 +96,14 @@ class SettingsViewModel(
 
             SettingAction.ShowThemeSelection -> {
                 _state.update { it.copy(showThemeSelection = true) }
+            }
+
+            SettingAction.DismissLanguageSelection -> {
+                _state.update { it.copy(showLanguageSelection = false) }
+            }
+
+            SettingAction.ShowLanguageSelection -> {
+                _state.update { it.copy(showLanguageSelection = true) }
             }
         }
     }

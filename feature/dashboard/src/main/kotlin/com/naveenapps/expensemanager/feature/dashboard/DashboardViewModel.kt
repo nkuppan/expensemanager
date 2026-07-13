@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.feature.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetName
@@ -150,7 +150,7 @@ class DashboardViewModel(
         ) { allBudgets, dateRange ->
             val activeMonth = when (dateRange.type) {
                 DateRangeType.TODAY, DateRangeType.THIS_WEEK, DateRangeType.THIS_MONTH ->
-                    Date(dateRange.dateRanges[0]).toMonthAndYear()
+                    Date(dateRange.dateRanges[0]).toMonthAndYearKey()
                 else -> null
             }
             val filtered = if (activeMonth != null) {

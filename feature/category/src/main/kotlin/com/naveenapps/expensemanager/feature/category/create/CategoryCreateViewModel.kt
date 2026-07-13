@@ -76,7 +76,8 @@ class CategoryCreateViewModel(
                     type = it.type.copy(value = categoryItem.type),
                     icon = it.icon.copy(value = categoryItem.storedIcon.name),
                     color = it.color.copy(value = categoryItem.storedIcon.backgroundColor),
-                    showDeleteButton = true
+                    showDeleteButton = true,
+                    nameResId = categoryItem.titleResId,
                 )
             }
         }
@@ -128,6 +129,10 @@ class CategoryCreateViewModel(
             ),
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time,
+            // Preserve the default-category marker across edits. Without this, saving any
+            // change (even just icon/color) to a built-in category would silently strip its
+            // titleResId/defaultCategoryKey and permanently freeze its name in English.
+            titleResId = this.category?.titleResId,
         )
 
         viewModelScope.launch {

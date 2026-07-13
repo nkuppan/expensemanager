@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Erinnerung</string>
+    <string name="reminder_notification">Erinnerungsbenachrichtigung</string>
+    <string name="reminder_notification_message">Benachrichtigungszeit, um dich an das Hinzufügen deiner Ausgaben zu erinnern</string>
+    <string name="notification_time">Erinnerungsbenachrichtigungszeit</string>
+    <string name="notification_permission_message">Die Benachrichtigungsberechtigung ist für diese App wichtig. Bitte erteile die Berechtigung.</string>
+    <string name="permission_disabled">Benachrichtigungsberechtigung ist deaktiviert</string>
+    <string name="request_permission">Berechtigung anfordern</string>
+    <string name="open_settings">Einstellungen öffnen</string>
+
+    <string name="permission_required_title">Benachrichtigungen deaktiviert</string>
+    <string name="schedule">Zeitplan</string>
+</resources>

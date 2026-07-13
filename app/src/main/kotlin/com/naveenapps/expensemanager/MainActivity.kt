@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,7 +36,7 @@ import org.koin.androidx.scope.activityScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.scope.Scope
 
-internal class MainActivity : FragmentActivity(), AndroidScopeComponent {
+internal class MainActivity : AppCompatActivity(), AndroidScopeComponent {
 
     private val appComposeNavigator: AppComposeNavigator by inject()
 

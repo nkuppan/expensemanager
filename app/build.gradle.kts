@@ -222,6 +222,7 @@ dependencies {
 
     implementation(project(":feature:settings"))
     implementation(project(":feature:theme"))
+    implementation(project(":feature:language"))
     implementation(project(":feature:export"))
     implementation(project(":feature:reminder"))
     implementation(project(":feature:currency"))

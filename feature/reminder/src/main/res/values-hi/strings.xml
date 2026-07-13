@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">रिमाइंडर</string>
+    <string name="reminder_notification">रिमाइंडर सूचना</string>
+    <string name="reminder_notification_message">आपको खर्च जोड़ने की याद दिलाने के लिए सूचना का समय</string>
+    <string name="notification_time">रिमाइंडर सूचना का समय</string>
+    <string name="notification_permission_message">इस ऐप के लिए सूचना की अनुमति ज़रूरी है। कृपया अनुमति दें।</string>
+    <string name="permission_disabled">सूचना की अनुमति बंद है</string>
+    <string name="request_permission">अनुमति मांगें</string>
+    <string name="open_settings">सेटिंग्स खोलें</string>
+
+    <string name="permission_required_title">सूचनाएं बंद हैं</string>
+    <string name="schedule">शेड्यूल</string>
+</resources>

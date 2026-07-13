@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Suivez vos dépenses</string>
+    <string name="welcome_message_description">Restez informé et gardez un historique de vos dépenses</string>
+    <string name="privacy_text">Toutes vos données sont stockées sur votre appareil, avec possibilité de sauvegarde externe. En continuant, vous acceptez notre politique de confidentialité.</string>
+    <string name="currency">Devise</string>
+    <string name="select_main_currency">Sélectionner la devise principale</string>
+    <string name="add_new">Ajouter</string>
+    <string name="proceed">Continuer</string>
+    <string name="get_started">Commencer</string>
+    <string name="setup">Configurer les paramètres de l\'application</string>
+    <string name="create_new">Créer</string>
+
+    <string name="setup_description">Configurez votre devise et vos comptes pour commencer</string>
+    <string name="tap_to_change">Appuyez pour modifier</string>
+    <string name="setup_currency">Configurer la devise</string>
+    <string name="not_set_up_yet">Pas encore configuré</string>
+
+    <string name="track">Suivre</string>
+    <string name="organize">Organiser</string>
+    <string name="grow">Se développer</string>
+</resources>

@@ -384,7 +384,8 @@ private fun TransactionCreateContent(
         ) {
             SettingsSection(title = stringResource(R.string.select_category)) {
                 CategoryItem(
-                    name = state.selectedCategory.name,
+                    name = state.selectedCategory.titleResId?.let { stringResource(it) }
+                        ?: state.selectedCategory.name,
                     icon = state.selectedCategory.storedIcon.name,
                     iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
                     modifier = Modifier.fillMaxWidth(),

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Controla tus gastos</string>
+    <string name="welcome_message_description">Mantente informado y lleva un registro de tus gastos</string>
+    <string name="privacy_text">Todos tus datos se almacenan en tu dispositivo, con opción de copia de seguridad externa. Al continuar, aceptas nuestra política de privacidad.</string>
+    <string name="currency">Moneda</string>
+    <string name="select_main_currency">Seleccionar moneda principal</string>
+    <string name="add_new">Añadir nuevo</string>
+    <string name="proceed">Continuar</string>
+    <string name="get_started">Comenzar</string>
+    <string name="setup">Configurar los ajustes de la app</string>
+    <string name="create_new">Crear nuevo</string>
+
+    <string name="setup_description">Configura tu moneda y cuentas para empezar</string>
+    <string name="tap_to_change">Toca para cambiar</string>
+    <string name="setup_currency">Configurar la moneda</string>
+    <string name="not_set_up_yet">Aún no configurado</string>
+
+    <string name="track">Controlar</string>
+    <string name="organize">Organizar</string>
+    <string name="grow">Crecer</string>
+</resources>

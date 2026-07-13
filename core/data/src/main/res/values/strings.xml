@@ -31,4 +31,22 @@
     <string name="dark">Dark</string>
     <string name="set_by_battery_saver">Set by battery saver</string>
     <string name="system_default">System default</string>
+
+    <string name="language_english">English</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_french">Français</string>
+    <string name="language_german">Deutsch</string>
+    <string name="language_hindi">हिन्दी</string>
+
+    <string name="category_clothing">Clothing</string>
+    <string name="category_entertainment">Entertainment</string>
+    <string name="category_food">Food</string>
+    <string name="category_health">Health</string>
+    <string name="category_leisure">Leisure</string>
+    <string name="category_shopping">Shopping</string>
+    <string name="category_transportation">Transportation</string>
+    <string name="category_utilities">Utilities</string>
+    <string name="category_salary">Salary</string>
+    <string name="category_gift">Gift</string>
+    <string name="category_coupons">Coupons</string>
 </resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">श्रेणियां</string>
+    <string name="income">आय</string>
+    <string name="expense">खर्च</string>
+    <string name="no_category_available">कोई श्रेणी उपलब्ध नहीं है\nअपनी श्रेणियां बनाने के लिए + बटन दबाएं</string>
+    <string name="no_transactions_available">चुनी गई अवधि के लिए कोई लेन-देन उपलब्ध नहीं है।\nअपना लेन-देन दर्ज करने के लिए + बटन दबाएं</string>
+    <string name="category_selection_message">आगे बढ़ने के लिए कम से कम एक श्रेणी चुनना होगा</string>
+    <string name="select_account">खाता चुनें</string>
+    <string name="clear_all">सभी हटाएं</string>
+    <string name="select">चुनें</string>
+    <string name="select_category">श्रेणी चुनें</string>
+
+    <string name="delete_item_message">क्या आप वाकई इस आइटम को हटाना चाहते हैं?</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="category">श्रेणी</string>
+    <string name="category_name">श्रेणी का नाम</string>
+
+    <string name="category_create_error">श्रेणी जोड़ते समय अज्ञात त्रुटि हुई</string>
+    <string name="category_name_error">नाम खाली नहीं होना चाहिए</string>
+    <string name="category_create_success">श्रेणी सफलतापूर्वक बनाई/बदली गई</string>
+    <string name="category_delete_error_message">इस श्रेणी को हटाया नहीं जा सका</string>
+    <string name="category_delete_message">इस श्रेणी को हटाने से इससे जुड़े सभी लेन-देन भी हट जाएंगे और यह किसी भी बजट से भी हट जाएगी जिसमें यह शामिल है। यह प्रक्रिया पूर्ववत नहीं की जा सकती।</string>
+    <string name="default_category_name_locked_message">यह एक डिफ़ॉल्ट श्रेणी है, इसलिए इसका नाम आपकी चुनी हुई ऐप भाषा के अनुसार दिखता है और इसे बदला नहीं जा सकता।</string>
+    <string name="edit">एडिट करें</string>
+    <string name="add_new">नया जोड़ें</string>
+
+    <string name="edit_category">श्रेणी संपादित करें</string>
+    <string name="create_category">श्रेणी बनाएं</string>
+    <string name="save">सेव करें</string>
+    <string name="delete">हटाएं</string>
+    <string name="preview">पूर्वावलोकन</string>
+    <string name="details">विवरण</string>
+    <string name="appearance">दिखावट</string>
+    <string name="category_type">श्रेणी का प्रकार</string>
+    <string name="category_name_placeholder">श्रेणी का नाम</string>
+
+    <string name="add_category">श्रेणी जोड़ें</string>
+    <string name="add_transaction">लेन-देन जोड़ें</string>
+    <string name="tap_chart_to_switch_to">"इसमें बदलने के लिए चार्ट पर टैप करें "</string>
+
+    <plurals name="category_count">
+        <item quantity="one">%d श्रेणी</item>
+        <item quantity="other">%d श्रेणियां</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d चयनित</item>
+        <item quantity="other">%d चयनित</item>
+    </plurals>
+</resources>

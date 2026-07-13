@@ -125,7 +125,7 @@ private fun MultipleCategorySelectionViewContent(
             items(categories, key = { it.id }) { category ->
                 val isSelected = selectedCategories.fastAny { it.id == category.id }
                 CategoryItem(
-                    name = category.name,
+                    name = category.titleResId?.let { stringResource(it) } ?: category.name,
                     icon = category.storedIcon.name,
                     iconBackgroundColor = category.storedIcon.backgroundColor,
                     border = CategoryItemDefaults.border(isSelected),

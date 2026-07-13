@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">लेन-देन सारांश</string>
+    <string name="expense">खर्च</string>
+    <string name="income">आय</string>
+    <string name="total">कुल</string>
+    <string name="balance">शेष राशि</string>
+    <string name="categories">श्रेणियां</string>
+    <string name="hello">नमस्ते!</string>
+    <string name="guest">गेस्ट</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="transaction">लेन-देन</string>
+    <string name="no_transactions_available">चुनी गई अवधि के लिए कोई लेन-देन उपलब्ध नहीं है।\nअपने लेन-देन जोड़ने के लिए + बटन दबाएं</string>
+    <string name="home">होम</string>
+    <string name="transaction_create_message">"अपने खर्च, आय और ट्रांसफर यहां जोड़ें। "</string>
+    <string name="help"><![CDATA[मदद और जानकारी]]></string>
+    <string name="ok">OK</string>
+    <string name="no_budget_for_month">कोई %1$s नहीं</string>
+    <string name="tap_to_set_spending_limit">खर्च की सीमा तय करने के लिए टैप करें</string>
+</resources>

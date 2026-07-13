@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.settings
 
 import androidx.compose.runtime.Stable
+import com.naveenapps.expensemanager.core.model.AppLocale
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
 
@@ -8,5 +9,7 @@ import com.naveenapps.expensemanager.core.model.Theme
 data class SettingState(
     val currency: Currency,
     val theme: Theme?,
-    val showThemeSelection: Boolean
+    val locale: AppLocale? = null,
+    val showThemeSelection: Boolean,
+    val showLanguageSelection: Boolean = false,
 )

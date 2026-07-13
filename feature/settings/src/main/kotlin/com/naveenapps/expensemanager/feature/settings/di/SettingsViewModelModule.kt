@@ -11,6 +11,7 @@ val SettingsViewModelModule = module {
             getDefaultCurrencyUseCase = get(),
             getCurrencyUseCase = get(),
             getCurrentThemeUseCase = get(),
+            getCurrentLocaleUseCase = get(),
             appComposeNavigator = get()
         )
     }

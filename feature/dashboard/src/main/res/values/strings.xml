@@ -15,4 +15,6 @@
     <string name="transaction_create_message">"Add your expenses, incomes and transfers here. "</string>
     <string name="help"><![CDATA[Help & info]]></string>
     <string name="ok">OK</string>
+    <string name="no_budget_for_month">No %1$s</string>
+    <string name="tap_to_set_spending_limit">Tap to set a spending limit</string>
 </resources>

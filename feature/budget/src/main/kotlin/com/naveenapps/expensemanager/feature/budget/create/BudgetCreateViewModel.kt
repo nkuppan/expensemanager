@@ -3,8 +3,8 @@ package com.naveenapps.expensemanager.feature.budget.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
-import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseCase
@@ -121,7 +121,7 @@ class BudgetCreateViewModel(
             state.copy(
                 isLoading = false,
                 amount = state.amount.copy(value = numberFormatRepository.formatForEditing(budget.amount)),
-                month = state.month.copy(value = budget.selectedMonth.fromMonthAndYear() ?: Date()),
+                month = state.month.copy(value = budget.selectedMonth.fromMonthAndYearKey() ?: Date()),
                 isAllAccountSelected = budget.isAllAccountsSelected,
                 selectedAccounts = emptyList(),
                 isAllCategorySelected = budget.isAllCategoriesSelected,
@@ -178,7 +178,7 @@ class BudgetCreateViewModel(
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
             amount = amount ?: 0.0,
-            selectedMonth = date.toMonthAndYear(),
+            selectedMonth = date.toMonthAndYearKey(),
             categories = categories,
             accounts = accounts,
             isAllCategoriesSelected = _state.value.isAllCategorySelected,

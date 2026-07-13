@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Rappel</string>
+    <string name="reminder_notification">Notification de rappel</string>
+    <string name="reminder_notification_message">Heure de notification pour vous rappeler d\'ajouter vos dépenses</string>
+    <string name="notification_time">Heure de la notification de rappel</string>
+    <string name="notification_permission_message">L\'autorisation de notification est importante pour cette application. Veuillez l\'accorder.</string>
+    <string name="permission_disabled">L\'autorisation de notification est désactivée</string>
+    <string name="request_permission">Demander l\'autorisation</string>
+    <string name="open_settings">Ouvrir les paramètres</string>
+
+    <string name="permission_required_title">Notifications désactivées</string>
+    <string name="schedule">Planifier</string>
+</resources>

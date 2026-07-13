@@ -3,8 +3,8 @@ package com.naveenapps.expensemanager.core.domain.usecase.budget
 import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
-import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -60,11 +60,11 @@ class GetBudgetsUseCase(
 private val shortMonthFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
 
 fun budgetName(selectedMonth: String): String {
-    val currentMonth = Date().toMonthAndYear()
+    val currentMonth = Date().toMonthAndYearKey()
     return if (selectedMonth == currentMonth) {
         "This Month Budget"
     } else {
-        val short = selectedMonth.fromMonthAndYear()
+        val short = selectedMonth.fromMonthAndYearKey()
             ?.let { shortMonthFormat.format(it) }
             ?: selectedMonth
         "$short Budget"

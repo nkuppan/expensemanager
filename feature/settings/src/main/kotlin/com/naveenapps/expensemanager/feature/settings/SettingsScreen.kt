@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.RateReview
@@ -31,9 +32,11 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseMana
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
+import com.naveenapps.expensemanager.core.model.AppLocale
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
+import com.naveenapps.expensemanager.feature.language.LanguageDialogView
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -70,6 +73,12 @@ private fun SettingsScreenScaffoldView(
         }
     }
 
+    if (state.showLanguageSelection) {
+        LanguageDialogView {
+            onAction.invoke(SettingAction.DismissLanguageSelection)
+        }
+    }
+
     Scaffold(
         topBar = {
             ExpenseManagerTopAppBar(
@@ -89,6 +98,7 @@ private fun SettingsScreenScaffoldView(
                 .padding(horizontal = 16.dp),
             selectedCurrency = state.currency,
             theme = state.theme,
+            locale = state.locale,
             onAction = onAction,
         )
     }
@@ -99,6 +109,7 @@ private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     selectedCurrency: Currency,
     theme: Theme? = null,
+    locale: AppLocale? = null,
     onAction: (SettingAction) -> Unit,
 ) {
     Column(
@@ -133,6 +144,19 @@ private fun SettingsScreenContent(
                     title = stringResource(id = R.string.reminder_notification),
                     subtitle = stringResource(id = R.string.selected_daily_reminder_time),
                     icon = Icons.Outlined.EditNotifications,
+                    showDivider = true,
+                )
+                SettingRow(
+                    onClick = { onAction.invoke(SettingAction.ShowLanguageSelection) },
+                    title = stringResource(
+                        id = com.naveenapps.expensemanager.feature.language.R.string.language,
+                    ),
+                    subtitle = if (locale != null) {
+                        stringResource(id = locale.titleResId)
+                    } else {
+                        stringResource(id = R.string.system_default)
+                    },
+                    icon = Icons.Outlined.Language,
                 )
             }
         }

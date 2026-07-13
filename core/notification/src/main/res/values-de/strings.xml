@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">Vergiss nicht, deine Ausgaben zu erfassen</string>
+    <string name="notification_title">Transaktion hinzufügen</string>
+    <string name="notification_channel_description">Wird für Erinnerungen verwendet</string>
+</resources>

@@ -66,7 +66,8 @@ private fun CategoryCreateScreenContentView(
     if (state.showDeleteDialog) {
         DeleteDialogItem(
             confirm = { onAction.invoke(CategoryCreateAction.Delete) },
-            dismiss = { onAction.invoke(CategoryCreateAction.DismissDeleteDialog) }
+            dismiss = { onAction.invoke(CategoryCreateAction.DismissDeleteDialog) },
+            message = stringResource(R.string.category_delete_message),
         )
     }
 
@@ -121,6 +122,7 @@ private fun CategoryCreateScreenContentView(
             categoryTypeField = state.type,
             selectedColorField = state.color,
             selectedIconField = state.icon,
+            nameResId = state.nameResId,
         )
     }
 }
@@ -132,6 +134,7 @@ private fun CategoryCreateScreen(
     selectedColorField: TextFieldValue<String>,
     selectedIconField: TextFieldValue<String>,
     modifier: Modifier = Modifier,
+    nameResId: Int? = null,
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
@@ -159,15 +162,25 @@ private fun CategoryCreateScreen(
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
+                    val displayName = nameResId?.let { stringResource(it) } ?: nameField.value
                     StringTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = nameField.value,
+                        value = displayName,
                         isError = nameField.valueError,
-                        onValueChange = nameField.onValueChange,
+                        onValueChange = if (nameResId == null) nameField.onValueChange else null,
                         label = R.string.category_name,
                         errorMessage = stringResource(id = R.string.category_name_error),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        enabled = nameResId == null,
                     )
+                    if (nameResId != null) {
+                        Text(
+                            text = stringResource(R.string.default_category_name_locked_message),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 4.dp),
+                        )
+                    }
                 }
             }
         }

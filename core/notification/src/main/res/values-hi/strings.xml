@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">अपने खर्च दर्ज करना न भूलें</string>
+    <string name="notification_title">लेन-देन जोड़ें</string>
+    <string name="notification_channel_description">रिमाइंडर के लिए इस्तेमाल किया जाता है</string>
+</resources>

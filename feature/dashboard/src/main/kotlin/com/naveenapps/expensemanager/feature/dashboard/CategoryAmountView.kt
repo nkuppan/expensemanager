@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
@@ -34,7 +35,7 @@ fun CategoryAmountView(
             totalAmountText = categoryTransactionState.totalAmount.amountString ?: "",
             chartData = categoryTransactionState.pieChartData.map {
                 PieChartUiData(
-                    it.name,
+                    it.titleResId?.let { resId -> stringResource(resId) } ?: it.name,
                     it.value,
                     it.color.toColorInt(),
                 )
@@ -54,7 +55,8 @@ fun CategoryAmountView(
                 if (it < 4) {
                     val item = categoryTransactionState.categoryTransactions[it]
                     CategoryTransactionSmallItem(
-                        name = item.category.name,
+                        name = item.category.titleResId?.let { stringResource(it) }
+                            ?: item.category.name,
                         icon = item.category.storedIcon.name,
                         iconBackgroundColor = item.category.storedIcon.backgroundColor,
                         amount = item.amount.amountString ?: "",

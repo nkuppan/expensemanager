@@ -155,9 +155,13 @@ private fun AdvancedSettingsScaffoldView(
                     if (state.expenseCategories.isNotEmpty() && state.selectedExpenseCategory != null) {
                         DropdownSettingItem(
                             label = stringResource(id = R.string.default_expense_category),
-                            selectedValue = state.selectedExpenseCategory.name,
+                            selectedValue = state.selectedExpenseCategory.titleResId?.let {
+                                stringResource(it)
+                            } ?: state.selectedExpenseCategory.name,
                             icon = Icons.AutoMirrored.Outlined.TrendingUp,
-                            items = state.expenseCategories.map { it.name },
+                            items = state.expenseCategories.map {
+                                it.titleResId?.let { resId -> stringResource(resId) } ?: it.name
+                            },
                             onItemSelected = { index ->
                                 onAction.invoke(AdvancedSettingAction.SelectExpenseCategory(state.expenseCategories[index]))
                             },
@@ -167,9 +171,13 @@ private fun AdvancedSettingsScaffoldView(
                     if (state.incomeCategories.isNotEmpty() && state.selectedIncomeCategory != null) {
                         DropdownSettingItem(
                             label = stringResource(id = R.string.default_income_category),
-                            selectedValue = state.selectedIncomeCategory.name,
+                            selectedValue = state.selectedIncomeCategory.titleResId?.let {
+                                stringResource(it)
+                            } ?: state.selectedIncomeCategory.name,
                             icon = Icons.AutoMirrored.Outlined.TrendingDown,
-                            items = state.incomeCategories.map { it.name },
+                            items = state.incomeCategories.map {
+                                it.titleResId?.let { resId -> stringResource(resId) } ?: it.name
+                            },
                             onItemSelected = { index ->
                                 onAction.invoke(AdvancedSettingAction.SelectIncomeCategory(state.incomeCategories[index]))
                             },

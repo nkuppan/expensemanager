@@ -111,8 +111,8 @@ private fun CurrencyCustomiseScreenContent(
         ) {
             // Currency Selection Section
             CurrencySection(
-                title = "Selected Currency",
-                subtitle = "Choose your preferred currency"
+                title = stringResource(id = R.string.selected_currency),
+                subtitle = stringResource(id = R.string.choose_preferred_currency)
             ) {
                 AppCardView(modifier = Modifier.fillMaxWidth()) {
                     SettingRow(
@@ -129,7 +129,7 @@ private fun CurrencyCustomiseScreenContent(
             // Currency Position Section
             CurrencySection(
                 title = stringResource(id = R.string.currency_position),
-                subtitle = "Where the symbol appears"
+                subtitle = stringResource(id = R.string.where_symbol_appears)
             ) {
                 CurrencyPositionSelector(
                     currency = state.currency.symbol,
@@ -143,7 +143,7 @@ private fun CurrencyCustomiseScreenContent(
             // Currency Format Section
             CurrencySection(
                 title = stringResource(id = R.string.currency_format),
-                subtitle = "Number formatting style"
+                subtitle = stringResource(id = R.string.number_formatting_style)
             ) {
                 CurrencyFormatSelector(
                     textFormat = state.numberFormatType,

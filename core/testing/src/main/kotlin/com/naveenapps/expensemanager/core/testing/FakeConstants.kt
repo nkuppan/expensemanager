@@ -115,7 +115,9 @@ val FAKE_TRANSFER_TRANSACTION = Transaction(
 val FAKE_BUDGET = Budget(
     id = "1",
     amount = 5000.0,
-    selectedMonth = SimpleDateFormat("MMMM yyyy", Locale.getDefault()).format(Date()),
+    // Matches the fixed-locale key format used by Date.toMonthAndYearKey() / String.fromMonthAndYearKey()
+    // so this fixture stays parseable regardless of the test JVM's default locale.
+    selectedMonth = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).format(Date()),
     accounts = emptyList(),
     categories = emptyList(),
     isAllAccountsSelected = true,

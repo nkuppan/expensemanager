@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">Kategorien</string>
+    <string name="income">Einnahme</string>
+    <string name="expense">Ausgabe</string>
+    <string name="no_category_available">Keine Kategorie vorhanden\nTippe auf die Schaltfläche +, um deine Kategorien zu erstellen</string>
+    <string name="no_transactions_available">Keine Transaktionen für den ausgewählten Zeitraum vorhanden.\nTippe auf die Schaltfläche +, um deine Transaktionen zu erfassen</string>
+    <string name="category_selection_message">Es sollte mindestens eine Kategorie ausgewählt werden, um fortzufahren</string>
+    <string name="select_account">Konto auswählen</string>
+    <string name="clear_all">Alle löschen</string>
+    <string name="select">Auswählen</string>
+    <string name="select_category">Kategorie auswählen</string>
+
+    <string name="delete_item_message">Möchtest du diesen Eintrag wirklich löschen?</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="category">Kategorie</string>
+    <string name="category_name">Kategoriename</string>
+
+    <string name="category_create_error">Beim Einfügen der Kategorie ist ein unbekannter Fehler aufgetreten</string>
+    <string name="category_name_error">Name darf nicht leer sein</string>
+    <string name="category_create_success">Kategorie erfolgreich erstellt/geändert</string>
+    <string name="category_delete_error_message">Diese Kategorie kann nicht gelöscht werden</string>
+    <string name="category_delete_message">Beim Löschen dieser Kategorie werden auch alle zugehörigen Transaktionen gelöscht und die Kategorie aus allen Budgets entfernt, denen sie zugeordnet ist. Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="default_category_name_locked_message">Dies ist eine Standardkategorie. Ihr Name richtet sich nach der gewählten App-Sprache und kann nicht geändert werden.</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="add_new">Neu hinzufügen</string>
+
+    <string name="edit_category">Kategorie bearbeiten</string>
+    <string name="create_category">Kategorie erstellen</string>
+    <string name="save">Speichern</string>
+    <string name="delete">Löschen</string>
+    <string name="preview">Vorschau</string>
+    <string name="details">Details</string>
+    <string name="appearance">Erscheinungsbild</string>
+    <string name="category_type">Kategorietyp</string>
+    <string name="category_name_placeholder">Kategoriename</string>
+
+    <string name="add_category">Kategorie hinzufügen</string>
+    <string name="add_transaction">Transaktion hinzufügen</string>
+    <string name="tap_chart_to_switch_to">"Auf das Diagramm tippen, um zu wechseln zu "</string>
+
+    <plurals name="category_count">
+        <item quantity="one">%d Kategorie</item>
+        <item quantity="other">%d Kategorien</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d ausgewählt</item>
+        <item quantity="other">%d ausgewählt</item>
+    </plurals>
+</resources>

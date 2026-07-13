@@ -1,5 +1,7 @@
 package com.naveenapps.expensemanager.core.data.repository
 
+import android.content.Context
+import com.naveenapps.expensemanager.core.data.R
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.getThisMonthRange
 import com.naveenapps.expensemanager.core.common.utils.getThisWeekRange
@@ -27,12 +29,21 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 class DateRangeFilterRepositoryImpl(
+    private val context: Context,
     private val dataStore: DateRangeDataStore,
     private val dispatcher: AppCoroutineDispatchers,
 ) : DateRangeFilterRepository {
 
     // In-memory flag: resets to false on every app launch so dynamic filters always
     // start fresh. Set to true only while the user navigates forward/backward.
+    //
+    // @Volatile because it's written from setDateRanges()/setDateRangeFilterType() (which run
+    // on dispatcher.io, a background dispatcher) and read from getOriginalDateRangeValues()
+    // (which runs on whatever dispatcher collects the reactive GetDateRangeUseCase flow, e.g.
+    // Main). Without it, a write on one thread isn't guaranteed to be visible to a read on
+    // another, which could make forward/backward navigation intermittently appear to skip a
+    // step (write lands, but a concurrently-running read still sees the old flag value).
+    @Volatile
     private var isNavigated = false
 
     override suspend fun getAllDateRanges(): Resource<List<DateRangeModel>> {
@@ -63,12 +74,12 @@ class DateRangeFilterRepositoryImpl(
 
     override suspend fun getDateRangeFilterRangeName(dateRangeType: DateRangeType): String {
         return when (dateRangeType) {
-            DateRangeType.TODAY -> "Today"
-            DateRangeType.THIS_WEEK -> "This Week"
-            DateRangeType.THIS_MONTH -> "This Month"
-            DateRangeType.THIS_YEAR -> "This Year"
-            DateRangeType.CUSTOM -> "Custom"
-            DateRangeType.ALL -> "All time"
+            DateRangeType.TODAY -> context.getString(R.string.today)
+            DateRangeType.THIS_WEEK -> context.getString(R.string.this_week)
+            DateRangeType.THIS_MONTH -> context.getString(R.string.this_month)
+            DateRangeType.THIS_YEAR -> context.getString(R.string.this_year)
+            DateRangeType.CUSTOM -> context.getString(R.string.custom)
+            DateRangeType.ALL -> context.getString(R.string.all_time)
         }
     }
 
@@ -83,15 +94,24 @@ class DateRangeFilterRepositoryImpl(
 
     override suspend fun setDateRangeFilterType(dateRangeType: DateRangeType): Resource<Boolean> =
         withContext(dispatcher.io) {
-            dataStore.setFilterType(dateRangeType)
+            // Flip the flag *before* writing, since the write is what triggers the reactive
+            // date-range flow to re-read this repository's state. If the flag flipped after,
+            // a concurrent re-read could still observe the old value and use a stale range.
             isNavigated = false
+            dataStore.setFilterType(dateRangeType)
             return@withContext Resource.Success(true)
         }
 
     override suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean> =
         withContext(dispatcher.io) {
-            dataStore.setDateRanges(dateRanges[0].time, dateRanges[1].time)
+            // Same ordering fix as setDateRangeFilterType(): flip the flag *before* persisting,
+            // so that once the reactive flow observes this write, isNavigated is already true
+            // and it reads back the range we just stored instead of recomputing "current period"
+            // and appearing to ignore the navigation (see MoveDateRangeForwardUseCase/
+            // MoveDateRangeBackwardUseCase, which call this after computing the next/previous
+            // range).
             isNavigated = true
+            dataStore.setDateRanges(dateRanges[0].time, dateRanges[1].time)
             return@withContext Resource.Success(true)
         }
 

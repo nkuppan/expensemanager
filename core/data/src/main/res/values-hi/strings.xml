@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">आज</string>
+    <string name="this_week">इस हफ्ते</string>
+    <string name="this_month">इस महीने</string>
+    <string name="this_year">इस साल</string>
+    <string name="all_time">सभी समय</string>
+    <string name="custom">कस्टम</string>
+
+    <string name="amount">राशि</string>
+    <string name="category">श्रेणी</string>
+    <string name="date">तारीख</string>
+    <string name="notes">नोट्स</string>
+    <string name="average">औसत</string>
+    <string name="day">दिन</string>
+    <string name="week">हफ्ता</string>
+    <string name="time">समय</string>
+    <string name="month">महीना</string>
+    <string name="from_account">किस खाते से</string>
+    <string name="to_account">किस खाते में</string>
+    <string name="transaction_type">लेन-देन का प्रकार</string>
+    <string name="category_type">श्रेणी का प्रकार</string>
+    <string name="account_type">खाते का प्रकार</string>
+    <string name="exported_on">एक्सपोर्ट किया गया</string>
+    <string name="total_transactions">कुल लेन-देन</string>
+    <string name="total_income">कुल आय</string>
+    <string name="total_expense">कुल खर्च</string>
+    <string name="net_balance">कुल शेष राशि</string>
+
+    <string name="light">लाइट</string>
+    <string name="dark">डार्क</string>
+    <string name="set_by_battery_saver">बैटरी सेवर द्वारा सेट किया गया</string>
+    <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
+
+    <string name="category_clothing">कपड़े</string>
+    <string name="category_entertainment">मनोरंजन</string>
+    <string name="category_food">भोजन</string>
+    <string name="category_health">स्वास्थ्य</string>
+    <string name="category_leisure">अवकाश</string>
+    <string name="category_shopping">खरीदारी</string>
+    <string name="category_transportation">परिवहन</string>
+    <string name="category_utilities">उपयोगिताएं</string>
+    <string name="category_salary">वेतन</string>
+    <string name="category_gift">उपहार</string>
+    <string name="category_coupons">कूपन</string>
+</resources>

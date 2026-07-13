@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_description">%s(%s)</string>
+    <string name="search_country">Land suchen</string>
+    <string name="clear_search_text">Suchtext löschen</string>
+    <string name="back">Zurück</string>
+    <string name="no_countries_found">Keine Länder gefunden</string>
+</resources>

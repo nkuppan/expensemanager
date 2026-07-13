@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Recordatorio</string>
+    <string name="reminder_notification">Notificación de recordatorio</string>
+    <string name="reminder_notification_message">Hora de la notificación para recordarte que añadas tus gastos</string>
+    <string name="notification_time">Hora de la notificación del recordatorio</string>
+    <string name="notification_permission_message">El permiso de notificaciones es importante para esta app. Por favor, concede el permiso.</string>
+    <string name="permission_disabled">El permiso de notificaciones está desactivado</string>
+    <string name="request_permission">Solicitar permiso</string>
+    <string name="open_settings">Abrir ajustes</string>
+
+    <string name="permission_required_title">Notificaciones desactivadas</string>
+    <string name="schedule">Programar</string>
+</resources>

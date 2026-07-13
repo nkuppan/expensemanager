@@ -14,6 +14,7 @@ import com.naveenapps.expensemanager.core.data.repository.export.PdfExportStrate
 import com.naveenapps.expensemanager.core.data.repository.FeedbackRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.FirebaseSettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.JsonConverterRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.LocaleRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.SettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ShareRepositoryImpl
@@ -32,6 +33,7 @@ import com.naveenapps.expensemanager.core.repository.ExportRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.FirebaseSettingsRepository
 import com.naveenapps.expensemanager.core.repository.JsonConverterRepository
+import com.naveenapps.expensemanager.core.repository.LocaleRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.ShareRepository
@@ -46,6 +48,12 @@ val RepositoryModule = module {
         ThemeRepositoryImpl(
             dataStore = get(),
             versionCheckerRepository = get(),
+            dispatchers = get()
+        )
+    }
+    single<LocaleRepository> {
+        LocaleRepositoryImpl(
+            dataStore = get(),
             dispatchers = get()
         )
     }
@@ -94,6 +102,7 @@ val RepositoryModule = module {
     }
     single<DateRangeFilterRepository> {
         DateRangeFilterRepositoryImpl(
+            context = androidContext(),
             dataStore = get(),
             dispatcher = get()
         )

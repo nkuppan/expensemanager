@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.getEndOfTheMonth
 import com.naveenapps.expensemanager.core.common.utils.getStartOfTheMonth
-import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
@@ -31,7 +31,7 @@ class GetBudgetTransactionsUseCase(
             budget.categories
         }
 
-        val date = budget.selectedMonth.fromMonthAndYear()
+        val date = budget.selectedMonth.fromMonthAndYearKey()
 
         date ?: return Resource.Error(IllegalArgumentException("Unknown month value"))
 
@@ -45,7 +45,7 @@ class GetBudgetTransactionsUseCase(
             startDate = startDayOfMonth,
             endDate = endDayOfMonth,
         ).firstOrNull()?.filter {
-            it.createdOn.toMonthAndYear() == budget.selectedMonth
+            it.createdOn.toMonthAndYearKey() == budget.selectedMonth
         }
 
         return Resource.Success(transaction ?: emptyList())

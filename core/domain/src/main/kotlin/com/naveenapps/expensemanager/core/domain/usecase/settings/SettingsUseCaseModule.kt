@@ -5,6 +5,10 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDe
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.export.ExportFileUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.ApplyLocaleUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.GetCurrentLocaleUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.GetLocalesUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.SaveLocaleUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetPreloadStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
@@ -51,5 +55,11 @@ val SettingsUseCaseModule = module {
     single { GetThemesUseCase(get()) }
     single { SaveThemeUseCase(get()) }
     single { ApplyThemeUseCase(get()) }
+
+    //Locale
+    single { GetCurrentLocaleUseCase(get()) }
+    single { GetLocalesUseCase(get()) }
+    single { SaveLocaleUseCase(get()) }
+    single { ApplyLocaleUseCase(get()) }
 
 }

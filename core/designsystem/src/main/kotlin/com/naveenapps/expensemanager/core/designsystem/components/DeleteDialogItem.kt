@@ -28,11 +28,12 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBo
 fun DeleteDialogItem(
     confirm: () -> Unit,
     dismiss: () -> Unit,
+    message: String? = null,
 ) {
     SafeModalBottomSheet(
         onDismissRequest = { dismiss.invoke() }
     ) {
-        DeleteDialogContent(confirm, dismiss)
+        DeleteDialogContent(confirm, dismiss, message)
     }
 }
 
@@ -40,6 +41,7 @@ fun DeleteDialogItem(
 private fun DeleteDialogContent(
     confirm: () -> Unit,
     dismiss: () -> Unit,
+    message: String? = null,
 ) {
     Column(
         modifier = Modifier
@@ -58,7 +60,7 @@ private fun DeleteDialogContent(
         )
 
         Text(
-            text = stringResource(id = R.string.delete_item_message),
+            text = message ?: stringResource(id = R.string.delete_item_message),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f) // Softer secondary text
         )

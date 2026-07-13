@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">Résumé des transactions</string>
+    <string name="expense">Dépense</string>
+    <string name="income">Revenu</string>
+    <string name="total">Total</string>
+    <string name="balance">Solde</string>
+    <string name="categories">Catégories</string>
+    <string name="hello">Bonjour !</string>
+    <string name="guest">Invité</string>
+    <string name="settings">Paramètres</string>
+    <string name="transaction">Transaction</string>
+    <string name="no_transactions_available">Aucune transaction disponible pour la période sélectionnée.\nAppuyez sur le bouton + pour noter vos transactions</string>
+    <string name="home">Accueil</string>
+    <string name="transaction_create_message">"Ajoutez ici vos dépenses, revenus et virements. "</string>
+    <string name="help"><![CDATA[Aide & infos]]></string>
+    <string name="ok">OK</string>
+    <string name="no_budget_for_month">Aucun %1$s</string>
+    <string name="tap_to_set_spending_limit">Appuyez pour définir une limite de dépenses</string>
+</resources>

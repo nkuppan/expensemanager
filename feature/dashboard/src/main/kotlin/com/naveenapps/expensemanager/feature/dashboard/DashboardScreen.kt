@@ -286,14 +286,17 @@ private fun DashboardScreenContent(
                             }
                             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                 Text(
-                                    text = "No ${state.showCreateBudgetForMonth}",
+                                    text = stringResource(
+                                        id = R.string.no_budget_for_month,
+                                        state.showCreateBudgetForMonth,
+                                    ),
                                     style = MaterialTheme.typography.titleSmall.copy(
                                         fontWeight = FontWeight.SemiBold,
                                     ),
                                     color = MaterialTheme.colorScheme.onSurface,
                                 )
                                 Text(
-                                    text = "Tap to set a spending limit",
+                                    text = stringResource(id = R.string.tap_to_set_spending_limit),
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                         .copy(alpha = 0.7f),
@@ -341,7 +344,8 @@ private fun DashboardScreenContent(
                             .clickable {
                                 onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
                             },
-                        categoryName = transaction.categoryName,
+                        categoryName = transaction.categoryTitleResId?.let { stringResource(it) }
+                            ?: transaction.categoryName,
                         categoryColor = transaction.categoryIcon.backgroundColor,
                         categoryIcon = transaction.categoryIcon.name,
                         amount = transaction.amount,

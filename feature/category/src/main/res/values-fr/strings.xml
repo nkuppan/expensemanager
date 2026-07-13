@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">Catégories</string>
+    <string name="income">Revenu</string>
+    <string name="expense">Dépense</string>
+    <string name="no_category_available">Aucune catégorie disponible\nAppuyez sur le bouton + pour créer vos catégories</string>
+    <string name="no_transactions_available">Aucune transaction disponible pour la période sélectionnée.\nAppuyez sur le bouton + pour noter vos transactions</string>
+    <string name="category_selection_message">Vous devez sélectionner au moins une catégorie pour continuer</string>
+    <string name="select_account">Sélectionner un compte</string>
+    <string name="clear_all">Tout effacer</string>
+    <string name="select">Sélectionner</string>
+    <string name="select_category">Sélectionner une catégorie</string>
+
+    <string name="delete_item_message">Voulez-vous vraiment supprimer cet élément ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="category">Catégorie</string>
+    <string name="category_name">Nom de la catégorie</string>
+
+    <string name="category_create_error">Une erreur inconnue s\'est produite lors de l\'ajout de la catégorie</string>
+    <string name="category_name_error">Le nom ne doit pas être vide</string>
+    <string name="category_create_success">Catégorie créée/modifiée avec succès</string>
+    <string name="category_delete_error_message">Impossible de supprimer cette catégorie</string>
+    <string name="category_delete_message">La suppression de cette catégorie supprimera également toutes ses transactions et la retirera de tous les budgets dont elle fait partie. Cette action est irréversible.</string>
+    <string name="default_category_name_locked_message">Il s\'agit d\'une catégorie par défaut : son nom suit la langue sélectionnée dans l\'application et ne peut pas être modifié.</string>
+    <string name="edit">Modifier</string>
+    <string name="add_new">Ajouter</string>
+
+    <string name="edit_category">Modifier la catégorie</string>
+    <string name="create_category">Créer une catégorie</string>
+    <string name="save">Enregistrer</string>
+    <string name="delete">Supprimer</string>
+    <string name="preview">Aperçu</string>
+    <string name="details">Détails</string>
+    <string name="appearance">Apparence</string>
+    <string name="category_type">Type de catégorie</string>
+    <string name="category_name_placeholder">Nom de la catégorie</string>
+
+    <string name="add_category">Ajouter une catégorie</string>
+    <string name="add_transaction">Ajouter une transaction</string>
+    <string name="tap_chart_to_switch_to">"Touchez le graphique pour passer à "</string>
+
+    <plurals name="category_count">
+        <item quantity="one">%d catégorie</item>
+        <item quantity="other">%d catégories</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d sélectionné</item>
+        <item quantity="other">%d sélectionnés</item>
+    </plurals>
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">लेन-देन जोड़ने में असमर्थ</string>
+    <string name="unable_to_find_transaction">लेन-देन खोजने में असमर्थ</string>
+    <string name="transaction_delete_error_message">इस लेन-देन को हटाने में असमर्थ</string>
+
+    <string name="no_transactions_available">चुनी गई अवधि के लिए कोई लेन-देन उपलब्ध नहीं है।\nअपना लेन-देन दर्ज करने के लिए + बटन दबाएं</string>
+    <string name="date">तारीख</string>
+    <string name="notes">नोट्स</string>
+    <string name="expense">खर्च</string>
+    <string name="income">आय</string>
+    <string name="transfer">ट्रांसफर</string>
+
+    <string name="select_different_account">अलग खाता चुनें। From और To खाता एक जैसा नहीं होना चाहिए।</string>
+    <string name="amount_error_message">कृपया मान्य राशि दर्ज करें</string>
+    <string name="amount_should_greater_than_zero">राशि शून्य से अधिक होनी चाहिए</string>
+    <string name="transaction_create_success">लेन-देन सफलतापूर्वक बनाया/अपडेट किया गया</string>
+    <string name="optional_details">वैकल्पिक विवरण</string>
+    <string name="select_account">खाता चुनें</string>
+    <string name="select_category">श्रेणी चुनें</string>
+    <string name="select_date">तारीख चुनें</string>
+    <string name="select_time">समय चुनें</string>
+
+    <string name="transaction">लेन-देन</string>
+    <string name="clear">साफ़ करें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="ok">OK</string>
+    <string name="amount">राशि</string>
+    <string name="from_account">किस खाते से</string>
+    <string name="to_account">किस खाते में</string>
+
+    <string name="edit_transaction">लेन-देन संपादित करें</string>
+    <string name="create_transaction">नया लेन-देन</string>
+    <string name="date_and_time">तारीख और समय</string>
+    <string name="delete">हटाएं</string>
+    <string name="save">सेव करें</string>
+    <string name="transaction_type">लेन-देन का प्रकार</string>
+    <string name="details">विवरण</string>
+
+    <string name="done">हो गया</string>
+    <string name="backspace">बैकस्पेस</string>
+    <string name="add_transaction">लेन-देन जोड़ें</string>
+</resources>

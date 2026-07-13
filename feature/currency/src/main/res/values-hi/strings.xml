@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">मुद्रा चुनें</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="ok">OK</string>
+    <string name="prefix_amount">प्रीफिक्स (%s500)</string>
+    <string name="suffix_amount">सफिक्स (500%s)</string>
+    <string name="currency">मुद्रा</string>
+    <string name="select_currency">मुद्रा चुनें</string>
+    <string name="currency_position">मुद्रा की स्थिति</string>
+    <string name="currency_format">मुद्रा फॉर्मेट</string>
+    <string name="none">कोई नहीं(1234.23)</string>
+    <string name="number_format">फॉर्मेट(1,23,423.13)</string>
+    <string name="selected_currency">चुनी गई मुद्रा</string>
+    <string name="choose_preferred_currency">अपनी पसंदीदा मुद्रा चुनें</string>
+    <string name="where_symbol_appears">सिंबल कहां दिखे</string>
+    <string name="number_formatting_style">नंबर फॉर्मेटिंग स्टाइल</string>
+
+</resources>

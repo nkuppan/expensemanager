@@ -2,4 +2,5 @@
 <resources>
     <string name="notification_description">Don\'t forget to record your expenses</string>
     <string name="notification_title">Add transaction</string>
+    <string name="notification_channel_description">Used for reminders</string>
 </resources>

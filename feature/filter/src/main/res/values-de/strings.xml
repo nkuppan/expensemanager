@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">Nach Datum filtern</string>
+    <string name="from_date">Von Datum</string>
+    <string name="to_date">Bis Datum</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="select">Auswählen</string>
+    <string name="transaction_type">Transaktionstyp</string>
+    <string name="accounts">Konten</string>
+    <string name="categories">Kategorien</string>
+    <string name="apply">Anwenden</string>
+    <string name="filtered_by">Gefiltert nach</string>
+    <string name="custom">Benutzerdefiniert</string>
+
+    <string name="filters">Filter</string>
+    <string name="clear_all">Alle löschen</string>
+    <plurals name="filters_selected">
+        <item quantity="one">%d Filter ausgewählt</item>
+        <item quantity="other">%d Filter ausgewählt</item>
+    </plurals>
+</resources>

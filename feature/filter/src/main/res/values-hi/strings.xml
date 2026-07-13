@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">तारीख से फ़िल्टर करें</string>
+    <string name="from_date">शुरू की तारीख</string>
+    <string name="to_date">आखिरी तारीख</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="select">चुनें</string>
+    <string name="transaction_type">लेन-देन का प्रकार</string>
+    <string name="accounts">खाते</string>
+    <string name="categories">श्रेणियां</string>
+    <string name="apply">लागू करें</string>
+    <string name="filtered_by">इससे फ़िल्टर किया गया</string>
+    <string name="custom">कस्टम</string>
+
+    <string name="filters">फ़िल्टर</string>
+    <string name="clear_all">सभी हटाएं</string>
+    <plurals name="filters_selected">
+        <item quantity="one">%d फ़िल्टर चुना गया</item>
+        <item quantity="other">%d फ़िल्टर चुने गए</item>
+    </plurals>
+</resources>

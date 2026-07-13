@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">Análisis</string>
+    <string name="average_and_projected">Promedio y proyección</string>
+    <string name="day">Día</string>
+    <string name="week">Semana</string>
+    <string name="month">Mes</string>
+    <string name="no_chart_available">No hay datos disponibles para el análisis</string>
+</resources>

@@ -33,6 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -247,7 +248,7 @@ fun TypeFilter(
             }
             filterState.selectedCategories.forEach { category ->
                 InputChipView(
-                    label = category.name,
+                    label = category.titleResId?.let { stringResource(it) } ?: category.name,
                     selected = true,
                     iconName = category.storedIcon.name,
                 ) {

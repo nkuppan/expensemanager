@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">खाता सफलतापूर्वक बनाया/अपडेट किया गया</string>
+    <string name="account_name_error">नाम खाली नहीं होना चाहिए</string>
+    <string name="account_delete_error_message">इस खाते को हटाया नहीं जा सका</string>
+    <string name="account_name">खाते का नाम</string>
+    <string name="accounts">खाते</string>
+    <string name="available_balance">उपलब्ध शेष राशि</string>
+    <string name="credit_limit">क्रेडिट लिमिट</string>
+    <string name="credit_limit_error">क्रेडिट लिमिट खाली नहीं होनी चाहिए</string>
+    <string name="current_balance">मौजूदा शेष राशि</string>
+    <string name="current_balance_error">मौजूदा शेष राशि खाली नहीं होनी चाहिए</string>
+    <string name="current_balance_value_error">मौजूदा शेष राशि एक मान्य संख्या होनी चाहिए</string>
+    <string name="no_account_available">कोई खाता उपलब्ध नहीं है\nअपना पहला खाता बनाने के लिए + बटन दबाएं</string>
+    <string name="no_account_available_short">कोई खाता उपलब्ध नहीं है</string>
+    <string name="account_create_error">कृपया मान्य जानकारी दर्ज करें</string>
+    <string name="bank_account">बैंक खाता</string>
+    <string name="credit">क्रेडिट</string>
+    <string name="select_account">खाता चुनें</string>
+    <string name="account_selection_message">आगे बढ़ने के लिए कम से कम एक खाता चुनना होगा</string>
+    <string name="clear_all">सभी हटाएं</string>
+    <string name="select">चुनें</string>
+    <string name="account_delete_success_message">खाता सफलतापूर्वक हटाया गया</string>
+    <string name="add_new">नया जोड़ें</string>
+    <string name="accounts_re_order">खातों को फिर से व्यवस्थित करें</string>
+    <string name="available_limit">उपलब्ध लिमिट %s</string>
+    <string name="drag_to_reorder_hint">खातों को फिर से व्यवस्थित करने के लिए दबाकर खींचें</string>
+    <string name="save">सेव करें</string>
+    <string name="apply">लागू करें</string>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d चयनित</item>
+        <item quantity="other">%d चयनित</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="one">%d खाता</item>
+        <item quantity="other">%d खाते</item>
+    </plurals>
+    <string name="add_account">खाता जोड़ें</string>
+
+    <string name="details">विवरण</string>
+    <string name="delete">हटाएं</string>
+    <string name="appearance">दिखावट</string>
+    <string name="edit_account">खाता संपादित करें</string>
+    <string name="create_account">खाता बनाएं</string>
+    <string name="account_type">खाते का प्रकार</string>
+    <string name="balance">शेष राशि</string>
+</resources>

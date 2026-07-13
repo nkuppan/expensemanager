@@ -107,6 +107,7 @@ fun StringTextField(
     minLines: Int = 1,
     singleLine: Boolean = minLines == 1,
     errorMessage: String = "",
+    enabled: Boolean = true,
 ) {
     AutoSelectTextField(
         text = value,
@@ -122,7 +123,8 @@ fun StringTextField(
         isError = isError,
         errorMessage = errorMessage,
         modifier = modifier,
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
+        enabled = enabled,
     )
 }
 

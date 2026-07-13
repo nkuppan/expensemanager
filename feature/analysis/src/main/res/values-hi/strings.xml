@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">विश्लेषण</string>
+    <string name="average_and_projected">औसत और अनुमानित</string>
+    <string name="day">दिन</string>
+    <string name="week">हफ्ता</string>
+    <string name="month">महीना</string>
+    <string name="no_chart_available">विश्लेषण के लिए कोई डेटा उपलब्ध नहीं है</string>
+</resources>

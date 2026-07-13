@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">फ़ाइल एक्सपोर्ट करते समय एक अज्ञात गड़बड़ी हुई</string>
+    <string name="export_success_message">फ़ाइल सफलतापूर्वक एक्सपोर्ट हो गई</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">शेयर करें</string>
+    <string name="export">एक्सपोर्ट करें</string>
+    <string name="select_range">रेंज चुनें</string>
+    <string name="select_account">खाता चुनें</string>
+<string name="all">सभी</string>
+    <string name="today">आज</string>
+</resources>

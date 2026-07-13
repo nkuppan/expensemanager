@@ -36,6 +36,7 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
         )
 
     private val repository: DateRangeFilterRepository = DateRangeFilterRepositoryImpl(
+        testContext,
         DateRangeDataStore(testDataStore),
         AppCoroutineDispatchers(
             testCoroutineDispatcher.dispatcher,

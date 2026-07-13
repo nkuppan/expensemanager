@@ -10,4 +10,10 @@ data class CategoryCreateState(
     val type: TextFieldValue<CategoryType>,
     val showDeleteButton: Boolean,
     val showDeleteDialog: Boolean,
+    // Set only when editing one of the built-in default categories (see Category.titleResId).
+    // Its name field shows the localized string below and can't be renamed, since the stored
+    // `name` is just the original English seed value used as a lookup key, not real user text.
+    val nameResId: Int? = null,
 )
+
+val CategoryCreateState.isDefaultCategory: Boolean get() = nameResId != null

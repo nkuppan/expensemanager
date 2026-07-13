@@ -48,7 +48,7 @@ fun CategorySelectionScreen(
             val isSelected = selectedCategory?.id == category.id
 
             CategoryItem(
-                name = category.name,
+                name = category.titleResId?.let { stringResource(it) } ?: category.name,
                 icon = category.storedIcon.name,
                 iconBackgroundColor = category.storedIcon.backgroundColor,
                 border = CategoryItemDefaults.border(isSelected),

@@ -69,7 +69,7 @@ class GetTransactionGroupByCategoryUseCase(
                         transaction = emptyList(),
                     )
                 }
-                pieChartData = categories.map { getDummyPieChartData(it.name, equalShare) }
+                pieChartData = categories.map { getDummyPieChartData(it.name, equalShare, it.titleResId) }
             } else {
                 newCategoryTransaction = categoryTransactions
                 pieChartData = categoryTransactions.map { it.toChartModel() }
@@ -91,5 +91,6 @@ fun CategoryTransaction.toChartModel(): PieChartData {
         name = this.category.name,
         value = this.percent,
         color = this.category.storedIcon.backgroundColor,
+        titleResId = this.category.titleResId,
     )
 }

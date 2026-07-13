@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Behalte deine Ausgaben im Blick</string>
+    <string name="welcome_message_description">Bleib informiert und führe Buch über deine Ausgaben</string>
+    <string name="privacy_text">Alle deine Daten werden auf deinem Gerät gespeichert, mit der Option eines externen Backups. Indem du fortfährst, stimmst du unserer Datenschutzerklärung zu.</string>
+    <string name="currency">Währung</string>
+    <string name="select_main_currency">Hauptwährung auswählen</string>
+    <string name="add_new">Neu hinzufügen</string>
+    <string name="proceed">Fortfahren</string>
+    <string name="get_started">Loslegen</string>
+    <string name="setup">App-Einstellungen einrichten</string>
+    <string name="create_new">Neu erstellen</string>
+
+    <string name="setup_description">Richte deine Währung und Konten ein, um loszulegen</string>
+    <string name="tap_to_change">Zum Ändern tippen</string>
+    <string name="setup_currency">Währung einrichten</string>
+    <string name="not_set_up_yet">Noch nicht eingerichtet</string>
+
+    <string name="track">Erfassen</string>
+    <string name="organize">Organisieren</string>
+    <string name="grow">Wachsen</string>
+</resources>

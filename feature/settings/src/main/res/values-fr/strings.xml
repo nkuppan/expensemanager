@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Paramètres</string>
+    <string name="theme">Thème</string>
+    <string name="analysis">Analyse</string>
+    <string name="select_currency">Sélectionner la devise</string>
+    <string name="reminder_notification">Notification</string>
+    <string name="info">Infos</string>
+    <string name="about_the_app_information">À propos de l\'application</string>
+    <string name="rate_us_message">Cela nous aidera à nous améliorer</string>
+    <string name="currency">Personnaliser la devise</string>
+    <string name="selected_daily_reminder_time">Nous vous rappellerons d\'ajouter votre dépense à l\'heure définie</string>
+    <string name="rate_us">Évaluez-nous</string>
+    <string name="choose_web_browser">Choisir un navigateur web</string>
+
+    <string name="export">Exporter</string>
+    <string name="export_message">Exportez vos données et analysez-les dans le format de votre choix</string>
+
+    <string name="filter">Filtre</string>
+    <string name="filter_message">Vous pouvez sélectionner le filtre de date pour afficher les dépenses</string>
+
+    <string name="developed_by">Développé par Naveen Kumar Kuppan</string>
+    <string name="system_default">Par défaut du système</string>
+    <string name="app_version">Version : %s</string>
+    <string name="advanced">Avancé</string>
+    <string name="advanced_config_message">Gérer les configurations avancées de l\'application</string>
+    <string name="default_account">Compte par défaut</string>
+    <string name="default_expense_category">Catégorie de dépense par défaut</string>
+    <string name="default_income_category">Catégorie de revenu par défaut</string>
+    <string name="accounts_re_order">Réorganiser les comptes</string>
+    <string name="accounts_re_order_message">Vous pouvez modifier l\'ordre de la liste des comptes sur le tableau de bord.</string>
+    <string name="backup">Sauvegarde</string>
+    <string name="backup_message">Créez une sauvegarde de vos données et restaurez-les sur n\'importe quel appareil.</string>
+    <string name="restore">Restaurer</string>
+    <string name="restore_message">Restaurez vos données pour les récupérer sur vos appareils.</string>
+    <string name="default_selected_items">Éléments sélectionnés par défaut</string>
+    <string name="restore_and_backup"><![CDATA[Restauration & sauvegarde]]></string>
+    <string name="others">Autres paramètres</string>
+
+    <string name="general">Général</string>
+    <string name="data">Données</string>
+    <string name="support">Assistance</string>
+
+    <string name="compact_summary">Résumé compact</string>
+    <string name="compact_summary_message">Afficher un widget de résumé plus petit sur l\'écran d\'accueil</string>
+
+    <string name="app_lock">Verrouillage de l\'application</string>
+    <string name="app_lock_message">Exiger une authentification biométrique ou les identifiants de l\'appareil à l\'ouverture de l\'application</string>
+</resources>

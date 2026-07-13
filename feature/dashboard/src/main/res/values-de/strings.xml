@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">Transaktionsübersicht</string>
+    <string name="expense">Ausgabe</string>
+    <string name="income">Einnahme</string>
+    <string name="total">Gesamt</string>
+    <string name="balance">Saldo</string>
+    <string name="categories">Kategorien</string>
+    <string name="hello">Hallo!</string>
+    <string name="guest">Gast</string>
+    <string name="settings">Einstellungen</string>
+    <string name="transaction">Transaktion</string>
+    <string name="no_transactions_available">Keine Transaktionen für den ausgewählten Zeitraum vorhanden.\nTippe auf die Schaltfläche +, um deine Transaktionen zu erfassen</string>
+    <string name="home">Start</string>
+    <string name="transaction_create_message">"Erfasse hier deine Ausgaben, Einnahmen und Überweisungen. "</string>
+    <string name="help"><![CDATA[Hilfe & Infos]]></string>
+    <string name="ok">OK</string>
+    <string name="no_budget_for_month">Kein %1$s</string>
+    <string name="tap_to_set_spending_limit">Tippen, um ein Ausgabenlimit festzulegen</string>
+</resources>

@@ -14,5 +14,6 @@ dependencies {
     implementation(project(":feature:filter"))
     implementation(project(":feature:reminder"))
     implementation(project(":feature:theme"))
+    implementation(project(":feature:language"))
     implementation(project(":feature:about"))
 }

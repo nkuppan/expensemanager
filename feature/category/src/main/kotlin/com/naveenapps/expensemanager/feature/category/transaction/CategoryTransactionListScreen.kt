@@ -204,7 +204,7 @@ private fun CategoryTransactionListScreenContent(
                                 else stringResource(id = R.string.income)) + "\n" + state.data.totalAmount.amountString,
                                 chartData = state.data.pieChartData.map {
                                     PieChartUiData(
-                                        it.name,
+                                        it.titleResId?.let { resId -> stringResource(resId) } ?: it.name,
                                         it.value,
                                         it.color.toColorInt(),
                                     )
@@ -298,7 +298,9 @@ private fun CategoryTransactionListScreenContent(
                                             .clickable {
                                                 onItemClick.invoke(categoryTransaction)
                                             },
-                                        name = categoryTransaction.category.name,
+                                        name = categoryTransaction.category.titleResId?.let {
+                                            stringResource(it)
+                                        } ?: categoryTransaction.category.name,
                                         icon = categoryTransaction.category.storedIcon.name,
                                         iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
                                         amount = categoryTransaction.amount.amountString ?: "",

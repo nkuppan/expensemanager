@@ -13,6 +13,7 @@ import com.naveenapps.expensemanager.feature.currency.di.CurrencyViewModelModule
 import com.naveenapps.expensemanager.feature.dashboard.di.DashboardViewModelModule
 import com.naveenapps.expensemanager.feature.export.di.ExportViewModelModule
 import com.naveenapps.expensemanager.feature.filter.di.FilterViewModelModule
+import com.naveenapps.expensemanager.feature.language.di.LanguageViewModelModule
 import com.naveenapps.expensemanager.feature.onboarding.di.OnboardingViewModelModule
 import com.naveenapps.expensemanager.feature.reminder.di.ReminderViewModelModule
 import com.naveenapps.expensemanager.feature.settings.di.SettingsViewModelModule
@@ -51,6 +52,7 @@ val ViewModelModule = module {
         OnboardingViewModelModule,
         SettingsViewModelModule,
         ThemeViewModelModule,
+        LanguageViewModelModule,
         ExportViewModelModule,
         ReminderViewModelModule,
         CurrencyViewModelModule,

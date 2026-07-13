@@ -25,6 +25,7 @@ data class TransactionUiItem(
     val fromAccountIcon: StoredIcon,
     val toAccountName: String? = null,
     val toAccountIcon: StoredIcon? = null,
+    val categoryTitleResId: Int? = null,
 )
 
 fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
@@ -40,5 +41,6 @@ fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
         fromAccountIcon = this.fromAccount.storedIcon,
         toAccountName = this.toAccount?.name,
         toAccountIcon = this.toAccount?.storedIcon,
+        categoryTitleResId = this.category.titleResId,
     )
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_description">%s(%s)</string>
+    <string name="search_country">देश खोजें</string>
+    <string name="clear_search_text">सर्च टेक्स्ट हटाएं</string>
+    <string name="back">वापस</string>
+    <string name="no_countries_found">कोई देश नहीं मिला</string>
+</resources>

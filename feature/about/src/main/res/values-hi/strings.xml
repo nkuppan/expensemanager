@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">नवीन कुमार कुप्पन द्वारा बनाया गया</string>
+    <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
+    <string name="app_version">वर्शन: %s</string>
+    <string name="about_us">हमारे बारे में</string>
+    <string name="privacy_policy">प्राइवेसी पॉलिसी</string>
+    <string name="terms_and_conditions">नियम और शर्तें</string>
+    <string name="licenses">ओपन सोर्स लाइसेंस</string>
+</resources>

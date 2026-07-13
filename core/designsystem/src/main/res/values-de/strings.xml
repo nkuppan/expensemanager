@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="choose_web_browser">Browser auswählen</string>
+    <string name="select">Auswählen</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Symbol auswählen</string>
+    <string name="choose_color">Farbe auswählen</string>
+    <string name="view_all">Alle anzeigen</string>
+    <string name="income">Einnahme</string>
+    <string name="expense">Ausgabe</string>
+    <string name="balance">Saldo</string>
+    <string name="transaction_summary">Zusammenfassung</string>
+    <string name="total">Gesamt</string>
+
+    <string name="delete">Löschen</string>
+    <string name="delete_item_message">Möchtest du diesen Eintrag wirklich löschen? Gelöschte Einträge können nicht wiederhergestellt werden.</string>
+    <string name="yes_delete">Ja, löschen</string>
+    <string name="no_keep">Nein, behalten</string>
+
+    <string name="color">Farbe</string>
+    <string name="icon">Symbol</string>
+    <string name="change">Ändern</string>
+    <string name="add_new">Neu hinzufügen</string>
+    <string name="no_account_available">Keine Konten vorhanden\\nTippe auf die Schaltfläche +, um dein erstes Konto zu erstellen</string>
+</resources>

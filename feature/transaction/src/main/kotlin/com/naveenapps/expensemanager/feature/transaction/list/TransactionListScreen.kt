@@ -230,7 +230,8 @@ private fun TransactionGroupCard(
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    categoryName = item.categoryName,
+                    categoryName = item.categoryTitleResId?.let { stringResource(it) }
+                        ?: item.categoryName,
                     categoryColor = item.categoryIcon.backgroundColor,
                     categoryIcon = item.categoryIcon.name,
                     amount = item.amount,

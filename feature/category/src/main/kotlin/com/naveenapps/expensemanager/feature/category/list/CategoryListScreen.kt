@@ -219,7 +219,8 @@ private fun CategoryListScreenContent(
                             key = { _, item -> item.id },
                         ) { index, category ->
                             CategoryItem(
-                                name = category.name,
+                                name = category.titleResId?.let { stringResource(it) }
+                                    ?: category.name,
                                 icon = category.storedIcon.name,
                                 iconBackgroundColor = category.storedIcon.backgroundColor,
                                 shape = AppCardViewDefaults.cardShape(index, categories),

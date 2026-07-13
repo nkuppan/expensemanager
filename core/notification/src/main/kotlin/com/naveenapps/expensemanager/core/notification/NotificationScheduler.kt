@@ -142,7 +142,7 @@ class NotificationScheduler(
             createNotificationChannel(
                 NotificationChannelId.CHANNEL_GENERAL,
                 NotificationChannelId.CHANNEL_GENERAL,
-                "Used for reminders",
+                context.getString(R.string.notification_channel_description),
             )
         }
     }

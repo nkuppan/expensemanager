@@ -14,12 +14,30 @@ import java.util.Locale
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
+// Formats below fall into two groups:
+//
+// 1. Purely numeric patterns (digits only, no month/day *names*) — these are pinned to a fixed
+//    Locale.US regardless of the app's selected display language. Some of them (notably
+//    DateMonthAndYearFormat) are used as round-tripped keys: a value they format is later parsed
+//    back with the *same* formatter (e.g. to group transactions by day). If that formatter's
+//    Locale changes — which it now can, since the app supports switching its display language at
+//    runtime — a value written under one locale can fail to parse under another. Numeric digits
+//    don't need localization anyway, so pinning these removes that whole class of bug for free.
+//
+// 2. Patterns with localized month/day *names* (MonthAndYearFormat, ElabratedMonthDataFormat,
+//    DayFormat, HourAndMinutesIn12HoursFormat) are kept locale-aware because they're only ever
+//    used for one-way, human-facing display text — never parsed back — so following the app's
+//    selected language is both safe and desirable.
+//
+// MonthAndYearFormat is the one exception that's used for *both* roles (see MonthAndYearKeyFormat
+// below for the round-tripped one, used for Budget.selectedMonth).
+
 private val YearDataFormat by lazy {
-    SimpleDateFormat("yyyy", Locale.getDefault())
+    SimpleDateFormat("yyyy", Locale.US)
 }
 
 private val HourAndMinutesIn24HoursFormat by lazy {
-    SimpleDateFormat("HH:mm", Locale.getDefault())
+    SimpleDateFormat("HH:mm", Locale.US)
 }
 
 private val HourAndMinutesIn12HoursFormat by lazy {
@@ -27,23 +45,33 @@ private val HourAndMinutesIn12HoursFormat by lazy {
 }
 
 private val MonthFormat by lazy {
-    SimpleDateFormat("MM", Locale.getDefault())
+    SimpleDateFormat("MM", Locale.US)
 }
 
 private val MonthAndYearFormat by lazy {
     SimpleDateFormat("MMMM yyyy", Locale.getDefault())
 }
 
+/**
+ * Same pattern as [MonthAndYearFormat] but always English, used only for values that get
+ * persisted or matched later (currently `Budget.selectedMonth`, and the transaction date it's
+ * compared against). Never use this to show text to the user — use [Date.toMonthAndYear] for
+ * that instead.
+ */
+private val MonthAndYearKeyFormat by lazy {
+    SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
+}
+
 private val DateMonthAndYearFormat by lazy {
-    SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    SimpleDateFormat("dd/MM/yyyy", Locale.US)
 }
 
 private val DateFormat by lazy {
-    SimpleDateFormat("dd", Locale.getDefault())
+    SimpleDateFormat("dd", Locale.US)
 }
 
 private val DateAndMonthFormat by lazy {
-    SimpleDateFormat("dd/MM", Locale.getDefault())
+    SimpleDateFormat("dd/MM", Locale.US)
 }
 
 private val ElabratedMonthDataFormat by lazy {
@@ -55,7 +83,7 @@ private val DayFormat by lazy {
 }
 
 private val ShortMontAndYearFormat by lazy {
-    SimpleDateFormat("MM-yyyy", Locale.getDefault())
+    SimpleDateFormat("MM-yyyy", Locale.US)
 }
 
 
@@ -183,7 +211,22 @@ fun Date.toMonthAndYear(): String {
 }
 
 fun String.fromMonthAndYear(): Date? {
-    return MonthAndYearFormat.parse(this)
+    return kotlin.runCatching { MonthAndYearFormat.parse(this) }.getOrNull()
+}
+
+/**
+ * Locale-independent counterpart of [toMonthAndYear], for values that get persisted or compared
+ * later (e.g. `Budget.selectedMonth`). Always formats/parses in English so a budget saved while
+ * the app was in one language can still be read back correctly after the user switches to
+ * another — see [MonthAndYearKeyFormat].
+ */
+fun Date.toMonthAndYearKey(): String {
+    return MonthAndYearKeyFormat.format(this)
+}
+
+/** See [Date.toMonthAndYearKey]. Returns null instead of throwing on unparseable input. */
+fun String.fromMonthAndYearKey(): Date? {
+    return kotlin.runCatching { MonthAndYearKeyFormat.parse(this) }.getOrNull()
 }
 
 fun Date.toMonth(): Int {

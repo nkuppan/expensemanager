@@ -19,4 +19,8 @@ sealed class SettingAction {
     data object ShowThemeSelection : SettingAction()
 
     data object DismissThemeSelection : SettingAction()
+
+    data object ShowLanguageSelection : SettingAction()
+
+    data object DismissLanguageSelection : SettingAction()
 }

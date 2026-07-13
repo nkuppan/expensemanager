@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">अपने खर्च को ट्रैक करें</string>
+    <string name="welcome_message_description">जानकारी रखें और अपने खर्च का रिकॉर्ड बनाएं</string>
+    <string name="privacy_text">आपका सारा डेटा आपकी डिवाइस पर सेव रहता है, साथ ही बाहरी बैकअप का विकल्प भी उपलब्ध है। आगे बढ़ने पर, आप हमारी प्राइवेसी पॉलिसी से सहमत होते हैं।</string>
+    <string name="currency">मुद्रा</string>
+    <string name="select_main_currency">मुख्य मुद्रा चुनें</string>
+    <string name="add_new">नया जोड़ें</string>
+    <string name="proceed">आगे बढ़ें</string>
+    <string name="get_started">शुरू करें</string>
+    <string name="setup">ऐप सेटिंग्स सेट करें</string>
+    <string name="create_new">नया बनाएं</string>
+
+    <string name="setup_description">शुरू करने के लिए अपनी मुद्रा और खाते सेट करें</string>
+    <string name="tap_to_change">बदलने के लिए टैप करें</string>
+    <string name="setup_currency">मुद्रा सेट करें</string>
+    <string name="not_set_up_yet">अभी सेट नहीं किया गया</string>
+
+    <string name="track">ट्रैक करें</string>
+    <string name="organize">व्यवस्थित करें</string>
+    <string name="grow">आगे बढ़ें</string>
+</resources>

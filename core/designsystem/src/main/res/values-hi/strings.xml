@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">रद्द करें</string>
+    <string name="choose_web_browser">ब्राउज़र चुनें</string>
+    <string name="select">चुनें</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">आइकॉन चुनें</string>
+    <string name="choose_color">रंग चुनें</string>
+    <string name="view_all">सभी देखें</string>
+    <string name="income">आय</string>
+    <string name="expense">खर्च</string>
+    <string name="balance">शेष राशि</string>
+    <string name="transaction_summary">सारांश</string>
+    <string name="total">कुल</string>
+
+    <string name="delete">हटाएं</string>
+    <string name="delete_item_message">क्या आप वाकई इस आइटम को हटाना चाहते हैं? हटाए गए आइटम को वापस नहीं लाया जा सकता।</string>
+    <string name="yes_delete">हां, हटाएं</string>
+    <string name="no_keep">नहीं, रहने दें</string>
+
+    <string name="color">रंग</string>
+    <string name="icon">आइकॉन</string>
+    <string name="change">बदलें</string>
+    <string name="add_new">नया जोड़ें</string>
+    <string name="no_account_available">कोई खाता उपलब्ध नहीं है\\nअपना पहला खाता बनाने के लिए + बटन दबाएं</string>
+</resources>

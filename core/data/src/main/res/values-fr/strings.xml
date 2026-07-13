@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Aujourd\'hui</string>
+    <string name="this_week">Cette semaine</string>
+    <string name="this_month">Ce mois-ci</string>
+    <string name="this_year">Cette année</string>
+    <string name="all_time">Toute la période</string>
+    <string name="custom">Personnalisé</string>
+
+    <string name="amount">Montant</string>
+    <string name="category">Catégorie</string>
+    <string name="date">Date</string>
+    <string name="notes">Notes</string>
+    <string name="average">Moyenne</string>
+    <string name="day">Jour</string>
+    <string name="week">Semaine</string>
+    <string name="time">Heure</string>
+    <string name="month">Mois</string>
+    <string name="from_account">Compte source</string>
+    <string name="to_account">Compte de destination</string>
+    <string name="transaction_type">Type de transaction</string>
+    <string name="category_type">Type de catégorie</string>
+    <string name="account_type">Type de compte</string>
+    <string name="exported_on">Exporté le</string>
+    <string name="total_transactions">Total des transactions</string>
+    <string name="total_income">Total des revenus</string>
+    <string name="total_expense">Total des dépenses</string>
+    <string name="net_balance">Solde net</string>
+
+    <string name="light">Clair</string>
+    <string name="dark">Sombre</string>
+    <string name="set_by_battery_saver">Défini par l\'économiseur de batterie</string>
+    <string name="system_default">Par défaut du système</string>
+
+    <string name="category_clothing">Vêtements</string>
+    <string name="category_entertainment">Divertissement</string>
+    <string name="category_food">Alimentation</string>
+    <string name="category_health">Santé</string>
+    <string name="category_leisure">Loisirs</string>
+    <string name="category_shopping">Achats</string>
+    <string name="category_transportation">Transport</string>
+    <string name="category_utilities">Services publics</string>
+    <string name="category_salary">Salaire</string>
+    <string name="category_gift">Cadeau</string>
+    <string name="category_coupons">Coupons</string>
+</resources>

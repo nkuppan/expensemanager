@@ -190,7 +190,9 @@ internal suspend fun refreshExpenseWidgetData(context: Context) {
             .sortedByDescending { it.createdOn }
             .take(3)
             .joinToString("") { tx ->
-                val displayName = tx.notes.ifBlank { tx.category.name }
+                val categoryName = tx.category.titleResId?.let { context.getString(it) }
+                    ?: tx.category.name
+                val displayName = tx.notes.ifBlank { categoryName }
                 val amtStr = formatAmount.invoke(tx.amount.amount, currency).amountString.orEmpty()
                 "${displayName}${tx.category.storedIcon.name}${tx.category.storedIcon.backgroundColor}${amtStr}${tx.type == TransactionType.INCOME}"
             }

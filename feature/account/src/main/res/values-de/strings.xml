@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">Konto erfolgreich erstellt/aktualisiert</string>
+    <string name="account_name_error">Name darf nicht leer sein</string>
+    <string name="account_delete_error_message">Dieses Konto kann nicht gelöscht werden</string>
+    <string name="account_name">Kontoname</string>
+    <string name="accounts">Konten</string>
+    <string name="available_balance">Verfügbares Guthaben</string>
+    <string name="credit_limit">Kreditlimit</string>
+    <string name="credit_limit_error">Kreditlimit darf nicht leer sein</string>
+    <string name="current_balance">Aktueller Saldo</string>
+    <string name="current_balance_error">Aktueller Saldo darf nicht leer sein</string>
+    <string name="current_balance_value_error">Aktueller Saldo darf keine ungültige Zahl sein</string>
+    <string name="no_account_available">Keine Konten vorhanden\nTippe auf die Schaltfläche +, um dein erstes Konto zu erstellen</string>
+    <string name="no_account_available_short">Keine Konten vorhanden</string>
+    <string name="account_create_error">Bitte gültige Werte eingeben</string>
+    <string name="bank_account">Bankkonto</string>
+    <string name="credit">Kredit</string>
+    <string name="select_account">Konto auswählen</string>
+    <string name="account_selection_message">Es sollte mindestens ein Konto ausgewählt werden, um fortzufahren</string>
+    <string name="clear_all">Alle löschen</string>
+    <string name="select">Auswählen</string>
+    <string name="account_delete_success_message">Konto erfolgreich gelöscht</string>
+    <string name="add_new">Neu hinzufügen</string>
+    <string name="accounts_re_order">Konten neu anordnen</string>
+    <string name="available_limit">Verfügbares Limit %s</string>
+    <string name="drag_to_reorder_hint">Halten und ziehen, um die Konten neu anzuordnen</string>
+    <string name="save">Speichern</string>
+    <string name="apply">Anwenden</string>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d ausgewählt</item>
+        <item quantity="other">%d ausgewählt</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="one">%d Konto</item>
+        <item quantity="other">%d Konten</item>
+    </plurals>
+    <string name="add_account">Konto hinzufügen</string>
+
+    <string name="details">Details</string>
+    <string name="delete">Löschen</string>
+    <string name="appearance">Erscheinungsbild</string>
+    <string name="edit_account">Konto bearbeiten</string>
+    <string name="create_account">Konto erstellen</string>
+    <string name="account_type">Kontotyp</string>
+    <string name="balance">Saldo</string>
+</resources>

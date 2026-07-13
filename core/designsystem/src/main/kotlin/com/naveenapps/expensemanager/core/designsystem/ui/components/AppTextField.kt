@@ -37,7 +37,8 @@ fun AutoSelectTextField(
     supportingText: String? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+    enabled: Boolean = true,
 ) {
     var textFieldValue by remember {
         mutableStateOf(
@@ -88,7 +89,8 @@ fun AutoSelectTextField(
         errorMessage = errorMessage,
         isError = isError,
         minLines = minLines,
-        keyboardOptions = keyboardOptions
+        keyboardOptions = keyboardOptions,
+        enabled = enabled,
     )
 }
 
@@ -107,7 +109,8 @@ fun AppTextField(
     supportingText: String? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+    enabled: Boolean = true,
 ) {
     OutlinedTextField(
         value = value,
@@ -121,6 +124,7 @@ fun AppTextField(
         singleLine = singleLine,
         shape = RoundedCornerShape(8.dp),
         isError = isError,
+        enabled = enabled,
         supportingText = if (isError) {
             errorMessage.let {
                 { Text(it) }

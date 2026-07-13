@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">बजट</string>
+    <string name="active_budgets">सक्रिय बजट</string>
+    <string name="no_budget_available">कोई बजट उपलब्ध नहीं है\nनया बजट बनाने के लिए + बटन दबाएं</string>
+    <string name="no_budget_available_short">कोई बजट उपलब्ध नहीं है</string>
+    <string name="budget_name">बजट का नाम</string>
+    <string name="budget_delete_error_message">बजट अपडेट करने में विफल</string>
+    <string name="budget_name_error">नाम खाली नहीं होना चाहिए</string>
+    <string name="budget_create_error">बजट बनाया/अपडेट नहीं किया जा सका</string>
+    <string name="budget_create_success">बजट सफलतापूर्वक बनाया/अपडेट किया गया</string>
+    <string name="budget_amount">बजट राशि</string>
+    <string name="budget_amount_error">बजट राशि खाली या शून्य नहीं होनी चाहिए</string>
+
+    <string name="select_date">तारीख चुनें</string>
+    <string name="select_account">खाता चुनें</string>
+    <string name="clear_all">सभी हटाएं</string>
+    <string name="select">चुनें</string>
+    <string name="select_category">श्रेणी चुनें</string>
+
+    <string name="all">सभी</string>
+
+    <string name="edit_budget">बजट संपादित करें</string>
+    <string name="create_budget">बजट बनाएं</string>
+    <string name="period">अवधि</string>
+    <string name="budget_scope">बजट का दायरा</string>
+    <string name="details">विवरण</string>
+    <string name="appearance">दिखावट</string>
+    <string name="select_month">महीना चुनें</string>
+    <string name="budget_for">इसके लिए बजट</string>
+    <string name="what_is_your_budget_limit">आपकी कुल बजट सीमा क्या है</string>
+</resources>

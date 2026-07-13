@@ -3,4 +3,6 @@
     <string name="currency_description">%s(%s)</string>
     <string name="search_country">Search country</string>
     <string name="clear_search_text">Clear Search Text</string>
+    <string name="back">Back</string>
+    <string name="no_countries_found">No countries found</string>
 </resources>

@@ -175,7 +175,7 @@ private fun FilterSelectionView(
                     val isSelected = state.selectedCategories.fastAny { it.id == category.id }
                     FilterChipView(
                         selected = isSelected,
-                        label = category.name,
+                        label = category.titleResId?.let { stringResource(it) } ?: category.name,
                         iconName = category.storedIcon.name,
                         onSelection = { onAction.invoke(FilterTypeAction.SelectCategory(category)) },
                     )

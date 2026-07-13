@@ -141,7 +141,7 @@ internal fun CountrySearchView(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = "Clear search"
+                                contentDescription = stringResource(id = R.string.clear_search_text)
                             )
                         }
                     }
@@ -162,7 +162,7 @@ internal fun CountrySearchView(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back"
+                    contentDescription = stringResource(id = R.string.back)
                 )
             }
         },
@@ -195,7 +195,7 @@ internal fun CountryCurrencyListView(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                 )
                 Text(
-                    text = "No countries found",
+                    text = stringResource(id = R.string.no_countries_found),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

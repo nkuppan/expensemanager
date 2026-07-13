@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_language">Choisir la langue</string>
+    <string name="language">Langue</string>
+</resources>

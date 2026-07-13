@@ -116,7 +116,9 @@ private fun CategoryDetailsContent(
                     state.categoryTransaction?.let { categoryTransaction ->
                         CategoryTransactionItem(
                             modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                            name = categoryTransaction.category.name,
+                            name = categoryTransaction.category.titleResId?.let {
+                                stringResource(it)
+                            } ?: categoryTransaction.category.name,
                             icon = categoryTransaction.category.storedIcon.name,
                             iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
                             amount = categoryTransaction.amount.amountString ?: "",

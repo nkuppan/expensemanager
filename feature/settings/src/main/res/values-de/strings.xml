@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Einstellungen</string>
+    <string name="theme">Design</string>
+    <string name="analysis">Analyse</string>
+    <string name="select_currency">Währung auswählen</string>
+    <string name="reminder_notification">Benachrichtigung</string>
+    <string name="info">Info</string>
+    <string name="about_the_app_information">Informationen über die App</string>
+    <string name="rate_us_message">Es wird uns helfen, besser zu werden</string>
+    <string name="currency">Währung anpassen</string>
+    <string name="selected_daily_reminder_time">Wir erinnern dich pünktlich daran, deine Ausgaben hinzuzufügen</string>
+    <string name="rate_us">Bewerte uns</string>
+    <string name="choose_web_browser">Webbrowser auswählen</string>
+
+    <string name="export">Exportieren</string>
+    <string name="export_message">Exportiere deine Daten und analysiere sie in deinem bevorzugten Format</string>
+
+    <string name="filter">Filter</string>
+    <string name="filter_message">Du kannst den Datumsfilter auswählen, um Ausgaben anzuzeigen</string>
+
+    <string name="developed_by">Entwickelt von Naveen Kumar Kuppan</string>
+    <string name="system_default">Systemstandard</string>
+    <string name="app_version">Version: %s</string>
+    <string name="advanced">Erweitert</string>
+    <string name="advanced_config_message">Erweiterte Konfigurationen für die App verwalten</string>
+    <string name="default_account">Standardkonto</string>
+    <string name="default_expense_category">Standardkategorie für Ausgaben</string>
+    <string name="default_income_category">Standardkategorie für Einnahmen</string>
+    <string name="accounts_re_order">Konten neu anordnen</string>
+    <string name="accounts_re_order_message">Du kannst die Reihenfolge der Kontenliste im Dashboard ändern.</string>
+    <string name="backup">Backup</string>
+    <string name="backup_message">Erstelle ein Backup deiner Daten und stelle sie auf jedem Gerät wieder her.</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="restore_message">Stelle deine Daten wieder her, um sie auf Geräten zurückzuholen.</string>
+    <string name="default_selected_items">Standardmäßig ausgewählte Elemente</string>
+    <string name="restore_and_backup"><![CDATA[Wiederherstellen & Backup]]></string>
+    <string name="others">Weitere Einstellungen</string>
+
+    <string name="general">Allgemein</string>
+    <string name="data">Daten</string>
+    <string name="support">Support</string>
+
+    <string name="compact_summary">Kompakte Zusammenfassung</string>
+    <string name="compact_summary_message">Ein kleineres Übersichts-Widget auf dem Startbildschirm anzeigen</string>
+
+    <string name="app_lock">App-Sperre</string>
+    <string name="app_lock_message">Biometrie oder Gerätezugangsdaten beim Öffnen der App verlangen</string>
+</resources>

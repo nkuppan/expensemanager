@@ -32,3 +32,43 @@ internal val MIGRATION_3_4 = object : Migration(3, 4) {
         db.execSQL("ALTER TABLE `budget_new` RENAME TO `budget`")
     }
 }
+
+/**
+ * Adds a nullable `default_category_key` column used to mark which rows are the app's
+ * built-in seeded categories (as opposed to user-created ones), so their display name can be
+ * localized via string resources instead of the raw stored `name`.
+ *
+ * For existing installs, the 11 categories seeded by `PreloadDatabaseInitializer.BASE_CATEGORY_LIST`
+ * always got the deterministic ids "1".."11" on first launch (that list is only ever inserted into
+ * an empty table). We backfill the key for those ids, but only when `name` still matches the
+ * original seeded English name — if a user has since renamed one of these categories, we leave
+ * `default_category_key` null so their custom name is preserved instead of being overwritten by a
+ * translation the user never asked for.
+ */
+internal val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `category` ADD COLUMN `default_category_key` TEXT DEFAULT NULL")
+
+        val defaults = listOf(
+            Triple("1", "Clothing", "clothing"),
+            Triple("2", "Entertainment", "entertainment"),
+            Triple("3", "Food", "food"),
+            Triple("4", "Health", "health"),
+            Triple("5", "Leisure", "leisure"),
+            Triple("6", "Shopping", "shopping"),
+            Triple("7", "Transportation", "transportation"),
+            Triple("8", "Utilities", "utilities"),
+            Triple("9", "Salary", "salary"),
+            Triple("10", "Gift", "gift"),
+            Triple("11", "Coupons", "coupons"),
+        )
+
+        defaults.forEach { (id, originalName, key) ->
+            db.execSQL(
+                "UPDATE `category` SET `default_category_key` = ? " +
+                    "WHERE `id` = ? AND `name` = ?",
+                arrayOf(key, id, originalName),
+            )
+        }
+    }
+}
