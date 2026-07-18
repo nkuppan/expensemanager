@@ -138,13 +138,11 @@ class NotificationScheduler(
     }
 
     private fun createChannelIfRequired() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(
-                NotificationChannelId.CHANNEL_GENERAL,
-                NotificationChannelId.CHANNEL_GENERAL,
-                context.getString(R.string.notification_channel_description),
-            )
-        }
+        createNotificationChannel(
+            NotificationChannelId.CHANNEL_GENERAL,
+            NotificationChannelId.CHANNEL_GENERAL,
+            context.getString(R.string.notification_channel_description),
+        )
     }
 
     private fun createNotificationChannel(

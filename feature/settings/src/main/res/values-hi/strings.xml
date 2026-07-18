@@ -33,12 +33,13 @@
     <string name="backup_message">अपने डेटा का बैकअप बनाएं और उसे किसी भी डिवाइस में वापस पा सकें।</string>
     <string name="restore">रिस्टोर</string>
     <string name="restore_message">अपना डेटा वापस पाने के लिए उसे डिवाइस में रिस्टोर करें।</string>
-    <string name="default_selected_items">डिफ़ॉल्ट चुनी गई चीज़ें</string>
-    <string name="restore_and_backup"><![CDATA[रिस्टोर और बैकअप]]></string>
+    <string name="defaults">डिफ़ॉल्ट सेटिंग्स</string>
     <string name="others">अन्य सेटिंग्स</string>
 
-    <string name="general">सामान्य</string>
-    <string name="data">डेटा</string>
+    <string name="personalization">वैयक्तिकरण</string>
+    <string name="notifications">नोटिफिकेशन</string>
+    <string name="data_and_backup"><![CDATA[डेटा और बैकअप]]></string>
+    <string name="security">सुरक्षा</string>
     <string name="support">सहायता</string>
 
     <string name="compact_summary">कॉम्पैक्ट सारांश</string>

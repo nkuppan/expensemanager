@@ -33,12 +33,13 @@
     <string name="backup_message">Créez une sauvegarde de vos données et restaurez-les sur n\'importe quel appareil.</string>
     <string name="restore">Restaurer</string>
     <string name="restore_message">Restaurez vos données pour les récupérer sur vos appareils.</string>
-    <string name="default_selected_items">Éléments sélectionnés par défaut</string>
-    <string name="restore_and_backup"><![CDATA[Restauration & sauvegarde]]></string>
+    <string name="defaults">Valeurs par défaut</string>
     <string name="others">Autres paramètres</string>
 
-    <string name="general">Général</string>
-    <string name="data">Données</string>
+    <string name="personalization">Personnalisation</string>
+    <string name="notifications">Notifications</string>
+    <string name="data_and_backup"><![CDATA[Données & sauvegarde]]></string>
+    <string name="security">Sécurité</string>
     <string name="support">Assistance</string>
 
     <string name="compact_summary">Résumé compact</string>

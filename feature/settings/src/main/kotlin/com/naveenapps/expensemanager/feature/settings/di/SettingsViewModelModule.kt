@@ -12,14 +12,14 @@ val SettingsViewModelModule = module {
             getCurrencyUseCase = get(),
             getCurrentThemeUseCase = get(),
             getCurrentLocaleUseCase = get(),
+            getAllAccountsUseCase = get(),
+            getAllCategoryUseCase = get(),
+            settingsRepository = get(),
             appComposeNavigator = get()
         )
     }
     viewModel {
         AdvancedSettingsViewModel(
-            getAllCategoryUseCase = get(),
-            getAllAccountsUseCase = get(),
-            settingsRepository = get(),
             appComposeNavigator = get()
         )
     }

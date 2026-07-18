@@ -113,7 +113,10 @@ fun NavGraphBuilder.expenseManagerNavigation(
         AnalysisScreen()
     }
     composable<ExpenseManagerScreens.Settings> {
-        SettingsScreen(componentProvider.getShareRepository())
+        SettingsScreen(
+            shareRepository = componentProvider.getShareRepository(),
+            backupRepository = componentProvider.getBackupRepository(),
+        )
     }
     composable<ExpenseManagerScreens.ExportScreen> {
         ExportScreen()
@@ -133,7 +136,7 @@ fun NavGraphBuilder.expenseManagerNavigation(
         AboutScreen(componentProvider.getShareRepository())
     }
     composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
-        AdvancedSettingsScreen(componentProvider.getBackupRepository())
+        AdvancedSettingsScreen()
     }
     composable<ExpenseManagerScreens.AccountReOrderScreen> {
         AccountReOrderScreen()

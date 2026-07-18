@@ -33,12 +33,13 @@
     <string name="backup_message">Crea una copia de seguridad de tus datos y restáurala en cualquier dispositivo.</string>
     <string name="restore">Restaurar</string>
     <string name="restore_message">Restaura tus datos para recuperarlos en los dispositivos.</string>
-    <string name="default_selected_items">Elementos seleccionados predeterminados</string>
-    <string name="restore_and_backup"><![CDATA[Restaurar y hacer copia de seguridad]]></string>
+    <string name="defaults">Predeterminados</string>
     <string name="others">Otros ajustes</string>
 
-    <string name="general">General</string>
-    <string name="data">Datos</string>
+    <string name="personalization">Personalización</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="data_and_backup"><![CDATA[Datos y copia de seguridad]]></string>
+    <string name="security">Seguridad</string>
     <string name="support">Soporte</string>
 
     <string name="compact_summary">Resumen compacto</string>

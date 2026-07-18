@@ -1,16 +1,8 @@
 package com.naveenapps.expensemanager.feature.settings.advanced
 
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.Category
-
+// Defaults, Backup & Restore, and App Lock/Compact Summary moved to the main SettingsState —
+// they're common enough that hiding them behind "Advanced" made them hard to find. This screen
+// now only holds the genuinely rare, set-once-and-forget items.
 data class AdvancedSettingState(
-    val accounts: List<Account>,
-    val selectedAccount: Account?,
-    val selectedIncomeCategory: Category?,
-    val incomeCategories: List<Category>,
-    val selectedExpenseCategory: Category?,
-    val expenseCategories: List<Category>,
-    val showDateFilter: Boolean,
-    val isCompactSummary: Boolean = false,
-    val isAppLockEnabled: Boolean = false,
+    val showDateFilter: Boolean = false,
 )
