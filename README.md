@@ -18,7 +18,6 @@
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-100%25-7F52FF.svg?style=flat&logo=kotlin&logoColor=white" alt="Kotlin"></a>
   <a href="https://developer.android.com/jetpack/compose"><img src="https://img.shields.io/badge/Jetpack%20Compose-UI-4285F4.svg?style=flat&logo=jetpackcompose&logoColor=white" alt="Compose"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
-  <a href="https://github.com/sponsors/nkuppan"><img src="https://img.shields.io/badge/Sponsor-Open%20Collective-pink.svg" alt="Sponsor"></a>
 </p>
 
 ---
