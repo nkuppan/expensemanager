@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">选择货币</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确认</string>
+    <string name="prefix_amount">前缀（%s500）</string>
+    <string name="suffix_amount">后缀（500%s）</string>
+    <string name="currency">货币</string>
+    <string name="select_currency">选择货币</string>
+    <string name="currency_position">货币位置</string>
+    <string name="currency_format">货币格式</string>
+    <string name="none">无（1234.23）</string>
+    <string name="number_format">格式化（1,23,423.13）</string>
+    <string name="selected_currency">已选货币</string>
+    <string name="choose_preferred_currency">选择您偏好的货币</string>
+    <string name="where_symbol_appears">符号显示位置</string>
+    <string name="number_formatting_style">数字格式样式</string>
+
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">别忘了记录您的支出</string>
+    <string name="notification_title">添加交易</string>
+    <string name="notification_channel_description">用于提醒</string>
+</resources>

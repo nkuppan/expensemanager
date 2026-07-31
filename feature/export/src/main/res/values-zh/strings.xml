@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">导出文件时发生未知错误</string>
+    <string name="export_success_message">文件导出成功</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">分享</string>
+    <string name="export">导出</string>
+    <string name="select_range">选择范围</string>
+    <string name="select_account">选择账户</string>
+    <string name="all">全部</string>
+    <string name="today">今日</string>
+</resources>

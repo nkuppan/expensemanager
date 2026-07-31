@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">Expense Manager</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">选择</string>
+
+    <string name="title_home">首页</string>
+    <string name="view_all">查看全部</string>
+    <string name="accounts">账户</string>
+
+    <string name="category_name">分类名称</string>
+
+
+    <string name="title_graph">图表</string>
+
+
+    <string name="currency">货币</string>
+
+    <string name="choose_color">选择颜色</string>
+    <string name="choose_icon">选择图标</string>
+
+
+    <string name="categories">分类</string>
+    <string name="total">总计</string>
+    <string name="transaction_summary">交易摘要</string>
+    <string name="clear_all">全部清除</string>
+    <string name="category_selection_message">至少需要选择一种分类</string>
+    <string name="share">分享</string>
+    <string name="hello">你好！</string>
+    <string name="guest">游客</string>
+    <string name="balance">余额</string>
+
+    <string name="add_transaction">添加交易</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确认</string>
+    <string name="settings">设置</string>
+    <string name="analysis">分析</string>
+    <string name="transaction">交易</string>
+
+    <string name="app_lock_title">解锁支出管理器</string>
+    <string name="app_lock_description">通过验证以继续</string>
+    <string name="app_lock_unlock">解锁</string>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">今日</string>
+    <string name="this_week">本周</string>
+    <string name="this_month">本月</string>
+    <string name="this_year">当年</string>
+    <string name="all_time">所有时间</string>
+    <string name="custom">自定义</string>
+
+    <string name="amount">金额</string>
+    <string name="category">分类</string>
+    <string name="date">日期</string>
+    <string name="notes">备注</string>
+    <string name="average">平均值</string>
+    <string name="day">天</string>
+    <string name="week">周</string>
+    <string name="time">时间</string>
+    <string name="month">月</string>
+    <string name="from_account">转出账户</string>
+    <string name="to_account">转入账户</string>
+    <string name="transaction_type">交易类型</string>
+    <string name="category_type">分类类型</string>
+    <string name="account_type">账户类型</string>
+    <string name="exported_on">导出时间</string>
+    <string name="total_transactions">总交易数</string>
+    <string name="total_income">总收入</string>
+    <string name="total_expense">总支出</string>
+    <string name="net_balance">净余额</string>
+
+    <string name="light">浅色</string>
+    <string name="dark">深色</string>
+    <string name="set_by_battery_saver">由省电模式设置</string>
+    <string name="system_default">跟随系统</string>
+
+    <string name="category_clothing">服饰</string>
+    <string name="category_entertainment">娱乐</string>
+    <string name="category_food">餐饮</string>
+    <string name="category_health">健康</string>
+    <string name="category_leisure">休闲</string>
+    <string name="category_shopping">购物</string>
+    <string name="category_transportation">交通</string>
+    <string name="category_utilities">水电燃气</string>
+    <string name="category_salary">工资</string>
+    <string name="category_gift">礼物</string>
+    <string name="category_coupons">优惠券</string>
+</resources>

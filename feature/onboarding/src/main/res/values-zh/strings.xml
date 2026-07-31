@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">追踪您的支出</string>
+    <string name="welcome_message_description">了解并记录您的支出</string>
+    <string name="privacy_text">您的所有数据都存储在设备上，并支持外部备份。继续即表示您同意我们的隐私政策。</string>
+    <string name="currency">货币</string>
+    <string name="select_main_currency">选择主货币</string>
+    <string name="add_new">新增</string>
+    <string name="proceed">继续</string>
+    <string name="get_started">开始使用</string>
+    <string name="setup">设置应用</string>
+    <string name="create_new">新建</string>
+
+    <string name="setup_description">配置您的货币和账户以开始使用</string>
+    <string name="tap_to_change">点击更改</string>
+    <string name="setup_currency">设置货币</string>
+    <string name="not_set_up_yet">尚未设置</string>
+
+    <string name="track">追踪</string>
+    <string name="organize">整理</string>
+    <string name="grow">成长</string>
+</resources>

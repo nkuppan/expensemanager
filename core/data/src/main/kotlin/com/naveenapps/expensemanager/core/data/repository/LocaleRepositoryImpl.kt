@@ -65,6 +65,7 @@ class LocaleRepositoryImpl(
             AppLocale("fr", R.string.language_french),
             AppLocale("de", R.string.language_german),
             AppLocale("hi", R.string.language_hindi),
+            AppLocale("zh", R.string.language_chinese),
         )
     }
 }

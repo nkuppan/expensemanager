@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">分析</string>
+    <string name="average_and_projected">平均值与预测</string>
+    <string name="day">天</string>
+    <string name="week">周</string>
+    <string name="month">月</string>
+    <string name="no_chart_available">暂无数据可供分析</string>
+</resources>

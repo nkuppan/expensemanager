@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">账户创建/更新成功</string>
+    <string name="account_name_error">名称不能为空</string>
+    <string name="account_delete_error_message">无法删除此账户</string>
+    <string name="account_name">账户名称</string>
+    <string name="accounts">账户</string>
+    <string name="available_balance">可用余额</string>
+    <string name="credit_limit">信用额度</string>
+    <string name="credit_limit_error">信用额度不能为空</string>
+    <string name="current_balance">当前余额</string>
+    <string name="current_balance_error">当前余额不能为空</string>
+    <string name="current_balance_value_error">当前余额不能是无效数字</string>
+    <string name="no_account_available">暂无账户\n点击 + 按钮创建您的第一个账户</string>
+    <string name="no_account_available_short">暂无账户</string>
+    <string name="account_create_error">请输入有效值</string>
+    <string name="bank_account">银行账户</string>
+    <string name="credit">信用</string>
+    <string name="select_account">选择账户</string>
+    <string name="account_selection_message">至少需要选择一个账户才能继续</string>
+    <string name="clear_all">全部清除</string>
+    <string name="select">选择</string>
+    <string name="account_delete_success_message">账户删除成功</string>
+    <string name="add_new">新增</string>
+    <string name="accounts_re_order">账户重新排序</string>
+    <string name="available_limit">可用额度 %s</string>
+    <string name="drag_to_reorder_hint">按住并拖动以重新排序账户</string>
+    <string name="save">保存</string>
+    <string name="apply">应用</string>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d 个已选</item>
+        <item quantity="other">%d 个已选</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="one">%d 个账户</item>
+        <item quantity="other">%d 个账户</item>
+    </plurals>
+    <string name="add_account">添加账户</string>
+
+    <string name="details">详情</string>
+    <string name="delete">删除</string>
+    <string name="appearance">外观</string>
+    <string name="edit_account">编辑账户</string>
+    <string name="create_account">创建账户</string>
+    <string name="account_type">账户类型</string>
+    <string name="balance">余额</string>
+</resources>

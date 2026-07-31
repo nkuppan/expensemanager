@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">交易摘要</string>
+    <string name="expense">支出</string>
+    <string name="income">收入</string>
+    <string name="total">总计</string>
+    <string name="balance">余额</string>
+    <string name="categories">分类</string>
+    <string name="hello">你好！</string>
+    <string name="guest">游客</string>
+    <string name="settings">设置</string>
+    <string name="transaction">交易</string>
+    <string name="no_transactions_available">所选时间段内没有交易。\n点击 + 按钮记录您的交易</string>
+    <string name="home">首页</string>
+    <string name="transaction_create_message">"在这里添加您的支出、收入和转账。"</string>
+    <string name="help"><![CDATA[帮助与信息]]></string>
+    <string name="ok">确认</string>
+    <string name="no_budget_for_month">无 %1$s 预算</string>
+    <string name="tap_to_set_spending_limit">点击设置消费限额</string>
+</resources>

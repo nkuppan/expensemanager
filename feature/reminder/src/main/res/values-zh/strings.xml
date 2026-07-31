@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">提醒</string>
+    <string name="reminder_notification">提醒通知</string>
+    <string name="reminder_notification_message">提醒您记录支出的通知时间</string>
+    <string name="notification_time">提醒通知时间</string>
+    <string name="notification_permission_message">通知权限对本应用很重要。请授予该权限。</string>
+    <string name="permission_disabled">通知权限已关闭</string>
+    <string name="request_permission">请求权限</string>
+    <string name="open_settings">打开设置</string>
+
+    <string name="permission_required_title">通知已关闭</string>
+    <string name="schedule">日程</string>
+</resources>

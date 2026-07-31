@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">设置</string>
+    <string name="theme">主题</string>
+    <string name="analysis">分析</string>
+    <string name="select_currency">选择货币</string>
+    <string name="reminder_notification">通知</string>
+    <string name="info">信息</string>
+    <string name="about_the_app_information">关于应用信息</string>
+    <string name="rate_us_message">这将帮助我们更好地成长</string>
+    <string name="currency">货币自定义</string>
+    <string name="selected_daily_reminder_time">我们会在每个设定时间提醒您记录支出</string>
+    <string name="rate_us">给我们评分</string>
+    <string name="choose_web_browser">选择浏览器</string>
+
+    <string name="export">导出</string>
+    <string name="export_message">导出您的数据并以您喜欢的格式进行分析</string>
+
+    <string name="filter">筛选</string>
+    <string name="filter_message">可选择日期筛选来查看支出</string>
+
+    <string name="developed_by">由 Naveen Kumar Kuppan 开发</string>
+    <string name="system_default">跟随系统</string>
+    <string name="app_version">版本：%s</string>
+    <string name="advanced">高级</string>
+    <string name="advanced_config_message">管理应用的高级配置</string>
+    <string name="default_account">默认账户</string>
+    <string name="default_expense_category">默认支出分类</string>
+    <string name="default_income_category">默认收入分类</string>
+    <string name="accounts_re_order">账户重新排序</string>
+    <string name="accounts_re_order_message">可以更改首页上账户列表的顺序。</string>
+    <string name="backup">备份</string>
+    <string name="backup_message">创建数据备份并在任意设备上恢复。</string>
+    <string name="restore">恢复</string>
+    <string name="restore_message">恢复数据以将数据重新导入设备。</string>
+    <string name="defaults">默认设置</string>
+    <string name="others">其他设置</string>
+
+    <string name="personalization">个性化</string>
+    <string name="notifications">通知</string>
+    <string name="data_and_backup"><![CDATA[数据与备份]]></string>
+    <string name="security">安全</string>
+    <string name="support">支持</string>
+
+    <string name="compact_summary">精简摘要</string>
+    <string name="compact_summary_message">在首页显示更小的摘要组件</string>
+
+    <string name="app_lock">应用锁</string>
+    <string name="app_lock_message">打开应用时需要生物识别或设备凭据</string>
+</resources>

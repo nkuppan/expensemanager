@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">预算</string>
+    <string name="active_budgets">进行中的预算</string>
+    <string name="no_budget_available">暂无预算\n点击 + 按钮创建新预算</string>
+    <string name="no_budget_available_short">暂无预算</string>
+    <string name="budget_name">预算名称</string>
+    <string name="budget_delete_error_message">预算更新失败</string>
+    <string name="budget_name_error">名称不能为空</string>
+    <string name="budget_create_error">无法创建/更新预算</string>
+    <string name="budget_create_success">预算创建/更新成功</string>
+    <string name="budget_amount">预算金额</string>
+    <string name="budget_amount_error">预算金额不能为空或为零</string>
+
+    <string name="select_date">选择日期</string>
+    <string name="select_account">选择账户</string>
+    <string name="clear_all">全部清除</string>
+    <string name="select">选择</string>
+    <string name="select_category">选择分类</string>
+
+    <string name="all">全部</string>
+
+    <string name="edit_budget">编辑预算</string>
+    <string name="create_budget">创建预算</string>
+    <string name="period">周期</string>
+    <string name="budget_scope">预算范围</string>
+    <string name="details">详情</string>
+    <string name="appearance">外观</string>
+    <string name="select_month">选择月份</string>
+    <string name="budget_for">预算期间</string>
+    <string name="what_is_your_budget_limit">您的总预算上限是多少</string>
+</resources>
