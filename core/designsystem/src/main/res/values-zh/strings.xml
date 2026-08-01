@@ -23,5 +23,5 @@
     <string name="icon">图标</string>
     <string name="change">更改</string>
     <string name="add_new">新增</string>
-    <string name="no_account_available">暂无账户\n点击 + 按钮创建您的第一个账户</string>
+    <string name="no_account_available">暂无账户\\n点击 + 按钮创建您的第一个账户</string>
 </resources>
