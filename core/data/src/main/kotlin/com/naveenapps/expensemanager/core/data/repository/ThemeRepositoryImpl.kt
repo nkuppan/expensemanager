@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.repository.ThemeRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -36,9 +37,12 @@ class ThemeRepositoryImpl(
     }
 
     override suspend fun applyTheme() = withContext(dispatchers.io) {
-        val theme = Theme(AppCompatDelegate.MODE_NIGHT_YES, R.string.dark)
+        // Re-apply whatever the user last saved (or the system-default fallback if they never
+        // picked one) on process start. This used to be hardcoded to MODE_NIGHT_YES, which
+        // forced dark mode on every app launch regardless of the user's actual preference.
+        val defaultMode = getDefaultTheme().mode
+        val mode = dataStore.getTheme(defaultMode).first()
         withContext(dispatchers.main) {
-            val mode = theme.mode
             AppCompatDelegate.setDefaultNightMode(mode)
         }
     }

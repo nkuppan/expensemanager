@@ -97,4 +97,14 @@ class ThemeRepositoryImplTest : BaseCoroutineTest() {
     fun checkApplyTheme() = runTest {
         repository.applyTheme()
     }
+
+    @Test
+    fun applyThemeShouldReuseTheSavedThemeInsteadOfForcingDark() = runTest {
+        repository.saveTheme(defaultTheme.copy(mode = AppCompatDelegate.MODE_NIGHT_NO))
+
+        repository.applyTheme()
+
+        Truth.assertThat(AppCompatDelegate.getDefaultNightMode())
+            .isEqualTo(AppCompatDelegate.MODE_NIGHT_NO)
+    }
 }
