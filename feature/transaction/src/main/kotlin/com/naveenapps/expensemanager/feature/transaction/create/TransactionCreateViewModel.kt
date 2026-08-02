@@ -12,6 +12,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransact
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
+import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -34,12 +35,14 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -61,7 +64,11 @@ class TransactionCreateViewModel(
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
     private val numberFormatRepository: NumberFormatRepository,
+    private val feedbackRepository: FeedbackRepository,
 ) : ViewModel() {
+
+    private val _event = Channel<TransactionCreateEvent>()
+    val event = _event.receiveAsFlow()
 
     private val transactionType = MutableStateFlow(TransactionType.EXPENSE)
 
@@ -261,6 +268,7 @@ class TransactionCreateViewModel(
     }
 
     private fun persistTransaction(transaction: Transaction) {
+        val isNewTransaction = editingTransaction == null
         viewModelScope.launch {
             val response = if (editingTransaction != null) {
                 updateTransactionUseCase.invoke(transaction)
@@ -268,8 +276,25 @@ class TransactionCreateViewModel(
                 addTransactionUseCase.invoke(transaction)
             }
             if (response is Resource.Success) {
+                if (isNewTransaction) {
+                    onNewTransactionCreated()
+                }
                 closePage()
             }
+        }
+    }
+
+    // Only ever called after a brand-new transaction (not an edit) is saved successfully.
+    // Bumps the running "transactions created" count, and — once someone has logged enough
+    // transactions and enough days have passed since install — requests Google Play's in-app
+    // review popup exactly once for the life of the install.
+    private suspend fun onNewTransactionCreated() {
+        feedbackRepository.setTransactionCreated(true)
+        if (feedbackRepository.shouldShowFeedbackDialog().first()) {
+            // Marked immediately, before we know whether Play actually showed anything —
+            // Play never reports that back, so "requested" is the only signal we get.
+            feedbackRepository.setFeedbackDialogShown(true)
+            _event.send(TransactionCreateEvent.RequestReview)
         }
     }
 

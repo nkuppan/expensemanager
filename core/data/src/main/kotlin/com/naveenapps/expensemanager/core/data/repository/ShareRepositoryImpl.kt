@@ -1,6 +1,10 @@
 package com.naveenapps.expensemanager.core.data.repository
 
+import android.app.Activity
 import android.content.Context
+import com.google.android.play.core.ktx.launchReview
+import com.google.android.play.core.ktx.requestReview
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.naveenapps.expensemanager.core.common.utils.openAppSettings
 import com.naveenapps.expensemanager.core.common.utils.openEmailOption
 import com.naveenapps.expensemanager.core.common.utils.openEmailToOption
@@ -39,6 +43,19 @@ class ShareRepositoryImpl(
 
     override fun openRateUs() {
         context.openRateUs()
+    }
+
+    override suspend fun requestInAppReview() {
+        // `context` is normally an Activity here (this repository is Activity-scoped in
+        // KoinActivityModule.kt), which `launchReview` requires. Guard anyway in case this
+        // ever resolves from the app-scoped registration instead, and never let a failure here
+        // (no network, Play throttling it, etc.) surface to the user.
+        val activity = context as? Activity ?: return
+        runCatching {
+            val reviewManager = ReviewManagerFactory.create(context)
+            val reviewInfo = reviewManager.requestReview()
+            reviewManager.launchReview(activity, reviewInfo)
+        }
     }
 
     override fun openPrivacy() {

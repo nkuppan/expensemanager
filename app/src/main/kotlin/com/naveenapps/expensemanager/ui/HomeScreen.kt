@@ -92,7 +92,7 @@ fun NavGraphBuilder.expenseManagerNavigation(
         TransactionListScreen(showBackNavigationIcon = true)
     }
     composable<ExpenseManagerScreens.TransactionCreate> {
-        TransactionCreateScreen()
+        TransactionCreateScreen(shareRepository = componentProvider.getShareRepository())
     }
     composable<ExpenseManagerScreens.AccountList> {
         AccountListScreen()

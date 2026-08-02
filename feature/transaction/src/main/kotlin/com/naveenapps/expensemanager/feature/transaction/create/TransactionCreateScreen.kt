@@ -39,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -56,6 +57,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalText
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -66,6 +68,7 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.account.selection.AccountItem
 import com.naveenapps.expensemanager.feature.account.selection.AccountItemDefaults
 import com.naveenapps.expensemanager.feature.account.selection.AccountSelectionScreen
@@ -74,16 +77,29 @@ import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefa
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 import java.util.Calendar
 import java.util.Date
 
 @Composable
 fun TransactionCreateScreen(
+    shareRepository: ShareRepository,
     viewModel: TransactionCreateViewModel = koinViewModel()
 ) {
 
     val state by viewModel.state.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
+
+    ObserveAsEvents(viewModel.event) {
+        when (it) {
+            TransactionCreateEvent.RequestReview -> {
+                coroutineScope.launch {
+                    shareRepository.requestInAppReview()
+                }
+            }
+        }
+    }
 
     TransactionCreateScreenContent(
         state = state,

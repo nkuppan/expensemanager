@@ -21,6 +21,7 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
@@ -47,6 +48,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val settingsRepository: SettingsRepository = mock()
     private val appComposeNavigator: AppComposeNavigator = mock()
     private val numberFormatRepository: NumberFormatRepository = mock()
+    private val feedbackRepository: FeedbackRepository = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
 
@@ -103,6 +105,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
             settingsRepository = settingsRepository,
             appComposeNavigator = appComposeNavigator,
             numberFormatRepository = numberFormatRepository,
+            feedbackRepository = feedbackRepository,
         )
     }
 

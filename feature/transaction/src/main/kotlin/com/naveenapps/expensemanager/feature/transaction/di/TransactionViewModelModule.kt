@@ -22,6 +22,7 @@ val TransactionViewModelModule = module {
             settingsRepository = get(),
             appComposeNavigator = get(),
             numberFormatRepository = get(),
+            feedbackRepository = get(),
         )
     }
     viewModel {

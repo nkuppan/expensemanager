@@ -12,6 +12,15 @@ interface ShareRepository {
 
     fun openRateUs()
 
+    /**
+     * Requests Google Play's native in-app review popup (not a Play Store listing deep link —
+     * see [openRateUs] for that). Play decides whether to actually display it (quota-limited,
+     * independent of app logic) and never reports back whether the user rated or dismissed it,
+     * so callers should mark the request as "done" up front and never call this again for the
+     * same eligibility window. Safe to call speculatively; failures are swallowed silently.
+     */
+    suspend fun requestInAppReview()
+
     fun openPrivacy()
 
     fun openTerms()

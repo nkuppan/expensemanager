@@ -31,6 +31,7 @@ dependencies {
 
     implementation(libs.androidx.dataStore.preference)
     implementation(libs.backup.restore)
+    implementation(libs.google.android.play.review)
 
     androidTestImplementation(project(":core:testing"))
     testImplementation(project(":core:testing"))
