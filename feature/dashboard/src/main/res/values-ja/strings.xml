@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">取引サマリー</string>
+    <string name="expense">支出</string>
+    <string name="income">収入</string>
+    <string name="total">合計</string>
+    <string name="balance">残高</string>
+    <string name="categories">カテゴリ</string>
+    <string name="hello">こんにちは!</string>
+    <string name="guest">ゲスト</string>
+    <string name="settings">設定</string>
+    <string name="transaction">取引</string>
+    <string name="no_transactions_available">選択した期間の取引はありません。\n取引を記録するには + ボタンをタップしてください</string>
+    <string name="home">ホーム</string>
+    <string name="transaction_create_message">"支出、収入、振替をここに記録しましょう。 "</string>
+    <string name="help"><![CDATA[ヘルプ&情報]]></string>
+    <string name="ok">OK</string>
+    <string name="no_budget_for_month">%1$s なし</string>
+    <string name="tap_to_set_spending_limit">支出上限を設定するにはタップしてください</string>
+</resources>

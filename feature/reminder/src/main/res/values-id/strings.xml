@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Pengingat</string>
+    <string name="reminder_notification">Notifikasi Pengingat</string>
+    <string name="reminder_notification_message">Waktu notifikasi untuk mengingatkan Anda mencatat pengeluaran</string>
+    <string name="notification_time">Waktu Notifikasi Pengingat</string>
+    <string name="notification_permission_message">Izin notifikasi penting untuk aplikasi ini. Mohon berikan izinnya.</string>
+    <string name="permission_disabled">Izin notifikasi dinonaktifkan</string>
+    <string name="request_permission">Minta izin</string>
+    <string name="open_settings">Buka Pengaturan</string>
+
+    <string name="permission_required_title">Notifikasi Dinonaktifkan</string>
+    <string name="schedule">Jadwal</string>
+</resources>

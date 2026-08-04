@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">Anggaran</string>
+    <string name="active_budgets">Anggaran Aktif</string>
+    <string name="no_budget_available">Tidak ada anggaran yang tersedia\nKetuk tombol + untuk membuat anggaran baru</string>
+    <string name="no_budget_available_short">Tidak ada anggaran yang tersedia</string>
+    <string name="budget_name">Nama Anggaran</string>
+    <string name="budget_delete_error_message">Pembaruan anggaran gagal</string>
+    <string name="budget_name_error">Nama tidak boleh kosong</string>
+    <string name="budget_create_error">Tidak dapat membuat/memperbarui anggaran</string>
+    <string name="budget_create_success">Anggaran berhasil dibuat/diperbarui</string>
+    <string name="budget_amount">Jumlah Anggaran</string>
+    <string name="budget_amount_error">Jumlah anggaran tidak boleh kosong atau nol</string>
+
+    <string name="select_date">Pilih Tanggal</string>
+    <string name="select_account">Pilih Akun</string>
+    <string name="clear_all">Hapus Semua</string>
+    <string name="select">Pilih</string>
+    <string name="select_category">Pilih Kategori</string>
+
+    <string name="all">Semua</string>
+
+    <string name="edit_budget">Ubah Anggaran</string>
+    <string name="create_budget">Buat Anggaran</string>
+    <string name="period">Periode</string>
+    <string name="budget_scope">Cakupan Anggaran</string>
+    <string name="details">Detail</string>
+    <string name="appearance">Tampilan</string>
+    <string name="select_month">Pilih Bulan</string>
+    <string name="budget_for">Anggaran untuk</string>
+    <string name="what_is_your_budget_limit">Berapa batas total anggaran Anda</string>
+</resources>

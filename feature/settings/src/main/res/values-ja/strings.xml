@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">設定</string>
+    <string name="theme">テーマ</string>
+    <string name="analysis">分析</string>
+    <string name="select_currency">通貨を選択</string>
+    <string name="reminder_notification">通知</string>
+    <string name="info">情報</string>
+    <string name="about_the_app_information">アプリについての情報</string>
+    <string name="rate_us_message">私たちの成長に役立ちます</string>
+    <string name="currency">通貨のカスタマイズ</string>
+    <string name="selected_daily_reminder_time">設定した時刻に毎回、経費の記録をお知らせします</string>
+    <string name="rate_us">評価する</string>
+    <string name="choose_web_browser">ウェブブラウザを選択</string>
+
+    <string name="export">エクスポート</string>
+    <string name="export_message">データをエクスポートして、お好みの形式で分析できます</string>
+
+    <string name="filter">フィルター</string>
+    <string name="filter_message">日付フィルターを選択して支出を表示できます</string>
+
+    <string name="developed_by">Naveen Kumar Kuppan 開発</string>
+    <string name="system_default">システムのデフォルト</string>
+    <string name="app_version">バージョン: %s</string>
+    <string name="advanced">詳細設定</string>
+    <string name="advanced_config_message">アプリの詳細な設定を管理します</string>
+    <string name="default_account">デフォルトアカウント</string>
+    <string name="default_expense_category">デフォルト支出カテゴリ</string>
+    <string name="default_income_category">デフォルト収入カテゴリ</string>
+    <string name="accounts_re_order">アカウントの並べ替え</string>
+    <string name="accounts_re_order_message">ホーム画面のアカウントリストの順序を変更できます。</string>
+    <string name="backup">バックアップ</string>
+    <string name="backup_message">データのバックアップを作成し、どの端末でも復元できます。</string>
+    <string name="restore">復元</string>
+    <string name="restore_message">データを復元して端末に戻します。</string>
+    <string name="defaults">デフォルト</string>
+    <string name="others">その他の設定</string>
+
+    <string name="personalization">パーソナライズ</string>
+    <string name="notifications">通知</string>
+    <string name="data_and_backup"><![CDATA[データ&バックアップ]]></string>
+    <string name="security">セキュリティ</string>
+    <string name="support">サポート</string>
+
+    <string name="compact_summary">コンパクトサマリー</string>
+    <string name="compact_summary_message">ホーム画面に小さなサマリーウィジェットを表示します</string>
+
+    <string name="app_lock">アプリロック</string>
+    <string name="app_lock_message">アプリを開く際に生体認証または端末の認証情報を要求します</string>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">حدث خطأ غير معروف أثناء تصدير الملف</string>
+    <string name="export_success_message">تم تصدير الملف بنجاح</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">مشاركة</string>
+    <string name="export">تصدير</string>
+    <string name="select_range">اختيار النطاق</string>
+    <string name="select_account">اختيار الحساب</string>
+<string name="all">الكل</string>
+    <string name="today">اليوم</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">Phân tích</string>
+    <string name="average_and_projected">Trung bình &amp; Dự kiến</string>
+    <string name="day">Ngày</string>
+    <string name="week">Tuần</string>
+    <string name="month">Tháng</string>
+    <string name="no_chart_available">Không có dữ liệu để phân tích</string>
+</resources>

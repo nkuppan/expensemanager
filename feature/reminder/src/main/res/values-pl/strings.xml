@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Przypomnienie</string>
+    <string name="reminder_notification">Powiadomienie przypominające</string>
+    <string name="reminder_notification_message">Godzina powiadomienia przypominającego o dodaniu wydatków</string>
+    <string name="notification_time">Godzina powiadomienia przypominającego</string>
+    <string name="notification_permission_message">Uprawnienie do powiadomień jest ważne dla tej aplikacji. Nadaj to uprawnienie.</string>
+    <string name="permission_disabled">Uprawnienie do powiadomień jest wyłączone</string>
+    <string name="request_permission">Poproś o uprawnienie</string>
+    <string name="open_settings">Otwórz ustawienia</string>
+
+    <string name="permission_required_title">Powiadomienia wyłączone</string>
+    <string name="schedule">Harmonogram</string>
+</resources>

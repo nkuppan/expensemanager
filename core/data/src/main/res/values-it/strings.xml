@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Oggi</string>
+    <string name="this_week">Questa settimana</string>
+    <string name="this_month">Questo mese</string>
+    <string name="this_year">Quest\'anno</string>
+    <string name="all_time">Sempre</string>
+    <string name="custom">Personalizzato</string>
+
+    <string name="amount">Importo</string>
+    <string name="category">Categoria</string>
+    <string name="date">Data</string>
+    <string name="notes">Note</string>
+    <string name="average">Media</string>
+    <string name="day">Giorno</string>
+    <string name="week">Settimana</string>
+    <string name="time">Ora</string>
+    <string name="month">Mese</string>
+    <string name="from_account">Dal conto</string>
+    <string name="to_account">Al conto</string>
+    <string name="transaction_type">Tipo di transazione</string>
+    <string name="category_type">Tipo di categoria</string>
+    <string name="account_type">Tipo di conto</string>
+    <string name="exported_on">Esportato il</string>
+    <string name="total_transactions">Transazioni totali</string>
+    <string name="total_income">Entrate totali</string>
+    <string name="total_expense">Spese totali</string>
+    <string name="net_balance">Saldo netto</string>
+
+    <string name="light">Chiaro</string>
+    <string name="dark">Scuro</string>
+    <string name="set_by_battery_saver">Impostato dal risparmio energetico</string>
+    <string name="system_default">Predefinito di sistema</string>
+
+    <string name="category_clothing">Abbigliamento</string>
+    <string name="category_entertainment">Intrattenimento</string>
+    <string name="category_food">Cibo</string>
+    <string name="category_health">Salute</string>
+    <string name="category_leisure">Tempo libero</string>
+    <string name="category_shopping">Shopping</string>
+    <string name="category_transportation">Trasporti</string>
+    <string name="category_utilities">Utenze</string>
+    <string name="category_salary">Stipendio</string>
+    <string name="category_gift">Regalo</string>
+    <string name="category_coupons">Coupon</string>
+</resources>

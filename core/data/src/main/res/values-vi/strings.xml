@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Hôm nay</string>
+    <string name="this_week">Tuần này</string>
+    <string name="this_month">Tháng này</string>
+    <string name="this_year">Năm này</string>
+    <string name="all_time">Toàn bộ thời gian</string>
+    <string name="custom">Tùy chỉnh</string>
+
+    <string name="amount">Số tiền</string>
+    <string name="category">Danh mục</string>
+    <string name="date">Ngày</string>
+    <string name="notes">Ghi chú</string>
+    <string name="average">Trung bình</string>
+    <string name="day">Ngày</string>
+    <string name="week">Tuần</string>
+    <string name="time">Thời gian</string>
+    <string name="month">Tháng</string>
+    <string name="from_account">Từ tài khoản</string>
+    <string name="to_account">Đến tài khoản</string>
+    <string name="transaction_type">Loại giao dịch</string>
+    <string name="category_type">Loại danh mục</string>
+    <string name="account_type">Loại tài khoản</string>
+    <string name="exported_on">Xuất vào</string>
+    <string name="total_transactions">Tổng số giao dịch</string>
+    <string name="total_income">Tổng thu nhập</string>
+    <string name="total_expense">Tổng chi tiêu</string>
+    <string name="net_balance">Số dư ròng</string>
+
+    <string name="light">Sáng</string>
+    <string name="dark">Tối</string>
+    <string name="set_by_battery_saver">Đặt theo chế độ tiết kiệm pin</string>
+    <string name="system_default">Mặc định hệ thống</string>
+
+    <string name="category_clothing">Quần áo</string>
+    <string name="category_entertainment">Giải trí</string>
+    <string name="category_food">Ăn uống</string>
+    <string name="category_health">Sức khỏe</string>
+    <string name="category_leisure">Thư giãn</string>
+    <string name="category_shopping">Mua sắm</string>
+    <string name="category_transportation">Di chuyển</string>
+    <string name="category_utilities">Tiện ích</string>
+    <string name="category_salary">Lương</string>
+    <string name="category_gift">Quà tặng</string>
+    <string name="category_coupons">Phiếu giảm giá</string>
+</resources>

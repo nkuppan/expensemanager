@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">Nie można dodać transakcji</string>
+    <string name="unable_to_find_transaction">Nie można znaleźć transakcji</string>
+    <string name="transaction_delete_error_message">Nie można usunąć tej transakcji</string>
+
+    <string name="no_transactions_available">Brak transakcji w wybranym okresie.\nDotknij przycisku +, aby zapisać swoje transakcje</string>
+    <string name="date">Data</string>
+    <string name="notes">Notatki</string>
+    <string name="expense">Wydatek</string>
+    <string name="income">Przychód</string>
+    <string name="transfer">Przelew</string>
+
+    <string name="select_different_account">Wybierz inne konto. Konto źródłowe i docelowe nie mogą być takie same.</string>
+    <string name="amount_error_message">Wprowadź prawidłową kwotę</string>
+    <string name="amount_should_greater_than_zero">Kwota musi być większa niż zero</string>
+    <string name="transaction_create_success">Transakcja utworzona/zaktualizowana pomyślnie</string>
+    <string name="optional_details">Dodatkowe informacje (opcjonalnie)</string>
+    <string name="select_account">Wybierz konto</string>
+    <string name="select_category">Wybierz kategorię</string>
+    <string name="select_date">Wybierz datę</string>
+    <string name="select_time">Wybierz godzinę</string>
+
+    <string name="transaction">Transakcja</string>
+    <string name="clear">Wyczyść</string>
+    <string name="cancel">Anuluj</string>
+    <string name="ok">OK</string>
+    <string name="amount">Kwota</string>
+    <string name="from_account">Z konta</string>
+    <string name="to_account">Na konto</string>
+
+    <string name="edit_transaction">Edytuj transakcję</string>
+    <string name="create_transaction">Nowa transakcja</string>
+    <string name="date_and_time">Data i godzina</string>
+    <string name="delete">Usuń</string>
+    <string name="save">Zapisz</string>
+    <string name="transaction_type">Typ transakcji</string>
+    <string name="details">Szczegóły</string>
+
+    <string name="done">Gotowe</string>
+    <string name="backspace">Backspace</string>
+    <string name="add_transaction">Dodaj transakcję</string>
+</resources>

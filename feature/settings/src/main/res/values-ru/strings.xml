@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Настройки</string>
+    <string name="theme">Тема</string>
+    <string name="analysis">Анализ</string>
+    <string name="select_currency">Выбрать валюту</string>
+    <string name="reminder_notification">Уведомление</string>
+    <string name="info">Информация</string>
+    <string name="about_the_app_information">Информация о приложении</string>
+    <string name="rate_us_message">Это поможет нам стать лучше</string>
+    <string name="currency">Настройка валюты</string>
+    <string name="selected_daily_reminder_time">Мы будем напоминать вам добавлять расходы каждый раз в указанное время</string>
+    <string name="rate_us">Оценить нас</string>
+    <string name="choose_web_browser">Выбрать веб-браузер</string>
+
+    <string name="export">Экспорт</string>
+    <string name="export_message">Экспортируйте свои данные и анализируйте их в предпочитаемом формате</string>
+
+    <string name="filter">Фильтр</string>
+    <string name="filter_message">Можно выбрать фильтр по дате для просмотра расходов</string>
+
+    <string name="developed_by">Разработано Навином Кумаром Куппаном</string>
+    <string name="system_default">Системная по умолчанию</string>
+    <string name="app_version">Версия: %s</string>
+    <string name="advanced">Дополнительно</string>
+    <string name="advanced_config_message">Управление дополнительными настройками приложения</string>
+    <string name="default_account">Счёт по умолчанию</string>
+    <string name="default_expense_category">Категория расходов по умолчанию</string>
+    <string name="default_income_category">Категория доходов по умолчанию</string>
+    <string name="accounts_re_order">Изменение порядка счетов</string>
+    <string name="accounts_re_order_message">Можно изменить порядок списка счетов на главном экране.</string>
+    <string name="backup">Резервное копирование</string>
+    <string name="backup_message">Создайте резервную копию своих данных и восстановите их на любом устройстве.</string>
+    <string name="restore">Восстановление</string>
+    <string name="restore_message">Восстановите свои данные, чтобы вернуть их на устройство.</string>
+    <string name="defaults">Значения по умолчанию</string>
+    <string name="others">Другие настройки</string>
+
+    <string name="personalization">Персонализация</string>
+    <string name="notifications">Уведомления</string>
+    <string name="data_and_backup"><![CDATA[Данные и резервное копирование]]></string>
+    <string name="security">Безопасность</string>
+    <string name="support">Поддержка</string>
+
+    <string name="compact_summary">Компактная сводка</string>
+    <string name="compact_summary_message">Показывать уменьшенный виджет сводки на главном экране</string>
+
+    <string name="app_lock">Блокировка приложения</string>
+    <string name="app_lock_message">Требовать биометрию или учётные данные устройства при открытии приложения</string>
+</resources>

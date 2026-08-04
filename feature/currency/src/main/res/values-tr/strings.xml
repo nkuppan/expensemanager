@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">Para Birimi Seç</string>
+    <string name="cancel">İptal</string>
+    <string name="ok">Tamam</string>
+    <string name="prefix_amount">Önek (%s500)</string>
+    <string name="suffix_amount">Sonek (500%s)</string>
+    <string name="currency">Para Birimi</string>
+    <string name="select_currency">Para Birimi Seç</string>
+    <string name="currency_position">Para Birimi Konumu</string>
+    <string name="currency_format">Para Birimi Biçimi</string>
+    <string name="none">Yok(1234.23)</string>
+    <string name="number_format">Biçim(1,23,423.13)</string>
+    <string name="selected_currency">Seçilen Para Birimi</string>
+    <string name="choose_preferred_currency">Tercih ettiğiniz para birimini seçin</string>
+    <string name="where_symbol_appears">Sembolün görüneceği yer</string>
+    <string name="number_formatting_style">Sayı biçimlendirme stili</string>
+
+</resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">Kategori</string>
+    <string name="income">Pemasukan</string>
+    <string name="expense">Pengeluaran</string>
+    <string name="no_category_available">Tidak ada kategori yang tersedia\nKetuk tombol + untuk membuat kategori Anda</string>
+    <string name="no_transactions_available">Tidak ada transaksi yang tersedia untuk periode yang dipilih.\nKetuk tombol + untuk mencatat transaksi Anda</string>
+    <string name="category_selection_message">Pilih minimal satu kategori untuk melanjutkan</string>
+    <string name="select_account">Pilih Akun</string>
+    <string name="clear_all">Hapus Semua</string>
+    <string name="select">Pilih</string>
+    <string name="select_category">Pilih Kategori</string>
+
+    <string name="delete_item_message">Apakah Anda yakin ingin menghapus item ini?</string>
+    <string name="cancel">Batal</string>
+    <string name="category">Kategori</string>
+    <string name="category_name">Nama Kategori</string>
+
+    <string name="category_create_error">Terjadi kesalahan yang tidak diketahui saat menambahkan kategori</string>
+    <string name="category_name_error">Nama tidak boleh kosong</string>
+    <string name="category_create_success">Kategori berhasil dibuat/diubah</string>
+    <string name="category_delete_error_message">Tidak dapat menghapus kategori ini</string>
+    <string name="category_delete_message">Menghapus kategori ini juga akan menghapus semua transaksinya dan menghilangkannya dari anggaran mana pun yang menyertakannya. Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="default_category_name_locked_message">Ini adalah kategori bawaan, sehingga namanya mengikuti bahasa aplikasi yang Anda pilih dan tidak dapat diganti namanya.</string>
+    <string name="edit">Edit</string>
+    <string name="add_new">Tambah Baru</string>
+
+    <string name="edit_category">Ubah Kategori</string>
+    <string name="create_category">Buat Kategori</string>
+    <string name="save">Simpan</string>
+    <string name="delete">Hapus</string>
+    <string name="preview">Pratinjau</string>
+    <string name="details">Detail</string>
+    <string name="appearance">Tampilan</string>
+    <string name="category_type">Jenis Kategori</string>
+    <string name="category_name_placeholder">Nama Kategori</string>
+
+    <string name="add_category">Tambah Kategori</string>
+    <string name="add_transaction">Tambah Transaksi</string>
+    <string name="tap_chart_to_switch_to">"Ketuk grafik untuk beralih ke "</string>
+
+    <plurals name="category_count">
+        <item quantity="other">%d kategori</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="other">%d dipilih</item>
+    </plurals>
+</resources>

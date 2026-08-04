@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">تعذرت إضافة المعاملة</string>
+    <string name="unable_to_find_transaction">تعذر العثور على المعاملة</string>
+    <string name="transaction_delete_error_message">تعذر حذف هذه المعاملة</string>
+
+    <string name="no_transactions_available">لا توجد معاملات متاحة للفترة المحددة.\nانقر على زر + لتسجيل معاملاتك</string>
+    <string name="date">التاريخ</string>
+    <string name="notes">الملاحظات</string>
+    <string name="expense">المصروف</string>
+    <string name="income">الدخل</string>
+    <string name="transfer">تحويل</string>
+
+    <string name="select_different_account">اختر حسابًا مختلفًا. يجب ألا يكون حساب المصدر والوجهة متطابقين.</string>
+    <string name="amount_error_message">يرجى إدخال مبلغ صالح</string>
+    <string name="amount_should_greater_than_zero">يجب أن يكون المبلغ أكبر من صفر</string>
+    <string name="transaction_create_success">تم إنشاء/تحديث المعاملة بنجاح</string>
+    <string name="optional_details">تفاصيل اختيارية</string>
+    <string name="select_account">اختيار الحساب</string>
+    <string name="select_category">اختيار الفئة</string>
+    <string name="select_date">اختيار التاريخ</string>
+    <string name="select_time">اختيار الوقت</string>
+
+    <string name="transaction">المعاملة</string>
+    <string name="clear">مسح</string>
+    <string name="cancel">إلغاء</string>
+    <string name="ok">موافق</string>
+    <string name="amount">المبلغ</string>
+    <string name="from_account">من حساب</string>
+    <string name="to_account">إلى حساب</string>
+
+    <string name="edit_transaction">تعديل المعاملة</string>
+    <string name="create_transaction">معاملة جديدة</string>
+    <string name="date_and_time">التاريخ والوقت</string>
+    <string name="delete">حذف</string>
+    <string name="save">حفظ</string>
+    <string name="transaction_type">نوع المعاملة</string>
+    <string name="details">التفاصيل</string>
+
+    <string name="done">تم</string>
+    <string name="backspace">رجوع للخلف</string>
+    <string name="add_transaction">إضافة معاملة</string>
+</resources>

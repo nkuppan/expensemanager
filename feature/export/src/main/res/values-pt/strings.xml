@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">Ocorreu um erro desconhecido ao exportar o ficheiro</string>
+    <string name="export_success_message">Ficheiro exportado com sucesso</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">Partilhar</string>
+    <string name="export">Exportar</string>
+    <string name="select_range">Selecionar intervalo</string>
+    <string name="select_account">Selecionar conta</string>
+<string name="all">Tudo</string>
+    <string name="today">Hoje</string>
+</resources>

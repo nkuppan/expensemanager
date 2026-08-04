@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">支出を記録しましょう</string>
+    <string name="welcome_message_description">支出を把握し、記録を残しましょう</string>
+    <string name="privacy_text">すべてのデータは端末内に保存され、外部バックアップも選択できます。続行することで、プライバシーポリシーに同意したものとみなされます。</string>
+    <string name="currency">通貨</string>
+    <string name="select_main_currency">メイン通貨を選択</string>
+    <string name="add_new">新規追加</string>
+    <string name="proceed">次へ</string>
+    <string name="get_started">はじめる</string>
+    <string name="setup">アプリ設定のセットアップ</string>
+    <string name="create_new">新規作成</string>
+
+    <string name="setup_description">通貨とアカウントを設定して始めましょう</string>
+    <string name="tap_to_change">タップして変更</string>
+    <string name="setup_currency">通貨を設定</string>
+    <string name="not_set_up_yet">まだ設定されていません</string>
+
+    <string name="track">記録する</string>
+    <string name="organize">整理する</string>
+    <string name="grow">増やす</string>
+</resources>

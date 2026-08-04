@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">리마인더</string>
+    <string name="reminder_notification">리마인더 알림</string>
+    <string name="reminder_notification_message">지출을 추가하라고 알려주는 알림 시간</string>
+    <string name="notification_time">리마인더 알림 시간</string>
+    <string name="notification_permission_message">이 앱에는 알림 권한이 중요합니다. 권한을 허용해 주세요.</string>
+    <string name="permission_disabled">알림 권한이 비활성화되어 있습니다</string>
+    <string name="request_permission">권한 요청</string>
+    <string name="open_settings">설정 열기</string>
+
+    <string name="permission_required_title">알림이 비활성화됨</string>
+    <string name="schedule">예약</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">Nie zapomnij zapisać swoich wydatków</string>
+    <string name="notification_title">Dodaj transakcję</string>
+    <string name="notification_channel_description">Używane do przypomnień</string>
+</resources>

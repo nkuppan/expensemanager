@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">Фильтр по дате</string>
+    <string name="from_date">С даты</string>
+    <string name="to_date">По дату</string>
+    <string name="cancel">Отмена</string>
+    <string name="select">Выбрать</string>
+    <string name="transaction_type">Тип операции</string>
+    <string name="accounts">Счета</string>
+    <string name="categories">Категории</string>
+    <string name="apply">Применить</string>
+    <string name="filtered_by">Отфильтровано по</string>
+    <string name="custom">Произвольный</string>
+
+    <string name="filters">Фильтры</string>
+    <string name="clear_all">Очистить всё</string>
+    <plurals name="filters_selected">
+        <item quantity="one">%d фильтр выбран</item>
+        <item quantity="few">%d фильтра выбрано</item>
+        <item quantity="many">%d фильтров выбрано</item>
+        <item quantity="other">%d фильтра выбрано</item>
+    </plurals>
+</resources>

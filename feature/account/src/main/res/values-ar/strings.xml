@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">تم إنشاء/تحديث الحساب بنجاح</string>
+    <string name="account_name_error">يجب ألا يكون الاسم فارغًا</string>
+    <string name="account_delete_error_message">تعذر حذف هذا الحساب</string>
+    <string name="account_name">اسم الحساب</string>
+    <string name="accounts">الحسابات</string>
+    <string name="available_balance">الرصيد المتاح</string>
+    <string name="credit_limit">حد الائتمان</string>
+    <string name="credit_limit_error">يجب ألا يكون حد الائتمان فارغًا</string>
+    <string name="current_balance">الرصيد الحالي</string>
+    <string name="current_balance_error">يجب ألا يكون الرصيد الحالي فارغًا</string>
+    <string name="current_balance_value_error">يجب ألا يكون الرصيد الحالي رقمًا غير صالح</string>
+    <string name="no_account_available">لا توجد حسابات متاحة\nانقر على زر + لإنشاء حسابك الأول</string>
+    <string name="no_account_available_short">لا توجد حسابات متاحة</string>
+    <string name="account_create_error">يرجى إدخال قيم صحيحة</string>
+    <string name="bank_account">حساب بنكي</string>
+    <string name="credit">ائتمان</string>
+    <string name="select_account">اختيار الحساب</string>
+    <string name="account_selection_message">يجب اختيار حساب واحد على الأقل للمتابعة</string>
+    <string name="clear_all">مسح الكل</string>
+    <string name="select">اختيار</string>
+    <string name="account_delete_success_message">تم حذف الحساب بنجاح</string>
+    <string name="add_new">إضافة جديد</string>
+    <string name="accounts_re_order">إعادة ترتيب الحسابات</string>
+    <string name="available_limit">الحد المتاح %s</string>
+    <string name="drag_to_reorder_hint">اضغط مطولاً واسحب لإعادة ترتيب الحسابات</string>
+    <string name="save">حفظ</string>
+    <string name="apply">تطبيق</string>
+
+    <plurals name="items_selected">
+        <item quantity="zero">لم يتم تحديد أي عنصر</item>
+        <item quantity="one">تم تحديد عنصر واحد</item>
+        <item quantity="two">تم تحديد عنصرين</item>
+        <item quantity="few">تم تحديد %d عناصر</item>
+        <item quantity="many">تم تحديد %d عنصرًا</item>
+        <item quantity="other">تم تحديد %d عنصر</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="zero">لا توجد حسابات</item>
+        <item quantity="one">حساب واحد</item>
+        <item quantity="two">حسابان</item>
+        <item quantity="few">%d حسابات</item>
+        <item quantity="many">%d حسابًا</item>
+        <item quantity="other">%d حساب</item>
+    </plurals>
+    <string name="add_account">إضافة حساب</string>
+
+    <string name="details">التفاصيل</string>
+    <string name="delete">حذف</string>
+    <string name="appearance">المظهر</string>
+    <string name="edit_account">تعديل الحساب</string>
+    <string name="create_account">إنشاء حساب</string>
+    <string name="account_type">نوع الحساب</string>
+    <string name="balance">الرصيد</string>
+</resources>

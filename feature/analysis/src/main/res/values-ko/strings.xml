@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">분석</string>
+    <string name="average_and_projected">평균 &amp; 예상치</string>
+    <string name="day">일</string>
+    <string name="week">주</string>
+    <string name="month">월</string>
+    <string name="no_chart_available">분석할 데이터가 없습니다</string>
+</resources>

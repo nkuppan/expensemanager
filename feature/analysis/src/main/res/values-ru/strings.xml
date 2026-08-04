@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">Анализ</string>
+    <string name="average_and_projected">Среднее и прогноз</string>
+    <string name="day">День</string>
+    <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
+    <string name="no_chart_available">Нет данных для анализа</string>
+</resources>

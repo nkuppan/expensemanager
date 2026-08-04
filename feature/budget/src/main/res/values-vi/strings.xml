@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">Ngân sách</string>
+    <string name="active_budgets">Ngân sách đang hoạt động</string>
+    <string name="no_budget_available">Không có ngân sách nào\nNhấn nút + để tạo ngân sách mới</string>
+    <string name="no_budget_available_short">Không có ngân sách nào</string>
+    <string name="budget_name">Tên ngân sách</string>
+    <string name="budget_delete_error_message">Cập nhật ngân sách thất bại</string>
+    <string name="budget_name_error">Tên không được để trống</string>
+    <string name="budget_create_error">Không thể tạo/cập nhật ngân sách</string>
+    <string name="budget_create_success">Ngân sách đã được tạo/cập nhật thành công</string>
+    <string name="budget_amount">Số tiền ngân sách</string>
+    <string name="budget_amount_error">Số tiền ngân sách không được để trống hoặc bằng 0</string>
+
+    <string name="select_date">Chọn ngày</string>
+    <string name="select_account">Chọn tài khoản</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="select">Chọn</string>
+    <string name="select_category">Chọn danh mục</string>
+
+    <string name="all">Tất cả</string>
+
+    <string name="edit_budget">Chỉnh sửa ngân sách</string>
+    <string name="create_budget">Tạo ngân sách</string>
+    <string name="period">Kỳ hạn</string>
+    <string name="budget_scope">Phạm vi ngân sách</string>
+    <string name="details">Chi tiết</string>
+    <string name="appearance">Giao diện</string>
+    <string name="select_month">Chọn tháng</string>
+    <string name="budget_for">Ngân sách cho</string>
+    <string name="what_is_your_budget_limit">Hạn mức ngân sách tổng của bạn là bao nhiêu</string>
+</resources>

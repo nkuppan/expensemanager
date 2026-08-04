@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">Tidak dapat menambahkan transaksi</string>
+    <string name="unable_to_find_transaction">Tidak dapat menemukan transaksi</string>
+    <string name="transaction_delete_error_message">Tidak dapat menghapus transaksi ini</string>
+
+    <string name="no_transactions_available">Tidak ada transaksi yang tersedia untuk periode yang dipilih.\nKetuk tombol + untuk mencatat transaksi Anda</string>
+    <string name="date">Tanggal</string>
+    <string name="notes">Catatan</string>
+    <string name="expense">Pengeluaran</string>
+    <string name="income">Pemasukan</string>
+    <string name="transfer">Transfer</string>
+
+    <string name="select_different_account">Pilih akun yang berbeda. Akun Dari dan Ke tidak boleh sama.</string>
+    <string name="amount_error_message">Silakan masukkan jumlah yang valid</string>
+    <string name="amount_should_greater_than_zero">Jumlah harus lebih besar dari nol</string>
+    <string name="transaction_create_success">Transaksi berhasil dibuat/diperbarui</string>
+    <string name="optional_details">Detail opsional</string>
+    <string name="select_account">Pilih Akun</string>
+    <string name="select_category">Pilih Kategori</string>
+    <string name="select_date">Pilih Tanggal</string>
+    <string name="select_time">Pilih Waktu</string>
+
+    <string name="transaction">Transaksi</string>
+    <string name="clear">Hapus</string>
+    <string name="cancel">Batal</string>
+    <string name="ok">OK</string>
+    <string name="amount">Jumlah</string>
+    <string name="from_account">Dari Akun</string>
+    <string name="to_account">Ke Akun</string>
+
+    <string name="edit_transaction">Ubah Transaksi</string>
+    <string name="create_transaction">Transaksi Baru</string>
+    <string name="date_and_time">Tanggal &amp; Waktu</string>
+    <string name="delete">Hapus</string>
+    <string name="save">Simpan</string>
+    <string name="transaction_type">Jenis Transaksi</string>
+    <string name="details">Detail</string>
+
+    <string name="done">Selesai</string>
+    <string name="backspace">Hapus mundur</string>
+    <string name="add_transaction">Tambah Transaksi</string>
+</resources>

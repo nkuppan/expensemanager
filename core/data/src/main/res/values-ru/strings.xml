@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Сегодня</string>
+    <string name="this_week">Эта неделя</string>
+    <string name="this_month">Этот месяц</string>
+    <string name="this_year">Этот год</string>
+    <string name="all_time">Всё время</string>
+    <string name="custom">Произвольный</string>
+
+    <string name="amount">Сумма</string>
+    <string name="category">Категория</string>
+    <string name="date">Дата</string>
+    <string name="notes">Заметки</string>
+    <string name="average">Среднее</string>
+    <string name="day">День</string>
+    <string name="week">Неделя</string>
+    <string name="time">Время</string>
+    <string name="month">Месяц</string>
+    <string name="from_account">Счёт списания</string>
+    <string name="to_account">Счёт зачисления</string>
+    <string name="transaction_type">Тип операции</string>
+    <string name="category_type">Тип категории</string>
+    <string name="account_type">Тип счёта</string>
+    <string name="exported_on">Дата экспорта</string>
+    <string name="total_transactions">Всего операций</string>
+    <string name="total_income">Общий доход</string>
+    <string name="total_expense">Общий расход</string>
+    <string name="net_balance">Чистый баланс</string>
+
+    <string name="light">Светлая</string>
+    <string name="dark">Тёмная</string>
+    <string name="set_by_battery_saver">Определяется режимом энергосбережения</string>
+    <string name="system_default">Системная по умолчанию</string>
+
+    <string name="category_clothing">Одежда</string>
+    <string name="category_entertainment">Развлечения</string>
+    <string name="category_food">Еда</string>
+    <string name="category_health">Здоровье</string>
+    <string name="category_leisure">Досуг</string>
+    <string name="category_shopping">Покупки</string>
+    <string name="category_transportation">Транспорт</string>
+    <string name="category_utilities">Коммунальные услуги</string>
+    <string name="category_salary">Зарплата</string>
+    <string name="category_gift">Подарок</string>
+    <string name="category_coupons">Купоны</string>
+</resources>

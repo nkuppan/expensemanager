@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">تم التطوير بواسطة Naveen Kumar Kuppan</string>
+    <string name="system_default">افتراضي النظام</string>
+    <string name="app_version">الإصدار: %s</string>
+    <string name="about_us">من نحن</string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="terms_and_conditions">الشروط والأحكام</string>
+    <string name="licenses">تراخيص المصادر المفتوحة</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">تتبع إنفاقك</string>
+    <string name="welcome_message_description">كن على اطلاع واحتفظ بسجل لمصروفاتك</string>
+    <string name="privacy_text">تُخزَّن جميع بياناتك على جهازك مع إمكانية النسخ الاحتياطي الخارجي. بالمتابعة، فإنك توافق على سياسة الخصوصية الخاصة بنا.</string>
+    <string name="currency">العملة</string>
+    <string name="select_main_currency">اختيار العملة الرئيسية</string>
+    <string name="add_new">إضافة جديد</string>
+    <string name="proceed">متابعة</string>
+    <string name="get_started">البدء</string>
+    <string name="setup">إعداد إعدادات التطبيق</string>
+    <string name="create_new">إنشاء جديد</string>
+
+    <string name="setup_description">قم بتهيئة عملتك وحساباتك للبدء</string>
+    <string name="tap_to_change">انقر للتغيير</string>
+    <string name="setup_currency">إعداد العملة</string>
+    <string name="not_set_up_yet">لم يتم الإعداد بعد</string>
+
+    <string name="track">تتبع</string>
+    <string name="organize">نظّم</string>
+    <string name="grow">نمِّ</string>
+</resources>

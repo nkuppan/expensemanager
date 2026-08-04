@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">ОК</string>
+    <string name="cancel">Отмена</string>
+    <string name="choose_web_browser">Выбрать браузер</string>
+    <string name="select">Выбрать</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Выбрать значок</string>
+    <string name="choose_color">Выбрать цвет</string>
+    <string name="view_all">Смотреть все</string>
+    <string name="income">Доход</string>
+    <string name="expense">Расход</string>
+    <string name="balance">Баланс</string>
+    <string name="transaction_summary">Сводка</string>
+    <string name="total">Итого</string>
+
+    <string name="delete">Удалить</string>
+    <string name="delete_item_message">Вы уверены, что хотите удалить этот элемент? Удалённый элемент нельзя восстановить.</string>
+    <string name="yes_delete">Да, удалить</string>
+    <string name="no_keep">Нет, оставить</string>
+
+    <string name="color">Цвет</string>
+    <string name="icon">Значок</string>
+    <string name="change">Изменить</string>
+    <string name="add_new">Добавить</string>
+    <string name="no_account_available">Нет доступных счетов\\nНажмите кнопку +, чтобы создать первый счёт</string>
+</resources>

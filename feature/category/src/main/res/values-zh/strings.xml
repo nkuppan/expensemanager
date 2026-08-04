@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">分类</string>
+    <string name="income">收入</string>
+    <string name="expense">支出</string>
+    <string name="no_category_available">暂无可用分类\n点击 + 按钮创建您的分类</string>
+    <string name="no_transactions_available">所选期间内暂无交易记录。\n点击 + 按钮记录您的交易</string>
+    <string name="category_selection_message">请至少选择一个分类以继续</string>
+    <string name="select_account">选择账户</string>
+    <string name="clear_all">清除全部</string>
+    <string name="select">选择</string>
+    <string name="select_category">选择分类</string>
+
+    <string name="delete_item_message">确定要删除此项目吗？</string>
+    <string name="cancel">取消</string>
+    <string name="category">分类</string>
+    <string name="category_name">分类名称</string>
+
+    <string name="category_create_error">插入分类时发生未知错误</string>
+    <string name="category_name_error">名称不能为空</string>
+    <string name="category_create_success">分类创建/修改成功</string>
+    <string name="category_delete_error_message">无法删除此分类</string>
+    <string name="category_delete_message">删除此分类将同时删除其所有交易记录，并将其从所属的所有预算中移除。此操作无法撤销。</string>
+    <string name="default_category_name_locked_message">这是一个默认分类，其名称会跟随您选择的应用语言，无法重命名。</string>
+    <string name="edit">编辑</string>
+    <string name="add_new">新增</string>
+
+    <string name="edit_category">编辑分类</string>
+    <string name="create_category">创建分类</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="preview">预览</string>
+    <string name="details">详情</string>
+    <string name="appearance">外观</string>
+    <string name="category_type">分类类型</string>
+    <string name="category_name_placeholder">分类名称</string>
+
+    <string name="add_category">添加分类</string>
+    <string name="add_transaction">添加交易</string>
+    <string name="tap_chart_to_switch_to">"点击图表切换到 "</string>
+
+    <plurals name="category_count">
+        <item quantity="other">%d 个分类</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="other">已选择 %d 项</item>
+    </plurals>
+</resources>

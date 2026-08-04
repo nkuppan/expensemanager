@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">日付で絞り込み</string>
+    <string name="from_date">開始日</string>
+    <string name="to_date">終了日</string>
+    <string name="cancel">キャンセル</string>
+    <string name="select">選択</string>
+    <string name="transaction_type">取引タイプ</string>
+    <string name="accounts">アカウント</string>
+    <string name="categories">カテゴリ</string>
+    <string name="apply">適用</string>
+    <string name="filtered_by">絞り込み条件</string>
+    <string name="custom">カスタム</string>
+
+    <string name="filters">フィルター</string>
+    <string name="clear_all">すべてクリア</string>
+    <plurals name="filters_selected">
+        <item quantity="other">%d 件のフィルターを選択中</item>
+    </plurals>
+</resources>

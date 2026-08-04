@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">التحليل</string>
+    <string name="average_and_projected">المتوسط والمتوقع</string>
+    <string name="day">يوم</string>
+    <string name="week">أسبوع</string>
+    <string name="month">شهر</string>
+    <string name="no_chart_available">لا توجد بيانات متاحة للتحليل</string>
+</resources>

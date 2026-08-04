@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">Счёт успешно создан/обновлён</string>
+    <string name="account_name_error">Имя не должно быть пустым</string>
+    <string name="account_delete_error_message">Не удалось удалить этот счёт</string>
+    <string name="account_name">Название счёта</string>
+    <string name="accounts">Счета</string>
+    <string name="available_balance">Доступный баланс</string>
+    <string name="credit_limit">Кредитный лимит</string>
+    <string name="credit_limit_error">Кредитный лимит не должен быть пустым</string>
+    <string name="current_balance">Текущий баланс</string>
+    <string name="current_balance_error">Текущий баланс не должен быть пустым</string>
+    <string name="current_balance_value_error">Текущий баланс содержит недопустимое число</string>
+    <string name="no_account_available">Нет доступных счетов\nНажмите кнопку +, чтобы создать первый счёт</string>
+    <string name="no_account_available_short">Нет доступных счетов</string>
+    <string name="account_create_error">Пожалуйста, введите корректные значения</string>
+    <string name="bank_account">Банковский счёт</string>
+    <string name="credit">Кредит</string>
+    <string name="select_account">Выбрать счёт</string>
+    <string name="account_selection_message">Нужно выбрать хотя бы один счёт, чтобы продолжить</string>
+    <string name="clear_all">Очистить всё</string>
+    <string name="select">Выбрать</string>
+    <string name="account_delete_success_message">Счёт успешно удалён</string>
+    <string name="add_new">Добавить</string>
+    <string name="accounts_re_order">Изменение порядка счетов</string>
+    <string name="available_limit">Доступный лимит %s</string>
+    <string name="drag_to_reorder_hint">Удерживайте и перетаскивайте, чтобы изменить порядок счетов</string>
+    <string name="save">Сохранить</string>
+    <string name="apply">Применить</string>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d элемент выбран</item>
+        <item quantity="few">%d элемента выбрано</item>
+        <item quantity="many">%d элементов выбрано</item>
+        <item quantity="other">%d элемента выбрано</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="one">%d счёт</item>
+        <item quantity="few">%d счёта</item>
+        <item quantity="many">%d счетов</item>
+        <item quantity="other">%d счёта</item>
+    </plurals>
+    <string name="add_account">Добавить счёт</string>
+
+    <string name="details">Детали</string>
+    <string name="delete">Удалить</string>
+    <string name="appearance">Внешний вид</string>
+    <string name="edit_account">Изменить счёт</string>
+    <string name="create_account">Создать счёт</string>
+    <string name="account_type">Тип счёта</string>
+    <string name="balance">Баланс</string>
+</resources>

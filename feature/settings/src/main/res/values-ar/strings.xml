@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">الإعدادات</string>
+    <string name="theme">السمة</string>
+    <string name="analysis">التحليل</string>
+    <string name="select_currency">اختيار العملة</string>
+    <string name="reminder_notification">الإشعار</string>
+    <string name="info">معلومات</string>
+    <string name="about_the_app_information">معلومات حول التطبيق</string>
+    <string name="rate_us_message">سيساعدنا ذلك على التطور بشكل أفضل</string>
+    <string name="currency">تخصيص العملة</string>
+    <string name="selected_daily_reminder_time">سنذكّرك بإضافة مصروفك في الوقت المحدد</string>
+    <string name="rate_us">قيّم التطبيق</string>
+    <string name="choose_web_browser">اختيار متصفح الويب</string>
+
+    <string name="export">تصدير</string>
+    <string name="export_message">صدّر بياناتك وحلّلها بالتنسيق الذي تفضله</string>
+
+    <string name="filter">التصفية</string>
+    <string name="filter_message">يمكنك اختيار تصفية التاريخ لعرض المصروفات</string>
+
+    <string name="developed_by">تم التطوير بواسطة Naveen Kumar Kuppan</string>
+    <string name="system_default">افتراضي النظام</string>
+    <string name="app_version">الإصدار: %s</string>
+    <string name="advanced">متقدم</string>
+    <string name="advanced_config_message">إدارة الإعدادات المتقدمة للتطبيق</string>
+    <string name="default_account">الحساب الافتراضي</string>
+    <string name="default_expense_category">فئة المصروف الافتراضية</string>
+    <string name="default_income_category">فئة الدخل الافتراضية</string>
+    <string name="accounts_re_order">إعادة ترتيب الحسابات</string>
+    <string name="accounts_re_order_message">يمكنك تغيير ترتيب قائمة الحسابات في الشاشة الرئيسية.</string>
+    <string name="backup">نسخ احتياطي</string>
+    <string name="backup_message">أنشئ نسخة احتياطية من بياناتك واستعدها على أي جهاز.</string>
+    <string name="restore">استعادة</string>
+    <string name="restore_message">استعد بياناتك لاسترجاعها إلى الأجهزة.</string>
+    <string name="defaults">الإعدادات الافتراضية</string>
+    <string name="others">إعدادات أخرى</string>
+
+    <string name="personalization">التخصيص</string>
+    <string name="notifications">الإشعارات</string>
+    <string name="data_and_backup"><![CDATA[البيانات والنسخ الاحتياطي]]></string>
+    <string name="security">الأمان</string>
+    <string name="support">الدعم</string>
+
+    <string name="compact_summary">ملخص مضغوط</string>
+    <string name="compact_summary_message">عرض أداة ملخص أصغر في الشاشة الرئيسية</string>
+
+    <string name="app_lock">قفل التطبيق</string>
+    <string name="app_lock_message">طلب بصمة الإصبع أو بيانات اعتماد الجهاز عند فتح التطبيق</string>
+</resources>

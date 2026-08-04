@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">Pilih Mata Uang</string>
+    <string name="cancel">Batal</string>
+    <string name="ok">OK</string>
+    <string name="prefix_amount">Awalan (%s500)</string>
+    <string name="suffix_amount">Akhiran (500%s)</string>
+    <string name="currency">Mata Uang</string>
+    <string name="select_currency">Pilih Mata Uang</string>
+    <string name="currency_position">Posisi Mata Uang</string>
+    <string name="currency_format">Format Mata Uang</string>
+    <string name="none">Tidak ada(1234.23)</string>
+    <string name="number_format">Format(1,23,423.13)</string>
+    <string name="selected_currency">Mata Uang Terpilih</string>
+    <string name="choose_preferred_currency">Pilih mata uang pilihan Anda</string>
+    <string name="where_symbol_appears">Di mana simbol muncul</string>
+    <string name="number_formatting_style">Gaya format angka</string>
+
+</resources>

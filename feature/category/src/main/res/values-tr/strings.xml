@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">Kategoriler</string>
+    <string name="income">Gelir</string>
+    <string name="expense">Gider</string>
+    <string name="no_category_available">Hiç kategori yok\nKategorilerinizi oluşturmak için + düğmesine dokunun</string>
+    <string name="no_transactions_available">Seçilen dönem için işlem bulunmuyor.\nİşlemlerinizi not etmek için + düğmesine dokunun</string>
+    <string name="category_selection_message">Devam etmek için en az bir kategori seçmelisiniz</string>
+    <string name="select_account">Hesap Seç</string>
+    <string name="clear_all">Tümünü Temizle</string>
+    <string name="select">Seç</string>
+    <string name="select_category">Kategori Seç</string>
+
+    <string name="delete_item_message">Bu öğeyi silmek istediğinizden emin misiniz?</string>
+    <string name="cancel">İptal</string>
+    <string name="category">Kategori</string>
+    <string name="category_name">Kategori Adı</string>
+
+    <string name="category_create_error">Kategori eklenirken bilinmeyen bir hata oluştu</string>
+    <string name="category_name_error">Ad boş olamaz</string>
+    <string name="category_create_success">Kategori başarıyla oluşturuldu/değiştirildi</string>
+    <string name="category_delete_error_message">Bu kategori silinemiyor</string>
+    <string name="category_delete_message">Bu kategoriyi silmek, ona ait tüm işlemleri de siler ve dahil olduğu tüm bütçelerden kaldırır. Bu işlem geri alınamaz.</string>
+    <string name="default_category_name_locked_message">Bu varsayılan bir kategoridir, bu nedenle adı seçtiğiniz uygulama diline göre belirlenir ve yeniden adlandırılamaz.</string>
+    <string name="edit">Düzenle</string>
+    <string name="add_new">Yeni Ekle</string>
+
+    <string name="edit_category">Kategoriyi Düzenle</string>
+    <string name="create_category">Kategori Oluştur</string>
+    <string name="save">Kaydet</string>
+    <string name="delete">Sil</string>
+    <string name="preview">Önizleme</string>
+    <string name="details">Detaylar</string>
+    <string name="appearance">Görünüm</string>
+    <string name="category_type">Kategori Türü</string>
+    <string name="category_name_placeholder">Kategori Adı</string>
+
+    <string name="add_category">Kategori Ekle</string>
+    <string name="add_transaction">İşlem Ekle</string>
+    <string name="tap_chart_to_switch_to">"Değiştirmek için grafiğe dokunun "</string>
+
+    <plurals name="category_count">
+        <item quantity="one">%d kategori</item>
+        <item quantity="other">%d kategori</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d seçildi</item>
+        <item quantity="other">%d seçildi</item>
+    </plurals>
+</resources>

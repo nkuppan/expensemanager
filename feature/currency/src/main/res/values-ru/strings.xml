@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">Выбрать валюту</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="prefix_amount">Префикс (%s500)</string>
+    <string name="suffix_amount">Суффикс (500%s)</string>
+    <string name="currency">Валюта</string>
+    <string name="select_currency">Выбрать валюту</string>
+    <string name="currency_position">Позиция валюты</string>
+    <string name="currency_format">Формат валюты</string>
+    <string name="none">Нет(1234.23)</string>
+    <string name="number_format">Формат(1,23,423.13)</string>
+    <string name="selected_currency">Выбранная валюта</string>
+    <string name="choose_preferred_currency">Выберите предпочитаемую валюту</string>
+    <string name="where_symbol_appears">Где отображается символ</string>
+    <string name="number_formatting_style">Стиль форматирования чисел</string>
+
+</resources>

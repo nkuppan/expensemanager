@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">Не удалось добавить операцию</string>
+    <string name="unable_to_find_transaction">Не удалось найти операцию</string>
+    <string name="transaction_delete_error_message">Не удалось удалить эту операцию</string>
+
+    <string name="no_transactions_available">Нет операций за выбранный период.\nНажмите кнопку +, чтобы записать операцию</string>
+    <string name="date">Дата</string>
+    <string name="notes">Заметки</string>
+    <string name="expense">Расход</string>
+    <string name="income">Доход</string>
+    <string name="transfer">Перевод</string>
+
+    <string name="select_different_account">Выберите другой счёт. Счета списания и зачисления не должны совпадать.</string>
+    <string name="amount_error_message">Пожалуйста, введите корректную сумму</string>
+    <string name="amount_should_greater_than_zero">Сумма должна быть больше нуля</string>
+    <string name="transaction_create_success">Операция успешно создана/обновлена</string>
+    <string name="optional_details">Дополнительные детали</string>
+    <string name="select_account">Выбрать счёт</string>
+    <string name="select_category">Выбрать категорию</string>
+    <string name="select_date">Выбрать дату</string>
+    <string name="select_time">Выбрать время</string>
+
+    <string name="transaction">Операция</string>
+    <string name="clear">Очистить</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="amount">Сумма</string>
+    <string name="from_account">Счёт списания</string>
+    <string name="to_account">Счёт зачисления</string>
+
+    <string name="edit_transaction">Изменить операцию</string>
+    <string name="create_transaction">Новая операция</string>
+    <string name="date_and_time">Дата &amp; время</string>
+    <string name="delete">Удалить</string>
+    <string name="save">Сохранить</string>
+    <string name="transaction_type">Тип операции</string>
+    <string name="details">Детали</string>
+
+    <string name="done">Готово</string>
+    <string name="backspace">Стереть</string>
+    <string name="add_transaction">Добавить операцию</string>
+</resources>

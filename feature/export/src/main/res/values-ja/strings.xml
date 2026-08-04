@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">ファイルのエクスポート中に不明なエラーが発生しました</string>
+    <string name="export_success_message">ファイルが正常にエクスポートされました</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">共有</string>
+    <string name="export">エクスポート</string>
+    <string name="select_range">範囲を選択</string>
+    <string name="select_account">アカウントを選択</string>
+<string name="all">すべて</string>
+    <string name="today">今日</string>
+</resources>

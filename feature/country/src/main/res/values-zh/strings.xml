@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_description">%s(%s)</string>
+    <string name="search_country">搜索国家</string>
+    <string name="clear_search_text">清除搜索文本</string>
+    <string name="back">返回</string>
+    <string name="no_countries_found">未找到国家</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Śledź swoje wydatki</string>
+    <string name="welcome_message_description">Bądź na bieżąco i miej rejestr swoich wydatków</string>
+    <string name="privacy_text">Wszystkie Twoje dane są przechowywane na Twoim urządzeniu, z opcją zewnętrznej kopii zapasowej. Kontynuując, akceptujesz naszą politykę prywatności.</string>
+    <string name="currency">Waluta</string>
+    <string name="select_main_currency">Wybierz walutę główną</string>
+    <string name="add_new">Dodaj nowe</string>
+    <string name="proceed">Kontynuuj</string>
+    <string name="get_started">Rozpocznij</string>
+    <string name="setup">Skonfiguruj ustawienia aplikacji</string>
+    <string name="create_new">Utwórz nowe</string>
+
+    <string name="setup_description">Skonfiguruj walutę i konta, aby rozpocząć</string>
+    <string name="tap_to_change">Dotknij, aby zmienić</string>
+    <string name="setup_currency">Skonfiguruj walutę</string>
+    <string name="not_set_up_yet">Jeszcze nie skonfigurowano</string>
+
+    <string name="track">Śledź</string>
+    <string name="organize">Organizuj</string>
+    <string name="grow">Rozwijaj się</string>
+</resources>

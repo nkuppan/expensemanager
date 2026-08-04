@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">Expense Manager</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">Pilih</string>
+
+    <string name="title_home">Beranda</string>
+    <string name="view_all">Lihat semua</string>
+    <string name="accounts">Akun</string>
+
+    <string name="category_name">Nama Kategori</string>
+
+
+    <string name="title_graph">Grafik</string>
+
+
+    <string name="currency">Mata Uang</string>
+
+    <string name="choose_color">Pilih warna</string>
+    <string name="choose_icon">Pilih Ikon</string>
+
+
+    <string name="categories">Kategori</string>
+    <string name="total">Total</string>
+    <string name="transaction_summary">Ringkasan</string>
+    <string name="clear_all">Hapus Semua</string>
+    <string name="category_selection_message">Pilih minimal satu kategori untuk melanjutkan</string>
+    <string name="share">Bagikan</string>
+    <string name="hello">Halo!</string>
+    <string name="guest">Tamu</string>
+    <string name="balance">Saldo</string>
+
+    <string name="add_transaction">Tambah Transaksi</string>
+    <string name="cancel">Batal</string>
+    <string name="ok">OK</string>
+    <string name="settings">Pengaturan</string>
+    <string name="analysis">Analisis</string>
+    <string name="transaction">Transaksi</string>
+
+    <string name="app_lock_title">Buka Kunci Expense Manager</string>
+    <string name="app_lock_description">Verifikasi identitas Anda untuk melanjutkan</string>
+    <string name="app_lock_unlock">Buka Kunci</string>
+</resources>

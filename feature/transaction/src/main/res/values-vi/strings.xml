@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">Không thể thêm giao dịch</string>
+    <string name="unable_to_find_transaction">Không thể tìm thấy giao dịch</string>
+    <string name="transaction_delete_error_message">Không thể xóa giao dịch này</string>
+
+    <string name="no_transactions_available">Không có giao dịch nào trong khoảng thời gian đã chọn.\nNhấn nút + để ghi lại giao dịch của bạn</string>
+    <string name="date">Ngày</string>
+    <string name="notes">Ghi chú</string>
+    <string name="expense">Chi tiêu</string>
+    <string name="income">Thu nhập</string>
+    <string name="transfer">Chuyển khoản</string>
+
+    <string name="select_different_account">Chọn tài khoản khác. Tài khoản nguồn và tài khoản đích không được trùng nhau.</string>
+    <string name="amount_error_message">Vui lòng nhập số tiền hợp lệ</string>
+    <string name="amount_should_greater_than_zero">Số tiền phải lớn hơn 0</string>
+    <string name="transaction_create_success">Giao dịch đã được tạo/cập nhật thành công</string>
+    <string name="optional_details">Chi tiết tùy chọn</string>
+    <string name="select_account">Chọn tài khoản</string>
+    <string name="select_category">Chọn danh mục</string>
+    <string name="select_date">Chọn ngày</string>
+    <string name="select_time">Chọn giờ</string>
+
+    <string name="transaction">Giao dịch</string>
+    <string name="clear">Xóa</string>
+    <string name="cancel">Hủy</string>
+    <string name="ok">OK</string>
+    <string name="amount">Số tiền</string>
+    <string name="from_account">Từ tài khoản</string>
+    <string name="to_account">Đến tài khoản</string>
+
+    <string name="edit_transaction">Chỉnh sửa giao dịch</string>
+    <string name="create_transaction">Giao dịch mới</string>
+    <string name="date_and_time">Ngày &amp; Giờ</string>
+    <string name="delete">Xóa</string>
+    <string name="save">Lưu</string>
+    <string name="transaction_type">Loại giao dịch</string>
+    <string name="details">Chi tiết</string>
+
+    <string name="done">Xong</string>
+    <string name="backspace">Xóa lùi</string>
+    <string name="add_transaction">Thêm giao dịch</string>
+</resources>

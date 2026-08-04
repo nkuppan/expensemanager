@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">キャンセル</string>
+    <string name="choose_web_browser">ブラウザを選択</string>
+    <string name="select">選択</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">アイコンを選択</string>
+    <string name="choose_color">色を選択</string>
+    <string name="view_all">すべて表示</string>
+    <string name="income">収入</string>
+    <string name="expense">支出</string>
+    <string name="balance">残高</string>
+    <string name="transaction_summary">サマリー</string>
+    <string name="total">合計</string>
+
+    <string name="delete">削除</string>
+    <string name="delete_item_message">このアイテムを削除してもよろしいですか?削除したアイテムは復元できません。</string>
+    <string name="yes_delete">はい、削除する</string>
+    <string name="no_keep">いいえ、保持する</string>
+
+    <string name="color">色</string>
+    <string name="icon">アイコン</string>
+    <string name="change">変更</string>
+    <string name="add_new">新規追加</string>
+    <string name="no_account_available">アカウントがありません\\nアカウントを作成するには + ボタンをタップしてください</string>
+</resources>

@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">Expense Manager</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">Chọn</string>
+
+    <string name="title_home">Trang chủ</string>
+    <string name="view_all">Xem tất cả</string>
+    <string name="accounts">Tài khoản</string>
+
+    <string name="category_name">Tên danh mục</string>
+
+
+    <string name="title_graph">Biểu đồ</string>
+
+
+    <string name="currency">Tiền tệ</string>
+
+    <string name="choose_color">Chọn màu</string>
+    <string name="choose_icon">Chọn biểu tượng</string>
+
+
+    <string name="categories">Danh mục</string>
+    <string name="total">Tổng</string>
+    <string name="transaction_summary">Tóm tắt</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="category_selection_message">Cần chọn ít nhất một danh mục để tiếp tục</string>
+    <string name="share">Chia sẻ</string>
+    <string name="hello">Xin chào!</string>
+    <string name="guest">Khách</string>
+    <string name="balance">Số dư</string>
+
+    <string name="add_transaction">Thêm giao dịch</string>
+    <string name="cancel">Hủy</string>
+    <string name="ok">OK</string>
+    <string name="settings">Cài đặt</string>
+    <string name="analysis">Phân tích</string>
+    <string name="transaction">Giao dịch</string>
+
+    <string name="app_lock_title">Mở khóa Expense Manager</string>
+    <string name="app_lock_description">Xác minh danh tính của bạn để tiếp tục</string>
+    <string name="app_lock_unlock">Mở khóa</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">Batal</string>
+    <string name="choose_web_browser">Pilih browser</string>
+    <string name="select">Pilih</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Pilih Ikon</string>
+    <string name="choose_color">Pilih Warna</string>
+    <string name="view_all">Lihat Semua</string>
+    <string name="income">Pemasukan</string>
+    <string name="expense">Pengeluaran</string>
+    <string name="balance">Saldo</string>
+    <string name="transaction_summary">Ringkasan</string>
+    <string name="total">Total</string>
+
+    <string name="delete">Hapus</string>
+    <string name="delete_item_message">Anda yakin ingin menghapus item ini? Item yang dihapus tidak dapat dipulihkan.</string>
+    <string name="yes_delete">Ya, Hapus</string>
+    <string name="no_keep">Tidak, Simpan</string>
+
+    <string name="color">Warna</string>
+    <string name="icon">Ikon</string>
+    <string name="change">Ubah</string>
+    <string name="add_new">Tambah Baru</string>
+    <string name="no_account_available">Tidak ada akun yang tersedia\\nKetuk tombol + untuk membuat akun pertama Anda</string>
+</resources>

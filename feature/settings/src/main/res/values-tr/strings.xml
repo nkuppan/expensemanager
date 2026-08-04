@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Ayarlar</string>
+    <string name="theme">Tema</string>
+    <string name="analysis">Analiz</string>
+    <string name="select_currency">Para birimi seç</string>
+    <string name="reminder_notification">Bildirim</string>
+    <string name="info">Bilgi</string>
+    <string name="about_the_app_information">Uygulama bilgisi hakkında</string>
+    <string name="rate_us_message">Daha iyi büyümemize yardımcı olacak</string>
+    <string name="currency">Para Birimi Özelleştirme</string>
+    <string name="selected_daily_reminder_time">Belirlenen saatte giderinizi eklemeniz için sizi hatırlatacağız</string>
+    <string name="rate_us">Bizi Değerlendirin</string>
+    <string name="choose_web_browser">Web tarayıcısı seç</string>
+
+    <string name="export">Dışa Aktar</string>
+    <string name="export_message">Verilerinizi tercih ettiğiniz biçimde dışa aktarın ve analiz edin</string>
+
+    <string name="filter">Filtre</string>
+    <string name="filter_message">Giderleri görüntülemek için tarih filtresini seçebilirsiniz</string>
+
+    <string name="developed_by">Geliştirici: Naveen Kumar Kuppan</string>
+    <string name="system_default">Sistem Varsayılanı</string>
+    <string name="app_version">Sürüm: %s</string>
+    <string name="advanced">Gelişmiş</string>
+    <string name="advanced_config_message">Uygulama için gelişmiş yapılandırmaları yönetin</string>
+    <string name="default_account">Varsayılan Hesap</string>
+    <string name="default_expense_category">Varsayılan Gider Kategorisi</string>
+    <string name="default_income_category">Varsayılan Gelir Kategorisi</string>
+    <string name="accounts_re_order">Hesapları Yeniden Sırala</string>
+    <string name="accounts_re_order_message">Kontrol panelindeki hesap listesinin sırasını değiştirebilirsiniz.</string>
+    <string name="backup">Yedekleme</string>
+    <string name="backup_message">Verilerinizin yedeğini oluşturun ve istediğiniz cihazda geri yükleyin.</string>
+    <string name="restore">Geri Yükleme</string>
+    <string name="restore_message">Verilerinizi cihazlara geri almak için geri yükleyin.</string>
+    <string name="defaults">Varsayılanlar</string>
+    <string name="others">Diğer Ayarlar</string>
+
+    <string name="personalization">Kişiselleştirme</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="data_and_backup"><![CDATA[Veri ve Yedekleme]]></string>
+    <string name="security">Güvenlik</string>
+    <string name="support">Destek</string>
+
+    <string name="compact_summary">Kompakt Özet</string>
+    <string name="compact_summary_message">Ana ekranda daha küçük bir özet widget\'ı gösterin</string>
+
+    <string name="app_lock">Uygulama Kilidi</string>
+    <string name="app_lock_message">Uygulamayı açarken biyometrik veya cihaz kimlik bilgilerini iste</string>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">Hesap başarıyla oluşturuldu/güncellendi</string>
+    <string name="account_name_error">Ad boş olamaz</string>
+    <string name="account_delete_error_message">Bu hesap silinemiyor</string>
+    <string name="account_name">Hesap Adı</string>
+    <string name="accounts">Hesaplar</string>
+    <string name="available_balance">Kullanılabilir bakiye</string>
+    <string name="credit_limit">Kredi Limiti</string>
+    <string name="credit_limit_error">Kredi limiti boş olamaz</string>
+    <string name="current_balance">Güncel Bakiye</string>
+    <string name="current_balance_error">Güncel bakiye boş olamaz</string>
+    <string name="current_balance_value_error">Güncel bakiye geçersiz bir sayı olamaz</string>
+    <string name="no_account_available">Hiç hesap yok\nİlk hesabınızı oluşturmak için + düğmesine dokunun</string>
+    <string name="no_account_available_short">Hiç hesap yok</string>
+    <string name="account_create_error">Lütfen geçerli değerler girin</string>
+    <string name="bank_account">Banka hesabı</string>
+    <string name="credit">Kredi</string>
+    <string name="select_account">Hesap Seç</string>
+    <string name="account_selection_message">Devam etmek için en az bir hesap seçmelisiniz</string>
+    <string name="clear_all">Tümünü Temizle</string>
+    <string name="select">Seç</string>
+    <string name="account_delete_success_message">Hesap başarıyla silindi</string>
+    <string name="add_new">Yeni Ekle</string>
+    <string name="accounts_re_order">Hesapları Yeniden Sırala</string>
+    <string name="available_limit">Kullanılabilir limit %s</string>
+    <string name="drag_to_reorder_hint">Hesapları yeniden sıralamak için basılı tutup sürükleyin</string>
+    <string name="save">Kaydet</string>
+    <string name="apply">Uygula</string>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d seçildi</item>
+        <item quantity="other">%d seçildi</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="one">%d hesap</item>
+        <item quantity="other">%d hesap</item>
+    </plurals>
+    <string name="add_account">Hesap Ekle</string>
+
+    <string name="details">Detaylar</string>
+    <string name="delete">Sil</string>
+    <string name="appearance">Görünüm</string>
+    <string name="edit_account">Hesabı Düzenle</string>
+    <string name="create_account">Hesap Oluştur</string>
+    <string name="account_type">Hesap Türü</string>
+    <string name="balance">Bakiye</string>
+</resources>

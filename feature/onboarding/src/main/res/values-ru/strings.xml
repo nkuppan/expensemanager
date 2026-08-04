@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Отслеживайте свои расходы</string>
+    <string name="welcome_message_description">Будьте в курсе и ведите учёт своих расходов</string>
+    <string name="privacy_text">Все ваши данные хранятся на устройстве с возможностью внешнего резервного копирования. Продолжая, вы соглашаетесь с нашей политикой конфиденциальности.</string>
+    <string name="currency">Валюта</string>
+    <string name="select_main_currency">Выберите основную валюту</string>
+    <string name="add_new">Добавить</string>
+    <string name="proceed">Продолжить</string>
+    <string name="get_started">Начать</string>
+    <string name="setup">Настройка приложения</string>
+    <string name="create_new">Создать новый</string>
+
+    <string name="setup_description">Настройте валюту и счета, чтобы начать</string>
+    <string name="tap_to_change">Нажмите, чтобы изменить</string>
+    <string name="setup_currency">Настройте валюту</string>
+    <string name="not_set_up_yet">Ещё не настроено</string>
+
+    <string name="track">Отслеживайте</string>
+    <string name="organize">Организуйте</string>
+    <string name="grow">Развивайтесь</string>
+</resources>

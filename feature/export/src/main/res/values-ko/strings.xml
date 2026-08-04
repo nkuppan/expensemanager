@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">파일을 내보내는 중 알 수 없는 오류가 발생했습니다</string>
+    <string name="export_success_message">파일이 성공적으로 내보내졌습니다</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">공유</string>
+    <string name="export">내보내기</string>
+    <string name="select_range">기간 선택</string>
+    <string name="select_account">계좌 선택</string>
+<string name="all">전체</string>
+    <string name="today">오늘</string>
+</resources>

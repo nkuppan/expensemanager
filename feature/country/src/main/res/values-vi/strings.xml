@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_description">%s(%s)</string>
+    <string name="search_country">Tìm quốc gia</string>
+    <string name="clear_search_text">Xóa văn bản tìm kiếm</string>
+    <string name="back">Quay lại</string>
+    <string name="no_countries_found">Không tìm thấy quốc gia nào</string>
+</resources>

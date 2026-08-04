@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">날짜로 필터링</string>
+    <string name="from_date">시작일</string>
+    <string name="to_date">종료일</string>
+    <string name="cancel">취소</string>
+    <string name="select">선택</string>
+    <string name="transaction_type">거래 유형</string>
+    <string name="accounts">계좌</string>
+    <string name="categories">카테고리</string>
+    <string name="apply">적용</string>
+    <string name="filtered_by">필터 기준</string>
+    <string name="custom">사용자 지정</string>
+
+    <string name="filters">필터</string>
+    <string name="clear_all">모두 지우기</string>
+    <plurals name="filters_selected">
+        <item quantity="other">필터 %d개 선택됨</item>
+    </plurals>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">Dikembangkan oleh Naveen Kumar Kuppan</string>
+    <string name="system_default">Default Sistem</string>
+    <string name="app_version">Versi: %s</string>
+    <string name="about_us">Tentang Kami</string>
+    <string name="privacy_policy">Kebijakan Privasi</string>
+    <string name="terms_and_conditions">Syarat dan ketentuan</string>
+    <string name="licenses">Lisensi sumber terbuka</string>
+</resources>

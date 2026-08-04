@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">اليوم</string>
+    <string name="this_week">هذا الأسبوع</string>
+    <string name="this_month">هذا الشهر</string>
+    <string name="this_year">هذا العام</string>
+    <string name="all_time">كل الوقت</string>
+    <string name="custom">مخصص</string>
+
+    <string name="amount">المبلغ</string>
+    <string name="category">الفئة</string>
+    <string name="date">التاريخ</string>
+    <string name="notes">الملاحظات</string>
+    <string name="average">المتوسط</string>
+    <string name="day">يوم</string>
+    <string name="week">أسبوع</string>
+    <string name="time">الوقت</string>
+    <string name="month">شهر</string>
+    <string name="from_account">من حساب</string>
+    <string name="to_account">إلى حساب</string>
+    <string name="transaction_type">نوع المعاملة</string>
+    <string name="category_type">نوع الفئة</string>
+    <string name="account_type">نوع الحساب</string>
+    <string name="exported_on">تم التصدير في</string>
+    <string name="total_transactions">إجمالي المعاملات</string>
+    <string name="total_income">إجمالي الدخل</string>
+    <string name="total_expense">إجمالي المصروفات</string>
+    <string name="net_balance">صافي الرصيد</string>
+
+    <string name="light">فاتح</string>
+    <string name="dark">داكن</string>
+    <string name="set_by_battery_saver">يُحدَّد بواسطة توفير البطارية</string>
+    <string name="system_default">افتراضي النظام</string>
+
+    <string name="category_clothing">ملابس</string>
+    <string name="category_entertainment">ترفيه</string>
+    <string name="category_food">طعام</string>
+    <string name="category_health">صحة</string>
+    <string name="category_leisure">أوقات الفراغ</string>
+    <string name="category_shopping">تسوق</string>
+    <string name="category_transportation">المواصلات</string>
+    <string name="category_utilities">المرافق</string>
+    <string name="category_salary">راتب</string>
+    <string name="category_gift">هدية</string>
+    <string name="category_coupons">كوبونات</string>
+</resources>

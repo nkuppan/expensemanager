@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">Geliştirici: Naveen Kumar Kuppan</string>
+    <string name="system_default">Sistem Varsayılanı</string>
+    <string name="app_version">Sürüm: %s</string>
+    <string name="about_us">Hakkımızda</string>
+    <string name="privacy_policy">Gizlilik Politikası</string>
+    <string name="terms_and_conditions">Kullanım Şartları</string>
+    <string name="licenses">Açık kaynak lisansları</string>
+</resources>

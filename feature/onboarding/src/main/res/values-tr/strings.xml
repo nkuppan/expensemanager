@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Harcamalarınızı takip edin</string>
+    <string name="welcome_message_description">Harcamalarınızdan haberdar olun ve kaydını tutun</string>
+    <string name="privacy_text">Tüm verileriniz, isteğe bağlı harici yedekleme seçeneğiyle cihazınızda saklanır. Devam ederek gizlilik politikamızı kabul etmiş olursunuz.</string>
+    <string name="currency">Para Birimi</string>
+    <string name="select_main_currency">Ana Para Birimini Seç</string>
+    <string name="add_new">Yeni Ekle</string>
+    <string name="proceed">Devam Et</string>
+    <string name="get_started">Başlayın</string>
+    <string name="setup">Uygulama Ayarlarını Yapılandır</string>
+    <string name="create_new">Yeni Oluştur</string>
+
+    <string name="setup_description">Başlamak için para biriminizi ve hesaplarınızı yapılandırın</string>
+    <string name="tap_to_change">Değiştirmek için dokunun</string>
+    <string name="setup_currency">Para birimini ayarlayın</string>
+    <string name="not_set_up_yet">Henüz ayarlanmadı</string>
+
+    <string name="track">Takip Et</string>
+    <string name="organize">Düzenle</string>
+    <string name="grow">Büyüt</string>
+</resources>

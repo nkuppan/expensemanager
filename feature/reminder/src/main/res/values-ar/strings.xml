@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">التذكير</string>
+    <string name="reminder_notification">إشعار التذكير</string>
+    <string name="reminder_notification_message">وقت الإشعار لتذكيرك بإضافة مصروفاتك</string>
+    <string name="notification_time">وقت إشعار التذكير</string>
+    <string name="notification_permission_message">إذن الإشعارات مهم لهذا التطبيق. يرجى منح الإذن.</string>
+    <string name="permission_disabled">إذن الإشعارات معطل</string>
+    <string name="request_permission">طلب الإذن</string>
+    <string name="open_settings">فتح الإعدادات</string>
+
+    <string name="permission_required_title">الإشعارات معطّلة</string>
+    <string name="schedule">الجدولة</string>
+</resources>

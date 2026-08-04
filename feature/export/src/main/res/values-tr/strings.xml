@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">Dosya dışa aktarılırken bilinmeyen bir hata oluştu</string>
+    <string name="export_success_message">Dosya başarıyla dışa aktarıldı</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">Paylaş</string>
+    <string name="export">Dışa Aktar</string>
+    <string name="select_range">Aralık Seç</string>
+    <string name="select_account">Hesap Seç</string>
+<string name="all">Tümü</string>
+    <string name="today">Bugün</string>
+</resources>

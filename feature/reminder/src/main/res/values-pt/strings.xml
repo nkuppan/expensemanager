@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Lembrete</string>
+    <string name="reminder_notification">Notificação de lembrete</string>
+    <string name="reminder_notification_message">Hora da notificação para o lembrar de adicionar as suas despesas</string>
+    <string name="notification_time">Hora da notificação de lembrete</string>
+    <string name="notification_permission_message">A permissão de notificação é importante para esta aplicação. Por favor, conceda a permissão.</string>
+    <string name="permission_disabled">A permissão de notificação está desativada</string>
+    <string name="request_permission">Solicitar permissão</string>
+    <string name="open_settings">Abrir definições</string>
+
+    <string name="permission_required_title">Notificações desativadas</string>
+    <string name="schedule">Agendar</string>
+</resources>

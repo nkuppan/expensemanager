@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">تصفية حسب التاريخ</string>
+    <string name="from_date">من تاريخ</string>
+    <string name="to_date">إلى تاريخ</string>
+    <string name="cancel">إلغاء</string>
+    <string name="select">اختيار</string>
+    <string name="transaction_type">نوع المعاملة</string>
+    <string name="accounts">الحسابات</string>
+    <string name="categories">الفئات</string>
+    <string name="apply">تطبيق</string>
+    <string name="filtered_by">تمت التصفية حسب</string>
+    <string name="custom">مخصص</string>
+
+    <string name="filters">عوامل التصفية</string>
+    <string name="clear_all">مسح الكل</string>
+    <plurals name="filters_selected">
+        <item quantity="zero">لم يتم تحديد أي عامل تصفية</item>
+        <item quantity="one">تم تحديد عامل تصفية واحد</item>
+        <item quantity="two">تم تحديد عاملَي تصفية</item>
+        <item quantity="few">تم تحديد %d عوامل تصفية</item>
+        <item quantity="many">تم تحديد %d عامل تصفية</item>
+        <item quantity="other">تم تحديد %d عامل تصفية</item>
+    </plurals>
+</resources>

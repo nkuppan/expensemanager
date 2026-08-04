@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">Analiz</string>
+    <string name="average_and_projected">Ortalama ve Tahmini</string>
+    <string name="day">Gün</string>
+    <string name="week">Hafta</string>
+    <string name="month">Ay</string>
+    <string name="no_chart_available">Analiz için veri bulunmuyor</string>
+</resources>

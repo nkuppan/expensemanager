@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">Đã xảy ra lỗi không xác định khi xuất tệp</string>
+    <string name="export_success_message">Tệp đã được xuất thành công</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">Chia sẻ</string>
+    <string name="export">Xuất</string>
+    <string name="select_range">Chọn khoảng thời gian</string>
+    <string name="select_account">Chọn tài khoản</string>
+<string name="all">Tất cả</string>
+    <string name="today">Hôm nay</string>
+</resources>

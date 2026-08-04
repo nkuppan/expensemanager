@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">Resumo de transações</string>
+    <string name="expense">Despesa</string>
+    <string name="income">Receita</string>
+    <string name="total">Total</string>
+    <string name="balance">Saldo</string>
+    <string name="categories">Categorias</string>
+    <string name="hello">Olá!</string>
+    <string name="guest">Convidado</string>
+    <string name="settings">Definições</string>
+    <string name="transaction">Transação</string>
+    <string name="no_transactions_available">Não há transações disponíveis para o período selecionado.\nToque no botão + para registar as suas transações</string>
+    <string name="home">Início</string>
+    <string name="transaction_create_message">"Adicione aqui as suas despesas, receitas e transferências. "</string>
+    <string name="help"><![CDATA[Ajuda e informações]]></string>
+    <string name="ok">OK</string>
+    <string name="no_budget_for_month">Sem %1$s</string>
+    <string name="tap_to_set_spending_limit">Toque para definir um limite de gastos</string>
+</resources>

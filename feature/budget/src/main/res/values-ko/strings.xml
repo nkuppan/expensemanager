@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">예산</string>
+    <string name="active_budgets">진행 중인 예산</string>
+    <string name="no_budget_available">사용 가능한 예산이 없습니다\n+ 버튼을 눌러 새 예산을 만드세요</string>
+    <string name="no_budget_available_short">사용 가능한 예산이 없습니다</string>
+    <string name="budget_name">예산 이름</string>
+    <string name="budget_delete_error_message">예산 업데이트에 실패했습니다</string>
+    <string name="budget_name_error">이름은 비워둘 수 없습니다</string>
+    <string name="budget_create_error">예산을 생성/수정할 수 없습니다</string>
+    <string name="budget_create_success">예산이 성공적으로 생성/수정되었습니다</string>
+    <string name="budget_amount">예산 금액</string>
+    <string name="budget_amount_error">예산 금액은 비워두거나 0으로 설정할 수 없습니다</string>
+
+    <string name="select_date">날짜 선택</string>
+    <string name="select_account">계좌 선택</string>
+    <string name="clear_all">모두 지우기</string>
+    <string name="select">선택</string>
+    <string name="select_category">카테고리 선택</string>
+
+    <string name="all">전체</string>
+
+    <string name="edit_budget">예산 수정</string>
+    <string name="create_budget">예산 만들기</string>
+    <string name="period">기간</string>
+    <string name="budget_scope">예산 범위</string>
+    <string name="details">세부 정보</string>
+    <string name="appearance">모양</string>
+    <string name="select_month">월 선택</string>
+    <string name="budget_for">예산 대상</string>
+    <string name="what_is_your_budget_limit">총 예산 한도는 얼마인가요</string>
+</resources>

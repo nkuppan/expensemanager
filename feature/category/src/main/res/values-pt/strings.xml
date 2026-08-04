@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">Categorias</string>
+    <string name="income">Receita</string>
+    <string name="expense">Despesa</string>
+    <string name="no_category_available">Não há categorias disponíveis\nToque no botão + para criar as suas categorias</string>
+    <string name="no_transactions_available">Não há transações disponíveis para o período selecionado.\nToque no botão + para registar as suas transações</string>
+    <string name="category_selection_message">Deve selecionar pelo menos uma categoria para continuar</string>
+    <string name="select_account">Selecionar conta</string>
+    <string name="clear_all">Limpar tudo</string>
+    <string name="select">Selecionar</string>
+    <string name="select_category">Selecionar categoria</string>
+
+    <string name="delete_item_message">Deseja realmente eliminar este item?</string>
+    <string name="cancel">Cancelar</string>
+    <string name="category">Categoria</string>
+    <string name="category_name">Nome da categoria</string>
+
+    <string name="category_create_error">Ocorreu um erro desconhecido ao inserir a categoria</string>
+    <string name="category_name_error">O nome não deve estar vazio</string>
+    <string name="category_create_success">Categoria criada/modificada com sucesso</string>
+    <string name="category_delete_error_message">Não foi possível eliminar esta categoria</string>
+    <string name="category_delete_message">Eliminar esta categoria também eliminará todas as suas transações e removê-la-á de qualquer orçamento a que pertença. Esta ação não pode ser desfeita.</string>
+    <string name="default_category_name_locked_message">Esta é uma categoria predefinida, pelo que o seu nome segue o idioma selecionado da aplicação e não pode ser renomeado.</string>
+    <string name="edit">Editar</string>
+    <string name="add_new">Adicionar novo</string>
+
+    <string name="edit_category">Editar categoria</string>
+    <string name="create_category">Criar categoria</string>
+    <string name="save">Guardar</string>
+    <string name="delete">Eliminar</string>
+    <string name="preview">Pré-visualização</string>
+    <string name="details">Detalhes</string>
+    <string name="appearance">Aparência</string>
+    <string name="category_type">Tipo de categoria</string>
+    <string name="category_name_placeholder">Nome da categoria</string>
+
+    <string name="add_category">Adicionar categoria</string>
+    <string name="add_transaction">Adicionar transação</string>
+    <string name="tap_chart_to_switch_to">"Toque no gráfico para mudar para "</string>
+
+    <plurals name="category_count">
+        <item quantity="one">%d categoria</item>
+        <item quantity="other">%d categorias</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d selecionado</item>
+        <item quantity="other">%d selecionados</item>
+    </plurals>
+</resources>

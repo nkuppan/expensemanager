@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">リマインダー</string>
+    <string name="reminder_notification">リマインダー通知</string>
+    <string name="reminder_notification_message">経費を追加するようお知らせする通知時刻</string>
+    <string name="notification_time">リマインダー通知時刻</string>
+    <string name="notification_permission_message">通知の許可はこのアプリにとって重要です。許可を与えてください。</string>
+    <string name="permission_disabled">通知の許可が無効になっています</string>
+    <string name="request_permission">許可をリクエスト</string>
+    <string name="open_settings">設定を開く</string>
+
+    <string name="permission_required_title">通知が無効です</string>
+    <string name="schedule">スケジュール</string>
+</resources>

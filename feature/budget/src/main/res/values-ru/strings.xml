@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">Бюджеты</string>
+    <string name="active_budgets">Активные бюджеты</string>
+    <string name="no_budget_available">Нет доступных бюджетов\nНажмите кнопку +, чтобы создать новый бюджет</string>
+    <string name="no_budget_available_short">Нет доступных бюджетов</string>
+    <string name="budget_name">Название бюджета</string>
+    <string name="budget_delete_error_message">Не удалось обновить бюджет</string>
+    <string name="budget_name_error">Название не должно быть пустым</string>
+    <string name="budget_create_error">Не удалось создать/обновить бюджет</string>
+    <string name="budget_create_success">Бюджет успешно создан/обновлён</string>
+    <string name="budget_amount">Сумма бюджета</string>
+    <string name="budget_amount_error">Сумма бюджета не должна быть пустой или равной нулю</string>
+
+    <string name="select_date">Выбрать дату</string>
+    <string name="select_account">Выбрать счёт</string>
+    <string name="clear_all">Очистить всё</string>
+    <string name="select">Выбрать</string>
+    <string name="select_category">Выбрать категорию</string>
+
+    <string name="all">Все</string>
+
+    <string name="edit_budget">Изменить бюджет</string>
+    <string name="create_budget">Создать бюджет</string>
+    <string name="period">Период</string>
+    <string name="budget_scope">Область бюджета</string>
+    <string name="details">Детали</string>
+    <string name="appearance">Внешний вид</string>
+    <string name="select_month">Выбрать месяц</string>
+    <string name="budget_for">Бюджет на</string>
+    <string name="what_is_your_budget_limit">Какой у вас общий лимит бюджета</string>
+</resources>

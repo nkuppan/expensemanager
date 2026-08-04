@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">予算</string>
+    <string name="active_budgets">有効な予算</string>
+    <string name="no_budget_available">予算がありません\n新しい予算を作成するには + ボタンをタップしてください</string>
+    <string name="no_budget_available_short">予算がありません</string>
+    <string name="budget_name">予算名</string>
+    <string name="budget_delete_error_message">予算の更新に失敗しました</string>
+    <string name="budget_name_error">名前を入力してください</string>
+    <string name="budget_create_error">予算を作成/更新できません</string>
+    <string name="budget_create_success">予算が正常に作成/更新されました</string>
+    <string name="budget_amount">予算金額</string>
+    <string name="budget_amount_error">予算金額を0以外で入力してください</string>
+
+    <string name="select_date">日付を選択</string>
+    <string name="select_account">アカウントを選択</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="select">選択</string>
+    <string name="select_category">カテゴリを選択</string>
+
+    <string name="all">すべて</string>
+
+    <string name="edit_budget">予算を編集</string>
+    <string name="create_budget">予算を作成</string>
+    <string name="period">期間</string>
+    <string name="budget_scope">予算の範囲</string>
+    <string name="details">詳細</string>
+    <string name="appearance">外観</string>
+    <string name="select_month">月を選択</string>
+    <string name="budget_for">予算対象</string>
+    <string name="what_is_your_budget_limit">合計予算の上限はいくらですか</string>
+</resources>

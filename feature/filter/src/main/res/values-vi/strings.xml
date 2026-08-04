@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">Lọc theo ngày</string>
+    <string name="from_date">Từ ngày</string>
+    <string name="to_date">Đến ngày</string>
+    <string name="cancel">Hủy</string>
+    <string name="select">Chọn</string>
+    <string name="transaction_type">Loại giao dịch</string>
+    <string name="accounts">Tài khoản</string>
+    <string name="categories">Danh mục</string>
+    <string name="apply">Áp dụng</string>
+    <string name="filtered_by">Lọc theo</string>
+    <string name="custom">Tùy chỉnh</string>
+
+    <string name="filters">Bộ lọc</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <plurals name="filters_selected">
+        <item quantity="other">%d bộ lọc đã chọn</item>
+    </plurals>
+</resources>

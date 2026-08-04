@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.core.data.repository
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.R
@@ -58,13 +60,49 @@ class LocaleRepositoryImpl(
     }
 
     override fun getLocales(): List<AppLocale> {
+        // Ordered by actual on-device/app language usage rather than raw speaker counts. These
+        // diverge in populous markets where a large share of smartphone users default to English
+        // for apps despite it not being the majority spoken language (India, Nigeria, Philippines,
+        // Pakistan), versus markets like Indonesia, Brazil, and Japan where the local language is
+        // used on-device almost universally. System default and English stay first since one is a
+        // meta-option and the other is the app's base/fallback language.
         return listOf(
             defaultLocale,
             AppLocale("en", R.string.language_english),
+            AppLocale("zh", R.string.language_chinese),
             AppLocale("es", R.string.language_spanish),
-            AppLocale("fr", R.string.language_french),
-            AppLocale("de", R.string.language_german),
+            AppLocale("id", R.string.language_indonesian),
+            AppLocale("pt", R.string.language_portuguese),
             AppLocale("hi", R.string.language_hindi),
-        )
+            AppLocale("ar", R.string.language_arabic),
+            AppLocale("ru", R.string.language_russian),
+            AppLocale("fr", R.string.language_french),
+            AppLocale("ja", R.string.language_japanese),
+            AppLocale("vi", R.string.language_vietnamese),
+            AppLocale("tr", R.string.language_turkish),
+            AppLocale("de", R.string.language_german),
+            AppLocale("ko", R.string.language_korean),
+            AppLocale("it", R.string.language_italian),
+            AppLocale("pl", R.string.language_polish),
+        ).withDeviceLocaleFirst()
+    }
+
+    /**
+     * Surfaces whichever supported language matches the device's actual system locale (read off
+     * [Resources.getSystem], which reflects the OS-level configuration and is unaffected by any
+     * per-app locale override this app has already applied) right after the "System default"
+     * entry, so a user picking a language for the first time can spot their own without scrolling
+     * the full list. No-ops if nothing matches, or if the match is already in that position.
+     */
+    private fun List<AppLocale>.withDeviceLocaleFirst(): List<AppLocale> {
+        val deviceLanguage = ConfigurationCompat.getLocales(Resources.getSystem().configuration)
+            .get(0)
+            ?.language
+            ?: return this
+        val matchIndex = indexOfFirst { it.tag == deviceLanguage }
+        if (matchIndex <= 1) return this
+        return toMutableList().apply {
+            add(1, removeAt(matchIndex))
+        }
     }
 }

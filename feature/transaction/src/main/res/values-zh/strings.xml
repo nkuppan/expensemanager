@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">无法添加交易</string>
+    <string name="unable_to_find_transaction">找不到交易</string>
+    <string name="transaction_delete_error_message">无法删除此交易</string>
+
+    <string name="no_transactions_available">所选期间内暂无交易记录。\n点击 + 按钮记录您的交易</string>
+    <string name="date">日期</string>
+    <string name="notes">备注</string>
+    <string name="expense">支出</string>
+    <string name="income">收入</string>
+    <string name="transfer">转账</string>
+
+    <string name="select_different_account">请选择不同的账户，转出和转入账户不能相同。</string>
+    <string name="amount_error_message">请输入有效金额</string>
+    <string name="amount_should_greater_than_zero">金额必须大于零</string>
+    <string name="transaction_create_success">交易创建/更新成功</string>
+    <string name="optional_details">可选详情</string>
+    <string name="select_account">选择账户</string>
+    <string name="select_category">选择分类</string>
+    <string name="select_date">选择日期</string>
+    <string name="select_time">选择时间</string>
+
+    <string name="transaction">交易</string>
+    <string name="clear">清除</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="amount">金额</string>
+    <string name="from_account">转出账户</string>
+    <string name="to_account">转入账户</string>
+
+    <string name="edit_transaction">编辑交易</string>
+    <string name="create_transaction">新交易</string>
+    <string name="date_and_time">日期与时间</string>
+    <string name="delete">删除</string>
+    <string name="save">保存</string>
+    <string name="transaction_type">交易类型</string>
+    <string name="details">详情</string>
+
+    <string name="done">完成</string>
+    <string name="backspace">退格</string>
+    <string name="add_transaction">添加交易</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">Filter Berdasarkan Tanggal</string>
+    <string name="from_date">Dari tanggal</string>
+    <string name="to_date">Sampai tanggal</string>
+    <string name="cancel">Batal</string>
+    <string name="select">Pilih</string>
+    <string name="transaction_type">Jenis Transaksi</string>
+    <string name="accounts">Akun</string>
+    <string name="categories">Kategori</string>
+    <string name="apply">Terapkan</string>
+    <string name="filtered_by">Difilter berdasarkan</string>
+    <string name="custom">Kustom</string>
+
+    <string name="filters">Filter</string>
+    <string name="clear_all">Hapus semua</string>
+    <plurals name="filters_selected">
+        <item quantity="other">%d filter dipilih</item>
+    </plurals>
+</resources>

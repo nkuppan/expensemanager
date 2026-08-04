@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Acompanhe os seus gastos</string>
+    <string name="welcome_message_description">Mantenha-se informado e tenha um registo dos seus gastos</string>
+    <string name="privacy_text">Todos os seus dados são armazenados no seu dispositivo, com a opção de cópia de segurança externa. Ao continuar, concorda com a nossa política de privacidade.</string>
+    <string name="currency">Moeda</string>
+    <string name="select_main_currency">Selecionar moeda principal</string>
+    <string name="add_new">Adicionar novo</string>
+    <string name="proceed">Continuar</string>
+    <string name="get_started">Começar</string>
+    <string name="setup">Configurar definições da aplicação</string>
+    <string name="create_new">Criar novo</string>
+
+    <string name="setup_description">Configure a sua moeda e contas para começar</string>
+    <string name="tap_to_change">Toque para alterar</string>
+    <string name="setup_currency">Configurar a moeda</string>
+    <string name="not_set_up_yet">Ainda não configurado</string>
+
+    <string name="track">Acompanhar</string>
+    <string name="organize">Organizar</string>
+    <string name="grow">Crescer</string>
+</resources>

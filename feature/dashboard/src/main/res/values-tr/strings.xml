@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">İşlem Özeti</string>
+    <string name="expense">Gider</string>
+    <string name="income">Gelir</string>
+    <string name="total">Toplam</string>
+    <string name="balance">Bakiye</string>
+    <string name="categories">Kategoriler</string>
+    <string name="hello">Merhaba!</string>
+    <string name="guest">Misafir</string>
+    <string name="settings">Ayarlar</string>
+    <string name="transaction">İşlem</string>
+    <string name="no_transactions_available">Seçilen dönem için işlem bulunmuyor.\nİşlemlerinizi not etmek için + düğmesine dokunun</string>
+    <string name="home">Ana Sayfa</string>
+    <string name="transaction_create_message">"Giderlerinizi, gelirlerinizi ve transferlerinizi buraya ekleyin. "</string>
+    <string name="help"><![CDATA[Yardım ve bilgi]]></string>
+    <string name="ok">Tamam</string>
+    <string name="no_budget_for_month">%1$s yok</string>
+    <string name="tap_to_set_spending_limit">Harcama limiti belirlemek için dokunun</string>
+</resources>

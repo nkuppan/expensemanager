@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">통화 선택</string>
+    <string name="cancel">취소</string>
+    <string name="ok">확인</string>
+    <string name="prefix_amount">앞에 표시 (%s500)</string>
+    <string name="suffix_amount">뒤에 표시 (500%s)</string>
+    <string name="currency">통화</string>
+    <string name="select_currency">통화 선택</string>
+    <string name="currency_position">통화 기호 위치</string>
+    <string name="currency_format">통화 형식</string>
+    <string name="none">없음(1234.23)</string>
+    <string name="number_format">형식(1,23,423.13)</string>
+    <string name="selected_currency">선택한 통화</string>
+    <string name="choose_preferred_currency">선호하는 통화를 선택하세요</string>
+    <string name="where_symbol_appears">기호가 표시되는 위치</string>
+    <string name="number_formatting_style">숫자 표시 형식</string>
+
+</resources>

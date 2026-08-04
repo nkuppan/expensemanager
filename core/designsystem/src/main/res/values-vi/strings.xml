@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">Hủy</string>
+    <string name="choose_web_browser">Chọn trình duyệt</string>
+    <string name="select">Chọn</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Chọn biểu tượng</string>
+    <string name="choose_color">Chọn màu</string>
+    <string name="view_all">Xem tất cả</string>
+    <string name="income">Thu nhập</string>
+    <string name="expense">Chi tiêu</string>
+    <string name="balance">Số dư</string>
+    <string name="transaction_summary">Tóm tắt</string>
+    <string name="total">Tổng</string>
+
+    <string name="delete">Xóa</string>
+    <string name="delete_item_message">Bạn có chắc chắn muốn xóa mục này không? Mục đã xóa không thể khôi phục.</string>
+    <string name="yes_delete">Có, xóa</string>
+    <string name="no_keep">Không, giữ lại</string>
+
+    <string name="color">Màu sắc</string>
+    <string name="icon">Biểu tượng</string>
+    <string name="change">Thay đổi</string>
+    <string name="add_new">Thêm mới</string>
+    <string name="no_account_available">Không có tài khoản nào\\nNhấn nút + để tạo tài khoản đầu tiên của bạn</string>
+</resources>

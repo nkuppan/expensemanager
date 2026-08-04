@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">Akun berhasil dibuat/diperbarui</string>
+    <string name="account_name_error">Nama tidak boleh kosong</string>
+    <string name="account_delete_error_message">Tidak dapat menghapus akun ini</string>
+    <string name="account_name">Nama Akun</string>
+    <string name="accounts">Akun</string>
+    <string name="available_balance">Saldo tersedia</string>
+    <string name="credit_limit">Batas Kredit</string>
+    <string name="credit_limit_error">Batas kredit tidak boleh kosong</string>
+    <string name="current_balance">Saldo Saat Ini</string>
+    <string name="current_balance_error">Saldo saat ini tidak boleh kosong</string>
+    <string name="current_balance_value_error">Saldo saat ini bukan angka yang valid</string>
+    <string name="no_account_available">Tidak ada akun yang tersedia\nKetuk tombol + untuk membuat akun pertama Anda</string>
+    <string name="no_account_available_short">Tidak ada akun yang tersedia</string>
+    <string name="account_create_error">Silakan masukkan nilai yang valid</string>
+    <string name="bank_account">Rekening bank</string>
+    <string name="credit">Kredit</string>
+    <string name="select_account">Pilih Akun</string>
+    <string name="account_selection_message">Pilih minimal satu akun untuk melanjutkan</string>
+    <string name="clear_all">Hapus Semua</string>
+    <string name="select">Pilih</string>
+    <string name="account_delete_success_message">Akun berhasil dihapus</string>
+    <string name="add_new">Tambah Baru</string>
+    <string name="accounts_re_order">Urutkan Ulang Akun</string>
+    <string name="available_limit">Batas tersedia %s</string>
+    <string name="drag_to_reorder_hint">Tahan dan seret untuk mengurutkan ulang akun</string>
+    <string name="save">Simpan</string>
+    <string name="apply">Terapkan</string>
+
+    <plurals name="items_selected">
+        <item quantity="other">%d dipilih</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="other">%d akun</item>
+    </plurals>
+    <string name="add_account">Tambah Akun</string>
+
+    <string name="details">Detail</string>
+    <string name="delete">Hapus</string>
+    <string name="appearance">Tampilan</string>
+    <string name="edit_account">Ubah Akun</string>
+    <string name="create_account">Buat Akun</string>
+    <string name="account_type">Jenis Akun</string>
+    <string name="balance">Saldo</string>
+</resources>

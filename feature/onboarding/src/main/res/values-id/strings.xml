@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Lacak pengeluaran Anda</string>
+    <string name="welcome_message_description">Tetap terinformasi dan miliki catatan pengeluaran Anda</string>
+    <string name="privacy_text">Semua data Anda disimpan di perangkat Anda dengan opsi cadangan eksternal. Dengan melanjutkan, Anda menyetujui kebijakan privasi kami.</string>
+    <string name="currency">Mata Uang</string>
+    <string name="select_main_currency">Pilih Mata Uang Utama</string>
+    <string name="add_new">Tambah Baru</string>
+    <string name="proceed">Lanjutkan</string>
+    <string name="get_started">Mulai</string>
+    <string name="setup">Atur Pengaturan Aplikasi</string>
+    <string name="create_new">Buat Baru</string>
+
+    <string name="setup_description">Atur mata uang dan akun Anda untuk memulai</string>
+    <string name="tap_to_change">Ketuk untuk mengubah</string>
+    <string name="setup_currency">Atur mata uang</string>
+    <string name="not_set_up_yet">Belum diatur</string>
+
+    <string name="track">Lacak</string>
+    <string name="organize">Atur</string>
+    <string name="grow">Kembangkan</string>
+</resources>

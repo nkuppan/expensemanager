@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Ustawienia</string>
+    <string name="theme">Motyw</string>
+    <string name="analysis">Analiza</string>
+    <string name="select_currency">Wybierz walutę</string>
+    <string name="reminder_notification">Powiadomienie</string>
+    <string name="info">Informacje</string>
+    <string name="about_the_app_information">Informacje o aplikacji</string>
+    <string name="rate_us_message">Pomoże nam to lepiej się rozwijać</string>
+    <string name="currency">Personalizacja waluty</string>
+    <string name="selected_daily_reminder_time">Przypomnimy Ci o dodaniu wydatku o wybranej porze</string>
+    <string name="rate_us">Oceń nas</string>
+    <string name="choose_web_browser">Wybierz przeglądarkę internetową</string>
+
+    <string name="export">Eksport</string>
+    <string name="export_message">Eksportuj swoje dane i analizuj je w preferowanym formacie</string>
+
+    <string name="filter">Filtr</string>
+    <string name="filter_message">Możesz wybrać filtr daty, aby zobaczyć wydatki</string>
+
+    <string name="developed_by">Opracowane przez Naveen Kumar Kuppan</string>
+    <string name="system_default">Domyślne systemowe</string>
+    <string name="app_version">Wersja: %s</string>
+    <string name="advanced">Zaawansowane</string>
+    <string name="advanced_config_message">Zarządzaj zaawansowaną konfiguracją aplikacji</string>
+    <string name="default_account">Domyślne konto</string>
+    <string name="default_expense_category">Domyślna kategoria wydatków</string>
+    <string name="default_income_category">Domyślna kategoria przychodów</string>
+    <string name="accounts_re_order">Zmiana kolejności kont</string>
+    <string name="accounts_re_order_message">Możesz zmienić kolejność listy kont na pulpicie.</string>
+    <string name="backup">Kopia zapasowa</string>
+    <string name="backup_message">Utwórz kopię zapasową danych i przywróć ją na dowolnym urządzeniu.</string>
+    <string name="restore">Przywracanie</string>
+    <string name="restore_message">Przywróć swoje dane, aby odzyskać je na urządzeniach.</string>
+    <string name="defaults">Domyślne</string>
+    <string name="others">Inne ustawienia</string>
+
+    <string name="personalization">Personalizacja</string>
+    <string name="notifications">Powiadomienia</string>
+    <string name="data_and_backup"><![CDATA[Dane i kopia zapasowa]]></string>
+    <string name="security">Bezpieczeństwo</string>
+    <string name="support">Wsparcie</string>
+
+    <string name="compact_summary">Kompaktowe podsumowanie</string>
+    <string name="compact_summary_message">Pokaż mniejszy widżet podsumowania na ekranie głównym</string>
+
+    <string name="app_lock">Blokada aplikacji</string>
+    <string name="app_lock_message">Wymagaj biometrii lub danych uwierzytelniających urządzenia podczas otwierania aplikacji</string>
+</resources>

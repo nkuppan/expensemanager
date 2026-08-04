@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">오늘</string>
+    <string name="this_week">이번 주</string>
+    <string name="this_month">이번 달</string>
+    <string name="this_year">올해</string>
+    <string name="all_time">전체 기간</string>
+    <string name="custom">사용자 지정</string>
+
+    <string name="amount">금액</string>
+    <string name="category">카테고리</string>
+    <string name="date">날짜</string>
+    <string name="notes">메모</string>
+    <string name="average">평균</string>
+    <string name="day">일</string>
+    <string name="week">주</string>
+    <string name="time">시간</string>
+    <string name="month">월</string>
+    <string name="from_account">출금 계좌</string>
+    <string name="to_account">입금 계좌</string>
+    <string name="transaction_type">거래 유형</string>
+    <string name="category_type">카테고리 유형</string>
+    <string name="account_type">계좌 유형</string>
+    <string name="exported_on">내보낸 날짜</string>
+    <string name="total_transactions">총 거래 수</string>
+    <string name="total_income">총 수입</string>
+    <string name="total_expense">총 지출</string>
+    <string name="net_balance">순 잔액</string>
+
+    <string name="light">라이트</string>
+    <string name="dark">다크</string>
+    <string name="set_by_battery_saver">배터리 절약 모드에 따라 설정됨</string>
+    <string name="system_default">시스템 기본값</string>
+
+    <string name="category_clothing">의류</string>
+    <string name="category_entertainment">엔터테인먼트</string>
+    <string name="category_food">식비</string>
+    <string name="category_health">건강</string>
+    <string name="category_leisure">여가</string>
+    <string name="category_shopping">쇼핑</string>
+    <string name="category_transportation">교통</string>
+    <string name="category_utilities">공과금</string>
+    <string name="category_salary">급여</string>
+    <string name="category_gift">선물</string>
+    <string name="category_coupons">쿠폰</string>
+</resources>

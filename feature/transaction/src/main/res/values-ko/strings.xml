@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">거래를 추가할 수 없습니다</string>
+    <string name="unable_to_find_transaction">거래를 찾을 수 없습니다</string>
+    <string name="transaction_delete_error_message">이 거래를 삭제할 수 없습니다</string>
+
+    <string name="no_transactions_available">선택한 기간에 대한 거래가 없습니다.\n+ 버튼을 눌러 거래를 기록하세요</string>
+    <string name="date">날짜</string>
+    <string name="notes">메모</string>
+    <string name="expense">지출</string>
+    <string name="income">수입</string>
+    <string name="transfer">이체</string>
+
+    <string name="select_different_account">다른 계좌를 선택하세요. 출금 계좌와 입금 계좌가 같을 수 없습니다.</string>
+    <string name="amount_error_message">올바른 금액을 입력해 주세요</string>
+    <string name="amount_should_greater_than_zero">금액은 0보다 커야 합니다</string>
+    <string name="transaction_create_success">거래가 성공적으로 생성/수정되었습니다</string>
+    <string name="optional_details">선택 항목</string>
+    <string name="select_account">계좌 선택</string>
+    <string name="select_category">카테고리 선택</string>
+    <string name="select_date">날짜 선택</string>
+    <string name="select_time">시간 선택</string>
+
+    <string name="transaction">거래</string>
+    <string name="clear">지우기</string>
+    <string name="cancel">취소</string>
+    <string name="ok">확인</string>
+    <string name="amount">금액</string>
+    <string name="from_account">출금 계좌</string>
+    <string name="to_account">입금 계좌</string>
+
+    <string name="edit_transaction">거래 수정</string>
+    <string name="create_transaction">새 거래</string>
+    <string name="date_and_time">날짜 &amp; 시간</string>
+    <string name="delete">삭제</string>
+    <string name="save">저장</string>
+    <string name="transaction_type">거래 유형</string>
+    <string name="details">세부 정보</string>
+
+    <string name="done">완료</string>
+    <string name="backspace">백스페이스</string>
+    <string name="add_transaction">거래 추가</string>
+</resources>

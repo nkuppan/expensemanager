@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">Bütçeler</string>
+    <string name="active_budgets">Aktif Bütçeler</string>
+    <string name="no_budget_available">Hiç bütçe yok\nYeni bütçe oluşturmak için + düğmesine dokunun</string>
+    <string name="no_budget_available_short">Hiç bütçe yok</string>
+    <string name="budget_name">Bütçe Adı</string>
+    <string name="budget_delete_error_message">Bütçe güncellemesi başarısız oldu</string>
+    <string name="budget_name_error">Ad boş olamaz</string>
+    <string name="budget_create_error">Bütçe oluşturulamıyor/güncellenemiyor</string>
+    <string name="budget_create_success">Bütçe başarıyla oluşturuldu/güncellendi</string>
+    <string name="budget_amount">Bütçe Tutarı</string>
+    <string name="budget_amount_error">Bütçe tutarı boş veya sıfır olamaz</string>
+
+    <string name="select_date">Tarih Seç</string>
+    <string name="select_account">Hesap Seç</string>
+    <string name="clear_all">Tümünü Temizle</string>
+    <string name="select">Seç</string>
+    <string name="select_category">Kategori Seç</string>
+
+    <string name="all">Tümü</string>
+
+    <string name="edit_budget">Bütçeyi Düzenle</string>
+    <string name="create_budget">Bütçe Oluştur</string>
+    <string name="period">Dönem</string>
+    <string name="budget_scope">Bütçe Kapsamı</string>
+    <string name="details">Detaylar</string>
+    <string name="appearance">Görünüm</string>
+    <string name="select_month">Ay Seç</string>
+    <string name="budget_for">Bütçe:</string>
+    <string name="what_is_your_budget_limit">Toplam bütçe limitiniz nedir</string>
+</resources>

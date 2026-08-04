@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">مدير المصروفات</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">اختيار</string>
+
+    <string name="title_home">الرئيسية</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="accounts">حساب</string>
+
+    <string name="category_name">اسم الفئة</string>
+
+
+    <string name="title_graph">الرسم البياني</string>
+
+
+    <string name="currency">العملة</string>
+
+    <string name="choose_color">اختيار اللون</string>
+    <string name="choose_icon">اختيار الأيقونة</string>
+
+
+    <string name="categories">الفئات</string>
+    <string name="total">الإجمالي</string>
+    <string name="transaction_summary">الملخص</string>
+    <string name="clear_all">مسح الكل</string>
+    <string name="category_selection_message">يجب اختيار فئة واحدة على الأقل للمتابعة</string>
+    <string name="share">مشاركة</string>
+    <string name="hello">مرحبًا!</string>
+    <string name="guest">ضيف</string>
+    <string name="balance">الرصيد</string>
+
+    <string name="add_transaction">إضافة معاملة</string>
+    <string name="cancel">إلغاء</string>
+    <string name="ok">موافق</string>
+    <string name="settings">الإعدادات</string>
+    <string name="analysis">التحليل</string>
+    <string name="transaction">معاملة</string>
+
+    <string name="app_lock_title">فتح قفل مدير المصروفات</string>
+    <string name="app_lock_description">تحقق من هويتك للمتابعة</string>
+    <string name="app_lock_unlock">فتح القفل</string>
+</resources>

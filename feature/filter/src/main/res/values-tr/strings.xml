@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">Tarihe Göre Filtrele</string>
+    <string name="from_date">Başlangıç tarihi</string>
+    <string name="to_date">Bitiş tarihi</string>
+    <string name="cancel">İptal</string>
+    <string name="select">Seç</string>
+    <string name="transaction_type">İşlem Türü</string>
+    <string name="accounts">Hesaplar</string>
+    <string name="categories">Kategoriler</string>
+    <string name="apply">Uygula</string>
+    <string name="filtered_by">Şuna göre filtrelendi</string>
+    <string name="custom">Özel</string>
+
+    <string name="filters">Filtreler</string>
+    <string name="clear_all">Tümünü temizle</string>
+    <plurals name="filters_selected">
+        <item quantity="one">%d filtre seçildi</item>
+        <item quantity="other">%d filtre seçildi</item>
+    </plurals>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">Filtruj według daty</string>
+    <string name="from_date">Data od</string>
+    <string name="to_date">Data do</string>
+    <string name="cancel">Anuluj</string>
+    <string name="select">Wybierz</string>
+    <string name="transaction_type">Typ transakcji</string>
+    <string name="accounts">Konta</string>
+    <string name="categories">Kategorie</string>
+    <string name="apply">Zastosuj</string>
+    <string name="filtered_by">Filtrowane według</string>
+    <string name="custom">Niestandardowy</string>
+
+    <string name="filters">Filtry</string>
+    <string name="clear_all">Wyczyść wszystko</string>
+    <plurals name="filters_selected">
+        <item quantity="one">%d filtr wybrany</item>
+        <item quantity="few">%d filtry wybrane</item>
+        <item quantity="many">%d filtrów wybranych</item>
+        <item quantity="other">%d filtra wybranego</item>
+    </plurals>
+</resources>

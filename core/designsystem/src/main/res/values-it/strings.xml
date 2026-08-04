@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">Annulla</string>
+    <string name="choose_web_browser">Scegli browser</string>
+    <string name="select">Seleziona</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Scegli icona</string>
+    <string name="choose_color">Scegli colore</string>
+    <string name="view_all">Vedi tutto</string>
+    <string name="income">Entrata</string>
+    <string name="expense">Spesa</string>
+    <string name="balance">Saldo</string>
+    <string name="transaction_summary">Riepilogo</string>
+    <string name="total">Totale</string>
+
+    <string name="delete">Elimina</string>
+    <string name="delete_item_message">Sei sicuro di voler eliminare questo elemento? L\'elemento eliminato non potrà essere recuperato.</string>
+    <string name="yes_delete">Sì, elimina</string>
+    <string name="no_keep">No, mantieni</string>
+
+    <string name="color">Colore</string>
+    <string name="icon">Icona</string>
+    <string name="change">Cambia</string>
+    <string name="add_new">Aggiungi nuovo</string>
+    <string name="no_account_available">Nessun conto disponibile\\nTocca il pulsante + per creare il tuo primo conto</string>
+</resources>

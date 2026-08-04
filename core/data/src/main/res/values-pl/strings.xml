@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Dzisiaj</string>
+    <string name="this_week">Ten tydzień</string>
+    <string name="this_month">Ten miesiąc</string>
+    <string name="this_year">Ten rok</string>
+    <string name="all_time">Cały czas</string>
+    <string name="custom">Niestandardowy</string>
+
+    <string name="amount">Kwota</string>
+    <string name="category">Kategoria</string>
+    <string name="date">Data</string>
+    <string name="notes">Notatki</string>
+    <string name="average">Średnia</string>
+    <string name="day">Dzień</string>
+    <string name="week">Tydzień</string>
+    <string name="time">Czas</string>
+    <string name="month">Miesiąc</string>
+    <string name="from_account">Z konta</string>
+    <string name="to_account">Na konto</string>
+    <string name="transaction_type">Typ transakcji</string>
+    <string name="category_type">Typ kategorii</string>
+    <string name="account_type">Typ konta</string>
+    <string name="exported_on">Wyeksportowano</string>
+    <string name="total_transactions">Łączna liczba transakcji</string>
+    <string name="total_income">Łączny przychód</string>
+    <string name="total_expense">Łączny wydatek</string>
+    <string name="net_balance">Saldo netto</string>
+
+    <string name="light">Jasny</string>
+    <string name="dark">Ciemny</string>
+    <string name="set_by_battery_saver">Ustawiane przez oszczędzanie baterii</string>
+    <string name="system_default">Domyślne systemowe</string>
+
+    <string name="category_clothing">Odzież</string>
+    <string name="category_entertainment">Rozrywka</string>
+    <string name="category_food">Jedzenie</string>
+    <string name="category_health">Zdrowie</string>
+    <string name="category_leisure">Wypoczynek</string>
+    <string name="category_shopping">Zakupy</string>
+    <string name="category_transportation">Transport</string>
+    <string name="category_utilities">Media</string>
+    <string name="category_salary">Wynagrodzenie</string>
+    <string name="category_gift">Prezent</string>
+    <string name="category_coupons">Kupony</string>
+</resources>

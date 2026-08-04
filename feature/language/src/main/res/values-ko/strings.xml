@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_language">언어 선택</string>
+    <string name="language">언어</string>
+</resources>

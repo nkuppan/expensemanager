@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">موافق</string>
+    <string name="cancel">إلغاء</string>
+    <string name="choose_web_browser">اختيار المتصفح</string>
+    <string name="select">اختيار</string>
+    <string name="page_name" translatable="false">اسم الصفحة</string>
+    <string name="choose_icon">اختيار الأيقونة</string>
+    <string name="choose_color">اختيار اللون</string>
+    <string name="view_all">عرض الكل</string>
+    <string name="income">الدخل</string>
+    <string name="expense">المصروف</string>
+    <string name="balance">الرصيد</string>
+    <string name="transaction_summary">الملخص</string>
+    <string name="total">الإجمالي</string>
+
+    <string name="delete">حذف</string>
+    <string name="delete_item_message">هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن استرجاع العنصر المحذوف.</string>
+    <string name="yes_delete">نعم، احذف</string>
+    <string name="no_keep">لا، احتفظ به</string>
+
+    <string name="color">اللون</string>
+    <string name="icon">الأيقونة</string>
+    <string name="change">تغيير</string>
+    <string name="add_new">إضافة جديد</string>
+    <string name="no_account_available">لا توجد حسابات متاحة\\nانقر على زر + لإنشاء حسابك الأول</string>
+</resources>

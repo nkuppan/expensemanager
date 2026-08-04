@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Promemoria</string>
+    <string name="reminder_notification">Notifica promemoria</string>
+    <string name="reminder_notification_message">Orario di notifica per ricordarti di aggiungere le tue spese</string>
+    <string name="notification_time">Orario notifica promemoria</string>
+    <string name="notification_permission_message">Il permesso di notifica è importante per questa app. Concedi il permesso.</string>
+    <string name="permission_disabled">Il permesso di notifica è disabilitato</string>
+    <string name="request_permission">Richiedi permesso</string>
+    <string name="open_settings">Apri impostazioni</string>
+
+    <string name="permission_required_title">Notifiche disabilitate</string>
+    <string name="schedule">Pianifica</string>
+</resources>

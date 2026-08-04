@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">Scegli valuta</string>
+    <string name="cancel">Annulla</string>
+    <string name="ok">OK</string>
+    <string name="prefix_amount">Prefisso (%s500)</string>
+    <string name="suffix_amount">Suffisso (500%s)</string>
+    <string name="currency">Valuta</string>
+    <string name="select_currency">Seleziona valuta</string>
+    <string name="currency_position">Posizione della valuta</string>
+    <string name="currency_format">Formato valuta</string>
+    <string name="none">Nessuno(1234.23)</string>
+    <string name="number_format">Formato(1.23.423,13)</string>
+    <string name="selected_currency">Valuta selezionata</string>
+    <string name="choose_preferred_currency">Scegli la tua valuta preferita</string>
+    <string name="where_symbol_appears">Dove appare il simbolo</string>
+    <string name="number_formatting_style">Stile di formattazione dei numeri</string>
+
+</resources>

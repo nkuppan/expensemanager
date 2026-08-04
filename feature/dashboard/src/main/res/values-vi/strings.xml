@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">Tóm tắt giao dịch</string>
+    <string name="expense">Chi tiêu</string>
+    <string name="income">Thu nhập</string>
+    <string name="total">Tổng</string>
+    <string name="balance">Số dư</string>
+    <string name="categories">Danh mục</string>
+    <string name="hello">Xin chào!</string>
+    <string name="guest">Khách</string>
+    <string name="settings">Cài đặt</string>
+    <string name="transaction">Giao dịch</string>
+    <string name="no_transactions_available">Không có giao dịch nào trong khoảng thời gian đã chọn.\nNhấn nút + để ghi lại giao dịch của bạn</string>
+    <string name="home">Trang chủ</string>
+    <string name="transaction_create_message">"Thêm chi tiêu, thu nhập và chuyển khoản của bạn tại đây. "</string>
+    <string name="help"><![CDATA[Trợ giúp & thông tin]]></string>
+    <string name="ok">OK</string>
+    <string name="no_budget_for_month">Không có %1$s</string>
+    <string name="tap_to_set_spending_limit">Nhấn để đặt hạn mức chi tiêu</string>
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">الميزانيات</string>
+    <string name="active_budgets">الميزانيات النشطة</string>
+    <string name="no_budget_available">لا توجد ميزانيات متاحة\nانقر على زر + لإنشاء ميزانية جديدة</string>
+    <string name="no_budget_available_short">لا توجد ميزانيات متاحة</string>
+    <string name="budget_name">اسم الميزانية</string>
+    <string name="budget_delete_error_message">فشل تحديث الميزانية</string>
+    <string name="budget_name_error">يجب ألا يكون الاسم فارغًا</string>
+    <string name="budget_create_error">تعذر إنشاء/تحديث الميزانية</string>
+    <string name="budget_create_success">تم إنشاء/تحديث الميزانية بنجاح</string>
+    <string name="budget_amount">مبلغ الميزانية</string>
+    <string name="budget_amount_error">يجب ألا يكون مبلغ الميزانية فارغًا أو صفرًا</string>
+
+    <string name="select_date">اختيار التاريخ</string>
+    <string name="select_account">اختيار الحساب</string>
+    <string name="clear_all">مسح الكل</string>
+    <string name="select">اختيار</string>
+    <string name="select_category">اختيار الفئة</string>
+
+    <string name="all">الكل</string>
+
+    <string name="edit_budget">تعديل الميزانية</string>
+    <string name="create_budget">إنشاء ميزانية</string>
+    <string name="period">الفترة</string>
+    <string name="budget_scope">نطاق الميزانية</string>
+    <string name="details">التفاصيل</string>
+    <string name="appearance">المظهر</string>
+    <string name="select_month">اختيار الشهر</string>
+    <string name="budget_for">ميزانية لـ</string>
+    <string name="what_is_your_budget_limit">ما هو الحد الإجمالي لميزانيتك</string>
+</resources>

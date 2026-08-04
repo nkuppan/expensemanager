@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">Произошла неизвестная ошибка при экспорте файла</string>
+    <string name="export_success_message">Файл успешно экспортирован</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">Поделиться</string>
+    <string name="export">Экспорт</string>
+    <string name="select_range">Выбрать диапазон</string>
+    <string name="select_account">Выбрать счёт</string>
+<string name="all">Все</string>
+    <string name="today">Сегодня</string>
+</resources>

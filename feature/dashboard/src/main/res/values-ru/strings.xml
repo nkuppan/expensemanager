@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">Сводка операций</string>
+    <string name="expense">Расход</string>
+    <string name="income">Доход</string>
+    <string name="total">Итого</string>
+    <string name="balance">Баланс</string>
+    <string name="categories">Категории</string>
+    <string name="hello">Привет!</string>
+    <string name="guest">Гость</string>
+    <string name="settings">Настройки</string>
+    <string name="transaction">Операция</string>
+    <string name="no_transactions_available">Нет операций за выбранный период.\nНажмите кнопку +, чтобы записать операцию</string>
+    <string name="home">Главная</string>
+    <string name="transaction_create_message">"Добавляйте здесь свои расходы, доходы и переводы. "</string>
+    <string name="help"><![CDATA[Помощь и информация]]></string>
+    <string name="ok">ОК</string>
+    <string name="no_budget_for_month">Нет %1$s</string>
+    <string name="tap_to_set_spending_limit">Нажмите, чтобы установить лимит расходов</string>
+</resources>

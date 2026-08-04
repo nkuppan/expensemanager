@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Impostazioni</string>
+    <string name="theme">Tema</string>
+    <string name="analysis">Analisi</string>
+    <string name="select_currency">Seleziona valuta</string>
+    <string name="reminder_notification">Notifica</string>
+    <string name="info">Informazioni</string>
+    <string name="about_the_app_information">Informazioni sull\'app</string>
+    <string name="rate_us_message">Ci aiuterà a crescere meglio</string>
+    <string name="currency">Personalizza valuta</string>
+    <string name="selected_daily_reminder_time">Ti ricorderemo di aggiungere le tue spese ogni giorno all\'orario impostato</string>
+    <string name="rate_us">Valutaci</string>
+    <string name="choose_web_browser">Scegli browser web</string>
+
+    <string name="export">Esporta</string>
+    <string name="export_message">Esporta i tuoi dati e analizzali nel formato che preferisci</string>
+
+    <string name="filter">Filtro</string>
+    <string name="filter_message">Puoi selezionare il filtro data per visualizzare le spese</string>
+
+    <string name="developed_by">Sviluppato da Naveen Kumar Kuppan</string>
+    <string name="system_default">Predefinito di sistema</string>
+    <string name="app_version">Versione: %s</string>
+    <string name="advanced">Avanzate</string>
+    <string name="advanced_config_message">Gestisci le configurazioni avanzate dell\'app</string>
+    <string name="default_account">Conto predefinito</string>
+    <string name="default_expense_category">Categoria di spesa predefinita</string>
+    <string name="default_income_category">Categoria di entrata predefinita</string>
+    <string name="accounts_re_order">Riordina conti</string>
+    <string name="accounts_re_order_message">Puoi cambiare l\'ordine dell\'elenco dei conti nella dashboard.</string>
+    <string name="backup">Backup</string>
+    <string name="backup_message">Crea il backup dei tuoi dati e ripristinali su qualsiasi dispositivo.</string>
+    <string name="restore">Ripristina</string>
+    <string name="restore_message">Ripristina i tuoi dati per recuperarli sui dispositivi.</string>
+    <string name="defaults">Predefiniti</string>
+    <string name="others">Altre impostazioni</string>
+
+    <string name="personalization">Personalizzazione</string>
+    <string name="notifications">Notifiche</string>
+    <string name="data_and_backup"><![CDATA[Dati e backup]]></string>
+    <string name="security">Sicurezza</string>
+    <string name="support">Supporto</string>
+
+    <string name="compact_summary">Riepilogo compatto</string>
+    <string name="compact_summary_message">Mostra un widget di riepilogo più piccolo nella schermata home</string>
+
+    <string name="app_lock">Blocco app</string>
+    <string name="app_lock_message">Richiedi l\'impronta digitale o le credenziali del dispositivo all\'apertura dell\'app</string>
+</resources>

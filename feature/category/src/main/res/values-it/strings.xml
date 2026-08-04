@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">Categorie</string>
+    <string name="income">Entrata</string>
+    <string name="expense">Spesa</string>
+    <string name="no_category_available">Nessuna categoria disponibile\nTocca il pulsante + per creare le tue categorie</string>
+    <string name="no_transactions_available">Nessuna transazione disponibile per il periodo selezionato.\nTocca il pulsante + per registrare le tue transazioni</string>
+    <string name="category_selection_message">Seleziona almeno una categoria per continuare</string>
+    <string name="select_account">Seleziona conto</string>
+    <string name="clear_all">Cancella tutto</string>
+    <string name="select">Seleziona</string>
+    <string name="select_category">Seleziona categoria</string>
+
+    <string name="delete_item_message">Vuoi davvero eliminare questo elemento?</string>
+    <string name="cancel">Annulla</string>
+    <string name="category">Categoria</string>
+    <string name="category_name">Nome categoria</string>
+
+    <string name="category_create_error">Si è verificato un errore sconosciuto durante l\'inserimento della categoria</string>
+    <string name="category_name_error">Il nome non deve essere vuoto</string>
+    <string name="category_create_success">Categoria creata/modificata con successo</string>
+    <string name="category_delete_error_message">Impossibile eliminare questa categoria</string>
+    <string name="category_delete_message">Eliminando questa categoria verranno eliminate anche tutte le sue transazioni e verrà rimossa da qualsiasi budget di cui fa parte. Questa azione non può essere annullata.</string>
+    <string name="default_category_name_locked_message">Questa è una categoria predefinita, quindi il suo nome segue la lingua dell\'app selezionata e non può essere rinominato.</string>
+    <string name="edit">Modifica</string>
+    <string name="add_new">Aggiungi nuovo</string>
+
+    <string name="edit_category">Modifica categoria</string>
+    <string name="create_category">Crea categoria</string>
+    <string name="save">Salva</string>
+    <string name="delete">Elimina</string>
+    <string name="preview">Anteprima</string>
+    <string name="details">Dettagli</string>
+    <string name="appearance">Aspetto</string>
+    <string name="category_type">Tipo di categoria</string>
+    <string name="category_name_placeholder">Nome categoria</string>
+
+    <string name="add_category">Aggiungi categoria</string>
+    <string name="add_transaction">Aggiungi transazione</string>
+    <string name="tap_chart_to_switch_to">"Tocca il grafico per passare a "</string>
+
+    <plurals name="category_count">
+        <item quantity="one">%d categoria</item>
+        <item quantity="other">%d categorie</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="one">%d selezionato</item>
+        <item quantity="other">%d selezionati</item>
+    </plurals>
+</resources>

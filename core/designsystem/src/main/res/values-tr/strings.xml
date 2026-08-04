@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="choose_web_browser">Tarayıcı seç</string>
+    <string name="select">Seç</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Simge Seç</string>
+    <string name="choose_color">Renk Seç</string>
+    <string name="view_all">Tümünü Gör</string>
+    <string name="income">Gelir</string>
+    <string name="expense">Gider</string>
+    <string name="balance">Bakiye</string>
+    <string name="transaction_summary">Özet</string>
+    <string name="total">Toplam</string>
+
+    <string name="delete">Sil</string>
+    <string name="delete_item_message">Bu öğeyi silmek istediğinizden emin misiniz? Silinen öğe geri getirilemez.</string>
+    <string name="yes_delete">Evet, Sil</string>
+    <string name="no_keep">Hayır, Tut</string>
+
+    <string name="color">Renk</string>
+    <string name="icon">Simge</string>
+    <string name="change">Değiştir</string>
+    <string name="add_new">Yeni Ekle</string>
+    <string name="no_account_available">Hiç hesap yok\\nİlk hesabınızı oluşturmak için + düğmesine dokunun</string>
+</resources>

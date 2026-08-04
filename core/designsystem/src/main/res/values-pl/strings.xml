@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="cancel">Anuluj</string>
+    <string name="choose_web_browser">Wybierz przeglądarkę</string>
+    <string name="select">Wybierz</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">Wybierz ikonę</string>
+    <string name="choose_color">Wybierz kolor</string>
+    <string name="view_all">Zobacz wszystko</string>
+    <string name="income">Przychód</string>
+    <string name="expense">Wydatek</string>
+    <string name="balance">Saldo</string>
+    <string name="transaction_summary">Podsumowanie</string>
+    <string name="total">Razem</string>
+
+    <string name="delete">Usuń</string>
+    <string name="delete_item_message">Czy na pewno chcesz usunąć ten element? Usuniętego elementu nie można odzyskać.</string>
+    <string name="yes_delete">Tak, usuń</string>
+    <string name="no_keep">Nie, zachowaj</string>
+
+    <string name="color">Kolor</string>
+    <string name="icon">Ikona</string>
+    <string name="change">Zmień</string>
+    <string name="add_new">Dodaj nowe</string>
+    <string name="no_account_available">Brak dostępnych kont\\nDotknij przycisku +, aby utworzyć pierwsze konto</string>
+</resources>

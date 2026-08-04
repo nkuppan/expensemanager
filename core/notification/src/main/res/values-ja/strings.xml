@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">経費の記録を忘れずに</string>
+    <string name="notification_title">取引を追加</string>
+    <string name="notification_channel_description">リマインダーに使用</string>
+</resources>

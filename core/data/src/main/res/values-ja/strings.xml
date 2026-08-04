@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">今日</string>
+    <string name="this_week">今週</string>
+    <string name="this_month">今月</string>
+    <string name="this_year">今年</string>
+    <string name="all_time">全期間</string>
+    <string name="custom">カスタム</string>
+
+    <string name="amount">金額</string>
+    <string name="category">カテゴリ</string>
+    <string name="date">日付</string>
+    <string name="notes">メモ</string>
+    <string name="average">平均</string>
+    <string name="day">日</string>
+    <string name="week">週</string>
+    <string name="time">時間</string>
+    <string name="month">月</string>
+    <string name="from_account">振替元アカウント</string>
+    <string name="to_account">振替先アカウント</string>
+    <string name="transaction_type">取引タイプ</string>
+    <string name="category_type">カテゴリタイプ</string>
+    <string name="account_type">アカウントタイプ</string>
+    <string name="exported_on">エクスポート日時</string>
+    <string name="total_transactions">取引件数</string>
+    <string name="total_income">収入合計</string>
+    <string name="total_expense">支出合計</string>
+    <string name="net_balance">純残高</string>
+
+    <string name="light">ライト</string>
+    <string name="dark">ダーク</string>
+    <string name="set_by_battery_saver">バッテリーセーバーによる設定</string>
+    <string name="system_default">システムのデフォルト</string>
+
+    <string name="category_clothing">衣服</string>
+    <string name="category_entertainment">娯楽</string>
+    <string name="category_food">食費</string>
+    <string name="category_health">健康</string>
+    <string name="category_leisure">レジャー</string>
+    <string name="category_shopping">買い物</string>
+    <string name="category_transportation">交通費</string>
+    <string name="category_utilities">光熱費</string>
+    <string name="category_salary">給料</string>
+    <string name="category_gift">贈り物</string>
+    <string name="category_coupons">クーポン</string>
+</resources>

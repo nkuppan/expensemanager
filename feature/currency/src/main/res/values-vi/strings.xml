@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">Chọn tiền tệ</string>
+    <string name="cancel">Hủy</string>
+    <string name="ok">OK</string>
+    <string name="prefix_amount">Tiền tố (%s500)</string>
+    <string name="suffix_amount">Hậu tố (500%s)</string>
+    <string name="currency">Tiền tệ</string>
+    <string name="select_currency">Chọn tiền tệ</string>
+    <string name="currency_position">Vị trí tiền tệ</string>
+    <string name="currency_format">Định dạng tiền tệ</string>
+    <string name="none">Không có(1234.23)</string>
+    <string name="number_format">Định dạng(1,23,423.13)</string>
+    <string name="selected_currency">Tiền tệ đã chọn</string>
+    <string name="choose_preferred_currency">Chọn tiền tệ ưa thích của bạn</string>
+    <string name="where_symbol_appears">Vị trí xuất hiện của ký hiệu</string>
+    <string name="number_formatting_style">Kiểu định dạng số</string>
+
+</resources>

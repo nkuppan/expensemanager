@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">Expense Manager</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">Selecionar</string>
+
+    <string name="title_home">Início</string>
+    <string name="view_all">Ver tudo</string>
+    <string name="accounts">Conta</string>
+
+    <string name="category_name">Nome da categoria</string>
+
+
+    <string name="title_graph">Gráfico</string>
+
+
+    <string name="currency">Moeda</string>
+
+    <string name="choose_color">Escolher cor</string>
+    <string name="choose_icon">Escolher ícone</string>
+
+
+    <string name="categories">Categorias</string>
+    <string name="total">Total</string>
+    <string name="transaction_summary">Resumo</string>
+    <string name="clear_all">Limpar tudo</string>
+    <string name="category_selection_message">Deve selecionar pelo menos uma categoria para continuar</string>
+    <string name="share">Partilhar</string>
+    <string name="hello">Olá!</string>
+    <string name="guest">Convidado</string>
+    <string name="balance">Saldo</string>
+
+    <string name="add_transaction">Adicionar transação</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">OK</string>
+    <string name="settings">Definições</string>
+    <string name="analysis">Análise</string>
+    <string name="transaction">Transação</string>
+
+    <string name="app_lock_title">Desbloquear o Expense Manager</string>
+    <string name="app_lock_description">Verifique a sua identidade para continuar</string>
+    <string name="app_lock_unlock">Desbloquear</string>
+</resources>

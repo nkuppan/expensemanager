@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">Expense Manager</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">Seç</string>
+
+    <string name="title_home">Ana Sayfa</string>
+    <string name="view_all">Tümünü gör</string>
+    <string name="accounts">Hesap</string>
+
+    <string name="category_name">Kategori Adı</string>
+
+
+    <string name="title_graph">Grafik</string>
+
+
+    <string name="currency">Para Birimi</string>
+
+    <string name="choose_color">Renk seç</string>
+    <string name="choose_icon">Simge Seç</string>
+
+
+    <string name="categories">Kategoriler</string>
+    <string name="total">Toplam</string>
+    <string name="transaction_summary">Özet</string>
+    <string name="clear_all">Tümünü Temizle</string>
+    <string name="category_selection_message">Devam etmek için en az bir kategori seçmelisiniz</string>
+    <string name="share">Paylaş</string>
+    <string name="hello">Merhaba!</string>
+    <string name="guest">Misafir</string>
+    <string name="balance">Bakiye</string>
+
+    <string name="add_transaction">İşlem Ekle</string>
+    <string name="cancel">İptal</string>
+    <string name="ok">Tamam</string>
+    <string name="settings">Ayarlar</string>
+    <string name="analysis">Analiz</string>
+    <string name="transaction">İşlem</string>
+
+    <string name="app_lock_title">Expense Manager Kilidini Aç</string>
+    <string name="app_lock_description">Devam etmek için kimliğinizi doğrulayın</string>
+    <string name="app_lock_unlock">Kilidi Aç</string>
+</resources>

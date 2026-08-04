@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">Danh mục</string>
+    <string name="income">Thu nhập</string>
+    <string name="expense">Chi tiêu</string>
+    <string name="no_category_available">Không có danh mục nào\nNhấn nút + để tạo danh mục của bạn</string>
+    <string name="no_transactions_available">Không có giao dịch nào trong khoảng thời gian đã chọn.\nNhấn nút + để ghi lại giao dịch của bạn</string>
+    <string name="category_selection_message">Cần chọn ít nhất một danh mục để tiếp tục</string>
+    <string name="select_account">Chọn tài khoản</string>
+    <string name="clear_all">Xóa tất cả</string>
+    <string name="select">Chọn</string>
+    <string name="select_category">Chọn danh mục</string>
+
+    <string name="delete_item_message">Bạn có thực sự muốn xóa mục này không?</string>
+    <string name="cancel">Hủy</string>
+    <string name="category">Danh mục</string>
+    <string name="category_name">Tên danh mục</string>
+
+    <string name="category_create_error">Đã xảy ra lỗi không xác định khi thêm danh mục</string>
+    <string name="category_name_error">Tên không được để trống</string>
+    <string name="category_create_success">Danh mục đã được tạo/chỉnh sửa thành công</string>
+    <string name="category_delete_error_message">Không thể xóa danh mục này</string>
+    <string name="category_delete_message">Xóa danh mục này cũng sẽ xóa tất cả giao dịch liên quan và loại bỏ danh mục khỏi các ngân sách có chứa nó. Hành động này không thể hoàn tác.</string>
+    <string name="default_category_name_locked_message">Đây là danh mục mặc định, nên tên của nó theo ngôn ngữ ứng dụng bạn đã chọn và không thể đổi tên.</string>
+    <string name="edit">Sửa</string>
+    <string name="add_new">Thêm mới</string>
+
+    <string name="edit_category">Chỉnh sửa danh mục</string>
+    <string name="create_category">Tạo danh mục</string>
+    <string name="save">Lưu</string>
+    <string name="delete">Xóa</string>
+    <string name="preview">Xem trước</string>
+    <string name="details">Chi tiết</string>
+    <string name="appearance">Giao diện</string>
+    <string name="category_type">Loại danh mục</string>
+    <string name="category_name_placeholder">Tên danh mục</string>
+
+    <string name="add_category">Thêm danh mục</string>
+    <string name="add_transaction">Thêm giao dịch</string>
+    <string name="tap_chart_to_switch_to">"Chạm vào biểu đồ để chuyển sang "</string>
+
+    <plurals name="category_count">
+        <item quantity="other">%d danh mục</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="other">%d đã chọn</item>
+    </plurals>
+</resources>

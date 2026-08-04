@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="choose_web_browser">选择浏览器</string>
+    <string name="select">选择</string>
+    <string name="page_name" translatable="false">Page Name</string>
+    <string name="choose_icon">选择图标</string>
+    <string name="choose_color">选择颜色</string>
+    <string name="view_all">查看全部</string>
+    <string name="income">收入</string>
+    <string name="expense">支出</string>
+    <string name="balance">余额</string>
+    <string name="transaction_summary">摘要</string>
+    <string name="total">总计</string>
+
+    <string name="delete">删除</string>
+    <string name="delete_item_message">确定要删除此项目吗？删除后将无法恢复。</string>
+    <string name="yes_delete">是，删除</string>
+    <string name="no_keep">否，保留</string>
+
+    <string name="color">颜色</string>
+    <string name="icon">图标</string>
+    <string name="change">更改</string>
+    <string name="add_new">新增</string>
+    <string name="no_account_available">暂无可用账户\\n点击 + 按钮创建您的第一个账户</string>
+</resources>

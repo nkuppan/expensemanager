@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="choose_currency">اختيار العملة</string>
+    <string name="cancel">إلغاء</string>
+    <string name="ok">موافق</string>
+    <string name="prefix_amount">بادئة (%s500)</string>
+    <string name="suffix_amount">لاحقة (500%s)</string>
+    <string name="currency">العملة</string>
+    <string name="select_currency">اختيار العملة</string>
+    <string name="currency_position">موضع العملة</string>
+    <string name="currency_format">تنسيق العملة</string>
+    <string name="none">بدون(1234.23)</string>
+    <string name="number_format">تنسيق(1,23,423.13)</string>
+    <string name="selected_currency">العملة المحددة</string>
+    <string name="choose_preferred_currency">اختر عملتك المفضلة</string>
+    <string name="where_symbol_appears">أين يظهر الرمز</string>
+    <string name="number_formatting_style">نمط تنسيق الأرقام</string>
+
+</resources>

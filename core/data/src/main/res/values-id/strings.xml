@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Hari Ini</string>
+    <string name="this_week">Minggu Ini</string>
+    <string name="this_month">Bulan Ini</string>
+    <string name="this_year">Tahun Ini</string>
+    <string name="all_time">Sepanjang waktu</string>
+    <string name="custom">Kustom</string>
+
+    <string name="amount">Jumlah</string>
+    <string name="category">Kategori</string>
+    <string name="date">Tanggal</string>
+    <string name="notes">Catatan</string>
+    <string name="average">Rata-rata</string>
+    <string name="day">Hari</string>
+    <string name="week">Minggu</string>
+    <string name="time">Waktu</string>
+    <string name="month">Bulan</string>
+    <string name="from_account">Dari Akun</string>
+    <string name="to_account">Ke Akun</string>
+    <string name="transaction_type">Jenis Transaksi</string>
+    <string name="category_type">Jenis Kategori</string>
+    <string name="account_type">Jenis Akun</string>
+    <string name="exported_on">Diekspor Pada</string>
+    <string name="total_transactions">Total Transaksi</string>
+    <string name="total_income">Total Pemasukan</string>
+    <string name="total_expense">Total Pengeluaran</string>
+    <string name="net_balance">Saldo Bersih</string>
+
+    <string name="light">Terang</string>
+    <string name="dark">Gelap</string>
+    <string name="set_by_battery_saver">Diatur oleh penghemat baterai</string>
+    <string name="system_default">Default sistem</string>
+
+    <string name="category_clothing">Pakaian</string>
+    <string name="category_entertainment">Hiburan</string>
+    <string name="category_food">Makanan</string>
+    <string name="category_health">Kesehatan</string>
+    <string name="category_leisure">Rekreasi</string>
+    <string name="category_shopping">Belanja</string>
+    <string name="category_transportation">Transportasi</string>
+    <string name="category_utilities">Utilitas</string>
+    <string name="category_salary">Gaji</string>
+    <string name="category_gift">Hadiah</string>
+    <string name="category_coupons">Kupon</string>
+</resources>

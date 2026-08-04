@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="date_filter">按日期筛选</string>
+    <string name="from_date">起始日期</string>
+    <string name="to_date">结束日期</string>
+    <string name="cancel">取消</string>
+    <string name="select">选择</string>
+    <string name="transaction_type">交易类型</string>
+    <string name="accounts">账户</string>
+    <string name="categories">分类</string>
+    <string name="apply">应用</string>
+    <string name="filtered_by">筛选条件</string>
+    <string name="custom">自定义</string>
+
+    <string name="filters">筛选</string>
+    <string name="clear_all">全部清除</string>
+    <plurals name="filters_selected">
+        <item quantity="other">已选择 %d 个筛选条件</item>
+    </plurals>
+</resources>

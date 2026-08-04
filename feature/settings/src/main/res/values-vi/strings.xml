@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Cài đặt</string>
+    <string name="theme">Chủ đề</string>
+    <string name="analysis">Phân tích</string>
+    <string name="select_currency">Chọn tiền tệ</string>
+    <string name="reminder_notification">Thông báo</string>
+    <string name="info">Thông tin</string>
+    <string name="about_the_app_information">Thông tin về ứng dụng</string>
+    <string name="rate_us_message">Điều này sẽ giúp chúng tôi phát triển tốt hơn</string>
+    <string name="currency">Tùy chỉnh tiền tệ</string>
+    <string name="selected_daily_reminder_time">Chúng tôi sẽ nhắc bạn ghi lại chi tiêu đúng giờ mỗi ngày</string>
+    <string name="rate_us">Đánh giá chúng tôi</string>
+    <string name="choose_web_browser">Chọn trình duyệt web</string>
+
+    <string name="export">Xuất</string>
+    <string name="export_message">Xuất dữ liệu của bạn và phân tích theo định dạng ưa thích</string>
+
+    <string name="filter">Bộ lọc</string>
+    <string name="filter_message">Có thể chọn bộ lọc ngày để xem chi tiêu</string>
+
+    <string name="developed_by">Phát triển bởi Naveen Kumar Kuppan</string>
+    <string name="system_default">Mặc định hệ thống</string>
+    <string name="app_version">Phiên bản: %s</string>
+    <string name="advanced">Nâng cao</string>
+    <string name="advanced_config_message">Quản lý cấu hình nâng cao cho ứng dụng</string>
+    <string name="default_account">Tài khoản mặc định</string>
+    <string name="default_expense_category">Danh mục chi tiêu mặc định</string>
+    <string name="default_income_category">Danh mục thu nhập mặc định</string>
+    <string name="accounts_re_order">Sắp xếp lại tài khoản</string>
+    <string name="accounts_re_order_message">Có thể thay đổi thứ tự danh sách tài khoản trên trang tổng quan.</string>
+    <string name="backup">Sao lưu</string>
+    <string name="backup_message">Tạo bản sao lưu dữ liệu của bạn và khôi phục trên bất kỳ thiết bị nào.</string>
+    <string name="restore">Khôi phục</string>
+    <string name="restore_message">Khôi phục dữ liệu để lấy lại dữ liệu của bạn trên thiết bị.</string>
+    <string name="defaults">Mặc định</string>
+    <string name="others">Cài đặt khác</string>
+
+    <string name="personalization">Cá nhân hóa</string>
+    <string name="notifications">Thông báo</string>
+    <string name="data_and_backup"><![CDATA[Dữ liệu & Sao lưu]]></string>
+    <string name="security">Bảo mật</string>
+    <string name="support">Hỗ trợ</string>
+
+    <string name="compact_summary">Tóm tắt thu gọn</string>
+    <string name="compact_summary_message">Hiển thị tiện ích tóm tắt nhỏ gọn trên trang chủ</string>
+
+    <string name="app_lock">Khóa ứng dụng</string>
+    <string name="app_lock_message">Yêu cầu sinh trắc học hoặc mã khóa thiết bị khi mở ứng dụng</string>
+</resources>

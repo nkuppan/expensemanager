@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">Phát triển bởi Naveen Kumar Kuppan</string>
+    <string name="system_default">Mặc định hệ thống</string>
+    <string name="app_version">Phiên bản: %s</string>
+    <string name="about_us">Về chúng tôi</string>
+    <string name="privacy_policy">Chính sách bảo mật</string>
+    <string name="terms_and_conditions">Điều khoản và điều kiện</string>
+    <string name="licenses">Giấy phép mã nguồn mở</string>
+</resources>

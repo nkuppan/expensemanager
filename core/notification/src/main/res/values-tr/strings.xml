@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">Giderlerinizi kaydetmeyi unutmayın</string>
+    <string name="notification_title">İşlem ekle</string>
+    <string name="notification_channel_description">Hatırlatıcılar için kullanılır</string>
+</resources>

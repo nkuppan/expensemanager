@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_description">%s(%s)</string>
+    <string name="search_country">국가 검색</string>
+    <string name="clear_search_text">검색어 지우기</string>
+    <string name="back">뒤로</string>
+    <string name="no_countries_found">국가를 찾을 수 없습니다</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">Naveen Kumar Kuppan 開発</string>
+    <string name="system_default">システムのデフォルト</string>
+    <string name="app_version">バージョン: %s</string>
+    <string name="about_us">このアプリについて</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="terms_and_conditions">利用規約</string>
+    <string name="licenses">オープンソースライセンス</string>
+</resources>

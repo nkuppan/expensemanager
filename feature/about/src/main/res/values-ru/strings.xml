@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">Разработано Навином Кумаром Куппаном</string>
+    <string name="system_default">Системная по умолчанию</string>
+    <string name="app_version">Версия: %s</string>
+    <string name="about_us">О нас</string>
+    <string name="privacy_policy">Политика конфиденциальности</string>
+    <string name="terms_and_conditions">Условия использования</string>
+    <string name="licenses">Лицензии с открытым исходным кодом</string>
+</resources>

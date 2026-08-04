@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Theo dõi chi tiêu của bạn</string>
+    <string name="welcome_message_description">Nắm rõ và lưu lại chi tiêu của bạn</string>
+    <string name="privacy_text">Toàn bộ dữ liệu của bạn được lưu trữ trên thiết bị, với tùy chọn sao lưu bên ngoài. Bằng việc tiếp tục, bạn đồng ý với chính sách bảo mật của chúng tôi.</string>
+    <string name="currency">Tiền tệ</string>
+    <string name="select_main_currency">Chọn tiền tệ chính</string>
+    <string name="add_new">Thêm mới</string>
+    <string name="proceed">Tiếp tục</string>
+    <string name="get_started">Bắt đầu</string>
+    <string name="setup">Thiết lập cài đặt ứng dụng</string>
+    <string name="create_new">Tạo mới</string>
+
+    <string name="setup_description">Thiết lập tiền tệ và tài khoản của bạn để bắt đầu</string>
+    <string name="tap_to_change">Nhấn để thay đổi</string>
+    <string name="setup_currency">Thiết lập tiền tệ</string>
+    <string name="not_set_up_yet">Chưa được thiết lập</string>
+
+    <string name="track">Theo dõi</string>
+    <string name="organize">Sắp xếp</string>
+    <string name="grow">Phát triển</string>
+</resources>

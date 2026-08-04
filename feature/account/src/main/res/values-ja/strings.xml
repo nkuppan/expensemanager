@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">アカウントが正常に作成/更新されました</string>
+    <string name="account_name_error">名前を入力してください</string>
+    <string name="account_delete_error_message">このアカウントを削除できません</string>
+    <string name="account_name">アカウント名</string>
+    <string name="accounts">アカウント</string>
+    <string name="available_balance">利用可能残高</string>
+    <string name="credit_limit">利用限度額</string>
+    <string name="credit_limit_error">利用限度額を入力してください</string>
+    <string name="current_balance">現在の残高</string>
+    <string name="current_balance_error">現在の残高を入力してください</string>
+    <string name="current_balance_value_error">現在の残高には有効な数値を入力してください</string>
+    <string name="no_account_available">アカウントがありません\nアカウントを作成するには + ボタンをタップしてください</string>
+    <string name="no_account_available_short">アカウントがありません</string>
+    <string name="account_create_error">有効な値を入力してください</string>
+    <string name="bank_account">銀行口座</string>
+    <string name="credit">クレジット</string>
+    <string name="select_account">アカウントを選択</string>
+    <string name="account_selection_message">続行するには少なくとも1つのアカウントを選択してください</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="select">選択</string>
+    <string name="account_delete_success_message">アカウントが正常に削除されました</string>
+    <string name="add_new">新規追加</string>
+    <string name="accounts_re_order">アカウントの並べ替え</string>
+    <string name="available_limit">利用可能限度額 %s</string>
+    <string name="drag_to_reorder_hint">長押ししてドラッグするとアカウントを並べ替えられます</string>
+    <string name="save">保存</string>
+    <string name="apply">適用</string>
+
+    <plurals name="items_selected">
+        <item quantity="other">%d 件選択</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="other">%d 件のアカウント</item>
+    </plurals>
+    <string name="add_account">アカウントを追加</string>
+
+    <string name="details">詳細</string>
+    <string name="delete">削除</string>
+    <string name="appearance">外観</string>
+    <string name="edit_account">アカウントを編集</string>
+    <string name="create_account">アカウントを作成</string>
+    <string name="account_type">アカウントタイプ</string>
+    <string name="balance">残高</string>
+</resources>

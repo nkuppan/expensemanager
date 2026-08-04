@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">Jangan lupa mencatat pengeluaran Anda</string>
+    <string name="notification_title">Tambah transaksi</string>
+    <string name="notification_channel_description">Digunakan untuk pengingat</string>
+</resources>

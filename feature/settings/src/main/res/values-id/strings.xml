@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Pengaturan</string>
+    <string name="theme">Tema</string>
+    <string name="analysis">Analisis</string>
+    <string name="select_currency">Pilih mata uang</string>
+    <string name="reminder_notification">Notifikasi</string>
+    <string name="info">Info</string>
+    <string name="about_the_app_information">Tentang informasi aplikasi</string>
+    <string name="rate_us_message">Ini akan membantu kami berkembang lebih baik</string>
+    <string name="currency">Kustomisasi Mata Uang</string>
+    <string name="selected_daily_reminder_time">Kami akan mengingatkan Anda untuk mencatat pengeluaran setiap waktu yang ditentukan</string>
+    <string name="rate_us">Beri Nilai</string>
+    <string name="choose_web_browser">Pilih browser web</string>
+
+    <string name="export">Ekspor</string>
+    <string name="export_message">Ekspor data Anda dan analisis dalam format pilihan Anda</string>
+
+    <string name="filter">Filter</string>
+    <string name="filter_message">Dapat memilih filter tanggal untuk melihat pengeluaran</string>
+
+    <string name="developed_by">Dikembangkan oleh Naveen Kumar Kuppan</string>
+    <string name="system_default">Default Sistem</string>
+    <string name="app_version">Versi: %s</string>
+    <string name="advanced">Lanjutan</string>
+    <string name="advanced_config_message">Kelola konfigurasi lanjutan untuk aplikasi</string>
+    <string name="default_account">Akun Default</string>
+    <string name="default_expense_category">Kategori Pengeluaran Default</string>
+    <string name="default_income_category">Kategori Pemasukan Default</string>
+    <string name="accounts_re_order">Urutkan Ulang Akun</string>
+    <string name="accounts_re_order_message">Dapat mengubah urutan daftar akun di dasbor.</string>
+    <string name="backup">Cadangkan</string>
+    <string name="backup_message">Buat cadangan data Anda dan pulihkan di perangkat mana pun.</string>
+    <string name="restore">Pulihkan</string>
+    <string name="restore_message">Pulihkan data Anda untuk mengambil kembali data Anda ke perangkat.</string>
+    <string name="defaults">Default</string>
+    <string name="others">Pengaturan Lainnya</string>
+
+    <string name="personalization">Personalisasi</string>
+    <string name="notifications">Notifikasi</string>
+    <string name="data_and_backup"><![CDATA[Data & Cadangan]]></string>
+    <string name="security">Keamanan</string>
+    <string name="support">Dukungan</string>
+
+    <string name="compact_summary">Ringkasan Ringkas</string>
+    <string name="compact_summary_message">Tampilkan widget ringkasan yang lebih kecil di layar beranda</string>
+
+    <string name="app_lock">Kunci Aplikasi</string>
+    <string name="app_lock_message">Memerlukan biometrik atau kredensial perangkat saat membuka aplikasi</string>
+</resources>

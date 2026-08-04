@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="export_error_message">Terjadi kesalahan yang tidak diketahui saat mengekspor file</string>
+    <string name="export_success_message">File berhasil diekspor</string>
+    <string name="csv">CSV</string>
+    <string name="pdf">PDF</string>
+    <string name="share">Bagikan</string>
+    <string name="export">Ekspor</string>
+    <string name="select_range">Pilih Rentang</string>
+    <string name="select_account">Pilih Akun</string>
+<string name="all">Semua</string>
+    <string name="today">Hari Ini</string>
+</resources>

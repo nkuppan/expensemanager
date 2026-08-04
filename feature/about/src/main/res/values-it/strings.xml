@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="developed_by">Sviluppato da Naveen Kumar Kuppan</string>
+    <string name="system_default">Predefinito di sistema</string>
+    <string name="app_version">Versione: %s</string>
+    <string name="about_us">Chi siamo</string>
+    <string name="privacy_policy">Informativa sulla privacy</string>
+    <string name="terms_and_conditions">Termini e condizioni</string>
+    <string name="licenses">Licenze open source</string>
+</resources>

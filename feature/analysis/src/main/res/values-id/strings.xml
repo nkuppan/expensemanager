@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">Analisis</string>
+    <string name="average_and_projected">Rata-rata &amp; Proyeksi</string>
+    <string name="day">Hari</string>
+    <string name="week">Minggu</string>
+    <string name="month">Bulan</string>
+    <string name="no_chart_available">Tidak ada data yang tersedia untuk analisis</string>
+</resources>

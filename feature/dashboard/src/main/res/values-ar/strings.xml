@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">ملخص المعاملات</string>
+    <string name="expense">المصروف</string>
+    <string name="income">الدخل</string>
+    <string name="total">الإجمالي</string>
+    <string name="balance">الرصيد</string>
+    <string name="categories">الفئات</string>
+    <string name="hello">مرحبًا!</string>
+    <string name="guest">ضيف</string>
+    <string name="settings">الإعدادات</string>
+    <string name="transaction">معاملة</string>
+    <string name="no_transactions_available">لا توجد معاملات متاحة للفترة المحددة.\nانقر على زر + لتسجيل معاملاتك</string>
+    <string name="home">الرئيسية</string>
+    <string name="transaction_create_message">"أضف مصروفاتك ودخلك وتحويلاتك هنا. "</string>
+    <string name="help"><![CDATA[المساعدة والمعلومات]]></string>
+    <string name="ok">موافق</string>
+    <string name="no_budget_for_month">لا يوجد %1$s</string>
+    <string name="tap_to_set_spending_limit">انقر لتعيين حد للإنفاق</string>
+</resources>

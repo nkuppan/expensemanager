@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">Não se esqueça de registar as suas despesas</string>
+    <string name="notification_title">Adicionar transação</string>
+    <string name="notification_channel_description">Utilizado para lembretes</string>
+</resources>

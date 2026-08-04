@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">Orçamentos</string>
+    <string name="active_budgets">Orçamentos ativos</string>
+    <string name="no_budget_available">Não há orçamentos disponíveis\nToque no botão + para criar um novo orçamento</string>
+    <string name="no_budget_available_short">Não há orçamentos disponíveis</string>
+    <string name="budget_name">Nome do orçamento</string>
+    <string name="budget_delete_error_message">Falha ao atualizar o orçamento</string>
+    <string name="budget_name_error">O nome não deve estar vazio</string>
+    <string name="budget_create_error">Não foi possível criar/atualizar o orçamento</string>
+    <string name="budget_create_success">Orçamento criado/atualizado com sucesso</string>
+    <string name="budget_amount">Valor do orçamento</string>
+    <string name="budget_amount_error">O valor do orçamento não deve estar vazio nem ser zero</string>
+
+    <string name="select_date">Selecionar data</string>
+    <string name="select_account">Selecionar conta</string>
+    <string name="clear_all">Limpar tudo</string>
+    <string name="select">Selecionar</string>
+    <string name="select_category">Selecionar categoria</string>
+
+    <string name="all">Tudo</string>
+
+    <string name="edit_budget">Editar orçamento</string>
+    <string name="create_budget">Criar orçamento</string>
+    <string name="period">Período</string>
+    <string name="budget_scope">Âmbito do orçamento</string>
+    <string name="details">Detalhes</string>
+    <string name="appearance">Aparência</string>
+    <string name="select_month">Selecionar mês</string>
+    <string name="budget_for">Orçamento para</string>
+    <string name="what_is_your_budget_limit">Qual é o seu limite total de orçamento</string>
+</resources>

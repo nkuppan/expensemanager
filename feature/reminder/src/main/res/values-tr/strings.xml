@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Hatırlatıcı</string>
+    <string name="reminder_notification">Hatırlatıcı Bildirimi</string>
+    <string name="reminder_notification_message">Giderlerinizi eklemeniz için hatırlatma bildirimi saati</string>
+    <string name="notification_time">Hatırlatıcı Bildirim Saati</string>
+    <string name="notification_permission_message">Bildirim izni bu uygulama için önemlidir. Lütfen izni verin.</string>
+    <string name="permission_disabled">Bildirim izni devre dışı</string>
+    <string name="request_permission">İzin iste</string>
+    <string name="open_settings">Ayarları Aç</string>
+
+    <string name="permission_required_title">Bildirimler Devre Dışı</string>
+    <string name="schedule">Zamanla</string>
+</resources>

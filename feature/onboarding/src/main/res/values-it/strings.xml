@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">Tieni traccia delle tue spese</string>
+    <string name="welcome_message_description">Resta informato e tieni un registro delle tue spese</string>
+    <string name="privacy_text">Tutti i tuoi dati sono archiviati sul tuo dispositivo con opzione di backup esterno. Continuando, accetti la nostra informativa sulla privacy.</string>
+    <string name="currency">Valuta</string>
+    <string name="select_main_currency">Seleziona valuta principale</string>
+    <string name="add_new">Aggiungi nuovo</string>
+    <string name="proceed">Procedi</string>
+    <string name="get_started">Inizia</string>
+    <string name="setup">Configura le impostazioni dell\'app</string>
+    <string name="create_new">Crea nuovo</string>
+
+    <string name="setup_description">Configura la tua valuta e i tuoi conti per iniziare</string>
+    <string name="tap_to_change">Tocca per cambiare</string>
+    <string name="setup_currency">Configura la valuta</string>
+    <string name="not_set_up_yet">Non ancora configurato</string>
+
+    <string name="track">Traccia</string>
+    <string name="organize">Organizza</string>
+    <string name="grow">Cresci</string>
+</resources>

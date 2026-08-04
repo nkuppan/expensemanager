@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">الفئات</string>
+    <string name="income">الدخل</string>
+    <string name="expense">المصروف</string>
+    <string name="no_category_available">لا توجد فئات متاحة\nانقر على زر + لإنشاء فئاتك</string>
+    <string name="no_transactions_available">لا توجد معاملات متاحة للفترة المحددة.\nانقر على زر + لتسجيل معاملاتك</string>
+    <string name="category_selection_message">يجب اختيار فئة واحدة على الأقل للمتابعة</string>
+    <string name="select_account">اختيار الحساب</string>
+    <string name="clear_all">مسح الكل</string>
+    <string name="select">اختيار</string>
+    <string name="select_category">اختيار الفئة</string>
+
+    <string name="delete_item_message">هل تريد حقًا حذف هذا العنصر؟</string>
+    <string name="cancel">إلغاء</string>
+    <string name="category">الفئة</string>
+    <string name="category_name">اسم الفئة</string>
+
+    <string name="category_create_error">حدث خطأ غير معروف أثناء إضافة الفئة</string>
+    <string name="category_name_error">يجب ألا يكون الاسم فارغًا</string>
+    <string name="category_create_success">تم إنشاء/تعديل الفئة بنجاح</string>
+    <string name="category_delete_error_message">تعذر حذف هذه الفئة</string>
+    <string name="category_delete_message">سيؤدي حذف هذه الفئة أيضًا إلى حذف جميع معاملاتها وإزالتها من أي ميزانيات تنتمي إليها. لا يمكن التراجع عن هذا الإجراء.</string>
+    <string name="default_category_name_locked_message">هذه فئة افتراضية، لذا يتبع اسمها لغة التطبيق المحددة ولا يمكن إعادة تسميتها.</string>
+    <string name="edit">تعديل</string>
+    <string name="add_new">إضافة جديد</string>
+
+    <string name="edit_category">تعديل الفئة</string>
+    <string name="create_category">إنشاء فئة</string>
+    <string name="save">حفظ</string>
+    <string name="delete">حذف</string>
+    <string name="preview">معاينة</string>
+    <string name="details">التفاصيل</string>
+    <string name="appearance">المظهر</string>
+    <string name="category_type">نوع الفئة</string>
+    <string name="category_name_placeholder">اسم الفئة</string>
+
+    <string name="add_category">إضافة فئة</string>
+    <string name="add_transaction">إضافة معاملة</string>
+    <string name="tap_chart_to_switch_to">"انقر على الرسم البياني للتبديل إلى "</string>
+
+    <plurals name="category_count">
+        <item quantity="zero">لا توجد فئات</item>
+        <item quantity="one">فئة واحدة</item>
+        <item quantity="two">فئتان</item>
+        <item quantity="few">%d فئات</item>
+        <item quantity="many">%d فئةً</item>
+        <item quantity="other">%d فئة</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="zero">لم يتم تحديد أي عنصر</item>
+        <item quantity="one">تم تحديد عنصر واحد</item>
+        <item quantity="two">تم تحديد عنصرين</item>
+        <item quantity="few">تم تحديد %d عناصر</item>
+        <item quantity="many">تم تحديد %d عنصرًا</item>
+        <item quantity="other">تم تحديد %d عنصر</item>
+    </plurals>
+</resources>

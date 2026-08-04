@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analysis">分析</string>
+    <string name="average_and_projected">平均と予測</string>
+    <string name="day">日</string>
+    <string name="week">週</string>
+    <string name="month">月</string>
+    <string name="no_chart_available">分析に利用できるデータがありません</string>
+</resources>

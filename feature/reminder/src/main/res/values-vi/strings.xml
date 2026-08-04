@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Nhắc nhở</string>
+    <string name="reminder_notification">Thông báo nhắc nhở</string>
+    <string name="reminder_notification_message">Thời gian thông báo để nhắc bạn ghi lại chi tiêu</string>
+    <string name="notification_time">Thời gian thông báo nhắc nhở</string>
+    <string name="notification_permission_message">Quyền thông báo rất quan trọng đối với ứng dụng này. Vui lòng cấp quyền.</string>
+    <string name="permission_disabled">Quyền thông báo đã bị tắt</string>
+    <string name="request_permission">Yêu cầu quyền</string>
+    <string name="open_settings">Mở cài đặt</string>
+
+    <string name="permission_required_title">Thông báo đã bị tắt</string>
+    <string name="schedule">Lịch trình</string>
+</resources>

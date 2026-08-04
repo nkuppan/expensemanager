@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_message_title">지출을 추적하세요</string>
+    <string name="welcome_message_description">지출 내역을 파악하고 기록해 보세요</string>
+    <string name="privacy_text">모든 데이터는 기기에 저장되며 외부 백업 옵션도 제공됩니다. 계속 진행하면 개인정보 처리방침에 동의하는 것으로 간주됩니다.</string>
+    <string name="currency">통화</string>
+    <string name="select_main_currency">주 통화 선택</string>
+    <string name="add_new">새로 추가</string>
+    <string name="proceed">계속</string>
+    <string name="get_started">시작하기</string>
+    <string name="setup">앱 설정 구성</string>
+    <string name="create_new">새로 만들기</string>
+
+    <string name="setup_description">시작하려면 통화와 계좌를 설정하세요</string>
+    <string name="tap_to_change">탭하여 변경</string>
+    <string name="setup_currency">통화 설정</string>
+    <string name="not_set_up_yet">아직 설정되지 않음</string>
+
+    <string name="track">추적</string>
+    <string name="organize">정리</string>
+    <string name="grow">성장</string>
+</resources>

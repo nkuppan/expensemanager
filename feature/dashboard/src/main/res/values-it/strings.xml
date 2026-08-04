@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transaction_summary">Riepilogo transazioni</string>
+    <string name="expense">Spesa</string>
+    <string name="income">Entrata</string>
+    <string name="total">Totale</string>
+    <string name="balance">Saldo</string>
+    <string name="categories">Categorie</string>
+    <string name="hello">Ciao!</string>
+    <string name="guest">Ospite</string>
+    <string name="settings">Impostazioni</string>
+    <string name="transaction">Transazione</string>
+    <string name="no_transactions_available">Nessuna transazione disponibile per il periodo selezionato.\nTocca il pulsante + per registrare le tue transazioni</string>
+    <string name="home">Home</string>
+    <string name="transaction_create_message">"Aggiungi qui le tue spese, entrate e trasferimenti. "</string>
+    <string name="help"><![CDATA[Aiuto e informazioni]]></string>
+    <string name="ok">OK</string>
+    <string name="no_budget_for_month">Nessun %1$s</string>
+    <string name="tap_to_set_spending_limit">Tocca per impostare un limite di spesa</string>
+</resources>

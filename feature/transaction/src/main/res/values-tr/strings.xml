@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">İşlem eklenemiyor</string>
+    <string name="unable_to_find_transaction">İşlem bulunamıyor</string>
+    <string name="transaction_delete_error_message">Bu işlem silinemiyor</string>
+
+    <string name="no_transactions_available">Seçilen dönem için işlem bulunmuyor.\nİşlemlerinizi not etmek için + düğmesine dokunun</string>
+    <string name="date">Tarih</string>
+    <string name="notes">Notlar</string>
+    <string name="expense">Gider</string>
+    <string name="income">Gelir</string>
+    <string name="transfer">Transfer</string>
+
+    <string name="select_different_account">Farklı bir hesap seçin. Kaynak ve hedef hesap aynı olamaz.</string>
+    <string name="amount_error_message">Lütfen geçerli bir tutar girin</string>
+    <string name="amount_should_greater_than_zero">Tutar sıfırdan büyük olmalıdır</string>
+    <string name="transaction_create_success">İşlem başarıyla oluşturuldu/güncellendi</string>
+    <string name="optional_details">İsteğe bağlı detaylar</string>
+    <string name="select_account">Hesap Seç</string>
+    <string name="select_category">Kategori Seç</string>
+    <string name="select_date">Tarih Seç</string>
+    <string name="select_time">Saat Seç</string>
+
+    <string name="transaction">İşlem</string>
+    <string name="clear">Temizle</string>
+    <string name="cancel">İptal</string>
+    <string name="ok">Tamam</string>
+    <string name="amount">Tutar</string>
+    <string name="from_account">Kaynak Hesap</string>
+    <string name="to_account">Hedef Hesap</string>
+
+    <string name="edit_transaction">İşlemi Düzenle</string>
+    <string name="create_transaction">Yeni İşlem</string>
+    <string name="date_and_time">Tarih &amp; Saat</string>
+    <string name="delete">Sil</string>
+    <string name="save">Kaydet</string>
+    <string name="transaction_type">İşlem Türü</string>
+    <string name="details">Detaylar</string>
+
+    <string name="done">Bitti</string>
+    <string name="backspace">Geri sil</string>
+    <string name="add_transaction">İşlem Ekle</string>
+</resources>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="categories">カテゴリ</string>
+    <string name="income">収入</string>
+    <string name="expense">支出</string>
+    <string name="no_category_available">カテゴリがありません\nカテゴリを作成するには + ボタンをタップしてください</string>
+    <string name="no_transactions_available">選択した期間の取引はありません。\n取引を記録するには + ボタンをタップしてください</string>
+    <string name="category_selection_message">続行するには少なくとも1つのカテゴリを選択してください</string>
+    <string name="select_account">アカウントを選択</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="select">選択</string>
+    <string name="select_category">カテゴリを選択</string>
+
+    <string name="delete_item_message">このアイテムを本当に削除しますか?</string>
+    <string name="cancel">キャンセル</string>
+    <string name="category">カテゴリ</string>
+    <string name="category_name">カテゴリ名</string>
+
+    <string name="category_create_error">カテゴリの登録中に不明なエラーが発生しました</string>
+    <string name="category_name_error">名前を入力してください</string>
+    <string name="category_create_success">カテゴリが正常に作成/変更されました</string>
+    <string name="category_delete_error_message">このカテゴリを削除できません</string>
+    <string name="category_delete_message">このカテゴリを削除すると、関連するすべての取引も削除され、含まれている予算からも除外されます。この操作は取り消せません。</string>
+    <string name="default_category_name_locked_message">これはデフォルトカテゴリのため、名前は選択したアプリの言語に従って表示され、変更できません。</string>
+    <string name="edit">編集</string>
+    <string name="add_new">新規追加</string>
+
+    <string name="edit_category">カテゴリを編集</string>
+    <string name="create_category">カテゴリを作成</string>
+    <string name="save">保存</string>
+    <string name="delete">削除</string>
+    <string name="preview">プレビュー</string>
+    <string name="details">詳細</string>
+    <string name="appearance">外観</string>
+    <string name="category_type">カテゴリタイプ</string>
+    <string name="category_name_placeholder">カテゴリ名</string>
+
+    <string name="add_category">カテゴリを追加</string>
+    <string name="add_transaction">取引を追加</string>
+    <string name="tap_chart_to_switch_to">"グラフをタップして切り替え: "</string>
+
+    <plurals name="category_count">
+        <item quantity="other">%d 件のカテゴリ</item>
+    </plurals>
+
+    <plurals name="items_selected">
+        <item quantity="other">%d 件選択</item>
+    </plurals>
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">계좌가 성공적으로 생성/수정되었습니다</string>
+    <string name="account_name_error">이름은 비워둘 수 없습니다</string>
+    <string name="account_delete_error_message">이 계좌를 삭제할 수 없습니다</string>
+    <string name="account_name">계좌 이름</string>
+    <string name="accounts">계좌</string>
+    <string name="available_balance">사용 가능한 잔액</string>
+    <string name="credit_limit">신용 한도</string>
+    <string name="credit_limit_error">신용 한도는 비워둘 수 없습니다</string>
+    <string name="current_balance">현재 잔액</string>
+    <string name="current_balance_error">현재 잔액은 비워둘 수 없습니다</string>
+    <string name="current_balance_value_error">현재 잔액은 올바른 숫자여야 합니다</string>
+    <string name="no_account_available">사용 가능한 계좌가 없습니다\n+ 버튼을 눌러 첫 계좌를 만드세요</string>
+    <string name="no_account_available_short">사용 가능한 계좌가 없습니다</string>
+    <string name="account_create_error">올바른 값을 입력해 주세요</string>
+    <string name="bank_account">은행 계좌</string>
+    <string name="credit">신용</string>
+    <string name="select_account">계좌 선택</string>
+    <string name="account_selection_message">계속하려면 계좌를 하나 이상 선택해야 합니다</string>
+    <string name="clear_all">모두 지우기</string>
+    <string name="select">선택</string>
+    <string name="account_delete_success_message">계좌가 성공적으로 삭제되었습니다</string>
+    <string name="add_new">새로 추가</string>
+    <string name="accounts_re_order">계좌 순서 변경</string>
+    <string name="available_limit">사용 가능한 한도 %s</string>
+    <string name="drag_to_reorder_hint">길게 눌러 드래그하면 계좌 순서를 변경할 수 있습니다</string>
+    <string name="save">저장</string>
+    <string name="apply">적용</string>
+
+    <plurals name="items_selected">
+        <item quantity="other">%d개 선택됨</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="other">계좌 %d개</item>
+    </plurals>
+    <string name="add_account">계좌 추가</string>
+
+    <string name="details">세부 정보</string>
+    <string name="delete">삭제</string>
+    <string name="appearance">모양</string>
+    <string name="edit_account">계좌 수정</string>
+    <string name="create_account">계좌 만들기</string>
+    <string name="account_type">계좌 유형</string>
+    <string name="balance">잔액</string>
+</resources>

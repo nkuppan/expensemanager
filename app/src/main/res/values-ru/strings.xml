@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">Expense Manager</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">Выбрать</string>
+
+    <string name="title_home">Главная</string>
+    <string name="view_all">Смотреть все</string>
+    <string name="accounts">Счёт</string>
+
+    <string name="category_name">Название категории</string>
+
+
+    <string name="title_graph">График</string>
+
+
+    <string name="currency">Валюта</string>
+
+    <string name="choose_color">Выбрать цвет</string>
+    <string name="choose_icon">Выбрать значок</string>
+
+
+    <string name="categories">Категории</string>
+    <string name="total">Итого</string>
+    <string name="transaction_summary">Сводка</string>
+    <string name="clear_all">Очистить всё</string>
+    <string name="category_selection_message">Нужно выбрать хотя бы одну категорию, чтобы продолжить</string>
+    <string name="share">Поделиться</string>
+    <string name="hello">Привет!</string>
+    <string name="guest">Гость</string>
+    <string name="balance">Баланс</string>
+
+    <string name="add_transaction">Добавить операцию</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">ОК</string>
+    <string name="settings">Настройки</string>
+    <string name="analysis">Анализ</string>
+    <string name="transaction">Операция</string>
+
+    <string name="app_lock_title">Разблокировать Expense Manager</string>
+    <string name="app_lock_description">Подтвердите личность, чтобы продолжить</string>
+    <string name="app_lock_unlock">Разблокировать</string>
+</resources>

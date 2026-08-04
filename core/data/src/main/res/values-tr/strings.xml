@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today">Bugün</string>
+    <string name="this_week">Bu Hafta</string>
+    <string name="this_month">Bu Ay</string>
+    <string name="this_year">Bu Yıl</string>
+    <string name="all_time">Tüm zamanlar</string>
+    <string name="custom">Özel</string>
+
+    <string name="amount">Tutar</string>
+    <string name="category">Kategori</string>
+    <string name="date">Tarih</string>
+    <string name="notes">Notlar</string>
+    <string name="average">Ortalama</string>
+    <string name="day">Gün</string>
+    <string name="week">Hafta</string>
+    <string name="time">Saat</string>
+    <string name="month">Ay</string>
+    <string name="from_account">Kaynak Hesap</string>
+    <string name="to_account">Hedef Hesap</string>
+    <string name="transaction_type">İşlem Türü</string>
+    <string name="category_type">Kategori Türü</string>
+    <string name="account_type">Hesap Türü</string>
+    <string name="exported_on">Dışa Aktarılma Tarihi</string>
+    <string name="total_transactions">Toplam İşlem</string>
+    <string name="total_income">Toplam Gelir</string>
+    <string name="total_expense">Toplam Gider</string>
+    <string name="net_balance">Net Bakiye</string>
+
+    <string name="light">Açık</string>
+    <string name="dark">Koyu</string>
+    <string name="set_by_battery_saver">Pil tasarrufu tarafından ayarlandı</string>
+    <string name="system_default">Sistem varsayılanı</string>
+
+    <string name="category_clothing">Giyim</string>
+    <string name="category_entertainment">Eğlence</string>
+    <string name="category_food">Yiyecek</string>
+    <string name="category_health">Sağlık</string>
+    <string name="category_leisure">Boş Zaman</string>
+    <string name="category_shopping">Alışveriş</string>
+    <string name="category_transportation">Ulaşım</string>
+    <string name="category_utilities">Faturalar</string>
+    <string name="category_salary">Maaş</string>
+    <string name="category_gift">Hediye</string>
+    <string name="category_coupons">Kuponlar</string>
+</resources>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="budgets">Budget</string>
+    <string name="active_budgets">Budget attivi</string>
+    <string name="no_budget_available">Nessun budget disponibile\nTocca il pulsante + per creare un nuovo budget</string>
+    <string name="no_budget_available_short">Nessun budget disponibile</string>
+    <string name="budget_name">Nome budget</string>
+    <string name="budget_delete_error_message">Aggiornamento del budget non riuscito</string>
+    <string name="budget_name_error">Il nome non deve essere vuoto</string>
+    <string name="budget_create_error">Impossibile creare/aggiornare il budget</string>
+    <string name="budget_create_success">Budget creato/aggiornato con successo</string>
+    <string name="budget_amount">Importo del budget</string>
+    <string name="budget_amount_error">L\'importo del budget non deve essere vuoto o zero</string>
+
+    <string name="select_date">Seleziona data</string>
+    <string name="select_account">Seleziona conto</string>
+    <string name="clear_all">Cancella tutto</string>
+    <string name="select">Seleziona</string>
+    <string name="select_category">Seleziona categoria</string>
+
+    <string name="all">Tutti</string>
+
+    <string name="edit_budget">Modifica budget</string>
+    <string name="create_budget">Crea budget</string>
+    <string name="period">Periodo</string>
+    <string name="budget_scope">Ambito del budget</string>
+    <string name="details">Dettagli</string>
+    <string name="appearance">Aspetto</string>
+    <string name="select_month">Seleziona mese</string>
+    <string name="budget_for">Budget per</string>
+    <string name="what_is_your_budget_limit">Qual è il tuo limite di budget totale</string>
+</resources>

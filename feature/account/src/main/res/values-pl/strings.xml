@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="account_create_success">Konto utworzone/zaktualizowane pomyślnie</string>
+    <string name="account_name_error">Nazwa nie może być pusta</string>
+    <string name="account_delete_error_message">Nie można usunąć tego konta</string>
+    <string name="account_name">Nazwa konta</string>
+    <string name="accounts">Konta</string>
+    <string name="available_balance">Dostępne saldo</string>
+    <string name="credit_limit">Limit kredytowy</string>
+    <string name="credit_limit_error">Limit kredytowy nie może być pusty</string>
+    <string name="current_balance">Bieżące saldo</string>
+    <string name="current_balance_error">Bieżące saldo nie może być puste</string>
+    <string name="current_balance_value_error">Bieżące saldo nie może być nieprawidłową liczbą</string>
+    <string name="no_account_available">Brak dostępnych kont\nDotknij przycisku +, aby utworzyć pierwsze konto</string>
+    <string name="no_account_available_short">Brak dostępnych kont</string>
+    <string name="account_create_error">Wprowadź prawidłowe wartości</string>
+    <string name="bank_account">Konto bankowe</string>
+    <string name="credit">Kredyt</string>
+    <string name="select_account">Wybierz konto</string>
+    <string name="account_selection_message">Aby kontynuować, wybierz co najmniej jedno konto</string>
+    <string name="clear_all">Wyczyść wszystko</string>
+    <string name="select">Wybierz</string>
+    <string name="account_delete_success_message">Konto usunięte pomyślnie</string>
+    <string name="add_new">Dodaj nowe</string>
+    <string name="accounts_re_order">Zmiana kolejności kont</string>
+    <string name="available_limit">Dostępny limit %s</string>
+    <string name="drag_to_reorder_hint">Przytrzymaj i przeciągnij, aby zmienić kolejność kont</string>
+    <string name="save">Zapisz</string>
+    <string name="apply">Zastosuj</string>
+
+    <plurals name="items_selected">
+        <item quantity="one">Wybrano: %d</item>
+        <item quantity="few">Wybrano: %d</item>
+        <item quantity="many">Wybrano: %d</item>
+        <item quantity="other">Wybrano: %d</item>
+    </plurals>
+    <plurals name="account_count">
+        <item quantity="one">%d konto</item>
+        <item quantity="few">%d konta</item>
+        <item quantity="many">%d kont</item>
+        <item quantity="other">%d konta</item>
+    </plurals>
+    <string name="add_account">Dodaj konto</string>
+
+    <string name="details">Szczegóły</string>
+    <string name="delete">Usuń</string>
+    <string name="appearance">Wygląd</string>
+    <string name="edit_account">Edytuj konto</string>
+    <string name="create_account">Utwórz konto</string>
+    <string name="account_type">Typ konta</string>
+    <string name="balance">Saldo</string>
+</resources>

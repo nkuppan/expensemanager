@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings">Definições</string>
+    <string name="theme">Tema</string>
+    <string name="analysis">Análise</string>
+    <string name="select_currency">Selecionar moeda</string>
+    <string name="reminder_notification">Notificação</string>
+    <string name="info">Informações</string>
+    <string name="about_the_app_information">Informações sobre a aplicação</string>
+    <string name="rate_us_message">Isso vai ajudar-nos a crescer melhor</string>
+    <string name="currency">Personalizar moeda</string>
+    <string name="selected_daily_reminder_time">Vamos lembrá-lo de adicionar a sua despesa sempre à hora definida</string>
+    <string name="rate_us">Avalie-nos</string>
+    <string name="choose_web_browser">Escolher navegador web</string>
+
+    <string name="export">Exportar</string>
+    <string name="export_message">Exporte os seus dados e analise-os no formato que preferir</string>
+
+    <string name="filter">Filtro</string>
+    <string name="filter_message">Pode selecionar o filtro de data para ver as despesas</string>
+
+    <string name="developed_by">Desenvolvido por Naveen Kumar Kuppan</string>
+    <string name="system_default">Padrão do sistema</string>
+    <string name="app_version">Versão: %s</string>
+    <string name="advanced">Avançado</string>
+    <string name="advanced_config_message">Gerir as configurações avançadas da aplicação</string>
+    <string name="default_account">Conta predefinida</string>
+    <string name="default_expense_category">Categoria de despesa predefinida</string>
+    <string name="default_income_category">Categoria de receita predefinida</string>
+    <string name="accounts_re_order">Reordenar contas</string>
+    <string name="accounts_re_order_message">Pode alterar a ordem da lista de contas no painel principal.</string>
+    <string name="backup">Cópia de segurança</string>
+    <string name="backup_message">Crie uma cópia de segurança dos seus dados e restaure-a em qualquer dispositivo.</string>
+    <string name="restore">Restaurar</string>
+    <string name="restore_message">Restaure os seus dados para os recuperar de volta nos dispositivos.</string>
+    <string name="defaults">Predefinições</string>
+    <string name="others">Outras definições</string>
+
+    <string name="personalization">Personalização</string>
+    <string name="notifications">Notificações</string>
+    <string name="data_and_backup"><![CDATA[Dados e cópia de segurança]]></string>
+    <string name="security">Segurança</string>
+    <string name="support">Suporte</string>
+
+    <string name="compact_summary">Resumo compacto</string>
+    <string name="compact_summary_message">Mostra um widget de resumo mais pequeno no ecrã principal</string>
+
+    <string name="app_lock">Bloqueio da aplicação</string>
+    <string name="app_lock_message">Exigir dados biométricos ou credenciais do dispositivo ao abrir a aplicação</string>
+</resources>

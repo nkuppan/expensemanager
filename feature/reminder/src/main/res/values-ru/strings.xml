@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder">Напоминание</string>
+    <string name="reminder_notification">Уведомление-напоминание</string>
+    <string name="reminder_notification_message">Время уведомления для напоминания о добавлении расходов</string>
+    <string name="notification_time">Время напоминания</string>
+    <string name="notification_permission_message">Разрешение на уведомления важно для этого приложения. Пожалуйста, предоставьте разрешение.</string>
+    <string name="permission_disabled">Разрешение на уведомления отключено</string>
+    <string name="request_permission">Запросить разрешение</string>
+    <string name="open_settings">Открыть настройки</string>
+
+    <string name="permission_required_title">Уведомления отключены</string>
+    <string name="schedule">Расписание</string>
+</resources>

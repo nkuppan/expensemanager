@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_description">Đừng quên ghi lại chi tiêu của bạn</string>
+    <string name="notification_title">Thêm giao dịch</string>
+    <string name="notification_channel_description">Dùng cho nhắc nhở</string>
+</resources>

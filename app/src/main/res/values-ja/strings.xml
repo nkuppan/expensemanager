@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">Expense Manager</string>
+
+
+    <!-- Failure message strings -->
+
+    <string name="select">選択</string>
+
+    <string name="title_home">ホーム</string>
+    <string name="view_all">すべて表示</string>
+    <string name="accounts">アカウント</string>
+
+    <string name="category_name">カテゴリ名</string>
+
+
+    <string name="title_graph">グラフ</string>
+
+
+    <string name="currency">通貨</string>
+
+    <string name="choose_color">色を選択</string>
+    <string name="choose_icon">アイコンを選択</string>
+
+
+    <string name="categories">カテゴリ</string>
+    <string name="total">合計</string>
+    <string name="transaction_summary">サマリー</string>
+    <string name="clear_all">すべてクリア</string>
+    <string name="category_selection_message">続行するには少なくとも1つのカテゴリを選択してください</string>
+    <string name="share">共有</string>
+    <string name="hello">こんにちは!</string>
+    <string name="guest">ゲスト</string>
+    <string name="balance">残高</string>
+
+    <string name="add_transaction">取引を追加</string>
+    <string name="cancel">キャンセル</string>
+    <string name="ok">OK</string>
+    <string name="settings">設定</string>
+    <string name="analysis">分析</string>
+    <string name="transaction">取引</string>
+
+    <string name="app_lock_title">Expense Manager のロックを解除</string>
+    <string name="app_lock_description">続行するには本人確認を行ってください</string>
+    <string name="app_lock_unlock">ロック解除</string>
+</resources>

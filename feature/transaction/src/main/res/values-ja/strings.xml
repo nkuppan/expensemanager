@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="double_zero">00</string>
+
+    <string name="divide">/</string>
+    <string name="multiply">*</string>
+    <string name="minus">-</string>
+    <string name="dot">.</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
+
+    <string name="unable_to_add_transaction">取引を追加できません</string>
+    <string name="unable_to_find_transaction">取引が見つかりません</string>
+    <string name="transaction_delete_error_message">この取引を削除できません</string>
+
+    <string name="no_transactions_available">選択した期間の取引はありません。\n取引を記録するには + ボタンをタップしてください</string>
+    <string name="date">日付</string>
+    <string name="notes">メモ</string>
+    <string name="expense">支出</string>
+    <string name="income">収入</string>
+    <string name="transfer">振替</string>
+
+    <string name="select_different_account">別のアカウントを選択してください。振替元と振替先のアカウントは同じにできません。</string>
+    <string name="amount_error_message">有効な金額を入力してください</string>
+    <string name="amount_should_greater_than_zero">金額は0より大きくしてください</string>
+    <string name="transaction_create_success">取引が正常に作成/更新されました</string>
+    <string name="optional_details">任意の詳細</string>
+    <string name="select_account">アカウントを選択</string>
+    <string name="select_category">カテゴリを選択</string>
+    <string name="select_date">日付を選択</string>
+    <string name="select_time">時間を選択</string>
+
+    <string name="transaction">取引</string>
+    <string name="clear">クリア</string>
+    <string name="cancel">キャンセル</string>
+    <string name="ok">OK</string>
+    <string name="amount">金額</string>
+    <string name="from_account">振替元アカウント</string>
+    <string name="to_account">振替先アカウント</string>
+
+    <string name="edit_transaction">取引を編集</string>
+    <string name="create_transaction">新規取引</string>
+    <string name="date_and_time">日付と時間</string>
+    <string name="delete">削除</string>
+    <string name="save">保存</string>
+    <string name="transaction_type">取引タイプ</string>
+    <string name="details">詳細</string>
+
+    <string name="done">完了</string>
+    <string name="backspace">バックスペース</string>
+    <string name="add_transaction">取引を追加</string>
+</resources>
