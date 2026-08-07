@@ -27,6 +27,9 @@
     <string name="details">Detail</string>
     <string name="appearance">Tampilan</string>
     <string name="select_month">Pilih Bulan</string>
+    <string name="select_year">Pilih Tahun</string>
+    <string name="monthly">Bulanan</string>
+    <string name="annual">Tahunan</string>
     <string name="budget_for">Anggaran untuk</string>
     <string name="what_is_your_budget_limit">Berapa batas total anggaran Anda</string>
 </resources>

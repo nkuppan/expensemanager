@@ -40,7 +40,7 @@ class GetBudgetDetailUseCase(
                 val transactionAmount = budgetTransactions?.sumOf { it.amount.amount } ?: 0.0
                 val percent = (transactionAmount / budget.amount).toFloat() * 100
                 budget.toBudgetUiModel(
-                    name = budgetName(budget.selectedMonth),
+                    name = budgetName(budget.selectedMonth, budget.periodType),
                     budgetAmount = getFormattedAmountUseCase(budget.amount, currency),
                     transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
                     percent,

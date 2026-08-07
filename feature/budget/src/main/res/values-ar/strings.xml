@@ -27,6 +27,9 @@
     <string name="details">التفاصيل</string>
     <string name="appearance">المظهر</string>
     <string name="select_month">اختيار الشهر</string>
+    <string name="select_year">اختيار السنة</string>
+    <string name="monthly">شهري</string>
+    <string name="annual">سنوي</string>
     <string name="budget_for">ميزانية لـ</string>
     <string name="what_is_your_budget_limit">ما هو الحد الإجمالي لميزانيتك</string>
 </resources>

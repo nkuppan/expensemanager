@@ -5,6 +5,7 @@ import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.MIGRATION_2_3
 import com.naveenapps.expensemanager.core.database.MIGRATION_3_4
 import com.naveenapps.expensemanager.core.database.MIGRATION_4_5
+import com.naveenapps.expensemanager.core.database.MIGRATION_5_6
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -20,6 +21,7 @@ val DatabaseModule = module {
             MIGRATION_2_3,
             MIGRATION_3_4,
             MIGRATION_4_5,
+            MIGRATION_5_6,
         ).build()
     }
     single { get<ExpenseManagerDatabase>().categoryDao() }

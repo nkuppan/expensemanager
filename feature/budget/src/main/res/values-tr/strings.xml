@@ -27,6 +27,9 @@
     <string name="details">Detaylar</string>
     <string name="appearance">Görünüm</string>
     <string name="select_month">Ay Seç</string>
+    <string name="select_year">Yıl Seç</string>
+    <string name="monthly">Aylık</string>
+    <string name="annual">Yıllık</string>
     <string name="budget_for">Bütçe:</string>
     <string name="what_is_your_budget_limit">Toplam bütçe limitiniz nedir</string>
 </resources>

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.budget.create
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -41,11 +43,14 @@ import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDate
+import com.naveenapps.expensemanager.core.common.utils.fromYear
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -53,6 +58,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
+import com.naveenapps.expensemanager.core.designsystem.ui.components.YearPicker
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
@@ -123,27 +130,50 @@ private fun BudgetCreateScreenContentView(
     }
 
     if (state.showMonthSelection) {
-        MonthPicker(
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(16.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp),
-                ),
-            currentMonth = state.month.value.toMonth(),
-            currentYear = state.month.value.toYearInt(),
-            confirmButtonCLicked = { month, year ->
-                ("$month-$year").fromShortMonthAndYearToDate()?.let {
-                    state.month.onValueChange?.invoke(it)
-                } ?: run {
+        if (state.periodType == BudgetPeriod.YEARLY) {
+            YearPicker(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(16.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.background,
+                        shape = RoundedCornerShape(8.dp),
+                    ),
+                currentYear = state.month.value.toYearInt(),
+                confirmButtonCLicked = { year ->
+                    year.toString().fromYear()?.let {
+                        state.month.onValueChange?.invoke(it)
+                    } ?: run {
+                        onAction.invoke(BudgetCreateAction.CloseMonthSelection)
+                    }
+                },
+                cancelClicked = {
                     onAction.invoke(BudgetCreateAction.CloseMonthSelection)
-                }
-            },
-            cancelClicked = {
-                onAction.invoke(BudgetCreateAction.CloseMonthSelection)
-            },
-        )
+                },
+            )
+        } else {
+            MonthPicker(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(16.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.background,
+                        shape = RoundedCornerShape(8.dp),
+                    ),
+                currentMonth = state.month.value.toMonth(),
+                currentYear = state.month.value.toYearInt(),
+                confirmButtonCLicked = { month, year ->
+                    ("$month-$year").fromShortMonthAndYearToDate()?.let {
+                        state.month.onValueChange?.invoke(it)
+                    } ?: run {
+                        onAction.invoke(BudgetCreateAction.CloseMonthSelection)
+                    }
+                },
+                cancelClicked = {
+                    onAction.invoke(BudgetCreateAction.CloseMonthSelection)
+                },
+            )
+        }
     }
 
     Scaffold(
@@ -196,6 +226,7 @@ private fun BudgetCreateScreenContentView(
             amountField = state.amount,
             currencyIconField = state.currency.symbol,
             selectedDate = state.month,
+            periodType = state.periodType,
             accountCount = if (state.isAllAccountSelected) {
                 stringResource(R.string.all)
             } else {
@@ -220,6 +251,7 @@ fun BudgetCreateScreen(
     categoriesCount: String,
     onAction: (BudgetCreateAction) -> Unit,
     modifier: Modifier = Modifier,
+    periodType: BudgetPeriod = BudgetPeriod.MONTHLY,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -233,12 +265,52 @@ fun BudgetCreateScreen(
         ) {
             AppCardView {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        AppFilterChip(
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .weight(1f),
+                            centerAlign = true,
+                            filterName = stringResource(id = R.string.monthly),
+                            isSelected = periodType == BudgetPeriod.MONTHLY,
+                            onClick = {
+                                onAction.invoke(
+                                    BudgetCreateAction.SelectPeriodType(BudgetPeriod.MONTHLY),
+                                )
+                            },
+                        )
+                        AppFilterChip(
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .weight(1f),
+                            centerAlign = true,
+                            filterName = stringResource(id = R.string.annual),
+                            isSelected = periodType == BudgetPeriod.YEARLY,
+                            onClick = {
+                                onAction.invoke(
+                                    BudgetCreateAction.SelectPeriodType(BudgetPeriod.YEARLY),
+                                )
+                            },
+                        )
+                    }
                     ClickableTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        value = selectedDate.value.toMonthAndYear(),
-                        label = R.string.select_month,
+                        value = if (periodType == BudgetPeriod.YEARLY) {
+                            selectedDate.value.toYear()
+                        } else {
+                            selectedDate.value.toMonthAndYear()
+                        },
+                        label = if (periodType == BudgetPeriod.YEARLY) {
+                            R.string.select_year
+                        } else {
+                            R.string.select_month
+                        },
                         leadingIcon = Icons.Default.EditCalendar,
                         onClick = {
                             focusManager.clearFocus(force = true)

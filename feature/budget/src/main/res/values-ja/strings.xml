@@ -27,6 +27,9 @@
     <string name="details">詳細</string>
     <string name="appearance">外観</string>
     <string name="select_month">月を選択</string>
+    <string name="select_year">年を選択</string>
+    <string name="monthly">毎月</string>
+    <string name="annual">毎年</string>
     <string name="budget_for">予算対象</string>
     <string name="what_is_your_budget_limit">合計予算の上限はいくらですか</string>
 </resources>

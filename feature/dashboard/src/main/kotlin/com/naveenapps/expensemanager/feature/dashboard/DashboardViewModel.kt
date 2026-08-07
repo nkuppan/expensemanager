@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetName
@@ -14,6 +15,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransact
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DateRangeType
@@ -154,11 +156,23 @@ class DashboardViewModel(
                 else -> null
             }
             val filtered = if (activeMonth != null) {
-                allBudgets.filter { budget -> budget.selectedMonth == activeMonth }
+                // "Active Budgets" means: the monthly budget covering the month being viewed,
+                // together with the yearly budget covering the current year — both can be active
+                // at once (e.g. a monthly grocery budget alongside a yearly travel budget).
+                val currentYear = Date().toYear()
+                allBudgets.filter { budget ->
+                    when (budget.periodType) {
+                        BudgetPeriod.MONTHLY -> budget.selectedMonth == activeMonth
+                        BudgetPeriod.YEARLY -> budget.selectedMonth == currentYear
+                    }
+                }
             } else {
                 allBudgets
             }
-            val showCreateBudgetForMonth = if (activeMonth != null && filtered.isEmpty()) {
+            // The "create a budget for this month" nudge is about monthly budgets specifically —
+            // an active yearly budget shouldn't suppress it.
+            val hasMonthlyBudget = filtered.any { it.periodType == BudgetPeriod.MONTHLY }
+            val showCreateBudgetForMonth = if (activeMonth != null && !hasMonthlyBudget) {
                 budgetName(activeMonth)
             } else {
                 null

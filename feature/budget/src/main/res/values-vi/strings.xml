@@ -27,6 +27,9 @@
     <string name="details">Chi tiết</string>
     <string name="appearance">Giao diện</string>
     <string name="select_month">Chọn tháng</string>
+    <string name="select_year">Chọn năm</string>
+    <string name="monthly">Hàng tháng</string>
+    <string name="annual">Hàng năm</string>
     <string name="budget_for">Ngân sách cho</string>
     <string name="what_is_your_budget_limit">Hạn mức ngân sách tổng của bạn là bao nhiêu</string>
 </resources>

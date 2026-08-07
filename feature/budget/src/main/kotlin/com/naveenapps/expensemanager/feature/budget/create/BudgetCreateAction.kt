@@ -1,11 +1,14 @@
 package com.naveenapps.expensemanager.feature.budget.create
 
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Category
 
 sealed class BudgetCreateAction {
 
     data object ClosePage : BudgetCreateAction()
+
+    data class SelectPeriodType(val periodType: BudgetPeriod) : BudgetCreateAction()
 
     data object ShowMonthSelection : BudgetCreateAction()
 

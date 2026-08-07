@@ -4,7 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.fromYear
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseCase
@@ -16,6 +18,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDe
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -61,6 +64,7 @@ class BudgetCreateViewModel(
                 valueError = false,
                 onValueChange = this::setDateChange
             ),
+            periodType = BudgetPeriod.MONTHLY,
             currency = getDefaultCurrencyUseCase.invoke(),
             isAllAccountSelected = true,
             selectedAccounts = emptyList(),
@@ -117,11 +121,18 @@ class BudgetCreateViewModel(
             setCategories(categories, budget.isAllAccountsSelected)
         }
 
+        val loadedDate = if (budget.periodType == BudgetPeriod.YEARLY) {
+            budget.selectedMonth.fromYear()
+        } else {
+            budget.selectedMonth.fromMonthAndYearKey()
+        } ?: Date()
+
         _state.update { state ->
             state.copy(
                 isLoading = false,
                 amount = state.amount.copy(value = numberFormatRepository.formatForEditing(budget.amount)),
-                month = state.month.copy(value = budget.selectedMonth.fromMonthAndYearKey() ?: Date()),
+                month = state.month.copy(value = loadedDate),
+                periodType = budget.periodType,
                 isAllAccountSelected = budget.isAllAccountsSelected,
                 selectedAccounts = emptyList(),
                 isAllCategorySelected = budget.isAllCategoriesSelected,
@@ -175,10 +186,16 @@ class BudgetCreateViewModel(
 
         val accounts = _state.value.selectedAccounts.map { it.id }
 
+        val periodType = _state.value.periodType
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
             amount = amount ?: 0.0,
-            selectedMonth = date.toMonthAndYearKey(),
+            selectedMonth = if (periodType == BudgetPeriod.YEARLY) {
+                date.toYear()
+            } else {
+                date.toMonthAndYearKey()
+            },
+            periodType = periodType,
             categories = categories,
             accounts = accounts,
             isAllCategoriesSelected = _state.value.isAllCategorySelected,
@@ -221,6 +238,10 @@ class BudgetCreateViewModel(
                 showMonthSelection = false
             )
         }
+    }
+
+    private fun setPeriodType(periodType: BudgetPeriod) {
+        _state.update { it.copy(periodType = periodType) }
     }
 
     private fun setAccounts(selectedAccounts: List<AccountUiModel>, isAllSelected: Boolean) {
@@ -298,6 +319,7 @@ class BudgetCreateViewModel(
     fun processAction(action: BudgetCreateAction) {
         when (action) {
             BudgetCreateAction.ClosePage -> closePage()
+            is BudgetCreateAction.SelectPeriodType -> setPeriodType(action.periodType)
             BudgetCreateAction.OpenAccountSelectionDialog -> openAccountSelection()
             BudgetCreateAction.CloseAccountSelectionDialog -> closeAccountSelection()
             BudgetCreateAction.OpenCategorySelectionDialog -> openCategorySelection()

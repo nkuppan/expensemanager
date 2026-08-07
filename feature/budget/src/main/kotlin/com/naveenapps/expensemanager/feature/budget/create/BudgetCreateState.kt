@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.budget.create
 
 import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -12,6 +13,7 @@ data class BudgetCreateState(
     val isLoading: Boolean,
     val amount: TextFieldValue<String>,
     val month: TextFieldValue<Date>,
+    val periodType: BudgetPeriod = BudgetPeriod.MONTHLY,
     val isAllAccountSelected: Boolean,
     val selectedAccounts: List<AccountUiModel>,
     val isAllCategorySelected: Boolean,

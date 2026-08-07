@@ -27,6 +27,9 @@
     <string name="details">세부 정보</string>
     <string name="appearance">모양</string>
     <string name="select_month">월 선택</string>
+    <string name="select_year">연도 선택</string>
+    <string name="monthly">월간</string>
+    <string name="annual">연간</string>
     <string name="budget_for">예산 대상</string>
     <string name="what_is_your_budget_limit">총 예산 한도는 얼마인가요</string>
 </resources>

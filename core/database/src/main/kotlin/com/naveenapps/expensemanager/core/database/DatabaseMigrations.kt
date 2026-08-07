@@ -72,3 +72,15 @@ internal val MIGRATION_4_5 = object : Migration(4, 5) {
         }
     }
 }
+
+/**
+ * Adds a `period_type` column to `budget` so a budget can cover either a single month or an
+ * entire year (see `core.model.BudgetPeriod`). `BudgetPeriod.MONTHLY` is ordinal 0, matching the
+ * column's `DEFAULT 0`, so every budget that existed before this migration — all of which were
+ * implicitly monthly — is correctly backfilled without needing a separate UPDATE statement.
+ */
+internal val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `budget` ADD COLUMN `period_type` INTEGER NOT NULL DEFAULT 0")
+    }
+}

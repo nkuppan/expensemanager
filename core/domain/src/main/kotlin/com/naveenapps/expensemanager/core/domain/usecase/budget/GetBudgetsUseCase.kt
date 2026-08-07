@@ -5,11 +5,13 @@ import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
@@ -44,7 +46,7 @@ class GetBudgetsUseCase(
                 val transactionAmount = transactions?.sumOf { it.amount.amount } ?: 0.0
                 val percent = (transactionAmount / budget.amount).toFloat() * 100
                 budget.toBudgetUiModel(
-                    name = budgetName(budget.selectedMonth),
+                    name = budgetName(budget.selectedMonth, budget.periodType),
                     budgetAmount = getFormattedAmountUseCase(budget.amount, currency),
                     transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
                     percent,
@@ -59,7 +61,15 @@ class GetBudgetsUseCase(
 
 private val shortMonthFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
 
-fun budgetName(selectedMonth: String): String {
+fun budgetName(selectedMonth: String, periodType: BudgetPeriod = BudgetPeriod.MONTHLY): String {
+    if (periodType == BudgetPeriod.YEARLY) {
+        val currentYear = Date().toYear()
+        return if (selectedMonth == currentYear) {
+            "This Year Budget"
+        } else {
+            "$selectedMonth Budget"
+        }
+    }
     val currentMonth = Date().toMonthAndYearKey()
     return if (selectedMonth == currentMonth) {
         "This Month Budget"
@@ -81,6 +91,7 @@ fun Budget.toBudgetUiModel(
     id = this.id,
     name = name,
     selectedMonth = this.selectedMonth,
+    periodType = this.periodType,
     progressBarColor = when {
         percent < 0f -> R.color.green_500
         percent in 0f..35f -> R.color.green_500
@@ -99,6 +110,7 @@ data class BudgetUiModel(
     val id: String,
     val name: String,
     val selectedMonth: String,
+    val periodType: BudgetPeriod = BudgetPeriod.MONTHLY,
     val progressBarColor: Int,
     val amount: Amount,
     val transactionAmount: Amount,

@@ -180,6 +180,27 @@ fun Date.getEndOfTheMonth(): Long {
         .toEpochMilliseconds()
 }
 
+/** Year-scoped counterpart of [getStartOfTheMonth], used for yearly (`BudgetPeriod.YEARLY`) budgets. */
+@OptIn(ExperimentalTime::class)
+fun Date.getStartOfTheYear(): Long {
+    val dateTime =
+        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
+    return dateTime.date.minus(dateTime.dayOfYear, DateTimeUnit.DAY)
+        .atStartOfDayIn(TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
+}
+
+/** Year-scoped counterpart of [getEndOfTheMonth], used for yearly (`BudgetPeriod.YEARLY`) budgets. */
+@OptIn(ExperimentalTime::class)
+fun Date.getEndOfTheYear(): Long {
+    val dateTime =
+        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
+    val startOfTheYear = dateTime.date.minus(dateTime.dayOfYear, DateTimeUnit.DAY)
+        .atStartOfDayIn(TimeZone.currentSystemDefault())
+    return startOfTheYear.plus(1, DateTimeUnit.YEAR, TimeZone.currentSystemDefault())
+        .toEpochMilliseconds()
+}
+
 fun Long.toCompleteDate(): Date {
     return Date(this)
 }
@@ -239,6 +260,16 @@ fun Date.toYearInt(): Int {
 
 fun Date.toYear(): String {
     return YearDataFormat.format(this)
+}
+
+/**
+ * See [Date.toYear]. Returns null instead of throwing on unparseable input. Used as the
+ * round-trip key for yearly (`BudgetPeriod.YEARLY`) `Budget.selectedMonth` values, mirroring
+ * [fromMonthAndYearKey]. Safe to round-trip like the other purely-numeric formats in this file
+ * (see the file header comment) since [YearDataFormat] is already pinned to `Locale.US`.
+ */
+fun String.fromYear(): Date? {
+    return kotlin.runCatching { YearDataFormat.parse(this) }.getOrNull()
 }
 
 fun Date.toTimeAndMinutes(): String {

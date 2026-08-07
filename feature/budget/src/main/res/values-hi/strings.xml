@@ -27,6 +27,9 @@
     <string name="details">विवरण</string>
     <string name="appearance">दिखावट</string>
     <string name="select_month">महीना चुनें</string>
+    <string name="select_year">वर्ष चुनें</string>
+    <string name="monthly">मासिक</string>
+    <string name="annual">वार्षिक</string>
     <string name="budget_for">इसके लिए बजट</string>
     <string name="what_is_your_budget_limit">आपकी कुल बजट सीमा क्या है</string>
 </resources>

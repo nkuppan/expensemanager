@@ -1,10 +1,15 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
 import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.fromYear
 import com.naveenapps.expensemanager.core.common.utils.getEndOfTheMonth
+import com.naveenapps.expensemanager.core.common.utils.getEndOfTheYear
 import com.naveenapps.expensemanager.core.common.utils.getStartOfTheMonth
+import com.naveenapps.expensemanager.core.common.utils.getStartOfTheYear
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.model.Budget
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
@@ -31,21 +36,30 @@ class GetBudgetTransactionsUseCase(
             budget.categories
         }
 
-        val date = budget.selectedMonth.fromMonthAndYearKey()
+        val isYearly = budget.periodType == BudgetPeriod.YEARLY
+        val date = if (isYearly) {
+            budget.selectedMonth.fromYear()
+        } else {
+            budget.selectedMonth.fromMonthAndYearKey()
+        }
 
         date ?: return Resource.Error(IllegalArgumentException("Unknown month value"))
 
-        val startDayOfMonth = date.getStartOfTheMonth()
-        val endDayOfMonth = date.getEndOfTheMonth()
+        val startDate = if (isYearly) date.getStartOfTheYear() else date.getStartOfTheMonth()
+        val endDate = if (isYearly) date.getEndOfTheYear() else date.getEndOfTheMonth()
 
         val transaction = transactionRepository.getFilteredTransaction(
             accounts = accounts,
             categories = categories,
             transactionType = CategoryType.entries.map { it.ordinal }.toList(),
-            startDate = startDayOfMonth,
-            endDate = endDayOfMonth,
+            startDate = startDate,
+            endDate = endDate,
         ).firstOrNull()?.filter {
-            it.createdOn.toMonthAndYearKey() == budget.selectedMonth
+            if (isYearly) {
+                it.createdOn.toYear() == budget.selectedMonth
+            } else {
+                it.createdOn.toMonthAndYearKey() == budget.selectedMonth
+            }
         }
 
         return Resource.Success(transaction ?: emptyList())

@@ -27,6 +27,9 @@
     <string name="details">Detalhes</string>
     <string name="appearance">Aparência</string>
     <string name="select_month">Selecionar mês</string>
+    <string name="select_year">Selecionar ano</string>
+    <string name="monthly">Mensal</string>
+    <string name="annual">Anual</string>
     <string name="budget_for">Orçamento para</string>
     <string name="what_is_your_budget_limit">Qual é o seu limite total de orçamento</string>
 </resources>
