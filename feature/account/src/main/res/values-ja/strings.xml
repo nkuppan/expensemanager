@@ -42,5 +42,9 @@
     <string name="edit_account">アカウントを編集</string>
     <string name="create_account">アカウントを作成</string>
     <string name="account_type">アカウントタイプ</string>
+    <string name="account_summary">口座の概要</string>
+    <string name="assets">資産</string>
+    <string name="liabilities">負債</string>
+    <string name="total_balance">合計残高</string>
     <string name="balance">残高</string>
 </resources>

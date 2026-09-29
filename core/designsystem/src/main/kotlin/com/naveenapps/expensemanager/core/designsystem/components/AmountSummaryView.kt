@@ -161,7 +161,7 @@ fun AmountInfoWidget(
 }
 
 @Composable
-private fun SummaryCard(
+fun SummaryCard(
     label: String,
     amount: String,
     icon: ImageVector,

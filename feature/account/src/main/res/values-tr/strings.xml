@@ -44,5 +44,9 @@
     <string name="edit_account">Hesabı Düzenle</string>
     <string name="create_account">Hesap Oluştur</string>
     <string name="account_type">Hesap Türü</string>
+    <string name="account_summary">Hesap özeti</string>
+    <string name="assets">Varlıklar</string>
+    <string name="liabilities">Borçlar</string>
+    <string name="total_balance">Toplam bakiye</string>
     <string name="balance">Bakiye</string>
 </resources>

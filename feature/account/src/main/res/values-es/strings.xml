@@ -44,5 +44,9 @@
     <string name="edit_account">Editar cuenta</string>
     <string name="create_account">Crear cuenta</string>
     <string name="account_type">Tipo de cuenta</string>
+    <string name="account_summary">Resumen de cuentas</string>
+    <string name="assets">Activos</string>
+    <string name="liabilities">Pasivos</string>
+    <string name="total_balance">Saldo total</string>
     <string name="balance">Saldo</string>
 </resources>

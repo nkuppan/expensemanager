@@ -42,5 +42,9 @@
     <string name="edit_account">계좌 수정</string>
     <string name="create_account">계좌 만들기</string>
     <string name="account_type">계좌 유형</string>
+    <string name="account_summary">계좌 요약</string>
+    <string name="assets">자산</string>
+    <string name="liabilities">부채</string>
+    <string name="total_balance">총 잔액</string>
     <string name="balance">잔액</string>
 </resources>

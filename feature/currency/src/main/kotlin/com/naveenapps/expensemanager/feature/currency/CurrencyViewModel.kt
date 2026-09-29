@@ -52,7 +52,8 @@ class CurrencyViewModel(
                 it.copy(
                     currency = it.currency.copy(
                         name = currency.name,
-                        symbol = currency.symbol
+                        symbol = currency.symbol,
+                        code = currency.code
                     ),
                     showCurrencySelection = false
                 )

@@ -42,5 +42,9 @@
     <string name="edit_account">Ubah Akun</string>
     <string name="create_account">Buat Akun</string>
     <string name="account_type">Jenis Akun</string>
+    <string name="account_summary">Ringkasan akun</string>
+    <string name="assets">Aset</string>
+    <string name="liabilities">Liabilitas</string>
+    <string name="total_balance">Total saldo</string>
     <string name="balance">Saldo</string>
 </resources>

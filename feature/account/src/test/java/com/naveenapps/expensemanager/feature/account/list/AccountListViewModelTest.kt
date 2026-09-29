@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsU
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.isCredit
@@ -67,6 +68,35 @@ class AccountListViewModelTest : BaseCoroutineTest() {
             Truth.assertThat(secondState).isNotNull()
             Truth.assertThat(secondState.accounts).isNotEmpty()
             Truth.assertThat(secondState.accounts).hasSize(totalCount)
+        }
+    }
+
+    @Test
+    fun summaryShouldSplitAssetsLiabilitiesAndNetTotal() = runTest {
+        accountFlow.value = listOf(
+            getAccountData(1, AccountType.REGULAR, amount = 500.0, creditLimit = 0.0),
+            getAccountData(2, AccountType.REGULAR, amount = 250.0, creditLimit = 0.0),
+            getAccountData(3, AccountType.CREDIT, amount = -150.0, creditLimit = 1000.0),
+        )
+
+        accountListViewModel.state.test {
+            awaitItem()
+
+            val state = awaitItem()
+            Truth.assertThat(state.accounts).hasSize(3)
+            Truth.assertThat(state.totalAmount).isNotNull()
+            Truth.assertThat(state.assetsAmount).isNotNull()
+            Truth.assertThat(state.liabilitiesAmount).isNotNull()
+            // Assets 500 + 250, liabilities 150 (credit spend), net total 600.
+            verify(currencyRepository).getFormattedCurrency(
+                org.mockito.kotlin.argThat { amount == 750.0 },
+            )
+            verify(currencyRepository).getFormattedCurrency(
+                org.mockito.kotlin.argThat { amount == 150.0 },
+            )
+            verify(currencyRepository).getFormattedCurrency(
+                org.mockito.kotlin.argThat { amount == 600.0 },
+            )
         }
     }
 

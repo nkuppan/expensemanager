@@ -42,5 +42,9 @@
     <string name="edit_account">Chỉnh sửa tài khoản</string>
     <string name="create_account">Tạo tài khoản</string>
     <string name="account_type">Loại tài khoản</string>
+    <string name="account_summary">Tóm tắt tài khoản</string>
+    <string name="assets">Tài sản</string>
+    <string name="liabilities">Nợ phải trả</string>
+    <string name="total_balance">Tổng số dư</string>
     <string name="balance">Số dư</string>
 </resources>

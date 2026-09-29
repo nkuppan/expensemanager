@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.account.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -55,9 +56,17 @@ class AccountListViewModel(
                 )
             }
 
+            val assets = accounts.filter { it.amount > 0 }.sumOf { it.amount }
+            val liabilities = accounts.filter { it.amount < 0 }.sumOf { -it.amount }
+            val total = assets - liabilities
+
             _state.update {
                 it.copy(
                     accounts = list,
+                    assetsAmount = getFormattedAmountUseCase.invoke(assets, currency),
+                    liabilitiesAmount = getFormattedAmountUseCase.invoke(liabilities, currency),
+                    totalAmount = getFormattedAmountUseCase.invoke(total, currency),
+                    totalAmountTextColor = total.getAmountTextColor(),
                     showReOrder = accounts.isNotEmpty() && accounts.size > 1
                 )
             }

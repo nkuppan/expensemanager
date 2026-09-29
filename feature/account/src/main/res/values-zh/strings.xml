@@ -42,5 +42,9 @@
     <string name="edit_account">编辑账户</string>
     <string name="create_account">创建账户</string>
     <string name="account_type">账户类型</string>
+    <string name="account_summary">账户概览</string>
+    <string name="assets">资产</string>
+    <string name="liabilities">负债</string>
+    <string name="total_balance">总余额</string>
     <string name="balance">余额</string>
 </resources>

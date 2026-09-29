@@ -48,5 +48,9 @@
     <string name="edit_account">Изменить счёт</string>
     <string name="create_account">Создать счёт</string>
     <string name="account_type">Тип счёта</string>
+    <string name="account_summary">Сводка по счетам</string>
+    <string name="assets">Активы</string>
+    <string name="liabilities">Обязательства</string>
+    <string name="total_balance">Общий баланс</string>
     <string name="balance">Баланс</string>
 </resources>

@@ -44,5 +44,9 @@
     <string name="edit_account">Edit Account</string>
     <string name="create_account">Create Account</string>
     <string name="account_type">Account Type</string>
+    <string name="account_summary">Account summary</string>
+    <string name="assets">Assets</string>
+    <string name="liabilities">Liabilities</string>
+    <string name="total_balance">Total balance</string>
     <string name="balance">Balance</string>
 </resources>

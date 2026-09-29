@@ -25,7 +25,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.AccountBalance
+import androidx.compose.material.icons.rounded.CreditCard
 import androidx.compose.material.icons.rounded.SwapVert
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -54,6 +55,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.components.SummaryCard
+import com.naveenapps.expensemanager.core.designsystem.components.WidgetHeader
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -169,33 +172,18 @@ private fun AccountListScreenContent(
                 ),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
-                item {
-                    // Hint banner
-                    Row(
+                item(key = "account_summary") {
+                    AccountSummaryView(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 4.dp, end = 4.dp, top = 10.dp, bottom = 22.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Info,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp),
-                        )
-                        Text(
-                            text = pluralStringResource(
-                                id = R.plurals.account_count,
-                                count = state.accounts.size,
-                                state.accounts.size,
-                            ),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+                            .padding(top = 8.dp, bottom = 16.dp),
+                        accountCount = state.accounts.size,
+                        assetsAmount = state.assetsAmount?.amountString.orEmpty(),
+                        liabilitiesAmount = state.liabilitiesAmount?.amountString.orEmpty(),
+                        totalAmount = state.totalAmount?.amountString.orEmpty(),
+                        totalAmountTextColor = state.totalAmountTextColor,
+                    )
                 }
-
 
                 itemsIndexed(
                     items = state.accounts,
@@ -220,6 +208,98 @@ private fun AccountListScreenContent(
                         },
                     )
                 }
+            }
+        }
+    }
+}
+
+/**
+ * Summary of every account, styled like the dashboard's transaction summary
+ * (header · subtitle, tinted tiles, muted total row).
+ */
+@Composable
+private fun AccountSummaryView(
+    accountCount: Int,
+    assetsAmount: String,
+    liabilitiesAmount: String,
+    totalAmount: String,
+    totalAmountTextColor: Int?,
+    modifier: Modifier = Modifier,
+) {
+    val incomeColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
+    val expenseColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
+
+    AppCardView(
+        modifier = modifier.testTag("AccountSummary"),
+        cornerSize = 16.dp,
+    ) {
+        Column(modifier = Modifier.padding(18.dp)) {
+            WidgetHeader(
+                title = stringResource(R.string.account_summary),
+                subTitle = pluralStringResource(
+                    id = R.plurals.account_count,
+                    count = accountCount,
+                    accountCount,
+                ),
+            )
+
+            Spacer(Modifier.height(16.dp))
+
+            // ── Assets & Liabilities — side by side ────────────────
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                SummaryCard(
+                    label = stringResource(R.string.assets),
+                    amount = assetsAmount,
+                    icon = Icons.Rounded.AccountBalance,
+                    tintColor = incomeColor,
+                    modifier = Modifier.weight(1f),
+                )
+                SummaryCard(
+                    label = stringResource(R.string.liabilities),
+                    amount = liabilitiesAmount,
+                    icon = Icons.Rounded.CreditCard,
+                    tintColor = expenseColor,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            // ── Total balance row ──────────────────────────────────
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(
+                        MaterialTheme.colorScheme.surfaceContainerHighest
+                            .copy(alpha = 0.5f),
+                    )
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.total_balance),
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Medium,
+                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                        .copy(alpha = 0.6f),
+                )
+                Spacer(Modifier.weight(1f))
+                Text(
+                    text = totalAmount,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = (-0.3).sp,
+                    ),
+                    color = totalAmountTextColor?.let { colorResource(id = it) }
+                        ?: MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
     }
@@ -429,6 +509,10 @@ private fun AccountListItemSuccessStatePreview() {
             state = AccountListState(
                 accounts = getRandomAccountUiModel(10),
                 showReOrder = true,
+                assetsAmount = Amount(amount = 1500.0, amountString = "1500.0$"),
+                liabilitiesAmount = Amount(amount = 500.0, amountString = "500.0$"),
+                totalAmount = Amount(amount = 1000.0, amountString = "1000.0$"),
+                totalAmountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
             ),
             onAction = {},
         )

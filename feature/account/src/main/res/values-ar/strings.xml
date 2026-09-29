@@ -52,5 +52,9 @@
     <string name="edit_account">تعديل الحساب</string>
     <string name="create_account">إنشاء حساب</string>
     <string name="account_type">نوع الحساب</string>
+    <string name="account_summary">ملخص الحسابات</string>
+    <string name="assets">الأصول</string>
+    <string name="liabilities">الالتزامات</string>
+    <string name="total_balance">الرصيد الإجمالي</string>
     <string name="balance">الرصيد</string>
 </resources>

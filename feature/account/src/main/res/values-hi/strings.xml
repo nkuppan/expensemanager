@@ -44,5 +44,9 @@
     <string name="edit_account">खाता संपादित करें</string>
     <string name="create_account">खाता बनाएं</string>
     <string name="account_type">खाते का प्रकार</string>
+    <string name="account_summary">खाता सारांश</string>
+    <string name="assets">संपत्ति</string>
+    <string name="liabilities">देनदारियां</string>
+    <string name="total_balance">कुल शेष राशि</string>
     <string name="balance">शेष राशि</string>
 </resources>
