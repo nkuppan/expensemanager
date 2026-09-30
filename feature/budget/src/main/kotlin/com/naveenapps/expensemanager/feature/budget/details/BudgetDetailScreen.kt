@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -35,7 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -121,7 +122,10 @@ private fun BudgetDetailsScaffoldView(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { openTransactionCreateScreen.invoke(null) }) {
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+onClick = { openTransactionCreateScreen.invoke(null) }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -212,7 +216,7 @@ private fun BudgetDetailContent(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun BudgetDetailsScaffoldViewPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         BudgetDetailsScaffoldView(
             budget = BudgetUiModel(
                 id = "sample",

@@ -226,6 +226,9 @@ private fun ExportScreenContent(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+
                 onClick = {
                     getFileCreateIntent(fileType = state.fileType)?.let {
                         fileCreatorIntent.launch(it)

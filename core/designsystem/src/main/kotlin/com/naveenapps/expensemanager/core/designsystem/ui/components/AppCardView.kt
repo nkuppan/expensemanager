@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -28,6 +29,9 @@ fun AppCardView(
             onClick = onClick,
             shape = shape,
             border = border,
+            colors = CardDefaults.outlinedCardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            ),
             content = content,
             elevation = CardDefaults.outlinedCardElevation(elevation),
         )
@@ -36,6 +40,9 @@ fun AppCardView(
             modifier = modifier,
             shape = shape,
             border = border,
+            colors = CardDefaults.outlinedCardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            ),
             content = content,
             elevation = CardDefaults.outlinedCardElevation(elevation),
         )

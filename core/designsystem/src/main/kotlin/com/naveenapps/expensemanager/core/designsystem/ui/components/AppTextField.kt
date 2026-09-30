@@ -20,7 +20,7 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 
 @Composable
@@ -146,7 +146,7 @@ fun AppTextField(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AppTextFieldPreview() {
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         var text by remember { mutableStateOf("Editable text") }
 
         AutoSelectTextField(

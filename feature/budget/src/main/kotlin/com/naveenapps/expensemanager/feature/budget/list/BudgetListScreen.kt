@@ -44,7 +44,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
@@ -91,6 +91,9 @@ private fun BudgetListScreenContent(
         },
         floatingActionButton = {
             FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+
                 onClick = {
                     onAction.invoke(BudgetListAction.OpenBudgetCreate)
                 }
@@ -447,7 +450,7 @@ private fun getBudgetUiModel(id: String) = BudgetUiModel(
 @Preview
 @Composable
 private fun BudgetItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         BudgetItem(
             name = "Jun 2026 Budget",
             amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
@@ -462,7 +465,7 @@ private fun BudgetItemPreview() {
 @Preview
 @Composable
 private fun DashboardBudgetItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         DashBoardBudgetItem(
             name = "This Month Budget",
             progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
@@ -477,7 +480,7 @@ private fun DashboardBudgetItemPreview() {
 @Preview
 @Composable
 private fun BudgetListItemLoadingStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         BudgetListScreenContent(
             state = BudgetState(isLoading = true, budgets = emptyList()),
             onAction = {},
@@ -488,7 +491,7 @@ private fun BudgetListItemLoadingStatePreview() {
 @Preview
 @Composable
 private fun BudgetListItemEmptyStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         BudgetListScreenContent(
             state = BudgetState(isLoading = false, budgets = emptyList()),
             onAction = {},
@@ -499,7 +502,7 @@ private fun BudgetListItemEmptyStatePreview() {
 @Preview
 @Composable
 private fun BudgetListItemSuccessStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         BudgetListScreenContent(
             state = BudgetState(isLoading = false, budgets = getRandomBudgetUiModel(5)),
             onAction = {},

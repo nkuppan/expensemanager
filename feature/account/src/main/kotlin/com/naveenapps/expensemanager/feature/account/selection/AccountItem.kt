@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -111,7 +111,7 @@ fun AccountItemPreview() {
 
     val account = getRandomAccountUiModel(0).first()
 
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         AccountItem(
             name = account.name,
             icon = account.storedIcon.name,

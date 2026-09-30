@@ -43,7 +43,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
 
@@ -281,7 +281,7 @@ fun ColorSelectionScreen(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun ColorSelectionPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         ColorSelectionScreen(
             selectedColorValue = colors[2].toColorInt(), // Example: Selects "#D32F2F"
             onColorPicked = {}

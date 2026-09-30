@@ -27,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
@@ -176,7 +176,7 @@ private fun MultipleCategorySelectionViewContent(
 @Preview
 @Composable
 private fun MultipleCategoriesSelectionScreenPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         MultipleCategorySelectionViewContent(
             categories = getRandomCategoryData(),
             selectedCategories = getRandomCategoryData(),

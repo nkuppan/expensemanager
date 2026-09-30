@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
 import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDay
 import com.naveenapps.expensemanager.core.designsystem.R
@@ -55,7 +55,7 @@ fun AppDatePickerDialog(
                 .fillMaxWidth()
                 .padding(16.dp),
             shape = RoundedCornerShape(28.dp),
-            color = MaterialTheme.colorScheme.surface,
+            color = MaterialTheme.colorScheme.surfaceContainerLowest,
             tonalElevation = 6.dp
         ) {
             Column {
@@ -111,7 +111,7 @@ fun AppDatePickerDialog(
 @Composable
 @Preview
 fun AppDatePickerDialogPreview() {
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         AppDatePickerDialog(
             selectedDate = Date(),
             onDateSelected = {},

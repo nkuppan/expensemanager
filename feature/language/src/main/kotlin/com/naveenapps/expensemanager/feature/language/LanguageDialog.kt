@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.model.AppLocale
 
@@ -128,7 +128,7 @@ fun LanguageDialogViewContent(
 @Preview
 @Composable
 fun LanguageDialogViewPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         LanguageDialogViewContent(
             onConfirm = {},
             selectedLocale = AppLocale("", R.string.choose_language),

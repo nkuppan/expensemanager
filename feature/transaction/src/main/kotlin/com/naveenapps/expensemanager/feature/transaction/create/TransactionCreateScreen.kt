@@ -47,7 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
@@ -178,6 +178,9 @@ private fun TransactionCreateScreenContent(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+
                 onClick = { onAction.invoke(TransactionCreateAction.Save) },
                 icon = {
                     Icon(
@@ -569,7 +572,7 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
 @Composable
 private fun TransactionCreateStateForTransferPreview() {
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         TransactionCreateScreenContent(
             state = getTransactionState(amountField, TransactionType.TRANSFER),
             onAction = {},
@@ -581,7 +584,7 @@ private fun TransactionCreateStateForTransferPreview() {
 @Composable
 private fun TransactionCreateStateForIncomePreview() {
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         TransactionCreateScreenContent(
             state = getTransactionState(amountField, TransactionType.INCOME),
             onAction = {},

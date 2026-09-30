@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -382,7 +382,7 @@ private fun CompactBalanceCell(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         AmountInfoWidget(
             expenseAmount = AMOUNT_VALUE,
             incomeAmount = AMOUNT_VALUE,

@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 
 @Composable
@@ -210,7 +210,7 @@ fun SettingToggleRow(
 @Composable
 @AppPreviewsLightAndDarkMode
 fun SettingRowPreview() {
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         AppCardView {
             SettingRow(
                 icon = Icons.Default.ImageSearch,
@@ -232,7 +232,7 @@ fun SettingRowPreview() {
 @Composable
 @AppPreviewsLightAndDarkMode
 fun SettingRowWithSampleValuePreview() {
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         AppCardView {
             SettingRow(
                 icon = Icons.Default.ImageSearch,
@@ -254,7 +254,7 @@ fun SettingRowWithSampleValuePreview() {
 @Composable
 @AppPreviewsLightAndDarkMode
 fun SettingRowWithSampleValueAndSubtitlePreview() {
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         AppCardView {
             SettingRow(
                 icon = Icons.Default.ImageSearch,

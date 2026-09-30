@@ -38,7 +38,7 @@ fun SafeModalBottomSheet(
         modifier = modifier,
         sheetState = sheetState,
         content = content,
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         contentColor = MaterialTheme.colorScheme.onSurface,
     )
 }

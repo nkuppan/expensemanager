@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.components.AppTopAppBar
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 @Composable
 fun ExpenseManagerTopAppBar(
@@ -39,7 +39,7 @@ fun ExpenseManagerTopAppBar(
 @Preview
 @Composable
 private fun AppTopPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         ExpenseManagerTopAppBar(
             title = "Home",
             navigationIcon = null,

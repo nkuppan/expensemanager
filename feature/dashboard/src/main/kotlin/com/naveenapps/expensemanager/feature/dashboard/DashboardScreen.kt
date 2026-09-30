@@ -40,7 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
@@ -104,7 +104,10 @@ private fun DashboardScaffoldContent(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
+            FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+onClick = {
                 onAction.invoke(
                     DashboardAction.OpenTransactionEdit(
                         null
@@ -406,7 +409,7 @@ fun IncomeExpenseBalanceView(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun DashboardScaffoldContentPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         DashboardScaffoldContent(
             state = DashboardState(
                 expenseFlowState = ExpenseFlowState(),

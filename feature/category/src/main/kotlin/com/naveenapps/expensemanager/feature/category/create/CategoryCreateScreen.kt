@@ -30,7 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
@@ -110,6 +110,9 @@ private fun CategoryCreateScreenContentView(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+
                 onClick = { onAction.invoke(CategoryCreateAction.Save) },
                 icon = {
                     Icon(
@@ -244,7 +247,7 @@ private fun CategoryCreateStatePreview() {
         value = CategoryType.EXPENSE, valueError = false, onValueChange = { }
     )
 
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         CategoryCreateScreenContentView(
             state = CategoryCreateState(
                 name = nameField,

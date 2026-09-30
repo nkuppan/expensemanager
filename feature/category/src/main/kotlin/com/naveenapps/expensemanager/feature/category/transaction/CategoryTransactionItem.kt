@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -168,7 +168,7 @@ fun CategoryTransactionSmallItem(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionSmallItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         CategoryTransactionSmallItem(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -183,7 +183,7 @@ private fun CategoryTransactionSmallItemPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         CategoryTransactionItem(
             modifier = Modifier
                 .fillMaxWidth(),

@@ -52,7 +52,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
@@ -367,7 +367,7 @@ private fun DateRangeType.toIcon(): ImageVector {
 @Preview
 @Composable
 private fun FilterNormalViewPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
         val dateFilter = TextFieldValue(Date(), false, {})
         FilterTypesAndViewContent(

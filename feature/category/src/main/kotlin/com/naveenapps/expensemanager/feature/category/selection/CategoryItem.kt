@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
@@ -79,7 +79,7 @@ fun CategoryItem(
 fun CategoryItemPreview() {
 
     val category = getCategory(0)
-    NaveenAppsPreviewTheme {
+    ExpenseManagerPreviewTheme {
         // List screen — chevron
         CategoryItem(
             name = category.name,

@@ -25,7 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.R
 import java.io.File
 
@@ -110,7 +110,7 @@ fun AttachmentAddTile(
 @Preview
 @Composable
 private fun AttachmentAddTilePreview() {
-    NaveenAppsPreviewTheme(padding = 16.dp) {
+    ExpenseManagerPreviewTheme(padding = 16.dp) {
         AttachmentAddTile(onClick = {})
     }
 }
@@ -118,7 +118,7 @@ private fun AttachmentAddTilePreview() {
 @Preview
 @Composable
 private fun AttachmentThumbnailPreview() {
-    NaveenAppsPreviewTheme(padding = 16.dp) {
+    ExpenseManagerPreviewTheme(padding = 16.dp) {
         AttachmentThumbnail(imagePath = "", onRemove = {})
     }
 }

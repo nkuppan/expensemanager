@@ -10,4 +10,6 @@
     <color name="blue_500">#166EF7</color>
     <color name="black_100">#10000000</color>
 
+    <color name="em_window_background">#F4F5F9</color>
+    <color name="em_primary">#0F9D5B</color>
 </resources>

@@ -5,6 +5,7 @@ import androidx.annotation.ColorInt
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.colorResource
 import com.naveenapps.expensemanager.core.common.R
+import com.naveenapps.expensemanager.core.designsystem.theme.LocalExpenseManagerColors
 
 @ColorInt
 fun getColorValue(colorValue: String?): Int {
@@ -14,10 +15,10 @@ fun getColorValue(colorValue: String?): Int {
 }
 
 @Composable
-fun getIncomeColor() = colorResource(id = R.color.green_500)
+fun getIncomeColor() = LocalExpenseManagerColors.current.income
 
 @Composable
-fun getExpenseColor() = colorResource(id = R.color.red_500)
+fun getExpenseColor() = LocalExpenseManagerColors.current.expense
 
 @Composable
 fun getBalanceColor() = colorResource(id = R.color.black_100)

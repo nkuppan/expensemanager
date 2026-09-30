@@ -33,7 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
@@ -92,8 +92,8 @@ private fun TransactionListScreenContent(
             FloatingActionButton(
                 onClick = { onAction(TransactionListAction.OpenCreateTransaction) },
                 shape = RoundedCornerShape(16.dp),
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 elevation = FloatingActionButtonDefaults.elevation(
                     defaultElevation = 6.dp,
                     pressedElevation = 10.dp,
@@ -323,7 +323,7 @@ fun TransactionHeaderItem(
 @Preview
 @Composable
 fun TransactionListItemEmptyStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         TransactionListScreen(
             state = TransactionListState(emptyList()),
             modifier = Modifier.fillMaxSize(),
@@ -369,7 +369,7 @@ private fun getTransactionUiState(date: String) = TransactionGroup(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionListItemSuccessStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         TransactionListScreenContent(
             state = TransactionListState(DUMMY_DATA.convertGroupToTransactionListItems()),
             showBackNavigationIcon = true,

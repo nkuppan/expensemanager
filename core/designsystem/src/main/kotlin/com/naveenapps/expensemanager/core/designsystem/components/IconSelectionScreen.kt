@@ -38,7 +38,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.R
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -158,7 +158,7 @@ fun IconSelectionComponentContent(
 @Preview
 @Composable
 private fun ColorSelectionPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         IconSelectionComponentContent(
             icons = iconSelectionList,
             onIconPicked = {}

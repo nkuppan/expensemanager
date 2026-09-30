@@ -40,7 +40,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
@@ -101,7 +101,7 @@ fun CategoryTransactionTabScreenContent(
                     onAction.invoke(CategoryTransactionAction.OpenTransactionCreate)
                 },
                 shape = RoundedCornerShape(16.dp),
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                containerColor = MaterialTheme.colorScheme.primary,
                 elevation = FloatingActionButtonDefaults.elevation(
                     defaultElevation = 10.dp,
                 ),
@@ -278,10 +278,7 @@ private fun CategoryTransactionListScreenContent(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(16.dp))
-                                .background(
-                                    MaterialTheme.colorScheme.surfaceContainerLow,
-                                ),
+                                .clip(RoundedCornerShape(16.dp)),
                         ) {
                             categoryTransactions.forEachIndexed { index, categoryTransaction ->
                                 AppCardView(
@@ -344,7 +341,7 @@ val getPieChartData = listOf(
 
 fun getRandomCategoryTransactionData(): CategoryTransactionState {
     return CategoryTransactionState(
-        pieChartData = getPieChartData,
+        pieChartData = emptyList(),
         totalAmount = Amount(300.0, "300.00$"),
         categoryTransactions = buildList {
             repeat(15) {
@@ -369,7 +366,7 @@ fun getUiState(): UiState<CategoryTransactionState> {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryTransactionTabScreenPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         CategoryTransactionTabScreenContent(
             state = getUiState(),
             onAction = {},

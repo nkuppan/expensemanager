@@ -53,7 +53,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.SummaryCard
 import com.naveenapps.expensemanager.core.designsystem.components.WidgetHeader
@@ -122,6 +122,9 @@ internal fun AccountListContentView(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+
                 modifier = Modifier.testTag("Create"),
                 onClick = { onAction.invoke(AccountListAction.CreateAccount) },
                 icon = {
@@ -455,7 +458,7 @@ fun getRandomAccountUiModel(count: Int) = getRandomAccountData(count).map {
 @Preview
 @Composable
 private fun DashBoardAccountItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         DashBoardAccountItem(
             modifier = Modifier
                 .wrapContentWidth()
@@ -472,7 +475,7 @@ private fun DashBoardAccountItemPreview() {
 @Preview
 @Composable
 private fun AccountItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         AccountItem(
             modifier = Modifier
                 .fillMaxWidth()
@@ -490,7 +493,7 @@ private fun AccountItemPreview() {
 @Preview
 @Composable
 private fun AccountListItemEmptyStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         AccountListContentView(
             state = AccountListState(
                 accounts = emptyList(),
@@ -504,7 +507,7 @@ private fun AccountListItemEmptyStatePreview() {
 @Preview
 @Composable
 private fun AccountListItemSuccessStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         AccountListContentView(
             state = AccountListState(
                 accounts = getRandomAccountUiModel(10),

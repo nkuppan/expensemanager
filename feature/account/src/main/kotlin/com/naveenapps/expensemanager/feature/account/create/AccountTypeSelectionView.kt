@@ -37,7 +37,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.feature.account.R
@@ -105,7 +105,7 @@ private data class AccountTypeUi(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AccountTypeSelectionViewPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         Column {
             AccountTypeSelectionView(
                 modifier = Modifier

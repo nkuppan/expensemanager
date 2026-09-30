@@ -23,7 +23,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.naveenapps.designsystem.theme.NaveenAppsTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -95,7 +95,7 @@ internal class MainActivity : AppCompatActivity(), AndroidScopeComponent {
                     val showLock = onBoardingStatus == true && isAppLockEnabled && !isAuthenticated
 
                     if (showLock) {
-                        NaveenAppsTheme(isDarkTheme = isDarkTheme) {
+                        ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
                             LaunchedEffect(Unit) { showBiometricPrompt() }
                             AppLockScreen(onUnlockClick = ::showBiometricPrompt)
                         }

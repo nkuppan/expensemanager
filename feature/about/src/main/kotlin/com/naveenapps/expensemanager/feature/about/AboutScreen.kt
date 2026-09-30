@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getAppVersionName
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -250,7 +250,7 @@ private enum class AboutUsOption {
 @Composable
 @AppPreviewsLightAndDarkMode
 fun AboutUsScreenScaffoldViewPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         AboutUsScreenScaffoldView { }
     }
 }

@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -49,7 +50,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
@@ -137,7 +138,7 @@ fun TransactionItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .offset { IntOffset(animatedOffset.roundToInt(), 0) }
-                .background(MaterialTheme.colorScheme.surface)
+                .background(MaterialTheme.colorScheme.surfaceContainerLowest)
                 .then(
                     if (onEdit != null || onDelete != null) {
                         Modifier.pointerInput(Unit) {
@@ -167,7 +168,11 @@ fun TransactionItem(
             // ── Category / transfer icon ───────────────────────────
             CategoryIconBox(
                 icon = if (isTransfer) "ic_transfer_account" else categoryIcon,
-                iconColor = if (isTransfer) "#166EF7" else categoryColor,
+                iconColor = if (isTransfer) {
+                    String.format("#%08X", MaterialTheme.colorScheme.tertiary.toArgb())
+                } else {
+                    categoryColor
+                },
                 contentDescription = categoryName,
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
@@ -454,7 +459,7 @@ private fun SwipeAction(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun TransactionUiStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         AppCardView(
             modifier = Modifier
                 .fillMaxWidth()

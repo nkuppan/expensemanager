@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="ExpenseManager.Theme" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="ExpenseManager.Theme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/em_window_background</item>
+        <item name="colorPrimary">@color/em_primary</item>
+    </style>
 
     <style name="ExpenseManager.Theme.Splash" parent="Theme.SplashScreen">
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>

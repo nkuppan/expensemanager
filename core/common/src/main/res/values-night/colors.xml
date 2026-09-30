@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark-mode variants matching expensemanager.naveenapps.com -->
+    <color name="red_500">#F0616D</color>
+    <color name="green_500">#22C97A</color>
+    <color name="orange_500">#F5A623</color>
+    <color name="blue_500">#6D93FF</color>
+</resources>

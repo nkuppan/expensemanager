@@ -42,7 +42,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -131,6 +131,9 @@ private fun CategoryDetailsContent(
         },
         floatingActionButton = {
             FloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+
                 onClick = {
                     onAction.invoke(
                         CategoryDetailsAction.OpenTransactionCreate
@@ -349,7 +352,7 @@ fun getTransactionItem(id: String) = TransactionUiItem(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun CategoryDetailsPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         CategoryDetailsContent(
             state = CategoryDetailsState(
                 categoryTransaction = CategoryTransaction(

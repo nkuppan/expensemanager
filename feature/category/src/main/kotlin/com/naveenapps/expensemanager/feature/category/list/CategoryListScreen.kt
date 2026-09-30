@@ -44,7 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.theme.NaveenAppsPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
@@ -132,6 +132,9 @@ private fun CategoryListScreenContentView(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+
                 onClick = { onAction.invoke(CategoryListAction.Create) },
                 icon = {
                     Icon(
@@ -277,7 +280,7 @@ fun getRandomCategoryData(totalCount: Int = 10): List<Category> {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryItemPreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         Column {
             CategoryItem(
                 name = "Utilities",
@@ -298,7 +301,7 @@ private fun CategoryItemPreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryListItemEmptyStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         CategoryListScreenContentView(
             state = CategoryListState(
                 categories = emptyList(),
@@ -314,7 +317,7 @@ private fun CategoryListItemEmptyStatePreview() {
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun CategoryListItemSuccessStatePreview() {
-    NaveenAppsPreviewTheme(padding = 0.dp) {
+    ExpenseManagerPreviewTheme(padding = 0.dp) {
         CategoryListScreenContentView(
             state = CategoryListState(
                 categories = emptyList(),
