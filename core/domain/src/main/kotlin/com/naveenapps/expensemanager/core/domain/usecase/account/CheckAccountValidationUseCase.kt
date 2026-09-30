@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.account
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Resource
 
-class CheckAccountValidationUseCase() {
+class CheckAccountValidationUseCase {
 
     operator fun invoke(account: Account): Resource<Boolean> {
         if (account.id.isBlank()) {

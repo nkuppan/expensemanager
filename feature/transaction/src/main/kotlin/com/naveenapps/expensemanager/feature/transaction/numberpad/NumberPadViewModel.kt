@@ -12,7 +12,7 @@ import kotlin.math.sqrt
 import kotlin.math.tan
 
 
-class NumberPadViewModel() : ViewModel() {
+class NumberPadViewModel : ViewModel() {
 
     private val _calculatedAmount = MutableStateFlow("0")
     val calculatedAmount = _calculatedAmount.asStateFlow()

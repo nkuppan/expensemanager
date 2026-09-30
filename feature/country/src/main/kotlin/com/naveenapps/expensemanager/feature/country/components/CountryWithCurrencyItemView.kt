@@ -9,10 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 
@@ -39,7 +37,6 @@ internal fun CountryWithCurrencyItemView(
 @Preview(uiMode = UI_MODE_NIGHT_NO)
 @Composable
 fun CountryWithCurrencyItemViewPreview() {
-    val context = LocalContext.current
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         CountryWithCurrencyItemView(
             modifier = Modifier.padding(16.dp),

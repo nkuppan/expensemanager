@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.core.navigation
 
 import androidx.navigation.navOptions
 
-class ExpenseManagerComposeNavigator() : AppComposeNavigator() {
+class ExpenseManagerComposeNavigator : AppComposeNavigator() {
 
     override fun navigate(route: Any) {
         navigationCommands.tryEmit(NavigationCommand.NavigateTo(route))

@@ -59,7 +59,7 @@ internal val iconSelectionList = listOf(
 )
 
 
-class IconSelectionViewModel() : ViewModel() {
+class IconSelectionViewModel : ViewModel() {
 
     private val _icons = MutableStateFlow(iconSelectionList)
     val icons = _icons.asStateFlow()

@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.category
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 
-class CheckCategoryValidationUseCase() {
+class CheckCategoryValidationUseCase {
 
     operator fun invoke(category: Category): Resource<Boolean> {
         if (category.id.isBlank()) {
