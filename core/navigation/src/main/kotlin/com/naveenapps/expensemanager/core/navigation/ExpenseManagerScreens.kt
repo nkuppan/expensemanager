@@ -68,6 +68,9 @@ sealed class ExpenseManagerScreens {
 
     @Serializable
     data class TransactionCreate(val id: String?) : ExpenseManagerScreens()
+
+    @Serializable
+    data object ImportTransactions : ExpenseManagerScreens()
 }
 
 object ExpenseManagerArgsNames {

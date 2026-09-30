@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.transaction.di
 
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateViewModel
+import com.naveenapps.expensemanager.feature.transaction.import.review.ImportViewModel
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListViewModel
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadViewModel
 import org.koin.core.module.dsl.viewModel
@@ -36,5 +37,18 @@ val TransactionViewModelModule = module {
         )
     }
     viewModel { NumberPadViewModel() }
+    viewModel {
+        ImportViewModel(
+            getCurrencyUseCase = get(),
+            getAllAccountsUseCase = get(),
+            getAllCategoryUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            addTransactionUseCase = get(),
+            transactionRepository = get(),
+            numberFormatRepository = get(),
+            appComposeNavigator = get(),
+            statementPasswordStore = get(),
+        )
+    }
 }
 

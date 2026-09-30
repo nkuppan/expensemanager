@@ -50,6 +50,7 @@ import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
+import com.naveenapps.expensemanager.feature.transaction.import.review.ImportTransactionsScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -93,6 +94,9 @@ fun NavGraphBuilder.expenseManagerNavigation(
     }
     composable<ExpenseManagerScreens.TransactionCreate> {
         TransactionCreateScreen(shareRepository = componentProvider.getShareRepository())
+    }
+    composable<ExpenseManagerScreens.ImportTransactions> {
+        ImportTransactionsScreen()
     }
     composable<ExpenseManagerScreens.AccountList> {
         AccountListScreen()

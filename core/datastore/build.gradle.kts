@@ -13,4 +13,10 @@ dependencies {
     implementation(project(":core:common"))
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.dataStore.preference)
+
+    // The statement password store is backed by the Android Keystore, which does
+    // not exist on the JVM, so it is covered by instrumented tests instead.
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.truth)
 }

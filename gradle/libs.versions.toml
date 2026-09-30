@@ -58,6 +58,7 @@ mockito = "6.2.3"
 jxl = "2.6.12"
 truth = "1.4.5"
 vico = "1.11.1"
+pdfboxAndroid = "2.0.27.0"
 play-publish = "3.12.1"
 google-services = "4.4.4"
 backup-restore = "1.1.0"
@@ -176,6 +177,7 @@ androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidge
 androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "androidxGlance" }
 naveenapps-designsystem = { module = "com.naveenapps:designsystem", version.ref = "naveenapps-designsystem" }
 naveenapps-settings = { module = "com.naveenapps:settings", version.ref = "naveenapps-settings" }
+pdfbox-android = { group = "com.tom-roush", name = "pdfbox-android", version.ref = "pdfboxAndroid" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

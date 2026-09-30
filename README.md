@@ -40,6 +40,10 @@
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
 | <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> |
 
+|                Statement Import                  |                   Import Review                   |                Import Review List                |              Password-Protected PDF               |
+|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
+| <img src="docs/images/image13.png" width="250px"/> | <img src="docs/images/image14.png" width="250px"/> | <img src="docs/images/image15.png" width="250px"/> | <img src="docs/images/image16.png" width="250px"/> |
+
 ---
 
 ## Features
@@ -79,6 +83,17 @@ Each transaction row has been refined for better visual hierarchy and interactio
 - **Swipe actions** — integrated Edit / Delete reveal with spring physics animation
 - **Smooth content transitions** — `animateContentSize()` for expanding/collapsing notes
 - **Backward-compatible API** — all new callbacks (`onEdit`, `onDelete`, `onClick`) default to `null`, so existing call sites remain unchanged
+
+### Statement Import (PDF)
+- **On-device parsing** — statement PDFs are read with PdfBox-Android; nothing is uploaded and no network call is made
+- **Two statement formats** — BHIM/UPI transaction histories and SBI YONO account statements, detected automatically from the document text
+- **Two review modes** — a swipeable card stack for one-at-a-time review, or a list with multi-select and bulk import
+- **Editable before import** — amount, notes, date, type, account and category can be corrected on the card
+- **Possible-duplicate warnings** — matches on transaction type, amount and timestamp; date-only statements (YONO) widen the match to the whole day
+- **Unparseable rows are never silently dropped** — a malformed date or amount is flagged and must be corrected before that row can be imported
+- **Password-protected statements** — encrypted PDFs prompt for a password, which is decrypted on-device; optionally remembered with an AES-GCM key held in the Android Keystore
+- **Category shortcuts** — the three most-used categories for the transaction type, plus a full picker
+- **Bounded extraction** — PDF size, page count and extracted-text length are capped, so a malformed file cannot exhaust memory
 
 ### Theming
 - Full **Material 3** design system with dynamic color support

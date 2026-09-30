@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.datastore.FeedbackDataStore
 import com.naveenapps.expensemanager.core.datastore.LocaleDataStore
 import com.naveenapps.expensemanager.core.datastore.ReminderTimeDataStore
 import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
+import com.naveenapps.expensemanager.core.datastore.StatementPasswordStore
 import com.naveenapps.expensemanager.core.datastore.ThemeDataStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -23,5 +24,6 @@ val DatastoreModule = module {
     single { SettingsDataStore(get()) }
     single { DateRangeDataStore(get()) }
     single { FeedbackDataStore(get()) }
+    single { StatementPasswordStore(get()) }
 }
 

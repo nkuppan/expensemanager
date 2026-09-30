@@ -58,3 +58,15 @@
 # the compile/runtime classpath here. It's a source-retention nullness annotation with no
 # runtime behavior, so it's safe to suppress rather than pull in the whole basement artifact.
 -dontwarn com.google.android.gms.common.annotation.NoNullnessRewrite
+
+# PdfBox-Android (statement PDF import). JPXFilter reaches for an optional
+# JPEG2000 decoder that is not on the classpath; without this the release build
+# fails at R8 with "Missing class com.gemalto.jp2.JP2Decoder". JPXFilter is
+# never invoked for text-based statements, so suppressing it is enough.
+-dontwarn com.gemalto.jp2.**
+
+# PdfBox resolves filters, fonts and COS object types reflectively by name, so
+# the names must survive obfuscation for text extraction to work in release.
+-keep class com.tom_roush.pdfbox.** { *; }
+-keep interface com.tom_roush.pdfbox.** { *; }
+-dontwarn com.tom_roush.pdfbox.**

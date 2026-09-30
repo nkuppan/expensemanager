@@ -75,6 +75,12 @@ class TransactionListViewModel(
         )
     }
 
+    private fun openImportScreen() {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.ImportTransactions,
+        )
+    }
+
     private fun closePage() {
         appComposeNavigator.popBackStack()
     }
@@ -84,6 +90,7 @@ class TransactionListViewModel(
             TransactionListAction.ClosePage -> closePage()
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
             is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
+            TransactionListAction.OpenImportTransactions -> openImportScreen()
         }
     }
 }
