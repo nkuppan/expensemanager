@@ -9,7 +9,7 @@ val LanguageViewModelModule = module {
         LanguageViewModel(
             getCurrentLocaleUseCase = get(),
             getLocalesUseCase = get(),
-            saveLocaleUseCase = get()
+            saveLocaleUseCase = get(),
         )
     }
 }

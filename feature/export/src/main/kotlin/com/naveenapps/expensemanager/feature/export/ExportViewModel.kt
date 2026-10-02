@@ -12,6 +12,9 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,11 +24,11 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class ExportViewModel(
     getDateRangeUseCase: GetDateRangeUseCase,
     private val exportFileUseCase: ExportFileUseCase,
     private val appComposeNavigator: AppComposeNavigator,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _event = Channel<ExportEvent>()
@@ -41,7 +44,7 @@ class ExportViewModel(
             isAllAccountSelected = true,
             selectedAccounts = emptyList(),
             showAccountSelection = false,
-        )
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -54,7 +57,7 @@ class ExportViewModel(
                         UiText.StringResource(R.string.all)
                     } else {
                         UiText.DynamicString(dateRange.description)
-                    }
+                    },
                 )
             }
         }.launchIn(viewModelScope)
@@ -76,14 +79,13 @@ class ExportViewModel(
                 } else {
                     UiText.DynamicString(selectedAccounts.size.toString())
                 },
-                showAccountSelection = false
+                showAccountSelection = false,
             )
         }
     }
 
     fun export(uri: Uri?) {
         viewModelScope.launch {
-
             val response = exportFileUseCase.invoke(
                 _state.value.fileType,
                 uri?.toString(),
@@ -95,17 +97,21 @@ class ExportViewModel(
                 is Resource.Error -> {
                     _event.send(
                         ExportEvent.Error(
-                            UiText.StringResource(R.string.export_error_message)
-                        )
+                            UiText.StringResource(R.string.export_error_message),
+                        ),
                     )
                 }
 
                 is Resource.Success -> {
+                    analyticsRepository.logEvent(
+                        AnalyticsEvents.EXPORT_DONE,
+                        mapOf(AnalyticsParams.FILE_TYPE to _state.value.fileType.name.lowercase()),
+                    )
                     _event.send(
                         ExportEvent.FileExported(
                             message = UiText.StringResource(R.string.export_success_message),
                             exportData = response.data,
-                        )
+                        ),
                     )
                 }
             }
@@ -119,6 +125,7 @@ class ExportViewModel(
     fun processAction(action: ExportAction) {
         when (action) {
             ExportAction.ClosePage -> closePage()
+
             is ExportAction.StartExport -> {
                 export(action.uri?.toUri())
             }
@@ -138,7 +145,7 @@ class ExportViewModel(
             is ExportAction.AccountSelection -> {
                 setAccounts(
                     selectedAccounts = action.accounts,
-                    isAllSelected = action.isAllAccountSelected
+                    isAllSelected = action.isAllAccountSelected,
                 )
             }
         }

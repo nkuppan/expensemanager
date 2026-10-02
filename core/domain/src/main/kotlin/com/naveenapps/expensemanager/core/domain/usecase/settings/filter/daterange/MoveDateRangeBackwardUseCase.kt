@@ -21,7 +21,7 @@ class MoveDateRangeBackwardUseCase(
         dateRangeFilterRepository.setDateRanges(
             listOf(
                 startTime.toEpochMilliseconds().toCompleteDate(),
-                endTime.toEpochMilliseconds().toCompleteDate()
+                endTime.toEpochMilliseconds().toCompleteDate(),
             ),
         )
         return Resource.Success(true)

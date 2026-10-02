@@ -28,9 +28,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import java.util.Date
 
 @Composable
@@ -68,7 +68,7 @@ fun ClickableTextField(
             },
             onTap = { _ ->
                 onClick()
-            }
+            },
         )
     }
 
@@ -92,7 +92,7 @@ fun ClickableTextField(
         },
         onValueChange = {},
         keyboardOptions = keyboardOptions,
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     )
 }
 
@@ -156,7 +156,7 @@ fun DecimalTextField(
         keyboardOptions = keyboardOptions.copy(
             keyboardType = KeyboardType.Decimal,
         ),
-        trailingIcon = trailingIcon
+        trailingIcon = trailingIcon,
     )
 }
 
@@ -194,7 +194,7 @@ fun NumberTextField(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
             imeAction = ImeAction.Next,
-        )
+        ),
     )
 }
 

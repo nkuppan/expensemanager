@@ -7,7 +7,5 @@ import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 class SaveReminderTimeUseCase(
     private val repository: ReminderTimeRepository,
 ) {
-    suspend operator fun invoke(reminderTimeState: ReminderTimeState): Resource<Boolean> {
-        return Resource.Success(repository.saveReminderTime(reminderTimeState))
-    }
+    suspend operator fun invoke(reminderTimeState: ReminderTimeState): Resource<Boolean> = Resource.Success(repository.saveReminderTime(reminderTimeState))
 }

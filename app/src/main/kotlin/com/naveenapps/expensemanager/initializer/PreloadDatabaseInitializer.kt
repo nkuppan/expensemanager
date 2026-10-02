@@ -2,23 +2,23 @@ package com.naveenapps.expensemanager.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
+import com.naveenapps.expensemanager.core.data.R as CategoryStringsR
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetPreloadStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetPreloadStatusUseCase
-import com.naveenapps.expensemanager.core.data.R as CategoryStringsR
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
+import java.util.Calendar
+import java.util.Date
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
-import java.util.Calendar
-import java.util.Date
 
 val BASE_CATEGORY_LIST = listOf(
     Category(
@@ -194,11 +194,10 @@ val BASE_ACCOUNT_LIST = listOf(
 class PreloadDatabaseInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-
-        val getPreloadStatusUseCase: GetPreloadStatusUseCase =  GlobalContext.get().get()
-        val setPreloadStatusUseCase: SetPreloadStatusUseCase =  GlobalContext.get().get()
-        val addAccountUseCase: AddAccountUseCase =  GlobalContext.get().get()
-        val addCategoryUseCase: AddCategoryUseCase =  GlobalContext.get().get()
+        val getPreloadStatusUseCase: GetPreloadStatusUseCase = GlobalContext.get().get()
+        val setPreloadStatusUseCase: SetPreloadStatusUseCase = GlobalContext.get().get()
+        val addAccountUseCase: AddAccountUseCase = GlobalContext.get().get()
+        val addCategoryUseCase: AddCategoryUseCase = GlobalContext.get().get()
 
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
             val isPreloaded = getPreloadStatusUseCase.invoke()
@@ -217,10 +216,7 @@ class PreloadDatabaseInitializer : Initializer<Unit> {
         }
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(
-            KoinInitializer::class.java,
-            WorkManagerInitializer::class.java
-        )
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf(
+        KoinInitializer::class.java,
+    )
 }

@@ -14,10 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
-
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 @Composable
 fun SettingsSection(
@@ -38,7 +37,6 @@ fun SettingsSection(
     }
 }
 
-
 @Composable
 @AppPreviewsLightAndDarkMode
 fun SettingsSectionWithSampleValueAndSubtitlePreview() {
@@ -51,14 +49,14 @@ fun SettingsSectionWithSampleValueAndSubtitlePreview() {
                     subtitle = "Sample description about the option. Which is too long to show the content so it's truncating",
                     value = "Value",
                     onClick = {},
-                    showDivider = true
+                    showDivider = true,
                 )
                 SettingRow(
                     icon = Icons.Default.ImageSearch,
                     title = "Sample Title",
                     subtitle = "Sample description about the option. Which is too long to show the content so it's truncating",
                     value = "Value",
-                    onClick = {}
+                    onClick = {},
                 )
             }
         }
@@ -69,7 +67,7 @@ fun SettingsSectionWithSampleValueAndSubtitlePreview() {
                     Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     StringTextField(
                         modifier = Modifier

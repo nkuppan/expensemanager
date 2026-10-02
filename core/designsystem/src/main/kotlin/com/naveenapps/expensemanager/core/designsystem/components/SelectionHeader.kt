@@ -19,12 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.R
 
-
 @Composable
 fun SelectionHeader(
     title: String,
     createNewCallback: (() -> Unit)?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier,

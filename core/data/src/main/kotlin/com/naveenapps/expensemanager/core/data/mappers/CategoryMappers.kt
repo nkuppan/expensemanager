@@ -5,35 +5,31 @@ import com.naveenapps.expensemanager.core.database.entity.CategoryEntity
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.StoredIcon
 
-fun Category.toEntityModel(): CategoryEntity {
-    return CategoryEntity(
-        id = id,
-        name = name,
-        type = type,
-        iconName = storedIcon.name,
-        iconBackgroundColor = storedIcon.backgroundColor,
-        createdOn = createdOn,
-        updatedOn = updatedOn,
-        defaultCategoryKey = titleResId.toDefaultCategoryKey(),
-        customImagePath = storedIcon.customImagePath,
-    )
-}
+fun Category.toEntityModel(): CategoryEntity = CategoryEntity(
+    id = id,
+    name = name,
+    type = type,
+    iconName = storedIcon.name,
+    iconBackgroundColor = storedIcon.backgroundColor,
+    createdOn = createdOn,
+    updatedOn = updatedOn,
+    defaultCategoryKey = titleResId.toDefaultCategoryKey(),
+    customImagePath = storedIcon.customImagePath,
+)
 
-fun CategoryEntity.toDomainModel(): Category {
-    return Category(
-        id = id,
-        name = name,
-        type = type,
-        storedIcon = StoredIcon(
-            name = iconName,
-            backgroundColor = iconBackgroundColor,
-            customImagePath = customImagePath,
-        ),
-        createdOn = createdOn,
-        updatedOn = updatedOn,
-        titleResId = defaultCategoryKey.toCategoryTitleResId(),
-    )
-}
+fun CategoryEntity.toDomainModel(): Category = Category(
+    id = id,
+    name = name,
+    type = type,
+    storedIcon = StoredIcon(
+        name = iconName,
+        backgroundColor = iconBackgroundColor,
+        customImagePath = customImagePath,
+    ),
+    createdOn = createdOn,
+    updatedOn = updatedOn,
+    titleResId = defaultCategoryKey.toCategoryTitleResId(),
+)
 
 /**
  * Maps the stable key stored for a built-in category (see `MIGRATION_4_5`) to the string

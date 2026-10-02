@@ -15,25 +15,23 @@ sealed class UiText {
      */
     class StringResource(val resId: Int, vararg val args: Any) : UiText()
 
-    fun asString(context: Context): String {
-        return when (this) {
-            is StringResource -> {
-                val newValues = if (args.isNotEmpty()) {
-                    args.map {
-                        if (it is UiText) {
-                            it.asString(context)
-                        } else {
-                            it
-                        }
-                    }.toTypedArray()
-                } else {
-                    args
-                }
-
-                context.getString(resId, *newValues)
+    fun asString(context: Context): String = when (this) {
+        is StringResource -> {
+            val newValues = if (args.isNotEmpty()) {
+                args.map {
+                    if (it is UiText) {
+                        it.asString(context)
+                    } else {
+                        it
+                    }
+                }.toTypedArray()
+            } else {
+                args
             }
 
-            is DynamicString -> message
+            context.getString(resId, *newValues)
         }
+
+        is DynamicString -> message
     }
 }

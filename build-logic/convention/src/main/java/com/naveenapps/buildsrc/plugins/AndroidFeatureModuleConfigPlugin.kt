@@ -1,17 +1,17 @@
 package com.naveenapps.buildsrc.plugins
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.naveenapps.buildsrc.extensions.configureAndroid
 import com.naveenapps.buildsrc.extensions.configureJacoco
 import com.naveenapps.buildsrc.extensions.configureKotlinAndroid
 import com.naveenapps.buildsrc.extensions.configureTestOptions
 import com.naveenapps.buildsrc.extensions.libs
+import kotlin.jvm.optionals.getOrNull
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
-import kotlin.jvm.optionals.getOrNull
 
 @SuppressWarnings("unused")
 class AndroidFeatureModuleConfigPlugin : Plugin<Project> {
@@ -19,7 +19,7 @@ class AndroidFeatureModuleConfigPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(plugin = "com.android.library")
-                apply(plugin = "org.jetbrains.kotlin.android")
+                // No org.jetbrains.kotlin.android: AGP 9 compiles Kotlin itself (built-in Kotlin).
                 apply(plugin = "jacoco")
             }
 

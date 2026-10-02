@@ -53,8 +53,8 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
@@ -105,15 +105,16 @@ fun ReminderScreen(
     if (state.showTimePickerDialog) {
         ReminderTimePickerView(
             reminderTimeState = state.reminderTimeState,
-            onAction = viewModel::processAction
+            onAction = viewModel::processAction,
         )
     }
 
     ReminderScreenContent(
         state = state,
-        onAction = viewModel::processAction
+        onAction = viewModel::processAction,
     )
 }
+
 @Composable
 private fun ReminderScreenContent(
     state: ReminderState,
@@ -291,18 +292,22 @@ private fun ReminderScreenContent(
                         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
                     ) {
                         Icon(
-                            imageVector = if (isRationale)
+                            imageVector = if (isRationale) {
                                 Icons.Rounded.Notifications
-                            else
-                                Icons.Rounded.Settings,
+                            } else {
+                                Icons.Rounded.Settings
+                            },
                             contentDescription = null,
                             modifier = Modifier.size(18.dp),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = stringResource(
-                                if (isRationale) R.string.request_permission
-                                else R.string.open_settings,
+                                if (isRationale) {
+                                    R.string.request_permission
+                                } else {
+                                    R.string.open_settings
+                                },
                             ),
                             fontWeight = FontWeight.SemiBold,
                         )
@@ -332,20 +337,22 @@ private fun SwitchSettingsItem(
     ) {
         Surface(
             shape = MaterialTheme.shapes.medium,
-            color = if (checked)
+            color = if (checked) {
                 MaterialTheme.colorScheme.primaryContainer
-            else
-                MaterialTheme.colorScheme.surfaceContainerHighest,
+            } else {
+                MaterialTheme.colorScheme.surfaceContainerHighest
+            },
             modifier = Modifier.size(44.dp),
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = if (checked)
+                    tint = if (checked) {
                         MaterialTheme.colorScheme.onPrimaryContainer
-                    else
-                        MaterialTheme.colorScheme.onSurfaceVariant,
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
                     modifier = Modifier.size(22.dp),
                 )
             }
@@ -377,7 +384,7 @@ fun ReminderScreenPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         ReminderScreenContent(
             state = ReminderState(
-                reminderStatus = true
+                reminderStatus = true,
             ),
             onAction = {},
         )

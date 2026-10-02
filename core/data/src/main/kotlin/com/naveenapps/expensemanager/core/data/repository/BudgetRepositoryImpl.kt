@@ -30,27 +30,24 @@ class BudgetRepositoryImpl(
         }
     }
 
-    override fun findBudgetByIdFlow(budgetId: String): Flow<Budget?> {
-        return budgetDao.findByIdFlow(budgetId).map {
-            it?.let {
-                convertBudgetModel(it)
-            }
+    override fun findBudgetByIdFlow(budgetId: String): Flow<Budget?> = budgetDao.findByIdFlow(budgetId).map {
+        it?.let {
+            convertBudgetModel(it)
         }
     }
 
-    override suspend fun findBudgetById(budgetId: String): Resource<Budget> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val budget = budgetDao.findById(budgetId)
-                if (budget != null) {
-                    Resource.Success(convertBudgetModel(budget))
-                } else {
-                    Resource.Error(KotlinNullPointerException())
-                }
-            } catch (e: Exception) {
-                Resource.Error(e)
+    override suspend fun findBudgetById(budgetId: String): Resource<Budget> = withContext(dispatchers.io) {
+        return@withContext try {
+            val budget = budgetDao.findById(budgetId)
+            if (budget != null) {
+                Resource.Success(convertBudgetModel(budget))
+            } else {
+                Resource.Error(KotlinNullPointerException())
             }
+        } catch (e: Exception) {
+            Resource.Error(e)
         }
+    }
 
     private suspend fun convertBudgetModel(budget: BudgetEntity): Budget {
         val accounts = budgetDao.getBudgetAccounts(budget.id)
@@ -61,41 +58,38 @@ class BudgetRepositoryImpl(
         )
     }
 
-    override suspend fun addBudget(budget: Budget): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val response = budgetDao.insertBudget(
-                    budget.toEntityModel(),
-                    budget.categories,
-                    budget.accounts,
-                )
-                Resource.Success(response != -1L)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun addBudget(budget: Budget): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            val response = budgetDao.insertBudget(
+                budget.toEntityModel(),
+                budget.categories,
+                budget.accounts,
+            )
+            Resource.Success(response != -1L)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 
-    override suspend fun updateBudget(budget: Budget): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                budgetDao.updateBudget(
-                    budget.toEntityModel(),
-                    budget.categories,
-                    budget.accounts,
-                )
-                Resource.Success(true)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun updateBudget(budget: Budget): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            budgetDao.updateBudget(
+                budget.toEntityModel(),
+                budget.categories,
+                budget.accounts,
+            )
+            Resource.Success(true)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 
-    override suspend fun deleteBudget(budget: Budget): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val response = budgetDao.delete(budget.toEntityModel())
-                Resource.Success(response > 0)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun deleteBudget(budget: Budget): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            val response = budgetDao.delete(budget.toEntityModel())
+            Resource.Success(response > 0)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 }

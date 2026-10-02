@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 
-
 class AccountListViewModel(
     getAllAccountsUseCase: GetAllAccountsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
@@ -29,8 +28,8 @@ class AccountListViewModel(
     private val _state = MutableStateFlow(
         AccountListState(
             accounts = emptyList(),
-            showReOrder = false
-        )
+            showReOrder = false,
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -48,11 +47,11 @@ class AccountListViewModel(
                     if (it.type == AccountType.CREDIT) {
                         getFormattedAmountUseCase.invoke(
                             it.getAvailableCreditLimit(),
-                            currency
+                            currency,
                         )
                     } else {
                         null
-                    }
+                    },
                 )
             }
 
@@ -67,7 +66,7 @@ class AccountListViewModel(
                     liabilitiesAmount = getFormattedAmountUseCase.invoke(liabilities, currency),
                     totalAmount = getFormattedAmountUseCase.invoke(total, currency),
                     totalAmountTextColor = total.getAmountTextColor(),
-                    showReOrder = accounts.isNotEmpty() && accounts.size > 1
+                    showReOrder = accounts.isNotEmpty() && accounts.size > 1,
                 )
             }
         }.launchIn(viewModelScope)

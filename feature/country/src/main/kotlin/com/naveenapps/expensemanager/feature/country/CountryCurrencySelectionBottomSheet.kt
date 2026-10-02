@@ -11,7 +11,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CountryCurrencySelectionBottomSheet(
     modifier: Modifier = Modifier,
     onEvent: (CountrySelectionEvent) -> Unit,
-    countryListViewModel: CountryListViewModel = koinViewModel()
+    countryListViewModel: CountryListViewModel = koinViewModel(),
 ) {
     SafeModalBottomSheet(
         onDismissRequest = {
@@ -21,7 +21,7 @@ fun CountryCurrencySelectionBottomSheet(
         CountryCurrencyListAndSearchView(
             modifier = modifier,
             viewModel = countryListViewModel,
-            onEvent = onEvent
+            onEvent = onEvent,
         )
     }
 }

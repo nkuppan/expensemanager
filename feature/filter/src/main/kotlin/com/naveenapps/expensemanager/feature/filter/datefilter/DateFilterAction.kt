@@ -10,9 +10,9 @@ sealed class DateFilterAction {
 
     data object ShowToDateSelection : DateFilterAction()
 
-    data class SaveFromDate(val date:Date) : DateFilterAction()
+    data class SaveFromDate(val date: Date) : DateFilterAction()
 
-    data class SaveToDate(val date:Date) : DateFilterAction()
+    data class SaveToDate(val date: Date) : DateFilterAction()
 
     data object DismissDateSelection : DateFilterAction()
 }

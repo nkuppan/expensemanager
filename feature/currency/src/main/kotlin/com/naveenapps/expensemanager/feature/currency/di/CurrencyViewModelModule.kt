@@ -15,4 +15,3 @@ val CurrencyViewModelModule = module {
         )
     }
 }
-

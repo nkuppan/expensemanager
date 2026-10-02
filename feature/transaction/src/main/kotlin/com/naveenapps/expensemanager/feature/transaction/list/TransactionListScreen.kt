@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.transaction.list
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,7 +32,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
@@ -41,6 +39,7 @@ import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.model.Amount
@@ -50,27 +49,30 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.R
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionListScreen(
     showBackNavigationIcon: Boolean = false,
-    viewModel: TransactionListViewModel = koinViewModel()
+    // False inside Home's tabs, where the bottom bar's centre "+" adds a transaction instead.
+    showAddButton: Boolean = true,
+    viewModel: TransactionListViewModel = koinViewModel(),
 ) {
-
     val state by viewModel.state.collectAsState()
 
     TransactionListScreenContent(
         showBackNavigationIcon,
+        showAddButton,
         state,
-        viewModel::processAction
+        viewModel::processAction,
     )
 }
 
 @Composable
 private fun TransactionListScreenContent(
     showBackNavigationIcon: Boolean,
+    showAddButton: Boolean = true,
     state: TransactionListState,
     onAction: (TransactionListAction) -> Unit,
 ) {
@@ -89,20 +91,22 @@ private fun TransactionListScreenContent(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onAction(TransactionListAction.OpenCreateTransaction) },
-                shape = RoundedCornerShape(16.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 6.dp,
-                    pressedElevation = 10.dp,
-                ),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.add_transaction),
-                )
+            if (showAddButton) {
+                FloatingActionButton(
+                    onClick = { onAction(TransactionListAction.OpenCreateTransaction) },
+                    shape = RoundedCornerShape(16.dp),
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    elevation = FloatingActionButtonDefaults.elevation(
+                        defaultElevation = 6.dp,
+                        pressedElevation = 10.dp,
+                    ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.add_transaction),
+                    )
+                }
             }
         },
     ) { innerPadding ->
@@ -245,7 +249,7 @@ private fun TransactionGroupCard(
                     toAccountColor = item.toAccountIcon?.backgroundColor,
                     onClick = {
                         onItemClick?.invoke(item)
-                    }
+                    },
                 )
 
                 // Thin inset divider between rows — not after the last one
@@ -373,7 +377,7 @@ fun TransactionListItemSuccessStatePreview() {
         TransactionListScreenContent(
             state = TransactionListState(DUMMY_DATA.convertGroupToTransactionListItems()),
             showBackNavigationIcon = true,
-            onAction = {}
+            onAction = {},
         )
     }
 }

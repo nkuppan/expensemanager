@@ -14,7 +14,6 @@ import org.koin.core.context.GlobalContext
 class AppInitializer : Initializer<Unit> {
 
     override fun create(context: Context) {
-
         val applyThemeUseCase: ApplyThemeUseCase = GlobalContext.get().get()
         val applyLocaleUseCase: ApplyLocaleUseCase = GlobalContext.get().get()
         val notificationScheduler: NotificationScheduler = GlobalContext.get().get()
@@ -23,13 +22,11 @@ class AppInitializer : Initializer<Unit> {
             applyThemeUseCase.invoke()
             applyLocaleUseCase.invoke()
             notificationScheduler.checkAndRestartReminder()
+            notificationScheduler.scheduleWeeklySummary()
         }
     }
 
-    override fun dependencies(): List<Class<out Initializer<*>>> {
-        return listOf(
-            KoinInitializer::class.java,
-            WorkManagerInitializer::class.java
-        )
-    }
+    override fun dependencies(): List<Class<out Initializer<*>>> = listOf(
+        KoinInitializer::class.java,
+    )
 }

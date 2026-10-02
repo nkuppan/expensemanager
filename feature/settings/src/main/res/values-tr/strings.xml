@@ -47,4 +47,7 @@
 
     <string name="app_lock">Uygulama Kilidi</string>
     <string name="app_lock_message">Uygulamayı açarken biyometrik veya cihaz kimlik bilgilerini iste</string>
+    <string name="share_app">Uygulamayı paylaş</string>
+    <string name="share_app_message">Bir arkadaşına Expense Manager\'ı anlat</string>
+    <string name="share_app_text">Harcamalarımı Expense Manager ile takip ediyorum. Ücretsiz ve verilerim telefonumda kalıyor: %1$s</string>
 </resources>

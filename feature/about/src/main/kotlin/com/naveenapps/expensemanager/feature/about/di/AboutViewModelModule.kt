@@ -8,8 +8,7 @@ val AboutViewModelModule = module {
     viewModel {
         AboutUsViewModel(
             appComposeNavigator = get(),
-            devicePropertyRepository = get()
+            devicePropertyRepository = get(),
         )
     }
 }
-

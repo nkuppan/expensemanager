@@ -50,8 +50,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
@@ -151,7 +151,9 @@ fun TransactionItem(
                                 },
                             )
                         }
-                    } else Modifier,
+                    } else {
+                        Modifier
+                    },
                 )
                 .then(
                     if (onClick != null) {
@@ -160,7 +162,9 @@ fun TransactionItem(
                             indication = null,
                             onClick = onClick,
                         )
-                    } else Modifier,
+                    } else {
+                        Modifier
+                    },
                 )
                 .padding(horizontal = 16.dp, vertical = 12.dp)
                 .animateContentSize(),
@@ -246,9 +250,11 @@ fun TransactionItem(
                     TransactionType.EXPENSE -> "−" to colorResource(
                         id = com.naveenapps.expensemanager.core.common.R.color.red_500,
                     )
+
                     TransactionType.INCOME -> "+" to colorResource(
                         id = com.naveenapps.expensemanager.core.common.R.color.green_500,
                     )
+
                     else -> "" to Color.Unspecified
                 }
 
@@ -454,7 +460,6 @@ private fun SwipeAction(
         }
     }
 }
-
 
 @AppPreviewsLightAndDarkMode
 @Composable

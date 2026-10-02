@@ -108,14 +108,14 @@ fun LanguageDialogViewContent(
                                 MaterialTheme.colorScheme.onSecondary
                             } else {
                                 Color.Unspecified
-                            }
+                            },
                         )
                         if (isLocaleSelected) {
                             Icon(
                                 modifier = Modifier.align(Alignment.CenterVertically),
                                 imageVector = Icons.Default.Done,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSecondary
+                                tint = MaterialTheme.colorScheme.onSecondary,
                             )
                         }
                     }

@@ -47,4 +47,7 @@
 
     <string name="app_lock">应用锁</string>
     <string name="app_lock_message">打开应用时需要生物识别或设备凭据验证</string>
+    <string name="share_app">分享应用</string>
+    <string name="share_app_message">向朋友推荐 Expense Manager</string>
+    <string name="share_app_text">我用 Expense Manager 记录支出。免费，而且数据只保存在我的手机上：%1$s</string>
 </resources>

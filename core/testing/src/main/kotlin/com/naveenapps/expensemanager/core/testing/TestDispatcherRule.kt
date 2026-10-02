@@ -18,15 +18,14 @@ import org.junit.runners.model.Statement
 class TestDispatcherRule(
     val dispatcher: CoroutineDispatcher = StandardTestDispatcher(),
 ) : TestRule {
-    override fun apply(base: Statement, description: Description): Statement =
-        object : Statement() {
-            override fun evaluate() {
-                Dispatchers.setMain(dispatcher)
-                try {
-                    base.evaluate()
-                } finally {
-                    Dispatchers.resetMain()
-                }
+    override fun apply(base: Statement, description: Description): Statement = object : Statement() {
+        override fun evaluate() {
+            Dispatchers.setMain(dispatcher)
+            try {
+                base.evaluate()
+            } finally {
+                Dispatchers.resetMain()
             }
         }
+    }
 }

@@ -3,4 +3,17 @@
     <string name="notification_description">지출 기록하는 것을 잊지 마세요</string>
     <string name="notification_title">거래 추가</string>
     <string name="notification_channel_description">알림 용도로 사용됩니다</string>
+    <string name="reminder_notification_title">오늘 지출을 기록하셨나요?</string>
+    <string name="reminder_notification_body">몇 초면 돼요. 탭해서 지출을 추가하세요.</string>
+    <string name="reminder_action_add">지출 추가</string>
+    <string name="reminder_action_no_spend">오늘은 지출 없음</string>
+    <string name="weekly_summary_title">이번 주 지출 요약</string>
+    <string name="weekly_summary_less">이번 주에 %1$s를 썼어요. 지난주보다 %2$d%% 적어요. 잘하고 있어요!</string>
+    <string name="weekly_summary_more">이번 주에 %1$s를 썼어요. 지난주보다 %2$d%% 많아요.</string>
+    <string name="weekly_summary_same">이번 주에 %1$s를 썼어요. 지난주와 비슷해요.</string>
+    <string name="weekly_summary_first">이번 주에 %1$s를 썼어요. 계속 기록해서 다음 주와 비교해 보세요.</string>
+    <string name="budget_alert_warning_title">%1$s 예산의 80%% 도달</string>
+    <string name="budget_alert_warning_body">%2$s 중 %1$s를 썼어요. 조금 속도를 줄여 보세요.</string>
+    <string name="budget_alert_over_title">%1$s 예산 초과</string>
+    <string name="budget_alert_over_body">%2$s 예산 중 %1$s를 썼어요.</string>
 </resources>

@@ -28,6 +28,5 @@ class ExportRepositoryImpl(
         strategy(ExportFileType.PDF).export(uri, transactions)
     }
 
-    private fun strategy(type: ExportFileType): ExportStrategy =
-        strategies.first { it.getFileType() == type }
+    private fun strategy(type: ExportFileType): ExportStrategy = strategies.first { it.getFileType() == type }
 }

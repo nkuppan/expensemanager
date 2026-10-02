@@ -6,12 +6,8 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 object TransactionTypeConverter {
 
     @TypeConverter
-    fun ordinalToTransactionType(value: Int?): TransactionType? {
-        return value?.let { TransactionType.entries[it] }
-    }
+    fun ordinalToTransactionType(value: Int?): TransactionType? = value?.let { TransactionType.entries[it] }
 
     @TypeConverter
-    fun transactionTypeToOrdinal(transactionType: TransactionType?): Int? {
-        return transactionType?.ordinal
-    }
+    fun transactionTypeToOrdinal(transactionType: TransactionType?): Int? = transactionType?.ordinal
 }

@@ -20,4 +20,9 @@
     <string name="track">記録する</string>
     <string name="organize">整理する</string>
     <string name="grow">増やす</string>
+    <string name="onboarding_add_first_expense">最初の支出を追加</string>
+    <string name="onboarding_explore_first">まずアプリを見てみる</string>
+    <string name="onboarding_reminder_title">毎日のリマインダー</string>
+    <string name="onboarding_reminder_time">毎日 %1$s</string>
+    <string name="onboarding_reminder_description">支出を記録するための軽いお知らせ</string>
 </resources>

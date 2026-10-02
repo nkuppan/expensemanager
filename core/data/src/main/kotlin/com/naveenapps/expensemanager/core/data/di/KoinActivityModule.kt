@@ -17,13 +17,13 @@ val ActivityModule = module {
         scoped<BackupRepository> {
             BackupRepositoryImpl(
                 roomBackup = get<RoomBackup>(),
-                database = get<ExpenseManagerDatabase>()
+                database = get<ExpenseManagerDatabase>(),
             )
         }
         scoped<ShareRepository> {
             ShareRepositoryImpl(
                 context = get<Activity>(),
-                firebaseSettingsRepository = get()
+                firebaseSettingsRepository = get(),
             )
         }
         scoped<ActivityComponentProvider> {
@@ -37,4 +37,3 @@ val ActivityModule = module {
         }
     }
 }
-

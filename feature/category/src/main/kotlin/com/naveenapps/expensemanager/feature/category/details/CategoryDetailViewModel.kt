@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 
-
 class CategoryDetailViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getCurrencyUseCase: GetCurrencyUseCase,
@@ -31,8 +30,8 @@ class CategoryDetailViewModel(
     private val _state = MutableStateFlow(
         CategoryDetailsState(
             categoryTransaction = null,
-            transactions = emptyList()
-        )
+            transactions = emptyList(),
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -63,7 +62,6 @@ class CategoryDetailViewModel(
 
                     val categoryAmount = categoryTransaction.sumOf { it.amount.amount }
 
-
                     _state.update {
                         it.copy(
                             categoryTransaction = CategoryTransaction(
@@ -75,14 +73,14 @@ class CategoryDetailViewModel(
                                 ),
                                 transaction = filterTransaction,
                             ),
-                            transactions = categoryTransaction
+                            transactions = categoryTransaction,
                         )
                     }
                 } else {
                     _state.update {
                         it.copy(
                             categoryTransaction = null,
-                            transactions = emptyList()
+                            transactions = emptyList(),
                         )
                     }
                 }
@@ -112,7 +110,9 @@ class CategoryDetailViewModel(
     fun processAction(action: CategoryDetailsAction) {
         when (action) {
             CategoryDetailsAction.ClosePage -> closePage()
+
             CategoryDetailsAction.OpenCategoryEdit -> openCategoryEditScreen()
+
             CategoryDetailsAction.OpenTransactionCreate -> {
                 openTransactionCreateScreen(null)
             }

@@ -7,13 +7,11 @@ import kotlinx.coroutines.flow.map
 
 class GetAllCategoryUseCase(private val repository: CategoryRepository) {
 
-    operator fun invoke(): Flow<List<Category>> {
-        return repository.getCategories().map { categories ->
-            if (categories.isNotEmpty()) {
-                categories.sortedBy { it.name }
-            } else {
-                categories
-            }
+    operator fun invoke(): Flow<List<Category>> = repository.getCategories().map { categories ->
+        if (categories.isNotEmpty()) {
+            categories.sortedBy { it.name }
+        } else {
+            categories
         }
     }
 }

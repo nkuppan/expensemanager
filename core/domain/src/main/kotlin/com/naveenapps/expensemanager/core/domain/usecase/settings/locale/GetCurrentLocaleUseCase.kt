@@ -6,7 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 class GetCurrentLocaleUseCase(private val repository: LocaleRepository) {
 
-    operator fun invoke(): Flow<AppLocale> {
-        return repository.getSelectedLocale()
-    }
+    operator fun invoke(): Flow<AppLocale> = repository.getSelectedLocale()
 }

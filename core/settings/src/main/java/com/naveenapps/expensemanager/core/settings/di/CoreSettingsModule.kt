@@ -21,17 +21,17 @@ val CoreSettingsModule = module {
     }
     single<NumberFormatSettingRepository> {
         NumberFormatSettingRepositoryImpl(
-            numberFormatSettingsDatastore = get()
+            numberFormatSettingsDatastore = get(),
         )
     }
     single<NumberFormatSettingRepository> {
         NumberFormatSettingRepositoryImpl(
-            numberFormatSettingsDatastore = get()
+            numberFormatSettingsDatastore = get(),
         )
     }
     single<NumberFormatRepository> {
         NumberFormatRepositoryImpl(
-            numberFormatSettingRepository = get()
+            numberFormatSettingRepository = get(),
         )
     }
 }

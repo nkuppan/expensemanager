@@ -210,19 +210,18 @@ class SettingsRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun `when getDefaultExpenseCategory after saving the item should return the saved value`() =
-        runTest {
-            val expectedItem = "sampleId"
+    fun `when getDefaultExpenseCategory after saving the item should return the saved value`() = runTest {
+        val expectedItem = "sampleId"
 
-            repository.setDefaultExpenseCategory(expectedItem)
+        repository.setDefaultExpenseCategory(expectedItem)
 
-            repository.getDefaultExpenseCategory().test {
-                val item = awaitItem()
-                Truth.assertThat(item).isNotNull()
-                Truth.assertThat(item).isNotEmpty()
-                Truth.assertThat(item).isEqualTo(expectedItem)
-            }
+        repository.getDefaultExpenseCategory().test {
+            val item = awaitItem()
+            Truth.assertThat(item).isNotNull()
+            Truth.assertThat(item).isNotEmpty()
+            Truth.assertThat(item).isEqualTo(expectedItem)
         }
+    }
 
     @Test
     fun `when getDefaultIncomeCategory for first time should return null`() = runTest {
@@ -241,17 +240,16 @@ class SettingsRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun `when getDefaultIncomeCategory after saving the item should return the saved value`() =
-        runTest {
-            val expectedItem = "sampleId"
+    fun `when getDefaultIncomeCategory after saving the item should return the saved value`() = runTest {
+        val expectedItem = "sampleId"
 
-            repository.setDefaultIncomeCategory(expectedItem)
+        repository.setDefaultIncomeCategory(expectedItem)
 
-            repository.getDefaultIncomeCategory().test {
-                val item = awaitItem()
-                Truth.assertThat(item).isNotNull()
-                Truth.assertThat(item).isNotEmpty()
-                Truth.assertThat(item).isEqualTo(expectedItem)
-            }
+        repository.getDefaultIncomeCategory().test {
+            val item = awaitItem()
+            Truth.assertThat(item).isNotNull()
+            Truth.assertThat(item).isNotEmpty()
+            Truth.assertThat(item).isEqualTo(expectedItem)
         }
+    }
 }

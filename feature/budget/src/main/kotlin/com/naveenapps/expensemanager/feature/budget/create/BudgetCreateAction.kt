@@ -20,7 +20,7 @@ sealed class BudgetCreateAction {
 
     data class SelectAccounts(
         val isAllSelected: Boolean,
-        val accounts: List<AccountUiModel>
+        val accounts: List<AccountUiModel>,
     ) : BudgetCreateAction()
 
     data object OpenCategorySelectionDialog : BudgetCreateAction()
@@ -29,7 +29,7 @@ sealed class BudgetCreateAction {
 
     data class SelectCategories(
         val isAllSelected: Boolean,
-        val categories: List<Category>
+        val categories: List<Category>,
     ) : BudgetCreateAction()
 
     data object ShowDeleteDialog : BudgetCreateAction()

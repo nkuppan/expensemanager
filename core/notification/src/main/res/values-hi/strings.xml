@@ -3,4 +3,17 @@
     <string name="notification_description">अपने खर्च दर्ज करना न भूलें</string>
     <string name="notification_title">लेन-देन जोड़ें</string>
     <string name="notification_channel_description">रिमाइंडर के लिए इस्तेमाल किया जाता है</string>
+    <string name="reminder_notification_title">आज का खर्च दर्ज किया?</string>
+    <string name="reminder_notification_body">बस कुछ सेकंड लगते हैं। खर्च जोड़ने के लिए टैप करें।</string>
+    <string name="reminder_action_add">खर्च जोड़ें</string>
+    <string name="reminder_action_no_spend">आज कुछ खर्च नहीं किया</string>
+    <string name="weekly_summary_title">आपका हफ़्ता, पैसों में</string>
+    <string name="weekly_summary_less">इस हफ़्ते आपने %1$s खर्च किए, पिछले हफ़्ते से %2$d%% कम। बहुत बढ़िया!</string>
+    <string name="weekly_summary_more">इस हफ़्ते आपने %1$s खर्च किए, पिछले हफ़्ते से %2$d%% ज़्यादा।</string>
+    <string name="weekly_summary_same">इस हफ़्ते आपने %1$s खर्च किए, लगभग पिछले हफ़्ते जितना।</string>
+    <string name="weekly_summary_first">इस हफ़्ते आपने %1$s खर्च किए। अगले हफ़्ते से तुलना के लिए दर्ज करते रहें।</string>
+    <string name="budget_alert_warning_title">%1$s 80%% पर है</string>
+    <string name="budget_alert_warning_body">आपने %2$s में से %1$s खर्च कर दिए हैं। थोड़ा धीमा करने का समय है।</string>
+    <string name="budget_alert_over_title">%1$s बजट से ज़्यादा हो गया</string>
+    <string name="budget_alert_over_body">आपने अपने %2$s के बजट में से %1$s खर्च कर दिए हैं।</string>
 </resources>

@@ -44,9 +44,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
@@ -55,8 +55,8 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItem
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefaults
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
+import org.koin.compose.viewmodel.koinViewModel
 
 enum class CategoryTabItems(
     val labelResourceID: Int,
@@ -69,12 +69,11 @@ enum class CategoryTabItems(
 
 @Composable
 fun CategoryListScreen(viewModel: CategoryListViewModel = koinViewModel()) {
-
     val state by viewModel.state.collectAsState()
 
     CategoryListScreenContentView(
         state = state,
-        onAction = viewModel::processAction
+        onAction = viewModel::processAction,
     )
 }
 
@@ -93,11 +92,11 @@ private fun CategoryListScreenContentView(
                             IconButton(
                                 onClick = {
                                     onAction.invoke(CategoryListAction.ClosePage)
-                                }
+                                },
                             ) {
                                 Icon(
                                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = null
+                                    contentDescription = null,
                                 )
                             }
                         },
@@ -111,7 +110,7 @@ private fun CategoryListScreenContentView(
                                 selected = state.selectedTab.categoryType == item.categoryType,
                                 onClick = {
                                     onAction.invoke(
-                                        CategoryListAction.ChangeCategory(item)
+                                        CategoryListAction.ChangeCategory(item),
                                     )
                                 },
                                 text = {
@@ -120,8 +119,11 @@ private fun CategoryListScreenContentView(
                                         maxLines = 1,
                                         overflow = TextOverflow.Ellipsis,
                                         style = MaterialTheme.typography.labelLarge,
-                                        fontWeight = if (state.selectedTab.categoryType == item.categoryType)
-                                            FontWeight.Bold else FontWeight.Normal,
+                                        fontWeight = if (state.selectedTab.categoryType == item.categoryType) {
+                                            FontWeight.Bold
+                                        } else {
+                                            FontWeight.Normal
+                                        },
                                     )
                                 },
                             )
@@ -171,7 +173,7 @@ private fun CategoryListScreenContent(
             targetState = state.filteredCategories.isEmpty(),
             transitionSpec = {
                 fadeIn(animationSpec = tween(300)) togetherWith
-                        fadeOut(animationSpec = tween(300))
+                    fadeOut(animationSpec = tween(300))
             },
             label = "category_list_transition",
         ) { isEmpty ->
@@ -211,7 +213,7 @@ private fun CategoryListScreenContent(
 
                     LazyColumn(
                         contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 78.dp),
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                     ) {
                         val categories = state.filteredCategories
 
@@ -232,7 +234,7 @@ private fun CategoryListScreenContent(
                                 onClick = { onItemClick.invoke(category) },
                                 trailingContent = {
                                     CategoryItemDefaults.ChevronTrailing()
-                                }
+                                },
                             )
                         }
                     }
@@ -245,35 +247,31 @@ private fun CategoryListScreenContent(
 fun getCategoryData(
     index: Int,
     categoryType: CategoryType,
-): Category {
-    return Category(
-        id = "$index",
-        name = "Category $index",
-        type = categoryType,
-        storedIcon = StoredIcon(
-            "account_balance",
-            "#000000",
-        ),
-        createdOn = Date(),
-        updatedOn = Date(),
-    )
-}
+): Category = Category(
+    id = "$index",
+    name = "Category $index",
+    type = categoryType,
+    storedIcon = StoredIcon(
+        "account_balance",
+        "#000000",
+    ),
+    createdOn = Date(),
+    updatedOn = Date(),
+)
 
-fun getRandomCategoryData(totalCount: Int = 10): List<Category> {
-    return buildList {
-        repeat(totalCount) {
-            val isEven = (it + 1) % 2 == 0
-            add(
-                getCategoryData(
-                    it,
-                    if (isEven) {
-                        CategoryType.EXPENSE
-                    } else {
-                        CategoryType.INCOME
-                    },
-                ),
-            )
-        }
+fun getRandomCategoryData(totalCount: Int = 10): List<Category> = buildList {
+    repeat(totalCount) {
+        val isEven = (it + 1) % 2 == 0
+        add(
+            getCategoryData(
+                it,
+                if (isEven) {
+                    CategoryType.EXPENSE
+                } else {
+                    CategoryType.INCOME
+                },
+            ),
+        )
     }
 }
 
@@ -292,7 +290,7 @@ private fun CategoryItemPreview() {
                     .then(ItemSpecModifier),
                 trailingContent = {
                     CategoryItemDefaults.ChevronTrailing()
-                }
+                },
             )
         }
     }
@@ -307,7 +305,7 @@ private fun CategoryListItemEmptyStatePreview() {
                 categories = emptyList(),
                 filteredCategories = emptyList(),
                 selectedTab = CategoryTabItems.Expense,
-                tabs = CategoryTabItems.entries
+                tabs = CategoryTabItems.entries,
             ),
             onAction = {},
         )
@@ -323,7 +321,7 @@ private fun CategoryListItemSuccessStatePreview() {
                 categories = emptyList(),
                 filteredCategories = getRandomCategoryData(),
                 selectedTab = CategoryTabItems.Expense,
-                tabs = CategoryTabItems.entries
+                tabs = CategoryTabItems.entries,
             ),
             onAction = {},
         )

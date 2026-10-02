@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
-
 class AccountSelectionViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
@@ -43,11 +42,11 @@ class AccountSelectionViewModel(
                     if (it.type == AccountType.CREDIT) {
                         getFormattedAmountUseCase.invoke(
                             it.getAvailableCreditLimit(),
-                            currency
+                            currency,
                         )
                     } else {
                         null
-                    }
+                    },
                 )
             }
 
@@ -61,11 +60,11 @@ class AccountSelectionViewModel(
                         if (it.type == AccountType.CREDIT) {
                             getFormattedAmountUseCase.invoke(
                                 it.getAvailableCreditLimit(),
-                                currency
+                                currency,
                             )
                         } else {
                             null
-                        }
+                        },
                     )
                 }
             }
@@ -99,7 +98,6 @@ class AccountSelectionViewModel(
     }
 
     fun selectAllThisAccount(accounts: List<AccountUiModel>) {
-
         accounts.ifEmpty { return }
 
         viewModelScope.launch {

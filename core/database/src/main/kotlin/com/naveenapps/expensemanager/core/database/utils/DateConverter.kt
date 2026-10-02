@@ -8,12 +8,8 @@ import java.util.Date
 object DateConverter {
 
     @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.fromUTCToLocalDate()
-    }
+    fun fromTimestamp(value: Long?): Date? = value?.fromUTCToLocalDate()
 
     @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.fromLocalToUTCTimeStamp()
-    }
+    fun dateToTimestamp(date: Date?): Long? = date?.time?.fromLocalToUTCTimeStamp()
 }

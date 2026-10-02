@@ -20,4 +20,9 @@
     <string name="track">Controlar</string>
     <string name="organize">Organizar</string>
     <string name="grow">Crecer</string>
+    <string name="onboarding_add_first_expense">Añade tu primer gasto</string>
+    <string name="onboarding_explore_first">Explorar la app primero</string>
+    <string name="onboarding_reminder_title">Recordatorio diario</string>
+    <string name="onboarding_reminder_time">Todos los días a las %1$s</string>
+    <string name="onboarding_reminder_description">Un aviso amable para registrar lo que gastaste</string>
 </resources>

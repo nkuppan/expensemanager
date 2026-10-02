@@ -8,7 +8,5 @@ class SetDateRangesUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
-    suspend operator fun invoke(customDateRange: List<Date>): Resource<Boolean> {
-        return dateRangeFilterRepository.setDateRanges(customDateRange)
-    }
+    suspend operator fun invoke(customDateRange: List<Date>): Resource<Boolean> = dateRangeFilterRepository.setDateRanges(customDateRange)
 }

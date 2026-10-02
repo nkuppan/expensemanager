@@ -38,8 +38,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -47,14 +47,13 @@ fun IconSelectionScreen(
     viewModel: IconSelectionViewModel = koinViewModel(),
     onIconPicked: ((Int) -> Unit)? = null,
 ) {
-
     val icons by viewModel.icons.collectAsState()
 
     IconSelectionComponentContent(
         icons = icons,
         onIconPicked = { selectedIcon ->
             onIconPicked?.invoke(selectedIcon)
-        }
+        },
     )
 }
 
@@ -99,19 +98,21 @@ fun IconSelectionComponentContent(
                 )
 
                 val bgColor by animateColorAsState(
-                    targetValue = if (isSelected)
+                    targetValue = if (isSelected) {
                         MaterialTheme.colorScheme.primaryContainer
-                    else
-                        MaterialTheme.colorScheme.surfaceContainerHigh,
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerHigh
+                    },
                     animationSpec = tween(200),
                     label = "bg_color",
                 )
 
                 val tintColor by animateColorAsState(
-                    targetValue = if (isSelected)
+                    targetValue = if (isSelected) {
                         MaterialTheme.colorScheme.onPrimaryContainer
-                    else
-                        MaterialTheme.colorScheme.onSurfaceVariant,
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
                     animationSpec = tween(200),
                     label = "tint_color",
                 )
@@ -134,7 +135,7 @@ fun IconSelectionComponentContent(
                                 )
                             } else {
                                 Modifier
-                            }
+                            },
                         )
                         .clickable { onIconPicked.invoke(icon) },
                     contentAlignment = Alignment.Center,
@@ -161,7 +162,7 @@ private fun ColorSelectionPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         IconSelectionComponentContent(
             icons = iconSelectionList,
-            onIconPicked = {}
+            onIconPicked = {},
         )
     }
 }

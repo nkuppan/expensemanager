@@ -61,15 +61,14 @@ import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.filter.R
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun DateFilterSelectionView(
     onComplete: () -> Unit,
-    viewModel: DateFilterViewModel = koinViewModel()
+    viewModel: DateFilterViewModel = koinViewModel(),
 ) {
-
     ObserveAsEvents(viewModel.event) {
         when (it) {
             DateFilterEvent.Saved -> onComplete.invoke()
@@ -101,7 +100,7 @@ fun DateFilterSelectionView(
         state = state,
         onAction = viewModel::processAction,
         modifier = Modifier
-            .wrapContentSize()
+            .wrapContentSize(),
     )
 }
 
@@ -130,10 +129,11 @@ private fun FilterTypesAndViewContent(
                 val isSelected = state.dateRangeType.value == filter.type
 
                 val bgColor by animateColorAsState(
-                    targetValue = if (isSelected)
+                    targetValue = if (isSelected) {
                         MaterialTheme.colorScheme.primaryContainer
-                    else
-                        MaterialTheme.colorScheme.surfaceContainerLow,
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainerLow
+                    },
                     animationSpec = tween(200),
                     label = "bg_color",
                 )
@@ -154,20 +154,22 @@ private fun FilterTypesAndViewContent(
                         // Leading icon based on filter type
                         Surface(
                             shape = MaterialTheme.shapes.medium,
-                            color = if (isSelected)
+                            color = if (isSelected) {
                                 MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
-                            else
-                                MaterialTheme.colorScheme.surfaceContainerHighest,
+                            } else {
+                                MaterialTheme.colorScheme.surfaceContainerHighest
+                            },
                             modifier = Modifier.size(40.dp),
                         ) {
                             Box(contentAlignment = Alignment.Center) {
                                 Icon(
                                     imageVector = filter.type.toIcon(),
                                     contentDescription = null,
-                                    tint = if (isSelected)
+                                    tint = if (isSelected) {
                                         MaterialTheme.colorScheme.primary
-                                    else
-                                        MaterialTheme.colorScheme.onSurfaceVariant,
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
                                     modifier = Modifier.size(20.dp),
                                 )
                             }
@@ -178,20 +180,22 @@ private fun FilterTypesAndViewContent(
                                 text = filter.name,
                                 style = MaterialTheme.typography.bodyLarge,
                                 fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                                color = if (isSelected)
+                                color = if (isSelected) {
                                     MaterialTheme.colorScheme.onPrimaryContainer
-                                else
-                                    MaterialTheme.colorScheme.onSurface,
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface
+                                },
                             )
                             if (filter.description.isNotBlank()) {
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = filter.description,
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = if (isSelected)
+                                    color = if (isSelected) {
                                         MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-                                    else
-                                        MaterialTheme.colorScheme.onSurfaceVariant,
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
                                 )
                             }
                         }
@@ -352,15 +356,13 @@ private fun DatePickerField(
  * Map DateRangeType to a relevant icon.
  * Adjust the mapping to match your actual DateRangeType enum values.
  */
-private fun DateRangeType.toIcon(): ImageVector {
-    return when (this) {
-        DateRangeType.TODAY -> Icons.Rounded.Today
-        DateRangeType.THIS_WEEK -> Icons.Rounded.DateRange
-        DateRangeType.THIS_MONTH -> Icons.Rounded.CalendarMonth
-        DateRangeType.THIS_YEAR -> Icons.Rounded.CalendarToday
-        DateRangeType.ALL -> Icons.Rounded.AllInclusive
-        DateRangeType.CUSTOM -> Icons.Rounded.EditCalendar
-    }
+private fun DateRangeType.toIcon(): ImageVector = when (this) {
+    DateRangeType.TODAY -> Icons.Rounded.Today
+    DateRangeType.THIS_WEEK -> Icons.Rounded.DateRange
+    DateRangeType.THIS_MONTH -> Icons.Rounded.CalendarMonth
+    DateRangeType.THIS_YEAR -> Icons.Rounded.CalendarToday
+    DateRangeType.ALL -> Icons.Rounded.AllInclusive
+    DateRangeType.CUSTOM -> Icons.Rounded.EditCalendar
 }
 
 @Preview
@@ -390,4 +392,3 @@ private fun FilterNormalViewPreview() {
         )
     }
 }
-

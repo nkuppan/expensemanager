@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.isCustom
+import java.util.Date
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,8 +18,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
-
 
 class DateFilterViewModel(
     getDateRangeUseCase: GetDateRangeUseCase,
@@ -34,23 +33,23 @@ class DateFilterViewModel(
             dateRangeType = TextFieldValue(
                 value = DateRangeType.THIS_MONTH,
                 valueError = false,
-                onValueChange = this::setFilterType
+                onValueChange = this::setFilterType,
             ),
             fromDate = TextFieldValue(
                 value = Date(),
                 valueError = false,
-                onValueChange = this::setFromDate
+                onValueChange = this::setFromDate,
             ),
             toDate = TextFieldValue(
                 value = Date(),
                 valueError = false,
-                onValueChange = this::setToDate
+                onValueChange = this::setToDate,
             ),
             dateRangeTypeList = emptyList(),
             showCustomRangeSelection = false,
             showDateFilter = false,
-            dateFilterType = DateFilterType.TO_DATE
-        )
+            dateFilterType = DateFilterType.TO_DATE,
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -67,6 +66,7 @@ class DateFilterViewModel(
         viewModelScope.launch {
             when (val response = getAllDateRangeUseCase.invoke()) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     _state.update {
                         it.copy(dateRangeTypeList = response.data)
@@ -80,7 +80,7 @@ class DateFilterViewModel(
         _state.update {
             it.copy(
                 dateRangeType = it.dateRangeType.copy(value = dateRangeType),
-                showCustomRangeSelection = dateRangeType.isCustom()
+                showCustomRangeSelection = dateRangeType.isCustom(),
             )
         }
     }
@@ -127,7 +127,7 @@ class DateFilterViewModel(
         _state.update {
             it.copy(
                 showDateFilter = false,
-                fromDate = it.fromDate.copy(value = date)
+                fromDate = it.fromDate.copy(value = date),
             )
         }
     }
@@ -136,7 +136,7 @@ class DateFilterViewModel(
         _state.update {
             it.copy(
                 showDateFilter = false,
-                toDate = it.toDate.copy(value = date)
+                toDate = it.toDate.copy(value = date),
             )
         }
     }
@@ -144,6 +144,7 @@ class DateFilterViewModel(
     fun processAction(action: DateFilterAction) {
         when (action) {
             DateFilterAction.Save -> save()
+
             DateFilterAction.DismissDateSelection -> {
                 _state.update { it.copy(showDateFilter = false) }
             }
@@ -152,7 +153,7 @@ class DateFilterViewModel(
                 _state.update {
                     it.copy(
                         showDateFilter = true,
-                        dateFilterType = DateFilterType.FROM_DATE
+                        dateFilterType = DateFilterType.FROM_DATE,
                     )
                 }
             }
@@ -161,7 +162,7 @@ class DateFilterViewModel(
                 _state.update {
                     it.copy(
                         showDateFilter = true,
-                        dateFilterType = DateFilterType.TO_DATE
+                        dateFilterType = DateFilterType.TO_DATE,
                     )
                 }
             }
@@ -178,7 +179,7 @@ class DateFilterViewModel(
                 _state.update {
                     it.copy(
                         showDateFilter = true,
-                        dateFilterType = DateFilterType.TO_DATE
+                        dateFilterType = DateFilterType.TO_DATE,
                     )
                 }
             }

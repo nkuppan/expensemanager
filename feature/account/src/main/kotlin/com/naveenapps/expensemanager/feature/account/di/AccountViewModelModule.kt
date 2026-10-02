@@ -21,13 +21,14 @@ val AccountViewModelModule = module {
             imageStorageRepository = get(),
             composeNavigator = get(),
             numberFormatRepository = get(),
+            analyticsRepository = get(),
         )
     }
     viewModel {
         AccountSelectionViewModel(
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
-            getAllAccountsUseCase = get()
+            getAllAccountsUseCase = get(),
         )
     }
     viewModel {
@@ -35,15 +36,14 @@ val AccountViewModelModule = module {
             getAllAccountsUseCase = get(),
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
     viewModel {
         AccountReOrderViewModel(
             getAllAccountsUseCase = get(),
             updateAllAccountUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
 }
-

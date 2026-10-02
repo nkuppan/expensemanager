@@ -25,8 +25,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 @Composable
 fun SettingRow(
@@ -37,7 +37,7 @@ fun SettingRow(
     value: String? = null,
     subtitle: String? = null,
     enabled: Boolean = true,
-    showDivider: Boolean = false
+    showDivider: Boolean = false,
 ) {
     Column(modifier = modifier) {
         Row(
@@ -46,15 +46,15 @@ fun SettingRow(
                 .clickable(enabled = enabled, onClick = onClick)
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             // Icon with container
             Surface(
                 modifier = Modifier.size(40.dp),
                 shape = RoundedCornerShape(10.dp),
                 color = MaterialTheme.colorScheme.primaryContainer.copy(
-                    alpha = if (enabled) 1f else 0.38f
-                )
+                    alpha = if (enabled) 1f else 0.38f,
+                ),
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
@@ -65,7 +65,7 @@ fun SettingRow(
                             MaterialTheme.colorScheme.onPrimaryContainer
                         } else {
                             MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                        }
+                        },
                     )
                 }
             }
@@ -73,7 +73,7 @@ fun SettingRow(
             // Title and subtitle
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
                     text = title,
@@ -83,7 +83,7 @@ fun SettingRow(
                         MaterialTheme.colorScheme.onSurface
                     } else {
                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                    }
+                    },
                 )
 
                 if (!subtitle.isNullOrBlank()) {
@@ -96,7 +96,7 @@ fun SettingRow(
                             MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                         },
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }
@@ -104,7 +104,7 @@ fun SettingRow(
             // Value and chevron
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (value?.isNotBlank() == true) {
                     Text(
@@ -117,7 +117,7 @@ fun SettingRow(
                         },
                         fontWeight = FontWeight.SemiBold,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
 
@@ -129,7 +129,7 @@ fun SettingRow(
                         MaterialTheme.colorScheme.onSurfaceVariant
                     } else {
                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                    }
+                    },
                 )
             }
         }
@@ -217,13 +217,13 @@ fun SettingRowPreview() {
                 title = "Sample Title",
                 value = "",
                 onClick = {},
-                showDivider = true
+                showDivider = true,
             )
             SettingRow(
                 icon = Icons.Default.ImageSearch,
                 title = "Sample Title",
                 value = "",
-                onClick = {}
+                onClick = {},
             )
         }
     }
@@ -239,13 +239,13 @@ fun SettingRowWithSampleValuePreview() {
                 title = "Sample Title",
                 value = "Value",
                 onClick = {},
-                showDivider = true
+                showDivider = true,
             )
             SettingRow(
                 icon = Icons.Default.ImageSearch,
                 title = "Sample Title",
                 value = "Value",
-                onClick = {}
+                onClick = {},
             )
         }
     }
@@ -262,14 +262,14 @@ fun SettingRowWithSampleValueAndSubtitlePreview() {
                 subtitle = "Sample description about the option. Which is too long to show the content so it's truncating",
                 value = "Value",
                 onClick = {},
-                showDivider = true
+                showDivider = true,
             )
             SettingRow(
                 icon = Icons.Default.ImageSearch,
                 title = "Sample Title",
                 subtitle = "Sample description about the option. Which is too long to show the content so it's truncating",
                 value = "Value",
-                onClick = {}
+                onClick = {},
             )
         }
     }

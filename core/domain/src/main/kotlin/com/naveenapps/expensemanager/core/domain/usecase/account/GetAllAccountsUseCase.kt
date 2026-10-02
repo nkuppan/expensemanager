@@ -5,7 +5,5 @@ import com.naveenapps.expensemanager.core.repository.AccountRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetAllAccountsUseCase(private val repository: AccountRepository) {
-    operator fun invoke(): Flow<List<Account>> {
-        return repository.getAccounts()
-    }
+    operator fun invoke(): Flow<List<Account>> = repository.getAccounts()
 }

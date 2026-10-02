@@ -1,5 +1,10 @@
 package com.naveenapps.expensemanager.core.common.utils
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
@@ -8,11 +13,6 @@ import kotlinx.datetime.minus
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 // Formats below fall into two groups:
 //
@@ -86,7 +86,6 @@ private val ShortMontAndYearFormat by lazy {
     SimpleDateFormat("MM-yyyy", Locale.US)
 }
 
-
 @OptIn(ExperimentalTime::class)
 fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = kotlin.time.Clock.System.now()
@@ -94,7 +93,7 @@ fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Lo
     val nextDateStartTime = todayStartTime.plus(1, DateTimeUnit.DAY)
     return listOf(
         todayStartTime.atStartOfDayIn(timeZone).toEpochMilliseconds(),
-        nextDateStartTime.atStartOfDayIn(timeZone).toEpochMilliseconds()
+        nextDateStartTime.atStartOfDayIn(timeZone).toEpochMilliseconds(),
     )
 }
 
@@ -107,7 +106,7 @@ fun getThisWeekRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
     val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.WEEK)
     return listOf(
         startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
-        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds()
+        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds(),
     )
 }
 
@@ -119,7 +118,7 @@ fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): Lis
     val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.MONTH)
     return listOf(
         startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
-        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds()
+        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds(),
     )
 }
 
@@ -131,29 +130,23 @@ fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
     val endTimeOfTheWeek = startOfTheWeekDay.plus(1, DateTimeUnit.YEAR)
     return listOf(
         startOfTheWeekDay.atStartOfDayIn(timeZone).toEpochMilliseconds(),
-        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds()
+        endTimeOfTheWeek.atStartOfDayIn(timeZone).toEpochMilliseconds(),
     )
 }
 
 @OptIn(ExperimentalTime::class)
-fun Long.fromLocalToUTCTimeStamp(): Long {
-    return Instant.fromEpochMilliseconds(this)
-        .toLocalDateTime(TimeZone.currentSystemDefault())
-        .toInstant(TimeZone.UTC)
-        .toEpochMilliseconds()
-}
+fun Long.fromLocalToUTCTimeStamp(): Long = Instant.fromEpochMilliseconds(this)
+    .toLocalDateTime(TimeZone.currentSystemDefault())
+    .toInstant(TimeZone.UTC)
+    .toEpochMilliseconds()
 
 @OptIn(ExperimentalTime::class)
-fun Long.fromUTCToLocalTimeStamp(): Long {
-    return Instant.fromEpochMilliseconds(this)
-        .toLocalDateTime(TimeZone.UTC)
-        .toInstant(TimeZone.currentSystemDefault())
-        .toEpochMilliseconds()
-}
+fun Long.fromUTCToLocalTimeStamp(): Long = Instant.fromEpochMilliseconds(this)
+    .toLocalDateTime(TimeZone.UTC)
+    .toInstant(TimeZone.currentSystemDefault())
+    .toEpochMilliseconds()
 
-fun Long.fromUTCToLocalDate(): Date {
-    return Date(this.fromUTCToLocalTimeStamp())
-}
+fun Long.fromUTCToLocalDate(): Date = Date(this.fromUTCToLocalTimeStamp())
 
 @OptIn(ExperimentalTime::class)
 fun Long.toExactStartOfTheDay(): Date {
@@ -201,39 +194,23 @@ fun Date.getEndOfTheYear(): Long {
         .toEpochMilliseconds()
 }
 
-fun Long.toCompleteDate(): Date {
-    return Date(this)
-}
+fun Long.toCompleteDate(): Date = Date(this)
 
-fun Date.toDate(): String {
-    return DateFormat.format(this)
-}
+fun Date.toDate(): String = DateFormat.format(this)
 
-fun Date.toDateAndMonth(): String {
-    return DateAndMonthFormat.format(this)
-}
+fun Date.toDateAndMonth(): String = DateAndMonthFormat.format(this)
 
-fun Date.toCompleteDate(): String {
-    return ElabratedMonthDataFormat.format(this)
-}
+fun Date.toCompleteDate(): String = ElabratedMonthDataFormat.format(this)
 
-fun Date.toCompleteDateWithDate(): String {
-    return DateMonthAndYearFormat.format(this)
-}
+fun Date.toCompleteDateWithDate(): String = DateMonthAndYearFormat.format(this)
 
-fun String.fromCompleteDate(): Date {
-    return kotlin.runCatching {
-        DateMonthAndYearFormat.parse(this)
-    }.getOrNull() ?: Date()
-}
+fun String.fromCompleteDate(): Date = kotlin.runCatching {
+    DateMonthAndYearFormat.parse(this)
+}.getOrNull() ?: Date()
 
-fun Date.toMonthAndYear(): String {
-    return MonthAndYearFormat.format(this)
-}
+fun Date.toMonthAndYear(): String = MonthAndYearFormat.format(this)
 
-fun String.fromMonthAndYear(): Date? {
-    return kotlin.runCatching { MonthAndYearFormat.parse(this) }.getOrNull()
-}
+fun String.fromMonthAndYear(): Date? = kotlin.runCatching { MonthAndYearFormat.parse(this) }.getOrNull()
 
 /**
  * Locale-independent counterpart of [toMonthAndYear], for values that get persisted or compared
@@ -241,26 +218,16 @@ fun String.fromMonthAndYear(): Date? {
  * the app was in one language can still be read back correctly after the user switches to
  * another — see [MonthAndYearKeyFormat].
  */
-fun Date.toMonthAndYearKey(): String {
-    return MonthAndYearKeyFormat.format(this)
-}
+fun Date.toMonthAndYearKey(): String = MonthAndYearKeyFormat.format(this)
 
 /** See [Date.toMonthAndYearKey]. Returns null instead of throwing on unparseable input. */
-fun String.fromMonthAndYearKey(): Date? {
-    return kotlin.runCatching { MonthAndYearKeyFormat.parse(this) }.getOrNull()
-}
+fun String.fromMonthAndYearKey(): Date? = kotlin.runCatching { MonthAndYearKeyFormat.parse(this) }.getOrNull()
 
-fun Date.toMonth(): Int {
-    return MonthFormat.format(this).toInt()
-}
+fun Date.toMonth(): Int = MonthFormat.format(this).toInt()
 
-fun Date.toYearInt(): Int {
-    return this.toYear().toInt()
-}
+fun Date.toYearInt(): Int = this.toYear().toInt()
 
-fun Date.toYear(): String {
-    return YearDataFormat.format(this)
-}
+fun Date.toYear(): String = YearDataFormat.format(this)
 
 /**
  * See [Date.toYear]. Returns null instead of throwing on unparseable input. Used as the
@@ -268,34 +235,20 @@ fun Date.toYear(): String {
  * [fromMonthAndYearKey]. Safe to round-trip like the other purely-numeric formats in this file
  * (see the file header comment) since [YearDataFormat] is already pinned to `Locale.US`.
  */
-fun String.fromYear(): Date? {
-    return kotlin.runCatching { YearDataFormat.parse(this) }.getOrNull()
-}
+fun String.fromYear(): Date? = kotlin.runCatching { YearDataFormat.parse(this) }.getOrNull()
 
-fun Date.toTimeAndMinutes(): String {
-    return HourAndMinutesIn24HoursFormat.format(this)
-}
+fun Date.toTimeAndMinutes(): String = HourAndMinutesIn24HoursFormat.format(this)
 
-fun Date.toMonthYear(): String {
-    return MonthAndYearFormat.format(this)
-}
+fun Date.toMonthYear(): String = MonthAndYearFormat.format(this)
 
-fun Date.toDay(): String {
-    return DayFormat.format(this)
-}
+fun Date.toDay(): String = DayFormat.format(this)
 
-fun String.fromTimeAndHour(): Date {
-    return kotlin.runCatching {
-        HourAndMinutesIn24HoursFormat.parse(this)
-    }.getOrNull() ?: Date()
-}
+fun String.fromTimeAndHour(): Date = kotlin.runCatching {
+    HourAndMinutesIn24HoursFormat.parse(this)
+}.getOrNull() ?: Date()
 
-fun Date.toTimeAndMinutesWithAMPM(): String {
-    return HourAndMinutesIn12HoursFormat.format(this)
-}
+fun Date.toTimeAndMinutesWithAMPM(): String = HourAndMinutesIn12HoursFormat.format(this)
 
-fun String.fromShortMonthAndYearToDate(): Date? {
-    return kotlin.runCatching {
-        ShortMontAndYearFormat.parse(this)
-    }.getOrNull()
-}
+fun String.fromShortMonthAndYearToDate(): Date? = kotlin.runCatching {
+    ShortMontAndYearFormat.parse(this)
+}.getOrNull()

@@ -5,7 +5,5 @@ import com.naveenapps.expensemanager.core.model.Theme
 
 class SaveThemeUseCase(private val repository: com.naveenapps.expensemanager.core.repository.ThemeRepository) {
 
-    suspend operator fun invoke(theme: Theme): Resource<Boolean> {
-        return Resource.Success(repository.saveTheme(theme))
-    }
+    suspend operator fun invoke(theme: Theme): Resource<Boolean> = Resource.Success(repository.saveTheme(theme))
 }

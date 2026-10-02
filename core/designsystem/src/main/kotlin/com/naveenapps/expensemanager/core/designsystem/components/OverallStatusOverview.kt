@@ -17,9 +17,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 /**
  * Displays payment status overview showing paid and due amounts side by side.
@@ -72,16 +72,16 @@ enum class PaymentStatusType(
 ) {
     INCOME(
         backgroundColor = Color(0xFFE8F5E9), // Light emerald green
-        contentColor = Color(0xFF1B5E20)     // Dark green
+        contentColor = Color(0xFF1B5E20), // Dark green
     ),
     EXPENSE(
         backgroundColor = Color(0xFFFFEBEE), // Light red
-        contentColor = Color(0xFFB71C1C)     // Dark red
+        contentColor = Color(0xFFB71C1C), // Dark red
     ),
     BALANCE(
         backgroundColor = Color(0xFFE8F5E9), // Light Grey
-        contentColor = Color(0xFF1B5E20)     // Dark Grey
-    )
+        contentColor = Color(0xFF1B5E20), // Dark Grey
+    ),
 }
 
 /**
@@ -113,9 +113,9 @@ fun PaymentStatusCard(
                 text = label.uppercase(),
                 style = MaterialTheme.typography.labelMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    letterSpacing = 1.2.sp
+                    letterSpacing = 1.2.sp,
                 ),
-                color = statusType.contentColor.copy(alpha = 0.7f)
+                color = statusType.contentColor.copy(alpha = 0.7f),
             )
 
             // Amount text
@@ -123,7 +123,7 @@ fun PaymentStatusCard(
                 text = amount,
                 style = MaterialTheme.typography.headlineSmall.copy(
                     fontWeight = FontWeight.Black,
-                    letterSpacing = (-0.5).sp
+                    letterSpacing = (-0.5).sp,
                 ),
                 color = statusType.contentColor,
                 modifier = Modifier.padding(top = 8.dp),

@@ -17,4 +17,3 @@ val AppModule = module {
     single<FirebaseAnalytics> { Firebase.analytics }
     single<FirebaseCrashlytics> { Firebase.crashlytics }
 }
-

@@ -35,7 +35,7 @@ fun DashboardWidgetTitle(
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Left
+            textAlign = TextAlign.Left,
         )
         if (onViewAllClick != null) {
             TextButton(onClick = onViewAllClick) {
@@ -61,7 +61,7 @@ fun DashboardWidgetTitlePreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         DashboardWidgetTitle(
             title = "Sample Title",
-            onViewAllClick = {}
+            onViewAllClick = {},
         )
     }
 }

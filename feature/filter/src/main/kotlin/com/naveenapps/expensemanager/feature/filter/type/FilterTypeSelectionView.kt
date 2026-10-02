@@ -40,9 +40,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -52,8 +52,8 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.filter.R
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FilterTypeSelectionView(
@@ -72,7 +72,7 @@ fun FilterTypeSelectionView(
     FilterSelectionView(
         modifier = modifier,
         state = state,
-        onAction = viewModel::processAction
+        onAction = viewModel::processAction,
     )
 }
 
@@ -98,8 +98,8 @@ private fun FilterSelectionView(
             )
 
             val totalSelected = state.selectedTransactionTypes.size +
-                    state.selectedAccounts.size +
-                    state.selectedCategories.size
+                state.selectedAccounts.size +
+                state.selectedCategories.size
 
             if (totalSelected > 0) {
                 TextButton(
@@ -191,8 +191,8 @@ private fun FilterSelectionView(
         )
 
         val totalSelected = state.selectedTransactionTypes.size +
-                state.selectedAccounts.size +
-                state.selectedCategories.size
+            state.selectedAccounts.size +
+            state.selectedCategories.size
 
         Row(
             modifier = Modifier
@@ -367,29 +367,25 @@ fun FilterTypeSelectionPreview() {
     }
 }
 
-fun getAccount(index: Int): AccountUiModel {
-    return AccountUiModel(
-        id = index.toString(),
-        name = "Account 1",
-        storedIcon = StoredIcon(
-            "account_balance",
-            "#000000",
-        ),
-        amount = Amount(0.0, "$ 0.0", currency = null),
-        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-    )
-}
+fun getAccount(index: Int): AccountUiModel = AccountUiModel(
+    id = index.toString(),
+    name = "Account 1",
+    storedIcon = StoredIcon(
+        "account_balance",
+        "#000000",
+    ),
+    amount = Amount(0.0, "$ 0.0", currency = null),
+    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+)
 
-fun getCategory(index: Int): Category {
-    return Category(
-        id = index.toString(),
-        name = "Category $index",
-        type = CategoryType.INCOME,
-        storedIcon = StoredIcon(
-            "account_balance",
-            "#000000",
-        ),
-        createdOn = Date(),
-        updatedOn = Date(),
-    )
-}
+fun getCategory(index: Int): Category = Category(
+    id = index.toString(),
+    name = "Category $index",
+    type = CategoryType.INCOME,
+    storedIcon = StoredIcon(
+        "account_balance",
+        "#000000",
+    ),
+    createdOn = Date(),
+    updatedOn = Date(),
+)

@@ -20,4 +20,9 @@
     <string name="track">Lacak</string>
     <string name="organize">Atur</string>
     <string name="grow">Kembangkan</string>
+    <string name="onboarding_add_first_expense">Tambahkan pengeluaran pertama</string>
+    <string name="onboarding_explore_first">Jelajahi aplikasi dulu</string>
+    <string name="onboarding_reminder_title">Pengingat harian</string>
+    <string name="onboarding_reminder_time">Setiap hari pukul %1$s</string>
+    <string name="onboarding_reminder_description">Pengingat ringan untuk mencatat pengeluaran</string>
 </resources>

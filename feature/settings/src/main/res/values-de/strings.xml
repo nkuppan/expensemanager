@@ -47,4 +47,7 @@
 
     <string name="app_lock">App-Sperre</string>
     <string name="app_lock_message">Biometrie oder Gerätezugangsdaten beim Öffnen der App verlangen</string>
+    <string name="share_app">App teilen</string>
+    <string name="share_app_message">Erzähl einem Freund von Expense Manager</string>
+    <string name="share_app_text">Ich erfasse meine Ausgaben mit Expense Manager. Kostenlos, und meine Daten bleiben auf dem Handy: %1$s</string>
 </resources>

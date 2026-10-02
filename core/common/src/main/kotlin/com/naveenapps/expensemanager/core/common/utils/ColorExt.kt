@@ -8,6 +8,4 @@ fun Double.getAmountTextColor() = if (this < 0) {
     R.color.green_500
 }
 
-fun Int.toColorString(): String {
-    return String.format("#%06X", 0xFFFFFF and this)
-}
+fun Int.toColorString(): String = String.format("#%06X", 0xFFFFFF and this)

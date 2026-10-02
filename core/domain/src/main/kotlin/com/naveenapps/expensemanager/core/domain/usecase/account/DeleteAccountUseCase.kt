@@ -9,15 +9,13 @@ class DeleteAccountUseCase(
     private val checkAccountValidationUseCase: CheckAccountValidationUseCase,
 ) {
 
-    suspend operator fun invoke(account: Account): Resource<Boolean> {
-        return when (val validationResult = checkAccountValidationUseCase(account)) {
-            is Resource.Error -> {
-                validationResult
-            }
+    suspend operator fun invoke(account: Account): Resource<Boolean> = when (val validationResult = checkAccountValidationUseCase(account)) {
+        is Resource.Error -> {
+            validationResult
+        }
 
-            is Resource.Success -> {
-                repository.deleteAccount(account)
-            }
+        is Resource.Success -> {
+            repository.deleteAccount(account)
         }
     }
 }

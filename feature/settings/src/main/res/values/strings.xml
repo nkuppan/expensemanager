@@ -47,4 +47,7 @@
 
     <string name="app_lock">App Lock</string>
     <string name="app_lock_message">Require biometric or device credentials when opening the app</string>
+    <string name="share_app">Share the app</string>
+    <string name="share_app_message">Tell a friend about Expense Manager</string>
+    <string name="share_app_text">I use Expense Manager to track my spending. It is free and keeps my data on my phone: %1$s</string>
 </resources>

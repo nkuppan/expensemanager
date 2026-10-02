@@ -5,8 +5,5 @@ enum class NumberFormatType {
     WITH_COMMA_SEPARATOR,
 }
 
-
-inline fun <reified T> toEnumValue(id: Int): T where T : Enum<T> {
-    return enumValues<T>().find { it.ordinal == id }
-        ?: enumValues<T>().first()
-}
+inline fun <reified T> toEnumValue(id: Int): T where T : Enum<T> = enumValues<T>().find { it.ordinal == id }
+    ?: enumValues<T>().first()

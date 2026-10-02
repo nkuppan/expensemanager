@@ -10,5 +10,5 @@ data class ReminderState(
     val reminderTimeState: ReminderTimeState = ReminderTimeState(6, 0, false),
     val showTimePickerDialog: Boolean = false,
     val shouldShowRationale: Boolean = false,
-    val showPermissionMessage: Boolean = false
+    val showPermissionMessage: Boolean = false,
 )

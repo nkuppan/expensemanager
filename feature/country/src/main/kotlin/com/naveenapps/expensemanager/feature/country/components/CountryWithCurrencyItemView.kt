@@ -13,7 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
-
 @Composable
 internal fun CountryWithCurrencyItemView(
     name: String,
@@ -32,7 +31,6 @@ internal fun CountryWithCurrencyItemView(
     }
 }
 
-
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Preview(uiMode = UI_MODE_NIGHT_NO)
 @Composable
@@ -41,7 +39,7 @@ fun CountryWithCurrencyItemViewPreview() {
         CountryWithCurrencyItemView(
             modifier = Modifier.padding(16.dp),
             name = "India",
-            description = "Currency: Rupee (₹)"
+            description = "Currency: Rupee (₹)",
         )
     }
 }

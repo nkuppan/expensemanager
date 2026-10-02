@@ -26,7 +26,6 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 
-
 fun openEmailToOption(context: Context, emailId: String) {
     try {
         val intent = Intent(Intent.ACTION_VIEW, "mailto:$emailId".toUri())
@@ -60,7 +59,7 @@ fun Context.openShareOption(pdfFile: File?) {
             val fileUri = FileProvider.getUriForFile(
                 this,
                 this.packageName + ".fileprovider",
-                pdfFile.absoluteFile
+                pdfFile.absoluteFile,
             )
             printIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
             printIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -74,11 +73,10 @@ fun Context.openShareOption(pdfFile: File?) {
 fun Context.openEmailOption(pdfFile: File?) {
     try {
         if (pdfFile != null) {
-
             FileProvider.getUriForFile(
                 this,
                 "${this.packageName}.fileprovider",
-                pdfFile
+                pdfFile,
             )
 
             val emailIntent = Intent(Intent.ACTION_SEND)
@@ -88,7 +86,7 @@ fun Context.openEmailOption(pdfFile: File?) {
             val fileUri = FileProvider.getUriForFile(
                 this,
                 this.packageName + ".fileprovider",
-                pdfFile.absoluteFile
+                pdfFile.absoluteFile,
             )
             emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri)
             emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -108,7 +106,7 @@ fun Context.openPrintOption(pdfFile: File?) {
                     newAttributes: PrintAttributes,
                     cancellationSignal: CancellationSignal,
                     callback: LayoutResultCallback,
-                    extras: Bundle?
+                    extras: Bundle?,
                 ) {
                     if (cancellationSignal.isCanceled) {
                         callback.onLayoutCancelled()
@@ -125,7 +123,7 @@ fun Context.openPrintOption(pdfFile: File?) {
                     pages: Array<PageRange?>?,
                     destination: ParcelFileDescriptor,
                     cancellationSignal: CancellationSignal?,
-                    callback: WriteResultCallback
+                    callback: WriteResultCallback,
                 ) {
                     try {
                         FileInputStream(pdfFile).use { input ->
@@ -148,18 +146,16 @@ fun Context.openPrintOption(pdfFile: File?) {
 
             val jobName = "Document"
             printManager?.print(
-                jobName, printAdapter,
-                PrintAttributes.Builder().build()
+                jobName,
+                printAdapter,
+                PrintAttributes.Builder().build(),
             )
         }
     } catch (_: ActivityNotFoundException) {
-
     }
 }
 
-fun Context.isNightModeOn(): Boolean {
-    return this.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-}
+fun Context.isNightModeOn(): Boolean = this.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
 fun Context.convertFileToString(fileName: String): String? {
     return kotlin.runCatching {
@@ -173,15 +169,15 @@ fun Context.openRateUs() {
         this.startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                "market://details?id=$packageName".toUri()
-            )
+                "market://details?id=$packageName".toUri(),
+            ),
         )
     } catch (e: ActivityNotFoundException) {
         this.startActivity(
             Intent(
                 Intent.ACTION_VIEW,
-                "https://play.google.com/store/apps/details?id=$packageName".toUri()
-            )
+                "https://play.google.com/store/apps/details?id=$packageName".toUri(),
+            ),
         )
     }
 }
@@ -202,7 +198,6 @@ fun Context.openAppSettings() {
             Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-
         } else {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -217,12 +212,10 @@ fun Context.openAppSettings() {
     }
 }
 
-fun Context.getAppVersionName(): String {
-    return try {
-        val pInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
-        pInfo.versionName ?: ""
-    } catch (e: PackageManager.NameNotFoundException) {
-        e.printStackTrace()
-        ""
-    }
+fun Context.getAppVersionName(): String = try {
+    val pInfo: PackageInfo = packageManager.getPackageInfo(packageName, 0)
+    pInfo.versionName ?: ""
+} catch (e: PackageManager.NameNotFoundException) {
+    e.printStackTrace()
+    ""
 }

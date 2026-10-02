@@ -8,7 +8,5 @@ class UpdateSelectedTransactionTypesUseCase(
     private val settingsRepository: SettingsRepository,
 ) {
 
-    suspend operator fun invoke(categoryTypes: List<TransactionType>?): Resource<Boolean> {
-        return settingsRepository.setTransactionTypes(categoryTypes)
-    }
+    suspend operator fun invoke(categoryTypes: List<TransactionType>?): Resource<Boolean> = settingsRepository.setTransactionTypes(categoryTypes)
 }

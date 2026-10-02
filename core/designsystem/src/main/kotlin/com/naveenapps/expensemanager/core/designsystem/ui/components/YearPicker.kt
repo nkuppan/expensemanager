@@ -31,10 +31,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import java.util.Date
 
 /**
@@ -105,7 +105,7 @@ fun YearPicker(
                     modifier = Modifier
                         .wrapContentSize()
                         .height(60.dp)
-                        .align(Alignment.End)
+                        .align(Alignment.End),
                 ) {
                     TextButton(
                         modifier = Modifier

@@ -23,19 +23,23 @@ import com.naveenapps.expensemanager.ui.HomeViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-
 val MainViewModelModule = module {
     viewModel {
         MainViewModel(
             getCurrentThemeUseCase = get(),
             getOnboardingStatusUseCase = get(),
             settingsRepository = get(),
+            analyticsRepository = get(),
         )
     }
     viewModel {
         HomeViewModel(
             updateReminderStatusUseCase = get(),
-            notificationScheduler = get()
+            notificationScheduler = get(),
+            analyticsRepository = get(),
+            reminderTimeRepository = get(),
+            feedbackRepository = get(),
+            appComposeNavigator = get(),
         )
     }
 }

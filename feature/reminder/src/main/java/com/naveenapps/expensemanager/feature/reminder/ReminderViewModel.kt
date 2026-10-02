@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class ReminderViewModel(
     getReminderTimeUseCase: GetReminderTimeUseCase,
     getReminderStatusUseCase: GetReminderStatusUseCase,
@@ -29,7 +28,7 @@ class ReminderViewModel(
     private val updateReminderStatusUseCase: UpdateReminderStatusUseCase,
     private val notificationScheduler: NotificationScheduler,
     private val appComposeNavigator: AppComposeNavigator,
-    private val saveReminderTimeUseCase: SaveReminderTimeUseCase
+    private val saveReminderTimeUseCase: SaveReminderTimeUseCase,
 ) : ViewModel() {
 
     private val _event = Channel<ReminderEvent>()
@@ -37,8 +36,8 @@ class ReminderViewModel(
 
     private val _state = MutableStateFlow(
         ReminderState(
-            showPermissionMessage = versionCheckerRepository.isAndroidTiramisuAndAbove()
-        )
+            showPermissionMessage = versionCheckerRepository.isAndroidTiramisuAndAbove(),
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -52,7 +51,7 @@ class ReminderViewModel(
                 it.copy(
                     reminderTimeState = time,
                     reminderTime = "${time.hour}:${time.minute}".fromTimeAndHour()
-                        .toTimeAndMinutesWithAMPM()
+                        .toTimeAndMinutesWithAMPM(),
                 )
             }
         }.launchIn(viewModelScope)
@@ -70,7 +69,7 @@ class ReminderViewModel(
 
             _state.update {
                 it.copy(
-                    showPermissionMessage = false
+                    showPermissionMessage = false,
                 )
             }
         }
@@ -92,6 +91,7 @@ class ReminderViewModel(
         viewModelScope.launch {
             when (action) {
                 ReminderAction.ClosePage -> closePage()
+
                 ReminderAction.CloseReminderDialog -> {
                     _state.update { it.copy(showTimePickerDialog = false) }
                 }
@@ -113,7 +113,7 @@ class ReminderViewModel(
                     _state.update {
                         it.copy(
                             showPermissionMessage = true,
-                            shouldShowRationale = true
+                            shouldShowRationale = true,
                         )
                     }
                 }

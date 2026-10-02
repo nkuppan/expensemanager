@@ -40,15 +40,14 @@ import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.model.toDisplayValue
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
-import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionBottomSheet
+import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CurrencyCustomiseScreen(
     viewModel: CurrencyViewModel = koinViewModel(),
 ) {
-
     val state by viewModel.state.collectAsState()
 
     CurrencyScreen(
@@ -62,7 +61,6 @@ private fun CurrencyScreen(
     state: CurrencyState,
     onAction: (CurrencyAction) -> Unit,
 ) {
-
     if (state.showCurrencySelection) {
         CountryCurrencySelectionBottomSheet(
             onEvent = { event ->
@@ -74,12 +72,12 @@ private fun CurrencyScreen(
                     is CountrySelectionEvent.CountrySelected -> {
                         onAction.invoke(
                             CurrencyAction.SelectCurrency(
-                                event.country
-                            )
+                                event.country,
+                            ),
                         )
                     }
                 }
-            }
+            },
         )
     }
 
@@ -89,7 +87,7 @@ private fun CurrencyScreen(
 @Composable
 private fun CurrencyCustomiseScreenContent(
     onAction: (CurrencyAction) -> Unit,
-    state: CurrencyState
+    state: CurrencyState,
 ) {
     Scaffold(
         topBar = {
@@ -107,12 +105,12 @@ private fun CurrencyCustomiseScreenContent(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp),
         ) {
             // Currency Selection Section
             CurrencySection(
                 title = stringResource(id = R.string.selected_currency),
-                subtitle = stringResource(id = R.string.choose_preferred_currency)
+                subtitle = stringResource(id = R.string.choose_preferred_currency),
             ) {
                 AppCardView(modifier = Modifier.fillMaxWidth()) {
                     SettingRow(
@@ -129,27 +127,27 @@ private fun CurrencyCustomiseScreenContent(
             // Currency Position Section
             CurrencySection(
                 title = stringResource(id = R.string.currency_position),
-                subtitle = stringResource(id = R.string.where_symbol_appears)
+                subtitle = stringResource(id = R.string.where_symbol_appears),
             ) {
                 CurrencyPositionSelector(
                     currency = state.currency.symbol,
                     selectedPosition = state.currency.position,
                     onPositionChange = {
                         onAction.invoke(CurrencyAction.ChangeCurrencyType(it))
-                    }
+                    },
                 )
             }
 
             // Currency Format Section
             CurrencySection(
                 title = stringResource(id = R.string.currency_format),
-                subtitle = stringResource(id = R.string.number_formatting_style)
+                subtitle = stringResource(id = R.string.number_formatting_style),
             ) {
                 CurrencyFormatSelector(
                     textFormat = state.numberFormatType,
                     onFormatChange = {
                         onAction.invoke(CurrencyAction.ChangeCurrencyNumberFormat(it))
-                    }
+                    },
                 )
             }
 
@@ -163,25 +161,25 @@ private fun CurrencySection(
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
         content()
@@ -193,11 +191,11 @@ private fun CurrencyPositionSelector(
     currency: String,
     selectedPosition: CurrencyPosition,
     onPositionChange: (CurrencyPosition) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         CurrencyPosition.entries.forEach { position ->
             val isSelected = position == selectedPosition
@@ -214,24 +212,24 @@ private fun CurrencyPositionSelector(
                         MaterialTheme.colorScheme.primaryContainer
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
-                    }
+                    },
                 ),
                 border = if (isSelected) {
                     BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
                 } else {
                     null
-                }
+                },
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
                         modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         Text(
                             text = position.name.replace("_", " ")
@@ -243,18 +241,18 @@ private fun CurrencyPositionSelector(
                                 MaterialTheme.colorScheme.onPrimaryContainer
                             } else {
                                 MaterialTheme.colorScheme.onSurface
-                            }
+                            },
                         )
                         Text(
                             text = preview,
                             style = MaterialTheme.typography.bodyMedium.copy(
-                                fontFeatureSettings = "tnum"
+                                fontFeatureSettings = "tnum",
                             ),
                             color = if (isSelected) {
                                 MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                             } else {
                                 MaterialTheme.colorScheme.onSurfaceVariant
-                            }
+                            },
                         )
                     }
 
@@ -263,7 +261,7 @@ private fun CurrencyPositionSelector(
                             imageVector = Icons.Default.CheckCircle,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 }
@@ -276,11 +274,11 @@ private fun CurrencyPositionSelector(
 private fun CurrencyFormatSelector(
     textFormat: NumberFormatType,
     onFormatChange: (NumberFormatType) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         NumberFormatType.entries.forEach { format ->
             val isSelected = format == textFormat
@@ -297,24 +295,24 @@ private fun CurrencyFormatSelector(
                         MaterialTheme.colorScheme.primaryContainer
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
-                    }
+                    },
                 ),
                 border = if (isSelected) {
                     BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
                 } else {
                     null
-                }
+                },
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
                         modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         Text(
                             text = format.name.replace("_", " ")
@@ -326,19 +324,19 @@ private fun CurrencyFormatSelector(
                                 MaterialTheme.colorScheme.onPrimaryContainer
                             } else {
                                 MaterialTheme.colorScheme.onSurface
-                            }
+                            },
                         )
                         Text(
                             text = preview,
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 fontFeatureSettings = "tnum",
-                                fontFamily = FontFamily.Monospace
+                                fontFamily = FontFamily.Monospace,
                             ),
                             color = if (isSelected) {
                                 MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
                             } else {
                                 MaterialTheme.colorScheme.onSurfaceVariant
-                            }
+                            },
                         )
                     }
 
@@ -347,7 +345,7 @@ private fun CurrencyFormatSelector(
                             imageVector = Icons.Default.CheckCircle,
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 }
@@ -364,9 +362,9 @@ fun CurrencyCustomiseScreenPreview() {
             state = CurrencyState(
                 showCurrencySelection = false,
                 currency = Currency("$", "Dollar", code = "USD"),
-                numberFormatType = NumberFormatType.WITHOUT_ANY_SEPARATOR
+                numberFormatType = NumberFormatType.WITHOUT_ANY_SEPARATOR,
             ),
-            onAction = {}
+            onAction = {},
         )
     }
 }

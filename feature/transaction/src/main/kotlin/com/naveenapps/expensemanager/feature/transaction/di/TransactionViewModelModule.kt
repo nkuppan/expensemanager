@@ -24,6 +24,8 @@ val TransactionViewModelModule = module {
             appComposeNavigator = get(),
             numberFormatRepository = get(),
             feedbackRepository = get(),
+            analyticsRepository = get(),
+            budgetAlertTrigger = get(),
         )
     }
     viewModel {
@@ -32,9 +34,8 @@ val TransactionViewModelModule = module {
             getFormattedAmountUseCase = get(),
             getTransactionWithFilterUseCase = get(),
             appCoroutineDispatchers = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
     viewModel { NumberPadViewModel() }
 }
-

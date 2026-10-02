@@ -43,4 +43,17 @@
     <string name="app_lock_title">Expense Manager のロックを解除</string>
     <string name="app_lock_description">続行するには本人確認を行ってください</string>
     <string name="app_lock_unlock">ロック解除</string>
+
+    <string name="reminder_primer_title">支出の記録を忘れずに</string>
+    <string name="reminder_primer_description">1日1回、支出を記録するためのリマインダーを受け取りましょう。数秒で終わり、予算を正確に保てます。</string>
+    <string name="reminder_primer_turn_on">毎日のリマインダーをオンにする</string>
+    <string name="reminder_primer_not_now">今はしない</string>
+    <string name="reminder_primer_footnote">時刻の変更やオフはいつでも設定から行えます。</string>
+    <string name="first_save_title">最初の支出を保存しました！</string>
+    <string name="first_save_description">いいスタートです。7日間記録を続けると、お金の使い道がはっきり分かります。</string>
+    <string name="first_save_progress">%2$d日中%1$d日目</string>
+    <string name="first_save_add_another">もう1件追加</string>
+    <string name="first_save_done">完了</string>
+    <string name="shortcut_add_expense_short">支出を追加</string>
+    <string name="shortcut_add_expense_long">新しい支出を追加</string>
 </resources>

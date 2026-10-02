@@ -1,16 +1,17 @@
 plugins {
     id("com.android.test")
-    id("org.jetbrains.kotlin.android")
+    // No org.jetbrains.kotlin.android: AGP 9 compiles Kotlin itself (built-in Kotlin).
 }
 
 android {
     namespace = "com.naveenapps.expensemanager.benchmark"
 
-    compileSdk = 34
+    // Same as the app: AGP 9 libraries (benchmark 1.5) require compileSdk >= the one they use.
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 23
-        targetSdk = 34
+        targetSdk = 37
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
@@ -32,8 +33,9 @@ android {
 
     testOptions {
         managedDevices {
-            devices {
-                create("pixel2Api31", com.android.build.api.dsl.ManagedVirtualDevice::class) {
+            // AGP 9: `localDevices` replaces the generic `devices` container.
+            localDevices {
+                create("pixel2Api31") {
                     device = "Pixel 2"
                     apiLevel = 31
                     systemImageSource = "aosp"

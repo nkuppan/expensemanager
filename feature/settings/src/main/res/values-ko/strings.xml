@@ -47,4 +47,7 @@
 
     <string name="app_lock">앱 잠금</string>
     <string name="app_lock_message">앱을 열 때 생체 인증 또는 기기 인증을 요구합니다</string>
+    <string name="share_app">앱 공유</string>
+    <string name="share_app_message">친구에게 Expense Manager 알려주기</string>
+    <string name="share_app_text">Expense Manager로 지출을 기록하고 있어요. 무료이고 데이터는 내 폰에만 저장돼요: %1$s</string>
 </resources>

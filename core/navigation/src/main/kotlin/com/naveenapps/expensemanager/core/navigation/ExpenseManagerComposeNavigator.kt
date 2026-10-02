@@ -19,6 +19,11 @@ class ExpenseManagerComposeNavigator : AppComposeNavigator() {
         )
     }
 
+    override fun resetBackStackTo(routes: List<Any>) {
+        if (routes.isEmpty()) return
+        navigationCommands.tryEmit(NavigationCommand.ResetBackStack(routes))
+    }
+
     override fun popBackStack() {
         navigationCommands.tryEmit(NavigationCommand.PopBackStack)
     }
@@ -52,7 +57,7 @@ class ExpenseManagerComposeNavigator : AppComposeNavigator() {
 
     override fun navigateBackWithMultipleResult(values: MutableMap<String, Any>) {
         navigationCommands.tryEmit(
-            NavigationCommand.NavigateBackWithMultipleResult(values = values)
+            NavigationCommand.NavigateBackWithMultipleResult(values = values),
         )
     }
 }

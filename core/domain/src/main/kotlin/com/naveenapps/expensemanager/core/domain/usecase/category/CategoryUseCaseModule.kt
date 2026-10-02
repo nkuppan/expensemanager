@@ -6,14 +6,14 @@ val CategoryUseCaseModule = module {
     single {
         AddCategoryUseCase(
             repository = get(),
-            checkCategoryValidationUseCase = get()
+            checkCategoryValidationUseCase = get(),
         )
     }
     single { CheckCategoryValidationUseCase() }
     single {
         DeleteCategoryUseCase(
             repository = get(),
-            checkCategoryValidationUseCase = get()
+            checkCategoryValidationUseCase = get(),
         )
     }
     single { FindCategoryByIdFlowUseCase(repository = get()) }
@@ -23,8 +23,7 @@ val CategoryUseCaseModule = module {
     single {
         UpdateCategoryUseCase(
             repository = get(),
-            checkCategoryValidationUseCase = get()
+            checkCategoryValidationUseCase = get(),
         )
     }
 }
-

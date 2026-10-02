@@ -22,10 +22,8 @@ class CategoryRepositoryImpl(
         }
     }
 
-    override fun findCategoryFlow(categoryId: String): Flow<Category?> {
-        return categoryDao.findByIdFlow(categoryId).map {
-            it?.toDomainModel()
-        }
+    override fun findCategoryFlow(categoryId: String): Flow<Category?> = categoryDao.findByIdFlow(categoryId).map {
+        it?.toDomainModel()
     }
 
     override suspend fun getAllCategory(): Resource<List<Category>> = withContext(dispatchers.io) {
@@ -42,48 +40,44 @@ class CategoryRepositoryImpl(
         }
     }
 
-    override suspend fun findCategory(categoryId: String): Resource<Category> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val category = categoryDao.findById(categoryId)
+    override suspend fun findCategory(categoryId: String): Resource<Category> = withContext(dispatchers.io) {
+        return@withContext try {
+            val category = categoryDao.findById(categoryId)
 
-                if (category != null) {
-                    Resource.Success(category.toDomainModel())
-                } else {
-                    Resource.Error(KotlinNullPointerException())
-                }
-            } catch (e: Exception) {
-                Resource.Error(e)
+            if (category != null) {
+                Resource.Success(category.toDomainModel())
+            } else {
+                Resource.Error(KotlinNullPointerException())
             }
+        } catch (e: Exception) {
+            Resource.Error(e)
         }
+    }
 
-    override suspend fun addCategory(category: Category): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val response = categoryDao.insert(category.toEntityModel())
-                Resource.Success(response != -1L)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun addCategory(category: Category): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            val response = categoryDao.insert(category.toEntityModel())
+            Resource.Success(response != -1L)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 
-    override suspend fun updateCategory(category: Category): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                categoryDao.update(category.toEntityModel())
-                Resource.Success(true)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun updateCategory(category: Category): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            categoryDao.update(category.toEntityModel())
+            Resource.Success(true)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 
-    override suspend fun deleteCategory(category: Category): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val response = categoryDao.delete(category.toEntityModel())
-                Resource.Success(response != -1)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun deleteCategory(category: Category): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            val response = categoryDao.delete(category.toEntityModel())
+            Resource.Success(response != -1)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 }

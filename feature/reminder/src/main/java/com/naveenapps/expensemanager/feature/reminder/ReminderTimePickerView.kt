@@ -18,8 +18,8 @@ fun ReminderTimePickerView(
         onTimeSelected = {
             onAction.invoke(
                 ReminderAction.SaveReminder(
-                    reminderState = ReminderTimeState(it.first, it.second, it.third)
-                )
+                    reminderState = ReminderTimeState(it.first, it.second, it.third),
+                ),
             )
         },
     ) {

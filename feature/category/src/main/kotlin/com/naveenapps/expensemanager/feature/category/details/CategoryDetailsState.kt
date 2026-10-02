@@ -7,5 +7,5 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 @Stable
 data class CategoryDetailsState(
     val categoryTransaction: CategoryTransaction?,
-    val transactions: List<TransactionUiItem>
+    val transactions: List<TransactionUiItem>,
 )

@@ -47,4 +47,7 @@
 
     <string name="app_lock">Blocco app</string>
     <string name="app_lock_message">Richiedi l\'impronta digitale o le credenziali del dispositivo all\'apertura dell\'app</string>
+    <string name="share_app">Condividi l\'app</string>
+    <string name="share_app_message">Parla di Expense Manager a un amico</string>
+    <string name="share_app_text">Uso Expense Manager per tenere traccia delle spese. È gratis e i miei dati restano sul telefono: %1$s</string>
 </resources>

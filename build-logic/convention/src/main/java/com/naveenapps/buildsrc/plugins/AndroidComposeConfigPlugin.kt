@@ -9,7 +9,6 @@ import org.gradle.kotlin.dsl.configure
 class AndroidComposeConfigPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-
             target.pluginManager.apply {
                 this.apply("org.jetbrains.kotlin.plugin.compose")
             }

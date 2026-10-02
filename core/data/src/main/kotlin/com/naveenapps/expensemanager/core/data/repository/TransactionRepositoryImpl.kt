@@ -26,77 +26,72 @@ class TransactionRepositoryImpl(
     private val dispatchers: AppCoroutineDispatchers,
 ) : TransactionRepository {
 
-    override fun getAllTransaction(): Flow<List<Transaction>?> =
-        transactionDao.getAllTransaction().map {
-            convertTransactionAndCategory(it)
+    override fun getAllTransaction(): Flow<List<Transaction>?> = transactionDao.getAllTransaction().map {
+        convertTransactionAndCategory(it)
+    }
+
+    override suspend fun findTransactionById(transactionId: String): Resource<Transaction> = withContext(dispatchers.io) {
+        return@withContext try {
+            val transaction = transactionDao.findById(transactionId)
+
+            if (transaction != null) {
+                Resource.Success(convertTransactionCategoryRelation(transaction))
+            } else {
+                Resource.Error(KotlinNullPointerException())
+            }
+        } catch (e: Exception) {
+            Resource.Error(e)
         }
+    }
 
-    override suspend fun findTransactionById(transactionId: String): Resource<Transaction> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val transaction = transactionDao.findById(transactionId)
-
-                if (transaction != null) {
-                    Resource.Success(convertTransactionCategoryRelation(transaction))
+    override suspend fun addTransaction(transaction: Transaction): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            val response = transactionDao.insertTransaction(
+                transaction.toEntityModel(),
+                if (transaction.type == TransactionType.INCOME) {
+                    transaction.amount.amount
                 } else {
-                    Resource.Error(KotlinNullPointerException())
-                }
-            } catch (e: Exception) {
-                Resource.Error(e)
-            }
+                    transaction.amount.amount * -1
+                },
+                transaction.type.isTransfer(),
+                transaction.attachments,
+            )
+            Resource.Success(response != -1L)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 
-    override suspend fun addTransaction(transaction: Transaction): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val response = transactionDao.insertTransaction(
-                    transaction.toEntityModel(),
-                    if (transaction.type == TransactionType.INCOME) {
-                        transaction.amount.amount
-                    } else {
-                        transaction.amount.amount * -1
-                    },
-                    transaction.type.isTransfer(),
-                    transaction.attachments,
-                )
-                Resource.Success(response != -1L)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun updateTransaction(transaction: Transaction): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            val transactionEntity = transaction.toEntityModel()
+            transactionDao.removePreviousEnteredAmount(transactionEntity)
+            transactionDao.updateTransaction(
+                transactionEntity,
+                if (transaction.type.isIncome()) {
+                    transaction.amount.amount
+                } else {
+                    transaction.amount.amount * -1
+                },
+                transaction.type.isTransfer(),
+                transaction.attachments,
+            )
+            Resource.Success(true)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
+    }
 
-    override suspend fun updateTransaction(transaction: Transaction): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val transactionEntity = transaction.toEntityModel()
-                transactionDao.removePreviousEnteredAmount(transactionEntity)
-                transactionDao.updateTransaction(
-                    transactionEntity,
-                    if (transaction.type.isIncome()) {
-                        transaction.amount.amount
-                    } else {
-                        transaction.amount.amount * -1
-                    },
-                    transaction.type.isTransfer(),
-                    transaction.attachments,
-                )
-                Resource.Success(true)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
+    override suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean> = withContext(dispatchers.io) {
+        return@withContext try {
+            val transactionEntity = transaction.toEntityModel()
+            transactionDao.removePreviousEnteredAmount(transactionEntity)
+            val response = transactionDao.delete(transactionEntity)
+            Resource.Success(response != -1)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
         }
-
-    override suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean> =
-        withContext(dispatchers.io) {
-            return@withContext try {
-                val transactionEntity = transaction.toEntityModel()
-                transactionDao.removePreviousEnteredAmount(transactionEntity)
-                val response = transactionDao.delete(transactionEntity)
-                Resource.Success(response != -1)
-            } catch (exception: Exception) {
-                Resource.Error(exception)
-            }
-        }
+    }
 
     private fun convertTransactionAndCategory(
         transactionWithCategory: List<TransactionRelation>?,
@@ -144,14 +139,12 @@ class TransactionRepositoryImpl(
         accounts: List<String>,
         categories: List<String>,
         transactionType: List<Int>,
-    ): Flow<List<Transaction>?> {
-        return transactionDao.getAllFilteredTransaction(
-            accounts,
-            categories,
-            transactionType,
-        ).map {
-            convertTransactionAndCategory(it)
-        }
+    ): Flow<List<Transaction>?> = transactionDao.getAllFilteredTransaction(
+        accounts,
+        categories,
+        transactionType,
+    ).map {
+        convertTransactionAndCategory(it)
     }
 
     override fun getFilteredTransaction(
@@ -160,15 +153,13 @@ class TransactionRepositoryImpl(
         transactionType: List<Int>,
         startDate: Long,
         endDate: Long,
-    ): Flow<List<Transaction>?> {
-        return transactionDao.getFilteredTransaction(
-            accounts,
-            categories,
-            transactionType,
-            startDate.fromLocalToUTCTimeStamp(),
-            endDate.fromLocalToUTCTimeStamp(),
-        ).map {
-            convertTransactionAndCategory(it)
-        }
+    ): Flow<List<Transaction>?> = transactionDao.getFilteredTransaction(
+        accounts,
+        categories,
+        transactionType,
+        startDate.fromLocalToUTCTimeStamp(),
+        endDate.fromLocalToUTCTimeStamp(),
+    ).map {
+        convertTransactionAndCategory(it)
     }
 }

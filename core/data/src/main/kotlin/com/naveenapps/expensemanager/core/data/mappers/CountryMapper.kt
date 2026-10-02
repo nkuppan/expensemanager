@@ -5,7 +5,6 @@ import com.naveenapps.expensemanager.core.data.dto.CurrencyResponseDto
 import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.model.Currency
 
-
 fun CountryResponseDto.toDomainModel(): Country? {
     val currency = currencyResponseDto?.toDomainModel()
 
@@ -19,10 +18,8 @@ fun CountryResponseDto.toDomainModel(): Country? {
     )
 }
 
-fun CurrencyResponseDto.toDomainModel(): Currency {
-    return Currency(
-        name = name ?: "",
-        symbol = symbol ?: "",
-        code = code ?: ""
-    )
-}
+fun CurrencyResponseDto.toDomainModel(): Currency = Currency(
+    name = name ?: "",
+    symbol = symbol ?: "",
+    code = code ?: "",
+)

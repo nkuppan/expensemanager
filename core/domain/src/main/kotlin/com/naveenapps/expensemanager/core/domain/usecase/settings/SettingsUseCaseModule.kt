@@ -24,42 +24,41 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.SaveThem
 import org.koin.dsl.module
 
 val SettingsUseCaseModule = module {
-    //Currency
+    // Currency
     single { GetCurrencyUseCase(get()) }
     single { GetDefaultCurrencyUseCase(get()) }
     single { GetFormattedAmountUseCase(get()) }
     single { SaveCurrencyUseCase(get()) }
 
-    //Export
+    // Export
     single {
         ExportFileUseCase(
             exportRepository = get(),
-            getExportTransactionsUseCase = get()
+            getExportTransactionsUseCase = get(),
         )
     }
 
-    //Onboarding
+    // Onboarding
     single { GetOnboardingStatusUseCase(get()) }
     single { GetPreloadStatusUseCase(get()) }
     single { SetOnboardingStatusUseCase(get()) }
     single { SetPreloadStatusUseCase(get()) }
 
-    //Reminder
+    // Reminder
     single { GetReminderStatusUseCase(get()) }
     single { GetReminderTimeUseCase(get()) }
     single { SaveReminderTimeUseCase(get()) }
     single { UpdateReminderStatusUseCase(get()) }
 
-    //Theme
+    // Theme
     single { GetCurrentThemeUseCase(get()) }
     single { GetThemesUseCase(get()) }
     single { SaveThemeUseCase(get()) }
     single { ApplyThemeUseCase(get()) }
 
-    //Locale
+    // Locale
     single { GetCurrentLocaleUseCase(get()) }
     single { GetLocalesUseCase(get()) }
     single { SaveLocaleUseCase(get()) }
     single { ApplyLocaleUseCase(get()) }
-
 }

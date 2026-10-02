@@ -43,4 +43,17 @@
     <string name="app_lock_title">فتح قفل مدير المصروفات</string>
     <string name="app_lock_description">تحقق من هويتك للمتابعة</string>
     <string name="app_lock_unlock">فتح القفل</string>
+
+    <string name="reminder_primer_title">لا تفوّت أي مصروف</string>
+    <string name="reminder_primer_description">احصل على تذكير لطيف واحد يوميًا لتسجيل ما أنفقته. يستغرق ذلك ثوانٍ ويحافظ على دقة ميزانياتك.</string>
+    <string name="reminder_primer_turn_on">تفعيل التذكير اليومي</string>
+    <string name="reminder_primer_not_now">ليس الآن</string>
+    <string name="reminder_primer_footnote">يمكنك تغيير الوقت أو إيقاف التذكير في أي وقت من الإعدادات.</string>
+    <string name="first_save_title">تم حفظ أول مصروف!</string>
+    <string name="first_save_description">بداية رائعة. سجّل إنفاقك لمدة 7 أيام وسترى بالضبط أين تذهب أموالك.</string>
+    <string name="first_save_progress">اليوم %1$d من %2$d</string>
+    <string name="first_save_add_another">أضف مصروفًا آخر</string>
+    <string name="first_save_done">تم</string>
+    <string name="shortcut_add_expense_short">إضافة مصروف</string>
+    <string name="shortcut_add_expense_long">إضافة مصروف جديد</string>
 </resources>

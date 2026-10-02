@@ -47,4 +47,7 @@
 
     <string name="app_lock">ऐप लॉक</string>
     <string name="app_lock_message">ऐप खोलते समय बायोमेट्रिक या डिवाइस क्रेडेंशियल की जरूरत रखें</string>
+    <string name="share_app">ऐप शेयर करें</string>
+    <string name="share_app_message">किसी दोस्त को Expense Manager के बारे में बताएँ</string>
+    <string name="share_app_text">मैं अपने खर्च ट्रैक करने के लिए Expense Manager इस्तेमाल करता हूँ। यह मुफ़्त है और मेरा डेटा मेरे फ़ोन पर रहता है: %1$s</string>
 </resources>

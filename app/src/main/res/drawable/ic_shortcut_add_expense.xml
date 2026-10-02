@@ -1,0 +1,14 @@
+<!-- Launcher shortcut icon: brand-green disc with a white "+". Fixed colours (launchers can't
+     resolve app theme attributes). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <path
+        android:fillColor="#FF0F9D5B"
+        android:pathData="M24,24m-24,0a24,24 0,1 1,48 0a24,24 0,1 1,-48 0" />
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M33,26h-7v7h-4v-7h-7v-4h7v-7h4v7h7z" />
+</vector>

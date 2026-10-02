@@ -27,10 +27,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
 import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDay
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +41,7 @@ fun AppDatePickerDialog(
     onDismiss: () -> Unit,
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = selectedDate.time.fromLocalToUTCTimeStamp()
+        initialSelectedDateMillis = selectedDate.time.fromLocalToUTCTimeStamp(),
     )
 
     Dialog(
@@ -56,7 +56,7 @@ fun AppDatePickerDialog(
                 .padding(16.dp),
             shape = RoundedCornerShape(28.dp),
             color = MaterialTheme.colorScheme.surfaceContainerLowest,
-            tonalElevation = 6.dp
+            tonalElevation = 6.dp,
         ) {
             Column {
                 // Date Picker
@@ -64,8 +64,8 @@ fun AppDatePickerDialog(
                     state = datePickerState,
                     showModeToggle = true,
                     colors = DatePickerDefaults.colors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    )
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
                 )
 
                 // Action Buttons
@@ -74,15 +74,15 @@ fun AppDatePickerDialog(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 16.dp),
                     horizontalArrangement = Arrangement.End,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TextButton(
                         onClick = onDismiss,
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.cancel),
-                            style = MaterialTheme.typography.labelLarge
+                            style = MaterialTheme.typography.labelLarge,
                         )
                     }
 
@@ -94,12 +94,12 @@ fun AppDatePickerDialog(
                                 ?: Date()
                             onDateSelected(date)
                         },
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp)
+                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
                     ) {
                         Text(
                             text = stringResource(id = R.string.select),
                             style = MaterialTheme.typography.labelLarge,
-                            fontWeight = FontWeight.SemiBold
+                            fontWeight = FontWeight.SemiBold,
                         )
                     }
                 }

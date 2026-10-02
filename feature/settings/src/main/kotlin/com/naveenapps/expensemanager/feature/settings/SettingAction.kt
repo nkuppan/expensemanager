@@ -11,6 +11,8 @@ sealed class SettingAction {
 
     data object OpenRateUs : SettingAction()
 
+    data object ShareApp : SettingAction()
+
     data object OpenAdvancedSettings : SettingAction()
 
     data object OpenAboutUs : SettingAction()

@@ -16,6 +16,8 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
+import java.util.Date
+import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -23,8 +25,6 @@ import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
 import kotlinx.datetime.plus
-import java.util.Date
-import kotlin.time.ExperimentalTime
 
 class GetChartDataUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
@@ -53,8 +53,11 @@ class GetChartDataUseCase(
             // from 1970 to year ~292 million. Forcing YEAR and clamping both ends to actual
             // transaction dates keeps the chart point count equal to the number of distinct
             // years in the data — naturally bounded, no hard cap needed.
-            val groupType = if (isAllTime) GroupType.YEAR
-            else getTransactionGroupTypeUseCase.invoke(dateRangeModel.type)
+            val groupType = if (isAllTime) {
+                GroupType.YEAR
+            } else {
+                getTransactionGroupTypeUseCase.invoke(dateRangeModel.type)
+            }
 
             val zeroFormatted = getFormattedAmountUseCase.invoke(0.0, currency)
 
@@ -75,7 +78,7 @@ class GetChartDataUseCase(
                     item.category.type.isIncome() -> bucket[1] += amount
                 }
                 transactionItems.add(
-                    item.toTransactionUIModel(getFormattedAmountUseCase.invoke(amount, currency))
+                    item.toTransactionUIModel(getFormattedAmountUseCase.invoke(amount, currency)),
                 )
             }
 
@@ -122,17 +125,25 @@ class GetChartDataUseCase(
                 dates.add(key)
                 expenses.add(
                     FloatEntryModel(
-                        index, totalExpense,
-                        if (totalExpense == 0.0) zeroFormatted
-                        else getFormattedAmountUseCase.invoke(totalExpense, currency)
-                    )
+                        index,
+                        totalExpense,
+                        if (totalExpense == 0.0) {
+                            zeroFormatted
+                        } else {
+                            getFormattedAmountUseCase.invoke(totalExpense, currency)
+                        },
+                    ),
                 )
                 incomes.add(
                     FloatEntryModel(
-                        index, totalIncome,
-                        if (totalIncome == 0.0) zeroFormatted
-                        else getFormattedAmountUseCase.invoke(totalIncome, currency)
-                    )
+                        index,
+                        totalIncome,
+                        if (totalIncome == 0.0) {
+                            zeroFormatted
+                        } else {
+                            getFormattedAmountUseCase.invoke(totalIncome, currency)
+                        },
+                    ),
                 )
 
                 fromDate = getAdjustedDateTime(groupType, fromDate)
@@ -141,8 +152,11 @@ class GetChartDataUseCase(
 
             AnalysisData(
                 transactionItems,
-                if (bucketTotals.isEmpty()) null
-                else AnalysisChartData(listOf(expenses, incomes), dates)
+                if (bucketTotals.isEmpty()) {
+                    null
+                } else {
+                    AnalysisChartData(listOf(expenses, incomes), dates)
+                },
             )
         }.flowOn(dispatcher.computation)
     }

@@ -5,7 +5,5 @@ import com.naveenapps.expensemanager.core.repository.LocaleRepository
 
 class GetLocalesUseCase(private val repository: LocaleRepository) {
 
-    operator fun invoke(): List<AppLocale> {
-        return repository.getLocales()
-    }
+    operator fun invoke(): List<AppLocale> = repository.getLocales()
 }

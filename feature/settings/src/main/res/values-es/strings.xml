@@ -47,4 +47,7 @@
 
     <string name="app_lock">Bloqueo de la app</string>
     <string name="app_lock_message">Requiere datos biométricos o credenciales del dispositivo al abrir la app</string>
+    <string name="share_app">Compartir la app</string>
+    <string name="share_app_message">Cuéntale a un amigo sobre Expense Manager</string>
+    <string name="share_app_text">Uso Expense Manager para controlar mis gastos. Es gratis y mis datos se quedan en mi teléfono: %1$s</string>
 </resources>

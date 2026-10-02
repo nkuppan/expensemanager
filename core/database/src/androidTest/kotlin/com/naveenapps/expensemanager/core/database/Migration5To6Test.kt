@@ -4,10 +4,10 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import java.io.IOException
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 private const val TEST_DB = "migration_test"
 
@@ -56,7 +56,7 @@ class Migration5To6Test {
                  created_on, updated_on)
             VALUES
                 ('budget-1', 'August 2026', 500.0, 1, 1, 1000, 1000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db5.close()
 
@@ -86,7 +86,7 @@ class Migration5To6Test {
                  sequence, created_on, updated_on)
             VALUES
                 ('acc-1', 'Checking', 0, '#FFFFFF', 'ic_bank', 1000.0, 0.0, 1, 1000, 2000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db5.close()
 

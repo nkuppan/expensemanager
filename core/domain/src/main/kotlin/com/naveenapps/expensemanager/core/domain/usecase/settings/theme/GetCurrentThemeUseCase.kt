@@ -6,7 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 class GetCurrentThemeUseCase(private val repository: ThemeRepository) {
 
-    operator fun invoke(): Flow<Theme> {
-        return repository.getSelectedTheme()
-    }
+    operator fun invoke(): Flow<Theme> = repository.getSelectedTheme()
 }

@@ -3,4 +3,17 @@
     <string name="notification_description">Giderlerinizi kaydetmeyi unutmayın</string>
     <string name="notification_title">İşlem ekle</string>
     <string name="notification_channel_description">Hatırlatıcılar için kullanılır</string>
+    <string name="reminder_notification_title">Bugünkü harcamalarını kaydettin mi?</string>
+    <string name="reminder_notification_body">Sadece birkaç saniye sürer. Harcama eklemek için dokun.</string>
+    <string name="reminder_action_add">Harcama ekle</string>
+    <string name="reminder_action_no_spend">Bugün harcama yok</string>
+    <string name="weekly_summary_title">Haftan, para açısından</string>
+    <string name="weekly_summary_less">Bu hafta %1$s harcadın, geçen haftadan %%%2$d daha az. Harika!</string>
+    <string name="weekly_summary_more">Bu hafta %1$s harcadın, geçen haftadan %%%2$d daha fazla.</string>
+    <string name="weekly_summary_same">Bu hafta %1$s harcadın, geçen haftayla hemen hemen aynı.</string>
+    <string name="weekly_summary_first">Bu hafta %1$s harcadın. Gelecek haftayla karşılaştırmak için kaydetmeye devam et.</string>
+    <string name="budget_alert_warning_title">%1$s %%80 seviyesinde</string>
+    <string name="budget_alert_warning_body">%2$s bütçenin %1$s kadarını harcadın. Biraz yavaşlama zamanı.</string>
+    <string name="budget_alert_over_title">%1$s bütçeyi aştı</string>
+    <string name="budget_alert_over_body">%2$s bütçenin %1$s kadarını harcadın.</string>
 </resources>

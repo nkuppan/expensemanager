@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-
 class CategoryListViewModel(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,
@@ -23,8 +22,8 @@ class CategoryListViewModel(
             categories = emptyList(),
             filteredCategories = emptyList(),
             selectedTab = CategoryTabItems.Expense,
-            tabs = CategoryTabItems.entries
-        )
+            tabs = CategoryTabItems.entries,
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -36,14 +35,14 @@ class CategoryListViewModel(
 
     private fun updateCategories(
         totalCategories: List<Category>,
-        categoryType: CategoryTabItems
+        categoryType: CategoryTabItems,
     ) {
         val filteredCategories = totalCategories.filter { it.type == categoryType.categoryType }
         _state.update {
             it.copy(
                 categories = totalCategories,
                 filteredCategories = filteredCategories,
-                selectedTab = categoryType
+                selectedTab = categoryType,
             )
         }
     }

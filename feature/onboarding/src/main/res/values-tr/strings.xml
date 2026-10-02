@@ -20,4 +20,9 @@
     <string name="track">Takip Et</string>
     <string name="organize">Düzenle</string>
     <string name="grow">Büyüt</string>
+    <string name="onboarding_add_first_expense">İlk harcamanı ekle</string>
+    <string name="onboarding_explore_first">Önce uygulamayı keşfet</string>
+    <string name="onboarding_reminder_title">Günlük hatırlatma</string>
+    <string name="onboarding_reminder_time">Her gün %1$s</string>
+    <string name="onboarding_reminder_description">Harcamalarını kaydetmen için nazik bir hatırlatma</string>
 </resources>

@@ -27,9 +27,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getAppVersionName
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
@@ -38,7 +38,7 @@ import com.naveenapps.expensemanager.core.repository.ShareRepository
 @Composable
 fun AboutScreen(
     shareRepository: ShareRepository,
-    viewModel: AboutUsViewModel = org.koin.androidx.compose.koinViewModel()
+    viewModel: AboutUsViewModel = org.koin.androidx.compose.koinViewModel(),
 ) {
     val context = LocalContext.current
 
@@ -87,7 +87,6 @@ fun AboutScreen(
 private fun AboutUsScreenScaffoldView(
     settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
 ) {
-
     Scaffold(
         topBar = {
             ExpenseManagerTopAppBar(
@@ -95,7 +94,7 @@ private fun AboutUsScreenScaffoldView(
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationBackClick = {
                     settingOptionSelected?.invoke(AboutUsOption.BACK)
-                }
+                },
             )
         },
     ) { innerPadding ->
@@ -104,7 +103,7 @@ private fun AboutUsScreenScaffoldView(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding),
-            settingOptionSelected = settingOptionSelected
+            settingOptionSelected = settingOptionSelected,
         )
     }
 }
@@ -118,8 +117,8 @@ private fun AboutUsScreenContent(
         AppCardView(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
-                vertical = 8.dp
-            )
+                vertical = 8.dp,
+            ),
         ) {
             SettingRow(
                 onClick = {
@@ -156,8 +155,8 @@ private fun AboutUsScreenContent(
         AppCardView(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
-                vertical = 8.dp
-            )
+                vertical = 8.dp,
+            ),
         ) {
             DeveloperInfoView(settingOptionSelected)
         }

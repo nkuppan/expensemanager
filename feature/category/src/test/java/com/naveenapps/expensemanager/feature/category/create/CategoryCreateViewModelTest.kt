@@ -30,7 +30,6 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoInteractions
 import org.mockito.kotlin.whenever
 
-
 class CategoryCreateViewModelTest : BaseCoroutineTest() {
 
     @Captor
@@ -44,7 +43,6 @@ class CategoryCreateViewModelTest : BaseCoroutineTest() {
     private lateinit var categoryCreateViewModel: CategoryCreateViewModel
 
     private fun createCategoryViewModel(state: Map<String, Any?>) {
-
         val checkCategoryValidationUseCase = CheckCategoryValidationUseCase()
 
         categoryCreateViewModel = CategoryCreateViewModel(
@@ -52,24 +50,23 @@ class CategoryCreateViewModelTest : BaseCoroutineTest() {
             findCategoryByIdUseCase = FindCategoryByIdUseCase(categoryRepository),
             addCategoryUseCase = AddCategoryUseCase(
                 categoryRepository,
-                checkCategoryValidationUseCase
+                checkCategoryValidationUseCase,
             ),
             updateCategoryUseCase = UpdateCategoryUseCase(
                 categoryRepository,
-                checkCategoryValidationUseCase
+                checkCategoryValidationUseCase,
             ),
             deleteCategoryUseCase = DeleteCategoryUseCase(
                 categoryRepository,
-                checkCategoryValidationUseCase
+                checkCategoryValidationUseCase,
             ),
             imageStorageRepository = imageStorageRepository,
-            appComposeNavigator = appComposeNavigator
+            appComposeNavigator = appComposeNavigator,
         )
     }
 
     @Test
     fun `when user doesn't have a category it shouldn't update state`() = runTest {
-
         createCategoryViewModel(emptyMap())
 
         categoryCreateViewModel.state.test {
@@ -85,9 +82,8 @@ class CategoryCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `when user have a category it should update state`() = runTest {
-
         whenever(categoryRepository.findCategory(FAKE_CATEGORY.id)).thenReturn(
-            Resource.Success(FAKE_CATEGORY)
+            Resource.Success(FAKE_CATEGORY),
         )
 
         createCategoryViewModel(mapOf(ExpenseManagerArgsNames.ID to FAKE_CATEGORY.id))
@@ -109,7 +105,6 @@ class CategoryCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `when user try to save without proper value it shouldn't allow to save`() = runTest {
-
         createCategoryViewModel(emptyMap())
 
         categoryCreateViewModel.processAction(CategoryCreateAction.Save)
@@ -120,7 +115,6 @@ class CategoryCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `when user try to save with proper value it shouldn't allow to save`() = runTest {
-
         whenever(categoryRepository.addCategory(any())).thenReturn(Resource.Success(true))
 
         createCategoryViewModel(emptyMap())
@@ -145,11 +139,10 @@ class CategoryCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `when user try to edit and save with proper value it shouldn't allow to save`() = runTest {
-
         whenever(categoryRepository.updateCategory(any())).thenReturn(Resource.Success(true))
 
         whenever(categoryRepository.findCategory(FAKE_CATEGORY.id)).thenReturn(
-            Resource.Success(FAKE_CATEGORY)
+            Resource.Success(FAKE_CATEGORY),
         )
 
         createCategoryViewModel(mapOf(ExpenseManagerArgsNames.ID to FAKE_CATEGORY.id))

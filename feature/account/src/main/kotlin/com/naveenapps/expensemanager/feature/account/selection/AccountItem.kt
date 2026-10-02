@@ -20,8 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.feature.account.R
@@ -55,7 +55,7 @@ fun AccountItem(
                         Modifier.clickable { onClick.invoke() }
                     } else {
                         Modifier
-                    }
+                    },
                 )
                 .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -108,7 +108,6 @@ fun AccountItem(
 @AppPreviewsLightAndDarkMode
 @Composable
 fun AccountItemPreview() {
-
     val account = getRandomAccountUiModel(0).first()
 
     ExpenseManagerPreviewTheme {

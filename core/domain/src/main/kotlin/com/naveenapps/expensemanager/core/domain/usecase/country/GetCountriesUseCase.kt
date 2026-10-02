@@ -4,7 +4,5 @@ import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.repository.CountryRepository
 
 class GetCountriesUseCase(private val repository: CountryRepository) {
-    suspend operator fun invoke(): List<Country> {
-        return repository.readCountries()
-    }
+    suspend operator fun invoke(): List<Country> = repository.readCountries()
 }

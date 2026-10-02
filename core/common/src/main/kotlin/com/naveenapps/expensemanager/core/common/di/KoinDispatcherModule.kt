@@ -7,8 +7,7 @@ val DispatcherModule = module {
         AppCoroutineDispatchers(
             main = Dispatchers.Main,
             io = Dispatchers.IO,
-            computation = Dispatchers.Default
+            computation = Dispatchers.Default,
         )
     }
 }
-

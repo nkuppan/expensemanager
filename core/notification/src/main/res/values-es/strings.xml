@@ -3,4 +3,17 @@
     <string name="notification_description">No olvides registrar tus gastos</string>
     <string name="notification_title">Añadir transacción</string>
     <string name="notification_channel_description">Se usa para recordatorios</string>
+    <string name="reminder_notification_title">¿Registraste los gastos de hoy?</string>
+    <string name="reminder_notification_body">Solo toma unos segundos. Toca para añadir un gasto.</string>
+    <string name="reminder_action_add">Añadir gasto</string>
+    <string name="reminder_action_no_spend">Hoy no gasté nada</string>
+    <string name="weekly_summary_title">Tu semana en dinero</string>
+    <string name="weekly_summary_less">Gastaste %1$s esta semana, un %2$d%% menos que la semana pasada. ¡Bien hecho!</string>
+    <string name="weekly_summary_more">Gastaste %1$s esta semana, un %2$d%% más que la semana pasada.</string>
+    <string name="weekly_summary_same">Gastaste %1$s esta semana, más o menos lo mismo que la semana pasada.</string>
+    <string name="weekly_summary_first">Gastaste %1$s esta semana. Sigue registrando para comparar con la próxima.</string>
+    <string name="budget_alert_warning_title">%1$s está al 80%%</string>
+    <string name="budget_alert_warning_body">Has gastado %1$s de %2$s. Es momento de ir más despacio.</string>
+    <string name="budget_alert_over_title">%1$s superó el presupuesto</string>
+    <string name="budget_alert_over_body">Has gastado %1$s de tu presupuesto de %2$s.</string>
 </resources>

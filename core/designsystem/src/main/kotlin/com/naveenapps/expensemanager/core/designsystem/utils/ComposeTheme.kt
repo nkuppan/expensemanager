@@ -11,8 +11,11 @@ import androidx.compose.runtime.Composable
 @Composable
 fun shouldUseDarkTheme(theme: Int): Boolean = when (theme) {
     AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> isSystemInDarkTheme()
+
     AppCompatDelegate.MODE_NIGHT_NO -> false
+
     AppCompatDelegate.MODE_NIGHT_YES -> true
+
     else -> {
         isSystemInDarkTheme()
     }

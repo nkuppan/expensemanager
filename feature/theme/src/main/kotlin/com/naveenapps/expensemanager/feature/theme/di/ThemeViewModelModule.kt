@@ -9,8 +9,7 @@ val ThemeViewModelModule = module {
         ThemeViewModel(
             getSelectedTheme = get(),
             getThemesUseCase = get(),
-            saveThemeUseCase = get()
+            saveThemeUseCase = get(),
         )
     }
 }
-

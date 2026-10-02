@@ -13,9 +13,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class CountryListViewModel(
-    private val getCountriesUseCase: GetCountriesUseCase
+    private val getCountriesUseCase: GetCountriesUseCase,
 ) : ViewModel() {
 
     private val _event = Channel<CountrySelectionEvent>()
@@ -28,9 +27,9 @@ class CountryListViewModel(
             searchText = TextFieldValue(
                 value = "",
                 valueError = false,
-                onValueChange = this::setSearchTextChange
-            )
-        )
+                onValueChange = this::setSearchTextChange,
+            ),
+        ),
     )
     val countryState = _state.asStateFlow()
 
@@ -41,11 +40,9 @@ class CountryListViewModel(
     }
 
     private fun loadCountries(searchName: String? = "") {
-
         currentJob?.cancel()
 
         currentJob = viewModelScope.launch {
-
             val countryList = getCountriesUseCase.invoke()
 
             val filteredList = mutableListOf<Country>()
@@ -55,9 +52,9 @@ class CountryListViewModel(
                     countryList.filter {
                         it.name.contains(
                             searchName,
-                            ignoreCase = true
+                            ignoreCase = true,
                         ) || it.currency.name.contains(searchName, ignoreCase = true)
-                    }
+                    },
                 )
             } else {
                 filteredList.addAll(countryList)
@@ -71,7 +68,7 @@ class CountryListViewModel(
         _state.update {
             it.copy(
                 searchText = it.searchText.copy(value = searchString),
-                showClearButton = searchString.isNotBlank()
+                showClearButton = searchString.isNotBlank(),
             )
         }
         loadCountries(searchString)

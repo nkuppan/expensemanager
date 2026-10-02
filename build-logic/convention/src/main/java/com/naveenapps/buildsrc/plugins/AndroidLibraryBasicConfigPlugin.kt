@@ -1,6 +1,6 @@
 package com.naveenapps.buildsrc.plugins
 
-import com.android.build.gradle.LibraryExtension
+import com.android.build.api.dsl.LibraryExtension
 import com.naveenapps.buildsrc.extensions.configureAndroid
 import com.naveenapps.buildsrc.extensions.configureJacoco
 import com.naveenapps.buildsrc.extensions.configureKotlinAndroid
@@ -15,7 +15,7 @@ class AndroidLibraryBasicConfigPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(plugin = "com.android.library")
-                apply(plugin = "org.jetbrains.kotlin.android")
+                // No org.jetbrains.kotlin.android: AGP 9 compiles Kotlin itself (built-in Kotlin).
                 apply(plugin = "jacoco")
             }
 

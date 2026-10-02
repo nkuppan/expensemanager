@@ -15,8 +15,7 @@ const val DESTINATION_CLASS = "com.naveenapps.expensemanager.MainActivity"
 open class BootAlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-
-        val notificationScheduler: NotificationScheduler =  GlobalContext.get().get()
+        val notificationScheduler: NotificationScheduler = GlobalContext.get().get()
 
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             if (Intent.ACTION_BOOT_COMPLETED == intent.action) {

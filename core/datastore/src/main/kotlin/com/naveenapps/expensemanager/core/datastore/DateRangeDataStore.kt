@@ -13,10 +13,9 @@ import kotlinx.coroutines.flow.map
 
 class DateRangeDataStore(private val dataStore: DataStore<Preferences>) {
 
-    suspend fun setFilterType(dateRangeType: DateRangeType) =
-        dataStore.edit { preferences ->
-            preferences[KEY_DATE_FILTER_TYPE] = dateRangeType.ordinal
-        }
+    suspend fun setFilterType(dateRangeType: DateRangeType) = dataStore.edit { preferences ->
+        preferences[KEY_DATE_FILTER_TYPE] = dateRangeType.ordinal
+    }
 
     fun getFilterType(): Flow<DateRangeType> = dataStore.data.map { preferences ->
         DateRangeType.entries[
@@ -30,19 +29,18 @@ class DateRangeDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_DATE_RANGE_END_TIME_TYPE] = endDate.fromLocalToUTCTimeStamp()
     }
 
-    fun getDateRanges(): Flow<List<Long>?> =
-        dataStore.data.map { preferences ->
-            val startDate = preferences[KEY_DATE_RANGE_START_TIME_TYPE]
-            val endDate = preferences[KEY_DATE_RANGE_END_TIME_TYPE]
-            if (startDate != null && endDate != null) {
-                listOf(
-                    startDate.fromUTCToLocalTimeStamp(),
-                    endDate.fromUTCToLocalTimeStamp()
-                )
-            } else {
-                null
-            }
+    fun getDateRanges(): Flow<List<Long>?> = dataStore.data.map { preferences ->
+        val startDate = preferences[KEY_DATE_RANGE_START_TIME_TYPE]
+        val endDate = preferences[KEY_DATE_RANGE_END_TIME_TYPE]
+        if (startDate != null && endDate != null) {
+            listOf(
+                startDate.fromUTCToLocalTimeStamp(),
+                endDate.fromUTCToLocalTimeStamp(),
+            )
+        } else {
+            null
         }
+    }
 
     companion object {
         private val KEY_DATE_FILTER_TYPE = intPreferencesKey("date_filter_type")

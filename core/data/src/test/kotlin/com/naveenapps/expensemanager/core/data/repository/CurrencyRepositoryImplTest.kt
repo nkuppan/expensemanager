@@ -46,7 +46,6 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
             },
         )
 
-
     val formatTypeFlow = MutableStateFlow(NumberFormatType.WITHOUT_ANY_SEPARATOR)
 
     private val numberFormatSettingRepository = mock<NumberFormatSettingRepository> {
@@ -55,7 +54,7 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
 
     private val numberFormatRepository = NumberFormatRepositoryImpl(
         coroutineScope = CoroutineScope(testCoroutineDispatcher.dispatcher),
-        numberFormatSettingRepository = numberFormatSettingRepository
+        numberFormatSettingRepository = numberFormatSettingRepository,
     )
 
     private val repository: CurrencyRepository = CurrencyRepositoryImpl(
@@ -137,7 +136,6 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun `Given new currency and prefix and number format with grouping when reading a formatted will return the amount with new currency in prefix and number grouping`() = runTest {
-
         formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
         advanceUntilIdle()
 
@@ -156,7 +154,6 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun `Given new currency and prefix and number format and negative number with grouping when reading a formatted will return the amount with new currency in prefix and number grouping`() = runTest {
-
         formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
         advanceUntilIdle()
 
@@ -175,7 +172,6 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun `Given new currency and prefix and number format and big negative number with grouping when reading a formatted will return the amount with new currency in prefix and number grouping`() = runTest {
-
         formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
         advanceUntilIdle()
 
@@ -194,10 +190,9 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
 
     @Test
     fun `Given new currency and suffix and number format and big negative number with grouping when reading a formatted will return the amount with new currency in suffix and number grouping`() = runTest {
-
         formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
         advanceUntilIdle()
-        
+
         val passedAmount = amount.copy(
             amount = -1200000000.44,
             currency = defaultCurrency.copy(

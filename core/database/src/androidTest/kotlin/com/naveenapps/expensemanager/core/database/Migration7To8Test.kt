@@ -4,10 +4,10 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import java.io.IOException
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 private const val TEST_DB = "migration_test"
 
@@ -55,7 +55,7 @@ class Migration7To8Test {
                 (id, name, type, icon_background_color, icon_name, updated_on, created_on)
             VALUES
                 ('cat-1', 'Food', 0, '#43A546', 'ic_calendar', 1000, 1000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db7.execSQL(
             """
@@ -64,7 +64,7 @@ class Migration7To8Test {
                  sequence, created_on, updated_on)
             VALUES
                 ('acc-1', 'Checking', 0, '#FFFFFF', 'ic_bank', 1000.0, 0.0, 1, 1000, 2000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db7.execSQL(
             """
@@ -73,7 +73,7 @@ class Migration7To8Test {
                  created_on, updated_on, to_account_id)
             VALUES
                 ('txn-1', '', 'cat-1', 'acc-1', 0, 100.0, '', 1000, 1000, NULL)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db7.close()
 
@@ -82,7 +82,7 @@ class Migration7To8Test {
             """
             INSERT INTO transaction_attachment (id, transaction_id, image_path, created_on)
             VALUES ('att-1', 'txn-1', '/tmp/receipt.jpg', 1000)
-            """.trimIndent()
+            """.trimIndent(),
         )
 
         val beforeDelete = db8.query("SELECT * FROM transaction_attachment WHERE transaction_id = 'txn-1'")
@@ -112,7 +112,7 @@ class Migration7To8Test {
                 (id, name, type, icon_background_color, icon_name, updated_on, created_on)
             VALUES
                 ('cat-1', 'Food', 0, '#43A546', 'ic_calendar', 1000, 1000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db7.close()
 

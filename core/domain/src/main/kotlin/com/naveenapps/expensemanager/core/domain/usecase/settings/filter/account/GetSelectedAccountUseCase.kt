@@ -20,6 +20,7 @@ class GetSelectedAccountUseCase(
                         val accountId = accountIds[it]
                         when (val response = findAccountByIdUseCase.invoke(accountId)) {
                             is Resource.Error -> Unit
+
                             is Resource.Success -> {
                                 add(response.data)
                             }

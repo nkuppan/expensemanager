@@ -42,7 +42,7 @@ fun AdvancedSettingsScreen(
 
     AdvancedSettingsScaffoldView(
         state = state,
-        onAction = viewModel::processAction
+        onAction = viewModel::processAction,
     )
 }
 
@@ -52,7 +52,6 @@ private fun AdvancedSettingsScaffoldView(
     state: AdvancedSettingState,
     onAction: (AdvancedSettingAction) -> Unit,
 ) {
-
     if (state.showDateFilter) {
         SafeModalBottomSheet(
             onDismissRequest = {

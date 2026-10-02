@@ -42,10 +42,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -95,8 +95,8 @@ private fun AccountReOrderScaffoldView(
                 exit = scaleOut() + fadeOut(),
             ) {
                 ExtendedFloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
 
                     onClick = { onAction.invoke(AccountReOrderAction.Save) },
                     icon = {
@@ -224,10 +224,11 @@ fun AccountReOrderItem(
         Icon(
             imageVector = Icons.Rounded.DragHandle,
             contentDescription = null,
-            tint = if (isDragging)
+            tint = if (isDragging) {
                 MaterialTheme.colorScheme.primary
-            else
-                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            } else {
+                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+            },
             modifier = Modifier.size(20.dp),
         )
 

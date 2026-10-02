@@ -6,7 +6,7 @@ import com.naveenapps.expensemanager.feature.filter.type.FilterTypeSelectionView
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
-val FilterViewModelModule = module{
+val FilterViewModelModule = module {
     viewModel {
         FilterViewModel(
             getSelectedTransactionTypesUseCase = get(),
@@ -17,14 +17,14 @@ val FilterViewModelModule = module{
             moveDateRangeForwardUseCase = get(),
             updateSelectedTransactionTypesUseCase = get(),
             updateSelectedCategoryUseCase = get(),
-            updateSelectedAccountUseCase = get()
+            updateSelectedAccountUseCase = get(),
         )
     }
     viewModel {
         DateFilterViewModel(
             getDateRangeUseCase = get(),
             getAllDateRangeUseCase = get(),
-            saveDateRangeUseCase = get()
+            saveDateRangeUseCase = get(),
         )
     }
     viewModel {
@@ -36,7 +36,7 @@ val FilterViewModelModule = module{
             getAllCategoryUseCase = get(),
             updateSelectedTransactionTypesUseCase = get(),
             updateSelectedCategoryUseCase = get(),
-            updateSelectedAccountUseCase = get()
+            updateSelectedAccountUseCase = get(),
         )
     }
 }

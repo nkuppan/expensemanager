@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-
 class BudgetDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val getBudgetDetailUseCase: GetBudgetDetailUseCase,

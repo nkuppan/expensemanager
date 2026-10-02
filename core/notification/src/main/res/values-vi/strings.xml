@@ -3,4 +3,17 @@
     <string name="notification_description">Đừng quên ghi lại chi tiêu của bạn</string>
     <string name="notification_title">Thêm giao dịch</string>
     <string name="notification_channel_description">Dùng cho nhắc nhở</string>
+    <string name="reminder_notification_title">Đã ghi chi tiêu hôm nay chưa?</string>
+    <string name="reminder_notification_body">Chỉ mất vài giây. Chạm để thêm khoản chi.</string>
+    <string name="reminder_action_add">Thêm khoản chi</string>
+    <string name="reminder_action_no_spend">Hôm nay không chi gì</string>
+    <string name="weekly_summary_title">Tuần của bạn qua con số</string>
+    <string name="weekly_summary_less">Tuần này bạn đã chi %1$s, ít hơn tuần trước %2$d%%. Làm tốt lắm!</string>
+    <string name="weekly_summary_more">Tuần này bạn đã chi %1$s, nhiều hơn tuần trước %2$d%%.</string>
+    <string name="weekly_summary_same">Tuần này bạn đã chi %1$s, gần bằng tuần trước.</string>
+    <string name="weekly_summary_first">Tuần này bạn đã chi %1$s. Tiếp tục ghi chép để so sánh với tuần sau.</string>
+    <string name="budget_alert_warning_title">%1$s đã đạt 80%%</string>
+    <string name="budget_alert_warning_body">Bạn đã chi %1$s trên %2$s. Đã đến lúc chậm lại một chút.</string>
+    <string name="budget_alert_over_title">%1$s đã vượt ngân sách</string>
+    <string name="budget_alert_over_body">Bạn đã chi %1$s trên ngân sách %2$s.</string>
 </resources>

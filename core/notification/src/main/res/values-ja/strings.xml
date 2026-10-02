@@ -3,4 +3,17 @@
     <string name="notification_description">経費の記録を忘れずに</string>
     <string name="notification_title">取引を追加</string>
     <string name="notification_channel_description">リマインダーに使用</string>
+    <string name="reminder_notification_title">今日の支出を記録しましたか？</string>
+    <string name="reminder_notification_body">数秒で完了します。タップして支出を追加しましょう。</string>
+    <string name="reminder_action_add">支出を追加</string>
+    <string name="reminder_action_no_spend">今日は支出なし</string>
+    <string name="weekly_summary_title">今週のお金のまとめ</string>
+    <string name="weekly_summary_less">今週は%1$sを使いました。先週より%2$d%%少なくなっています。いい調子です！</string>
+    <string name="weekly_summary_more">今週は%1$sを使いました。先週より%2$d%%多くなっています。</string>
+    <string name="weekly_summary_same">今週は%1$sを使いました。先週とほぼ同じです。</string>
+    <string name="weekly_summary_first">今週は%1$sを使いました。記録を続けて来週と比べましょう。</string>
+    <string name="budget_alert_warning_title">%1$sが80%%に達しました</string>
+    <string name="budget_alert_warning_body">%2$sのうち%1$sを使いました。少しペースを落としましょう。</string>
+    <string name="budget_alert_over_title">%1$sが予算を超えました</string>
+    <string name="budget_alert_over_body">%2$sの予算のうち%1$sを使いました。</string>
 </resources>

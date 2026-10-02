@@ -17,4 +17,3 @@ val ReminderViewModelModule = module {
         )
     }
 }
-

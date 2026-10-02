@@ -11,6 +11,6 @@ sealed class ExportEvent {
 
     data class FileExported(
         val message: UiText,
-        val exportData: ExportData
+        val exportData: ExportData,
     ) : ExportEvent()
 }

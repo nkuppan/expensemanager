@@ -12,6 +12,4 @@ enum class DateRangeType {
     CUSTOM,
 }
 
-fun DateRangeType.isCustom(): Boolean {
-    return this == DateRangeType.CUSTOM
-}
+fun DateRangeType.isCustom(): Boolean = this == DateRangeType.CUSTOM

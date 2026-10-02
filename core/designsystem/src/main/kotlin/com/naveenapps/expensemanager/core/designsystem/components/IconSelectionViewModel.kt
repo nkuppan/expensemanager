@@ -58,7 +58,6 @@ internal val iconSelectionList = listOf(
     R.drawable.wallet,
 )
 
-
 class IconSelectionViewModel : ViewModel() {
 
     private val _icons = MutableStateFlow(iconSelectionList)

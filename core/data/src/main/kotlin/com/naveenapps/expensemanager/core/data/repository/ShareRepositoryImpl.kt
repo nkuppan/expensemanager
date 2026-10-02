@@ -18,7 +18,7 @@ import java.io.File
 
 class ShareRepositoryImpl(
     val context: Context,
-    private val firebaseSettingsRepository: FirebaseSettingsRepository
+    private val firebaseSettingsRepository: FirebaseSettingsRepository,
 ) : ShareRepository {
 
     override fun sendEmail(file: File?) {

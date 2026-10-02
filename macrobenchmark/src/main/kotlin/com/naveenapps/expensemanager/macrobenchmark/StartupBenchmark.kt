@@ -22,8 +22,7 @@ class StartupBenchmark {
 
     @RequiresApi(Build.VERSION_CODES.N)
     @Test
-    fun startupWithBaselineProfileCompilation() =
-        startup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))
+    fun startupWithBaselineProfileCompilation() = startup(CompilationMode.Partial(baselineProfileMode = BaselineProfileMode.Require))
 
     private fun startup(compilationMode: CompilationMode) = benchmarkRule.measureRepeated(
         packageName = TARGET_PACKAGE,

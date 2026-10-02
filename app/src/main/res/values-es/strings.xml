@@ -43,4 +43,17 @@
     <string name="app_lock_title">Desbloquear Expense Manager</string>
     <string name="app_lock_description">Verifica tu identidad para continuar</string>
     <string name="app_lock_unlock">Desbloquear</string>
+
+    <string name="reminder_primer_title">No olvides ningún gasto</string>
+    <string name="reminder_primer_description">Recibe un recordatorio diario para registrar lo que gastaste. Toma segundos y mantiene tus presupuestos precisos.</string>
+    <string name="reminder_primer_turn_on">Activar recordatorio diario</string>
+    <string name="reminder_primer_not_now">Ahora no</string>
+    <string name="reminder_primer_footnote">Puedes cambiar la hora o desactivarlo cuando quieras en Ajustes.</string>
+    <string name="first_save_title">¡Primer gasto guardado!</string>
+    <string name="first_save_description">Buen comienzo. Registra tus gastos durante 7 días y verás exactamente en qué se va tu dinero.</string>
+    <string name="first_save_progress">Día %1$d de %2$d</string>
+    <string name="first_save_add_another">Añadir otro</string>
+    <string name="first_save_done">Listo</string>
+    <string name="shortcut_add_expense_short">Añadir gasto</string>
+    <string name="shortcut_add_expense_long">Añadir un nuevo gasto</string>
 </resources>

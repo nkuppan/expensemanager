@@ -9,7 +9,7 @@ import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 
 class BackupRepositoryImpl(
     private val roomBackup: RoomBackup,
-    private val database: ExpenseManagerDatabase
+    private val database: ExpenseManagerDatabase,
 ) : BackupRepository {
 
     override fun backupData(uri: String?): Resource<Boolean> {

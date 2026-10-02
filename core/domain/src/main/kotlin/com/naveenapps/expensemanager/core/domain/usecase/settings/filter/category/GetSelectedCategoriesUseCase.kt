@@ -20,6 +20,7 @@ class GetSelectedCategoriesUseCase(
                         val categoryId = categoryIds[it]
                         when (val response = findCategoryByIdUseCase.invoke(categoryId)) {
                             is Resource.Error -> Unit
+
                             is Resource.Success -> {
                                 add(response.data)
                             }

@@ -47,4 +47,7 @@
 
     <string name="app_lock">Блокировка приложения</string>
     <string name="app_lock_message">Требовать биометрию или учётные данные устройства при открытии приложения</string>
+    <string name="share_app">Поделиться приложением</string>
+    <string name="share_app_message">Расскажите другу об Expense Manager</string>
+    <string name="share_app_text">Я веду учёт расходов в Expense Manager. Бесплатно, и данные остаются на телефоне: %1$s</string>
 </resources>

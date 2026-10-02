@@ -14,6 +14,8 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +27,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class SettingsViewModel(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
@@ -35,6 +36,7 @@ class SettingsViewModel(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _event = Channel<SettingEvent>()
@@ -44,8 +46,8 @@ class SettingsViewModel(
         SettingState(
             currency = getDefaultCurrencyUseCase.invoke(),
             theme = null,
-            showThemeSelection = false
-        )
+            showThemeSelection = false,
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -77,7 +79,7 @@ class SettingsViewModel(
             _state.update {
                 it.copy(
                     accounts = accounts,
-                    selectedAccount = account ?: accounts.firstOrNull()
+                    selectedAccount = account ?: accounts.firstOrNull(),
                 )
             }
         }.launchIn(viewModelScope)
@@ -130,6 +132,7 @@ class SettingsViewModel(
         viewModelScope.launch {
             when (val response = settingsRepository.setDefaultAccount(account.id)) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     if (response.data) {
                         _state.update { it.copy(selectedAccount = account) }
@@ -143,6 +146,7 @@ class SettingsViewModel(
         viewModelScope.launch {
             when (val response = settingsRepository.setDefaultExpenseCategory(category.id)) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     if (response.data) {
                         _state.update { it.copy(selectedExpenseCategory = category) }
@@ -156,6 +160,7 @@ class SettingsViewModel(
         viewModelScope.launch {
             when (val response = settingsRepository.setDefaultIncomeCategory(category.id)) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     if (response.data) {
                         _state.update { it.copy(selectedIncomeCategory = category) }
@@ -168,13 +173,27 @@ class SettingsViewModel(
     fun processAction(action: SettingAction) {
         when (action) {
             SettingAction.ClosePage -> closePage()
+
             SettingAction.OpenAboutUs -> openAboutUs()
+
             SettingAction.OpenAdvancedSettings -> openAdvancedSettings()
+
             SettingAction.OpenCurrencyEdit -> openCurrencyCustomiseScreen()
+
             SettingAction.OpenExport -> openExportScreen()
+
             SettingAction.OpenNotification -> openNotificationScreen()
+
+            SettingAction.ShareApp -> {
+                viewModelScope.launch {
+                    analyticsRepository.logEvent(AnalyticsEvents.SHARE_APP, emptyMap())
+                    _event.send(SettingEvent.ShareApp)
+                }
+            }
+
             SettingAction.OpenRateUs -> {
                 viewModelScope.launch {
+                    analyticsRepository.logEvent(AnalyticsEvents.RATE_US_CLICKED, emptyMap())
                     _event.send(SettingEvent.RateUs)
                 }
             }
@@ -219,12 +238,14 @@ class SettingsViewModel(
 
             SettingAction.Backup -> {
                 viewModelScope.launch {
+                    analyticsRepository.logEvent(AnalyticsEvents.BACKUP_STARTED, emptyMap())
                     _event.send(SettingEvent.Backup)
                 }
             }
 
             SettingAction.Restore -> {
                 viewModelScope.launch {
+                    analyticsRepository.logEvent(AnalyticsEvents.RESTORE_STARTED, emptyMap())
                     _event.send(SettingEvent.Restore)
                 }
             }

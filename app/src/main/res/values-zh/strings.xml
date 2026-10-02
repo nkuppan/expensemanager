@@ -43,4 +43,17 @@
     <string name="app_lock_title">解锁 Expense Manager</string>
     <string name="app_lock_description">验证身份以继续</string>
     <string name="app_lock_unlock">解锁</string>
+
+    <string name="reminder_primer_title">不再漏记任何一笔支出</string>
+    <string name="reminder_primer_description">每天收到一次温和的提醒来记录您的支出。只需几秒钟，就能让预算保持准确。</string>
+    <string name="reminder_primer_turn_on">开启每日提醒</string>
+    <string name="reminder_primer_not_now">暂不</string>
+    <string name="reminder_primer_footnote">您可以随时在设置中更改时间或关闭提醒。</string>
+    <string name="first_save_title">第一笔支出已保存！</string>
+    <string name="first_save_description">好的开始。坚持记录 7 天，您就能清楚看到钱都花在了哪里。</string>
+    <string name="first_save_progress">第 %1$d 天，共 %2$d 天</string>
+    <string name="first_save_add_another">再添加一笔</string>
+    <string name="first_save_done">完成</string>
+    <string name="shortcut_add_expense_short">添加支出</string>
+    <string name="shortcut_add_expense_long">添加新支出</string>
 </resources>

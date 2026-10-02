@@ -8,11 +8,11 @@ import android.net.Uri
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.util.UUID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class ImageStorageRepositoryImpl(
     private val context: Context,
@@ -24,44 +24,40 @@ class ImageStorageRepositoryImpl(
         return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
     }
 
-    override suspend fun saveCategoryImage(sourceUri: Uri): String? =
-        saveImage(sourceUri, CATEGORY_IMAGE_DIR)
+    override suspend fun saveCategoryImage(sourceUri: Uri): String? = saveImage(sourceUri, CATEGORY_IMAGE_DIR)
 
     override fun deleteCategoryImage(path: String) {
         runCatching { File(path).delete() }
     }
 
-    override suspend fun saveAccountImage(sourceUri: Uri): String? =
-        saveImage(sourceUri, ACCOUNT_IMAGE_DIR)
+    override suspend fun saveAccountImage(sourceUri: Uri): String? = saveImage(sourceUri, ACCOUNT_IMAGE_DIR)
 
     override fun deleteAccountImage(path: String) {
         runCatching { File(path).delete() }
     }
 
-    override suspend fun saveTransactionAttachment(sourceUri: Uri): String? =
-        saveImage(sourceUri, TRANSACTION_ATTACHMENT_DIR)
+    override suspend fun saveTransactionAttachment(sourceUri: Uri): String? = saveImage(sourceUri, TRANSACTION_ATTACHMENT_DIR)
 
     override fun deleteTransactionAttachment(path: String) {
         runCatching { File(path).delete() }
     }
 
-    private suspend fun saveImage(sourceUri: Uri, folderName: String): String? =
-        withContext(Dispatchers.IO) {
-            runCatching {
-                val bitmap = decodeSampledBitmap(sourceUri) ?: return@runCatching null
-                val oriented = correctOrientation(bitmap, sourceUri)
+    private suspend fun saveImage(sourceUri: Uri, folderName: String): String? = withContext(Dispatchers.IO) {
+        runCatching {
+            val bitmap = decodeSampledBitmap(sourceUri) ?: return@runCatching null
+            val oriented = correctOrientation(bitmap, sourceUri)
 
-                val dir = File(context.filesDir, folderName).apply { mkdirs() }
-                val file = File(dir, "${UUID.randomUUID()}.jpg")
-                FileOutputStream(file).use { out ->
-                    oriented.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, out)
-                }
-                if (oriented !== bitmap) bitmap.recycle()
-                oriented.recycle()
+            val dir = File(context.filesDir, folderName).apply { mkdirs() }
+            val file = File(dir, "${UUID.randomUUID()}.jpg")
+            FileOutputStream(file).use { out ->
+                oriented.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, out)
+            }
+            if (oriented !== bitmap) bitmap.recycle()
+            oriented.recycle()
 
-                file.absolutePath
-            }.getOrNull()
-        }
+            file.absolutePath
+        }.getOrNull()
+    }
 
     // Decodes at a downsampled resolution rather than full size — gallery photos and camera
     // captures are routinely 10+ megapixels, far more than a small circular avatar ever needs,

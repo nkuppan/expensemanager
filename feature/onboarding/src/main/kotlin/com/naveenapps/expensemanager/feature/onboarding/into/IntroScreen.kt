@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.sp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.onboarding.R
 import org.koin.compose.viewmodel.koinViewModel
@@ -56,11 +56,11 @@ private const val LINK_PLACEHOLDER = "%1\$s"
 @Composable
 fun IntroScreen(
     shareRepository: ShareRepository?,
-    viewModel: IntroViewModel = koinViewModel()
+    viewModel: IntroViewModel = koinViewModel(),
 ) {
     ScaffoldContent(
         viewModel::navigate,
-        shareRepository
+        shareRepository,
     )
 }
 
@@ -120,15 +120,15 @@ private fun ScaffoldContent(
                 ) {
                     FeatureChip(
                         icon = Icons.Rounded.BarChart,
-                        label = stringResource(R.string.track)
+                        label = stringResource(R.string.track),
                     )
                     FeatureChip(
                         icon = Icons.Rounded.Category,
-                        label = stringResource(R.string.organize)
+                        label = stringResource(R.string.organize),
                     )
                     FeatureChip(
                         icon = Icons.AutoMirrored.Rounded.TrendingUp,
-                        label = stringResource(R.string.grow)
+                        label = stringResource(R.string.grow),
                     )
                 }
 
@@ -267,7 +267,6 @@ private fun FeatureChip(
         }
     }
 }
-
 
 @AppPreviewsLightAndDarkMode
 @Composable

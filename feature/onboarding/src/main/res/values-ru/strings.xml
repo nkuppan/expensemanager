@@ -20,4 +20,9 @@
     <string name="track">Отслеживайте</string>
     <string name="organize">Организуйте</string>
     <string name="grow">Развивайтесь</string>
+    <string name="onboarding_add_first_expense">Добавить первый расход</string>
+    <string name="onboarding_explore_first">Сначала изучить приложение</string>
+    <string name="onboarding_reminder_title">Ежедневное напоминание</string>
+    <string name="onboarding_reminder_time">Каждый день в %1$s</string>
+    <string name="onboarding_reminder_description">Мягкое напоминание записать траты</string>
 </resources>

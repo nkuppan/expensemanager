@@ -119,22 +119,17 @@ if (firebasePublisher.exists()) {
                 }
             }
         }
+    }
 
-        /**
-         * Our APK path leads to our universal APK file - do guarantee that it's present we need to
-         * make the distribution task depend on the universal APK assembly task.
-         */
-        applicationVariants.all { variant ->
-            variant.outputs.forEach { output ->
-                tasks.filter {
-                    return@filter it.name.startsWith(
-                        "appDistributionUpload${variant.name.toCapital()}"
-                    )
-                }.forEach {
-                    it?.dependsOn("assemble${variant.name.toCapital()}")
-                }
-            }
-            return@all true
+    /**
+     * Our APK path leads to our universal APK file - to guarantee that it's present, make each
+     * distribution upload task depend on the matching assemble task.
+     * (AGP 9 removed applicationVariants, so the upload tasks are matched by name instead.)
+     */
+    tasks.matching { it.name.startsWith("appDistributionUpload") }.configureEach {
+        val variantName = name.removePrefix("appDistributionUpload")
+        if (variantName.isNotEmpty()) {
+            dependsOn("assemble$variantName")
         }
     }
 } else {
@@ -182,8 +177,10 @@ android {
 
     testOptions {
         managedDevices {
-            devices {
-                maybeCreate<com.android.build.api.dsl.ManagedVirtualDevice>("pixel2api30").apply {
+            // AGP 9: managed emulators live in `localDevices` (typed to ManagedVirtualDevice);
+            // the generic `devices` container from AGP 8 no longer works with the new DSL.
+            localDevices {
+                maybeCreate("pixel2api30").apply {
                     // Use device profiles you typically see in Android Studio.
                     device = "Pixel 2"
                     // Use only API levels 27 and higher.

@@ -76,6 +76,7 @@ private fun AccountSelectionView(
         onItemSelection = viewModel::selectThisAccount,
     )
 }
+
 @Composable
 fun MultipleAccountSelectionScreen(
     modifier: Modifier = Modifier,

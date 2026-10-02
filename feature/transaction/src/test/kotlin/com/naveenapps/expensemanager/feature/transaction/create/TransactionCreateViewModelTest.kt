@@ -21,18 +21,20 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
+import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import java.util.Date
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TransactionCreateViewModelTest : BaseCoroutineTest() {
@@ -51,6 +53,8 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val appComposeNavigator: AppComposeNavigator = mock()
     private val numberFormatRepository: NumberFormatRepository = mock()
     private val feedbackRepository: FeedbackRepository = mock()
+    private val analyticsRepository: AnalyticsRepository = mock()
+    private val budgetAlertTrigger: BudgetAlertTrigger = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
 
@@ -92,6 +96,8 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         whenever(settingsRepository.getDefaultAccount()).thenReturn(flowOf(null))
         whenever(settingsRepository.getDefaultIncomeCategory()).thenReturn(flowOf(null))
         whenever(settingsRepository.getDefaultExpenseCategory()).thenReturn(flowOf(null))
+        whenever(feedbackRepository.getTransactionCreatedCount()).thenReturn(flowOf(1))
+        whenever(feedbackRepository.shouldShowFeedbackDialog()).thenReturn(flowOf(false))
 
         viewModel = TransactionCreateViewModel(
             savedStateHandle = SavedStateHandle(),
@@ -109,6 +115,8 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
             appComposeNavigator = appComposeNavigator,
             numberFormatRepository = numberFormatRepository,
             feedbackRepository = feedbackRepository,
+            analyticsRepository = analyticsRepository,
+            budgetAlertTrigger = budgetAlertTrigger,
         )
     }
 
@@ -293,6 +301,22 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         val result = viewModel.buildTransactionFromState(buildState(), amountValue = 100.0)
 
         assertThat(result.imagePath).isEmpty()
+    }
+
+    // endregion
+
+    // region number pad
+
+    @Test
+    fun `new transaction opens straight on the number pad`() {
+        assertThat(viewModel.state.value.showNumberPad).isTrue()
+    }
+
+    @Test
+    fun `dismissing the number pad without a value closes it`() {
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue(null))
+
+        assertThat(viewModel.state.value.showNumberPad).isFalse()
     }
 
     // endregion

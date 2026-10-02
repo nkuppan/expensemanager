@@ -23,13 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
@@ -52,9 +52,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AnalysisGraphScreen(
-    viewModel: AnalysisScreenViewModel = koinViewModel()
+    viewModel: AnalysisScreenViewModel = koinViewModel(),
 ) {
-
     val graphData by viewModel.graphItems.collectAsState()
     val averageData by viewModel.averageData.collectAsState()
     val amountUiState by viewModel.amountUiState.collectAsState()
@@ -87,7 +86,7 @@ private fun ChartScreenContent(
         modifier = Modifier
             .padding(top = 16.dp, bottom = 16.dp)
             .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         graphData?.chartData?.let {
             AppCardView(
@@ -104,7 +103,7 @@ private fun ChartScreenContent(
                 modifier = Modifier
                     .fillMaxWidth(),
                 emptyItemText = stringResource(id = R.string.no_chart_available),
-                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_analysis
+                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_analysis,
             )
         }
 

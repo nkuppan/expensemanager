@@ -44,10 +44,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -96,7 +96,7 @@ private fun BudgetListScreenContent(
 
                 onClick = {
                     onAction.invoke(BudgetListAction.OpenBudgetCreate)
-                }
+                },
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -112,7 +112,7 @@ private fun BudgetListScreenContent(
             state = state,
             onItemClick = {
                 onAction.invoke(BudgetListAction.EditBudget(it.id))
-            }
+            },
         )
     }
 }
@@ -133,7 +133,7 @@ private fun BudgetListScreenContent(
     if (state.budgets.isNotEmpty()) {
         LazyColumn(
             modifier = modifier,
-            state = scrollState
+            state = scrollState,
         ) {
             itemsIndexed(
                 items = state.budgets,
@@ -149,7 +149,7 @@ private fun BudgetListScreenContent(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 2.dp),
                     shape = AppCardViewDefaults.cardShape(index, state.budgets),
-                    onItemClick = { onItemClick.invoke(budget) }
+                    onItemClick = { onItemClick.invoke(budget) },
                 )
             }
             item {
@@ -164,7 +164,7 @@ private fun BudgetListScreenContent(
         EmptyItem(
             emptyItemText = stringResource(id = R.string.no_budget_available),
             icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
@@ -219,7 +219,6 @@ fun BudgetItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-
             // ── Row 1: Month label + Budget amount ─────────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -429,11 +428,9 @@ fun DashBoardBudgetItem(
     }
 }
 
-fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> {
-    return buildList {
-        repeat(size) {
-            add(getBudgetUiModel(it.toString()))
-        }
+fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> = buildList {
+    repeat(size) {
+        add(getBudgetUiModel(it.toString()))
     }
 }
 

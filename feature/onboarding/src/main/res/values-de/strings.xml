@@ -20,4 +20,9 @@
     <string name="track">Erfassen</string>
     <string name="organize">Organisieren</string>
     <string name="grow">Wachsen</string>
+    <string name="onboarding_add_first_expense">Erste Ausgabe hinzufügen</string>
+    <string name="onboarding_explore_first">Erst die App erkunden</string>
+    <string name="onboarding_reminder_title">Tägliche Erinnerung</string>
+    <string name="onboarding_reminder_time">Jeden Tag um %1$s</string>
+    <string name="onboarding_reminder_description">Ein kurzer Hinweis, deine Ausgaben einzutragen</string>
 </resources>

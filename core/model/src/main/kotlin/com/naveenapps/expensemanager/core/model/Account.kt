@@ -16,6 +16,4 @@ data class Account(
     val creditLimit: Double = 0.0,
 )
 
-fun Account.getAvailableCreditLimit(): Double {
-    return creditLimit + amount
-}
+fun Account.getAvailableCreditLimit(): Double = creditLimit + amount

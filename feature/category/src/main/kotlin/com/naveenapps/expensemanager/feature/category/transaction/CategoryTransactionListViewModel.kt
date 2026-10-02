@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-
 class CategoryTransactionListViewModel(
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,

@@ -8,5 +8,5 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 data class CountryState(
     val countries: List<Country>,
     val searchText: TextFieldValue<String>,
-    val showClearButton: Boolean
+    val showClearButton: Boolean,
 )

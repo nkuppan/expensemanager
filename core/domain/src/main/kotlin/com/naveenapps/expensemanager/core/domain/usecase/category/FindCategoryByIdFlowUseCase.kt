@@ -6,7 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 class FindCategoryByIdFlowUseCase(private val repository: CategoryRepository) {
 
-    operator fun invoke(categoryId: String): Flow<Category?> {
-        return repository.findCategoryFlow(categoryId)
-    }
+    operator fun invoke(categoryId: String): Flow<Category?> = repository.findCategoryFlow(categoryId)
 }

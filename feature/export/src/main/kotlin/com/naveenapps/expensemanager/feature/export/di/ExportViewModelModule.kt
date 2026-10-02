@@ -9,8 +9,8 @@ val ExportViewModelModule = module {
         ExportViewModel(
             getDateRangeUseCase = get(),
             exportFileUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
+            analyticsRepository = get(),
         )
     }
 }
-

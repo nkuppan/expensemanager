@@ -17,16 +17,18 @@ import kotlinx.coroutines.withContext
 class CountryRepositoryImpl(
     private val context: Context,
     private val jsonConverterRepository: JsonConverterRepository,
-    private val dispatchers: AppCoroutineDispatchers
+    private val dispatchers: AppCoroutineDispatchers,
 ) : CountryRepository {
 
     override suspend fun readCountries(): List<Country> = withContext(dispatchers.io) {
         return@withContext context.convertFileToString(fileName = "countries.json")
             ?.let { jsonString ->
-                return@let (jsonConverterRepository.fromJsonToObject(
-                    jsonString,
-                    CountriesResponseDto::class.java
-                ) as? CountriesResponseDto)?.counties?.mapNotNull {
+                return@let (
+                    jsonConverterRepository.fromJsonToObject(
+                        jsonString,
+                        CountriesResponseDto::class.java,
+                    ) as? CountriesResponseDto
+                    )?.counties?.mapNotNull {
                     it.toDomainModel()
                 }
             } ?: emptyList()

@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.SelectionHeader
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
@@ -58,7 +58,7 @@ fun CategorySelectionScreen(
                 trailingContent = { CategoryItemDefaults.SingleCheckedTrailing(isSelected) },
                 onClick = {
                     onItemSelection?.invoke(category)
-                }
+                },
             )
         }
     }
@@ -71,7 +71,7 @@ private fun CategorySelectionScreenPreview() {
         CategorySelectionScreen(
             categories = getRandomCategoryData(),
             selectedCategory = getRandomCategoryData().firstOrNull(),
-            createNewCallback = {}
+            createNewCallback = {},
         )
     }
 }

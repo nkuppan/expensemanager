@@ -17,11 +17,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -36,9 +36,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
@@ -54,14 +54,13 @@ import org.koin.compose.viewmodel.koinViewModel
 fun BudgetDetailScreen(
     viewModel: BudgetDetailViewModel = koinViewModel(),
 ) {
-
     val budget by viewModel.budget.collectAsState()
 
     BudgetDetailsScaffoldView(
         budget = budget,
         openBudgetEditScreen = viewModel::openBudgetCreateScreen,
         closePage = viewModel::closePage,
-        openTransactionCreateScreen = viewModel::openTransactionCreateScreen
+        openTransactionCreateScreen = viewModel::openTransactionCreateScreen,
     )
 }
 
@@ -73,7 +72,6 @@ private fun BudgetDetailsScaffoldView(
     closePage: () -> Unit,
     openTransactionCreateScreen: (String?) -> Unit,
 ) {
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -88,7 +86,7 @@ private fun BudgetDetailsScaffoldView(
                             IconButton(onClick = closePage) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = null
+                                    contentDescription = null,
                                 )
                             }
                         },
@@ -104,7 +102,7 @@ private fun BudgetDetailsScaffoldView(
                                     )
                                 }
                             }
-                        }
+                        },
                     )
                     budget?.let {
                         BudgetItem(
@@ -125,7 +123,8 @@ private fun BudgetDetailsScaffoldView(
             FloatingActionButton(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-onClick = { openTransactionCreateScreen.invoke(null) }) {
+                onClick = { openTransactionCreateScreen.invoke(null) },
+            ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "",
@@ -138,7 +137,7 @@ onClick = { openTransactionCreateScreen.invoke(null) }) {
             onItemClick = openTransactionCreateScreen,
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
         )
     }
 }
@@ -147,7 +146,7 @@ onClick = { openTransactionCreateScreen.invoke(null) }) {
 private fun BudgetDetailContent(
     budget: BudgetUiModel?,
     onItemClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
         val transactions = budget?.transactions
@@ -157,11 +156,10 @@ private fun BudgetDetailContent(
                     start = 16.dp,
                     end = 16.dp,
                     bottom = 78.dp,
-                    top = 16.dp
+                    top = 16.dp,
                 ),
-                verticalArrangement = Arrangement.spacedBy(2.dp)
+                verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
-
                 itemsIndexed(
                     items = transactions,
                     key = { _, item -> item.id },
@@ -189,7 +187,7 @@ private fun BudgetDetailContent(
                             toAccountColor = item.toAccountIcon?.backgroundColor,
                             onEdit = {
                                 onItemClick.invoke(item.id)
-                            }
+                            },
                         )
                     }
                 }
@@ -226,7 +224,7 @@ fun BudgetDetailsScaffoldViewPreview() {
                 amount = Amount(100.0, "$100.00"),
                 transactionAmount = Amount(100.0, "$100.00"),
                 percent = 50.0f,
-                transactions = getTransactionItems()
+                transactions = getTransactionItems(),
             ),
             openBudgetEditScreen = {},
             closePage = {},
@@ -235,10 +233,8 @@ fun BudgetDetailsScaffoldViewPreview() {
     }
 }
 
-private fun getTransactionItems(total: Int = 10): List<TransactionUiItem> {
-    return buildList {
-        repeat(total) {
-            add(getTransactionItem(it.toString()))
-        }
+private fun getTransactionItems(total: Int = 10): List<TransactionUiItem> = buildList {
+    repeat(total) {
+        add(getTransactionItem(it.toString()))
     }
 }

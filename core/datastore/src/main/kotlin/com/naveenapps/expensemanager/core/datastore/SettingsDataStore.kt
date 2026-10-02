@@ -12,11 +12,10 @@ import kotlinx.coroutines.flow.map
 
 class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
 
-    suspend fun setTransactionType(transactionTypes: List<TransactionType>?) =
-        dataStore.edit { preferences ->
-            preferences[KEY_TRANSACTION_TYPES] =
-                transactionTypes?.map { it.ordinal.toString() }?.toSet() ?: emptySet()
-        }
+    suspend fun setTransactionType(transactionTypes: List<TransactionType>?) = dataStore.edit { preferences ->
+        preferences[KEY_TRANSACTION_TYPES] =
+            transactionTypes?.map { it.ordinal.toString() }?.toSet() ?: emptySet()
+    }
 
     fun getTransactionType(): Flow<List<TransactionType>?> = dataStore.data.map { preferences ->
         preferences[KEY_TRANSACTION_TYPES]?.toList()?.map { TransactionType.entries[it.toInt()] }
@@ -47,10 +46,9 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_IS_PRELOAD] ?: false
     }
 
-    suspend fun setOnboardingCompleted(onboardingCompleted: Boolean) =
-        dataStore.edit { preferences ->
-            preferences[KEY_IS_ON_BOARDING_COMPLETED] = onboardingCompleted
-        }
+    suspend fun setOnboardingCompleted(onboardingCompleted: Boolean) = dataStore.edit { preferences ->
+        preferences[KEY_IS_ON_BOARDING_COMPLETED] = onboardingCompleted
+    }
 
     fun isOnboardingCompleted(): Flow<Boolean> = dataStore.data.map { preferences ->
         preferences[KEY_IS_ON_BOARDING_COMPLETED] ?: false

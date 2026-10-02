@@ -19,27 +19,25 @@ class ExportFileUseCase(
         dateRangeType: DateRangeType,
         accounts: List<AccountUiModel>,
         isAllAccountsSelected: Boolean,
-    ): Resource<ExportData> {
-        return when (
-            val transactions = getExportTransactionsUseCase.invoke(
-                dateRangeType,
-                accounts.map { it.id },
-                isAllAccountsSelected,
-            )
-        ) {
-            is Resource.Error -> {
-                transactions
-            }
+    ): Resource<ExportData> = when (
+        val transactions = getExportTransactionsUseCase.invoke(
+            dateRangeType,
+            accounts.map { it.id },
+            isAllAccountsSelected,
+        )
+    ) {
+        is Resource.Error -> {
+            transactions
+        }
 
-            is Resource.Success -> {
-                when (exportFileType) {
-                    ExportFileType.CSV -> {
-                        exportRepository.createCsvFile(uri, transactions.data)
-                    }
+        is Resource.Success -> {
+            when (exportFileType) {
+                ExportFileType.CSV -> {
+                    exportRepository.createCsvFile(uri, transactions.data)
+                }
 
-                    ExportFileType.PDF -> {
-                        exportRepository.createPdfFile(uri, transactions.data)
-                    }
+                ExportFileType.PDF -> {
+                    exportRepository.createPdfFile(uri, transactions.data)
                 }
             }
         }

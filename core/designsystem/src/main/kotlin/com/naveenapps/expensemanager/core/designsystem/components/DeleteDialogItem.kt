@@ -17,11 +17,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,7 +30,7 @@ fun DeleteDialogItem(
     message: String? = null,
 ) {
     SafeModalBottomSheet(
-        onDismissRequest = { dismiss.invoke() }
+        onDismissRequest = { dismiss.invoke() },
     ) {
         DeleteDialogContent(confirm, dismiss, message)
     }
@@ -48,33 +47,33 @@ private fun DeleteDialogContent(
             .fillMaxWidth()
             .padding(24.dp) // Increased padding for a more premium "Widget" feel
             .navigationBarsPadding(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
             text = stringResource(id = R.string.delete),
             // Using your "Pro" weight for headers
             style = MaterialTheme.typography.headlineSmall.copy(
                 fontWeight = FontWeight.Black,
-                letterSpacing = (-0.5).sp
-            )
+                letterSpacing = (-0.5).sp,
+            ),
         )
 
         Text(
             text = message ?: stringResource(id = R.string.delete_item_message),
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f) // Softer secondary text
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f), // Softer secondary text
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             // "Keep" is the primary safe action
             com.naveenapps.designsystem.components.PrimaryButton(
                 modifier = Modifier.weight(1f),
-                onClick = dismiss
+                onClick = dismiss,
             ) {
                 Text(text = stringResource(id = R.string.no_keep))
             }
@@ -88,7 +87,7 @@ private fun DeleteDialogContent(
             ) {
                 Text(
                     text = stringResource(id = R.string.yes_delete),
-                    color = MaterialTheme.colorScheme.error // Using the "Due" red color
+                    color = MaterialTheme.colorScheme.error, // Using the "Due" red color
                 )
             }
         }

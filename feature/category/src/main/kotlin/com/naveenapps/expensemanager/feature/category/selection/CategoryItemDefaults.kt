@@ -47,12 +47,10 @@ object CategoryItemDefaults {
     }
 
     @Composable
-    fun border(isSelected: Boolean): BorderStroke {
-        return if (isSelected) {
-            BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-        } else {
-            CardDefaults.outlinedCardBorder()
-        }
+    fun border(isSelected: Boolean): BorderStroke = if (isSelected) {
+        BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
+    } else {
+        CardDefaults.outlinedCardBorder()
     }
 
     @Composable

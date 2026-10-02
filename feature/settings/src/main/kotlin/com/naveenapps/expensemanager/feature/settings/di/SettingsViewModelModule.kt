@@ -15,13 +15,13 @@ val SettingsViewModelModule = module {
             getAllAccountsUseCase = get(),
             getAllCategoryUseCase = get(),
             settingsRepository = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
+            analyticsRepository = get(),
         )
     }
     viewModel {
         AdvancedSettingsViewModel(
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
 }
-

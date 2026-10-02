@@ -47,4 +47,7 @@
 
     <string name="app_lock">قفل التطبيق</string>
     <string name="app_lock_message">طلب بصمة الإصبع أو بيانات اعتماد الجهاز عند فتح التطبيق</string>
+    <string name="share_app">شارك التطبيق</string>
+    <string name="share_app_message">أخبر صديقًا عن Expense Manager</string>
+    <string name="share_app_text">أستخدم Expense Manager لتتبّع إنفاقي. إنه مجاني ويحفظ بياناتي على هاتفي: %1$s</string>
 </resources>

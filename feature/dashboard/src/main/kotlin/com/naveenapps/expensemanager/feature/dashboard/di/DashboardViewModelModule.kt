@@ -17,7 +17,11 @@ val DashboardViewModelModule = module {
             appComposeNavigator = get(),
             getDateRangeUseCase = get(),
             settingsRepository = get(),
+            feedbackRepository = get(),
+            getReminderStatusUseCase = get(),
+            getMonthlyRecapUseCase = get(),
+            getLoggingStreakUseCase = get(),
+            analyticsRepository = get(),
         )
     }
 }
-

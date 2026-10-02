@@ -17,7 +17,6 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.benchmark) apply false
-    alias(libs.plugins.org.jetbrains.kotlin.android) apply false
     alias(libs.plugins.play.publish) apply false
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
@@ -26,7 +25,9 @@ plugins {
     alias(libs.plugins.dependency.analysis) apply false
 }
 
-val ktlintVersion = "0.48.1"
+// Spotless 7+ only drives ktlint 1.x; 0.48.x crashes with an InvocationTargetException.
+// Rule tuning (Compose function names etc.) lives in the root .editorconfig.
+val ktlintVersion = "1.8.0"
 
 apply<com.diffplug.gradle.spotless.SpotlessPlugin>()
 
@@ -101,7 +102,8 @@ val coverageExclusions = listOf(
 apply<JacocoPlugin>()
 
 configure<JacocoPluginExtension> {
-    toolVersion = "0.8.7"
+    // 0.8.7 predates Java 17 class files; keep in step with the catalog.
+    toolVersion = libs.versions.jacoco.get()
 }
 
 
@@ -112,7 +114,7 @@ tasks.withType<Test>().configureEach {
     }
 }
 
-tasks.create<JacocoReport>("allDebugCoverage") {
+tasks.register<JacocoReport>("allDebugCoverage") {
 
     group = "Reporting"
     description = "Generate overall Jacoco coverage report for the debug build."
@@ -122,20 +124,20 @@ tasks.create<JacocoReport>("allDebugCoverage") {
         html.required.set(true)
     }
 
-    val jClasses: List<String> = subprojects.map { proj ->
-        "${proj.buildDir}/intermediates/javac/debug/classes"
-    }
-    val kClasses: List<String> = subprojects.map { proj ->
-        "${proj.buildDir}/tmp/kotlin-classes/debug"
-    }
-    val javaClasses = jClasses.map { path ->
-        fileTree(path) { exclude(coverageExclusions) }
-    }
-    val kotlinClasses = kClasses.map { path ->
-        fileTree(path) { exclude(coverageExclusions) }
+    // layout.buildDirectory (Project.buildDir is deprecated in Gradle 9). AGP 9's built-in Kotlin
+    // writes classes under intermediates/built_in_kotlinc rather than tmp/kotlin-classes.
+    val classDirs = subprojects.flatMap { proj ->
+        listOf(
+            "intermediates/javac/debug/compileDebugJavaWithJavac/classes",
+            "intermediates/javac/debug/classes",
+            "intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes",
+            "tmp/kotlin-classes/debug",
+        ).map { path ->
+            proj.layout.buildDirectory.dir(path).map { fileTree(it) { exclude(coverageExclusions) } }
+        }
     }
 
-    classDirectories.setFrom(files(listOf(javaClasses, kotlinClasses)))
+    classDirectories.setFrom(classDirs)
 
     val sources = subprojects.map { proj ->
         listOf(
@@ -148,12 +150,9 @@ tasks.create<JacocoReport>("allDebugCoverage") {
 
     sourceDirectories.setFrom(files(sources))
 
-    val executions = subprojects.filter { proj ->
-        val path = "${proj.buildDir}/jacoco/testDebugUnitTest.exec"
-        File(path).exists()
-    }.map { proj ->
-        "${proj.buildDir}/jacoco/testDebugUnitTest.exec"
-    }
+    val executions = subprojects
+        .map { proj -> proj.layout.buildDirectory.file("jacoco/testDebugUnitTest.exec").get().asFile }
+        .filter { it.exists() }
 
     executionData.setFrom(files(executions))
 }

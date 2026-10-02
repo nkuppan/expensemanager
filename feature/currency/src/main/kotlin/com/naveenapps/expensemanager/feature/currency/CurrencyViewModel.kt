@@ -17,7 +17,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class CurrencyViewModel(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
@@ -30,8 +29,8 @@ class CurrencyViewModel(
         CurrencyState(
             showCurrencySelection = false,
             numberFormatType = NumberFormatType.WITHOUT_ANY_SEPARATOR,
-            currency = getDefaultCurrencyUseCase()
-        )
+            currency = getDefaultCurrencyUseCase(),
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -53,9 +52,9 @@ class CurrencyViewModel(
                     currency = it.currency.copy(
                         name = currency.name,
                         symbol = currency.symbol,
-                        code = currency.code
+                        code = currency.code,
                     ),
-                    showCurrencySelection = false
+                    showCurrencySelection = false,
                 )
             }
             saveSelectedCurrency()
@@ -86,7 +85,6 @@ class CurrencyViewModel(
 
     fun processAction(action: CurrencyAction) {
         when (action) {
-
             CurrencyAction.ClosePage -> closePage()
 
             CurrencyAction.OpenCurrencySelection -> {

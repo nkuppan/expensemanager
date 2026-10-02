@@ -9,8 +9,6 @@ import com.naveenapps.expensemanager.core.data.repository.CurrencyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DateRangeFilterRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DevicePropertyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ExportRepositoryImpl
-import com.naveenapps.expensemanager.core.data.repository.export.CsvExportStrategy
-import com.naveenapps.expensemanager.core.data.repository.export.PdfExportStrategy
 import com.naveenapps.expensemanager.core.data.repository.FeedbackRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.FirebaseSettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ImageStorageRepositoryImpl
@@ -22,6 +20,8 @@ import com.naveenapps.expensemanager.core.data.repository.ShareRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ThemeRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.TransactionRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.VersionCheckerRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.export.CsvExportStrategy
+import com.naveenapps.expensemanager.core.data.repository.export.PdfExportStrategy
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
@@ -50,32 +50,32 @@ val RepositoryModule = module {
         ThemeRepositoryImpl(
             dataStore = get(),
             versionCheckerRepository = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
     single<LocaleRepository> {
         LocaleRepositoryImpl(
             dataStore = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
     single<AnalyticsRepository> {
         AnalyticsRepositoryImpl(
             firebaseAnalytics = get(),
-            devicePropertyRepository = get()
+            devicePropertyRepository = get(),
         )
     }
     single<JsonConverterRepository> {
         JsonConverterRepositoryImpl(
             gson = get(),
-            appCoroutineDispatchers = get()
+            appCoroutineDispatchers = get(),
         )
     }
     single<CountryRepository> {
         CountryRepositoryImpl(
             context = androidContext(),
             jsonConverterRepository = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
     single<CurrencyRepository> {
@@ -100,20 +100,20 @@ val RepositoryModule = module {
     single<AccountRepository> {
         AccountRepositoryImpl(
             accountDao = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
     single<BudgetRepository> {
         BudgetRepositoryImpl(
             budgetDao = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
     single<DateRangeFilterRepository> {
         DateRangeFilterRepositoryImpl(
             context = androidContext(),
             dataStore = get(),
-            dispatcher = get()
+            dispatcher = get(),
         )
     }
     single<ExportRepository> {
@@ -122,25 +122,26 @@ val RepositoryModule = module {
             strategies = listOf(
                 CsvExportStrategy(context = androidContext()),
                 PdfExportStrategy(context = androidContext()),
-            )
+            ),
         )
     }
     single<ReminderTimeRepository> {
         ReminderTimeRepositoryImpl(
             dataStore = get(),
-            dispatchers = get()
+            deviceLocalDataStore = get(),
+            dispatchers = get(),
         )
     }
     single<SettingsRepository> {
         SettingsRepositoryImpl(
             dataStore = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
     single<ShareRepository> {
         ShareRepositoryImpl(
             context = androidContext(),
-            firebaseSettingsRepository = get()
+            firebaseSettingsRepository = get(),
         )
     }
     single<TransactionRepository> {
@@ -148,13 +149,13 @@ val RepositoryModule = module {
             transactionDao = get(),
             accountDao = get(),
             categoryDao = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
     single<CategoryRepository> {
         CategoryRepositoryImpl(
             categoryDao = get(),
-            dispatchers = get()
+            dispatchers = get(),
         )
     }
 }

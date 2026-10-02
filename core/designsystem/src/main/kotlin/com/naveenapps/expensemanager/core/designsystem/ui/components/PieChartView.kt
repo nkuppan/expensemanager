@@ -156,9 +156,7 @@ private fun updatePieChartWithData(
 
             // Show category name instead of raw value
             valueFormatter = object : ValueFormatter() {
-                override fun getPieLabel(value: Float, pieEntry: PieEntry?): String {
-                    return pieEntry?.data?.toString() ?: ""
-                }
+                override fun getPieLabel(value: Float, pieEntry: PieEntry?): String = pieEntry?.data?.toString() ?: ""
             }
         } else {
             setDrawValues(false)

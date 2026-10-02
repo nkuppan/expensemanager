@@ -16,7 +16,7 @@ data class AccountUiModel(
 
 fun Account.toAccountUiModel(
     amount: Amount,
-    availableCreditLimit: Amount? = null
+    availableCreditLimit: Amount? = null,
 ) = AccountUiModel(
     id = this.id,
     name = this.name,
@@ -24,5 +24,5 @@ fun Account.toAccountUiModel(
     amount = amount,
     type = this.type,
     amountTextColor = this.amount.getAmountTextColor(),
-    availableCreditLimit = availableCreditLimit
+    availableCreditLimit = availableCreditLimit,
 )

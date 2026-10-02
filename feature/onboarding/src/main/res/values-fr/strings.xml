@@ -20,4 +20,9 @@
     <string name="track">Suivre</string>
     <string name="organize">Organiser</string>
     <string name="grow">Se développer</string>
+    <string name="onboarding_add_first_expense">Ajouter ma première dépense</string>
+    <string name="onboarding_explore_first">Découvrir l\'application d\'abord</string>
+    <string name="onboarding_reminder_title">Rappel quotidien</string>
+    <string name="onboarding_reminder_time">Tous les jours à %1$s</string>
+    <string name="onboarding_reminder_description">Un petit rappel pour noter vos dépenses</string>
 </resources>

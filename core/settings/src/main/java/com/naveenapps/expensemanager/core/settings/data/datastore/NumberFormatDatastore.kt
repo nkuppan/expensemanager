@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class NumberFormatSettingsDatastore(
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
 ) {
     suspend fun setNumberFormatType(type: NumberFormatType) = dataStore.edit { preferences ->
         preferences[KEY_NUMBER_FORMAT_TYPE] = type.ordinal

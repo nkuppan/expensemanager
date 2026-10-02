@@ -43,4 +43,17 @@
     <string name="app_lock_title">Mở khóa Expense Manager</string>
     <string name="app_lock_description">Xác minh danh tính của bạn để tiếp tục</string>
     <string name="app_lock_unlock">Mở khóa</string>
+
+    <string name="reminder_primer_title">Đừng bỏ lỡ khoản chi nào</string>
+    <string name="reminder_primer_description">Nhận một lời nhắc mỗi ngày để ghi lại những gì bạn đã chi. Chỉ mất vài giây và giúp ngân sách luôn chính xác.</string>
+    <string name="reminder_primer_turn_on">Bật nhắc nhở hằng ngày</string>
+    <string name="reminder_primer_not_now">Để sau</string>
+    <string name="reminder_primer_footnote">Bạn có thể đổi giờ hoặc tắt nhắc nhở bất cứ lúc nào trong Cài đặt.</string>
+    <string name="first_save_title">Đã lưu khoản chi đầu tiên!</string>
+    <string name="first_save_description">Khởi đầu tuyệt vời. Ghi chép chi tiêu trong 7 ngày và bạn sẽ thấy rõ tiền của mình đi đâu.</string>
+    <string name="first_save_progress">Ngày %1$d / %2$d</string>
+    <string name="first_save_add_another">Thêm khoản khác</string>
+    <string name="first_save_done">Xong</string>
+    <string name="shortcut_add_expense_short">Thêm khoản chi</string>
+    <string name="shortcut_add_expense_long">Thêm khoản chi mới</string>
 </resources>

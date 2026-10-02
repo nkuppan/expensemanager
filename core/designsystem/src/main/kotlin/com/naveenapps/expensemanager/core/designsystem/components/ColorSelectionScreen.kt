@@ -43,9 +43,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 val colors = listOf(
     // Reds
@@ -176,11 +176,11 @@ fun ColorSelectionScreen(
                                     Modifier.border(
                                         1.dp,
                                         Color.Black.copy(alpha = 0.12f),
-                                        CircleShape
+                                        CircleShape,
                                     )
                                 } else {
                                     Modifier
-                                }
+                                },
                             ),
                     )
                     Text(
@@ -236,7 +236,7 @@ fun ColorSelectionScreen(
                                 )
                             } else {
                                 Modifier
-                            }
+                            },
                         )
                         .then(
                             if (isSelected) {
@@ -247,7 +247,7 @@ fun ColorSelectionScreen(
                                 )
                             } else {
                                 Modifier
-                            }
+                            },
                         )
                         .clickable { onColorPicked?.invoke(parsedColorInt) },
                     contentAlignment = Alignment.Center,
@@ -284,7 +284,7 @@ private fun ColorSelectionPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         ColorSelectionScreen(
             selectedColorValue = colors[2].toColorInt(), // Example: Selects "#D32F2F"
-            onColorPicked = {}
+            onColorPicked = {},
         )
     }
 }

@@ -3,4 +3,17 @@
     <string name="notification_description">Не забудьте записать свои расходы</string>
     <string name="notification_title">Добавить операцию</string>
     <string name="notification_channel_description">Используется для напоминаний</string>
+    <string name="reminder_notification_title">Записали сегодняшние траты?</string>
+    <string name="reminder_notification_body">Это займёт пару секунд. Нажмите, чтобы добавить расход.</string>
+    <string name="reminder_action_add">Добавить расход</string>
+    <string name="reminder_action_no_spend">Сегодня без трат</string>
+    <string name="weekly_summary_title">Ваша неделя в цифрах</string>
+    <string name="weekly_summary_less">На этой неделе вы потратили %1$s — на %2$d%% меньше, чем на прошлой. Отлично!</string>
+    <string name="weekly_summary_more">На этой неделе вы потратили %1$s — на %2$d%% больше, чем на прошлой.</string>
+    <string name="weekly_summary_same">На этой неделе вы потратили %1$s — примерно как на прошлой.</string>
+    <string name="weekly_summary_first">На этой неделе вы потратили %1$s. Продолжайте записывать, чтобы сравнить со следующей.</string>
+    <string name="budget_alert_warning_title">%1$s: израсходовано 80%%</string>
+    <string name="budget_alert_warning_body">Потрачено %1$s из %2$s. Пора немного притормозить.</string>
+    <string name="budget_alert_over_title">%1$s: бюджет превышен</string>
+    <string name="budget_alert_over_body">Потрачено %1$s из бюджета %2$s.</string>
 </resources>

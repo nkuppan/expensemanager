@@ -5,4 +5,3 @@ import org.koin.dsl.module
 val CountryUseCaseModule = module {
     single { GetCountriesUseCase(repository = get()) }
 }
-

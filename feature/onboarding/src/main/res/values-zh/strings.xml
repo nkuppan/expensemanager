@@ -20,4 +20,9 @@
     <string name="track">追踪</string>
     <string name="organize">整理</string>
     <string name="grow">增长</string>
+    <string name="onboarding_add_first_expense">添加第一笔支出</string>
+    <string name="onboarding_explore_first">先看看应用</string>
+    <string name="onboarding_reminder_title">每日提醒</string>
+    <string name="onboarding_reminder_time">每天 %1$s</string>
+    <string name="onboarding_reminder_description">温和提醒您记录支出</string>
 </resources>

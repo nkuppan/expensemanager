@@ -63,13 +63,11 @@ private val coverageExclusions = listOf(
 )
 
 internal fun Project.configureJacoco() {
-
     configure<JacocoPluginExtension> {
         toolVersion = libs.findVersion("jacoco").get().toString()
     }
 
     tasks.register<JacocoReport>("debugCoverage") {
-
         dependsOn("testDebugUnitTest")
 
         group = "Reporting"
@@ -81,27 +79,31 @@ internal fun Project.configureJacoco() {
             html.required.set(true)
         }
 
-        val jClasses = "${buildDir}/intermediates/javac/debug/classes"
-        val kClasses = "${buildDir}/tmp/kotlin-classes/debug"
-        val javaClasses = fileTree(jClasses) { exclude(coverageExclusions) }
-        val kotlinClasses = fileTree(kClasses) { exclude(coverageExclusions) }
+        // Project.buildDir is deprecated in Gradle 9; use layout.buildDirectory.
+        // AGP 9's built-in Kotlin no longer writes to tmp/kotlin-classes, so the new built-in
+        // output path is listed alongside the old ones (missing directories are ignored).
+        // If coverage reports come out empty, check the real path with:
+        //   find <module>/build/intermediates -path "*debug*" -name "*.class" | head
+        val buildDirectory = layout.buildDirectory
+        val classDirs = listOf(
+            "intermediates/javac/debug/compileDebugJavaWithJavac/classes",
+            "intermediates/javac/debug/classes",
+            "intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes",
+            "tmp/kotlin-classes/debug",
+        ).map { path -> buildDirectory.dir(path).map { fileTree(it) { exclude(coverageExclusions) } } }
 
-        classDirectories.setFrom(files(javaClasses, kotlinClasses))
+        classDirectories.setFrom(classDirs)
 
         val sourceDirs = listOf(
-            "${projectDir}/src/main/java",
-            "${projectDir}/src/main/kotlin",
-            "${projectDir}/src/debug/java",
-            "${projectDir}/src/debug/kotlin",
+            "$projectDir/src/main/java",
+            "$projectDir/src/main/kotlin",
+            "$projectDir/src/debug/java",
+            "$projectDir/src/debug/kotlin",
         )
 
         sourceDirectories.setFrom(files(sourceDirs))
 
-        executionData.setFrom(
-            files(
-                listOf("${buildDir}/jacoco/testDebugUnitTest.exec"),
-            ),
-        )
+        executionData.setFrom(buildDirectory.file("jacoco/testDebugUnitTest.exec"))
     }
 
     tasks.withType<Test>().configureEach {

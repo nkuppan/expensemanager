@@ -9,9 +9,7 @@ class GetSelectedTransactionTypesUseCase(
     private val settingsRepository: SettingsRepository,
 ) {
 
-    operator fun invoke(): Flow<List<TransactionType>> {
-        return settingsRepository.getTransactionTypes().map {
-            it ?: emptyList()
-        }
+    operator fun invoke(): Flow<List<TransactionType>> = settingsRepository.getTransactionTypes().map {
+        it ?: emptyList()
     }
 }

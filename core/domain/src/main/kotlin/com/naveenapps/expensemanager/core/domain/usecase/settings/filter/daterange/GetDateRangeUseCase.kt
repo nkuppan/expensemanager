@@ -10,12 +10,10 @@ class GetDateRangeUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
-    operator fun invoke(): Flow<DateRangeModel> {
-        return combine(
-            dateRangeFilterRepository.getDateRangeFilterType(),
-            dateRangeFilterRepository.getDateRangeTimeFrame(),
-        ) { type, _ ->
-            getDateRangeByTypeUseCase.invoke(type)
-        }
+    operator fun invoke(): Flow<DateRangeModel> = combine(
+        dateRangeFilterRepository.getDateRangeFilterType(),
+        dateRangeFilterRepository.getDateRangeTimeFrame(),
+    ) { type, _ ->
+        getDateRangeByTypeUseCase.invoke(type)
     }
 }

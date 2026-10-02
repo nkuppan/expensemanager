@@ -12,17 +12,16 @@ import kotlinx.coroutines.flow.map
 
 class CurrencyDataStore(private val dataStore: DataStore<Preferences>) {
 
-    fun getCurrency(defaultCurrency: Currency): Flow<Currency> =
-        dataStore.data.map { preferences ->
-            val position =
-                preferences[KEY_CURRENCY_SYMBOL_POSITION] ?: defaultCurrency.position.ordinal
-            Currency(
-                name = preferences[KEY_CURRENCY_NAME] ?: defaultCurrency.name,
-                symbol = preferences[KEY_CURRENCY_SYMBOL] ?: defaultCurrency.symbol,
-                code = preferences[KEY_CURRENCY_CODE] ?: defaultCurrency.code,
-                position = CurrencyPosition.entries[position],
-            )
-        }
+    fun getCurrency(defaultCurrency: Currency): Flow<Currency> = dataStore.data.map { preferences ->
+        val position =
+            preferences[KEY_CURRENCY_SYMBOL_POSITION] ?: defaultCurrency.position.ordinal
+        Currency(
+            name = preferences[KEY_CURRENCY_NAME] ?: defaultCurrency.name,
+            symbol = preferences[KEY_CURRENCY_SYMBOL] ?: defaultCurrency.symbol,
+            code = preferences[KEY_CURRENCY_CODE] ?: defaultCurrency.code,
+            position = CurrencyPosition.entries[position],
+        )
+    }
 
     suspend fun setCurrency(
         name: String,

@@ -22,7 +22,7 @@ val defaultCurrency = Currency(
     name = DEFAULT_CURRENCY_NAME,
     symbol = DEFAULT_CURRENCY_SYMBOL,
     position = CurrencyPosition.SUFFIX,
-    code = DEFAULT_CURRENCY_CODE
+    code = DEFAULT_CURRENCY_CODE,
 )
 
 class CurrencyRepositoryImpl(
@@ -31,23 +31,19 @@ class CurrencyRepositoryImpl(
     private val numberFormatRepository: NumberFormatRepository,
 ) : CurrencyRepository {
 
-    override fun getDefaultCurrency(): Currency {
-        return defaultCurrency
-    }
+    override fun getDefaultCurrency(): Currency = defaultCurrency
 
     override suspend fun saveCurrency(currency: Currency): Boolean = withContext(dispatchers.io) {
         dataStore.setCurrency(
             name = currency.name,
             symbol = currency.symbol,
             position = currency.position.ordinal,
-            code = currency.code
+            code = currency.code,
         )
         true
     }
 
-    override fun getSelectedCurrency(): Flow<Currency> {
-        return dataStore.getCurrency(defaultCurrency = getDefaultCurrency())
-    }
+    override fun getSelectedCurrency(): Flow<Currency> = dataStore.getCurrency(defaultCurrency = getDefaultCurrency())
 
     override fun getFormattedCurrency(amount: Amount): Amount {
         val currency = amount.currency ?: getDefaultCurrency()
@@ -67,14 +63,13 @@ class CurrencyRepositoryImpl(
 
     private fun getCurrency(
         currency: Currency,
-        amount: Double
+        amount: Double,
     ): String {
-
         val currencyFormatted = numberFormatRepository.formatForDisplay(amount)
 
         return when (currency.position) {
             CurrencyPosition.PREFIX -> {
-                "${currency.symbol}${currencyFormatted}"
+                "${currency.symbol}$currencyFormatted"
             }
 
             CurrencyPosition.SUFFIX -> {
@@ -82,5 +77,4 @@ class CurrencyRepositoryImpl(
             }
         }
     }
-
 }

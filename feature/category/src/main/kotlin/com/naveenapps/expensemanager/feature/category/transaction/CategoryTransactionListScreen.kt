@@ -57,18 +57,21 @@ import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
-import org.koin.compose.viewmodel.koinViewModel
 import kotlin.random.Random
-
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CategoryTransactionTabScreen(
-    viewModel: CategoryTransactionListViewModel = koinViewModel()
+    // False inside Home's tabs, where the bottom bar's centre "+" adds a transaction instead.
+    showAddButton: Boolean = true,
+    viewModel: CategoryTransactionListViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
     CategoryTransactionTabScreenContent(
-        state = state, onAction = viewModel::processAction
+        state = state,
+        onAction = viewModel::processAction,
+        showAddButton = showAddButton,
     )
 }
 
@@ -77,6 +80,7 @@ fun CategoryTransactionTabScreen(
 fun CategoryTransactionTabScreenContent(
     state: UiState<CategoryTransactionState>,
     onAction: (CategoryTransactionAction) -> Unit,
+    showAddButton: Boolean = true,
 ) {
     Scaffold(
         topBar = {
@@ -95,20 +99,22 @@ fun CategoryTransactionTabScreenContent(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    onAction.invoke(CategoryTransactionAction.OpenTransactionCreate)
-                },
-                shape = RoundedCornerShape(16.dp),
-                containerColor = MaterialTheme.colorScheme.primary,
-                elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 10.dp,
-                ),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "",
-                )
+            if (showAddButton) {
+                FloatingActionButton(
+                    onClick = {
+                        onAction.invoke(CategoryTransactionAction.OpenTransactionCreate)
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    elevation = FloatingActionButtonDefaults.elevation(
+                        defaultElevation = 10.dp,
+                    ),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "",
+                    )
+                }
             }
         },
     ) { innerPadding ->
@@ -199,8 +205,13 @@ private fun CategoryTransactionListScreenContent(
                             horizontalAlignment = Alignment.CenterHorizontally,
                         ) {
                             PieChartView(
-                                totalAmountText = (if (isExpense) stringResource(id = R.string.expense)
-                                else stringResource(id = R.string.income)) + "\n" + state.data.totalAmount.amountString,
+                                totalAmountText = (
+                                    if (isExpense) {
+                                        stringResource(id = R.string.expense)
+                                    } else {
+                                        stringResource(id = R.string.income)
+                                    }
+                                    ) + "\n" + state.data.totalAmount.amountString,
                                 chartData = state.data.pieChartData.map {
                                     PieChartUiData(
                                         it.titleResId?.let { resId -> stringResource(resId) } ?: it.name,
@@ -219,8 +230,8 @@ private fun CategoryTransactionListScreenContent(
 
                             // Tap hint
                             Text(
-                                text = stringResource(R.string.tap_chart_to_switch_to)
-                                        + getCategoryGroupTitleInverted(isExpense),
+                                text = stringResource(R.string.tap_chart_to_switch_to) +
+                                    getCategoryGroupTitleInverted(isExpense),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
                                 modifier = Modifier.padding(bottom = 14.dp),
@@ -249,7 +260,7 @@ private fun CategoryTransactionListScreenContent(
                             text = pluralStringResource(
                                 R.plurals.category_count,
                                 categoryTransactions.size,
-                                categoryTransactions.size
+                                categoryTransactions.size,
                             ),
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
@@ -271,7 +282,6 @@ private fun CategoryTransactionListScreenContent(
                         )
                     }
                 } else {
-
                     // ── Category list — single grouped card ────────
                     item(key = "category_list") {
                         Column(
@@ -286,8 +296,8 @@ private fun CategoryTransactionListScreenContent(
                                         .padding(start = 16.dp, end = 16.dp, bottom = 2.dp),
                                     shape = AppCardViewDefaults.cardShape(
                                         index,
-                                        categoryTransactions
-                                    )
+                                        categoryTransactions,
+                                    ),
                                 ) {
                                     CategoryTransactionItem(
                                         modifier = Modifier
@@ -314,18 +324,14 @@ private fun CategoryTransactionListScreenContent(
 }
 
 @Composable
-private fun getCategoryGroupTitle(isExpense: Boolean): String {
-    return if (isExpense) {
-        stringResource(R.string.expense)
-    } else {
-        stringResource(R.string.income)
-    }
+private fun getCategoryGroupTitle(isExpense: Boolean): String = if (isExpense) {
+    stringResource(R.string.expense)
+} else {
+    stringResource(R.string.income)
 }
 
 @Composable
-private fun getCategoryGroupTitleInverted(isExpense: Boolean): String {
-    return getCategoryGroupTitle(isExpense.not())
-}
+private fun getCategoryGroupTitleInverted(isExpense: Boolean): String = getCategoryGroupTitle(isExpense.not())
 
 // ═══════════════════════════════════════════════════════════════════════
 //  Preview data
@@ -338,29 +344,25 @@ val getPieChartData = listOf(
     PieChartData("Internet Explorer", 15.62F, "#121212"),
 )
 
-fun getRandomCategoryTransactionData(): CategoryTransactionState {
-    return CategoryTransactionState(
-        pieChartData = emptyList(),
-        totalAmount = Amount(300.0, "300.00$"),
-        categoryTransactions = buildList {
-            repeat(15) {
-                add(
-                    CategoryTransaction(
-                        category = getCategoryData(it, CategoryType.EXPENSE),
-                        amount = Amount(300.0, "300.00$"),
-                        percent = Random(100).nextFloat(),
-                        transaction = emptyList(),
-                    ),
-                )
-            }
-        },
-        categoryType = CategoryType.EXPENSE,
-    )
-}
+fun getRandomCategoryTransactionData(): CategoryTransactionState = CategoryTransactionState(
+    pieChartData = emptyList(),
+    totalAmount = Amount(300.0, "300.00$"),
+    categoryTransactions = buildList {
+        repeat(15) {
+            add(
+                CategoryTransaction(
+                    category = getCategoryData(it, CategoryType.EXPENSE),
+                    amount = Amount(300.0, "300.00$"),
+                    percent = Random(100).nextFloat(),
+                    transaction = emptyList(),
+                ),
+            )
+        }
+    },
+    categoryType = CategoryType.EXPENSE,
+)
 
-fun getUiState(): UiState<CategoryTransactionState> {
-    return UiState.Success(data = getRandomCategoryTransactionData())
-}
+fun getUiState(): UiState<CategoryTransactionState> = UiState.Success(data = getRandomCategoryTransactionData())
 
 @AppPreviewsLightAndDarkMode
 @Composable

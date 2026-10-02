@@ -15,4 +15,6 @@ dependencies {
     implementation(project(":feature:category"))
     implementation(project(":feature:filter"))
     implementation(project(":feature:transaction"))
+    // Streak card flame icon (R8 strips the unused icons from release builds).
+    implementation(libs.androidx.compose.material.iconsExtended)
 }

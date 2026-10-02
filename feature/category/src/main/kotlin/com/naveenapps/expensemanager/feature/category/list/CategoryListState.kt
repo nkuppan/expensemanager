@@ -8,5 +8,5 @@ data class CategoryListState(
     val categories: List<Category>,
     val filteredCategories: List<Category>,
     val selectedTab: CategoryTabItems,
-    val tabs: List<CategoryTabItems>
+    val tabs: List<CategoryTabItems>,
 )

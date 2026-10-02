@@ -43,4 +43,17 @@
     <string name="app_lock_title">Разблокировать Expense Manager</string>
     <string name="app_lock_description">Подтвердите личность, чтобы продолжить</string>
     <string name="app_lock_unlock">Разблокировать</string>
+
+    <string name="reminder_primer_title">Не пропускайте ни одного расхода</string>
+    <string name="reminder_primer_description">Получайте одно напоминание в день, чтобы записать траты. Это занимает пару секунд и помогает держать бюджет точным.</string>
+    <string name="reminder_primer_turn_on">Включить ежедневное напоминание</string>
+    <string name="reminder_primer_not_now">Не сейчас</string>
+    <string name="reminder_primer_footnote">Время можно изменить или отключить напоминание в любой момент в настройках.</string>
+    <string name="first_save_title">Первый расход сохранён!</string>
+    <string name="first_save_description">Отличное начало. Записывайте траты 7 дней — и вы точно увидите, куда уходят деньги.</string>
+    <string name="first_save_progress">День %1$d из %2$d</string>
+    <string name="first_save_add_another">Добавить ещё</string>
+    <string name="first_save_done">Готово</string>
+    <string name="shortcut_add_expense_short">Добавить расход</string>
+    <string name="shortcut_add_expense_long">Добавить новый расход</string>
 </resources>

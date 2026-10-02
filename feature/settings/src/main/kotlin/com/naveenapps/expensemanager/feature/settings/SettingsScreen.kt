@@ -1,5 +1,10 @@
 package com.naveenapps.expensemanager.feature.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -54,8 +59,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
@@ -73,15 +78,20 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SettingsScreen(
     shareRepository: ShareRepository,
     backupRepository: BackupRepository,
-    viewModel: SettingsViewModel = koinViewModel()
+    viewModel: SettingsViewModel = koinViewModel(),
 ) {
-
     val state by viewModel.state.collectAsState()
+
+    val context = LocalContext.current
 
     ObserveAsEvents(viewModel.event) {
         when (it) {
             SettingEvent.RateUs -> {
                 shareRepository.openRateUs()
+            }
+
+            SettingEvent.ShareApp -> {
+                context.shareApp()
             }
 
             SettingEvent.Backup -> {
@@ -96,7 +106,7 @@ fun SettingsScreen(
 
     SettingsScreenScaffoldView(
         state = state,
-        onAction = viewModel::processAction
+        onAction = viewModel::processAction,
     )
 }
 
@@ -319,6 +329,13 @@ private fun SettingsScreenContent(
                     showDivider = true,
                 )
                 SettingRow(
+                    onClick = { onAction.invoke(SettingAction.ShareApp) },
+                    title = stringResource(id = R.string.share_app),
+                    subtitle = stringResource(id = R.string.share_app_message),
+                    icon = Icons.Outlined.Share,
+                    showDivider = true,
+                )
+                SettingRow(
                     onClick = { onAction.invoke(SettingAction.OpenAboutUs) },
                     title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
                     subtitle = stringResource(id = R.string.about_the_app_information),
@@ -413,7 +430,9 @@ private fun DropdownSettingItem(
                                 modifier = Modifier.size(18.dp),
                             )
                         }
-                    } else null,
+                    } else {
+                        null
+                    },
                     onClick = {
                         onItemSelected(index)
                         expanded = false
@@ -424,7 +443,6 @@ private fun DropdownSettingItem(
     }
 }
 
-
 @AppPreviewsLightAndDarkMode
 @Composable
 fun SettingsScreenPreview() {
@@ -433,9 +451,27 @@ fun SettingsScreenPreview() {
             state = SettingState(
                 currency = Currency("$", "US Dollar"),
                 theme = null,
-                showThemeSelection = false
+                showThemeSelection = false,
             ),
-            onAction = {}
+            onAction = {},
         )
     }
 }
+
+/** Play Store listing of the release app (not the ".debug" package a debug build runs as). */
+private const val PLAY_STORE_URL =
+    "https://play.google.com/store/apps/details?id=com.naveenapps.expensemanager"
+
+/** Word-of-mouth: share a short pitch plus the store link through any app. */
+private fun Context.shareApp() {
+    val send = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_text, PLAY_STORE_URL))
+    }
+    try {
+        startActivity(Intent.createChooser(send, getString(R.string.share_app)))
+    } catch (_: ActivityNotFoundException) {
+        // Nothing can receive a share; ignore.
+    }
+}
+

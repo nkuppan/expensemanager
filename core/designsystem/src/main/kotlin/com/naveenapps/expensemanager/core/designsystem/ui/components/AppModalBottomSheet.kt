@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 fun SafeModalBottomSheet(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     // SheetState is fully internal — callers cannot misuse it
     val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
+        skipPartiallyExpanded = true,
     )
 
     var isLayoutReady by remember { mutableStateOf(false) }

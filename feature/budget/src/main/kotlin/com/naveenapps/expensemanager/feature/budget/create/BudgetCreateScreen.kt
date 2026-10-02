@@ -40,7 +40,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDate
 import com.naveenapps.expensemanager.core.common.utils.fromYear
@@ -49,6 +48,7 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
@@ -65,14 +65,13 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BudgetCreateScreen(
-    viewModel: BudgetCreateViewModel = koinViewModel()
+    viewModel: BudgetCreateViewModel = koinViewModel(),
 ) {
-
     val state by viewModel.state.collectAsState()
 
     BudgetCreateScreenContentView(
@@ -124,7 +123,7 @@ private fun BudgetCreateScreenContentView(
                 selectedCategories = state.selectedCategories,
                 onItemSelection = { items, selected ->
                     onAction.invoke(BudgetCreateAction.SelectCategories(selected, items))
-                }
+                },
             )
         }
     }
@@ -186,10 +185,11 @@ private fun BudgetCreateScreenContentView(
                 navigationBackClick = {
                     onAction.invoke(BudgetCreateAction.ClosePage)
                 },
-                title = if (state.showDeleteButton)
+                title = if (state.showDeleteButton) {
                     stringResource(R.string.edit_budget)
-                else
-                    stringResource(R.string.create_budget),
+                } else {
+                    stringResource(R.string.create_budget)
+                },
                 actions = {
                     if (state.showDeleteButton) {
                         IconButton(onClick = { onAction.invoke(BudgetCreateAction.ShowDeleteDialog) }) {
@@ -260,7 +260,7 @@ fun BudgetCreateScreen(
 
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SettingsSection(
             title = stringResource(R.string.budget_for),
@@ -328,7 +328,7 @@ fun BudgetCreateScreen(
             AppCardView {
                 Column(
                     modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     DecimalTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -354,7 +354,7 @@ fun BudgetCreateScreen(
                         onClick = {
                             onAction.invoke(BudgetCreateAction.OpenAccountSelectionDialog)
                         },
-                        showDivider = true
+                        showDivider = true,
                     )
                     SettingRow(
                         modifier = Modifier.fillMaxWidth(),
@@ -363,12 +363,11 @@ fun BudgetCreateScreen(
                         value = categoriesCount,
                         onClick = {
                             onAction.invoke(BudgetCreateAction.OpenCategorySelectionDialog)
-                        }
+                        },
                     )
                 }
             }
         }
-
 
         // FAB clearance
         Spacer(modifier = Modifier.height(72.dp))
@@ -381,12 +380,12 @@ private fun BudgetCreateStatePreview() {
     val amountField = TextFieldValue(
         value = "0.0",
         valueError = false,
-        onValueChange = { }
+        onValueChange = { },
     )
     val dateField = TextFieldValue(
         value = Date(),
         valueError = false,
-        onValueChange = { }
+        onValueChange = { },
     )
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         BudgetCreateScreenContentView(

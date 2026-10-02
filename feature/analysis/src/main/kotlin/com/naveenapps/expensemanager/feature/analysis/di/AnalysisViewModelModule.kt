@@ -16,4 +16,3 @@ val AnalysisViewModelModule = module {
         )
     }
 }
-

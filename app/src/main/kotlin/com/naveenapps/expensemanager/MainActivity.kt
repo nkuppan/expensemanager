@@ -1,13 +1,14 @@
 package com.naveenapps.expensemanager
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.CompositionLocalProvider
@@ -28,6 +29,9 @@ import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.ui.AppLockScreen
 import com.naveenapps.expensemanager.ui.MainScreen
 import kotlinx.coroutines.flow.collectLatest
@@ -38,9 +42,13 @@ import org.koin.androidx.scope.activityScope
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.scope.Scope
 
-internal class MainActivity : AppCompatActivity(), AndroidScopeComponent {
+internal class MainActivity :
+    AppCompatActivity(),
+    AndroidScopeComponent {
 
     private val appComposeNavigator: AppComposeNavigator by inject()
+
+    private val analyticsRepository: AnalyticsRepository by inject()
 
     override val scope: Scope by activityScope()
 
@@ -57,13 +65,19 @@ internal class MainActivity : AppCompatActivity(), AndroidScopeComponent {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
 
         activityComponentProvider.getBackupRepository()
+
+        QuickAdd.publishShortcut(applicationContext)
+
+        // Only on a fresh launch: a recreated Activity re-delivers the same intent.
+        if (savedInstanceState == null) {
+            handleQuickAdd(intent)
+        }
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -89,6 +103,7 @@ internal class MainActivity : AppCompatActivity(), AndroidScopeComponent {
                 val onBoardingStatus by viewModel.onboardingStatus.collectAsState()
                 val isAppLockEnabled by viewModel.isAppLockEnabled.collectAsState()
                 val isAuthenticated by viewModel.isAuthenticated.collectAsState()
+                val pendingQuickAdd by viewModel.pendingQuickAdd.collectAsState()
                 val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
                 if (onBoardingStatus != null) {
@@ -107,13 +122,37 @@ internal class MainActivity : AppCompatActivity(), AndroidScopeComponent {
                             landingScreen = if (onBoardingStatus == true) {
                                 ExpenseManagerScreens.Home
                             } else {
-                                ExpenseManagerScreens.IntroScreen
-                            }
+                                // Single first-run screen (Intro + Setup were merged).
+                                ExpenseManagerScreens.Onboarding
+                            },
+                            // Behind the app lock this waits until MainScreen exists (unlocked).
+                            // Before onboarding there's nowhere sensible to add, so just drop it.
+                            pendingQuickAdd = pendingQuickAdd && onBoardingStatus == true,
+                            onQuickAddHandled = viewModel::onQuickAddHandled,
                         )
                     }
                 }
             }
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleQuickAdd(intent)
+    }
+
+    /** Widget "+", launcher shortcut or reminder tap: open straight on the keypad. */
+    private fun handleQuickAdd(intent: Intent?) {
+        val source = QuickAdd.sourceOf(intent) ?: return
+        if (source == QuickAdd.SOURCE_REMINDER) {
+            analyticsRepository.logEvent(AnalyticsEvents.REMINDER_OPENED, emptyMap())
+        }
+        analyticsRepository.logEvent(
+            AnalyticsEvents.QUICK_ADD_OPENED,
+            mapOf(AnalyticsParams.SOURCE to source),
+        )
+        viewModel.requestQuickAdd()
     }
 
     override fun onStart() {

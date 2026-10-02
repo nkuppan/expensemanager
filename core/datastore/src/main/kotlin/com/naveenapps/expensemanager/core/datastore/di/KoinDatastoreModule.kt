@@ -2,6 +2,7 @@ import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.datastore.DateRangeDataStore
+import com.naveenapps.expensemanager.core.datastore.DeviceLocalDataStore
 import com.naveenapps.expensemanager.core.datastore.FeedbackDataStore
 import com.naveenapps.expensemanager.core.datastore.LocaleDataStore
 import com.naveenapps.expensemanager.core.datastore.ReminderTimeDataStore
@@ -14,6 +15,9 @@ private const val DATA_STORE_NAME = "expense_manager_app_data_store"
 
 private val Context.dataStore by preferencesDataStore(DATA_STORE_NAME)
 
+// Not backed up (see DeviceLocalDataStore).
+private val Context.deviceLocalDataStore by preferencesDataStore(DeviceLocalDataStore.FILE_NAME)
+
 val DatastoreModule = module {
     single { androidContext().dataStore }
     single { ThemeDataStore(get()) }
@@ -23,5 +27,6 @@ val DatastoreModule = module {
     single { SettingsDataStore(get()) }
     single { DateRangeDataStore(get()) }
     single { FeedbackDataStore(get()) }
+    // Built directly (not via get()) so it can never pick up the backed-up DataStore by type.
+    single { DeviceLocalDataStore(androidContext().deviceLocalDataStore) }
 }
-

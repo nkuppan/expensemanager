@@ -28,7 +28,6 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenCategoryAvailableItShouldReflectOnSelectedCategories() = runTest {
-
         categorySelectionViewModel.categories.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()
@@ -46,7 +45,6 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenClearSelectedCategoryItShouldReflectOnSelectedCategoriesSize() = runTest {
-
         categorySelectionViewModel.selectedCategories.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()
@@ -63,7 +61,6 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenChangingSelectionOfTheCategoryItShouldReflectOnSelectedCategoriesSize() = runTest {
-
         categorySelectionViewModel.selectedCategories.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()
@@ -83,13 +80,11 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
             Truth.assertThat(thirdItem).isNotNull()
             Truth.assertThat(thirdItem).isNotEmpty()
             Truth.assertThat(thirdItem).hasSize(5)
-
         }
     }
 
     @Test
     fun whenSelectingListOfCategoryShouldReplacedExisting() = runTest {
-
         categorySelectionViewModel.selectedCategories.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()
@@ -109,7 +104,6 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun whenSelectingEmptyListOfCategoryShouldNotReplacedExisting() = runTest {
-
         categorySelectionViewModel.selectedCategories.test {
             val firstItem = awaitItem()
             Truth.assertThat(firstItem).isNotNull()

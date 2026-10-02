@@ -21,17 +21,19 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
+import java.util.Calendar
+import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Calendar
-import java.util.UUID
-
 
 class AccountCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -45,6 +47,7 @@ class AccountCreateViewModel(
     private val imageStorageRepository: ImageStorageRepository,
     private val composeNavigator: AppComposeNavigator,
     private val numberFormatRepository: NumberFormatRepository,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val sessionCreatedImagePaths = mutableListOf<String>()
@@ -54,39 +57,39 @@ class AccountCreateViewModel(
             name = TextFieldValue(
                 value = "",
                 valueError = false,
-                onValueChange = this::setNameChange
+                onValueChange = this::setNameChange,
             ),
             type = TextFieldValue(
                 value = AccountType.REGULAR,
                 valueError = false,
-                onValueChange = this::setAccountTypeChange
+                onValueChange = this::setAccountTypeChange,
             ),
             amount = TextFieldValue(
                 value = "",
                 valueError = false,
-                onValueChange = this::setAmount
+                onValueChange = this::setAmount,
             ),
             color = TextFieldValue(
                 value = DEFAULT_COLOR,
                 valueError = false,
-                onValueChange = this::setColorValue
+                onValueChange = this::setColorValue,
             ),
             icon = TextFieldValue(
                 value = DEFAULT_ICON,
                 valueError = false,
-                onValueChange = this::setIconValue
+                onValueChange = this::setIconValue,
             ),
             creditLimit = TextFieldValue(
                 value = "",
                 valueError = false,
-                onValueChange = this::setCreditLimitChange
+                onValueChange = this::setCreditLimitChange,
             ),
             totalAmountBackgroundColor = R.color.green_500,
             currency = getDefaultCurrencyUseCase.invoke(),
             totalAmount = "",
             showDeleteButton = false,
             showDeleteDialog = false,
-        )
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -103,7 +106,7 @@ class AccountCreateViewModel(
                     currency = currency,
                     totalAmount = getAmountValue(totalAmount, currency).amountString
                         ?: "",
-                    totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount)
+                    totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
                 )
             }
         }.launchIn(viewModelScope)
@@ -115,9 +118,8 @@ class AccountCreateViewModel(
 
     private fun getAmountValue(
         amount: Double,
-        currency: Currency? = null
+        currency: Currency? = null,
     ): Amount {
-
         val selectedCurrency = currency ?: _state.value.currency
 
         return getFormattedAmountUseCase.invoke(
@@ -141,10 +143,10 @@ class AccountCreateViewModel(
                     color = it.color.copy(value = accountItem.storedIcon.backgroundColor),
                     icon = it.icon.copy(value = accountItem.storedIcon.name),
                     amount = it.amount.copy(
-                        value = numberFormatRepository.formatForEditing(accountItem.amount)
+                        value = numberFormatRepository.formatForEditing(accountItem.amount),
                     ),
                     creditLimit = it.creditLimit.copy(
-                        value = numberFormatRepository.formatForEditing(accountItem.creditLimit)
+                        value = numberFormatRepository.formatForEditing(accountItem.creditLimit),
                     ),
                     totalAmount = getAmountValue(totalAmount, _state.value.currency).amountString
                         ?: "",
@@ -156,12 +158,10 @@ class AccountCreateViewModel(
         }
     }
 
-    private fun getBalanceBackgroundColor(totalAmount: Double): Int {
-        return if (totalAmount < 0) {
-            R.color.red_500
-        } else {
-            R.color.green_500
-        }
+    private fun getBalanceBackgroundColor(totalAmount: Double): Int = if (totalAmount < 0) {
+        R.color.red_500
+    } else {
+        R.color.green_500
     }
 
     private fun readAccountInfo(accountId: String?) {
@@ -169,6 +169,7 @@ class AccountCreateViewModel(
         viewModelScope.launch {
             when (val response = findAccountByIdUseCase.invoke(accountId)) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     updateAccountInfo(response.data)
                 }
@@ -181,6 +182,7 @@ class AccountCreateViewModel(
             account?.let { account ->
                 when (deleteAccountUseCase.invoke(account)) {
                     is Resource.Error -> Unit
+
                     is Resource.Success -> {
                         account.storedIcon.customImagePath?.let {
                             imageStorageRepository.deleteAccountImage(it)
@@ -214,9 +216,11 @@ class AccountCreateViewModel(
             isError = true
         }
 
-        if (accountType == AccountType.CREDIT && (creditLimit.isBlank() || numberFormatRepository.parseToDouble(
-                creditLimit
-            ) == null)
+        if (accountType == AccountType.CREDIT && (
+                creditLimit.isBlank() || numberFormatRepository.parseToDouble(
+                    creditLimit,
+                ) == null
+                )
         ) {
             _state.update { it.copy(name = it.creditLimit.copy(valueError = true)) }
             isError = true
@@ -243,12 +247,13 @@ class AccountCreateViewModel(
             },
             createdOn = Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time,
-            sequence = account?.sequence ?: Int.MAX_VALUE
+            sequence = account?.sequence ?: Int.MAX_VALUE,
         )
 
         viewModelScope.launch {
             val previouslyPersistedImagePath =
                 this@AccountCreateViewModel.account?.storedIcon?.customImagePath
+            val isNewAccount = this@AccountCreateViewModel.account == null
             val response = if (this@AccountCreateViewModel.account != null) {
                 updateAccountUseCase(account)
             } else {
@@ -256,7 +261,14 @@ class AccountCreateViewModel(
             }
             when (response) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
+                    if (isNewAccount) {
+                        analyticsRepository.logEvent(
+                            AnalyticsEvents.ACCOUNT_CREATED,
+                            mapOf(AnalyticsParams.TYPE to account.type.name.lowercase()),
+                        )
+                    }
                     if (previouslyPersistedImagePath != null &&
                         previouslyPersistedImagePath != customImagePath
                     ) {
@@ -315,46 +327,40 @@ class AccountCreateViewModel(
     }
 
     private fun setAmount(amount: String) {
-
         val totalAmount = (numberFormatRepository.parseToDouble(amount) ?: 0.0) + getCreditAmount()
 
         _state.update {
             it.copy(
                 amount = it.amount.copy(value = amount, valueError = amount.isBlank()),
                 totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
-                totalAmount = getAmountValue(totalAmount).amountString ?: ""
+                totalAmount = getAmountValue(totalAmount).amountString ?: "",
             )
         }
     }
 
-    private fun getCreditAmount(): Double {
-        return if (_state.value.type.value == AccountType.CREDIT) {
-            numberFormatRepository.parseToDouble(_state.value.creditLimit.value) ?: 0.0
-        } else {
-            0.0
-        }
+    private fun getCreditAmount(): Double = if (_state.value.type.value == AccountType.CREDIT) {
+        numberFormatRepository.parseToDouble(_state.value.creditLimit.value) ?: 0.0
+    } else {
+        0.0
     }
 
     private fun setCreditLimitChange(creditLimit: String) {
-
         val totalAmount = getTotalAmount(creditLimit, _state.value.amount.value)
 
         _state.update {
             it.copy(
                 creditLimit = it.creditLimit.copy(
                     value = creditLimit,
-                    valueError = creditLimit.isBlank()
+                    valueError = creditLimit.isBlank(),
                 ),
                 totalAmountBackgroundColor = getBalanceBackgroundColor(totalAmount),
-                totalAmount = getAmountValue(totalAmount).amountString ?: ""
+                totalAmount = getAmountValue(totalAmount).amountString ?: "",
             )
         }
     }
 
-    private fun getTotalAmount(creditLimit: String, accountAmount: String): Double {
-        return (numberFormatRepository.parseToDouble(creditLimit) ?: 0.0) +
-                (numberFormatRepository.parseToDouble(accountAmount) ?: 0.0)
-    }
+    private fun getTotalAmount(creditLimit: String, accountAmount: String): Double = (numberFormatRepository.parseToDouble(creditLimit) ?: 0.0) +
+        (numberFormatRepository.parseToDouble(accountAmount) ?: 0.0)
 
     private fun dismissDeleteDialog() {
         _state.update { it.copy(showDeleteDialog = false) }

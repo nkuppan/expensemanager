@@ -6,7 +6,5 @@ import com.naveenapps.expensemanager.core.repository.LocaleRepository
 
 class SaveLocaleUseCase(private val repository: LocaleRepository) {
 
-    suspend operator fun invoke(locale: AppLocale): Resource<Boolean> {
-        return Resource.Success(repository.saveLocale(locale))
-    }
+    suspend operator fun invoke(locale: AppLocale): Resource<Boolean> = Resource.Success(repository.saveLocale(locale))
 }

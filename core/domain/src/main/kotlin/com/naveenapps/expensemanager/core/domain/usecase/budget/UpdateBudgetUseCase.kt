@@ -9,15 +9,13 @@ class UpdateBudgetUseCase(
     private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase,
 ) {
 
-    suspend operator fun invoke(budget: Budget): Resource<Boolean> {
-        return when (val validationResult = checkBudgetValidateUseCase(budget)) {
-            is Resource.Error -> {
-                validationResult
-            }
+    suspend operator fun invoke(budget: Budget): Resource<Boolean> = when (val validationResult = checkBudgetValidateUseCase(budget)) {
+        is Resource.Error -> {
+            validationResult
+        }
 
-            is Resource.Success -> {
-                repository.updateBudget(budget)
-            }
+        is Resource.Success -> {
+            repository.updateBudget(budget)
         }
     }
 }

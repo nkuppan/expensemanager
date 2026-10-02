@@ -25,17 +25,18 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
+import java.util.Calendar
+import java.util.Date
+import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Calendar
-import java.util.Date
-import java.util.UUID
-
 
 class BudgetCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -49,6 +50,7 @@ class BudgetCreateViewModel(
     private val deleteBudgetUseCase: DeleteBudgetUseCase,
     private val appComposeNavigator: AppComposeNavigator,
     private val numberFormatRepository: NumberFormatRepository,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -57,12 +59,12 @@ class BudgetCreateViewModel(
             amount = TextFieldValue(
                 value = "",
                 valueError = false,
-                onValueChange = this::setAmountChange
+                onValueChange = this::setAmountChange,
             ),
             month = TextFieldValue(
                 value = Date(),
                 valueError = false,
-                onValueChange = this::setDateChange
+                onValueChange = this::setDateChange,
             ),
             periodType = BudgetPeriod.MONTHLY,
             currency = getDefaultCurrencyUseCase.invoke(),
@@ -74,8 +76,8 @@ class BudgetCreateViewModel(
             showDeleteDialog = false,
             showAccountSelectionDialog = false,
             showCategorySelectionDialog = false,
-            showMonthSelection = false
-        )
+            showMonthSelection = false,
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -97,6 +99,7 @@ class BudgetCreateViewModel(
         val accounts = budget.accounts.map {
             return@map when (val response = findAccountByIdUseCase.invoke(it)) {
                 is Resource.Error -> null
+
                 is Resource.Success -> {
                     val data = response.data
                     data.toAccountUiModel(
@@ -147,6 +150,7 @@ class BudgetCreateViewModel(
         viewModelScope.launch {
             when (val response = findBudgetByIdUseCase.invoke(budgetId)) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     updateBudgetInfo(response.data)
                 }
@@ -159,6 +163,7 @@ class BudgetCreateViewModel(
             budget?.let { budget ->
                 when (deleteBudgetUseCase.invoke(budget)) {
                     is Resource.Error -> Unit
+
                     is Resource.Success -> {
                         closePage()
                     }
@@ -204,6 +209,7 @@ class BudgetCreateViewModel(
             updatedOn = Calendar.getInstance().time,
         )
 
+        val isNewBudget = this@BudgetCreateViewModel.budget == null
         viewModelScope.launch {
             val response = if (this@BudgetCreateViewModel.budget != null) {
                 updateBudgetUseCase(budget)
@@ -212,7 +218,11 @@ class BudgetCreateViewModel(
             }
             when (response) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
+                    if (isNewBudget) {
+                        analyticsRepository.logEvent(AnalyticsEvents.BUDGET_CREATED, emptyMap())
+                    }
                     closePage()
                 }
             }
@@ -225,8 +235,8 @@ class BudgetCreateViewModel(
             it.copy(
                 amount = it.amount.copy(
                     value = amount,
-                    valueError = amountValue == null || amountValue == 0.0
-                )
+                    valueError = amountValue == null || amountValue == 0.0,
+                ),
             )
         }
     }
@@ -235,7 +245,7 @@ class BudgetCreateViewModel(
         _state.update {
             it.copy(
                 month = it.month.copy(value = date),
-                showMonthSelection = false
+                showMonthSelection = false,
             )
         }
     }
@@ -249,7 +259,7 @@ class BudgetCreateViewModel(
             it.copy(
                 isAllAccountSelected = isAllSelected,
                 selectedAccounts = selectedAccounts,
-                showAccountSelectionDialog = false
+                showAccountSelectionDialog = false,
             )
         }
     }
@@ -259,7 +269,7 @@ class BudgetCreateViewModel(
             it.copy(
                 isAllCategorySelected = isAllSelected,
                 selectedCategories = selectedCategories,
-                showCategorySelectionDialog = false
+                showCategorySelectionDialog = false,
             )
         }
     }
@@ -271,7 +281,7 @@ class BudgetCreateViewModel(
     private fun closeAccountSelection() {
         _state.update {
             it.copy(
-                showAccountSelectionDialog = false
+                showAccountSelectionDialog = false,
             )
         }
     }
@@ -279,7 +289,7 @@ class BudgetCreateViewModel(
     private fun openAccountSelection() {
         _state.update {
             it.copy(
-                showAccountSelectionDialog = true
+                showAccountSelectionDialog = true,
             )
         }
     }
@@ -319,27 +329,37 @@ class BudgetCreateViewModel(
     fun processAction(action: BudgetCreateAction) {
         when (action) {
             BudgetCreateAction.ClosePage -> closePage()
+
             is BudgetCreateAction.SelectPeriodType -> setPeriodType(action.periodType)
+
             BudgetCreateAction.OpenAccountSelectionDialog -> openAccountSelection()
+
             BudgetCreateAction.CloseAccountSelectionDialog -> closeAccountSelection()
+
             BudgetCreateAction.OpenCategorySelectionDialog -> openCategorySelection()
+
             BudgetCreateAction.CloseCategorySelectionDialog -> closeCategorySelection()
 
             BudgetCreateAction.CloseDeleteDialog -> closeDeleteDialog()
+
             BudgetCreateAction.ShowDeleteDialog -> openDeleteDialog()
+
             BudgetCreateAction.Save -> saveOrUpdateBudget()
+
             BudgetCreateAction.Delete -> deleteBudget()
+
             is BudgetCreateAction.SelectAccounts -> setAccounts(
                 action.accounts,
-                action.isAllSelected
+                action.isAllSelected,
             )
 
             is BudgetCreateAction.SelectCategories -> setCategories(
                 action.categories,
-                action.isAllSelected
+                action.isAllSelected,
             )
 
             BudgetCreateAction.CloseMonthSelection -> closeMonthSelection()
+
             BudgetCreateAction.ShowMonthSelection -> openMonthSelection()
         }
     }

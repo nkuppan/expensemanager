@@ -20,4 +20,9 @@
     <string name="track">تتبع</string>
     <string name="organize">نظّم</string>
     <string name="grow">نمِّ</string>
+    <string name="onboarding_add_first_expense">أضف أول مصروف لك</string>
+    <string name="onboarding_explore_first">استكشف التطبيق أولًا</string>
+    <string name="onboarding_reminder_title">تذكير يومي</string>
+    <string name="onboarding_reminder_time">كل يوم في %1$s</string>
+    <string name="onboarding_reminder_description">تنبيه لطيف لتسجيل ما أنفقته</string>
 </resources>

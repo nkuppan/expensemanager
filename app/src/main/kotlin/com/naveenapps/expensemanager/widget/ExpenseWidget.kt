@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColorInt
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.glance.ColorFilter
@@ -15,6 +16,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.LocalSize
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.clickable
@@ -25,6 +27,7 @@ import androidx.glance.appwidget.LinearProgressIndicator
 import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.provideContent
 import androidx.glance.appwidget.state.updateAppWidgetState
@@ -47,6 +50,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.naveenapps.expensemanager.QuickAdd
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
@@ -59,10 +63,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
-import androidx.core.graphics.toColorInt
 
-internal fun fixedColor(color: Color): ColorProvider =
-    androidx.glance.color.ColorProvider(day = color, night = color)
+internal fun fixedColor(color: Color): ColorProvider = androidx.glance.color.ColorProvider(day = color, night = color)
 
 data class ExpenseWidgetData(
     val income: Double,
@@ -91,6 +93,10 @@ object WidgetColors {
     val Purple = Color(0xFF7F77DD)
     val GreenBg = Color(0x265DCAA5)
     val PurpleBg = Color(0x267F77DD)
+
+    // Brand accent (website dark theme) for the quick-add button.
+    val Accent = Color(0xFF22C97A)
+    val OnAccent = Color(0xFF062014)
 }
 
 private fun iconResForName(name: String): Int = when (name) {
@@ -194,7 +200,7 @@ internal suspend fun refreshExpenseWidgetData(context: Context) {
                     ?: tx.category.name
                 val displayName = tx.notes.ifBlank { categoryName }
                 val amtStr = formatAmount.invoke(tx.amount.amount, currency).amountString.orEmpty()
-                "${displayName}${tx.category.storedIcon.name}${tx.category.storedIcon.backgroundColor}${amtStr}${tx.type == TransactionType.INCOME}"
+                "$displayName${tx.category.storedIcon.name}${tx.category.storedIcon.backgroundColor}$amtStr${tx.type == TransactionType.INCOME}"
             }
 
         WidgetRefreshData(incomeValue, expenseValue, incomeStr, expenseStr, balanceStr, recentStr)
@@ -235,8 +241,8 @@ class ExpenseWidget : GlanceAppWidget() {
         setOf(
             COMPACT,
             STANDARD,
-            EXPANDED
-        )
+            EXPANDED,
+        ),
     )
 
     companion object {
@@ -262,19 +268,25 @@ class ExpenseWidget : GlanceAppWidget() {
             val balanceStr = prefs[PREF_BALANCE_STR].orEmpty()
             val savingsRate = if (income > 0.0) {
                 kotlin.math.round(((income - expenses) / income) * 1000.0) / 10.0
-            } else 0.0
+            } else {
+                0.0
+            }
             val recentTxns = prefs[PREF_RECENT_TXN]
                 ?.split("")
                 ?.filter { it.isNotBlank() }
                 ?.mapNotNull { record ->
                     val parts = record.split("")
-                    if (parts.size >= 5) WidgetTransaction(
-                        name = parts[0],
-                        iconName = parts[1],
-                        iconBgColor = parts[2],
-                        amountStr = parts[3],
-                        isIncome = parts[4].toBoolean(),
-                    ) else null
+                    if (parts.size >= 5) {
+                        WidgetTransaction(
+                            name = parts[0],
+                            iconName = parts[1],
+                            iconBgColor = parts[2],
+                            amountStr = parts[3],
+                            isIncome = parts[4].toBoolean(),
+                        )
+                    } else {
+                        null
+                    }
                 } ?: emptyList()
 
             val data = ExpenseWidgetData(
@@ -307,24 +319,24 @@ fun CompactWidget(data: ExpenseWidgetData) {
             .background(WidgetColors.DarkBackground)
             .cornerRadius(20.dp)
             .padding(horizontal = 16.dp, vertical = 12.dp)
-            .clickable(actionRunCallback<RefreshExpenseWidgetAction>())
+            .clickable(actionRunCallback<RefreshExpenseWidgetAction>()),
     ) {
         Row(
             modifier = GlanceModifier.fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(
                 modifier = GlanceModifier
                     .size(38.dp)
                     .background(WidgetColors.PurpleBg)
                     .cornerRadius(12.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Image(
                     provider = ImageProvider(com.naveenapps.expensemanager.core.designsystem.R.drawable.wallet),
                     contentDescription = null,
                     modifier = GlanceModifier.size(20.dp),
-                    colorFilter = ColorFilter.tint(fixedColor(WidgetColors.Purple))
+                    colorFilter = ColorFilter.tint(fixedColor(WidgetColors.Purple)),
                 )
             }
 
@@ -335,16 +347,16 @@ fun CompactWidget(data: ExpenseWidgetData) {
                     text = "Balance",
                     style = TextStyle(
                         color = fixedColor(WidgetColors.WhiteDim),
-                        fontSize = 10.sp
-                    )
+                        fontSize = 10.sp,
+                    ),
                 )
                 Text(
                     text = data.balanceStr,
                     style = TextStyle(
                         color = fixedColor(WidgetColors.White),
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                        fontWeight = FontWeight.Medium,
+                    ),
                 )
             }
 
@@ -352,7 +364,7 @@ fun CompactWidget(data: ExpenseWidgetData) {
                 modifier = GlanceModifier
                     .width(0.5.dp)
                     .height(36.dp)
-                    .background(WidgetColors.WhiteDim)
+                    .background(WidgetColors.WhiteDim),
             ) {}
 
             Spacer(modifier = GlanceModifier.width(12.dp))
@@ -362,18 +374,22 @@ fun CompactWidget(data: ExpenseWidgetData) {
                     text = "Expenses",
                     style = TextStyle(
                         color = fixedColor(WidgetColors.WhiteDim),
-                        fontSize = 10.sp
-                    )
+                        fontSize = 10.sp,
+                    ),
                 )
                 Text(
                     text = data.expensesStr,
                     style = TextStyle(
                         color = fixedColor(WidgetColors.Red),
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                        fontWeight = FontWeight.Medium,
+                    ),
                 )
             }
+
+            Spacer(modifier = GlanceModifier.width(12.dp))
+
+            AddExpenseButton(size = 36.dp, iconSize = 20.dp, corner = 12.dp)
         }
     }
 }
@@ -382,34 +398,36 @@ fun CompactWidget(data: ExpenseWidgetData) {
 fun StandardWidget(data: ExpenseWidgetData) {
     val spentPercent = if (data.income > 0.0) {
         ((data.expenses / data.income) * 100).toInt().coerceIn(0, 100)
-    } else 0
+    } else {
+        0
+    }
 
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
             .background(WidgetColors.DarkBackground)
             .cornerRadius(20.dp)
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Top
+            verticalAlignment = Alignment.Top,
         ) {
             Column(modifier = GlanceModifier.defaultWeight()) {
                 Text(
                     text = "Total balance",
                     style = TextStyle(
                         color = fixedColor(WidgetColors.WhiteDim),
-                        fontSize = 11.sp
-                    )
+                        fontSize = 11.sp,
+                    ),
                 )
                 Text(
                     text = data.balanceStr,
                     style = TextStyle(
                         color = fixedColor(WidgetColors.White),
                         fontSize = 26.sp,
-                        fontWeight = FontWeight.Medium
-                    )
+                        fontWeight = FontWeight.Medium,
+                    ),
                 )
                 Spacer(modifier = GlanceModifier.height(4.dp))
                 Row(
@@ -417,19 +435,23 @@ fun StandardWidget(data: ExpenseWidgetData) {
                         .background(WidgetColors.GreenBg)
                         .cornerRadius(20.dp)
                         .padding(horizontal = 8.dp, vertical = 2.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "${data.changePercent}% saved",
                         style = TextStyle(
                             color = fixedColor(WidgetColors.Green),
-                            fontSize = 10.sp
-                        )
+                            fontSize = 10.sp,
+                        ),
                     )
                 }
             }
 
             Spacer(modifier = GlanceModifier.width(8.dp))
+
+            AddExpenseButton(size = 34.dp, iconSize = 20.dp, corner = 10.dp)
+
+            Spacer(modifier = GlanceModifier.width(6.dp))
 
             Box(
                 modifier = GlanceModifier
@@ -437,13 +459,13 @@ fun StandardWidget(data: ExpenseWidgetData) {
                     .background(WidgetColors.PurpleBg)
                     .cornerRadius(10.dp)
                     .clickable(actionRunCallback<RefreshExpenseWidgetAction>()),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Image(
                     provider = ImageProvider(com.naveenapps.expensemanager.R.drawable.ic_sync),
                     contentDescription = "Refresh",
                     modifier = GlanceModifier.size(18.dp),
-                    colorFilter = ColorFilter.tint(fixedColor(WidgetColors.Purple))
+                    colorFilter = ColorFilter.tint(fixedColor(WidgetColors.Purple)),
                 )
             }
         }
@@ -455,14 +477,14 @@ fun StandardWidget(data: ExpenseWidgetData) {
                 label = "Income",
                 value = data.incomeStr,
                 valueColor = WidgetColors.Green,
-                modifier = GlanceModifier.defaultWeight()
+                modifier = GlanceModifier.defaultWeight(),
             )
             Spacer(modifier = GlanceModifier.width(8.dp))
             StatPill(
                 label = "Expenses",
                 value = data.expensesStr,
                 valueColor = WidgetColors.Red,
-                modifier = GlanceModifier.defaultWeight()
+                modifier = GlanceModifier.defaultWeight(),
             )
         }
 
@@ -472,7 +494,7 @@ fun StandardWidget(data: ExpenseWidgetData) {
             progress = spentPercent / 100f,
             modifier = GlanceModifier.fillMaxWidth().height(5.dp).cornerRadius(99.dp),
             color = fixedColor(WidgetColors.Red),
-            backgroundColor = fixedColor(Color(0xFF2A2F50))
+            backgroundColor = fixedColor(Color(0xFF2A2F50)),
         )
 
         Spacer(modifier = GlanceModifier.height(4.dp))
@@ -481,11 +503,11 @@ fun StandardWidget(data: ExpenseWidgetData) {
             Text(
                 text = "$spentPercent% of income spent",
                 style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp),
-                modifier = GlanceModifier.defaultWeight()
+                modifier = GlanceModifier.defaultWeight(),
             )
             Text(
                 text = "${data.balanceStr} saved",
-                style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp)
+                style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp),
             )
         }
     }
@@ -496,25 +518,25 @@ private fun StatPill(
     label: String,
     value: String,
     valueColor: Color,
-    modifier: GlanceModifier = GlanceModifier
+    modifier: GlanceModifier = GlanceModifier,
 ) {
     Column(
         modifier = modifier
             .background(Color(0xFF252B50))
             .cornerRadius(10.dp)
-            .padding(horizontal = 10.dp, vertical = 8.dp)
+            .padding(horizontal = 10.dp, vertical = 8.dp),
     ) {
         Text(
             text = label,
-            style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp)
+            style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp),
         )
         Text(
             text = value,
             style = TextStyle(
                 color = fixedColor(valueColor),
                 fontSize = 14.sp,
-                fontWeight = FontWeight.Medium
-            )
+                fontWeight = FontWeight.Medium,
+            ),
         )
     }
 }
@@ -526,35 +548,35 @@ fun ExpandedWidget(data: ExpenseWidgetData) {
             .fillMaxSize()
             .background(WidgetColors.DarkBackground)
             .cornerRadius(20.dp)
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         Column(
             modifier = GlanceModifier
                 .defaultWeight()
-                .fillMaxHeight()
+                .fillMaxHeight(),
         ) {
             Text(
                 text = "Total balance",
-                style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp)
+                style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp),
             )
             Text(
                 text = data.balanceStr,
                 style = TextStyle(
                     color = fixedColor(WidgetColors.White),
                     fontSize = 22.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                    fontWeight = FontWeight.Medium,
+                ),
             )
             Spacer(modifier = GlanceModifier.height(4.dp))
             Row(
                 modifier = GlanceModifier
                     .background(WidgetColors.GreenBg)
                     .cornerRadius(20.dp)
-                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                    .padding(horizontal = 8.dp, vertical = 2.dp),
             ) {
                 Text(
                     text = "${data.changePercent}% saved",
-                    style = TextStyle(color = fixedColor(WidgetColors.Green), fontSize = 10.sp)
+                    style = TextStyle(color = fixedColor(WidgetColors.Green), fontSize = 10.sp),
                 )
             }
 
@@ -565,14 +587,14 @@ fun ExpandedWidget(data: ExpenseWidgetData) {
                     label = "Income",
                     value = data.incomeStr,
                     valueColor = WidgetColors.Green,
-                    modifier = GlanceModifier.defaultWeight()
+                    modifier = GlanceModifier.defaultWeight(),
                 )
                 Spacer(modifier = GlanceModifier.width(6.dp))
                 MiniStatBox(
                     label = "Spent",
                     value = data.expensesStr,
                     valueColor = WidgetColors.Red,
-                    modifier = GlanceModifier.defaultWeight()
+                    modifier = GlanceModifier.defaultWeight(),
                 )
             }
         }
@@ -582,37 +604,39 @@ fun ExpandedWidget(data: ExpenseWidgetData) {
             modifier = GlanceModifier
                 .width(0.5.dp)
                 .fillMaxHeight()
-                .background(Color(0x33FFFFFF))
+                .background(Color(0x33FFFFFF)),
         ) {}
         Spacer(modifier = GlanceModifier.width(12.dp))
 
         Column(
             modifier = GlanceModifier
                 .defaultWeight()
-                .fillMaxHeight()
+                .fillMaxHeight(),
         ) {
             Row(
                 modifier = GlanceModifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
                     text = "Recent",
                     style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 10.sp),
-                    modifier = GlanceModifier.defaultWeight()
+                    modifier = GlanceModifier.defaultWeight(),
                 )
+                AddExpenseButton(size = 22.dp, iconSize = 14.dp, corner = 6.dp)
+                Spacer(modifier = GlanceModifier.width(4.dp))
                 Box(
                     modifier = GlanceModifier
                         .size(22.dp)
                         .background(WidgetColors.PurpleBg)
                         .cornerRadius(6.dp)
                         .clickable(actionRunCallback<RefreshExpenseWidgetAction>()),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     Image(
                         provider = ImageProvider(com.naveenapps.expensemanager.R.drawable.ic_sync),
                         contentDescription = "Refresh",
                         modifier = GlanceModifier.size(13.dp),
-                        colorFilter = ColorFilter.tint(fixedColor(WidgetColors.Purple))
+                        colorFilter = ColorFilter.tint(fixedColor(WidgetColors.Purple)),
                     )
                 }
             }
@@ -621,7 +645,7 @@ fun ExpandedWidget(data: ExpenseWidgetData) {
             if (data.recentTransactions.isEmpty()) {
                 Text(
                     text = "No transactions",
-                    style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 11.sp)
+                    style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 11.sp),
                 )
             } else {
                 data.recentTransactions.forEach { tx ->
@@ -638,25 +662,25 @@ private fun MiniStatBox(
     label: String,
     value: String,
     valueColor: Color,
-    modifier: GlanceModifier = GlanceModifier
+    modifier: GlanceModifier = GlanceModifier,
 ) {
     Column(
         modifier = modifier
             .background(Color(0xFF252B50))
             .cornerRadius(8.dp)
-            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .padding(horizontal = 8.dp, vertical = 6.dp),
     ) {
         Text(
             text = label,
-            style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 9.sp)
+            style = TextStyle(color = fixedColor(WidgetColors.WhiteDim), fontSize = 9.sp),
         )
         Text(
             text = value,
             style = TextStyle(
                 color = fixedColor(valueColor),
                 fontSize = 12.sp,
-                fontWeight = FontWeight.Medium
-            )
+                fontWeight = FontWeight.Medium,
+            ),
         )
     }
 }
@@ -676,13 +700,13 @@ private fun TransactionRow(tx: WidgetTransaction) {
                 .size(24.dp)
                 .background(bgColor)
                 .cornerRadius(7.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Image(
                 provider = ImageProvider(iconRes),
                 contentDescription = null,
                 modifier = GlanceModifier.size(14.dp),
-                colorFilter = ColorFilter.tint(fixedColor(WidgetColors.White))
+                colorFilter = ColorFilter.tint(fixedColor(WidgetColors.White)),
             )
         }
         Spacer(modifier = GlanceModifier.width(7.dp))
@@ -690,15 +714,43 @@ private fun TransactionRow(tx: WidgetTransaction) {
             text = tx.name,
             style = TextStyle(color = fixedColor(WidgetColors.White), fontSize = 11.sp),
             modifier = GlanceModifier.defaultWeight(),
-            maxLines = 1
+            maxLines = 1,
         )
         Text(
             text = if (tx.isIncome) "+${tx.amountStr}" else tx.amountStr,
             style = TextStyle(
                 color = fixedColor(if (tx.isIncome) WidgetColors.Green else WidgetColors.Red),
                 fontSize = 11.sp,
-                fontWeight = FontWeight.Medium
-            )
+                fontWeight = FontWeight.Medium,
+            ),
+        )
+    }
+}
+
+/**
+ * Quick add: opens the app straight on the new-transaction keypad (see QuickAdd). Its own
+ * clickable wins over a parent's, so it still works inside the tap-to-refresh compact widget.
+ */
+@Composable
+private fun AddExpenseButton(
+    size: androidx.compose.ui.unit.Dp,
+    iconSize: androidx.compose.ui.unit.Dp,
+    corner: androidx.compose.ui.unit.Dp,
+) {
+    val context = LocalContext.current
+    Box(
+        modifier = GlanceModifier
+            .size(size)
+            .background(WidgetColors.Accent)
+            .cornerRadius(corner)
+            .clickable(actionStartActivity(QuickAdd.widgetIntent(context))),
+        contentAlignment = Alignment.Center,
+    ) {
+        Image(
+            provider = ImageProvider(com.naveenapps.expensemanager.R.drawable.ic_quick_add),
+            contentDescription = context.getString(com.naveenapps.expensemanager.R.string.shortcut_add_expense_short),
+            modifier = GlanceModifier.size(iconSize),
+            colorFilter = ColorFilter.tint(fixedColor(WidgetColors.OnAccent)),
         )
     }
 }

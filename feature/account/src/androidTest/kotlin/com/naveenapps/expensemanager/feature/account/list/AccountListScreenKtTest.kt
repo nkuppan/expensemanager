@@ -25,7 +25,7 @@ class AccountListScreenKtTest {
             AccountListContentView(
                 state = AccountListState(
                     accounts = emptyList(),
-                    showReOrder = false
+                    showReOrder = false,
                 ),
                 onAction = { },
             )
@@ -40,7 +40,7 @@ class AccountListScreenKtTest {
             AccountListContentView(
                 state = AccountListState(
                     accounts = getRandomAccountUiModel(5),
-                    showReOrder = false
+                    showReOrder = false,
                 ),
                 onAction = { },
             )
@@ -56,7 +56,7 @@ class AccountListScreenKtTest {
             AccountListContentView(
                 state = AccountListState(
                     accounts = emptyList(),
-                    showReOrder = false
+                    showReOrder = false,
                 ),
                 onAction = { },
             )

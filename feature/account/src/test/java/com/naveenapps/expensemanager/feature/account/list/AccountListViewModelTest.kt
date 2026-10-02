@@ -102,7 +102,6 @@ class AccountListViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun accountEmpty() = runTest {
-
         accountFlow.value = emptyList()
 
         accountListViewModel.state.test {
@@ -143,7 +142,7 @@ class AccountListViewModelTest : BaseCoroutineTest() {
     @Test
     fun checkOpenCreateNavigation() = runTest {
         accountListViewModel.processAction(
-            AccountListAction.EditAccount(getRandomAccountUiModel(1).first())
+            AccountListAction.EditAccount(getRandomAccountUiModel(1).first()),
         )
         verify(appComposeNavigator, times(1)).navigate(any())
     }

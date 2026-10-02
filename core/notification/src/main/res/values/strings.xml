@@ -3,4 +3,17 @@
     <string name="notification_description">Don\'t forget to record your expenses</string>
     <string name="notification_title">Add transaction</string>
     <string name="notification_channel_description">Used for reminders</string>
+    <string name="reminder_notification_title">Logged today\'s spending?</string>
+    <string name="reminder_notification_body">It only takes a few seconds. Tap to add an expense.</string>
+    <string name="reminder_action_add">Add expense</string>
+    <string name="reminder_action_no_spend">Nothing spent today</string>
+    <string name="weekly_summary_title">Your week in money</string>
+    <string name="weekly_summary_less">You spent %1$s this week, %2$d%% less than last week. Nice work!</string>
+    <string name="weekly_summary_more">You spent %1$s this week, %2$d%% more than last week.</string>
+    <string name="weekly_summary_same">You spent %1$s this week, about the same as last week.</string>
+    <string name="weekly_summary_first">You spent %1$s this week. Keep logging to compare with next week.</string>
+    <string name="budget_alert_warning_title">%1$s is at 80%%</string>
+    <string name="budget_alert_warning_body">You have spent %1$s of %2$s. Time to slow down a little.</string>
+    <string name="budget_alert_over_title">%1$s is over budget</string>
+    <string name="budget_alert_over_body">You have spent %1$s of your %2$s budget.</string>
 </resources>

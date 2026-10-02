@@ -1,5 +1,11 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetLoggingStreakUseCase
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetMonthlyRecapUseCase
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import java.time.LocalDate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
@@ -11,6 +17,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetName
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.GetReminderStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -26,7 +33,9 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
+import java.util.Date
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -34,8 +43,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
-import java.util.Date
-
+import kotlinx.coroutines.launch
 
 class DashboardViewModel(
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
@@ -47,7 +55,12 @@ class DashboardViewModel(
     appCoroutineDispatchers: AppCoroutineDispatchers,
     getDateRangeUseCase: GetDateRangeUseCase,
     settingsRepository: SettingsRepository,
-    private val appComposeNavigator: AppComposeNavigator
+    private val appComposeNavigator: AppComposeNavigator,
+    private val feedbackRepository: FeedbackRepository,
+    getReminderStatusUseCase: GetReminderStatusUseCase,
+    getMonthlyRecapUseCase: GetMonthlyRecapUseCase,
+    getLoggingStreakUseCase: GetLoggingStreakUseCase,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -62,12 +75,57 @@ class DashboardViewModel(
                 categoryTransactions = emptyList(),
                 categoryType = CategoryType.EXPENSE,
             ),
-            transactionPeriod = ""
-        )
+            transactionPeriod = "",
+        ),
     )
     val state = _state.asStateFlow()
 
     init {
+        // Lifetime "transactions created" count (the same one behind analytics' is_first), so
+        // an empty current month isn't mistaken for a brand-new user.
+        feedbackRepository.getTransactionCreatedCount()
+            .onEach { count ->
+                _state.update { it.copy(hasCreatedTransaction = count > 0, transactionCount = count) }
+            }
+            .launchIn(viewModelScope)
+
+        // Last month's recap card: only in the first days of a month, and only if the user
+        // hasn't closed it for that month.
+        if (LocalDate.now().dayOfMonth <= RECAP_VISIBLE_DAYS) {
+            viewModelScope.launch {
+                val recap = getMonthlyRecapUseCase.invoke() ?: return@launch
+                feedbackRepository.getDismissedRecapMonth().collect { dismissed ->
+                    val visible = recap.takeIf { it.monthKey != dismissed }
+                    if (visible != null && _state.value.recap == null) {
+                        analyticsRepository.logEvent(AnalyticsEvents.RECAP_CARD_SHOWN, emptyMap())
+                    }
+                    _state.update { it.copy(recap = visible) }
+                }
+            }
+        }
+
+        // Daily logging streak for the streak card; milestones are logged once as they're hit.
+        getLoggingStreakUseCase.invoke()
+            .onEach { streak ->
+                val previous = _state.value.streak?.current
+                if (previous != null && streak.current > previous && streak.current in STREAK_MILESTONES) {
+                    analyticsRepository.logEvent(
+                        AnalyticsEvents.STREAK_MILESTONE,
+                        mapOf(AnalyticsParams.DAYS to streak.current.toString()),
+                    )
+                }
+                _state.update { it.copy(streak = streak) }
+            }
+            .launchIn(viewModelScope)
+
+        // Inputs for the "Get started" checklist.
+        getReminderStatusUseCase.invoke()
+            .onEach { on -> _state.update { it.copy(isReminderOn = on) } }
+            .launchIn(viewModelScope)
+        feedbackRepository.isGettingStartedDismissed()
+            .onEach { dismissed -> _state.update { it.copy(isGettingStartedDismissed = dismissed) } }
+            .launchIn(viewModelScope)
+
         combine(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(),
@@ -75,14 +133,16 @@ class DashboardViewModel(
             getDateRangeUseCase.invoke(),
         ) { currency, transactions, accounts, dateRange ->
 
-            val filteredTransactions = (transactions?.map {
-                it.toTransactionUIModel(
-                    getFormattedAmountUseCase.invoke(
-                        it.amount.amount,
-                        currency,
-                    ),
-                )
-            } ?: emptyList()).take(MAX_TRANSACTIONS_IN_LIST)
+            val filteredTransactions = (
+                transactions?.map {
+                    it.toTransactionUIModel(
+                        getFormattedAmountUseCase.invoke(
+                            it.amount.amount,
+                            currency,
+                        ),
+                    )
+                } ?: emptyList()
+                ).take(MAX_TRANSACTIONS_IN_LIST)
 
             val accountsConverted = accounts.map {
                 it.toAccountUiModel(
@@ -93,11 +153,11 @@ class DashboardViewModel(
                     if (it.type == AccountType.CREDIT) {
                         getFormattedAmountUseCase.invoke(
                             it.getAvailableCreditLimit(),
-                            currency
+                            currency,
                         )
                     } else {
                         null
-                    }
+                    },
                 )
             }
 
@@ -108,7 +168,6 @@ class DashboardViewModel(
             val expenseValue = transactions?.filter { it.type == TransactionType.EXPENSE }?.sumOf {
                 it.amount.amount
             } ?: 0.0
-
 
             _state.update {
                 it.copy(
@@ -132,7 +191,7 @@ class DashboardViewModel(
                         "${dateRange.name} (${dateRange.description})"
                     } else {
                         dateRange.name
-                    }
+                    },
                 )
             }
         }.flowOn(appCoroutineDispatchers.computation)
@@ -153,6 +212,7 @@ class DashboardViewModel(
             val activeMonth = when (dateRange.type) {
                 DateRangeType.TODAY, DateRangeType.THIS_WEEK, DateRangeType.THIS_MONTH ->
                     Date(dateRange.dateRanges[0]).toMonthAndYearKey()
+
                 else -> null
             }
             val filtered = if (activeMonth != null) {
@@ -177,7 +237,18 @@ class DashboardViewModel(
             } else {
                 null
             }
-            _state.update { it.copy(budgets = filtered, showCreateBudgetForMonth = showCreateBudgetForMonth) }
+            _state.update {
+                it.copy(
+                    budgets = filtered,
+                    showCreateBudgetForMonth = showCreateBudgetForMonth,
+                    // "Create a monthly budget" is done only by a monthly budget for the current
+                    // calendar month — what Home shows — not by any old or restored budget.
+                    hasCurrentMonthBudget = allBudgets.any {
+                        it.periodType == BudgetPeriod.MONTHLY &&
+                            it.selectedMonth == Date().toMonthAndYearKey()
+                    },
+                )
+            }
         }.flowOn(appCoroutineDispatchers.computation)
             .launchIn(viewModelScope)
 
@@ -221,17 +292,46 @@ class DashboardViewModel(
     fun processAction(action: DashboardAction) {
         when (action) {
             is DashboardAction.OpenAccountEdit -> openAccountCreate(action.account.id)
+
             DashboardAction.OpenAccountList -> openAccountList()
+
             is DashboardAction.OpenBudgetDetails -> openBudgetDetails(action.budgetUiModel.id)
+
             DashboardAction.OpenBudgetList -> openBudgetList()
+
             DashboardAction.OpenBudgetCreate -> openBudgetCreate()
+
             DashboardAction.OpenSettings -> openSettings()
+
             is DashboardAction.OpenTransactionEdit -> openTransactionCreate(action.transaction?.id)
+
             DashboardAction.OpenTransactionList -> openTransactionList()
+
+            DashboardAction.OpenReminder -> appComposeNavigator.navigate(ExpenseManagerScreens.ReminderScreen)
+
+            DashboardAction.DismissGettingStarted -> viewModelScope.launch {
+                feedbackRepository.setGettingStartedDismissed()
+            }
+            DashboardAction.MarkNoSpendToday -> viewModelScope.launch {
+                analyticsRepository.logEvent(AnalyticsEvents.STREAK_NO_SPEND, emptyMap())
+                feedbackRepository.recordNoSpendDay(LocalDate.now().toEpochDay())
+            }
+            DashboardAction.RecapShared ->
+                analyticsRepository.logEvent(AnalyticsEvents.RECAP_SHARED, emptyMap())
+            DashboardAction.DismissRecap -> {
+                val monthKey = _state.value.recap?.monthKey ?: return
+                analyticsRepository.logEvent(AnalyticsEvents.RECAP_DISMISSED, emptyMap())
+                viewModelScope.launch { feedbackRepository.setDismissedRecapMonth(monthKey) }
+            }
         }
     }
 
     companion object {
+        // How long into a new month the previous month's recap card stays on Home.
+        private const val RECAP_VISIBLE_DAYS = 7
+
+        private val STREAK_MILESTONES = setOf(3, 7, 14, 30, 60, 100)
+
         private const val MAX_TRANSACTIONS_IN_LIST = 10
     }
 }

@@ -4,10 +4,10 @@ import androidx.room.testing.MigrationTestHelper
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth.assertThat
+import java.io.IOException
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 private const val TEST_DB = "migration_test"
 
@@ -56,7 +56,7 @@ class Migration4To5Test {
             VALUES
                 ('1', 'Clothing', 0, '#F44336', 'apparel', 1000, 1000),
                 ('9', 'Salary', 1, '#4CAF50', 'savings', 1000, 1000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db4.close()
 
@@ -87,7 +87,7 @@ class Migration4To5Test {
                 (id, name, type, icon_background_color, icon_name, updated_on, created_on)
             VALUES
                 ('3', 'Groceries', 0, '#9C27B0', 'restaurant', 1000, 1000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db4.close()
 
@@ -113,13 +113,13 @@ class Migration4To5Test {
                 (id, name, type, icon_background_color, icon_name, updated_on, created_on)
             VALUES
                 ('custom-uuid-123', 'My Hobby', 0, '#123456', 'ic_custom', 1000, 1000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db4.close()
 
         val db5 = helper.runMigrationsAndValidate(TEST_DB, 5, true, MIGRATION_4_5)
         val cursor = db5.query(
-            "SELECT default_category_key FROM category WHERE id = 'custom-uuid-123'"
+            "SELECT default_category_key FROM category WHERE id = 'custom-uuid-123'",
         )
 
         cursor.moveToFirst()
@@ -144,7 +144,7 @@ class Migration4To5Test {
                  sequence, created_on, updated_on)
             VALUES
                 ('acc-1', 'Checking', 0, '#FFFFFF', 'ic_bank', 1000.0, 0.0, 1, 1000, 2000)
-            """.trimIndent()
+            """.trimIndent(),
         )
         db4.close()
 

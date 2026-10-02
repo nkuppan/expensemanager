@@ -30,10 +30,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
@@ -46,7 +46,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CategoryCreateScreen(
-    viewModel: CategoryCreateViewModel = koinViewModel()
+    viewModel: CategoryCreateViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -70,7 +70,6 @@ private fun CategoryCreateScreenContentView(
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
 ) {
-
     val snackbarHostState = remember { SnackbarHostState() }
 
     if (state.showDeleteDialog) {
@@ -91,10 +90,11 @@ private fun CategoryCreateScreenContentView(
                 navigationBackClick = {
                     onAction.invoke(CategoryCreateAction.ClosePage)
                 },
-                title = if (state.showDeleteButton)
+                title = if (state.showDeleteButton) {
                     stringResource(R.string.edit_category)
-                else
-                    stringResource(R.string.create_category),
+                } else {
+                    stringResource(R.string.create_category)
+                },
                 actions = {
                     if (state.showDeleteButton) {
                         IconButton(onClick = { onAction.invoke(CategoryCreateAction.ShowDeleteDialog) }) {
@@ -105,7 +105,7 @@ private fun CategoryCreateScreenContentView(
                             )
                         }
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
@@ -159,7 +159,7 @@ private fun CategoryCreateScreen(
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SettingsSection(
             title = stringResource(R.string.category_type),
@@ -167,7 +167,7 @@ private fun CategoryCreateScreen(
         ) {
             AppCardView {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     CategoryTypeSelectionView(
                         modifier = Modifier.fillMaxWidth(),
@@ -181,7 +181,7 @@ private fun CategoryCreateScreen(
         SettingsSection(title = stringResource(R.string.details)) {
             AppCardView {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     val displayName = nameResId?.let { stringResource(it) } ?: nameField.value
                     StringTextField(
@@ -209,7 +209,7 @@ private fun CategoryCreateScreen(
         SettingsSection(title = stringResource(R.string.appearance)) {
             AppCardView {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     IconAndColorComponent(
                         modifier = Modifier.fillMaxWidth(),
@@ -235,16 +235,24 @@ private fun CategoryCreateScreen(
 @Composable
 private fun CategoryCreateStatePreview() {
     val nameField = TextFieldValue(
-        value = "", valueError = false, onValueChange = { }
+        value = "",
+        valueError = false,
+        onValueChange = { },
     )
     val selectedColorField = TextFieldValue(
-        value = "#000000", valueError = false, onValueChange = { }
+        value = "#000000",
+        valueError = false,
+        onValueChange = { },
     )
     val selectedIconField = TextFieldValue(
-        value = "account_balance_wallet", valueError = false, onValueChange = { }
+        value = "account_balance_wallet",
+        valueError = false,
+        onValueChange = { },
     )
     val categoryType = TextFieldValue(
-        value = CategoryType.EXPENSE, valueError = false, onValueChange = { }
+        value = CategoryType.EXPENSE,
+        valueError = false,
+        onValueChange = { },
     )
 
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -255,9 +263,9 @@ private fun CategoryCreateStatePreview() {
                 color = selectedColorField,
                 icon = selectedIconField,
                 showDeleteButton = false,
-                showDeleteDialog = false
+                showDeleteDialog = false,
             ),
-            onAction = {}
+            onAction = {},
         )
     }
 }

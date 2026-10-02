@@ -20,8 +20,8 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 @Composable
 fun AutoSelectTextField(
@@ -44,14 +44,14 @@ fun AutoSelectTextField(
         mutableStateOf(
             TextFieldValue(
                 text = text,
-                selection = TextRange(0) // initially no selection
-            )
+                selection = TextRange(0), // initially no selection
+            ),
         )
     }
 
     if (textFieldValue.text != text) {
         textFieldValue = textFieldValue.copy(
-            text = text
+            text = text,
         )
     }
 
@@ -79,7 +79,7 @@ fun AutoSelectTextField(
                     if (!hasFocusedOnce) {
                         hasFocusedOnce = true
                         textFieldValue = textFieldValue.copy(
-                            selection = TextRange(0, textFieldValue.text.length)
+                            selection = TextRange(0, textFieldValue.text.length),
                         )
                     }
                 } else {
@@ -155,7 +155,7 @@ private fun AppTextFieldPreview() {
             label = { Text("Enter something") },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .padding(16.dp),
         )
     }
 }

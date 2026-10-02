@@ -16,7 +16,7 @@ class AndroidAppBasicConfigPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply(plugin = "com.android.application")
-                apply(plugin = "org.jetbrains.kotlin.android")
+                // No org.jetbrains.kotlin.android: AGP 9 compiles Kotlin itself (built-in Kotlin).
                 apply(plugin = "jacoco")
             }
 

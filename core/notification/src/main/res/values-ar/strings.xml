@@ -3,4 +3,17 @@
     <string name="notification_description">لا تنس تسجيل مصروفاتك</string>
     <string name="notification_title">إضافة معاملة</string>
     <string name="notification_channel_description">يُستخدم للتذكيرات</string>
+    <string name="reminder_notification_title">هل سجّلت مصروفات اليوم؟</string>
+    <string name="reminder_notification_body">يستغرق الأمر ثوانٍ فقط. اضغط لإضافة مصروف.</string>
+    <string name="reminder_action_add">إضافة مصروف</string>
+    <string name="reminder_action_no_spend">لم أنفق شيئًا اليوم</string>
+    <string name="weekly_summary_title">أسبوعك المالي</string>
+    <string name="weekly_summary_less">أنفقت %1$s هذا الأسبوع، أقل بنسبة %2$d%% من الأسبوع الماضي. أحسنت!</string>
+    <string name="weekly_summary_more">أنفقت %1$s هذا الأسبوع، أكثر بنسبة %2$d%% من الأسبوع الماضي.</string>
+    <string name="weekly_summary_same">أنفقت %1$s هذا الأسبوع، تقريبًا مثل الأسبوع الماضي.</string>
+    <string name="weekly_summary_first">أنفقت %1$s هذا الأسبوع. واصل التسجيل للمقارنة مع الأسبوع القادم.</string>
+    <string name="budget_alert_warning_title">%1$s وصلت إلى 80%%</string>
+    <string name="budget_alert_warning_body">أنفقت %1$s من %2$s. حان وقت التمهّل قليلًا.</string>
+    <string name="budget_alert_over_title">%1$s تجاوزت الميزانية</string>
+    <string name="budget_alert_over_body">أنفقت %1$s من ميزانيتك البالغة %2$s.</string>
 </resources>

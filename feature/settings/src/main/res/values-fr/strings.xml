@@ -47,4 +47,7 @@
 
     <string name="app_lock">Verrouillage de l\'application</string>
     <string name="app_lock_message">Exiger une authentification biométrique ou les identifiants de l\'appareil à l\'ouverture de l\'application</string>
+    <string name="share_app">Partager l\'application</string>
+    <string name="share_app_message">Parlez d\'Expense Manager à un ami</string>
+    <string name="share_app_text">J\'utilise Expense Manager pour suivre mes dépenses. C\'est gratuit et mes données restent sur mon téléphone : %1$s</string>
 </resources>

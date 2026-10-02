@@ -11,4 +11,3 @@ val AccountUseCaseModule = module {
     single { UpdateAccountUseCase(get(), checkAccountValidationUseCase = get()) }
     single { UpdateAllAccountUseCase(get(), checkAccountValidationUseCase = get()) }
 }
-

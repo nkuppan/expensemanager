@@ -47,4 +47,7 @@
 
     <string name="app_lock">Blokada aplikacji</string>
     <string name="app_lock_message">Wymagaj biometrii lub danych uwierzytelniających urządzenia podczas otwierania aplikacji</string>
+    <string name="share_app">Udostępnij aplikację</string>
+    <string name="share_app_message">Poleć Expense Manager znajomemu</string>
+    <string name="share_app_text">Śledzę wydatki w Expense Manager. Jest darmowa, a moje dane zostają w telefonie: %1$s</string>
 </resources>

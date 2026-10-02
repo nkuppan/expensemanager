@@ -12,19 +12,15 @@ data class Currency(
     val code: String = "",
 )
 
-fun CurrencyPosition.isPrefix(): Boolean {
-    return this == CurrencyPosition.PREFIX
-}
+fun CurrencyPosition.isPrefix(): Boolean = this == CurrencyPosition.PREFIX
 
 enum class CurrencyPosition {
     PREFIX,
     SUFFIX,
 }
 
-fun Currency.toDisplayValue(): String {
-    return if (code.isNotBlank()) {
-        "$code(${symbol})"
-    } else {
-        "(${symbol})"
-    }
+fun Currency.toDisplayValue(): String = if (code.isNotBlank()) {
+    "$code($symbol)"
+} else {
+    "($symbol)"
 }

@@ -7,7 +7,5 @@ import kotlinx.coroutines.flow.Flow
 class GetReminderTimeUseCase(
     private val repository: ReminderTimeRepository,
 ) {
-    operator fun invoke(): Flow<ReminderTimeState> {
-        return repository.getReminderTime()
-    }
+    operator fun invoke(): Flow<ReminderTimeState> = repository.getReminderTime()
 }

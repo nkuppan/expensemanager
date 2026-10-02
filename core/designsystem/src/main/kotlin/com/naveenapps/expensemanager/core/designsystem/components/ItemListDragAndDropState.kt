@@ -57,9 +57,7 @@ private fun handleOverscrollJob(
 fun rememberDragDropListState(
     lazyListState: LazyListState = rememberLazyListState(),
     onMove: (Int, Int) -> Unit,
-): ItemListDragAndDropState {
-    return remember { ItemListDragAndDropState(lazyListState, onMove) }
-}
+): ItemListDragAndDropState = remember { ItemListDragAndDropState(lazyListState, onMove) }
 
 class ItemListDragAndDropState(
     private val lazyListState: LazyListState,
@@ -162,20 +160,14 @@ class ItemListDragAndDropState(
         return 0f
     }
 
-    fun getLazyListState(): LazyListState {
-        return lazyListState
-    }
+    fun getLazyListState(): LazyListState = lazyListState
 
-    fun getCurrentIndexOfDraggedListItem(): Int {
-        return currentIndexOfDraggedItem
-    }
+    fun getCurrentIndexOfDraggedListItem(): Int = currentIndexOfDraggedItem
 }
 
-fun LazyListState.getVisibleItemInfoFor(absoluteIndex: Int): LazyListItemInfo? {
-    return this.layoutInfo.visibleItemsInfo.getOrNull(
-        absoluteIndex - this.layoutInfo.visibleItemsInfo.first().index,
-    )
-}
+fun LazyListState.getVisibleItemInfoFor(absoluteIndex: Int): LazyListItemInfo? = this.layoutInfo.visibleItemsInfo.getOrNull(
+    absoluteIndex - this.layoutInfo.visibleItemsInfo.first().index,
+)
 
 /*
   Bottom offset of the element in Vertical list

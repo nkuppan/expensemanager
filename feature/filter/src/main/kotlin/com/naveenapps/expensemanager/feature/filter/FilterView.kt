@@ -33,16 +33,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -55,7 +55,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun FilterView(
     modifier: Modifier = Modifier,
-    viewModel: FilterViewModel = koinViewModel()
+    viewModel: FilterViewModel = koinViewModel(),
 ) {
     val filterState by viewModel.filterState.collectAsState()
 
@@ -68,7 +68,7 @@ fun FilterView(
             DateFilterSelectionView(
                 onComplete = {
                     viewModel.processAction(FilterAction.DismissDateFilter)
-                }
+                },
             )
         }
     }
@@ -163,9 +163,9 @@ private fun FilterContentView(
             }
 
             // Filter button with subtle badge
-            val hasActiveFilters = filterState.selectedTransactionTypes.isNotEmpty()
-                    || filterState.selectedAccounts.isNotEmpty()
-                    || filterState.selectedCategories.isNotEmpty()
+            val hasActiveFilters = filterState.selectedTransactionTypes.isNotEmpty() ||
+                filterState.selectedAccounts.isNotEmpty() ||
+                filterState.selectedCategories.isNotEmpty()
 
             IconButton(
                 onClick = { onAction.invoke(FilterAction.ShowTypeFilter) },
@@ -175,8 +175,8 @@ private fun FilterContentView(
                     badge = {
                         if (hasActiveFilters) {
                             val count = filterState.selectedTransactionTypes.size +
-                                    filterState.selectedAccounts.size +
-                                    filterState.selectedCategories.size
+                                filterState.selectedAccounts.size +
+                                filterState.selectedCategories.size
                             Badge(
                                 containerColor = MaterialTheme.colorScheme.primary,
                                 contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -212,9 +212,9 @@ fun TypeFilter(
     onAction: (FilterAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val hasFilters = filterState.selectedTransactionTypes.isNotEmpty()
-            || filterState.selectedAccounts.isNotEmpty()
-            || filterState.selectedCategories.isNotEmpty()
+    val hasFilters = filterState.selectedTransactionTypes.isNotEmpty() ||
+        filterState.selectedAccounts.isNotEmpty() ||
+        filterState.selectedCategories.isNotEmpty()
 
     AnimatedVisibility(
         visible = hasFilters,
@@ -286,7 +286,7 @@ fun FilterViewPreview() {
                     showForward = true,
                     selectedTransactionTypes = listOf(
                         TransactionType.TRANSFER,
-                        TransactionType.INCOME
+                        TransactionType.INCOME,
                     ),
                     selectedAccounts = emptyList(),
                     selectedCategories = emptyList(),

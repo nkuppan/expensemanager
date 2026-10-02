@@ -20,13 +20,13 @@ internal val MIGRATION_3_4 = object : Migration(3, 4) {
                 "`all_categories_selected` INTEGER NOT NULL, " +
                 "`created_on` INTEGER NOT NULL, " +
                 "`updated_on` INTEGER NOT NULL, " +
-                "PRIMARY KEY(`id`))"
+                "PRIMARY KEY(`id`))",
         )
         db.execSQL(
             "INSERT INTO `budget_new` " +
                 "(`id`, `selected_month`, `amount`, `all_accounts_selected`, `all_categories_selected`, `created_on`, `updated_on`) " +
                 "SELECT `id`, `selected_month`, `amount`, `all_accounts_selected`, `all_categories_selected`, `created_on`, `updated_on` " +
-                "FROM `budget`"
+                "FROM `budget`",
         )
         db.execSQL("DROP TABLE `budget`")
         db.execSQL("ALTER TABLE `budget_new` RENAME TO `budget`")
@@ -121,7 +121,7 @@ internal val MIGRATION_7_8 = object : Migration(7, 8) {
                 "`created_on` INTEGER NOT NULL, " +
                 "PRIMARY KEY(`id`), " +
                 "FOREIGN KEY(`transaction_id`) REFERENCES `transaction`(`id`) " +
-                "ON UPDATE NO ACTION ON DELETE CASCADE)"
+                "ON UPDATE NO ACTION ON DELETE CASCADE)",
         )
     }
 }

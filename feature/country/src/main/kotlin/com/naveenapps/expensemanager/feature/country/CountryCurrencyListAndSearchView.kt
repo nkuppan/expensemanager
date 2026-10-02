@@ -39,8 +39,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Country
 import com.naveenapps.expensemanager.core.model.Currency
@@ -50,9 +50,8 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 internal fun CountryCurrencyListAndSearchView(
     viewModel: CountryListViewModel,
     onEvent: (CountrySelectionEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-
     val countryState by viewModel.countryState.collectAsState()
 
     ObserveAsEvents(viewModel.event) {
@@ -65,24 +64,25 @@ internal fun CountryCurrencyListAndSearchView(
         onAction = viewModel::processAction,
     )
 }
+
 @Composable
 internal fun CountryCurrencyListAndSearchView(
     countryState: CountryState,
     onAction: ((CountrySelectionAction) -> Unit),
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
             CountrySearchView(
                 state = countryState,
-                onAction = onAction
+                onAction = onAction,
             )
         },
     ) { paddingValues ->
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
         ) {
             // Results count
             if (countryState.searchText.value.isNotBlank()) {
@@ -90,7 +90,7 @@ internal fun CountryCurrencyListAndSearchView(
                     text = "${countryState.countries.size} results found",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
 
@@ -99,7 +99,7 @@ internal fun CountryCurrencyListAndSearchView(
                 selection = {
                     onAction.invoke(CountrySelectionAction.SelectCountry(it))
                 },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             )
         }
     }
@@ -109,7 +109,7 @@ internal fun CountryCurrencyListAndSearchView(
 @Composable
 internal fun CountrySearchView(
     state: CountryState,
-    onAction: (CountrySelectionAction) -> Unit
+    onAction: (CountrySelectionAction) -> Unit,
 ) {
     TopAppBar(
         title = {
@@ -122,14 +122,14 @@ internal fun CountrySearchView(
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.search_country),
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Search,
                         contentDescription = null,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
                     )
                 },
                 trailingIcon = {
@@ -137,11 +137,11 @@ internal fun CountrySearchView(
                         IconButton(
                             onClick = {
                                 onAction.invoke(CountrySelectionAction.ClearText)
-                            }
+                            },
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(id = R.string.clear_search_text)
+                                contentDescription = stringResource(id = R.string.clear_search_text),
                             )
                         }
                     }
@@ -150,25 +150,25 @@ internal fun CountrySearchView(
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
-                )
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                ),
             )
         },
         navigationIcon = {
             IconButton(
                 onClick = {
                     onAction.invoke(CountrySelectionAction.ClosePage)
-                }
+                },
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(id = R.string.back)
+                    contentDescription = stringResource(id = R.string.back),
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        )
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
     )
 }
 
@@ -176,40 +176,40 @@ internal fun CountrySearchView(
 internal fun CountryCurrencyListView(
     countries: List<Country>,
     selection: (Country) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     if (countries.isEmpty()) {
         // Empty state
         Box(
             modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.SearchOff,
                     contentDescription = null,
                     modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                 )
                 Text(
                     text = stringResource(id = R.string.no_countries_found),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
     } else {
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(vertical = 8.dp)
+            contentPadding = PaddingValues(vertical = 8.dp),
         ) {
             items(countries, key = { it.name }) { country ->
                 CountryWithCurrencyItemView(
                     country = country,
-                    onClick = { selection(country) }
+                    onClick = { selection(country) },
                 )
             }
         }
@@ -225,20 +225,20 @@ internal fun CountryWithCurrencyItemView(
     Surface(
         onClick = onClick,
         modifier = modifier.fillMaxWidth(),
-        color = Color.Transparent
+        color = Color.Transparent,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Flag/Country icon container
             Surface(
                 modifier = Modifier.size(48.dp),
                 shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.primaryContainer
+                color = MaterialTheme.colorScheme.primaryContainer,
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     // If you have flag emojis or images, use them here
@@ -247,7 +247,7 @@ internal fun CountryWithCurrencyItemView(
                         text = country.name.take(2), // First 2 letters of country code
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
             }
@@ -255,34 +255,34 @@ internal fun CountryWithCurrencyItemView(
             // Country and currency info
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
                     text = country.name,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
 
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = country.currency.symbol,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text = "•",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
                         text = country.currency.name,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
@@ -292,12 +292,11 @@ internal fun CountryWithCurrencyItemView(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier.size(24.dp),
             )
         }
     }
 }
-
 
 @Composable
 @AppPreviewsLightAndDarkMode
@@ -312,28 +311,27 @@ private fun CountryDetailsPreview() {
                         currencyCode = "in",
                         currency = Currency(
                             name = "Rupees",
-                            symbol = "₹"
-                        )
+                            symbol = "₹",
+                        ),
                     ),
                     Country(
                         name = "USA",
                         countryCode = "us",
                         currencyCode = "us",
                         currency = Currency(
-                            name = "Rupees", symbol = "$"
-                        )
+                            name = "Rupees",
+                            symbol = "$",
+                        ),
                     ),
                 ),
                 searchText = TextFieldValue("", false, onValueChange = {}),
-                showClearButton = true
+                showClearButton = true,
             ),
             onAction = {
-
-            }
+            },
         )
     }
 }
-
 
 fun Country.getCurrencyName(context: Context): String {
     val currency = this.currency

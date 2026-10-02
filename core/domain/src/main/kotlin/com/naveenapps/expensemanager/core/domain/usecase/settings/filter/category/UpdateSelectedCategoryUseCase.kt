@@ -7,7 +7,5 @@ class UpdateSelectedCategoryUseCase(
     private val settingsRepository: SettingsRepository,
 ) {
 
-    suspend operator fun invoke(categories: List<String>?): Resource<Boolean> {
-        return settingsRepository.setCategories(categories)
-    }
+    suspend operator fun invoke(categories: List<String>?): Resource<Boolean> = settingsRepository.setCategories(categories)
 }

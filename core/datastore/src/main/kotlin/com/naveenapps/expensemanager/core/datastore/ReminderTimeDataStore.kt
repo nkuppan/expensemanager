@@ -11,21 +11,19 @@ import kotlinx.coroutines.flow.map
 
 class ReminderTimeDataStore(private val dataStore: DataStore<Preferences>) {
 
-    suspend fun setReminderTime(reminderTimeState: ReminderTimeState) =
-        dataStore.edit { preferences ->
-            preferences[KEY_REMINDER_TIME_STATE] =
-                "${reminderTimeState.hour}:${reminderTimeState.minute}:${reminderTimeState.is24Hour}"
-        }
+    suspend fun setReminderTime(reminderTimeState: ReminderTimeState) = dataStore.edit { preferences ->
+        preferences[KEY_REMINDER_TIME_STATE] =
+            "${reminderTimeState.hour}:${reminderTimeState.minute}:${reminderTimeState.is24Hour}"
+    }
 
-    fun getReminderTime(defaultSymbol: String): Flow<ReminderTimeState> =
-        dataStore.data.map { preferences ->
-            val timers = (preferences[KEY_REMINDER_TIME_STATE] ?: defaultSymbol).split(":")
-            ReminderTimeState(
-                hour = timers[0].toIntOrNull() ?: 10,
-                minute = timers[1].toIntOrNull() ?: 0,
-                is24Hour = timers[2].toBooleanStrictOrNull() ?: false,
-            )
-        }
+    fun getReminderTime(defaultSymbol: String): Flow<ReminderTimeState> = dataStore.data.map { preferences ->
+        val timers = (preferences[KEY_REMINDER_TIME_STATE] ?: defaultSymbol).split(":")
+        ReminderTimeState(
+            hour = timers[0].toIntOrNull() ?: 10,
+            minute = timers[1].toIntOrNull() ?: 0,
+            is24Hour = timers[2].toBooleanStrictOrNull() ?: false,
+        )
+    }
 
     suspend fun setReminder(reminder: Boolean) = dataStore.edit { preferences ->
         preferences[KEY_REMINDER] = reminder

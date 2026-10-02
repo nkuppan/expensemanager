@@ -43,4 +43,17 @@
     <string name="app_lock_title">Expense Manager अनलॉक करें</string>
     <string name="app_lock_description">जारी रखने के लिए अपनी पहचान सत्यापित करें</string>
     <string name="app_lock_unlock">अनलॉक करें</string>
+
+    <string name="reminder_primer_title">कोई भी खर्च न भूलें</string>
+    <string name="reminder_primer_description">अपने खर्च दर्ज करने के लिए रोज़ एक हल्का रिमाइंडर पाएँ। इसमें कुछ ही सेकंड लगते हैं और आपका बजट सटीक रहता है।</string>
+    <string name="reminder_primer_turn_on">दैनिक रिमाइंडर चालू करें</string>
+    <string name="reminder_primer_not_now">अभी नहीं</string>
+    <string name="reminder_primer_footnote">आप सेटिंग्स में कभी भी समय बदल सकते हैं या इसे बंद कर सकते हैं।</string>
+    <string name="first_save_title">पहला खर्च सेव हो गया!</string>
+    <string name="first_save_description">शानदार शुरुआत। 7 दिनों तक अपने खर्च दर्ज करें और आप ठीक-ठीक देख पाएँगे कि आपका पैसा कहाँ जाता है।</string>
+    <string name="first_save_progress">दिन %1$d / %2$d</string>
+    <string name="first_save_add_another">एक और जोड़ें</string>
+    <string name="first_save_done">हो गया</string>
+    <string name="shortcut_add_expense_short">खर्च जोड़ें</string>
+    <string name="shortcut_add_expense_long">नया खर्च जोड़ें</string>
 </resources>

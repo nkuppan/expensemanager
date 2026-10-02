@@ -3,4 +3,17 @@
     <string name="notification_description">Jangan lupa mencatat pengeluaran Anda</string>
     <string name="notification_title">Tambah transaksi</string>
     <string name="notification_channel_description">Digunakan untuk pengingat</string>
+    <string name="reminder_notification_title">Sudah catat pengeluaran hari ini?</string>
+    <string name="reminder_notification_body">Hanya butuh beberapa detik. Ketuk untuk menambah pengeluaran.</string>
+    <string name="reminder_action_add">Tambah pengeluaran</string>
+    <string name="reminder_action_no_spend">Tidak ada pengeluaran hari ini</string>
+    <string name="weekly_summary_title">Minggu Anda dalam angka</string>
+    <string name="weekly_summary_less">Anda menghabiskan %1$s minggu ini, %2$d%% lebih sedikit dari minggu lalu. Bagus!</string>
+    <string name="weekly_summary_more">Anda menghabiskan %1$s minggu ini, %2$d%% lebih banyak dari minggu lalu.</string>
+    <string name="weekly_summary_same">Anda menghabiskan %1$s minggu ini, hampir sama dengan minggu lalu.</string>
+    <string name="weekly_summary_first">Anda menghabiskan %1$s minggu ini. Terus catat untuk membandingkan minggu depan.</string>
+    <string name="budget_alert_warning_title">%1$s mencapai 80%%</string>
+    <string name="budget_alert_warning_body">Anda sudah menghabiskan %1$s dari %2$s. Saatnya sedikit berhemat.</string>
+    <string name="budget_alert_over_title">%1$s melebihi anggaran</string>
+    <string name="budget_alert_over_body">Anda sudah menghabiskan %1$s dari anggaran %2$s.</string>
 </resources>

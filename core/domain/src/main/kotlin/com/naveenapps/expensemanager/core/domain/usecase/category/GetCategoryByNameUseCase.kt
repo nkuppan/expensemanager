@@ -6,26 +6,25 @@ import com.naveenapps.expensemanager.core.repository.CategoryRepository
 
 class GetCategoryByNameUseCase(private val repository: CategoryRepository) {
 
-    suspend operator fun invoke(categoryName: String?): Resource<List<Category>> {
-        return when (val response = repository.getAllCategory()) {
-            is Resource.Error -> response
-            is Resource.Success -> {
-                val values = response.data
+    suspend operator fun invoke(categoryName: String?): Resource<List<Category>> = when (val response = repository.getAllCategory()) {
+        is Resource.Error -> response
 
-                val filteredList = mutableListOf<Category>()
+        is Resource.Success -> {
+            val values = response.data
 
-                if (categoryName?.isNotBlank() == true && values.isNotEmpty()) {
-                    filteredList.addAll(
-                        values.filter {
-                            it.name.contains(categoryName, ignoreCase = true)
-                        },
-                    )
-                } else {
-                    filteredList.addAll(values)
-                }
+            val filteredList = mutableListOf<Category>()
 
-                Resource.Success(filteredList)
+            if (categoryName?.isNotBlank() == true && values.isNotEmpty()) {
+                filteredList.addAll(
+                    values.filter {
+                        it.name.contains(categoryName, ignoreCase = true)
+                    },
+                )
+            } else {
+                filteredList.addAll(values)
             }
+
+            Resource.Success(filteredList)
         }
     }
 }

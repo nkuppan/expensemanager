@@ -53,10 +53,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.SummaryCard
 import com.naveenapps.expensemanager.core.designsystem.components.WidgetHeader
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -70,9 +70,9 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.selection.AccountItem
 import com.naveenapps.expensemanager.feature.account.selection.AccountItemDefaults
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
 import java.util.Random
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountListScreen(
@@ -318,7 +318,7 @@ fun DashBoardAccountItem(
     amountTextColor: Color,
     modifier: Modifier = Modifier,
     customImagePath: String? = null,
-    onItemClick: (() -> Unit) = {}
+    onItemClick: (() -> Unit) = {},
 ) {
     val hasCreditLimit = !availableCreditLimit.isNullOrBlank()
 
@@ -415,36 +415,32 @@ fun getAccountData(
     accountType: AccountType,
     amount: Double,
     creditLimit: Double,
-): Account {
-    return Account(
-        id = "$index",
-        name = "Account $index",
-        type = accountType,
-        storedIcon = StoredIcon(
-            name = "credit_card",
-            backgroundColor = "#000000",
-        ),
-        amount = amount,
-        creditLimit = creditLimit,
-        createdOn = Date(),
-        updatedOn = Date(),
-    )
-}
+): Account = Account(
+    id = "$index",
+    name = "Account $index",
+    type = accountType,
+    storedIcon = StoredIcon(
+        name = "credit_card",
+        backgroundColor = "#000000",
+    ),
+    amount = amount,
+    creditLimit = creditLimit,
+    createdOn = Date(),
+    updatedOn = Date(),
+)
 
-fun getRandomAccountData(totalCount: Int = 10): List<Account> {
-    return buildList {
-        val random = Random()
-        repeat(totalCount) { index ->
-            val isEven = random.nextInt() % 2 == 0
-            add(
-                getAccountData(
-                    index = index,
-                    accountType = if (isEven) AccountType.CREDIT else AccountType.REGULAR,
-                    amount = 100.0,
-                    creditLimit = if (isEven) 2000.0 else 0.0
-                ),
-            )
-        }
+fun getRandomAccountData(totalCount: Int = 10): List<Account> = buildList {
+    val random = Random()
+    repeat(totalCount) { index ->
+        val isEven = random.nextInt() % 2 == 0
+        add(
+            getAccountData(
+                index = index,
+                accountType = if (isEven) AccountType.CREDIT else AccountType.REGULAR,
+                amount = 100.0,
+                creditLimit = if (isEven) 2000.0 else 0.0,
+            ),
+        )
     }
 }
 

@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class AdvancedSettingsViewModel(
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {

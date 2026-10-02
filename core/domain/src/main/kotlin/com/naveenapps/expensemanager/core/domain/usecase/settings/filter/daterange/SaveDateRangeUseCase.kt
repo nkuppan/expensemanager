@@ -13,15 +13,13 @@ class SaveDateRangeUseCase(
     suspend operator fun invoke(
         dateRangeType: DateRangeType,
         customRanges: List<Date>,
-    ): Resource<Boolean> {
-        return when (val response = setDateRangesUseCase.invoke(customRanges)) {
-            is Resource.Error -> {
-                response
-            }
+    ): Resource<Boolean> = when (val response = setDateRangesUseCase.invoke(customRanges)) {
+        is Resource.Error -> {
+            response
+        }
 
-            is Resource.Success -> {
-                dateRangeFilterRepository.setDateRangeFilterType(dateRangeType)
-            }
+        is Resource.Success -> {
+            dateRangeFilterRepository.setDateRangeFilterType(dateRangeType)
         }
     }
 }

@@ -10,11 +10,9 @@ data class PieChartData(
     val titleResId: Int? = null,
 )
 
-fun getDummyPieChartData(categoryName: String, percent: Float, titleResId: Int? = null): PieChartData {
-    return PieChartData(
-        name = categoryName,
-        value = percent,
-        color = "#40121212",
-        titleResId = titleResId,
-    )
-}
+fun getDummyPieChartData(categoryName: String, percent: Float, titleResId: Int? = null): PieChartData = PieChartData(
+    name = categoryName,
+    value = percent,
+    color = "#40121212",
+    titleResId = titleResId,
+)

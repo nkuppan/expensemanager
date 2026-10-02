@@ -37,15 +37,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.feature.transaction.R
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NumberPadDialogView(
     onConfirm: ((String?) -> Unit),
-    viewModel: NumberPadViewModel = koinViewModel()
+    viewModel: NumberPadViewModel = koinViewModel(),
 ) {
     val calculatedAmount by viewModel.calculatedAmount.collectAsState()
     val calculatedAmountString by viewModel.calculatedAmountString.collectAsState()
@@ -55,7 +55,7 @@ fun NumberPadDialogView(
         onChange = viewModel::appendString,
         calculatedAmount = calculatedAmount,
         calculatedAmountString = calculatedAmountString,
-        clear = viewModel::clearAmount
+        clear = viewModel::clearAmount,
     )
 }
 
@@ -274,23 +274,26 @@ private fun NumberPadButton(
         onClick = onClick,
         modifier = modifier.height(64.dp),
         shape = MaterialTheme.shapes.medium,
-        color = if (isOperator)
+        color = if (isOperator) {
             MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-        else
-            Color.Transparent,
+        } else {
+            Color.Transparent
+        },
     ) {
         Box(contentAlignment = Alignment.Center) {
             Text(
                 text = text,
-                style = if (isOperator)
+                style = if (isOperator) {
                     MaterialTheme.typography.titleLarge
-                else
-                    MaterialTheme.typography.titleMedium,
+                } else {
+                    MaterialTheme.typography.titleMedium
+                },
                 fontWeight = if (isOperator) FontWeight.Bold else FontWeight.Medium,
-                color = if (isOperator)
+                color = if (isOperator) {
                     MaterialTheme.colorScheme.primary
-                else
-                    MaterialTheme.colorScheme.onSurface,
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
             )
         }
     }
@@ -304,7 +307,10 @@ fun NumberPadScreenPreview() {
             modifier = Modifier.wrapContentHeight(),
             value = "8,064",
             amountString = "5697+2367",
-            {}, {}, {}, {},
+            {},
+            {},
+            {},
+            {},
         )
     }
 }

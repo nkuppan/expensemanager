@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class FilterViewModel(
     getSelectedTransactionTypesUseCase: GetSelectedTransactionTypesUseCase,
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
@@ -48,8 +47,8 @@ class FilterViewModel(
             showBackward = true,
             showForward = true,
             showDateFilter = false,
-            showTypeFilter = false
-        )
+            showTypeFilter = false,
+        ),
     )
     val filterState = _filterState.asStateFlow()
 
@@ -57,7 +56,7 @@ class FilterViewModel(
         getSelectedTransactionTypesUseCase.invoke().onEach { types ->
             _filterState.update {
                 it.copy(
-                    selectedTransactionTypes = types
+                    selectedTransactionTypes = types,
                 )
             }
         }.launchIn(viewModelScope)
@@ -67,7 +66,7 @@ class FilterViewModel(
                 it.copy(
                     selectedAccounts = accounts?.map { account ->
                         account.toAccountUiModel(Amount(amount = account.amount))
-                    } ?: emptyList()
+                    } ?: emptyList(),
                 )
             }
         }.launchIn(viewModelScope)
@@ -112,7 +111,7 @@ class FilterViewModel(
                     showForward = showForward,
                     showBackward = showBackward,
                     dateRangeType = dateRangeType,
-                    date = date
+                    date = date,
                 )
             }
         }.launchIn(viewModelScope)
@@ -157,10 +156,15 @@ class FilterViewModel(
     fun processAction(action: FilterAction) {
         when (action) {
             FilterAction.MoveDateBackward -> moveDateRangeBackward()
+
             FilterAction.MoveDateForward -> moveDateRangeForward()
+
             is FilterAction.RemoveAccount -> removeAccount(action.account)
+
             is FilterAction.RemoveCategory -> removeCategory(action.category)
+
             is FilterAction.RemoveTransactionType -> removeTransaction(action.transactionType)
+
             FilterAction.ShowDateFilter -> {
                 _filterState.update { it.copy(showDateFilter = true) }
             }

@@ -7,7 +7,7 @@ import com.naveenapps.expensemanager.core.repository.DevicePropertyRepository
 
 class AnalyticsRepositoryImpl(
     private val firebaseAnalytics: FirebaseAnalytics,
-    private val devicePropertyRepository: DevicePropertyRepository
+    private val devicePropertyRepository: DevicePropertyRepository,
 ) : AnalyticsRepository {
 
     override fun trackAppOpenEvent() {
@@ -22,35 +22,38 @@ class AnalyticsRepositoryImpl(
                 params.onEach {
                     putString(it.key, it.value)
                 }
-            }
+            },
         )
     }
 
     override fun setCurrentScreen(screenName: String) {
+        // Firebase's standard screen_view event, so screens show up in the built-in
+        // "Pages and screens" report (single-Activity apps get no automatic per-screen data).
         firebaseAnalytics.logEvent(
-            /* name = */ SCREEN_NAME,
+            /* name = */ FirebaseAnalytics.Event.SCREEN_VIEW,
             /* params = */ Bundle().apply {
-                putString(SCREEN_NAME, screenName)
-            }
+                putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+                putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenName)
+            },
         )
     }
 
     override fun setUserProperties() {
         firebaseAnalytics.setUserProperty(
             DEVICE_NAME,
-            devicePropertyRepository.getDeviceName()
+            devicePropertyRepository.getDeviceName(),
         )
         firebaseAnalytics.setUserProperty(
             DEVICE_BRAND,
-            devicePropertyRepository.getDeviceBrandName()
+            devicePropertyRepository.getDeviceBrandName(),
         )
         firebaseAnalytics.setUserProperty(
             DEVICE_OS_NAME,
-            devicePropertyRepository.getDeviceOsVersion()
+            devicePropertyRepository.getDeviceOsVersion(),
         )
         firebaseAnalytics.setUserProperty(
             DEVICE_OS_NUMBER,
-            devicePropertyRepository.getDeviceOsVersionNumber()
+            devicePropertyRepository.getDeviceOsVersionNumber(),
         )
     }
 
@@ -61,6 +64,5 @@ class AnalyticsRepositoryImpl(
         private const val DEVICE_NAME = "device_name"
         private const val DEVICE_BRAND = "device_brand"
         private const val DEVICE_OS_NUMBER = "device_os_number"
-        private const val SCREEN_NAME = "screen_name"
     }
 }

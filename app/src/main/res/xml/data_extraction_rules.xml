@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Android 12+ (API 31+). Older versions use backup_rules.xml. -->
 <data-extraction-rules>
+    <!--
+        Once any <include> is present, ONLY the included paths are backed up.
+        Kept: the Room database, the two DataStore files that hold the user's settings
+        (onboarding done, currency, theme, app lock, reminder time) and the small account /
+        category images (resized to 512px).
+        Never backed up: shared prefs, caches, and datastore/expense_manager_device_local.preferences_pb,
+        which holds per-device state such as "notification explainer shown" (see DeviceLocalDataStore).
+    -->
     <cloud-backup>
-        <include
-            domain="database"
-            path="." />
-        <exclude
-            domain="sharedpref"
-            path="." />
-        <exclude
-            domain="file"
-            path="." />
-        <exclude
-            domain="external"
-            path="." />
+        <!-- Transaction photos are left out of cloud backup: Google's 25 MB per-app quota
+             would be exceeded by heavy users, and an over-quota backup is not saved at all. -->
+        <include domain="database" path="." />
+        <include domain="file" path="datastore/expense_manager_app_data_store.preferences_pb" />
+        <include domain="file" path="datastore/expense_manager_settings.preferences_pb" />
+        <include domain="file" path="account_images/" />
+        <include domain="file" path="category_images/" />
     </cloud-backup>
+    <!-- Phone-to-phone transfer has no size quota, so photos come along too. -->
     <device-transfer>
-        <include
-            domain="database"
-            path="." />
-        <exclude
-            domain="sharedpref"
-            path="." />
-        <exclude
-            domain="file"
-            path="." />
-        <exclude
-            domain="external"
-            path="." />
+        <include domain="database" path="." />
+        <include domain="file" path="datastore/expense_manager_app_data_store.preferences_pb" />
+        <include domain="file" path="datastore/expense_manager_settings.preferences_pb" />
+        <include domain="file" path="account_images/" />
+        <include domain="file" path="category_images/" />
+        <include domain="file" path="transaction_attachments/" />
     </device-transfer>
 </data-extraction-rules>

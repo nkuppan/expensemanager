@@ -16,13 +16,12 @@ import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
+import java.util.Calendar
+import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Calendar
-import java.util.UUID
-
 
 class CategoryCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -39,26 +38,26 @@ class CategoryCreateViewModel(
             name = TextFieldValue(
                 value = "",
                 valueError = false,
-                onValueChange = this::setNameChange
+                onValueChange = this::setNameChange,
             ),
             type = TextFieldValue(
                 value = CategoryType.EXPENSE,
                 valueError = false,
-                onValueChange = this::setCategoryTypeChange
+                onValueChange = this::setCategoryTypeChange,
             ),
             color = TextFieldValue(
                 value = DEFAULT_COLOR,
                 valueError = false,
-                onValueChange = this::setColorChange
+                onValueChange = this::setColorChange,
             ),
             icon = TextFieldValue(
                 value = DEFAULT_ICON,
                 valueError = false,
-                onValueChange = this::setIconChange
+                onValueChange = this::setIconChange,
             ),
             showDeleteDialog = false,
-            showDeleteButton = false
-        )
+            showDeleteButton = false,
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -101,6 +100,7 @@ class CategoryCreateViewModel(
         viewModelScope.launch {
             when (val response = findCategoryByIdUseCase.invoke(categoryId)) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     updateCategoryInfo(response.data)
                 }
@@ -113,6 +113,7 @@ class CategoryCreateViewModel(
             category?.let { category ->
                 when (deleteCategoryUseCase.invoke(category)) {
                     is Resource.Error -> Unit
+
                     is Resource.Success -> {
                         category.storedIcon.customImagePath?.let {
                             imageStorageRepository.deleteCategoryImage(it)
@@ -163,6 +164,7 @@ class CategoryCreateViewModel(
             }
             when (response) {
                 is Resource.Error -> Unit
+
                 is Resource.Success -> {
                     // The old persisted image is only safe to delete now that the new value has
                     // actually been written — deleting it earlier (e.g. the moment a replacement
@@ -209,7 +211,7 @@ class CategoryCreateViewModel(
     private fun setNameChange(name: String) {
         _state.update {
             it.copy(
-                name = it.name.copy(value = name, valueError = name.isBlank())
+                name = it.name.copy(value = name, valueError = name.isBlank()),
             )
         }
     }

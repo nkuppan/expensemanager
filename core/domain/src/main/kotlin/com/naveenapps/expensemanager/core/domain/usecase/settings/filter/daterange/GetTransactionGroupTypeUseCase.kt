@@ -8,7 +8,5 @@ class GetTransactionGroupTypeUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
 
-    suspend operator fun invoke(dateRangeType: DateRangeType): GroupType {
-        return dateRangeFilterRepository.getTransactionGroupType(dateRangeType)
-    }
+    suspend operator fun invoke(dateRangeType: DateRangeType): GroupType = dateRangeFilterRepository.getTransactionGroupType(dateRangeType)
 }

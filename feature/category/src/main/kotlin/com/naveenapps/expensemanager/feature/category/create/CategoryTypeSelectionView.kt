@@ -23,8 +23,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.feature.category.R
 
@@ -52,10 +52,11 @@ fun CategoryTypeSelectionView(
     val isExpenseSelected = selectedCategoryType == CategoryType.EXPENSE
 
     val borderColor by animateColorAsState(
-        targetValue = if (isExpenseSelected)
+        targetValue = if (isExpenseSelected) {
             MaterialTheme.colorScheme.error
-        else
-            MaterialTheme.colorScheme.primary,
+        } else {
+            MaterialTheme.colorScheme.primary
+        },
         animationSpec = tween(250),
         label = "border_color",
     )

@@ -15,13 +15,18 @@ val OnboardingViewModelModule = module {
             saveCurrencyUseCase = get(),
             setOnboardingStatusUseCase = get(),
             getFormattedAmountUseCase = get(),
-            composeNavigator = get()
+            composeNavigator = get(),
+            analyticsRepository = get(),
+            getReminderStatusUseCase = get(),
+            getReminderTimeUseCase = get(),
+            updateReminderStatusUseCase = get(),
+            reminderTimeRepository = get(),
         )
     }
     viewModel {
         IntroViewModel(
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
+            analyticsRepository = get(),
         )
     }
 }
-

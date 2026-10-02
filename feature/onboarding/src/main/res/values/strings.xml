@@ -20,4 +20,9 @@
     <string name="track">Track</string>
     <string name="organize">Organize</string>
     <string name="grow">Grow</string>
+    <string name="onboarding_add_first_expense">Add your first expense</string>
+    <string name="onboarding_explore_first">Explore the app first</string>
+    <string name="onboarding_reminder_title">Daily reminder</string>
+    <string name="onboarding_reminder_time">Every day at %1$s</string>
+    <string name="onboarding_reminder_description">A gentle nudge to log what you spent</string>
 </resources>

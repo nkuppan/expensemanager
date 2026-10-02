@@ -13,4 +13,9 @@ interface ReminderTimeRepository {
     fun isReminderOn(): Flow<Boolean>
 
     suspend fun setReminderOn(reminder: Boolean): Resource<Boolean>
+
+    /** True once the in-app explainer before the notification permission has been answered. */
+    fun isNotificationPrimerShown(): Flow<Boolean>
+
+    suspend fun setNotificationPrimerShown()
 }

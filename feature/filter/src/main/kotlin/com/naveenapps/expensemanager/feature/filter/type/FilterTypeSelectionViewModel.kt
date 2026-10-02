@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class FilterTypeSelectionViewModel(
     getSelectedTransactionTypesUseCase: GetSelectedTransactionTypesUseCase,
     getSelectedAccountUseCase: GetSelectedAccountUseCase,
@@ -47,8 +46,8 @@ class FilterTypeSelectionViewModel(
             selectedCategories = emptyList(),
             categories = emptyList(),
             selectedTransactionTypes = emptyList(),
-            transactionTypes = TransactionType.entries
-        )
+            transactionTypes = TransactionType.entries,
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -62,7 +61,7 @@ class FilterTypeSelectionViewModel(
                 it.copy(
                     selectedAccounts = accounts?.map { account ->
                         account.toAccountUiModel(Amount(amount = account.amount))
-                    } ?: emptyList()
+                    } ?: emptyList(),
                 )
             }
         }.launchIn(viewModelScope)
@@ -80,7 +79,7 @@ class FilterTypeSelectionViewModel(
                 it.copy(
                     accounts = accounts.map { account ->
                         account.toAccountUiModel(Amount(amount = account.amount))
-                    }
+                    },
                 )
             }
         }.launchIn(viewModelScope)
@@ -133,7 +132,7 @@ class FilterTypeSelectionViewModel(
             it.copy(
                 selectedCategories = emptyList(),
                 selectedAccounts = emptyList(),
-                selectedTransactionTypes = emptyList()
+                selectedTransactionTypes = emptyList(),
             )
         }
     }

@@ -23,11 +23,10 @@ import com.naveenapps.expensemanager.feature.country.CountrySelectionAction
 import com.naveenapps.expensemanager.feature.country.CountryState
 import com.naveenapps.expensemanager.feature.country.R
 
-
 @Composable
 internal fun CountrySearchView(
     state: CountryState,
-    onAction: (CountrySelectionAction) -> Unit
+    onAction: (CountrySelectionAction) -> Unit,
 ) {
     Surface(shadowElevation = 8.dp) {
         Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp, top = 4.dp)) {
@@ -42,12 +41,12 @@ internal fun CountrySearchView(
                 label = {
                     Text(
                         modifier = Modifier.align(
-                            Alignment.CenterVertically
+                            Alignment.CenterVertically,
                         ),
                         text = stringResource(
-                            id = R.string.search_country
+                            id = R.string.search_country,
                         ),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 },
                 leadingIcon = {
@@ -60,7 +59,7 @@ internal fun CountrySearchView(
                                 onAction.invoke(CountrySelectionAction.ClosePage)
                             },
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = ""
+                        contentDescription = "",
                     )
                 },
                 trailingIcon = {
@@ -74,10 +73,10 @@ internal fun CountrySearchView(
                                     onAction.invoke(CountrySelectionAction.ClearText)
                                 },
                             imageVector = Icons.Default.Close,
-                            contentDescription = ""
+                            contentDescription = "",
                         )
                     }
-                }
+                },
             )
         }
     }

@@ -17,12 +17,12 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 
 class GetBudgetsUseCase(
     private val budgetRepository: BudgetRepository,
@@ -30,33 +30,31 @@ class GetBudgetsUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase,
-    private val appCoroutineDispatchers: AppCoroutineDispatchers
+    private val appCoroutineDispatchers: AppCoroutineDispatchers,
 ) {
-    operator fun invoke(): Flow<List<BudgetUiModel>> {
-        return combine(
-            getCurrencyUseCase.invoke(),
-            getTransactionWithFilterUseCase.invoke(),
-            budgetRepository.getBudgets(),
-        ) { currency, _, budgets ->
-            budgets.map { budget ->
-                val transactions = when (val response = getBudgetTransactionsUseCase.invoke(budget)) {
-                    is Resource.Error -> null
-                    is Resource.Success -> response.data.filter { it.type.isExpense() }
-                }
-                val transactionAmount = transactions?.sumOf { it.amount.amount } ?: 0.0
-                val percent = (transactionAmount / budget.amount).toFloat() * 100
-                budget.toBudgetUiModel(
-                    name = budgetName(budget.selectedMonth, budget.periodType),
-                    budgetAmount = getFormattedAmountUseCase(budget.amount, currency),
-                    transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
-                    percent,
-                    transactions?.map {
-                        it.toTransactionUIModel(getFormattedAmountUseCase(it.amount.amount, currency))
-                    },
-                )
+    operator fun invoke(): Flow<List<BudgetUiModel>> = combine(
+        getCurrencyUseCase.invoke(),
+        getTransactionWithFilterUseCase.invoke(),
+        budgetRepository.getBudgets(),
+    ) { currency, _, budgets ->
+        budgets.map { budget ->
+            val transactions = when (val response = getBudgetTransactionsUseCase.invoke(budget)) {
+                is Resource.Error -> null
+                is Resource.Success -> response.data.filter { it.type.isExpense() }
             }
-        }.flowOn(appCoroutineDispatchers.computation)
-    }
+            val transactionAmount = transactions?.sumOf { it.amount.amount } ?: 0.0
+            val percent = (transactionAmount / budget.amount).toFloat() * 100
+            budget.toBudgetUiModel(
+                name = budgetName(budget.selectedMonth, budget.periodType),
+                budgetAmount = getFormattedAmountUseCase(budget.amount, currency),
+                transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
+                percent,
+                transactions?.map {
+                    it.toTransactionUIModel(getFormattedAmountUseCase(it.amount.amount, currency))
+                },
+            )
+        }
+    }.flowOn(appCoroutineDispatchers.computation)
 }
 
 private val shortMonthFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())

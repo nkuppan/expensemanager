@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.update
 
-
 class TransactionListViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
@@ -63,7 +62,7 @@ class TransactionListViewModel(
             _transactions.update {
                 it.copy(
                     transactionListItem = groupedItem?.convertGroupToTransactionListItems()
-                        ?: emptyList()
+                        ?: emptyList(),
                 )
             }
         }.flowOn(appCoroutineDispatchers.computation).launchIn(viewModelScope)
@@ -88,40 +87,37 @@ class TransactionListViewModel(
     }
 }
 
-fun List<Transaction>.toTransactionSum() =
-    this.sumOf {
-        when (it.type) {
-            TransactionType.INCOME -> {
-                it.amount.amount
-            }
+fun List<Transaction>.toTransactionSum() = this.sumOf {
+    when (it.type) {
+        TransactionType.INCOME -> {
+            it.amount.amount
+        }
 
-            TransactionType.EXPENSE -> {
-                it.amount.amount * -1
-            }
+        TransactionType.EXPENSE -> {
+            it.amount.amount * -1
+        }
 
-            TransactionType.TRANSFER -> {
-                0.0
-            }
+        TransactionType.TRANSFER -> {
+            0.0
         }
     }
+}
 
-fun List<TransactionGroup>.convertGroupToTransactionListItems(): List<TransactionListItem> {
-    return buildList {
-        this@convertGroupToTransactionListItems.forEach {
-            add(
-                TransactionListItem.HeaderItem(
-                    date = it.date,
-                    amountTextColor = it.amountTextColor,
-                    totalAmount = it.totalAmount.amountString ?: ""
-                )
-            )
+fun List<TransactionGroup>.convertGroupToTransactionListItems(): List<TransactionListItem> = buildList {
+    this@convertGroupToTransactionListItems.forEach {
+        add(
+            TransactionListItem.HeaderItem(
+                date = it.date,
+                amountTextColor = it.amountTextColor,
+                totalAmount = it.totalAmount.amountString ?: "",
+            ),
+        )
 
-            it.transactions.forEach {
-                add(TransactionListItem.TransactionItem(date = it))
-            }
-
-            add(TransactionListItem.Divider)
+        it.transactions.forEach {
+            add(TransactionListItem.TransactionItem(date = it))
         }
+
+        add(TransactionListItem.Divider)
     }
 }
 

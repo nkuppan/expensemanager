@@ -4,7 +4,5 @@ import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetReminderStatusUseCase(private val repository: ReminderTimeRepository) {
-    operator fun invoke(): Flow<Boolean> {
-        return repository.isReminderOn()
-    }
+    operator fun invoke(): Flow<Boolean> = repository.isReminderOn()
 }

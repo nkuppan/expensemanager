@@ -20,4 +20,9 @@
     <string name="track">Theo dõi</string>
     <string name="organize">Sắp xếp</string>
     <string name="grow">Phát triển</string>
+    <string name="onboarding_add_first_expense">Thêm khoản chi đầu tiên</string>
+    <string name="onboarding_explore_first">Khám phá ứng dụng trước</string>
+    <string name="onboarding_reminder_title">Nhắc nhở hằng ngày</string>
+    <string name="onboarding_reminder_time">Mỗi ngày lúc %1$s</string>
+    <string name="onboarding_reminder_description">Lời nhắc nhẹ để ghi lại khoản chi</string>
 </resources>

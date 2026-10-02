@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Android 11 and lower (API 23-30). Android 12+ uses data_extraction_rules.xml. -->
 <full-backup-content>
-    <include
-        domain="database"
-        path="." />
-    <exclude
-        domain="sharedpref"
-        path="." />
-    <exclude
-        domain="file"
-        path="." />
-    <exclude
-        domain="external"
-        path="." />
+    <!--
+        Once any <include> is present, ONLY the included paths are backed up.
+        Kept: the Room database, the two DataStore files that hold the user's settings
+        (onboarding done, currency, theme, app lock, reminder time) and the small account /
+        category images (resized to 512px).
+        Never backed up: shared prefs, caches, and datastore/expense_manager_device_local.preferences_pb,
+        which holds per-device state such as "notification explainer shown" (see DeviceLocalDataStore).
+    -->
+    <include domain="database" path="." />
+    <include domain="file" path="datastore/expense_manager_app_data_store.preferences_pb" />
+    <include domain="file" path="datastore/expense_manager_settings.preferences_pb" />
+    <include domain="file" path="account_images/" />
+    <include domain="file" path="category_images/" />
 </full-backup-content>

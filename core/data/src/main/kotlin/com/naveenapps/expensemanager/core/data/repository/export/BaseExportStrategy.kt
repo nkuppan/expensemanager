@@ -18,8 +18,8 @@ abstract class BaseExportStrategy(protected val context: Context) : ExportStrate
     protected fun getFileName(): String {
         val timestamp = System.currentTimeMillis()
         return when (getFileType()) {
-            ExportFileType.CSV -> "expense_manager_${timestamp}.csv"
-            ExportFileType.PDF -> "expense_manager_${timestamp}.pdf"
+            ExportFileType.CSV -> "expense_manager_$timestamp.csv"
+            ExportFileType.PDF -> "expense_manager_$timestamp.pdf"
         }
     }
 

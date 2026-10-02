@@ -20,7 +20,7 @@ fun ExpenseManagerTopAppBar(
     navigationIcon: ImageVector? = null,
     navigationBackClick: (() -> Unit) = {},
     actions: @Composable (RowScope.() -> Unit) = {},
-    titleClick: (() -> Unit)? = null
+    titleClick: (() -> Unit)? = null,
 ) {
     AppTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
@@ -47,12 +47,12 @@ private fun AppTopPreview() {
                 IconButton(onClick = {}) {
                     Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
                 }
-            }
+            },
         )
         ExpenseManagerTopAppBar(
             title = "",
             navigationIcon = null,
-            actions = {}
+            actions = {},
         )
     }
 }

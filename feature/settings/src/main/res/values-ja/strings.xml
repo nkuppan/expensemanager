@@ -47,4 +47,7 @@
 
     <string name="app_lock">アプリロック</string>
     <string name="app_lock_message">アプリを開く際に生体認証または端末の認証情報を要求します</string>
+    <string name="share_app">アプリを共有</string>
+    <string name="share_app_message">Expense Managerを友だちに紹介</string>
+    <string name="share_app_text">Expense Managerで支出を記録しています。無料で、データはスマホの中だけに保存されます: %1$s</string>
 </resources>

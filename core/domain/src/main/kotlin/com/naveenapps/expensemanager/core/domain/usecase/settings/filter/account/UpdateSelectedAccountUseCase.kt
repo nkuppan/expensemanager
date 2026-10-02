@@ -7,7 +7,5 @@ class UpdateSelectedAccountUseCase(
     private val settingsRepository: SettingsRepository,
 ) {
 
-    suspend operator fun invoke(accountId: List<String>?): Resource<Boolean> {
-        return settingsRepository.setAccounts(accountId)
-    }
+    suspend operator fun invoke(accountId: List<String>?): Resource<Boolean> = settingsRepository.setAccounts(accountId)
 }

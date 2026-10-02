@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
+        <!-- Daily reminder's "Nothing spent today" action button. -->
+        <receiver
+            android:name="com.naveenapps.expensemanager.core.notification.ReminderActionReceiver"
+            android:exported="false" />
+
         <receiver
             android:name="com.naveenapps.expensemanager.core.notification.BootAlarmReceiver"
             android:enabled="false"

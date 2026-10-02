@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val CategoryViewModelModule = module {
     viewModel {
         CategorySelectionViewModel(
-            getCategoriesUseCase = get()
+            getCategoriesUseCase = get(),
         )
     }
     viewModel {
@@ -22,13 +22,13 @@ val CategoryViewModelModule = module {
             updateCategoryUseCase = get(),
             deleteCategoryUseCase = get(),
             imageStorageRepository = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
     viewModel {
         CategoryListViewModel(
             getAllCategoryUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
     viewModel {
@@ -38,7 +38,7 @@ val CategoryViewModelModule = module {
             findCategoryByIdFlowUseCase = get(),
             getTransactionWithFilterUseCase = get(),
             getFormattedAmountUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
     viewModel {
@@ -48,4 +48,3 @@ val CategoryViewModelModule = module {
         )
     }
 }
-

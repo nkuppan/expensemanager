@@ -5,7 +5,5 @@ import com.naveenapps.expensemanager.core.repository.ThemeRepository
 
 class GetThemesUseCase(private val repository: ThemeRepository) {
 
-    operator fun invoke(): List<Theme> {
-        return repository.getThemes()
-    }
+    operator fun invoke(): List<Theme> = repository.getThemes()
 }

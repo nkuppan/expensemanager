@@ -6,7 +6,6 @@ import com.naveenapps.expensemanager.core.repository.DevicePropertyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-
 class AboutUsViewModel(
     devicePropertyRepository: DevicePropertyRepository,
     private val appComposeNavigator: AppComposeNavigator,
@@ -14,8 +13,8 @@ class AboutUsViewModel(
 
     private val _state = MutableStateFlow(
         AboutUsState(
-            appVersion = devicePropertyRepository.getAppVersion()
-        )
+            appVersion = devicePropertyRepository.getAppVersion(),
+        ),
     )
     val state = _state.asStateFlow()
 

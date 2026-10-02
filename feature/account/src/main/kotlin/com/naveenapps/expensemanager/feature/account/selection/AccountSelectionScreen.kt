@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.components.SelectionHeader
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
@@ -30,7 +30,7 @@ fun AccountSelectionScreen(
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         item {
             SelectionHeader(
@@ -56,7 +56,7 @@ fun AccountSelectionScreen(
                 border = AccountItemDefaults.border(isSelected),
                 trailingContent = {
                     AccountItemDefaults.SingleCheckedTrailing(isSelected)
-                }
+                },
             )
         }
         item {
@@ -74,7 +74,7 @@ private fun AccountSelectionScreenPreview() {
             accounts = accounts,
             selectedAccount = accounts.firstOrNull(),
             onItemSelection = {},
-            createNewCallback = {}
+            createNewCallback = {},
         )
     }
 }

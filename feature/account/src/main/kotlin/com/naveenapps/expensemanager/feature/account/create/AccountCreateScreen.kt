@@ -45,10 +45,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -63,9 +63,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountCreateScreen(
-    viewModel: AccountCreateViewModel = koinViewModel()
+    viewModel: AccountCreateViewModel = koinViewModel(),
 ) {
-
     val state by viewModel.state.collectAsState()
 
     val imagePicker = rememberImagePickerActions(
@@ -107,10 +106,11 @@ private fun AccountCreateScaffoldView(
                 navigationBackClick = {
                     onAction.invoke(AccountCreateAction.ClosePage)
                 },
-                title = if (state.showDeleteButton)
+                title = if (state.showDeleteButton) {
                     stringResource(R.string.edit_account)
-                else
-                    stringResource(R.string.create_account),
+                } else {
+                    stringResource(R.string.create_account)
+                },
                 actions = {
                     if (state.showDeleteButton) {
                         IconButton(onClick = { onAction.invoke(AccountCreateAction.ShowDeleteDialog) }) {
@@ -181,7 +181,7 @@ private fun AccountCreateScreen(
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SettingsSection(
             title = stringResource(R.string.account_type),
@@ -189,9 +189,8 @@ private fun AccountCreateScreen(
         ) {
             AppCardView {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
-
                     AccountTypeSelectionView(
                         modifier = Modifier.fillMaxWidth(),
                         selectedAccountType = type.value,
@@ -206,7 +205,7 @@ private fun AccountCreateScreen(
             AppCardView {
                 Column(
                     modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     StringTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -231,7 +230,7 @@ private fun AccountCreateScreen(
         SettingsSection(title = stringResource(R.string.appearance)) {
             AppCardView {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     IconAndColorComponent(
                         modifier = Modifier.fillMaxWidth(),
@@ -259,7 +258,7 @@ private fun ColumnScope.BalanceSectionContent(
     type: TextFieldValue<AccountType>,
     creditLimit: TextFieldValue<String>,
     totalAmount: String,
-    totalAmountBackgroundColor: Int
+    totalAmountBackgroundColor: Int,
 ) {
     DecimalTextField(
         modifier = Modifier.fillMaxWidth(),
@@ -337,18 +336,24 @@ private fun ColumnScope.BalanceSectionContent(
 @Composable
 private fun AccountCreateStatePreview() {
     val nameField = TextFieldValue(
-        value = "", valueError = false, onValueChange = { }
+        value = "",
+        valueError = false,
+        onValueChange = { },
     )
     val selectedColorField = TextFieldValue(
-        value = "#000000", valueError = false, onValueChange = { }
+        value = "#000000",
+        valueError = false,
+        onValueChange = { },
     )
     val selectedIconField = TextFieldValue(
-        value = "account_balance_wallet", valueError = false, onValueChange = { }
+        value = "account_balance_wallet",
+        valueError = false,
+        onValueChange = { },
     )
     val accountField = TextFieldValue(
         value = AccountType.CREDIT,
         valueError = false,
-        onValueChange = { }
+        onValueChange = { },
     )
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         AccountCreateScaffoldView(

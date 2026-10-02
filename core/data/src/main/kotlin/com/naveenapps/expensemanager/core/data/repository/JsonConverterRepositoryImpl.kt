@@ -12,21 +12,19 @@ class JsonConverterRepositoryImpl(
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
 ) : JsonConverterRepository {
 
-    override suspend fun fromJsonToObject(value: String, classValue: Class<*>): Any? =
-        withContext(appCoroutineDispatchers.io) {
-            return@withContext runCatching {
-                gson.fromJson(Uri.decode(value), classValue)
-            }.onFailure {
-                Log.d("Countries", it.message ?: "")
-            }.getOrNull()
-        }
+    override suspend fun fromJsonToObject(value: String, classValue: Class<*>): Any? = withContext(appCoroutineDispatchers.io) {
+        return@withContext runCatching {
+            gson.fromJson(Uri.decode(value), classValue)
+        }.onFailure {
+            Log.d("Countries", it.message ?: "")
+        }.getOrNull()
+    }
 
-    override suspend fun fromObjectToJson(value: Any): String? =
-        withContext(appCoroutineDispatchers.io) {
-            return@withContext runCatching {
-                Uri.encode(gson.toJson(value))
-            }.onFailure {
-                Log.d("Countries", it.message ?: "")
-            }.getOrNull()
-        }
+    override suspend fun fromObjectToJson(value: Any): String? = withContext(appCoroutineDispatchers.io) {
+        return@withContext runCatching {
+            Uri.encode(gson.toJson(value))
+        }.onFailure {
+            Log.d("Countries", it.message ?: "")
+        }.getOrNull()
+    }
 }

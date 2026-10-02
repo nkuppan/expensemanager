@@ -14,5 +14,5 @@ data class DateFilterState(
     val dateRangeTypeList: List<DateRangeModel>,
     val showCustomRangeSelection: Boolean,
     val showDateFilter: Boolean,
-    val dateFilterType: DateFilterType
+    val dateFilterType: DateFilterType,
 )

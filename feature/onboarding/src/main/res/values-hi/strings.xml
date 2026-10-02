@@ -20,4 +20,9 @@
     <string name="track">ट्रैक करें</string>
     <string name="organize">व्यवस्थित करें</string>
     <string name="grow">आगे बढ़ें</string>
+    <string name="onboarding_add_first_expense">अपना पहला खर्च जोड़ें</string>
+    <string name="onboarding_explore_first">पहले ऐप देखें</string>
+    <string name="onboarding_reminder_title">दैनिक रिमाइंडर</string>
+    <string name="onboarding_reminder_time">हर दिन %1$s बजे</string>
+    <string name="onboarding_reminder_description">अपने खर्च दर्ज करने के लिए एक हल्का रिमाइंडर</string>
 </resources>

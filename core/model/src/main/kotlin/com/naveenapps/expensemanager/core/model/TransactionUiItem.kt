@@ -28,19 +28,17 @@ data class TransactionUiItem(
     val categoryTitleResId: Int? = null,
 )
 
-fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem {
-    return TransactionUiItem(
-        this.id,
-        amount,
-        this.notes,
-        this.category.name,
-        this.type,
-        categoryIcon = this.category.storedIcon,
-        date = this.createdOn.toCompleteDateWithDate(),
-        fromAccountName = this.fromAccount.name,
-        fromAccountIcon = this.fromAccount.storedIcon,
-        toAccountName = this.toAccount?.name,
-        toAccountIcon = this.toAccount?.storedIcon,
-        categoryTitleResId = this.category.titleResId,
-    )
-}
+fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = TransactionUiItem(
+    this.id,
+    amount,
+    this.notes,
+    this.category.name,
+    this.type,
+    categoryIcon = this.category.storedIcon,
+    date = this.createdOn.toCompleteDateWithDate(),
+    fromAccountName = this.fromAccount.name,
+    fromAccountIcon = this.fromAccount.storedIcon,
+    toAccountName = this.toAccount?.name,
+    toAccountIcon = this.toAccount?.storedIcon,
+    categoryTitleResId = this.category.titleResId,
+)

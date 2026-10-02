@@ -7,7 +7,5 @@ import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 class GetDateRangeByTypeUseCase(
     private val dateRangeFilterRepository: DateRangeFilterRepository,
 ) {
-    suspend operator fun invoke(type: DateRangeType): DateRangeModel {
-        return dateRangeFilterRepository.getDateRangeFilterTypeString(type)
-    }
+    suspend operator fun invoke(type: DateRangeType): DateRangeModel = dateRangeFilterRepository.getDateRangeFilterTypeString(type)
 }

@@ -34,7 +34,7 @@ data class TransactionCreateState(
 
 enum class AccountSelection {
     FROM_ACCOUNT,
-    TO_ACCOUNT
+    TO_ACCOUNT,
 }
 
 data class TransactionCreateInitSetupState(

@@ -42,9 +42,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
@@ -58,8 +58,8 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionItem
 import com.naveenapps.expensemanager.feature.filter.type.getCategory
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -93,7 +93,7 @@ private fun CategoryDetailsContent(
                             }) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = null
+                                    contentDescription = null,
                                 )
                             }
                         },
@@ -103,7 +103,7 @@ private fun CategoryDetailsContent(
                                 IconButton(
                                     onClick = {
                                         onAction.invoke(CategoryDetailsAction.OpenCategoryEdit)
-                                    }
+                                    },
                                 ) {
                                     Icon(
                                         imageVector = Icons.Outlined.Edit,
@@ -111,7 +111,7 @@ private fun CategoryDetailsContent(
                                     )
                                 }
                             }
-                        }
+                        },
                     )
                     state.categoryTransaction?.let { categoryTransaction ->
                         CategoryTransactionItem(
@@ -136,9 +136,9 @@ private fun CategoryDetailsContent(
 
                 onClick = {
                     onAction.invoke(
-                        CategoryDetailsAction.OpenTransactionCreate
+                        CategoryDetailsAction.OpenTransactionCreate,
                     )
-                }
+                },
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -164,9 +164,8 @@ private fun CategoryDetailsContent(
             } else {
                 LazyColumn(
                     modifier = Modifier.padding(top = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
                 ) {
-
                     itemsIndexed(
                         items = state.transactions,
                         key = { _, item -> item.id },
@@ -177,8 +176,8 @@ private fun CategoryDetailsContent(
                                 .padding(start = 16.dp, end = 16.dp),
                             shape = AppCardViewDefaults.cardShape(
                                 index,
-                                state.transactions
-                            )
+                                state.transactions,
+                            ),
                         ) {
                             TransactionItem(
                                 categoryName = item.categoryName,
@@ -193,8 +192,8 @@ private fun CategoryDetailsContent(
                                     .clickable {
                                         onAction.invoke(
                                             CategoryDetailsAction.OpenTransactionEdit(
-                                                item.id
-                                            )
+                                                item.id,
+                                            ),
                                         )
                                     }
                                     .then(ItemSpecModifier),
@@ -359,15 +358,15 @@ fun CategoryDetailsPreview() {
                     category = getCategory(0),
                     amount = Amount(100.0, amountString = "$100.00"),
                     percent = 50.0f,
-                    transaction = emptyList()
+                    transaction = emptyList(),
                 ),
                 transactions = buildList {
                     repeat(5) { index ->
                         add(getTransactionItem(index.toString()))
                     }
-                }
+                },
             ),
-            onAction = {}
+            onAction = {},
         )
     }
 }

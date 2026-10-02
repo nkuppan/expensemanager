@@ -20,4 +20,9 @@
     <string name="track">추적</string>
     <string name="organize">정리</string>
     <string name="grow">성장</string>
+    <string name="onboarding_add_first_expense">첫 지출 추가하기</string>
+    <string name="onboarding_explore_first">먼저 앱 둘러보기</string>
+    <string name="onboarding_reminder_title">매일 알림</string>
+    <string name="onboarding_reminder_time">매일 %1$s</string>
+    <string name="onboarding_reminder_description">지출을 기록하도록 가볍게 알려 드려요</string>
 </resources>

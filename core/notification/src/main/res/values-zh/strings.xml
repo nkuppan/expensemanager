@@ -3,4 +3,17 @@
     <string name="notification_description">别忘了记录您的支出</string>
     <string name="notification_title">添加交易</string>
     <string name="notification_channel_description">用于提醒事项</string>
+    <string name="reminder_notification_title">今天的支出记录了吗？</string>
+    <string name="reminder_notification_body">只需几秒钟。点按即可添加支出。</string>
+    <string name="reminder_action_add">添加支出</string>
+    <string name="reminder_action_no_spend">今天没有支出</string>
+    <string name="weekly_summary_title">本周消费小结</string>
+    <string name="weekly_summary_less">本周您花费了 %1$s，比上周少 %2$d%%。做得好！</string>
+    <string name="weekly_summary_more">本周您花费了 %1$s，比上周多 %2$d%%。</string>
+    <string name="weekly_summary_same">本周您花费了 %1$s，与上周差不多。</string>
+    <string name="weekly_summary_first">本周您花费了 %1$s。继续记录，下周就能对比。</string>
+    <string name="budget_alert_warning_title">%1$s 已达 80%%</string>
+    <string name="budget_alert_warning_body">您已花费 %2$s 中的 %1$s。该稍微放慢一点了。</string>
+    <string name="budget_alert_over_title">%1$s 已超出预算</string>
+    <string name="budget_alert_over_body">您已花费 %2$s 预算中的 %1$s。</string>
 </resources>

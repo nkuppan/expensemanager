@@ -6,5 +6,5 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 @Stable
 data class BudgetState(
     val isLoading: Boolean,
-    val budgets: List<BudgetUiModel>
+    val budgets: List<BudgetUiModel>,
 )

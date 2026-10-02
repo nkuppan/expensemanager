@@ -8,10 +8,6 @@ enum class CategoryType {
     EXPENSE,
 }
 
-fun CategoryType.isIncome(): Boolean {
-    return this == CategoryType.INCOME
-}
+fun CategoryType.isIncome(): Boolean = this == CategoryType.INCOME
 
-fun CategoryType.isExpense(): Boolean {
-    return this == CategoryType.EXPENSE
-}
+fun CategoryType.isExpense(): Boolean = this == CategoryType.EXPENSE

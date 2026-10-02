@@ -4,5 +4,5 @@ import java.io.File
 
 data class ExportData(
     val uri: String?,
-    val file: File?
+    val file: File?,
 )

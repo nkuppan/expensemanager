@@ -85,10 +85,6 @@
                 android:value="androidx.startup" />
 
             <meta-data
-                android:name="com.naveenapps.expensemanager.initializer.WorkManagerInitializer"
-                android:value="androidx.startup" />
-
-            <meta-data
                 android:name="com.naveenapps.expensemanager.initializer.PreloadDatabaseInitializer"
                 android:value="androidx.startup" />
 
@@ -96,6 +92,8 @@
                 android:name="com.naveenapps.expensemanager.initializer.AppInitializer"
                 android:value="androidx.startup" />
 
+            <!-- Keep removed: WorkManager initialises on demand via
+                 ExpenseManagerApplication (Configuration.Provider). See that class. -->
             <meta-data
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"

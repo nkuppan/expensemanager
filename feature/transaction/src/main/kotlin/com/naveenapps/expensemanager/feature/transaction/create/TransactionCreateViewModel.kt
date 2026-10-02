@@ -13,7 +13,6 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransact
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
-import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -34,9 +33,17 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
+import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
+import java.util.Calendar
+import java.util.Date
+import java.util.UUID
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,10 +54,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Calendar
-import java.util.Date
-import java.util.UUID
-
 
 class TransactionCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -68,6 +71,8 @@ class TransactionCreateViewModel(
     private val appComposeNavigator: AppComposeNavigator,
     private val numberFormatRepository: NumberFormatRepository,
     private val feedbackRepository: FeedbackRepository,
+    private val analyticsRepository: AnalyticsRepository,
+    private val budgetAlertTrigger: BudgetAlertTrigger,
 ) : ViewModel() {
 
     private val sessionCreatedAttachmentPaths = mutableListOf<String>()
@@ -83,7 +88,7 @@ class TransactionCreateViewModel(
         TransactionCreateInitSetupState(
             isCategorySyncCompleted = false,
             isAccountSyncCompleted = false,
-        )
+        ),
     )
 
     private val _state = MutableStateFlow(
@@ -91,12 +96,12 @@ class TransactionCreateViewModel(
             amount = TextFieldValue(
                 value = numberFormatRepository.formatForEditing(0.0),
                 valueError = false,
-                onValueChange = this::setAmountOnChange
+                onValueChange = this::setAmountOnChange,
             ),
             notes = TextFieldValue(
                 value = "",
                 valueError = false,
-                onValueChange = this::setNotes
+                onValueChange = this::setNotes,
             ),
             dateTime = Date(),
             transactionType = TransactionType.EXPENSE,
@@ -110,11 +115,14 @@ class TransactionCreateViewModel(
             showDeleteDialog = false,
             showCategorySelection = false,
             showAccountSelection = false,
-            showNumberPad = false,
+            // A new transaction opens straight onto the keypad: the amount is the one field
+            // every entry needs, so this saves a tap on the app's most frequent action.
+            // Editing (an id was passed) opens on the form as before.
+            showNumberPad = savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank(),
             showTimeSelection = false,
             showDateSelection = false,
-            accountSelection = AccountSelection.FROM_ACCOUNT
-        )
+            accountSelection = AccountSelection.FROM_ACCOUNT,
+        ),
     )
     var state = _state.asStateFlow()
 
@@ -159,7 +167,7 @@ class TransactionCreateViewModel(
             transactionType,
             getAllCategoryUseCase.invoke(),
             settingsRepository.getDefaultIncomeCategory(),
-            settingsRepository.getDefaultExpenseCategory()
+            settingsRepository.getDefaultExpenseCategory(),
         ) { type, categories, defaultIncomeCategory, defaultExpenseCategory ->
             val filteredCategories = categories.filter { category ->
                 if (type.isIncome()) category.type.isIncome() else category.type.isExpense()
@@ -176,7 +184,7 @@ class TransactionCreateViewModel(
                     transactionType = type,
                     categories = filteredCategories,
                     selectedCategory = matchedCategory ?: filteredCategories.firstOrNull()
-                    ?: defaultCategory,
+                        ?: defaultCategory,
                 )
             }
             syncState.update { it.copy(isCategorySyncCompleted = true) }
@@ -200,6 +208,7 @@ class TransactionCreateViewModel(
     private suspend fun loadEditingTransaction(transactionId: String) {
         when (val response = findTransactionByIdUseCase.invoke(transactionId)) {
             is Resource.Error -> Unit
+
             is Resource.Success -> {
                 val transaction = response.data
                 editingTransaction = transaction
@@ -207,7 +216,7 @@ class TransactionCreateViewModel(
                 _state.update { current ->
                     current.copy(
                         amount = current.amount.copy(
-                            value = numberFormatRepository.formatForEditing(transaction.amount.amount)
+                            value = numberFormatRepository.formatForEditing(transaction.amount.amount),
                         ),
                         transactionType = transaction.type,
                         dateTime = transaction.createdOn,
@@ -216,14 +225,14 @@ class TransactionCreateViewModel(
                         selectedFromAccount = transaction.fromAccount.toAccountUiModel(
                             getFormattedAmountUseCase.invoke(
                                 transaction.fromAccount.amount,
-                                current.currency
+                                current.currency,
                             ),
                         ),
                         selectedToAccount = transaction.toAccount?.let { toAccount ->
                             toAccount.toAccountUiModel(
                                 getFormattedAmountUseCase.invoke(
                                     toAccount.amount,
-                                    current.currency
+                                    current.currency,
                                 ),
                             )
                         } ?: defaultAccount,
@@ -251,7 +260,9 @@ class TransactionCreateViewModel(
 
         if (currentState.transactionType.isTransfer() &&
             currentState.selectedFromAccount.id == currentState.selectedToAccount.id
-        ) return
+        ) {
+            return
+        }
 
         // amountValue is smart-cast to Double after the null check above
         persistTransaction(buildTransactionFromState(currentState, amountValue))
@@ -259,22 +270,20 @@ class TransactionCreateViewModel(
 
     internal fun buildTransactionFromState(
         state: TransactionCreateState,
-        amountValue: Double
-    ): Transaction {
-        return Transaction(
-            id = editingTransaction?.id ?: UUID.randomUUID().toString(),
-            notes = state.notes.value,
-            categoryId = state.selectedCategory.id,
-            fromAccountId = state.selectedFromAccount.id,
-            toAccountId = if (state.transactionType.isTransfer()) state.selectedToAccount.id else null,
-            type = state.transactionType,
-            amount = Amount(amountValue),
-            imagePath = "",
-            createdOn = state.dateTime,
-            updatedOn = Calendar.getInstance().time,
-            attachments = state.attachments,
-        )
-    }
+        amountValue: Double,
+    ): Transaction = Transaction(
+        id = editingTransaction?.id ?: UUID.randomUUID().toString(),
+        notes = state.notes.value,
+        categoryId = state.selectedCategory.id,
+        fromAccountId = state.selectedFromAccount.id,
+        toAccountId = if (state.transactionType.isTransfer()) state.selectedToAccount.id else null,
+        type = state.transactionType,
+        amount = Amount(amountValue),
+        imagePath = "",
+        createdOn = state.dateTime,
+        updatedOn = Calendar.getInstance().time,
+        attachments = state.attachments,
+    )
 
     private fun persistTransaction(transaction: Transaction) {
         val isNewTransaction = editingTransaction == null
@@ -290,9 +299,16 @@ class TransactionCreateViewModel(
                     imageStorageRepository.deleteTransactionAttachment(it)
                 }
                 sessionCreatedAttachmentPaths.removeAll(transaction.attachments)
+                // New or edited spending may have pushed a budget past 80% / 100%.
+                budgetAlertTrigger.checkBudgetsSoon()
                 discardSessionAttachments()
                 if (isNewTransaction) {
-                    onNewTransactionCreated()
+                    onNewTransactionCreated(transaction)
+                } else {
+                    analyticsRepository.logEvent(
+                        AnalyticsEvents.TRANSACTION_UPDATED,
+                        mapOf(AnalyticsParams.TYPE to transaction.type.name.lowercase()),
+                    )
                 }
                 closePage()
             }
@@ -303,20 +319,46 @@ class TransactionCreateViewModel(
     // Bumps the running "transactions created" count, and — once someone has logged enough
     // transactions and enough days have passed since install — requests Google Play's in-app
     // review popup exactly once for the life of the install.
-    private suspend fun onNewTransactionCreated() {
+    private suspend fun onNewTransactionCreated(transaction: Transaction) {
         feedbackRepository.setTransactionCreated(true)
+        logTransactionCreated(transaction)
         if (feedbackRepository.shouldShowFeedbackDialog().first()) {
             // Marked immediately, before we know whether Play actually showed anything —
             // Play never reports that back, so "requested" is the only signal we get.
             feedbackRepository.setFeedbackDialogShown(true)
+            analyticsRepository.logEvent(AnalyticsEvents.REVIEW_REQUESTED, emptyMap())
             _event.send(TransactionCreateEvent.RequestReview)
         }
+    }
+
+    // Activation metric: `is_first` marks the install's first-ever transaction, so the
+    // install -> first transaction funnel can be built in Firebase without BigQuery.
+    private suspend fun logTransactionCreated(transaction: Transaction) {
+        val count = feedbackRepository.getTransactionCreatedCount().first()
+        if (count == 1) {
+            // Very first transaction of this install: Home celebrates it once.
+            feedbackRepository.setFirstSaveCelebrationPending(true)
+        }
+        analyticsRepository.logEvent(
+            AnalyticsEvents.TRANSACTION_CREATED,
+            mapOf(
+                AnalyticsParams.TYPE to transaction.type.name.lowercase(),
+                AnalyticsParams.IS_FIRST to (count <= 1).toString(),
+                AnalyticsParams.TRANSACTION_COUNT to count.toString(),
+                AnalyticsParams.HAS_NOTES to transaction.notes.isNotBlank().toString(),
+                AnalyticsParams.HAS_ATTACHMENT to transaction.attachments.isNotEmpty().toString(),
+            ),
+        )
     }
 
     private fun deleteTransaction() {
         val transaction = editingTransaction ?: return
         viewModelScope.launch {
             if (deleteTransactionUseCase.invoke(transaction) is Resource.Success) {
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.TRANSACTION_DELETED,
+                    mapOf(AnalyticsParams.TYPE to transaction.type.name.lowercase()),
+                )
                 transaction.attachments.forEach {
                     imageStorageRepository.deleteTransactionAttachment(it)
                 }
@@ -358,18 +400,16 @@ class TransactionCreateViewModel(
 
     private fun mapAccountsToUiModels(
         accounts: List<Account>,
-        currency: Currency
-    ): List<AccountUiModel> {
-        return accounts.map { account ->
-            account.toAccountUiModel(
-                getFormattedAmountUseCase.invoke(account.amount, currency),
-                if (account.type == AccountType.CREDIT) {
-                    getFormattedAmountUseCase.invoke(account.getAvailableCreditLimit(), currency)
-                } else {
-                    null
-                }
-            )
-        }
+        currency: Currency,
+    ): List<AccountUiModel> = accounts.map { account ->
+        account.toAccountUiModel(
+            getFormattedAmountUseCase.invoke(account.amount, currency),
+            if (account.type == AccountType.CREDIT) {
+                getFormattedAmountUseCase.invoke(account.getAvailableCreditLimit(), currency)
+            } else {
+                null
+            },
+        )
     }
 
     private fun setAmountOnChange(amount: String) {
@@ -378,9 +418,9 @@ class TransactionCreateViewModel(
             it.copy(
                 amount = it.amount.copy(
                     value = amount,
-                    valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0
+                    valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0,
                 ),
-                showNumberPad = false
+                showNumberPad = false,
             )
         }
     }
@@ -419,31 +459,36 @@ class TransactionCreateViewModel(
     fun processAction(action: TransactionCreateAction) {
         when (action) {
             TransactionCreateAction.ClosePage -> cancelEditing()
+
             TransactionCreateAction.ShowDeleteDialog -> showDeleteDialog()
+
             TransactionCreateAction.DismissDeleteDialog -> dismissDeleteDialog()
+
             TransactionCreateAction.Delete -> deleteTransaction()
+
             TransactionCreateAction.Save -> save()
 
             is TransactionCreateAction.OpenAccountCreate -> openAccountCreate()
+
             is TransactionCreateAction.OpenCategoryCreate -> openCategoryCreate()
 
             is TransactionCreateAction.ChangeTransactionType -> changeTransactionType(action.type)
 
+            // The keypad reports null when it's dismissed (back / tap outside). Close it then,
+            // otherwise the user is stuck on the keypad until they enter an amount.
             is TransactionCreateAction.SetNumberPadValue -> action.amount?.let {
-                setAmountOnChange(
-                    it
-                )
-            }
+                setAmountOnChange(it)
+            } ?: _state.update { it.copy(showNumberPad = false) }
 
             TransactionCreateAction.ShowCategorySelection -> _state.update {
                 it.copy(
-                    showCategorySelection = true
+                    showCategorySelection = true,
                 )
             }
 
             TransactionCreateAction.DismissCategorySelection -> _state.update {
                 it.copy(
-                    showCategorySelection = false
+                    showCategorySelection = false,
                 )
             }
 
@@ -457,7 +502,7 @@ class TransactionCreateViewModel(
 
             TransactionCreateAction.DismissAccountSelection -> _state.update {
                 it.copy(
-                    showAccountSelection = false
+                    showAccountSelection = false,
                 )
             }
 
@@ -465,21 +510,24 @@ class TransactionCreateViewModel(
                 when (it.accountSelection) {
                     AccountSelection.FROM_ACCOUNT -> it.copy(
                         selectedFromAccount = action.account,
-                        showAccountSelection = false
+                        showAccountSelection = false,
                     )
 
                     AccountSelection.TO_ACCOUNT -> it.copy(
                         selectedToAccount = action.account,
-                        showAccountSelection = false
+                        showAccountSelection = false,
                     )
                 }
             }
 
             TransactionCreateAction.ShowNumberPad -> _state.update { it.copy(showNumberPad = true) }
+
             TransactionCreateAction.DismissNumberPad -> _state.update { it.copy(showNumberPad = false) }
 
             TransactionCreateAction.ShowDateSelection -> _state.update { it.copy(showDateSelection = true) }
+
             TransactionCreateAction.ShowTimeSelection -> _state.update { it.copy(showTimeSelection = true) }
+
             TransactionCreateAction.DismissDateSelection -> _state.update {
                 it.copy(showDateSelection = false, showTimeSelection = false)
             }
@@ -488,7 +536,7 @@ class TransactionCreateViewModel(
                 it.copy(
                     dateTime = action.date,
                     showDateSelection = false,
-                    showTimeSelection = false
+                    showTimeSelection = false,
                 )
             }
 

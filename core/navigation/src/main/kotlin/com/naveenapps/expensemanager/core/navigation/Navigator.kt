@@ -32,6 +32,9 @@ abstract class AppComposeNavigator : Navigator() {
 
     abstract fun navigateAndClearBackStack(route: Any)
 
+    /** Replaces the back stack with [routes], e.g. Home then TransactionCreate on top. */
+    abstract fun resetBackStackTo(routes: List<Any>)
+
     abstract fun popBackStack()
 
     suspend fun handleNavigationCommands(navController: NavController) {
@@ -56,6 +59,7 @@ abstract class AppComposeNavigator : Navigator() {
             }
 
             NavigationCommand.NavigateUp -> navigateUp()
+
             is NavigationCommand.PopUpToRoute -> popBackStack(
                 navigationCommand.route,
                 navigationCommand.inclusive,
@@ -90,11 +94,20 @@ abstract class AppComposeNavigator : Navigator() {
             is NavigationCommand.NavigateTo -> {
                 navigate(navigationCommand.route)
             }
+
+            is NavigationCommand.ResetBackStack -> {
+                navigationCommand.routes.forEachIndexed { index, route ->
+                    if (index == 0) {
+                        navigate(route) { popUpTo(0) }
+                    } else {
+                        navigate(route)
+                    }
+                }
+            }
         }
     }
 
-    private fun NavController.isCurrentEntryResumed(): Boolean =
-        currentBackStackEntry?.lifecycle?.currentState?.isAtLeast(Lifecycle.State.RESUMED) ?: true
+    private fun NavController.isCurrentEntryResumed(): Boolean = currentBackStackEntry?.lifecycle?.currentState?.isAtLeast(Lifecycle.State.RESUMED) ?: true
 
     private fun NavController.navUpWithResult(
         navigationCommand: NavigationCommand.NavigateUpWithResult<*>,
@@ -114,4 +127,3 @@ abstract class AppComposeNavigator : Navigator() {
         }
     }
 }
-

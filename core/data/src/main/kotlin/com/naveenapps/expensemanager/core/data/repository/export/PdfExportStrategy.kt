@@ -21,59 +21,68 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
 
     override fun getFileType(): ExportFileType = ExportFileType.PDF
 
-    override fun export(uri: String?, transactions: List<Transaction>): Resource<ExportData> {
-        return kotlin.runCatching {
-            val fileUri = generateFile(getFileName(), uri) { output ->
-                buildPdf(transactions).also { doc ->
-                    doc.writeTo(output)
-                    doc.close()
-                }
+    override fun export(uri: String?, transactions: List<Transaction>): Resource<ExportData> = kotlin.runCatching {
+        val fileUri = generateFile(getFileName(), uri) { output ->
+            buildPdf(transactions).also { doc ->
+                doc.writeTo(output)
+                doc.close()
             }
-            Resource.Success(fileUri)
-        }.onFailure {
-            Log.e("PdfExportStrategy", it.localizedMessage ?: "")
-        }.getOrNull() ?: Resource.Error(Exception())
-    }
+        }
+        Resource.Success(fileUri)
+    }.onFailure {
+        Log.e("PdfExportStrategy", it.localizedMessage ?: "")
+    }.getOrNull() ?: Resource.Error(Exception())
 
     private fun buildPdf(transactions: List<Transaction>): PdfDocument {
         // A4 landscape: 842 x 595 pts
         val pageWidth = 842
         val pageHeight = 595
         val margin = 32f
-        val contentWidth = pageWidth - margin * 2  // 778
+        val contentWidth = pageWidth - margin * 2 // 778
 
         val fixedWidths = floatArrayOf(85f, 38f, 55f, 75f, 55f, 75f, 55f, 65f, 55f)
         val colWidths = fixedWidths + floatArrayOf(contentWidth - fixedWidths.sum())
 
         val titlePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = 16f; isFakeBoldText = true; color = Color.BLACK
+            textSize = 16f
+            isFakeBoldText = true
+            color = Color.BLACK
         }
         val summaryLabelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = 9f; isFakeBoldText = true; color = Color.rgb(80, 80, 80)
+            textSize = 9f
+            isFakeBoldText = true
+            color = Color.rgb(80, 80, 80)
         }
         val summaryValuePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = 9f; color = Color.BLACK
+            textSize = 9f
+            color = Color.BLACK
         }
         val headerBgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.rgb(40, 40, 40)
         }
         val headerTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = 8f; isFakeBoldText = true; color = Color.WHITE
+            textSize = 8f
+            isFakeBoldText = true
+            color = Color.WHITE
         }
         val rowAltBgPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.rgb(246, 246, 246)
         }
         val cellTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = 8f; color = Color.BLACK
+            textSize = 8f
+            color = Color.BLACK
         }
         val incomePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = 8f; color = Color.rgb(27, 128, 62)
+            textSize = 8f
+            color = Color.rgb(27, 128, 62)
         }
         val expensePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            textSize = 8f; color = Color.rgb(185, 28, 28)
+            textSize = 8f
+            color = Color.rgb(185, 28, 28)
         }
         val dividerPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-            color = Color.rgb(220, 220, 220); strokeWidth = 0.5f
+            color = Color.rgb(220, 220, 220)
+            strokeWidth = 0.5f
         }
 
         val colHeaders = arrayOf(
@@ -109,7 +118,7 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
                     clipText(label, colWidths[i] - 6f, headerTextPaint),
                     x,
                     yTop + 15f,
-                    headerTextPaint
+                    headerTextPaint,
                 )
                 x += colWidths[i]
             }
@@ -148,7 +157,7 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
                     clipText(cell, colWidths[i] - 6f, paint),
                     x,
                     yTop + rowHeight - 5f,
-                    paint
+                    paint,
                 )
                 x += colWidths[i]
             }
@@ -157,7 +166,7 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
                 yTop + rowHeight,
                 margin + contentWidth,
                 yTop + rowHeight,
-                dividerPaint
+                dividerPaint,
             )
         }
 
@@ -189,14 +198,14 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
         }
         summaryRow(
             context.getString(R.string.exported_on),
-            "${now.toCompleteDate()} ${now.toTimeAndMinutes()}"
+            "${now.toCompleteDate()} ${now.toTimeAndMinutes()}",
         )
         summaryRow(context.getString(R.string.total_transactions), transactions.size.toString())
         summaryRow(context.getString(R.string.total_income), totalIncome.toTrimAmount())
         summaryRow(context.getString(R.string.total_expense), totalExpense.toTrimAmount())
         summaryRow(
             context.getString(R.string.net_balance),
-            (totalIncome - totalExpense).toTrimAmount()
+            (totalIncome - totalExpense).toTrimAmount(),
         )
 
         y += 4f

@@ -109,14 +109,14 @@ fun ThemeDialogViewContent(
                                 MaterialTheme.colorScheme.onSecondary
                             } else {
                                 Color.Unspecified
-                            }
+                            },
                         )
                         if (isThemeSelected) {
                             Icon(
                                 modifier = Modifier.align(Alignment.CenterVertically),
                                 imageVector = Icons.Default.Done,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSecondary
+                                tint = MaterialTheme.colorScheme.onSecondary,
                             )
                         }
                     }

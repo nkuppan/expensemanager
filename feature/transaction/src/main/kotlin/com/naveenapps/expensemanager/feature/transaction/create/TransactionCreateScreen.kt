@@ -47,7 +47,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
@@ -55,6 +54,7 @@ import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddT
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
+import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
@@ -84,17 +84,16 @@ import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefa
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Calendar
 import java.util.Date
+import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionCreateScreen(
     shareRepository: ShareRepository,
-    viewModel: TransactionCreateViewModel = koinViewModel()
+    viewModel: TransactionCreateViewModel = koinViewModel(),
 ) {
-
     val state by viewModel.state.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -159,10 +158,11 @@ private fun TransactionCreateScreenContent(
                 navigationBackClick = {
                     onAction.invoke(TransactionCreateAction.ClosePage)
                 },
-                title = if (state.showDeleteButton)
+                title = if (state.showDeleteButton) {
                     stringResource(R.string.edit_transaction)
-                else
-                    stringResource(R.string.create_transaction),
+                } else {
+                    stringResource(R.string.create_transaction)
+                },
                 actions = {
                     if (state.showDeleteButton) {
                         IconButton(onClick = { onAction.invoke(TransactionCreateAction.ShowDeleteDialog) }) {
@@ -307,7 +307,7 @@ private fun TransactionCreateScreen(
                 val reminderTimeState = ReminderTimeState(it.first, it.second, it.third)
                 onAction.invoke(
                     TransactionCreateAction.SelectDate(
-                        state.dateTime.toTime(reminderTimeState)
+                        state.dateTime.toTime(reminderTimeState),
                     ),
                 )
             },
@@ -334,7 +334,7 @@ private fun TransactionCreateContent(
 
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         SettingsSection(
             title = stringResource(R.string.transaction_type),
@@ -342,7 +342,7 @@ private fun TransactionCreateContent(
         ) {
             AppCardView {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     TransactionTypeSelectionView(
                         modifier = Modifier.fillMaxWidth(),
@@ -361,7 +361,7 @@ private fun TransactionCreateContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     DecimalTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -437,7 +437,6 @@ private fun TransactionCreateContent(
             }
         }
 
-
         // Category — only for non-transfer
         AnimatedVisibility(
             visible = state.transactionType != TransactionType.TRANSFER,
@@ -465,11 +464,12 @@ private fun TransactionCreateContent(
 
         SettingsSection(
             title = stringResource(
-                id = if (state.transactionType == TransactionType.TRANSFER)
+                id = if (state.transactionType == TransactionType.TRANSFER) {
                     R.string.from_account
-                else
-                    R.string.select_account,
-            )
+                } else {
+                    R.string.select_account
+                },
+            ),
         ) {
             AccountItem(
                 name = state.selectedFromAccount.name,
@@ -595,54 +595,53 @@ private fun TransactionCreateStateForIncomePreview() {
 private fun getTransactionState(
     amountField: TextFieldValue<String>,
     transactionType: TransactionType,
-): TransactionCreateState =
-    TransactionCreateState(
-        amount = amountField,
-        currency = Currency(symbol = "$", name = ""),
-        dateTime = Date(),
-        notes = amountField,
-        selectedCategory = Category(
-            id = "1",
-            name = "Shopping",
-            type = CategoryType.EXPENSE,
-            StoredIcon(
-                name = "account_balance_wallet",
-                backgroundColor = "#000000",
-            ),
-            createdOn = Date(),
-            updatedOn = Date(),
+): TransactionCreateState = TransactionCreateState(
+    amount = amountField,
+    currency = Currency(symbol = "$", name = ""),
+    dateTime = Date(),
+    notes = amountField,
+    selectedCategory = Category(
+        id = "1",
+        name = "Shopping",
+        type = CategoryType.EXPENSE,
+        StoredIcon(
+            name = "account_balance_wallet",
+            backgroundColor = "#000000",
         ),
-        selectedFromAccount = AccountUiModel(
-            id = "1",
-            name = "Shopping",
-            type = AccountType.REGULAR,
-            storedIcon = StoredIcon(
-                name = "account_balance_wallet",
-                backgroundColor = "#000000",
-            ),
-            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
-            amount = Amount(0.0, "$ 0.00"),
+        createdOn = Date(),
+        updatedOn = Date(),
+    ),
+    selectedFromAccount = AccountUiModel(
+        id = "1",
+        name = "Shopping",
+        type = AccountType.REGULAR,
+        storedIcon = StoredIcon(
+            name = "account_balance_wallet",
+            backgroundColor = "#000000",
         ),
-        selectedToAccount = AccountUiModel(
-            id = "1",
-            name = "Shopping",
-            type = AccountType.REGULAR,
-            storedIcon = StoredIcon(
-                name = "account_balance_wallet",
-                backgroundColor = "#000000",
-            ),
-            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
-            amount = Amount(0.0, "$ 0.00"),
+        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
+        amount = Amount(0.0, "$ 0.00"),
+    ),
+    selectedToAccount = AccountUiModel(
+        id = "1",
+        name = "Shopping",
+        type = AccountType.REGULAR,
+        storedIcon = StoredIcon(
+            name = "account_balance_wallet",
+            backgroundColor = "#000000",
         ),
-        accounts = emptyList(),
-        categories = emptyList(),
-        showDeleteButton = true,
-        showDeleteDialog = false,
-        showCategorySelection = false,
-        showAccountSelection = false,
-        showNumberPad = false,
-        transactionType = transactionType,
-        accountSelection = AccountSelection.FROM_ACCOUNT,
-        showTimeSelection = false,
-        showDateSelection = false,
-    )
+        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+        amount = Amount(0.0, "$ 0.00"),
+    ),
+    accounts = emptyList(),
+    categories = emptyList(),
+    showDeleteButton = true,
+    showDeleteDialog = false,
+    showCategorySelection = false,
+    showAccountSelection = false,
+    showNumberPad = false,
+    transactionType = transactionType,
+    accountSelection = AccountSelection.FROM_ACCOUNT,
+    showTimeSelection = false,
+    showDateSelection = false,
+)

@@ -22,7 +22,6 @@ import androidx.compose.ui.window.DialogProperties
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTimePickerDialog(
@@ -50,8 +49,8 @@ fun AppTimePickerDialog(
                     modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp),
                     state = timePickerState,
                     colors = TimePickerDefaults.colors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    )
+                        containerColor = MaterialTheme.colorScheme.surface,
+                    ),
                 )
 
                 Row(

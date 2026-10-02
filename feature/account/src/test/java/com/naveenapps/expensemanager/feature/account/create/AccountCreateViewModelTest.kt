@@ -18,6 +18,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.AccountRepository
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.settings.data.repository.NumberFormatRepositoryImpl
@@ -40,6 +41,8 @@ import org.mockito.kotlin.whenever
 class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     private val accountRepository: AccountRepository = mock()
+
+    private val analyticsRepository: AnalyticsRepository = mock()
     private val currencyRepository: CurrencyRepository = mock()
     private val appComposeNavigator: AppComposeNavigator = mock()
     private val imageStorageRepository: ImageStorageRepository = mock()
@@ -57,7 +60,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         coroutineScope = CoroutineScope(testCoroutineDispatcher.dispatcher),
         numberFormatSettingRepository = mock {
             whenever(it.getNumberFormatType()).thenReturn(flowOf(NumberFormatType.WITHOUT_ANY_SEPARATOR))
-        }
+        },
     )
 
     private lateinit var accountCreateViewModel: AccountCreateViewModel
@@ -81,7 +84,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
                     "-${amountString.replace("-", "")}"
                 } else {
                     amountString
-                }
+                },
             )
         }
 
@@ -97,6 +100,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             imageStorageRepository = imageStorageRepository,
             composeNavigator = appComposeNavigator,
             numberFormatRepository = numberFormatRepository,
+            analyticsRepository = analyticsRepository,
         )
     }
 
@@ -193,46 +197,45 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     }
 
     @Test
-    fun `when the amount and credit limit change it should reflect in the amount and amount background`() =
-        runTest {
-            accountCreateViewModel.state.test {
-                val firstState = awaitItem()
-                Truth.assertThat(firstState).isNotNull()
+    fun `when the amount and credit limit change it should reflect in the amount and amount background`() = runTest {
+        accountCreateViewModel.state.test {
+            val firstState = awaitItem()
+            Truth.assertThat(firstState).isNotNull()
 
-                val changedAmount = "10.0"
-                accountCreateViewModel.state.value.amount.onValueChange?.invoke(changedAmount)
+            val changedAmount = "10.0"
+            accountCreateViewModel.state.value.amount.onValueChange?.invoke(changedAmount)
 
-                val secondState = awaitItem()
-                Truth.assertThat(secondState).isNotNull()
-                Truth.assertThat(secondState.totalAmount).isNotEmpty()
-                Truth.assertThat(secondState.totalAmount)
-                    .isEqualTo("${newCurrency.symbol} $changedAmount")
-                Truth.assertThat(secondState.totalAmountBackgroundColor)
-                    .isEqualTo(R.color.green_500)
+            val secondState = awaitItem()
+            Truth.assertThat(secondState).isNotNull()
+            Truth.assertThat(secondState.totalAmount).isNotEmpty()
+            Truth.assertThat(secondState.totalAmount)
+                .isEqualTo("${newCurrency.symbol} $changedAmount")
+            Truth.assertThat(secondState.totalAmountBackgroundColor)
+                .isEqualTo(R.color.green_500)
 
-                val newNegativeAmount = "-10.0"
-                accountCreateViewModel.state.value.amount.onValueChange?.invoke(newNegativeAmount)
-                val thirdState = awaitItem()
-                Truth.assertThat(thirdState).isNotNull()
-                Truth.assertThat(thirdState.totalAmount).isNotEmpty()
-                Truth.assertThat(thirdState.totalAmount)
-                    .isEqualTo("-${newCurrency.symbol} ${(newNegativeAmount.replace("-", ""))}")
-                Truth.assertThat(thirdState.totalAmountBackgroundColor).isEqualTo(R.color.red_500)
+            val newNegativeAmount = "-10.0"
+            accountCreateViewModel.state.value.amount.onValueChange?.invoke(newNegativeAmount)
+            val thirdState = awaitItem()
+            Truth.assertThat(thirdState).isNotNull()
+            Truth.assertThat(thirdState.totalAmount).isNotEmpty()
+            Truth.assertThat(thirdState.totalAmount)
+                .isEqualTo("-${newCurrency.symbol} ${(newNegativeAmount.replace("-", ""))}")
+            Truth.assertThat(thirdState.totalAmountBackgroundColor).isEqualTo(R.color.red_500)
 
-                val creditLimitChange = "30.0"
-                val totalValueExpected = "30.0".toDouble() + newNegativeAmount.toDouble()
-                accountCreateViewModel.state.value.creditLimit.onValueChange?.invoke(
-                    creditLimitChange
-                )
-                val fourthState = awaitItem()
-                Truth.assertThat(fourthState).isNotNull()
-                Truth.assertThat(fourthState.totalAmount).isNotEmpty()
-                Truth.assertThat(fourthState.totalAmount)
-                    .isEqualTo("${newCurrency.symbol} ${(totalValueExpected)}")
-                Truth.assertThat(fourthState.totalAmountBackgroundColor)
-                    .isEqualTo(R.color.green_500)
-            }
+            val creditLimitChange = "30.0"
+            val totalValueExpected = "30.0".toDouble() + newNegativeAmount.toDouble()
+            accountCreateViewModel.state.value.creditLimit.onValueChange?.invoke(
+                creditLimitChange,
+            )
+            val fourthState = awaitItem()
+            Truth.assertThat(fourthState).isNotNull()
+            Truth.assertThat(fourthState.totalAmount).isNotEmpty()
+            Truth.assertThat(fourthState.totalAmount)
+                .isEqualTo("${newCurrency.symbol} ${(totalValueExpected)}")
+            Truth.assertThat(fourthState.totalAmountBackgroundColor)
+                .isEqualTo(R.color.green_500)
         }
+    }
 
     @Test
     fun `when the credit limit change it should reflect in the state`() = runTest {
@@ -277,40 +280,38 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         verify(appComposeNavigator, times(1)).popBackStack()
     }
 
-
     @Test
-    fun `when account is available and call delete action it should delete and pop backstack page`() =
-        runTest {
+    fun `when account is available and call delete action it should delete and pop backstack page`() = runTest {
+        val accountId = "accountId"
 
-            val accountId = "accountId"
+        whenever(accountRepository.findAccount(accountId)).thenReturn(
+            Resource.Success(FAKE_ACCOUNT),
+        )
 
-            whenever(accountRepository.findAccount(accountId)).thenReturn(
-                Resource.Success(FAKE_ACCOUNT)
-            )
+        whenever(accountRepository.deleteAccount(any())).thenReturn(Resource.Success(true))
 
-            whenever(accountRepository.deleteAccount(any())).thenReturn(Resource.Success(true))
+        accountCreateViewModel = AccountCreateViewModel(
+            savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
+            getCurrencyUseCase = getCurrencyUseCase,
+            getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
+            getFormattedAmountUseCase = getFormattedAmountUseCase,
+            findAccountByIdUseCase = findAccountByIdUseCase,
+            addAccountUseCase = addAccountUseCase,
+            updateAccountUseCase = updateAccountUseCase,
+            deleteAccountUseCase = deleteAccountUseCase,
+            imageStorageRepository = imageStorageRepository,
+            composeNavigator = appComposeNavigator,
+            numberFormatRepository = numberFormatRepository,
+            analyticsRepository = analyticsRepository,
+        )
 
-            accountCreateViewModel = AccountCreateViewModel(
-                savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
-                getCurrencyUseCase = getCurrencyUseCase,
-                getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
-                getFormattedAmountUseCase = getFormattedAmountUseCase,
-                findAccountByIdUseCase = findAccountByIdUseCase,
-                addAccountUseCase = addAccountUseCase,
-                updateAccountUseCase = updateAccountUseCase,
-                deleteAccountUseCase = deleteAccountUseCase,
-                imageStorageRepository = imageStorageRepository,
-                composeNavigator = appComposeNavigator,
-                numberFormatRepository = numberFormatRepository,
-            )
+        advanceUntilIdle()
 
-            advanceUntilIdle()
+        accountCreateViewModel.processAction(AccountCreateAction.Delete)
 
-            accountCreateViewModel.processAction(AccountCreateAction.Delete)
+        advanceUntilIdle()
 
-            advanceUntilIdle()
-
-            verify(accountRepository, times(1)).deleteAccount(eq(FAKE_ACCOUNT))
-            verify(appComposeNavigator, times(1)).popBackStack()
-        }
+        verify(accountRepository, times(1)).deleteAccount(eq(FAKE_ACCOUNT))
+        verify(appComposeNavigator, times(1)).popBackStack()
+    }
 }

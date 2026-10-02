@@ -17,6 +17,6 @@ sealed class ExportAction {
 
     data class AccountSelection(
         val accounts: List<AccountUiModel>,
-        val isAllAccountSelected: Boolean
+        val isAllAccountSelected: Boolean,
     ) : ExportAction()
 }

@@ -22,7 +22,7 @@ val FilterUseCaseModule = module {
     single {
         GetSelectedCategoriesUseCase(
             settingsRepository = get(),
-            findCategoryByIdUseCase = get()
+            findCategoryByIdUseCase = get(),
         )
     }
 
@@ -30,7 +30,7 @@ val FilterUseCaseModule = module {
     single {
         GetSelectedAccountUseCase(
             settingsRepository = get(),
-            findAccountByIdUseCase = get()
+            findAccountByIdUseCase = get(),
         )
     }
     single { UpdateSelectedAccountUseCase(get()) }
@@ -41,7 +41,7 @@ val FilterUseCaseModule = module {
     single {
         GetDateRangeUseCase(
             getDateRangeByTypeUseCase = get(),
-            dateRangeFilterRepository = get()
+            dateRangeFilterRepository = get(),
         )
     }
     single { GetTransactionGroupTypeUseCase(get()) }
@@ -50,7 +50,7 @@ val FilterUseCaseModule = module {
     single {
         SaveDateRangeUseCase(
             dateRangeFilterRepository = get(),
-            setDateRangesUseCase = get()
+            setDateRangesUseCase = get(),
         )
     }
     single { SetDateRangesUseCase(get()) }

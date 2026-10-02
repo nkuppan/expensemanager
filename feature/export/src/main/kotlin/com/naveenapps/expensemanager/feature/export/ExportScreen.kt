@@ -66,27 +66,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
-private fun getFileCreateIntent(fileType: ExportFileType): Intent? {
-    return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
-        val timestamp = System.currentTimeMillis()
-        Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            if (fileType == ExportFileType.PDF) {
-                type = "application/pdf"
-                putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.pdf")
-            } else {
-                type = "application/csv"
-                putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.csv")
-            }
+private fun getFileCreateIntent(fileType: ExportFileType): Intent? = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
+    val timestamp = System.currentTimeMillis()
+    Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+        addCategory(Intent.CATEGORY_OPENABLE)
+        if (fileType == ExportFileType.PDF) {
+            type = "application/pdf"
+            putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.pdf")
+        } else {
+            type = "application/csv"
+            putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.csv")
         }
-    } else {
-        null
     }
+} else {
+    null
 }
 
 @Composable
 fun ExportScreen(
-    viewModel: ExportViewModel = koinViewModel()
+    viewModel: ExportViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
     val state by viewModel.state.collectAsState()
@@ -104,7 +102,7 @@ fun ExportScreen(
                 }
                 context.startActivity(Intent.createChooser(shareIntent, null))
             }
-        }
+        },
     )
 }
 
@@ -146,13 +144,15 @@ private fun fileExportedProcess(
             )
         ) {
             SnackbarResult.Dismissed -> Unit
+
             SnackbarResult.ActionPerformed -> {
                 val uri = event.exportData.uri?.toUri()
                 val file = event.exportData.file
                 when {
                     uri != null -> shareWithUri(uri)
+
                     file != null -> shareWithUri(
-                        FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+                        FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file),
                     )
                 }
             }
@@ -184,7 +184,9 @@ private fun ExportScreenContent(
     ObserveAsEvents(eventFlow) { event ->
         when (event) {
             ExportEvent.CreateFile -> createFileEvent(fileCreatorIntent, writePermission, onAction)
+
             is ExportEvent.FileExported -> fileExportedProcess(coroutineScope, snackbarHostState, event, context, shareWithUri)
+
             is ExportEvent.Error -> coroutineScope.launch {
                 snackbarHostState.showSnackbar(message = event.message.asString(context))
             }
@@ -282,7 +284,7 @@ private fun ExportScreenContent(
             onDismissRequest = { showBottomSheet = false },
         ) {
             DateFilterSelectionView(
-                onComplete = { showBottomSheet = false }
+                onComplete = { showBottomSheet = false },
             )
         }
     }
@@ -326,6 +328,5 @@ private fun ExportScreenContent(
             icon = Icons.Outlined.AccountBalance,
             selectedCount = accountCount,
         )
-
     }
 }

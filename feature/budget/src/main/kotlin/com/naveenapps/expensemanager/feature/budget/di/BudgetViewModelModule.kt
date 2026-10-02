@@ -20,20 +20,20 @@ val BudgetViewModelModule = module {
             deleteBudgetUseCase = get(),
             appComposeNavigator = get(),
             numberFormatRepository = get(),
+            analyticsRepository = get(),
         )
     }
     viewModel {
         BudgetDetailViewModel(
             savedStateHandle = get(),
             getBudgetDetailUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
     viewModel {
         BudgetListViewModel(
             getBudgetsUseCase = get(),
-            appComposeNavigator = get()
+            appComposeNavigator = get(),
         )
     }
 }
-

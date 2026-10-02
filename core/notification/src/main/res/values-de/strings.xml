@@ -3,4 +3,17 @@
     <string name="notification_description">Vergiss nicht, deine Ausgaben zu erfassen</string>
     <string name="notification_title">Transaktion hinzufügen</string>
     <string name="notification_channel_description">Wird für Erinnerungen verwendet</string>
+    <string name="reminder_notification_title">Heutige Ausgaben erfasst?</string>
+    <string name="reminder_notification_body">Dauert nur Sekunden. Tippe, um eine Ausgabe hinzuzufügen.</string>
+    <string name="reminder_action_add">Ausgabe hinzufügen</string>
+    <string name="reminder_action_no_spend">Heute nichts ausgegeben</string>
+    <string name="weekly_summary_title">Deine Woche in Zahlen</string>
+    <string name="weekly_summary_less">Du hast diese Woche %1$s ausgegeben, %2$d%% weniger als letzte Woche. Gut gemacht!</string>
+    <string name="weekly_summary_more">Du hast diese Woche %1$s ausgegeben, %2$d%% mehr als letzte Woche.</string>
+    <string name="weekly_summary_same">Du hast diese Woche %1$s ausgegeben, etwa so viel wie letzte Woche.</string>
+    <string name="weekly_summary_first">Du hast diese Woche %1$s ausgegeben. Bleib dran, um mit nächster Woche zu vergleichen.</string>
+    <string name="budget_alert_warning_title">%1$s liegt bei 80%%</string>
+    <string name="budget_alert_warning_body">Du hast %1$s von %2$s ausgegeben. Zeit, etwas kürzerzutreten.</string>
+    <string name="budget_alert_over_title">%1$s ist überschritten</string>
+    <string name="budget_alert_over_body">Du hast %1$s von deinem Budget über %2$s ausgegeben.</string>
 </resources>

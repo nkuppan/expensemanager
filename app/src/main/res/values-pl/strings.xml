@@ -43,4 +43,17 @@
     <string name="app_lock_title">Odblokuj Expense Manager</string>
     <string name="app_lock_description">Zweryfikuj swoją tożsamość, aby kontynuować</string>
     <string name="app_lock_unlock">Odblokuj</string>
+
+    <string name="reminder_primer_title">Nie przegap żadnego wydatku</string>
+    <string name="reminder_primer_description">Otrzymuj jedno przypomnienie dziennie, aby zapisać swoje wydatki. To zajmuje kilka sekund i utrzymuje budżety w porządku.</string>
+    <string name="reminder_primer_turn_on">Włącz codzienne przypomnienie</string>
+    <string name="reminder_primer_not_now">Nie teraz</string>
+    <string name="reminder_primer_footnote">Godzinę możesz zmienić lub wyłączyć przypomnienie w dowolnym momencie w Ustawieniach.</string>
+    <string name="first_save_title">Pierwszy wydatek zapisany!</string>
+    <string name="first_save_description">Świetny początek. Zapisuj wydatki przez 7 dni, a zobaczysz dokładnie, na co idą Twoje pieniądze.</string>
+    <string name="first_save_progress">Dzień %1$d z %2$d</string>
+    <string name="first_save_add_another">Dodaj kolejny</string>
+    <string name="first_save_done">Gotowe</string>
+    <string name="shortcut_add_expense_short">Dodaj wydatek</string>
+    <string name="shortcut_add_expense_long">Dodaj nowy wydatek</string>
 </resources>

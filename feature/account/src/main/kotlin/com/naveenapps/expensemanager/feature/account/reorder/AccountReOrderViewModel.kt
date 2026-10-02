@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
 class AccountReOrderViewModel(
     getAllAccountsUseCase: GetAllAccountsUseCase,
     private val updateAllAccountUseCase: UpdateAllAccountUseCase,
@@ -23,8 +22,8 @@ class AccountReOrderViewModel(
     private val _state = MutableStateFlow(
         AccountReOrderState(
             accounts = emptyList(),
-            showSaveButton = false
-        )
+            showSaveButton = false,
+        ),
     )
     val state = _state.asStateFlow()
 

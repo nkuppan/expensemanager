@@ -43,4 +43,17 @@
     <string name="app_lock_title">Expense Manager entsperren</string>
     <string name="app_lock_description">Bestätige deine Identität, um fortzufahren</string>
     <string name="app_lock_unlock">Entsperren</string>
+
+    <string name="reminder_primer_title">Keine Ausgabe mehr vergessen</string>
+    <string name="reminder_primer_description">Erhalte täglich eine kurze Erinnerung, deine Ausgaben einzutragen. Das dauert nur Sekunden und hält deine Budgets genau.</string>
+    <string name="reminder_primer_turn_on">Tägliche Erinnerung aktivieren</string>
+    <string name="reminder_primer_not_now">Nicht jetzt</string>
+    <string name="reminder_primer_footnote">Du kannst die Uhrzeit jederzeit in den Einstellungen ändern oder die Erinnerung ausschalten.</string>
+    <string name="first_save_title">Erste Ausgabe gespeichert!</string>
+    <string name="first_save_description">Starker Anfang. Erfasse deine Ausgaben 7 Tage lang und du siehst genau, wohin dein Geld fließt.</string>
+    <string name="first_save_progress">Tag %1$d von %2$d</string>
+    <string name="first_save_add_another">Weitere hinzufügen</string>
+    <string name="first_save_done">Fertig</string>
+    <string name="shortcut_add_expense_short">Ausgabe hinzufügen</string>
+    <string name="shortcut_add_expense_long">Neue Ausgabe hinzufügen</string>
 </resources>

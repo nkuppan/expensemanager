@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 
-
 class BudgetListViewModel(
     getBudgetsUseCase: GetBudgetsUseCase,
     private val appComposeNavigator: AppComposeNavigator,
@@ -20,8 +19,8 @@ class BudgetListViewModel(
     private val _state = MutableStateFlow(
         BudgetState(
             isLoading = true,
-            budgets = emptyList()
-        )
+            budgets = emptyList(),
+        ),
     )
     val state = _state.asStateFlow()
 
@@ -30,7 +29,7 @@ class BudgetListViewModel(
             _state.update {
                 it.copy(
                     isLoading = false,
-                    budgets = budgets
+                    budgets = budgets,
                 )
             }
         }.launchIn(viewModelScope)
