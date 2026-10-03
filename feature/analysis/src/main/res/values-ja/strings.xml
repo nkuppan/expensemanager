@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">収入より多く支出</string>
     <string name="highlight_of_spending">支出に占める割合</string>
     <string name="highlight_of_income">収入に占める割合</string>
+    <string name="compare_title_day">昨日との比較</string>
+    <string name="compare_title_week">先週との比較</string>
+    <string name="compare_title_month">先月との比較</string>
+    <string name="compare_title_year">昨年との比較</string>
+    <string name="compare_title_custom">前の期間との比較</string>
+    <string name="compare_was">前回 %1$s</string>
+    <string name="compare_new">新規</string>
+    <string name="compare_same">変化なし</string>
+    <string name="compare_biggest_changes">大きな変化</string>
+    <string name="compare_category_detail">%1$s / 前回 %2$s</string>
 </resources>

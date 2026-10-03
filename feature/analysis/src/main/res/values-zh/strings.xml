@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">支出超过收入</string>
     <string name="highlight_of_spending">占支出</string>
     <string name="highlight_of_income">占收入</string>
+    <string name="compare_title_day">对比昨天</string>
+    <string name="compare_title_week">对比上周</string>
+    <string name="compare_title_month">对比上月</string>
+    <string name="compare_title_year">对比去年</string>
+    <string name="compare_title_custom">对比上一周期</string>
+    <string name="compare_was">之前 %1$s</string>
+    <string name="compare_new">新增</string>
+    <string name="compare_same">持平</string>
+    <string name="compare_biggest_changes">变化最大</string>
+    <string name="compare_category_detail">%1$s 对比 %2$s</string>
 </resources>

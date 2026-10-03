@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">Потрачено больше, чем заработано</string>
     <string name="highlight_of_spending">расходов</string>
     <string name="highlight_of_income">дохода</string>
+    <string name="compare_title_day">По сравнению со вчера</string>
+    <string name="compare_title_week">По сравнению с прошлой неделей</string>
+    <string name="compare_title_month">По сравнению с прошлым месяцем</string>
+    <string name="compare_title_year">По сравнению с прошлым годом</string>
+    <string name="compare_title_custom">По сравнению с прошлым периодом</string>
+    <string name="compare_was">было %1$s</string>
+    <string name="compare_new">Новое</string>
+    <string name="compare_same">Без изменений</string>
+    <string name="compare_biggest_changes">Крупнейшие изменения</string>
+    <string name="compare_category_detail">%1$s против %2$s</string>
 </resources>

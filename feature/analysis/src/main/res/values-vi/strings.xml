@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">Chi nhiều hơn thu</string>
     <string name="highlight_of_spending">chi tiêu</string>
     <string name="highlight_of_income">thu nhập</string>
+    <string name="compare_title_day">So với hôm qua</string>
+    <string name="compare_title_week">So với tuần trước</string>
+    <string name="compare_title_month">So với tháng trước</string>
+    <string name="compare_title_year">So với năm trước</string>
+    <string name="compare_title_custom">So với kỳ trước</string>
+    <string name="compare_was">trước %1$s</string>
+    <string name="compare_new">Mới</string>
+    <string name="compare_same">Không đổi</string>
+    <string name="compare_biggest_changes">Thay đổi lớn nhất</string>
+    <string name="compare_category_detail">%1$s so với %2$s</string>
 </resources>

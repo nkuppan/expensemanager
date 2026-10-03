@@ -17,6 +17,7 @@ import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetPeriodComparisonUseCase
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
@@ -39,11 +40,15 @@ class AnalysisScreenViewModel(
     getSpendingInsightsUseCase: GetSpendingInsightsUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    getPeriodComparisonUseCase: GetPeriodComparisonUseCase,
     private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
 
     private val _insights = MutableStateFlow<AnalysisInsightsUi?>(null)
     val insights = _insights.asStateFlow()
+
+    private val _comparison = MutableStateFlow<PeriodComparisonUi?>(null)
+    val comparison = _comparison.asStateFlow()
 
     private val _currentTheme = MutableStateFlow(
         Theme(
@@ -114,6 +119,13 @@ class AnalysisScreenViewModel(
                 },
             )
         }.onEach { _insights.value = it }.launchIn(viewModelScope)
+
+        combine(
+            getPeriodComparisonUseCase.invoke(),
+            getCurrencyUseCase.invoke(),
+        ) { comparison, currency ->
+            comparison?.toUi { getFormattedAmountUseCase.invoke(it, currency).amountString.orEmpty() }
+        }.onEach { _comparison.value = it }.launchIn(viewModelScope)
 
         getChartDataUseCase.invoke().onEach { response ->
             _graphItems.value = AnalysisUiData(

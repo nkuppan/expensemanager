@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">कमाई से ज़्यादा खर्च किया</string>
     <string name="highlight_of_spending">खर्च का</string>
     <string name="highlight_of_income">आय का</string>
+    <string name="compare_title_day">कल की तुलना में</string>
+    <string name="compare_title_week">पिछले हफ़्ते की तुलना में</string>
+    <string name="compare_title_month">पिछले महीने की तुलना में</string>
+    <string name="compare_title_year">पिछले साल की तुलना में</string>
+    <string name="compare_title_custom">पिछली अवधि की तुलना में</string>
+    <string name="compare_was">पहले %1$s</string>
+    <string name="compare_new">नया</string>
+    <string name="compare_same">समान</string>
+    <string name="compare_biggest_changes">सबसे बड़े बदलाव</string>
+    <string name="compare_category_detail">%1$s बनाम %2$s</string>
 </resources>

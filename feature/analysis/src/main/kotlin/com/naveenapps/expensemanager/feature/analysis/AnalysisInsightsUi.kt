@@ -29,3 +29,29 @@ data class WeekdayBarUi(
     /** Bar height relative to the busiest weekday (0..1). */
     val relative: Float,
 )
+
+/** [com.naveenapps.expensemanager.core.model.PeriodComparison] formatted for display. */
+data class PeriodComparisonUi(
+    val titleResId: Int,
+    /** e.g. "1–3 Oct vs 1–3 Sep". */
+    val periodsLabel: String,
+    val expense: ComparisonMetricUi,
+    val income: ComparisonMetricUi,
+    val categoryChanges: List<CategoryChangeUi>,
+)
+
+data class ComparisonMetricUi(
+    val current: String,
+    val previous: String,
+    /** Relative change, or null when the previous period had nothing. */
+    val change: Double?,
+)
+
+data class CategoryChangeUi(
+    val category: Category,
+    val current: String,
+    val previous: String,
+    /** Signed, e.g. "+₹300" / "−₹50". */
+    val difference: String,
+    val isIncrease: Boolean,
+)

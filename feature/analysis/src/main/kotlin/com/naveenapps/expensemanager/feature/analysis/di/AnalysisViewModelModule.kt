@@ -16,6 +16,7 @@ val AnalysisViewModelModule = module {
             getSpendingInsightsUseCase = get(),
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
+            getPeriodComparisonUseCase = get(),
             appComposeNavigator = get(),
         )
     }

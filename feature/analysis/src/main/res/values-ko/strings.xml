@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">번 것보다 더 많이 지출</string>
     <string name="highlight_of_spending">지출 중</string>
     <string name="highlight_of_income">수입 대비</string>
+    <string name="compare_title_day">어제 대비</string>
+    <string name="compare_title_week">지난주 대비</string>
+    <string name="compare_title_month">지난달 대비</string>
+    <string name="compare_title_year">작년 대비</string>
+    <string name="compare_title_custom">이전 기간 대비</string>
+    <string name="compare_was">이전 %1$s</string>
+    <string name="compare_new">새로움</string>
+    <string name="compare_same">동일</string>
+    <string name="compare_biggest_changes">가장 큰 변화</string>
+    <string name="compare_category_detail">%1$s / 이전 %2$s</string>
 </resources>

@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">أنفقت أكثر مما كسبت</string>
     <string name="highlight_of_spending">من الإنفاق</string>
     <string name="highlight_of_income">من الدخل</string>
+    <string name="compare_title_day">مقارنة بالأمس</string>
+    <string name="compare_title_week">مقارنة بالأسبوع الماضي</string>
+    <string name="compare_title_month">مقارنة بالشهر الماضي</string>
+    <string name="compare_title_year">مقارنة بالعام الماضي</string>
+    <string name="compare_title_custom">مقارنة بالفترة السابقة</string>
+    <string name="compare_was">كان %1$s</string>
+    <string name="compare_new">جديد</string>
+    <string name="compare_same">بلا تغيير</string>
+    <string name="compare_biggest_changes">أكبر التغييرات</string>
+    <string name="compare_category_detail">%1$s مقابل %2$s</string>
 </resources>

@@ -60,6 +60,7 @@ fun AnalysisGraphScreen(
     val transactionPeriod by viewModel.transactionPeriod.collectAsState()
     val isCompactSummary by viewModel.isCompactSummary.collectAsState()
     val insights by viewModel.insights.collectAsState()
+    val comparison by viewModel.comparison.collectAsState()
 
     val currentTheme by viewModel.currentTheme.collectAsState()
     val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
@@ -72,6 +73,7 @@ fun AnalysisGraphScreen(
         averageData = averageData,
         isCompactSummary = isCompactSummary,
         insights = insights,
+        comparison = comparison,
         onTransactionClick = viewModel::openTransaction,
         onCategoryClick = viewModel::openCategory,
         onViewAllCategories = viewModel::openCategoryList,
@@ -87,6 +89,7 @@ private fun ChartScreenContent(
     averageData: WholeAverageData,
     isCompactSummary: Boolean = false,
     insights: AnalysisInsightsUi? = null,
+    comparison: PeriodComparisonUi? = null,
     onTransactionClick: (String) -> Unit = {},
     onCategoryClick: (String) -> Unit = {},
     onViewAllCategories: () -> Unit = {},
@@ -124,6 +127,14 @@ private fun ChartScreenContent(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
         )
+
+        comparison?.let {
+            PeriodComparisonCard(
+                comparison = it,
+                onCategoryClick = onCategoryClick,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
 
         TransactionAverageItem(
             modifier = Modifier.padding(horizontal = 16.dp),

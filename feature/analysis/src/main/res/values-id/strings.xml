@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">Pengeluaran melebihi pemasukan</string>
     <string name="highlight_of_spending">dari pengeluaran</string>
     <string name="highlight_of_income">dari pemasukan</string>
+    <string name="compare_title_day">Vs kemarin</string>
+    <string name="compare_title_week">Vs minggu lalu</string>
+    <string name="compare_title_month">Vs bulan lalu</string>
+    <string name="compare_title_year">Vs tahun lalu</string>
+    <string name="compare_title_custom">Vs periode sebelumnya</string>
+    <string name="compare_was">sebelumnya %1$s</string>
+    <string name="compare_new">Baru</string>
+    <string name="compare_same">Sama</string>
+    <string name="compare_biggest_changes">Perubahan terbesar</string>
+    <string name="compare_category_detail">%1$s vs %2$s</string>
 </resources>

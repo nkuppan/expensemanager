@@ -26,6 +26,13 @@ val TransactionUseCaseModule = module {
             dispatchers = get(),
         )
     }
+    single {
+        GetPeriodComparisonUseCase(
+            getTransactionWithFilterUseCase = get(),
+            categoryRepository = get(),
+            dispatchers = get(),
+        )
+    }
     single { DeleteTransactionUseCase(repository = get()) }
     single { FindTransactionByIdUseCase(repository = get()) }
     single {

@@ -17,4 +17,14 @@
     <string name="highlight_overspent_value">Spent more than you earned</string>
     <string name="highlight_of_spending">of spending</string>
     <string name="highlight_of_income">of income</string>
+    <string name="compare_title_day">Vs yesterday</string>
+    <string name="compare_title_week">Vs last week</string>
+    <string name="compare_title_month">Vs last month</string>
+    <string name="compare_title_year">Vs last year</string>
+    <string name="compare_title_custom">Vs previous period</string>
+    <string name="compare_was">was %1$s</string>
+    <string name="compare_new">New</string>
+    <string name="compare_same">Same</string>
+    <string name="compare_biggest_changes">Biggest changes</string>
+    <string name="compare_category_detail">%1$s vs %2$s</string>
 </resources>
