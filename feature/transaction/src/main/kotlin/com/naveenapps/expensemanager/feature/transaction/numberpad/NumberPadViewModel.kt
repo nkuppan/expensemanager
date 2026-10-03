@@ -2,15 +2,14 @@ package com.naveenapps.expensemanager.feature.transaction.numberpad
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
 import kotlin.math.sqrt
 import kotlin.math.tan
-
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class NumberPadViewModel : ViewModel() {
 
@@ -51,8 +50,12 @@ class NumberPadViewModel : ViewModel() {
                 var x = parseTerm()
                 while (true) {
                     when {
-                        eat('+'.code) -> x += parseTerm() // addition
-                        eat('-'.code) -> x -= parseTerm() // subtraction
+                        eat('+'.code) -> x += parseTerm()
+
+                        // addition
+                        eat('-'.code) -> x -= parseTerm()
+
+                        // subtraction
                         else -> return x
                     }
                 }
@@ -62,8 +65,12 @@ class NumberPadViewModel : ViewModel() {
                 var x = parseFactor()
                 while (true) {
                     when {
-                        eat('*'.code) -> x *= parseFactor() // multiplication
-                        eat('/'.code) -> x /= parseFactor() // division
+                        eat('*'.code) -> x *= parseFactor()
+
+                        // multiplication
+                        eat('/'.code) -> x /= parseFactor()
+
+                        // division
                         else -> return x
                     }
                 }
@@ -78,11 +85,11 @@ class NumberPadViewModel : ViewModel() {
                 if (eat('('.code)) { // parentheses
                     x = parseExpression()
                     eat(')'.code)
-                } else if (ch >= '0'.code && ch <= '9'.code || ch == '.'.code) { // numbers
-                    while (ch >= '0'.code && ch <= '9'.code || ch == '.'.code) nextChar()
+                } else if (ch in '0'.code..'9'.code || ch == '.'.code) { // numbers
+                    while (ch in '0'.code..'9'.code || ch == '.'.code) nextChar()
                     x = java.lang.Double.parseDouble(str.substring(startPos, this.pos))
-                } else if (ch >= 'a'.code && ch <= 'z'.code) { // functions
-                    while (ch >= 'a'.code && ch <= 'z'.code) nextChar()
+                } else if (ch in 'a'.code..'z'.code) { // functions
+                    while (ch in 'a'.code..'z'.code) nextChar()
                     val func = str.substring(startPos, this.pos)
                     x = parseFactor()
                     x = when (func) {

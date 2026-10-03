@@ -50,4 +50,14 @@
     <string name="share_app">Uygulamayı paylaş</string>
     <string name="share_app_message">Bir arkadaşına Expense Manager\'ı anlat</string>
     <string name="share_app_text">Harcamalarımı Expense Manager ile takip ediyorum. Ücretsiz ve verilerim telefonumda kalıyor: %1$s</string>
+
+    <string name="backup_success">Yedek kaydedildi</string>
+    <string name="backup_failed">Yedek oluşturulamadı. Lütfen tekrar deneyin.</string>
+    <string name="restore_failed">Yedek geri yüklenemedi. Lütfen tekrar deneyin.</string>
+    <string name="restore_invalid_file">Bu dosya bir Expense Manager yedeği değil.</string>
+    <string name="restore_newer_version">Bu yedek uygulamanın daha yeni bir sürümüne ait. Uygulamayı güncelleyip tekrar deneyin.</string>
+    <string name="restore_confirm_title">Bu yedek geri yüklensin mi?</string>
+    <string name="restore_confirm_message">Mevcut verileriniz yedekle değiştirilecek ve uygulama yeniden başlatılacak.</string>
+    <string name="restore_confirm_action">Geri yükle</string>
+    <string name="no_file_picker">Bu cihazda dosya yöneticisi bulunamadı.</string>
 </resources>

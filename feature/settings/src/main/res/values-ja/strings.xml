@@ -50,4 +50,14 @@
     <string name="share_app">アプリを共有</string>
     <string name="share_app_message">Expense Managerを友だちに紹介</string>
     <string name="share_app_text">Expense Managerで支出を記録しています。無料で、データはスマホの中だけに保存されます: %1$s</string>
+
+    <string name="backup_success">バックアップを保存しました</string>
+    <string name="backup_failed">バックアップを作成できませんでした。もう一度お試しください。</string>
+    <string name="restore_failed">バックアップを復元できませんでした。もう一度お試しください。</string>
+    <string name="restore_invalid_file">このファイルは Expense Manager のバックアップではありません。</string>
+    <string name="restore_newer_version">このバックアップは新しいバージョンのアプリで作成されています。アプリを更新してもう一度お試しください。</string>
+    <string name="restore_confirm_title">このバックアップを復元しますか？</string>
+    <string name="restore_confirm_message">現在のデータはバックアップに置き換えられ、アプリが再起動します。</string>
+    <string name="restore_confirm_action">復元</string>
+    <string name="no_file_picker">この端末にファイルマネージャーが見つかりません。</string>
 </resources>

@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.data.di
 
 import com.naveenapps.expensemanager.core.data.repository.AccountRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.AnalyticsRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.BackupRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.BudgetRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CategoryRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CountryRepositoryImpl
@@ -24,6 +25,7 @@ import com.naveenapps.expensemanager.core.data.repository.export.CsvExportStrate
 import com.naveenapps.expensemanager.core.data.repository.export.PdfExportStrategy
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.CountryRepository
@@ -46,6 +48,13 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val RepositoryModule = module {
+    single<BackupRepository> {
+        BackupRepositoryImpl(
+            context = androidContext(),
+            database = get(),
+            dispatchers = get(),
+        )
+    }
     single<ThemeRepository> {
         ThemeRepositoryImpl(
             dataStore = get(),

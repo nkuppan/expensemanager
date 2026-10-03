@@ -50,4 +50,14 @@
     <string name="share_app">Chia sẻ ứng dụng</string>
     <string name="share_app_message">Giới thiệu Expense Manager cho bạn bè</string>
     <string name="share_app_text">Mình dùng Expense Manager để theo dõi chi tiêu. Miễn phí và dữ liệu nằm trên điện thoại của mình: %1$s</string>
+
+    <string name="backup_success">Đã lưu bản sao lưu</string>
+    <string name="backup_failed">Không thể tạo bản sao lưu. Vui lòng thử lại.</string>
+    <string name="restore_failed">Không thể khôi phục bản sao lưu. Vui lòng thử lại.</string>
+    <string name="restore_invalid_file">Tệp này không phải là bản sao lưu của Expense Manager.</string>
+    <string name="restore_newer_version">Bản sao lưu này từ phiên bản ứng dụng mới hơn. Hãy cập nhật ứng dụng và thử lại.</string>
+    <string name="restore_confirm_title">Khôi phục bản sao lưu này?</string>
+    <string name="restore_confirm_message">Dữ liệu hiện tại sẽ được thay bằng bản sao lưu và ứng dụng sẽ khởi động lại.</string>
+    <string name="restore_confirm_action">Khôi phục</string>
+    <string name="no_file_picker">Không tìm thấy trình quản lý tệp trên thiết bị này.</string>
 </resources>

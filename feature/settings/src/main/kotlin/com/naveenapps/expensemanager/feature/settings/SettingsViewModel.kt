@@ -16,6 +16,8 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.BackupException
+import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,6 +39,7 @@ class SettingsViewModel(
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
+    private val backupRepository: BackupRepository,
 ) : ViewModel() {
 
     private val _event = Channel<SettingEvent>()
@@ -237,17 +240,81 @@ class SettingsViewModel(
             }
 
             SettingAction.Backup -> {
+                if (_state.value.isBackupInProgress) return
                 viewModelScope.launch {
                     analyticsRepository.logEvent(AnalyticsEvents.BACKUP_STARTED, emptyMap())
-                    _event.send(SettingEvent.Backup)
+                    _event.send(SettingEvent.PickBackupDestination(backupRepository.backupFileName()))
                 }
             }
 
+            is SettingAction.BackupDestinationSelected -> {
+                val uri = action.uri ?: return
+                runBackupTask(
+                    task = { backupRepository.backupData(uri) },
+                    onSuccess = {
+                        analyticsRepository.logEvent(AnalyticsEvents.BACKUP_COMPLETED, emptyMap())
+                        _event.send(SettingEvent.ShowMessage(R.string.backup_success))
+                    },
+                    failureMessage = { R.string.backup_failed },
+                )
+            }
+
             SettingAction.Restore -> {
+                if (_state.value.isBackupInProgress) return
+                _state.update { it.copy(showRestoreConfirmation = true) }
+            }
+
+            SettingAction.DismissRestoreConfirmation -> {
+                _state.update { it.copy(showRestoreConfirmation = false) }
+            }
+
+            SettingAction.ConfirmRestore -> {
+                _state.update { it.copy(showRestoreConfirmation = false) }
                 viewModelScope.launch {
                     analyticsRepository.logEvent(AnalyticsEvents.RESTORE_STARTED, emptyMap())
-                    _event.send(SettingEvent.Restore)
+                    _event.send(SettingEvent.PickRestoreSource)
                 }
+            }
+
+            is SettingAction.RestoreSourceSelected -> {
+                val uri = action.uri ?: return
+                runBackupTask(
+                    task = { backupRepository.restoreData(uri) },
+                    onSuccess = {
+                        analyticsRepository.logEvent(AnalyticsEvents.RESTORE_COMPLETED, emptyMap())
+                        _event.send(SettingEvent.RestartApp)
+                    },
+                    failureMessage = { reason ->
+                        when (reason) {
+                            BackupException.Reason.INVALID_FILE -> R.string.restore_invalid_file
+                            BackupException.Reason.NEWER_VERSION -> R.string.restore_newer_version
+                            else -> R.string.restore_failed
+                        }
+                    },
+                )
+            }
+        }
+    }
+
+    private fun runBackupTask(
+        task: suspend () -> Resource<Boolean>,
+        onSuccess: suspend () -> Unit,
+        failureMessage: (BackupException.Reason?) -> Int,
+    ) {
+        if (_state.value.isBackupInProgress) return
+        _state.update { it.copy(isBackupInProgress = true) }
+        viewModelScope.launch {
+            try {
+                when (val result = task()) {
+                    is Resource.Success -> onSuccess()
+
+                    is Resource.Error -> {
+                        val reason = (result.exception as? BackupException)?.reason
+                        _event.send(SettingEvent.ShowMessage(failureMessage(reason)))
+                    }
+                }
+            } finally {
+                _state.update { it.copy(isBackupInProgress = false) }
             }
         }
     }

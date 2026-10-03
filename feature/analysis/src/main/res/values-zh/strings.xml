@@ -6,4 +6,15 @@
     <string name="week">周</string>
     <string name="month">月</string>
     <string name="no_chart_available">暂无可供分析的数据</string>
+    <string name="insights_title">重点</string>
+    <string name="where_money_goes">钱都花在哪里</string>
+    <string name="spending_by_weekday">按星期统计支出</string>
+    <string name="biggest_expenses">最大支出</string>
+    <string name="highlight_top_category">最高支出类别</string>
+    <string name="highlight_busiest_day">支出最多的一天</string>
+    <string name="highlight_savings">储蓄</string>
+    <string name="highlight_saved_value">从收入中留存</string>
+    <string name="highlight_overspent_value">支出超过收入</string>
+    <string name="highlight_of_spending">占支出</string>
+    <string name="highlight_of_income">占收入</string>
 </resources>

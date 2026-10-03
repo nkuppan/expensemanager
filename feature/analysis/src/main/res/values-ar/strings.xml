@@ -6,4 +6,15 @@
     <string name="week">أسبوع</string>
     <string name="month">شهر</string>
     <string name="no_chart_available">لا توجد بيانات متاحة للتحليل</string>
+    <string name="insights_title">أبرز النقاط</string>
+    <string name="where_money_goes">أين تذهب أموالك</string>
+    <string name="spending_by_weekday">الإنفاق حسب يوم الأسبوع</string>
+    <string name="biggest_expenses">أكبر المصروفات</string>
+    <string name="highlight_top_category">الفئة الأعلى</string>
+    <string name="highlight_busiest_day">أكثر يوم إنفاقًا</string>
+    <string name="highlight_savings">المدخرات</string>
+    <string name="highlight_saved_value">احتفظت به من دخلك</string>
+    <string name="highlight_overspent_value">أنفقت أكثر مما كسبت</string>
+    <string name="highlight_of_spending">من الإنفاق</string>
+    <string name="highlight_of_income">من الدخل</string>
 </resources>

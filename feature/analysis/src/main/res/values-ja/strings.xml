@@ -6,4 +6,15 @@
     <string name="week">週</string>
     <string name="month">月</string>
     <string name="no_chart_available">分析に利用できるデータがありません</string>
+    <string name="insights_title">ハイライト</string>
+    <string name="where_money_goes">お金の使い道</string>
+    <string name="spending_by_weekday">曜日別の支出</string>
+    <string name="biggest_expenses">大きな支出</string>
+    <string name="highlight_top_category">トップカテゴリ</string>
+    <string name="highlight_busiest_day">最も支出が多い曜日</string>
+    <string name="highlight_savings">貯蓄</string>
+    <string name="highlight_saved_value">収入から残した割合</string>
+    <string name="highlight_overspent_value">収入より多く支出</string>
+    <string name="highlight_of_spending">支出に占める割合</string>
+    <string name="highlight_of_income">収入に占める割合</string>
 </resources>

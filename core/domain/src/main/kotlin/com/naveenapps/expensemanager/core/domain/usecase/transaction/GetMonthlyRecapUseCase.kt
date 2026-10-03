@@ -5,11 +5,11 @@ import com.naveenapps.expensemanager.core.model.RecapCategory
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
-import kotlinx.coroutines.flow.firstOrNull
 import java.time.YearMonth
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Date
+import kotlinx.coroutines.flow.firstOrNull
 
 /**
  * Builds the recap for a calendar month (the previous month by default): total spent, how many

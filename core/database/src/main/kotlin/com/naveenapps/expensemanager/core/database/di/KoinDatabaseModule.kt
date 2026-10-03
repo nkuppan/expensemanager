@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.database.MIGRATION_4_5
 import com.naveenapps.expensemanager.core.database.MIGRATION_5_6
 import com.naveenapps.expensemanager.core.database.MIGRATION_6_7
 import com.naveenapps.expensemanager.core.database.MIGRATION_7_8
+import com.naveenapps.expensemanager.core.database.PendingDatabaseRestore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -15,6 +16,8 @@ private const val DATA_BASE_NAME = "expense_manager_database.db"
 
 val DatabaseModule = module {
     single {
+        // A restore is staged and then applied here, before Room opens the file.
+        PendingDatabaseRestore.applyIfPending(androidContext(), DATA_BASE_NAME)
         Room.databaseBuilder(
             androidContext(),
             ExpenseManagerDatabase::class.java,

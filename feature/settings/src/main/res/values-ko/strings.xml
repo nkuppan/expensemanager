@@ -50,4 +50,14 @@
     <string name="share_app">앱 공유</string>
     <string name="share_app_message">친구에게 Expense Manager 알려주기</string>
     <string name="share_app_text">Expense Manager로 지출을 기록하고 있어요. 무료이고 데이터는 내 폰에만 저장돼요: %1$s</string>
+
+    <string name="backup_success">백업을 저장했습니다</string>
+    <string name="backup_failed">백업을 만들 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="restore_failed">백업을 복원할 수 없습니다. 다시 시도해 주세요.</string>
+    <string name="restore_invalid_file">이 파일은 Expense Manager 백업이 아닙니다.</string>
+    <string name="restore_newer_version">이 백업은 최신 버전의 앱에서 만들어졌습니다. 앱을 업데이트한 후 다시 시도해 주세요.</string>
+    <string name="restore_confirm_title">이 백업을 복원할까요?</string>
+    <string name="restore_confirm_message">현재 데이터가 백업으로 대체되고 앱이 다시 시작됩니다.</string>
+    <string name="restore_confirm_action">복원</string>
+    <string name="no_file_picker">이 기기에서 파일 관리자를 찾을 수 없습니다.</string>
 </resources>

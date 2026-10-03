@@ -3,22 +3,29 @@ package com.naveenapps.expensemanager.feature.analysis
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAmountStateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageDataUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDataUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetSpendingInsightsUseCase
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.WholeAverageData
+import com.naveenapps.expensemanager.core.model.toTransactionUIModel
+import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.patrykandpatrick.vico.core.entry.entryOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -29,7 +36,14 @@ class AnalysisScreenViewModel(
     getAmountStateUseCase: GetAmountStateUseCase,
     getDateRangeUseCase: GetDateRangeUseCase,
     settingsRepository: SettingsRepository,
+    getSpendingInsightsUseCase: GetSpendingInsightsUseCase,
+    getCurrencyUseCase: GetCurrencyUseCase,
+    getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    private val appComposeNavigator: AppComposeNavigator,
 ) : ViewModel() {
+
+    private val _insights = MutableStateFlow<AnalysisInsightsUi?>(null)
+    val insights = _insights.asStateFlow()
 
     private val _currentTheme = MutableStateFlow(
         Theme(
@@ -68,6 +82,39 @@ class AnalysisScreenViewModel(
     val averageData = _averageData.asStateFlow()
 
     init {
+        combine(
+            getSpendingInsightsUseCase.invoke(),
+            getCurrencyUseCase.invoke(),
+        ) { insights, currency ->
+            val format: (Double) -> String = {
+                getFormattedAmountUseCase.invoke(it, currency).amountString.orEmpty()
+            }
+            val maxWeekday = insights.weekdays.maxOfOrNull { it.total } ?: 0.0
+            AnalysisInsightsUi(
+                hasExpenses = insights.totalExpense > 0,
+                savingsRate = insights.savingsRate,
+                categories = insights.categories.map {
+                    CategoryRowUi(it.category, format(it.total), it.share, it.count)
+                },
+                weekdays = insights.weekdays.map {
+                    WeekdayBarUi(
+                        dayOfWeek = it.dayOfWeek,
+                        amount = format(it.total),
+                        relative = if (maxWeekday > 0) (it.total / maxWeekday).toFloat() else 0f,
+                    )
+                },
+                busiestWeekday = insights.busiestWeekday,
+                busiestWeekdayShare = if (insights.totalExpense > 0) {
+                    (maxWeekday / insights.totalExpense).toFloat()
+                } else {
+                    0f
+                },
+                biggestExpenses = insights.biggestExpenses.map {
+                    it.toTransactionUIModel(getFormattedAmountUseCase.invoke(it.amount.amount, currency))
+                },
+            )
+        }.onEach { _insights.value = it }.launchIn(viewModelScope)
+
         getChartDataUseCase.invoke().onEach { response ->
             _graphItems.value = AnalysisUiData(
                 transactions = response.transactions,
@@ -112,6 +159,18 @@ class AnalysisScreenViewModel(
         settingsRepository.getHomeSummaryCompact().onEach {
             _isCompactSummary.value = it
         }.launchIn(viewModelScope)
+    }
+
+    fun openCategory(categoryId: String) {
+        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryDetails(categoryId))
+    }
+
+    fun openCategoryList() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.CategoryTransaction)
+    }
+
+    fun openTransaction(transactionId: String) {
+        appComposeNavigator.navigate(ExpenseManagerScreens.TransactionCreate(transactionId))
     }
 }
 

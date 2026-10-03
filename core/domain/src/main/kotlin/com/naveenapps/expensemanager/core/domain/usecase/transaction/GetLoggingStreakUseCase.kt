@@ -3,10 +3,10 @@ package com.naveenapps.expensemanager.core.domain.usecase.transaction
 import com.naveenapps.expensemanager.core.model.LoggingStreak
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
 /**
  * Live logging streak, combining days with transactions and confirmed no-spend days.

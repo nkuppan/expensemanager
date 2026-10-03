@@ -70,8 +70,6 @@ internal class MainActivity :
 
         enableEdgeToEdge()
 
-        activityComponentProvider.getBackupRepository()
-
         QuickAdd.publishShortcut(applicationContext)
 
         // Only on a fresh launch: a recreated Activity re-delivers the same intent.

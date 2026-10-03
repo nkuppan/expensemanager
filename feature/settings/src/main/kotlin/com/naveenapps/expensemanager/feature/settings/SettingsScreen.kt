@@ -3,8 +3,9 @@ package com.naveenapps.expensemanager.feature.settings
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.ui.platform.LocalContext
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,8 +35,10 @@ import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.SettingsApplications
+import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -44,17 +47,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,21 +76,41 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingTogg
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.language.LanguageDialogView
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SettingsScreen(
     shareRepository: ShareRepository,
-    backupRepository: BackupRepository,
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
     val context = LocalContext.current
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    // The pickers are registered from Compose so their results survive Activity recreation
+    // (rotation, theme/locale change, or the process being killed while the picker is open).
+    // The old backup library registered them in an object that was recreated with no state,
+    // and crashed in onResume when the result came back.
+    val backupLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.CreateDocument(BACKUP_MIME_TYPE),
+    ) { uri: Uri? ->
+        viewModel.processAction(SettingAction.BackupDestinationSelected(uri?.toString()))
+    }
+    val restoreLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument(),
+    ) { uri: Uri? ->
+        viewModel.processAction(SettingAction.RestoreSourceSelected(uri?.toString()))
+    }
+
+    fun showMessage(messageResId: Int) {
+        scope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }
+    }
 
     ObserveAsEvents(viewModel.event) {
         when (it) {
@@ -94,27 +122,73 @@ fun SettingsScreen(
                 context.shareApp()
             }
 
-            SettingEvent.Backup -> {
-                backupRepository.backupData(null)
+            is SettingEvent.PickBackupDestination -> {
+                try {
+                    backupLauncher.launch(it.fileName)
+                } catch (e: ActivityNotFoundException) {
+                    showMessage(R.string.no_file_picker)
+                }
             }
 
-            SettingEvent.Restore -> {
-                backupRepository.restoreData(null)
+            SettingEvent.PickRestoreSource -> {
+                try {
+                    // .aes files have no registered MIME type, so filtering would hide them.
+                    restoreLauncher.launch(arrayOf("*/*"))
+                } catch (e: ActivityNotFoundException) {
+                    showMessage(R.string.no_file_picker)
+                }
+            }
+
+            is SettingEvent.ShowMessage -> {
+                showMessage(it.messageResId)
+            }
+
+            SettingEvent.RestartApp -> {
+                context.restartApp()
             }
         }
     }
 
     SettingsScreenScaffoldView(
         state = state,
+        snackbarHostState = snackbarHostState,
         onAction = viewModel::processAction,
     )
+}
+
+private const val BACKUP_MIME_TYPE = "application/octet-stream"
+
+/** Cold restart so the staged restore is swapped in before the database is opened. */
+private fun Context.restartApp() {
+    val launchIntent = packageManager.getLaunchIntentForPackage(packageName) ?: return
+    startActivity(Intent.makeRestartActivityTask(launchIntent.component))
+    Runtime.getRuntime().exit(0)
 }
 
 @Composable
 private fun SettingsScreenScaffoldView(
     state: SettingState,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onAction: (SettingAction) -> Unit,
 ) {
+    if (state.showRestoreConfirmation) {
+        AlertDialog(
+            onDismissRequest = { onAction.invoke(SettingAction.DismissRestoreConfirmation) },
+            title = { Text(text = stringResource(id = R.string.restore_confirm_title)) },
+            text = { Text(text = stringResource(id = R.string.restore_confirm_message)) },
+            confirmButton = {
+                TextButton(onClick = { onAction.invoke(SettingAction.ConfirmRestore) }) {
+                    Text(text = stringResource(id = R.string.restore_confirm_action))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { onAction.invoke(SettingAction.DismissRestoreConfirmation) }) {
+                    Text(text = stringResource(id = android.R.string.cancel))
+                }
+            },
+        )
+    }
+
     if (state.showThemeSelection) {
         ThemeDialogView {
             onAction.invoke(SettingAction.DismissThemeSelection)
@@ -128,6 +202,7 @@ private fun SettingsScreenScaffoldView(
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
             ExpenseManagerTopAppBar(
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
@@ -474,4 +549,3 @@ private fun Context.shareApp() {
         // Nothing can receive a share; ignore.
     }
 }
-

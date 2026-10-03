@@ -61,7 +61,6 @@ truth = "1.4.5"
 vico = "1.11.1"
 play-publish = "4.1.1"
 google-services = "4.5.0"
-backup-restore = "1.1.0"
 gson = "2.14.0"
 dependency-analysis = "3.19.2"
 lottieCompose = "6.7.1"
@@ -163,7 +162,6 @@ truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
 vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
-backup-restore = { group = "de.raphaelebner", name = "roomdatabasebackup", version.ref = "backup-restore" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 

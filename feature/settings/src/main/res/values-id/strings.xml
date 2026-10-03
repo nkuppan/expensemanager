@@ -50,4 +50,14 @@
     <string name="share_app">Bagikan aplikasi</string>
     <string name="share_app_message">Ceritakan Expense Manager ke teman</string>
     <string name="share_app_text">Saya pakai Expense Manager untuk mencatat pengeluaran. Gratis dan data tetap di ponsel saya: %1$s</string>
+
+    <string name="backup_success">Cadangan disimpan</string>
+    <string name="backup_failed">Tidak dapat membuat cadangan. Silakan coba lagi.</string>
+    <string name="restore_failed">Tidak dapat memulihkan cadangan. Silakan coba lagi.</string>
+    <string name="restore_invalid_file">File ini bukan cadangan Expense Manager.</string>
+    <string name="restore_newer_version">Cadangan ini berasal dari versi aplikasi yang lebih baru. Perbarui aplikasi lalu coba lagi.</string>
+    <string name="restore_confirm_title">Pulihkan cadangan ini?</string>
+    <string name="restore_confirm_message">Data Anda saat ini akan diganti dengan cadangan, dan aplikasi akan dimulai ulang.</string>
+    <string name="restore_confirm_action">Pulihkan</string>
+    <string name="no_file_picker">Tidak ada pengelola file di perangkat ini.</string>
 </resources>

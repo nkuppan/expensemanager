@@ -73,8 +73,11 @@ class FeedbackRepositoryImpl(
         if (didCrashOnPreviousExecution()) return@combine false
         when (requestCount) {
             0 -> transactionCount > MIN_TRANSACTIONS_BEFORE_PROMPT && hasBeenInstalledLongEnough()
-            1 -> transactionCount >= MIN_TRANSACTIONS_BEFORE_REASK &&
-                System.currentTimeMillis() - lastRequestedAt >= TimeUnit.DAYS.toMillis(MIN_DAYS_BEFORE_REASK)
+
+            1 ->
+                transactionCount >= MIN_TRANSACTIONS_BEFORE_REASK &&
+                    System.currentTimeMillis() - lastRequestedAt >= TimeUnit.DAYS.toMillis(MIN_DAYS_BEFORE_REASK)
+
             else -> false
         }
     }

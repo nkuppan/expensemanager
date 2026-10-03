@@ -43,6 +43,16 @@ sealed class SettingAction {
 
     data object Restore : SettingAction()
 
+    /** Result of the "create document" picker; null when the user backed out. */
+    data class BackupDestinationSelected(val uri: String?) : SettingAction()
+
+    data object ConfirmRestore : SettingAction()
+
+    data object DismissRestoreConfirmation : SettingAction()
+
+    /** Result of the "open document" picker; null when the user backed out. */
+    data class RestoreSourceSelected(val uri: String?) : SettingAction()
+
     // Security section
     data object ToggleAppLock : SettingAction()
 }

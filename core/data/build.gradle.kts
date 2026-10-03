@@ -31,7 +31,6 @@ dependencies {
     implementation(libs.firebase.crashlytics)
 
     implementation(libs.androidx.dataStore.preference)
-    implementation(libs.backup.restore)
     implementation(libs.google.android.play.review)
     implementation(libs.androidx.exifinterface)
 

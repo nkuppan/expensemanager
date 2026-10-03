@@ -6,4 +6,15 @@
     <string name="week">Hafta</string>
     <string name="month">Ay</string>
     <string name="no_chart_available">Analiz için veri bulunmuyor</string>
+    <string name="insights_title">Öne çıkanlar</string>
+    <string name="where_money_goes">Paran nereye gidiyor</string>
+    <string name="spending_by_weekday">Haftanın günlerine göre harcama</string>
+    <string name="biggest_expenses">En büyük harcamalar</string>
+    <string name="highlight_top_category">En çok harcanan kategori</string>
+    <string name="highlight_busiest_day">En çok harcama yapılan gün</string>
+    <string name="highlight_savings">Birikim</string>
+    <string name="highlight_saved_value">Gelirden ayrılan</string>
+    <string name="highlight_overspent_value">Kazançtan fazla harcandı</string>
+    <string name="highlight_of_spending">harcamanın</string>
+    <string name="highlight_of_income">gelirin</string>
 </resources>

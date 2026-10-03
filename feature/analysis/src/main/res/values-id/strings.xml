@@ -6,4 +6,15 @@
     <string name="week">Minggu</string>
     <string name="month">Bulan</string>
     <string name="no_chart_available">Tidak ada data yang tersedia untuk analisis</string>
+    <string name="insights_title">Sorotan</string>
+    <string name="where_money_goes">Ke mana uang Anda pergi</string>
+    <string name="spending_by_weekday">Pengeluaran per hari</string>
+    <string name="biggest_expenses">Pengeluaran terbesar</string>
+    <string name="highlight_top_category">Kategori teratas</string>
+    <string name="highlight_busiest_day">Hari paling boros</string>
+    <string name="highlight_savings">Tabungan</string>
+    <string name="highlight_saved_value">Disimpan dari pemasukan</string>
+    <string name="highlight_overspent_value">Pengeluaran melebihi pemasukan</string>
+    <string name="highlight_of_spending">dari pengeluaran</string>
+    <string name="highlight_of_income">dari pemasukan</string>
 </resources>

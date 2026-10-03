@@ -6,4 +6,15 @@
     <string name="week">Settimana</string>
     <string name="month">Mese</string>
     <string name="no_chart_available">Nessun dato disponibile per l\'analisi</string>
+    <string name="insights_title">In evidenza</string>
+    <string name="where_money_goes">Dove vanno i tuoi soldi</string>
+    <string name="spending_by_weekday">Spese per giorno della settimana</string>
+    <string name="biggest_expenses">Spese più grandi</string>
+    <string name="highlight_top_category">Categoria principale</string>
+    <string name="highlight_busiest_day">Giorno con più spese</string>
+    <string name="highlight_savings">Risparmio</string>
+    <string name="highlight_saved_value">Tenuto dalle entrate</string>
+    <string name="highlight_overspent_value">Speso più di quanto guadagnato</string>
+    <string name="highlight_of_spending">della spesa</string>
+    <string name="highlight_of_income">delle entrate</string>
 </resources>

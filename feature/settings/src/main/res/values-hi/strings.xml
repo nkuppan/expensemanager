@@ -50,4 +50,14 @@
     <string name="share_app">ऐप शेयर करें</string>
     <string name="share_app_message">किसी दोस्त को Expense Manager के बारे में बताएँ</string>
     <string name="share_app_text">मैं अपने खर्च ट्रैक करने के लिए Expense Manager इस्तेमाल करता हूँ। यह मुफ़्त है और मेरा डेटा मेरे फ़ोन पर रहता है: %1$s</string>
+
+    <string name="backup_success">बैकअप सहेजा गया</string>
+    <string name="backup_failed">बैकअप नहीं बन सका। कृपया फिर से कोशिश करें।</string>
+    <string name="restore_failed">बैकअप रीस्टोर नहीं हो सका। कृपया फिर से कोशिश करें।</string>
+    <string name="restore_invalid_file">यह फ़ाइल Expense Manager का बैकअप नहीं है।</string>
+    <string name="restore_newer_version">यह बैकअप ऐप के नए वर्ज़न से है। ऐप अपडेट करें और फिर से कोशिश करें।</string>
+    <string name="restore_confirm_title">यह बैकअप रीस्टोर करें?</string>
+    <string name="restore_confirm_message">आपका मौजूदा डेटा बैकअप से बदल दिया जाएगा और ऐप रीस्टार्ट होगा।</string>
+    <string name="restore_confirm_action">रीस्टोर करें</string>
+    <string name="no_file_picker">इस डिवाइस पर कोई फ़ाइल मैनेजर नहीं मिला।</string>
 </resources>

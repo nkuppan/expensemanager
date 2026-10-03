@@ -133,7 +133,6 @@ fun NavGraphBuilder.expenseManagerNavigation(
     composable<ExpenseManagerScreens.Settings> {
         SettingsScreen(
             shareRepository = componentProvider.getShareRepository(),
-            backupRepository = componentProvider.getBackupRepository(),
         )
     }
     composable<ExpenseManagerScreens.ExportScreen> {

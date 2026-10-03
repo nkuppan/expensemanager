@@ -25,4 +25,7 @@ data class SettingState(
     val isCompactSummary: Boolean = false,
     // Security section
     val isAppLockEnabled: Boolean = false,
+    // Data & Backup section
+    val showRestoreConfirmation: Boolean = false,
+    val isBackupInProgress: Boolean = false,
 )

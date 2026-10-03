@@ -6,4 +6,15 @@
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="no_chart_available">No data is available for analysis</string>
+    <string name="insights_title">Highlights</string>
+    <string name="where_money_goes">Where your money goes</string>
+    <string name="spending_by_weekday">Spending by weekday</string>
+    <string name="biggest_expenses">Biggest expenses</string>
+    <string name="highlight_top_category">Top category</string>
+    <string name="highlight_busiest_day">Busiest day</string>
+    <string name="highlight_savings">Savings</string>
+    <string name="highlight_saved_value">Kept from your income</string>
+    <string name="highlight_overspent_value">Spent more than you earned</string>
+    <string name="highlight_of_spending">of spending</string>
+    <string name="highlight_of_income">of income</string>
 </resources>

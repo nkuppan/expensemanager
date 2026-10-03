@@ -6,4 +6,15 @@
     <string name="week">주</string>
     <string name="month">월</string>
     <string name="no_chart_available">분석할 데이터가 없습니다</string>
+    <string name="insights_title">하이라이트</string>
+    <string name="where_money_goes">돈이 어디에 쓰이나요</string>
+    <string name="spending_by_weekday">요일별 지출</string>
+    <string name="biggest_expenses">가장 큰 지출</string>
+    <string name="highlight_top_category">최다 지출 카테고리</string>
+    <string name="highlight_busiest_day">지출이 가장 많은 요일</string>
+    <string name="highlight_savings">저축</string>
+    <string name="highlight_saved_value">수입 중 남긴 비율</string>
+    <string name="highlight_overspent_value">번 것보다 더 많이 지출</string>
+    <string name="highlight_of_spending">지출 중</string>
+    <string name="highlight_of_income">수입 대비</string>
 </resources>

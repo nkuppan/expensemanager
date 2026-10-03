@@ -1,11 +1,5 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
-import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetLoggingStreakUseCase
-import com.naveenapps.expensemanager.core.repository.AnalyticsParams
-import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetMonthlyRecapUseCase
-import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
-import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
-import java.time.LocalDate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
@@ -17,7 +11,6 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetName
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.GetReminderStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -33,6 +26,7 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import java.util.Date
@@ -57,9 +51,6 @@ class DashboardViewModel(
     settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
     private val feedbackRepository: FeedbackRepository,
-    getReminderStatusUseCase: GetReminderStatusUseCase,
-    getMonthlyRecapUseCase: GetMonthlyRecapUseCase,
-    getLoggingStreakUseCase: GetLoggingStreakUseCase,
     private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
@@ -89,39 +80,7 @@ class DashboardViewModel(
             }
             .launchIn(viewModelScope)
 
-        // Last month's recap card: only in the first days of a month, and only if the user
-        // hasn't closed it for that month.
-        if (LocalDate.now().dayOfMonth <= RECAP_VISIBLE_DAYS) {
-            viewModelScope.launch {
-                val recap = getMonthlyRecapUseCase.invoke() ?: return@launch
-                feedbackRepository.getDismissedRecapMonth().collect { dismissed ->
-                    val visible = recap.takeIf { it.monthKey != dismissed }
-                    if (visible != null && _state.value.recap == null) {
-                        analyticsRepository.logEvent(AnalyticsEvents.RECAP_CARD_SHOWN, emptyMap())
-                    }
-                    _state.update { it.copy(recap = visible) }
-                }
-            }
-        }
-
-        // Daily logging streak for the streak card; milestones are logged once as they're hit.
-        getLoggingStreakUseCase.invoke()
-            .onEach { streak ->
-                val previous = _state.value.streak?.current
-                if (previous != null && streak.current > previous && streak.current in STREAK_MILESTONES) {
-                    analyticsRepository.logEvent(
-                        AnalyticsEvents.STREAK_MILESTONE,
-                        mapOf(AnalyticsParams.DAYS to streak.current.toString()),
-                    )
-                }
-                _state.update { it.copy(streak = streak) }
-            }
-            .launchIn(viewModelScope)
-
         // Inputs for the "Get started" checklist.
-        getReminderStatusUseCase.invoke()
-            .onEach { on -> _state.update { it.copy(isReminderOn = on) } }
-            .launchIn(viewModelScope)
         feedbackRepository.isGettingStartedDismissed()
             .onEach { dismissed -> _state.update { it.copy(isGettingStartedDismissed = dismissed) } }
             .launchIn(viewModelScope)
@@ -307,31 +266,15 @@ class DashboardViewModel(
 
             DashboardAction.OpenTransactionList -> openTransactionList()
 
-            DashboardAction.OpenReminder -> appComposeNavigator.navigate(ExpenseManagerScreens.ReminderScreen)
+            DashboardAction.OpenCurrency -> appComposeNavigator.navigate(ExpenseManagerScreens.CurrencyCustomiseScreen)
 
             DashboardAction.DismissGettingStarted -> viewModelScope.launch {
                 feedbackRepository.setGettingStartedDismissed()
-            }
-            DashboardAction.MarkNoSpendToday -> viewModelScope.launch {
-                analyticsRepository.logEvent(AnalyticsEvents.STREAK_NO_SPEND, emptyMap())
-                feedbackRepository.recordNoSpendDay(LocalDate.now().toEpochDay())
-            }
-            DashboardAction.RecapShared ->
-                analyticsRepository.logEvent(AnalyticsEvents.RECAP_SHARED, emptyMap())
-            DashboardAction.DismissRecap -> {
-                val monthKey = _state.value.recap?.monthKey ?: return
-                analyticsRepository.logEvent(AnalyticsEvents.RECAP_DISMISSED, emptyMap())
-                viewModelScope.launch { feedbackRepository.setDismissedRecapMonth(monthKey) }
             }
         }
     }
 
     companion object {
-        // How long into a new month the previous month's recap card stays on Home.
-        private const val RECAP_VISIBLE_DAYS = 7
-
-        private val STREAK_MILESTONES = setOf(3, 7, 14, 30, 60, 100)
-
         private const val MAX_TRANSACTIONS_IN_LIST = 10
     }
 }

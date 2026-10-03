@@ -22,14 +22,7 @@ sealed class DashboardAction {
 
     data object OpenAccountList : DashboardAction()
 
-    data object OpenReminder : DashboardAction()
+    data object OpenCurrency : DashboardAction()
 
     data object DismissGettingStarted : DashboardAction()
-
-    data object RecapShared : DashboardAction()
-
-    data object DismissRecap : DashboardAction()
-
-    /** "Nothing spent today" from the streak card: keeps the streak without a transaction. */
-    data object MarkNoSpendToday : DashboardAction()
 }

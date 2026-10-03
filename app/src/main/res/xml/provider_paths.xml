@@ -8,8 +8,4 @@
     <cache-path
         name="captured_images"
         path="captured_images/" />
-    <!-- Shareable monthly recap images (feature/dashboard RecapShare.kt, RECAP_CACHE_DIR). -->
-    <cache-path
-        name="recaps"
-        path="recaps/" />
 </paths>

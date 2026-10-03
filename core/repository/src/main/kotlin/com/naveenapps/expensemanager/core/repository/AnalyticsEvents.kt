@@ -32,6 +32,8 @@ object AnalyticsEvents {
     const val EXPORT_DONE = "export_done"
     const val BACKUP_STARTED = "backup_started"
     const val RESTORE_STARTED = "restore_started"
+    const val BACKUP_COMPLETED = "backup_completed"
+    const val RESTORE_COMPLETED = "restore_completed"
 
     // Referral / store
     const val FIRST_SAVE_CELEBRATION_SHOWN = "first_save_celebration_shown"

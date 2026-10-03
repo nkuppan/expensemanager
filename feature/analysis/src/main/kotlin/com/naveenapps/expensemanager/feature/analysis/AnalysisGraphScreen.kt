@@ -59,6 +59,7 @@ fun AnalysisGraphScreen(
     val amountUiState by viewModel.amountUiState.collectAsState()
     val transactionPeriod by viewModel.transactionPeriod.collectAsState()
     val isCompactSummary by viewModel.isCompactSummary.collectAsState()
+    val insights by viewModel.insights.collectAsState()
 
     val currentTheme by viewModel.currentTheme.collectAsState()
     val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
@@ -70,6 +71,10 @@ fun AnalysisGraphScreen(
         transactionPeriod = transactionPeriod,
         averageData = averageData,
         isCompactSummary = isCompactSummary,
+        insights = insights,
+        onTransactionClick = viewModel::openTransaction,
+        onCategoryClick = viewModel::openCategory,
+        onViewAllCategories = viewModel::openCategoryList,
     )
 }
 
@@ -81,6 +86,10 @@ private fun ChartScreenContent(
     transactionPeriod: String,
     averageData: WholeAverageData,
     isCompactSummary: Boolean = false,
+    insights: AnalysisInsightsUi? = null,
+    onTransactionClick: (String) -> Unit = {},
+    onCategoryClick: (String) -> Unit = {},
+    onViewAllCategories: () -> Unit = {},
 ) {
     Column(
         modifier = Modifier
@@ -120,6 +129,16 @@ private fun ChartScreenContent(
             modifier = Modifier.padding(horizontal = 16.dp),
             averageData = averageData,
         )
+
+        insights?.let {
+            AnalysisInsightsSection(
+                insights = it,
+                onTransactionClick = onTransactionClick,
+                onCategoryClick = onCategoryClick,
+                onViewAllCategories = onViewAllCategories,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
     }
 }
 

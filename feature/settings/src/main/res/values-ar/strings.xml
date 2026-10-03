@@ -50,4 +50,14 @@
     <string name="share_app">شارك التطبيق</string>
     <string name="share_app_message">أخبر صديقًا عن Expense Manager</string>
     <string name="share_app_text">أستخدم Expense Manager لتتبّع إنفاقي. إنه مجاني ويحفظ بياناتي على هاتفي: %1$s</string>
+
+    <string name="backup_success">تم حفظ النسخة الاحتياطية</string>
+    <string name="backup_failed">تعذّر إنشاء النسخة الاحتياطية. حاول مرة أخرى.</string>
+    <string name="restore_failed">تعذّرت استعادة النسخة الاحتياطية. حاول مرة أخرى.</string>
+    <string name="restore_invalid_file">هذا الملف ليس نسخة احتياطية من Expense Manager.</string>
+    <string name="restore_newer_version">هذه النسخة الاحتياطية من إصدار أحدث من التطبيق. حدّث التطبيق وحاول مرة أخرى.</string>
+    <string name="restore_confirm_title">استعادة هذه النسخة الاحتياطية؟</string>
+    <string name="restore_confirm_message">سيتم استبدال بياناتك الحالية بالنسخة الاحتياطية، وسيُعاد تشغيل التطبيق.</string>
+    <string name="restore_confirm_action">استعادة</string>
+    <string name="no_file_picker">لم يتم العثور على مدير ملفات على هذا الجهاز.</string>
 </resources>

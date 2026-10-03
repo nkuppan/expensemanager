@@ -1,7 +1,5 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
-import com.naveenapps.expensemanager.core.model.LoggingStreak
-import com.naveenapps.expensemanager.core.model.MonthlyRecap
 import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -27,11 +25,6 @@ data class DashboardState(
     /** Lifetime transactions created; the "Get started" checklist is only for new users. */
     val transactionCount: Int = 0,
     val hasCurrentMonthBudget: Boolean = false,
-    val isReminderOn: Boolean = false,
     // Defaults to true so the checklist never flashes in before the stored value loads.
     val isGettingStartedDismissed: Boolean = true,
-    /** Last month's recap, shown as a shareable card during the first days of a month. */
-    val recap: MonthlyRecap? = null,
-    /** Daily logging streak; null until loaded. */
-    val streak: LoggingStreak? = null,
 )

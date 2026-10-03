@@ -17,6 +17,7 @@ val SettingsViewModelModule = module {
             settingsRepository = get(),
             appComposeNavigator = get(),
             analyticsRepository = get(),
+            backupRepository = get(),
         )
     }
     viewModel {

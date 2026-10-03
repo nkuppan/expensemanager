@@ -50,4 +50,14 @@
     <string name="share_app">Condividi l\'app</string>
     <string name="share_app_message">Parla di Expense Manager a un amico</string>
     <string name="share_app_text">Uso Expense Manager per tenere traccia delle spese. È gratis e i miei dati restano sul telefono: %1$s</string>
+
+    <string name="backup_success">Backup salvato</string>
+    <string name="backup_failed">Impossibile creare il backup. Riprova.</string>
+    <string name="restore_failed">Impossibile ripristinare il backup. Riprova.</string>
+    <string name="restore_invalid_file">Questo file non è un backup di Expense Manager.</string>
+    <string name="restore_newer_version">Questo backup proviene da una versione più recente dell\'app. Aggiorna l\'app e riprova.</string>
+    <string name="restore_confirm_title">Ripristinare questo backup?</string>
+    <string name="restore_confirm_message">I dati attuali verranno sostituiti dal backup e l\'app verrà riavviata.</string>
+    <string name="restore_confirm_action">Ripristina</string>
+    <string name="no_file_picker">Nessun gestore di file trovato su questo dispositivo.</string>
 </resources>

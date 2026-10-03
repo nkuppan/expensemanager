@@ -50,4 +50,14 @@
     <string name="share_app">Поделиться приложением</string>
     <string name="share_app_message">Расскажите другу об Expense Manager</string>
     <string name="share_app_text">Я веду учёт расходов в Expense Manager. Бесплатно, и данные остаются на телефоне: %1$s</string>
+
+    <string name="backup_success">Резервная копия сохранена</string>
+    <string name="backup_failed">Не удалось создать резервную копию. Попробуйте ещё раз.</string>
+    <string name="restore_failed">Не удалось восстановить резервную копию. Попробуйте ещё раз.</string>
+    <string name="restore_invalid_file">Этот файл не является резервной копией Expense Manager.</string>
+    <string name="restore_newer_version">Эта копия создана в более новой версии приложения. Обновите приложение и попробуйте ещё раз.</string>
+    <string name="restore_confirm_title">Восстановить эту резервную копию?</string>
+    <string name="restore_confirm_message">Текущие данные будут заменены данными из копии, и приложение перезапустится.</string>
+    <string name="restore_confirm_action">Восстановить</string>
+    <string name="no_file_picker">На устройстве не найден файловый менеджер.</string>
 </resources>

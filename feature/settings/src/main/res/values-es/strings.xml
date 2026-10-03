@@ -50,4 +50,14 @@
     <string name="share_app">Compartir la app</string>
     <string name="share_app_message">Cuéntale a un amigo sobre Expense Manager</string>
     <string name="share_app_text">Uso Expense Manager para controlar mis gastos. Es gratis y mis datos se quedan en mi teléfono: %1$s</string>
+
+    <string name="backup_success">Copia de seguridad guardada</string>
+    <string name="backup_failed">No se pudo crear la copia de seguridad. Inténtalo de nuevo.</string>
+    <string name="restore_failed">No se pudo restaurar la copia de seguridad. Inténtalo de nuevo.</string>
+    <string name="restore_invalid_file">Este archivo no es una copia de seguridad de Expense Manager.</string>
+    <string name="restore_newer_version">Esta copia es de una versión más reciente de la app. Actualiza la app e inténtalo de nuevo.</string>
+    <string name="restore_confirm_title">¿Restaurar esta copia de seguridad?</string>
+    <string name="restore_confirm_message">Tus datos actuales se reemplazarán por la copia de seguridad y la app se reiniciará.</string>
+    <string name="restore_confirm_action">Restaurar</string>
+    <string name="no_file_picker">No se encontró un gestor de archivos en este dispositivo.</string>
 </resources>

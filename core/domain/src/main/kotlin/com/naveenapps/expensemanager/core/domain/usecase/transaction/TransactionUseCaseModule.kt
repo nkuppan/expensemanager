@@ -19,6 +19,13 @@ val TransactionUseCaseModule = module {
     single { AddTransactionUseCase(repository = get()) }
     single { GetMonthlyRecapUseCase(transactionRepository = get(), categoryRepository = get()) }
     single { GetLoggingStreakUseCase(transactionRepository = get(), feedbackRepository = get()) }
+    single {
+        GetSpendingInsightsUseCase(
+            getTransactionWithFilterUseCase = get(),
+            categoryRepository = get(),
+            dispatchers = get(),
+        )
+    }
     single { DeleteTransactionUseCase(repository = get()) }
     single { FindTransactionByIdUseCase(repository = get()) }
     single {

@@ -6,4 +6,15 @@
     <string name="week">हफ्ता</string>
     <string name="month">महीना</string>
     <string name="no_chart_available">विश्लेषण के लिए कोई डेटा उपलब्ध नहीं है</string>
+    <string name="insights_title">मुख्य बातें</string>
+    <string name="where_money_goes">आपका पैसा कहाँ जाता है</string>
+    <string name="spending_by_weekday">हफ़्ते के दिन के हिसाब से खर्च</string>
+    <string name="biggest_expenses">सबसे बड़े खर्च</string>
+    <string name="highlight_top_category">शीर्ष श्रेणी</string>
+    <string name="highlight_busiest_day">सबसे ज़्यादा खर्च वाला दिन</string>
+    <string name="highlight_savings">बचत</string>
+    <string name="highlight_saved_value">आय में से बचाया</string>
+    <string name="highlight_overspent_value">कमाई से ज़्यादा खर्च किया</string>
+    <string name="highlight_of_spending">खर्च का</string>
+    <string name="highlight_of_income">आय का</string>
 </resources>

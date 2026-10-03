@@ -50,4 +50,14 @@
     <string name="share_app">分享应用</string>
     <string name="share_app_message">向朋友推荐 Expense Manager</string>
     <string name="share_app_text">我用 Expense Manager 记录支出。免费，而且数据只保存在我的手机上：%1$s</string>
+
+    <string name="backup_success">备份已保存</string>
+    <string name="backup_failed">无法创建备份，请重试。</string>
+    <string name="restore_failed">无法恢复备份，请重试。</string>
+    <string name="restore_invalid_file">此文件不是 Expense Manager 备份。</string>
+    <string name="restore_newer_version">此备份来自更新版本的应用。请更新应用后重试。</string>
+    <string name="restore_confirm_title">要恢复此备份吗？</string>
+    <string name="restore_confirm_message">当前数据将被备份替换，应用将重新启动。</string>
+    <string name="restore_confirm_action">恢复</string>
+    <string name="no_file_picker">此设备上未找到文件管理器。</string>
 </resources>

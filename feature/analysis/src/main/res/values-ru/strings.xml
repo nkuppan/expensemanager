@@ -6,4 +6,15 @@
     <string name="week">Неделя</string>
     <string name="month">Месяц</string>
     <string name="no_chart_available">Нет данных для анализа</string>
+    <string name="insights_title">Главное</string>
+    <string name="where_money_goes">Куда уходят деньги</string>
+    <string name="spending_by_weekday">Расходы по дням недели</string>
+    <string name="biggest_expenses">Крупнейшие расходы</string>
+    <string name="highlight_top_category">Главная категория</string>
+    <string name="highlight_busiest_day">Самый затратный день</string>
+    <string name="highlight_savings">Сбережения</string>
+    <string name="highlight_saved_value">Отложено от дохода</string>
+    <string name="highlight_overspent_value">Потрачено больше, чем заработано</string>
+    <string name="highlight_of_spending">расходов</string>
+    <string name="highlight_of_income">дохода</string>
 </resources>

@@ -50,4 +50,14 @@
     <string name="share_app">App teilen</string>
     <string name="share_app_message">Erzähl einem Freund von Expense Manager</string>
     <string name="share_app_text">Ich erfasse meine Ausgaben mit Expense Manager. Kostenlos, und meine Daten bleiben auf dem Handy: %1$s</string>
+
+    <string name="backup_success">Sicherung gespeichert</string>
+    <string name="backup_failed">Die Sicherung konnte nicht erstellt werden. Bitte versuche es erneut.</string>
+    <string name="restore_failed">Die Sicherung konnte nicht wiederhergestellt werden. Bitte versuche es erneut.</string>
+    <string name="restore_invalid_file">Diese Datei ist keine Expense-Manager-Sicherung.</string>
+    <string name="restore_newer_version">Diese Sicherung stammt aus einer neueren App-Version. Aktualisiere die App und versuche es erneut.</string>
+    <string name="restore_confirm_title">Diese Sicherung wiederherstellen?</string>
+    <string name="restore_confirm_message">Deine aktuellen Daten werden durch die Sicherung ersetzt und die App wird neu gestartet.</string>
+    <string name="restore_confirm_action">Wiederherstellen</string>
+    <string name="no_file_picker">Auf diesem Gerät wurde kein Dateimanager gefunden.</string>
 </resources>

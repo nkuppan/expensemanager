@@ -6,4 +6,15 @@
     <string name="week">Tuần</string>
     <string name="month">Tháng</string>
     <string name="no_chart_available">Không có dữ liệu để phân tích</string>
+    <string name="insights_title">Điểm nổi bật</string>
+    <string name="where_money_goes">Tiền của bạn đi đâu</string>
+    <string name="spending_by_weekday">Chi tiêu theo ngày trong tuần</string>
+    <string name="biggest_expenses">Khoản chi lớn nhất</string>
+    <string name="highlight_top_category">Danh mục hàng đầu</string>
+    <string name="highlight_busiest_day">Ngày chi tiêu nhiều nhất</string>
+    <string name="highlight_savings">Tiết kiệm</string>
+    <string name="highlight_saved_value">Giữ lại từ thu nhập</string>
+    <string name="highlight_overspent_value">Chi nhiều hơn thu</string>
+    <string name="highlight_of_spending">chi tiêu</string>
+    <string name="highlight_of_income">thu nhập</string>
 </resources>
