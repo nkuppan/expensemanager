@@ -59,4 +59,18 @@
     <string name="done">हो गया</string>
     <string name="backspace">बैकस्पेस</string>
     <string name="add_transaction">लेन-देन जोड़ें</string>
+    <string name="repeat">दोहराएँ</string>
+    <string name="repeat_never">नहीं दोहराएँ</string>
+    <string name="repeat_daily">रोज़</string>
+    <string name="repeat_weekly">हर हफ़्ते</string>
+    <string name="repeat_monthly">हर महीने</string>
+    <string name="repeat_yearly">हर साल</string>
+    <string name="repeat_next">अगली प्रति %1$s को दर्ज होगी</string>
+    <string name="recurring_transactions">आवर्ती लेन-देन</string>
+    <string name="recurring_schedule">%1$s · अगला %2$s को</string>
+    <string name="recurring_stop">रोकें</string>
+    <string name="recurring_stop_title">दोहराना बंद करें?</string>
+    <string name="recurring_stop_message">आगे कोई प्रति दर्ज नहीं होगी। पहले से दर्ज लेन-देन बने रहेंगे।</string>
+    <string name="recurring_empty_title">अभी कुछ नहीं दोहराया जा रहा</string>
+    <string name="recurring_empty_message">लेन-देन जोड़ते समय दोहराएँ में रोज़, हर हफ़्ते, हर महीने या हर साल चुनें, यह अपने आप दर्ज होगा।</string>
 </resources>

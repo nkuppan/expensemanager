@@ -59,4 +59,18 @@
     <string name="done">Terminé</string>
     <string name="backspace">Retour arrière</string>
     <string name="add_transaction">Ajouter une transaction</string>
+    <string name="repeat">Répéter</string>
+    <string name="repeat_never">Ne se répète pas</string>
+    <string name="repeat_daily">Quotidien</string>
+    <string name="repeat_weekly">Hebdomadaire</string>
+    <string name="repeat_monthly">Mensuel</string>
+    <string name="repeat_yearly">Annuel</string>
+    <string name="repeat_next">Prochaine copie enregistrée le %1$s</string>
+    <string name="recurring_transactions">Transactions récurrentes</string>
+    <string name="recurring_schedule">%1$s · prochaine le %2$s</string>
+    <string name="recurring_stop">Arrêter</string>
+    <string name="recurring_stop_title">Arrêter la répétition ?</string>
+    <string name="recurring_stop_message">Plus aucune copie ne sera enregistrée. Les transactions déjà enregistrées sont conservées.</string>
+    <string name="recurring_empty_title">Rien ne se répète encore</string>
+    <string name="recurring_empty_message">En ajoutant une transaction, choisissez Quotidien, Hebdomadaire, Mensuel ou Annuel sous Répéter et elle sera enregistrée pour vous.</string>
 </resources>

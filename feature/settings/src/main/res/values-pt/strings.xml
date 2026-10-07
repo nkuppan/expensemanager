@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Seus dados atuais serão substituídos pelo backup e o app será reiniciado.</string>
     <string name="restore_confirm_action">Restaurar</string>
     <string name="no_file_picker">Nenhum gerenciador de arquivos encontrado neste dispositivo.</string>
+    <string name="recurring_transactions_setting">Transações recorrentes</string>
+    <string name="recurring_transactions_setting_message">Aluguel, assinaturas e salário registrados para você</string>
 </resources>

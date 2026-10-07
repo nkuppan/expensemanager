@@ -59,4 +59,18 @@
     <string name="done">完成</string>
     <string name="backspace">退格</string>
     <string name="add_transaction">添加交易</string>
+    <string name="repeat">重复</string>
+    <string name="repeat_never">不重复</string>
+    <string name="repeat_daily">每天</string>
+    <string name="repeat_weekly">每周</string>
+    <string name="repeat_monthly">每月</string>
+    <string name="repeat_yearly">每年</string>
+    <string name="repeat_next">下一笔将于 %1$s 记录</string>
+    <string name="recurring_transactions">周期性交易</string>
+    <string name="recurring_schedule">%1$s · 下次 %2$s</string>
+    <string name="recurring_stop">停止</string>
+    <string name="recurring_stop_title">停止重复？</string>
+    <string name="recurring_stop_message">将不再记录新的交易，已记录的交易会保留。</string>
+    <string name="recurring_empty_title">还没有重复的交易</string>
+    <string name="recurring_empty_message">添加交易时，在“重复”中选择每天、每周、每月或每年，系统会自动帮你记录。</string>
 </resources>

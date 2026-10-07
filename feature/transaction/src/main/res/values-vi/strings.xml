@@ -59,4 +59,18 @@
     <string name="done">Xong</string>
     <string name="backspace">Xóa lùi</string>
     <string name="add_transaction">Thêm giao dịch</string>
+    <string name="repeat">Lặp lại</string>
+    <string name="repeat_never">Không lặp lại</string>
+    <string name="repeat_daily">Hằng ngày</string>
+    <string name="repeat_weekly">Hằng tuần</string>
+    <string name="repeat_monthly">Hằng tháng</string>
+    <string name="repeat_yearly">Hằng năm</string>
+    <string name="repeat_next">Bản tiếp theo sẽ được ghi vào %1$s</string>
+    <string name="recurring_transactions">Giao dịch định kỳ</string>
+    <string name="recurring_schedule">%1$s · tiếp theo %2$s</string>
+    <string name="recurring_stop">Dừng</string>
+    <string name="recurring_stop_title">Dừng lặp lại?</string>
+    <string name="recurring_stop_message">Sẽ không ghi thêm bản nào. Các giao dịch đã ghi vẫn được giữ.</string>
+    <string name="recurring_empty_title">Chưa có gì lặp lại</string>
+    <string name="recurring_empty_message">Khi thêm giao dịch, chọn Hằng ngày, Hằng tuần, Hằng tháng hoặc Hằng năm ở mục Lặp lại và giao dịch sẽ được ghi tự động.</string>
 </resources>

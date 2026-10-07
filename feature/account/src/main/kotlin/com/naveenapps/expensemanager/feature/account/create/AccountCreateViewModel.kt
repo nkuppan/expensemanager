@@ -133,8 +133,8 @@ class AccountCreateViewModel(
 
         this.account?.let { accountItem ->
 
-            val totalAmount =
-                getTotalAmount(getCreditAmount().toString(), _state.value.amount.value)
+            val totalAmount = accountItem.amount +
+                if (accountItem.type == AccountType.CREDIT) accountItem.creditLimit else 0.0
 
             _state.update {
                 it.copy(
@@ -212,7 +212,7 @@ class AccountCreateViewModel(
         }
 
         if (currentBalance.isBlank() || numberFormatRepository.parseToDouble(currentBalance) == null) {
-            _state.update { it.copy(name = it.amount.copy(valueError = true)) }
+            _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
             isError = true
         }
 
@@ -222,7 +222,7 @@ class AccountCreateViewModel(
                 ) == null
                 )
         ) {
-            _state.update { it.copy(name = it.creditLimit.copy(valueError = true)) }
+            _state.update { it.copy(creditLimit = it.creditLimit.copy(valueError = true)) }
             isError = true
         }
 
@@ -245,7 +245,7 @@ class AccountCreateViewModel(
             } else {
                 0.0
             },
-            createdOn = Calendar.getInstance().time,
+            createdOn = account?.createdOn ?: Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time,
             sequence = account?.sequence ?: Int.MAX_VALUE,
         )

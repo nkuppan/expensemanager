@@ -8,6 +8,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -28,8 +31,11 @@ import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
+import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -65,12 +71,14 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBo
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.occurrenceDate
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -84,10 +92,10 @@ import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefa
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import java.util.Calendar
-import java.util.Date
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import java.util.Calendar
+import java.util.Date
 
 @Composable
 fun TransactionCreateScreen(
@@ -437,6 +445,16 @@ private fun TransactionCreateContent(
             }
         }
 
+        if (state.canRepeat) {
+            SettingsSection(title = stringResource(R.string.repeat)) {
+                RepeatSelector(
+                    selected = state.repeat,
+                    startDate = state.dateTime,
+                    onSelect = { onAction.invoke(TransactionCreateAction.SelectRepeat(it)) },
+                )
+            }
+        }
+
         // Category — only for non-transfer
         AnimatedVisibility(
             visible = state.transactionType != TransactionType.TRANSFER,
@@ -545,6 +563,59 @@ private fun TransactionCreateContent(
         }
 
         Spacer(modifier = Modifier.height(72.dp))
+    }
+}
+
+/**
+ * "Doesn't repeat" plus the four frequencies as chips, so the choice is one tap and always
+ * visible. Once one is picked, the line below says when the next copy will be logged.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun RepeatSelector(
+    selected: RecurringFrequency?,
+    startDate: Date,
+    onSelect: (RecurringFrequency?) -> Unit,
+) {
+    val options = listOf<Pair<RecurringFrequency?, Int>>(
+        null to R.string.repeat_never,
+        RecurringFrequency.DAILY to R.string.repeat_daily,
+        RecurringFrequency.WEEKLY to R.string.repeat_weekly,
+        RecurringFrequency.MONTHLY to R.string.repeat_monthly,
+        RecurringFrequency.YEARLY to R.string.repeat_yearly,
+    )
+    AppCardView {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                options.forEach { (frequency, label) ->
+                    FilterChip(
+                        selected = selected == frequency,
+                        onClick = { onSelect(frequency) },
+                        label = { Text(text = stringResource(id = label)) },
+                        leadingIcon = if (selected == frequency && frequency != null) {
+                            {
+                                Icon(
+                                    imageVector = Icons.Outlined.Repeat,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(FilterChipDefaults.IconSize),
+                                )
+                            }
+                        } else {
+                            null
+                        },
+                    )
+                }
+            }
+            if (selected != null) {
+                val next = remember(selected, startDate) { occurrenceDate(startDate, selected, 1) }
+                Text(
+                    text = stringResource(id = R.string.repeat_next, next.toCompleteDateWithDate()),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(top = 4.dp),
+                )
+            }
+        }
     }
 }
 

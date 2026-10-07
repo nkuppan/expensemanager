@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">سيتم استبدال بياناتك الحالية بالنسخة الاحتياطية، وسيُعاد تشغيل التطبيق.</string>
     <string name="restore_confirm_action">استعادة</string>
     <string name="no_file_picker">لم يتم العثور على مدير ملفات على هذا الجهاز.</string>
+    <string name="recurring_transactions_setting">المعاملات المتكررة</string>
+    <string name="recurring_transactions_setting_message">الإيجار والاشتراكات والراتب تُسجَّل تلقائيًا</string>
 </resources>

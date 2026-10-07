@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Текущие данные будут заменены данными из копии, и приложение перезапустится.</string>
     <string name="restore_confirm_action">Восстановить</string>
     <string name="no_file_picker">На устройстве не найден файловый менеджер.</string>
+    <string name="recurring_transactions_setting">Повторяющиеся операции</string>
+    <string name="recurring_transactions_setting_message">Аренда, подписки и зарплата записываются сами</string>
 </resources>

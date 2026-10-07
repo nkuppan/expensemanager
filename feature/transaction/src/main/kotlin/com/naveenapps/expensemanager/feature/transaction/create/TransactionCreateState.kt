@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.TransactionType
 import java.util.Date
@@ -30,6 +31,10 @@ data class TransactionCreateState(
     val showTimeSelection: Boolean,
     val attachments: List<String> = emptyList(),
     val showAttachmentPicker: Boolean = false,
+    /** Repeat rule for a new transaction; null = doesn't repeat. */
+    val repeat: RecurringFrequency? = null,
+    /** Only new transactions can be made recurring; editing one never changes a rule. */
+    val canRepeat: Boolean = true,
 )
 
 enum class AccountSelection {

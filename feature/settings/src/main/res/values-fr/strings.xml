@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Vos données actuelles seront remplacées par la sauvegarde et l\'application redémarrera.</string>
     <string name="restore_confirm_action">Restaurer</string>
     <string name="no_file_picker">Aucun gestionnaire de fichiers trouvé sur cet appareil.</string>
+    <string name="recurring_transactions_setting">Transactions récurrentes</string>
+    <string name="recurring_transactions_setting_message">Loyer, abonnements et salaire enregistrés pour vous</string>
 </resources>

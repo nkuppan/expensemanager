@@ -59,4 +59,18 @@
     <string name="done">Fertig</string>
     <string name="backspace">Rücktaste</string>
     <string name="add_transaction">Transaktion hinzufügen</string>
+    <string name="repeat">Wiederholen</string>
+    <string name="repeat_never">Keine Wiederholung</string>
+    <string name="repeat_daily">Täglich</string>
+    <string name="repeat_weekly">Wöchentlich</string>
+    <string name="repeat_monthly">Monatlich</string>
+    <string name="repeat_yearly">Jährlich</string>
+    <string name="repeat_next">Nächste Buchung am %1$s</string>
+    <string name="recurring_transactions">Wiederkehrende Buchungen</string>
+    <string name="recurring_schedule">%1$s · nächste am %2$s</string>
+    <string name="recurring_stop">Beenden</string>
+    <string name="recurring_stop_title">Wiederholung beenden?</string>
+    <string name="recurring_stop_message">Es werden keine weiteren Buchungen erfasst. Bereits erfasste bleiben erhalten.</string>
+    <string name="recurring_empty_title">Noch nichts wiederholt sich</string>
+    <string name="recurring_empty_message">Wähle beim Hinzufügen einer Buchung unter Wiederholen Täglich, Wöchentlich, Monatlich oder Jährlich – sie wird dann für dich erfasst.</string>
 </resources>

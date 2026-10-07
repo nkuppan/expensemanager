@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">現在のデータはバックアップに置き換えられ、アプリが再起動します。</string>
     <string name="restore_confirm_action">復元</string>
     <string name="no_file_picker">この端末にファイルマネージャーが見つかりません。</string>
+    <string name="recurring_transactions_setting">定期的な取引</string>
+    <string name="recurring_transactions_setting_message">家賃・サブスク・給料を自動で記録</string>
 </resources>

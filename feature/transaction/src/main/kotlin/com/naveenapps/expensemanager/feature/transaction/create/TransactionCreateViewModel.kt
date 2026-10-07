@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -73,6 +74,7 @@ class TransactionCreateViewModel(
     private val feedbackRepository: FeedbackRepository,
     private val analyticsRepository: AnalyticsRepository,
     private val budgetAlertTrigger: BudgetAlertTrigger,
+    private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase,
 ) : ViewModel() {
 
     private val sessionCreatedAttachmentPaths = mutableListOf<String>()
@@ -237,6 +239,7 @@ class TransactionCreateViewModel(
                             )
                         } ?: defaultAccount,
                         showDeleteButton = true,
+                        canRepeat = false,
                         attachments = transaction.attachments,
                     )
                 }
@@ -303,6 +306,16 @@ class TransactionCreateViewModel(
                 budgetAlertTrigger.checkBudgetsSoon()
                 discardSessionAttachments()
                 if (isNewTransaction) {
+                    _state.value.repeat?.let { frequency ->
+                        createRecurringTransactionUseCase.invoke(transaction, frequency)
+                        analyticsRepository.logEvent(
+                            AnalyticsEvents.RECURRING_CREATED,
+                            mapOf(
+                                AnalyticsParams.FREQUENCY to frequency.name.lowercase(),
+                                AnalyticsParams.TYPE to transaction.type.name.lowercase(),
+                            ),
+                        )
+                    }
                     onNewTransactionCreated(transaction)
                 } else {
                     analyticsRepository.logEvent(
@@ -467,6 +480,8 @@ class TransactionCreateViewModel(
             TransactionCreateAction.Delete -> deleteTransaction()
 
             TransactionCreateAction.Save -> save()
+
+            is TransactionCreateAction.SelectRepeat -> _state.update { it.copy(repeat = action.frequency) }
 
             is TransactionCreateAction.OpenAccountCreate -> openAccountCreate()
 

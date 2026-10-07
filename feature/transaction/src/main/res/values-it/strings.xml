@@ -59,4 +59,18 @@
     <string name="done">Fine</string>
     <string name="backspace">Backspace</string>
     <string name="add_transaction">Aggiungi transazione</string>
+    <string name="repeat">Ripeti</string>
+    <string name="repeat_never">Non si ripete</string>
+    <string name="repeat_daily">Giornaliero</string>
+    <string name="repeat_weekly">Settimanale</string>
+    <string name="repeat_monthly">Mensile</string>
+    <string name="repeat_yearly">Annuale</string>
+    <string name="repeat_next">La prossima copia verrà registrata il %1$s</string>
+    <string name="recurring_transactions">Transazioni ricorrenti</string>
+    <string name="recurring_schedule">%1$s · prossima il %2$s</string>
+    <string name="recurring_stop">Interrompi</string>
+    <string name="recurring_stop_title">Interrompere la ripetizione?</string>
+    <string name="recurring_stop_message">Non verranno registrate altre copie. Le transazioni già registrate restano.</string>
+    <string name="recurring_empty_title">Ancora nulla si ripete</string>
+    <string name="recurring_empty_message">Quando aggiungi una transazione, scegli Giornaliero, Settimanale, Mensile o Annuale in Ripeti e verrà registrata per te.</string>
 </resources>

@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Deine aktuellen Daten werden durch die Sicherung ersetzt und die App wird neu gestartet.</string>
     <string name="restore_confirm_action">Wiederherstellen</string>
     <string name="no_file_picker">Auf diesem Gerät wurde kein Dateimanager gefunden.</string>
+    <string name="recurring_transactions_setting">Wiederkehrende Buchungen</string>
+    <string name="recurring_transactions_setting_message">Miete, Abos und Gehalt werden für dich erfasst</string>
 </resources>

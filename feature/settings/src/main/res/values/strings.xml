@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Your current data will be replaced with the backup, and the app will restart.</string>
     <string name="restore_confirm_action">Restore</string>
     <string name="no_file_picker">No file manager found on this device.</string>
+    <string name="recurring_transactions_setting">Recurring transactions</string>
+    <string name="recurring_transactions_setting_message">Rent, subscriptions and salary logged for you</string>
 </resources>

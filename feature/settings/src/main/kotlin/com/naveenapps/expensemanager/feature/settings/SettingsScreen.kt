@@ -27,6 +27,7 @@ import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.DashboardCustomize
 import androidx.compose.material.icons.outlined.EditNotifications
+import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lock
@@ -345,6 +346,13 @@ private fun SettingsScreenContent(
         // between the main screen and "Advanced").
         SettingsSection(title = stringResource(R.string.data_and_backup)) {
             AppCardView {
+                SettingRow(
+                    onClick = { onAction.invoke(SettingAction.OpenRecurringTransactions) },
+                    title = stringResource(id = R.string.recurring_transactions_setting),
+                    subtitle = stringResource(id = R.string.recurring_transactions_setting_message),
+                    icon = Icons.Outlined.EventRepeat,
+                    showDivider = true,
+                )
                 SettingRow(
                     onClick = { onAction.invoke(SettingAction.OpenExport) },
                     title = stringResource(id = R.string.export),

@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.category.CategoryUseCas
 import com.naveenapps.expensemanager.core.domain.usecase.country.CountryUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.settings.SettingsUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.FilterUseCaseModule
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.RecurringUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.TransactionUseCaseModule
 import org.koin.dsl.module
 
@@ -17,6 +18,7 @@ val UseCaseModule = module {
         CountryUseCaseModule,
         SettingsUseCaseModule,
         TransactionUseCaseModule,
+        RecurringUseCaseModule,
         FilterUseCaseModule,
     )
 }

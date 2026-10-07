@@ -69,6 +69,7 @@ import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsS
 import com.naveenapps.expensemanager.feature.transaction.R as TransactionR
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
+import com.naveenapps.expensemanager.feature.transaction.recurring.RecurringTransactionsScreen
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -105,6 +106,9 @@ fun NavGraphBuilder.expenseManagerNavigation(
     }
     composable<ExpenseManagerScreens.CategoryDetails> {
         CategoryDetailScreen()
+    }
+    composable<ExpenseManagerScreens.RecurringTransactions> {
+        RecurringTransactionsScreen()
     }
     composable<ExpenseManagerScreens.TransactionList> {
         TransactionListScreen(showBackNavigationIcon = true)

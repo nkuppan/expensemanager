@@ -59,4 +59,18 @@
     <string name="done">Gotowe</string>
     <string name="backspace">Backspace</string>
     <string name="add_transaction">Dodaj transakcję</string>
+    <string name="repeat">Powtarzaj</string>
+    <string name="repeat_never">Nie powtarza się</string>
+    <string name="repeat_daily">Codziennie</string>
+    <string name="repeat_weekly">Co tydzień</string>
+    <string name="repeat_monthly">Co miesiąc</string>
+    <string name="repeat_yearly">Co rok</string>
+    <string name="repeat_next">Następna kopia zostanie zapisana %1$s</string>
+    <string name="recurring_transactions">Transakcje cykliczne</string>
+    <string name="recurring_schedule">%1$s · następna %2$s</string>
+    <string name="recurring_stop">Zatrzymaj</string>
+    <string name="recurring_stop_title">Zatrzymać powtarzanie?</string>
+    <string name="recurring_stop_message">Nie będą zapisywane kolejne kopie. Już zapisane transakcje zostaną.</string>
+    <string name="recurring_empty_title">Nic się jeszcze nie powtarza</string>
+    <string name="recurring_empty_message">Dodając transakcję, wybierz w Powtarzaj: Codziennie, Co tydzień, Co miesiąc lub Co rok, a będzie zapisywana za Ciebie.</string>
 </resources>

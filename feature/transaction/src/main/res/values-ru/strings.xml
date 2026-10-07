@@ -59,4 +59,18 @@
     <string name="done">Готово</string>
     <string name="backspace">Стереть</string>
     <string name="add_transaction">Добавить операцию</string>
+    <string name="repeat">Повторять</string>
+    <string name="repeat_never">Не повторяется</string>
+    <string name="repeat_daily">Ежедневно</string>
+    <string name="repeat_weekly">Еженедельно</string>
+    <string name="repeat_monthly">Ежемесячно</string>
+    <string name="repeat_yearly">Ежегодно</string>
+    <string name="repeat_next">Следующая запись — %1$s</string>
+    <string name="recurring_transactions">Повторяющиеся операции</string>
+    <string name="recurring_schedule">%1$s · следующая %2$s</string>
+    <string name="recurring_stop">Остановить</string>
+    <string name="recurring_stop_title">Остановить повтор?</string>
+    <string name="recurring_stop_message">Новые записи создаваться не будут. Уже созданные операции сохранятся.</string>
+    <string name="recurring_empty_title">Пока ничего не повторяется</string>
+    <string name="recurring_empty_message">Добавляя операцию, выберите в «Повторять» ежедневно, еженедельно, ежемесячно или ежегодно — и она будет записываться сама.</string>
 </resources>

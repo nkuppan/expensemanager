@@ -59,4 +59,18 @@
     <string name="done">Bitti</string>
     <string name="backspace">Geri sil</string>
     <string name="add_transaction">İşlem Ekle</string>
+    <string name="repeat">Tekrarla</string>
+    <string name="repeat_never">Tekrarlanmaz</string>
+    <string name="repeat_daily">Günlük</string>
+    <string name="repeat_weekly">Haftalık</string>
+    <string name="repeat_monthly">Aylık</string>
+    <string name="repeat_yearly">Yıllık</string>
+    <string name="repeat_next">Sonraki kopya %1$s tarihinde kaydedilir</string>
+    <string name="recurring_transactions">Tekrarlayan işlemler</string>
+    <string name="recurring_schedule">%1$s · sonraki %2$s</string>
+    <string name="recurring_stop">Durdur</string>
+    <string name="recurring_stop_title">Tekrar durdurulsun mu?</string>
+    <string name="recurring_stop_message">Yeni kopya kaydedilmez. Kaydedilmiş işlemler kalır.</string>
+    <string name="recurring_empty_title">Henüz tekrarlayan işlem yok</string>
+    <string name="recurring_empty_message">İşlem eklerken Tekrarla altında Günlük, Haftalık, Aylık veya Yıllık seçin; sizin için kaydedilir.</string>
 </resources>

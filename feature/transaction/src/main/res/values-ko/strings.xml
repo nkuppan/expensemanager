@@ -59,4 +59,18 @@
     <string name="done">완료</string>
     <string name="backspace">백스페이스</string>
     <string name="add_transaction">거래 추가</string>
+    <string name="repeat">반복</string>
+    <string name="repeat_never">반복 안 함</string>
+    <string name="repeat_daily">매일</string>
+    <string name="repeat_weekly">매주</string>
+    <string name="repeat_monthly">매월</string>
+    <string name="repeat_yearly">매년</string>
+    <string name="repeat_next">다음 기록일: %1$s</string>
+    <string name="recurring_transactions">반복 거래</string>
+    <string name="recurring_schedule">%1$s · 다음 %2$s</string>
+    <string name="recurring_stop">중지</string>
+    <string name="recurring_stop_title">반복을 중지할까요?</string>
+    <string name="recurring_stop_message">더 이상 기록되지 않습니다. 이미 기록된 거래는 유지됩니다.</string>
+    <string name="recurring_empty_title">반복 거래가 없습니다</string>
+    <string name="recurring_empty_message">거래를 추가할 때 반복에서 매일, 매주, 매월 또는 매년을 선택하면 자동으로 기록됩니다.</string>
 </resources>

@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Data Anda saat ini akan diganti dengan cadangan, dan aplikasi akan dimulai ulang.</string>
     <string name="restore_confirm_action">Pulihkan</string>
     <string name="no_file_picker">Tidak ada pengelola file di perangkat ini.</string>
+    <string name="recurring_transactions_setting">Transaksi berulang</string>
+    <string name="recurring_transactions_setting_message">Sewa, langganan, dan gaji dicatat otomatis</string>
 </resources>

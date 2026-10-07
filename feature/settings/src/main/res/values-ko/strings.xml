@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">현재 데이터가 백업으로 대체되고 앱이 다시 시작됩니다.</string>
     <string name="restore_confirm_action">복원</string>
     <string name="no_file_picker">이 기기에서 파일 관리자를 찾을 수 없습니다.</string>
+    <string name="recurring_transactions_setting">반복 거래</string>
+    <string name="recurring_transactions_setting_message">월세, 구독, 급여를 자동으로 기록</string>
 </resources>

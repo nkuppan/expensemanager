@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Dữ liệu hiện tại sẽ được thay bằng bản sao lưu và ứng dụng sẽ khởi động lại.</string>
     <string name="restore_confirm_action">Khôi phục</string>
     <string name="no_file_picker">Không tìm thấy trình quản lý tệp trên thiết bị này.</string>
+    <string name="recurring_transactions_setting">Giao dịch định kỳ</string>
+    <string name="recurring_transactions_setting_message">Tiền thuê, gói đăng ký và lương được ghi tự động</string>
 </resources>

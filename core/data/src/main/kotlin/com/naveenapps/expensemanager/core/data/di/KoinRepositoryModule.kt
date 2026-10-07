@@ -15,6 +15,7 @@ import com.naveenapps.expensemanager.core.data.repository.FirebaseSettingsReposi
 import com.naveenapps.expensemanager.core.data.repository.ImageStorageRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.JsonConverterRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.LocaleRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.RecurringTransactionRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.SettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ShareRepositoryImpl
@@ -38,6 +39,7 @@ import com.naveenapps.expensemanager.core.repository.FirebaseSettingsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.JsonConverterRepository
 import com.naveenapps.expensemanager.core.repository.LocaleRepository
+import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.ShareRepository
@@ -48,6 +50,12 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val RepositoryModule = module {
+    single<RecurringTransactionRepository> {
+        RecurringTransactionRepositoryImpl(
+            dao = get(),
+            dispatchers = get(),
+        )
+    }
     single<BackupRepository> {
         BackupRepositoryImpl(
             context = androidContext(),

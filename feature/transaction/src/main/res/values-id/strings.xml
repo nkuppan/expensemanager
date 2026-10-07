@@ -59,4 +59,18 @@
     <string name="done">Selesai</string>
     <string name="backspace">Hapus mundur</string>
     <string name="add_transaction">Tambah Transaksi</string>
+    <string name="repeat">Ulangi</string>
+    <string name="repeat_never">Tidak berulang</string>
+    <string name="repeat_daily">Harian</string>
+    <string name="repeat_weekly">Mingguan</string>
+    <string name="repeat_monthly">Bulanan</string>
+    <string name="repeat_yearly">Tahunan</string>
+    <string name="repeat_next">Salinan berikutnya dicatat pada %1$s</string>
+    <string name="recurring_transactions">Transaksi berulang</string>
+    <string name="recurring_schedule">%1$s · berikutnya %2$s</string>
+    <string name="recurring_stop">Hentikan</string>
+    <string name="recurring_stop_title">Hentikan pengulangan?</string>
+    <string name="recurring_stop_message">Tidak ada salinan baru yang dicatat. Transaksi yang sudah dicatat tetap ada.</string>
+    <string name="recurring_empty_title">Belum ada yang berulang</string>
+    <string name="recurring_empty_message">Saat menambahkan transaksi, pilih Harian, Mingguan, Bulanan, atau Tahunan di Ulangi dan transaksi akan dicatat otomatis.</string>
 </resources>

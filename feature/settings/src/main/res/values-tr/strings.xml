@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Mevcut verileriniz yedekle değiştirilecek ve uygulama yeniden başlatılacak.</string>
     <string name="restore_confirm_action">Geri yükle</string>
     <string name="no_file_picker">Bu cihazda dosya yöneticisi bulunamadı.</string>
+    <string name="recurring_transactions_setting">Tekrarlayan işlemler</string>
+    <string name="recurring_transactions_setting_message">Kira, abonelikler ve maaş otomatik kaydedilir</string>
 </resources>

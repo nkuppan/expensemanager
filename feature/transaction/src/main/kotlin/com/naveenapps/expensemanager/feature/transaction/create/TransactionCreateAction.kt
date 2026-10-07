@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.transaction.create
 import android.net.Uri
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TransactionType
 import java.util.Date
 
@@ -57,4 +58,6 @@ sealed class TransactionCreateAction {
     data class AttachmentPicked(val uri: Uri) : TransactionCreateAction()
 
     data class RemoveAttachment(val path: String) : TransactionCreateAction()
+
+    data class SelectRepeat(val frequency: RecurringFrequency?) : TransactionCreateAction()
 }

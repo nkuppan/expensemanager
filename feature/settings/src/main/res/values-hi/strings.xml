@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">आपका मौजूदा डेटा बैकअप से बदल दिया जाएगा और ऐप रीस्टार्ट होगा।</string>
     <string name="restore_confirm_action">रीस्टोर करें</string>
     <string name="no_file_picker">इस डिवाइस पर कोई फ़ाइल मैनेजर नहीं मिला।</string>
+    <string name="recurring_transactions_setting">आवर्ती लेन-देन</string>
+    <string name="recurring_transactions_setting_message">किराया, सदस्यता और वेतन अपने आप दर्ज</string>
 </resources>

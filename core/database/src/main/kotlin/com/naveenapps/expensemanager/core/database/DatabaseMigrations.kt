@@ -125,3 +125,37 @@ internal val MIGRATION_7_8 = object : Migration(7, 8) {
         )
     }
 }
+
+/**
+ * Adds the `recurring_transaction` table (repeating transaction rules). New table only, so every
+ * existing row is untouched. Must match RecurringTransactionEntity exactly, indices included,
+ * or Room's schema validation fails on open.
+ */
+internal val MIGRATION_8_9 = object : Migration(8, 9) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `recurring_transaction` (" +
+                "`id` TEXT NOT NULL, " +
+                "`notes` TEXT NOT NULL, " +
+                "`category_id` TEXT NOT NULL, " +
+                "`from_account_id` TEXT NOT NULL, " +
+                "`to_account_id` TEXT, " +
+                "`type` INTEGER NOT NULL, " +
+                "`amount` REAL NOT NULL, " +
+                "`frequency` TEXT NOT NULL, " +
+                "`start_date` INTEGER NOT NULL, " +
+                "`next_occurrence` INTEGER NOT NULL, " +
+                "`next_due_date` INTEGER NOT NULL, " +
+                "`created_on` INTEGER NOT NULL, " +
+                "`updated_on` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`id`), " +
+                "FOREIGN KEY(`from_account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, " +
+                "FOREIGN KEY(`to_account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, " +
+                "FOREIGN KEY(`category_id`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE)",
+        )
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_from_account_id` ON `recurring_transaction` (`from_account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_to_account_id` ON `recurring_transaction` (`to_account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_category_id` ON `recurring_transaction` (`category_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_next_due_date` ON `recurring_transaction` (`next_due_date`)")
+    }
+}

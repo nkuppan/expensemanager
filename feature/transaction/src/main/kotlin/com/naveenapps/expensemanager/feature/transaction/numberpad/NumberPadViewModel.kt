@@ -127,11 +127,18 @@ class NumberPadViewModel : ViewModel() {
 
             val currentString = _calculatedAmountString.value
 
-            if (currentString == character || (currentString == "0" && character == "00")) {
+            // Only block extra zeros after a lone leading "0" ("0" -> "00"/"000"). Repeated
+            // digits like 11, 22 or 99 are valid amounts and must not be blocked.
+            if (currentString == "0" && (character == "0" || character == "00")) {
                 return@launch
             }
 
-            val newString = currentString + character
+            // Replace a lone leading "0" with the next digit, so "0" then "5" gives "5", not "05".
+            val newString = if (currentString == "0" && character.all { it.isDigit() }) {
+                character
+            } else {
+                currentString + character
+            }
 
             if (newString.isEmpty()) {
                 clearAmount()

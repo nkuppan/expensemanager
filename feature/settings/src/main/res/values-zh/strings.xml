@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">当前数据将被备份替换，应用将重新启动。</string>
     <string name="restore_confirm_action">恢复</string>
     <string name="no_file_picker">此设备上未找到文件管理器。</string>
+    <string name="recurring_transactions_setting">周期性交易</string>
+    <string name="recurring_transactions_setting_message">房租、订阅和工资自动记录</string>
 </resources>

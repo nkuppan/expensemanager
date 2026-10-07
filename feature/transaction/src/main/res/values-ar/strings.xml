@@ -59,4 +59,18 @@
     <string name="done">تم</string>
     <string name="backspace">رجوع للخلف</string>
     <string name="add_transaction">إضافة معاملة</string>
+    <string name="repeat">التكرار</string>
+    <string name="repeat_never">بدون تكرار</string>
+    <string name="repeat_daily">يوميًا</string>
+    <string name="repeat_weekly">أسبوعيًا</string>
+    <string name="repeat_monthly">شهريًا</string>
+    <string name="repeat_yearly">سنويًا</string>
+    <string name="repeat_next">تُسجَّل النسخة التالية في %1$s</string>
+    <string name="recurring_transactions">المعاملات المتكررة</string>
+    <string name="recurring_schedule">%1$s · التالي في %2$s</string>
+    <string name="recurring_stop">إيقاف</string>
+    <string name="recurring_stop_title">إيقاف التكرار؟</string>
+    <string name="recurring_stop_message">لن تُسجَّل نسخ أخرى. تبقى المعاملات المسجلة كما هي.</string>
+    <string name="recurring_empty_title">لا شيء يتكرر بعد</string>
+    <string name="recurring_empty_message">عند إضافة معاملة، اختر يوميًا أو أسبوعيًا أو شهريًا أو سنويًا ضمن التكرار وستُسجَّل تلقائيًا.</string>
 </resources>

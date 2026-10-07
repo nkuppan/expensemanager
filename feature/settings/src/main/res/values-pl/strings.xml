@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Obecne dane zostaną zastąpione kopią zapasową, a aplikacja uruchomi się ponownie.</string>
     <string name="restore_confirm_action">Przywróć</string>
     <string name="no_file_picker">Nie znaleziono menedżera plików na tym urządzeniu.</string>
+    <string name="recurring_transactions_setting">Transakcje cykliczne</string>
+    <string name="recurring_transactions_setting_message">Czynsz, subskrypcje i pensja zapisywane za Ciebie</string>
 </resources>

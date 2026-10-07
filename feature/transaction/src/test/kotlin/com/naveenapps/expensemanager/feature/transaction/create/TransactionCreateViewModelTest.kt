@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.transaction.create
 
 import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth.assertThat
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -55,6 +56,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val feedbackRepository: FeedbackRepository = mock()
     private val analyticsRepository: AnalyticsRepository = mock()
     private val budgetAlertTrigger: BudgetAlertTrigger = mock()
+    private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
 
@@ -117,6 +119,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
             feedbackRepository = feedbackRepository,
             analyticsRepository = analyticsRepository,
             budgetAlertTrigger = budgetAlertTrigger,
+            createRecurringTransactionUseCase = createRecurringTransactionUseCase,
         )
     }
 

@@ -2,10 +2,12 @@ package com.naveenapps.expensemanager.core.data.repository.backup
 
 import java.nio.ByteBuffer
 import java.security.GeneralSecurityException
+import java.security.Security
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.BeforeClass
 import org.junit.Test
 
 class BackupCipherTest {
@@ -49,7 +51,23 @@ class BackupCipherTest {
         assertFalse(ByteArray(200).isSqliteDatabase())
     }
 
-    private companion object {
-        const val PASSWORD = "YOUR_SECRET_PASSWORD"
+    companion object {
+        private const val PASSWORD = "YOUR_SECRET_PASSWORD"
+
+        /**
+         * The other core:data tests run under Robolectric, which installs Conscrypt as the
+         * JVM-wide top security provider and leaves it there. Gradle reuses the same JVM, so if a
+         * Robolectric test runs first, the JDK's JCE provider check (javax.crypto.JarVerifier)
+         * goes through Conscrypt and fails, and every Cipher.getInstance call in this class then
+         * throws. This is a plain JVM test, so drop Conscrypt and use the JDK providers, the same
+         * way the code runs outside Robolectric. Robolectric adds Conscrypt back for its next test.
+         */
+        @BeforeClass
+        @JvmStatic
+        fun useJdkSecurityProviders() {
+            Security.getProviders()
+                .filter { it.javaClass.name.startsWith("org.conscrypt.") }
+                .forEach { Security.removeProvider(it.name) }
+        }
     }
 }

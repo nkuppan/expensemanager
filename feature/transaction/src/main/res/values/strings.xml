@@ -59,4 +59,18 @@
     <string name="done">Done</string>
     <string name="backspace">Backspace</string>
     <string name="add_transaction">Add Transaction</string>
+    <string name="repeat">Repeat</string>
+    <string name="repeat_never">Doesn\'t repeat</string>
+    <string name="repeat_daily">Daily</string>
+    <string name="repeat_weekly">Weekly</string>
+    <string name="repeat_monthly">Monthly</string>
+    <string name="repeat_yearly">Yearly</string>
+    <string name="repeat_next">Next copy is logged on %1$s</string>
+    <string name="recurring_transactions">Recurring transactions</string>
+    <string name="recurring_schedule">%1$s · next on %2$s</string>
+    <string name="recurring_stop">Stop</string>
+    <string name="recurring_stop_title">Stop repeating?</string>
+    <string name="recurring_stop_message">No more copies will be logged. Transactions already logged are kept.</string>
+    <string name="recurring_empty_title">Nothing repeats yet</string>
+    <string name="recurring_empty_message">When you add a transaction, pick Daily, Weekly, Monthly or Yearly under Repeat and it will be logged for you.</string>
 </resources>

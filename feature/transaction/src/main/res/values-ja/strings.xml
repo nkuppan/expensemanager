@@ -59,4 +59,18 @@
     <string name="done">完了</string>
     <string name="backspace">バックスペース</string>
     <string name="add_transaction">取引を追加</string>
+    <string name="repeat">繰り返し</string>
+    <string name="repeat_never">繰り返さない</string>
+    <string name="repeat_daily">毎日</string>
+    <string name="repeat_weekly">毎週</string>
+    <string name="repeat_monthly">毎月</string>
+    <string name="repeat_yearly">毎年</string>
+    <string name="repeat_next">次回は %1$s に記録されます</string>
+    <string name="recurring_transactions">定期的な取引</string>
+    <string name="recurring_schedule">%1$s · 次回 %2$s</string>
+    <string name="recurring_stop">停止</string>
+    <string name="recurring_stop_title">繰り返しを停止しますか？</string>
+    <string name="recurring_stop_message">今後は記録されません。記録済みの取引は残ります。</string>
+    <string name="recurring_empty_title">繰り返しはまだありません</string>
+    <string name="recurring_empty_message">取引を追加するときに「繰り返し」で毎日・毎週・毎月・毎年を選ぶと自動で記録されます。</string>
 </resources>

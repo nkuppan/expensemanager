@@ -185,6 +185,9 @@ class SettingsViewModel(
 
             SettingAction.OpenExport -> openExportScreen()
 
+            SettingAction.OpenRecurringTransactions ->
+                appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactions)
+
             SettingAction.OpenNotification -> openNotificationScreen()
 
             SettingAction.ShareApp -> {

@@ -63,6 +63,21 @@ class NotificationScheduler(
         }
     }
 
+    /** Recurring transactions twice a day. KEEP, so app starts never reset the schedule. */
+    fun scheduleRecurringTransactions() {
+        val request = PeriodicWorkRequestBuilder<RecurringTransactionWorker>(
+            RECURRING_INTERVAL_HOURS,
+            TimeUnit.HOURS,
+        ).build()
+        withWorkManager {
+            it.enqueueUniquePeriodicWork(
+                RECURRING_WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                request,
+            )
+        }
+    }
+
     /** Called after a transaction is saved; a short delay batches quick successive saves. */
     override fun checkBudgetsSoon() {
         val request = OneTimeWorkRequestBuilder<BudgetAlertWorker>()
@@ -288,6 +303,8 @@ object NotificationId {
 }
 
 private const val REMINDER_WORK_NAME = "daily_reminder"
+private const val RECURRING_WORK_NAME = "recurring_transactions"
+private const val RECURRING_INTERVAL_HOURS = 12L
 private const val WEEKLY_SUMMARY_WORK_NAME = "weekly_summary"
 private const val BUDGET_ALERT_WORK_NAME = "budget_alert_check"
 private const val WEEKLY_SUMMARY_HOUR = 19

@@ -60,4 +60,6 @@
     <string name="restore_confirm_message">Tus datos actuales se reemplazarán por la copia de seguridad y la app se reiniciará.</string>
     <string name="restore_confirm_action">Restaurar</string>
     <string name="no_file_picker">No se encontró un gestor de archivos en este dispositivo.</string>
+    <string name="recurring_transactions_setting">Transacciones recurrentes</string>
+    <string name="recurring_transactions_setting_message">Alquiler, suscripciones y sueldo registrados por ti</string>
 </resources>

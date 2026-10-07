@@ -6,12 +6,14 @@ import androidx.room.TypeConverters
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.BudgetDao
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
+import com.naveenapps.expensemanager.core.database.dao.RecurringTransactionDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
 import com.naveenapps.expensemanager.core.database.entity.AccountEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetAccountEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetCategoryEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import com.naveenapps.expensemanager.core.database.entity.CategoryEntity
+import com.naveenapps.expensemanager.core.database.entity.RecurringTransactionEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionAttachmentEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.database.utils.AccountTypeConverter
@@ -31,8 +33,9 @@ import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverte
         BudgetCategoryEntity::class,
         BudgetAccountEntity::class,
         TransactionAttachmentEntity::class,
+        RecurringTransactionEntity::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = true,
 )
 @TypeConverters(
@@ -50,4 +53,6 @@ abstract class ExpenseManagerDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
 
     abstract fun budgetDao(): BudgetDao
+
+    abstract fun recurringTransactionDao(): RecurringTransactionDao
 }
