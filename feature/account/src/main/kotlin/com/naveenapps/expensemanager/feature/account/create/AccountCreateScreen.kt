@@ -262,7 +262,7 @@ private fun ColumnScope.BalanceSectionContent(
 ) {
     DecimalTextField(
         modifier = Modifier.fillMaxWidth(),
-        value = amount.value,
+        value = String.format("%.2f", amount.value.toDouble()),
         isError = amount.valueError,
         errorMessage = stringResource(id = R.string.current_balance_error),
         onValueChange = amount.onValueChange,
