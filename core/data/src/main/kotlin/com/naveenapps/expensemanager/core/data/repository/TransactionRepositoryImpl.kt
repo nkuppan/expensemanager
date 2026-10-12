@@ -65,7 +65,7 @@ class TransactionRepositoryImpl(
     override suspend fun updateTransaction(transaction: Transaction): Resource<Boolean> = withContext(dispatchers.io) {
         return@withContext try {
             val transactionEntity = transaction.toEntityModel()
-            transactionDao.removePreviousEnteredAmount(transactionEntity)
+            // Reversal of the old amount happens inside this DAO transaction.
             transactionDao.updateTransaction(
                 transactionEntity,
                 if (transaction.type.isIncome()) {
@@ -85,9 +85,8 @@ class TransactionRepositoryImpl(
     override suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean> = withContext(dispatchers.io) {
         return@withContext try {
             val transactionEntity = transaction.toEntityModel()
-            transactionDao.removePreviousEnteredAmount(transactionEntity)
-            val response = transactionDao.delete(transactionEntity)
-            Resource.Success(response != -1)
+            val response = transactionDao.deleteTransaction(transactionEntity)
+            Resource.Success(response > 0)
         } catch (exception: Exception) {
             Resource.Error(exception)
         }

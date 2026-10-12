@@ -72,4 +72,31 @@ class MainViewModel(
     fun onAuthenticationSuccess() {
         _isAuthenticated.value = true
     }
+
+    // elapsedRealtime when the app last left the foreground while unlocked.
+    private var backgroundedAt: Long? = null
+
+    /** Called from Activity.onStop (not for configuration changes). */
+    fun onAppBackgrounded(now: Long) {
+        if (_isAuthenticated.value) {
+            backgroundedAt = now
+        }
+    }
+
+    /**
+     * Called from Activity.onStart. Re-locks the app if it stayed in the background longer
+     * than [RELOCK_TIMEOUT_MS]. The short grace period keeps quick trips to the camera,
+     * gallery or file picker (attachments, backup, export) from asking to unlock again.
+     */
+    fun onAppForegrounded(now: Long) {
+        val leftAt = backgroundedAt ?: return
+        backgroundedAt = null
+        if (now - leftAt >= RELOCK_TIMEOUT_MS) {
+            _isAuthenticated.value = false
+        }
+    }
+
+    companion object {
+        const val RELOCK_TIMEOUT_MS = 30_000L
+    }
 }

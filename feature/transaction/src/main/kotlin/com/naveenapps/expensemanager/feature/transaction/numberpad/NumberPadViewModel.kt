@@ -167,10 +167,15 @@ class NumberPadViewModel : ViewModel() {
             return
         }
 
-        val newString = String.format(
-            "%s",
-            calculatorString.substring(0, calculatorString.length - 1),
-        )
+        val newString = calculatorString.dropLast(1)
+
+        // Removing the last character leaves nothing to evaluate. evaluate("") throws, and the
+        // failure branch keeps the previous result, so reset the result to 0 here instead.
+        if (newString.isEmpty()) {
+            _calculatedAmount.value = "0"
+            _calculatedAmountString.value = ""
+            return
+        }
 
         calculateString(newString)
     }

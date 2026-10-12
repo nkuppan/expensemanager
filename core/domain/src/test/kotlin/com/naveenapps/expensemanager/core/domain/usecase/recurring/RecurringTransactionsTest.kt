@@ -9,21 +9,20 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.Date
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.util.Date
 
 class RecurringTransactionsTest {
 
     private val zone = ZoneId.systemDefault()
 
-    private fun date(y: Int, m: Int, d: Int, h: Int = 9) =
-        Date.from(LocalDateTime.of(y, m, d, h, 0).atZone(zone).toInstant())
+    private fun date(y: Int, m: Int, d: Int, h: Int = 9) = Date.from(LocalDateTime.of(y, m, d, h, 0).atZone(zone).toInstant())
 
     private fun Date.local() = toInstant().atZone(zone).toLocalDateTime()
 
@@ -112,11 +111,15 @@ class RecurringTransactionsTest {
         val rules = MutableStateFlow(initial.toList())
         override fun getAll(): Flow<List<RecurringTransaction>> = rules
         override suspend fun getDue(dueBefore: Date) = rules.value.filter { !it.nextDueDate.after(dueBefore) }
-        override suspend fun add(recurring: RecurringTransaction) { rules.value = rules.value + recurring }
+        override suspend fun add(recurring: RecurringTransaction) {
+            rules.value = rules.value + recurring
+        }
         override suspend fun update(recurring: RecurringTransaction) {
             rules.value = rules.value.map { if (it.id == recurring.id) recurring else it }
         }
-        override suspend fun delete(id: String) { rules.value = rules.value.filterNot { it.id == id } }
+        override suspend fun delete(id: String) {
+            rules.value = rules.value.filterNot { it.id == id }
+        }
     }
 
     private class FakeTransactionRepository(private val fail: Boolean = false) : TransactionRepository {

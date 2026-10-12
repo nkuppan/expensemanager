@@ -62,4 +62,42 @@ class NumberPadViewModelTest : BaseCoroutineTest() {
         assertThat(viewModel.calculatedAmountString.value).isEqualTo("1+22")
         assertThat(viewModel.calculatedAmount.value).isEqualTo(String.format("%.2f", 23.0))
     }
+
+    @Test
+    fun backspaceOnLastDigit_resetsAmountToZero() = runTest {
+        type("1")
+        assertThat(viewModel.calculatedAmount.value).isEqualTo(String.format("%.2f", 1.0))
+
+        type("")
+        assertThat(viewModel.calculatedAmountString.value).isEmpty()
+        assertThat(viewModel.calculatedAmount.value).isEqualTo("0")
+    }
+
+    @Test
+    fun backspaceAllDigits_resetsAmountToZero() = runTest {
+        type("2", "5", "", "")
+        assertThat(viewModel.calculatedAmountString.value).isEmpty()
+        assertThat(viewModel.calculatedAmount.value).isEqualTo("0")
+    }
+
+    @Test
+    fun backspaceOneDigit_recalculatesAmount() = runTest {
+        type("2", "5", "")
+        assertThat(viewModel.calculatedAmountString.value).isEqualTo("2")
+        assertThat(viewModel.calculatedAmount.value).isEqualTo(String.format("%.2f", 2.0))
+    }
+
+    @Test
+    fun typingAfterBackspacingEverything_startsFresh() = runTest {
+        type("1", "", "7")
+        assertThat(viewModel.calculatedAmountString.value).isEqualTo("7")
+        assertThat(viewModel.calculatedAmount.value).isEqualTo(String.format("%.2f", 7.0))
+    }
+
+    @Test
+    fun backspaceOnEmptyPad_keepsZero() = runTest {
+        type("")
+        assertThat(viewModel.calculatedAmountString.value).isEmpty()
+        assertThat(viewModel.calculatedAmount.value).isEqualTo("0")
+    }
 }

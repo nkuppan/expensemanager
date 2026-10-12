@@ -50,6 +50,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -92,10 +93,10 @@ import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefa
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Calendar
 import java.util.Date
+import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionCreateScreen(
@@ -104,12 +105,20 @@ fun TransactionCreateScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val resources = LocalContext.current.resources
 
     ObserveAsEvents(viewModel.event) {
         when (it) {
             TransactionCreateEvent.RequestReview -> {
                 coroutineScope.launch {
                     shareRepository.requestInAppReview()
+                }
+            }
+
+            is TransactionCreateEvent.ShowMessage -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(resources.getString(it.messageRes))
                 }
             }
         }
@@ -125,6 +134,7 @@ fun TransactionCreateScreen(
         onAction = viewModel::processAction,
         onCaptureRequested = attachmentPicker.onCaptureRequested,
         onGalleryRequested = attachmentPicker.onGalleryRequested,
+        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -134,9 +144,8 @@ private fun TransactionCreateScreenContent(
     onAction: (TransactionCreateAction) -> Unit,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
     if (state.showDeleteDialog) {
         DeleteDialogItem(
             confirm = { onAction.invoke(TransactionCreateAction.Delete) },

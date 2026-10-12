@@ -2,7 +2,10 @@ package com.naveenapps.expensemanager
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
+import android.view.WindowManager
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,10 +14,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
@@ -87,6 +94,17 @@ internal class MainActivity :
             }
         }
 
+        // With app lock on, keep balances out of the recent-apps preview and screenshots.
+        lifecycleScope.launch {
+            viewModel.isAppLockEnabled.collect { enabled ->
+                if (enabled) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                }
+            }
+        }
+
         setContent {
             // Provided explicitly rather than relying on the automatic ViewTree lookup that
             // rememberLauncherForActivityResult() falls back to (LocalView.current walking up to
@@ -107,27 +125,42 @@ internal class MainActivity :
                 if (onBoardingStatus != null) {
                     val showLock = onBoardingStatus == true && isAppLockEnabled && !isAuthenticated
 
-                    if (showLock) {
-                        ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
-                            LaunchedEffect(Unit) { showBiometricPrompt() }
-                            AppLockScreen(onUnlockClick = ::showBiometricPrompt)
+                    // The lock is drawn *over* MainScreen rather than replacing it, so
+                    // re-locking after a trip to the background keeps the user's navigation
+                    // back stack and any half-filled form. While locked, the content
+                    // underneath is hidden from accessibility services and the lock's Surface
+                    // consumes all touches.
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .then(if (showLock) Modifier.clearAndSetSemantics { } else Modifier),
+                        ) {
+                            MainScreen(
+                                composeNavigator = appComposeNavigator,
+                                componentProvider = activityComponentProvider,
+                                isDarkTheme = isDarkTheme,
+                                landingScreen = if (onBoardingStatus == true) {
+                                    ExpenseManagerScreens.Home
+                                } else {
+                                    // Single first-run screen (Intro + Setup were merged).
+                                    ExpenseManagerScreens.Onboarding
+                                },
+                                // Behind the app lock this waits until the user unlocks.
+                                // Before onboarding there's nowhere sensible to add, so drop it.
+                                pendingQuickAdd = pendingQuickAdd && onBoardingStatus == true && !showLock,
+                                onQuickAddHandled = viewModel::onQuickAddHandled,
+                            )
                         }
-                    } else {
-                        MainScreen(
-                            composeNavigator = appComposeNavigator,
-                            componentProvider = activityComponentProvider,
-                            isDarkTheme = isDarkTheme,
-                            landingScreen = if (onBoardingStatus == true) {
-                                ExpenseManagerScreens.Home
-                            } else {
-                                // Single first-run screen (Intro + Setup were merged).
-                                ExpenseManagerScreens.Onboarding
-                            },
-                            // Behind the app lock this waits until MainScreen exists (unlocked).
-                            // Before onboarding there's nowhere sensible to add, so just drop it.
-                            pendingQuickAdd = pendingQuickAdd && onBoardingStatus == true,
-                            onQuickAddHandled = viewModel::onQuickAddHandled,
-                        )
+
+                        if (showLock) {
+                            ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
+                                // Back must not reach the screens underneath the lock.
+                                BackHandler { finish() }
+                                LaunchedEffect(Unit) { showBiometricPrompt() }
+                                AppLockScreen(onUnlockClick = ::showBiometricPrompt)
+                            }
+                        }
                     }
                 }
             }
@@ -155,7 +188,15 @@ internal class MainActivity :
 
     override fun onStart() {
         super.onStart()
+        viewModel.onAppForegrounded(SystemClock.elapsedRealtime())
         launchAppUpdateCheck()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!isChangingConfigurations) {
+            viewModel.onAppBackgrounded(SystemClock.elapsedRealtime())
+        }
     }
 
     private fun showBiometricPrompt() {

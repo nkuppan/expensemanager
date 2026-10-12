@@ -57,14 +57,13 @@ class GetTransactionWithFilterUseCase(
         }
     }
 
-    private fun query(filter: FilterValue, start: Long, end: Long) =
-        transactionRepository.getFilteredTransaction(
-            filter.accounts,
-            filter.categories,
-            filter.transactionTypes,
-            start,
-            end,
-        )
+    private fun query(filter: FilterValue, start: Long, end: Long) = transactionRepository.getFilteredTransaction(
+        filter.accounts,
+        filter.categories,
+        filter.transactionTypes,
+        start,
+        end,
+    )
 
     private fun filterValues(): Flow<FilterValue> = combine(
         settingsRepository.getTransactionTypes(),

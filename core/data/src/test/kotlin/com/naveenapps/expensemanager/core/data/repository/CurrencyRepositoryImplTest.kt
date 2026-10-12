@@ -203,6 +203,6 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
         val formattedAmount = repository.getFormattedCurrency(passedAmount)
         Truth.assertThat(formattedAmount).isNotNull()
         Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
-        Truth.assertThat(formattedAmount.amountString).isEqualTo("-1,200,000,000.4€")
+        Truth.assertThat(formattedAmount.amountString).isEqualTo("-1,200,000,000.44€")
     }
 }

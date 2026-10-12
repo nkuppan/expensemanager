@@ -92,7 +92,9 @@ private fun NumberPadDialog(
                     onConfirm.invoke(calculatedAmount)
                 },
                 cancel = {
-                    onConfirm.invoke("0")
+                    // Cancel must keep the existing amount: null dismisses the pad without
+                    // changing the value (same as tapping outside the dialog).
+                    onConfirm.invoke(null)
                 },
                 clear = {
                     clear.invoke()

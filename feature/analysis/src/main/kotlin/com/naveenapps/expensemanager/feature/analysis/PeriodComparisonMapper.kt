@@ -52,11 +52,12 @@ private fun rangeLabel(start: Long, endExclusive: Long, zone: ZoneId, locale: Lo
     val full = DateTimeFormatter.ofPattern(if (withYear) "d MMM yyyy" else "d MMM", locale)
     return when {
         first == last -> full.format(first)
+
         first.month == last.month && first.year == last.year ->
             "${first.dayOfMonth}–${full.format(last)}"
+
         else -> "${short(first, locale, withYear && first.year != last.year)} – ${full.format(last)}"
     }
 }
 
-private fun short(date: LocalDate, locale: Locale, withYear: Boolean): String =
-    DateTimeFormatter.ofPattern(if (withYear) "d MMM yyyy" else "d MMM", locale).format(date)
+private fun short(date: LocalDate, locale: Locale, withYear: Boolean): String = DateTimeFormatter.ofPattern(if (withYear) "d MMM yyyy" else "d MMM", locale).format(date)
