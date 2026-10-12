@@ -47,4 +47,11 @@
     <string name="liabilities">负债</string>
     <string name="total_balance">总余额</string>
     <string name="balance">余额</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">删除此账户也会删除其交易（%d 笔），包括与此账户之间的转账。此操作无法撤消。</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">此账户没有交易。删除后无法撤消。</string>
+    <string name="account_delete_last_title">这是您唯一的账户</string>
+    <string name="account_delete_last_message">每笔交易都需要一个账户。请先创建另一个账户，然后才能删除此账户。</string>
 </resources>

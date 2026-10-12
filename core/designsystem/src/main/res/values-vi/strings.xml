@@ -32,4 +32,15 @@
     <string name="pick_an_icon">Chọn biểu tượng</string>
     <string name="remove_photo">Xóa ảnh</string>
     <string name="add_attachment">Thêm tệp đính kèm</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">Quay lại</string>
+    <string name="a11y_close">Đóng</string>
+    <string name="a11y_previous_period">Kỳ trước</string>
+    <string name="a11y_next_period">Kỳ sau</string>
+    <string name="a11y_open_calculator">Mở máy tính</string>
+    <string name="a11y_settings">Cài đặt</string>
+    <string name="a11y_select_icon">Chọn biểu tượng</string>
+    <string name="error_save_failed">Không thể lưu. Vui lòng thử lại.</string>
+    <string name="error_delete_failed">Không thể xóa. Vui lòng thử lại.</string>
 </resources>

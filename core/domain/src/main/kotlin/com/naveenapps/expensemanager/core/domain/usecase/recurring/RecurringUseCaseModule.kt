@@ -4,7 +4,13 @@ import org.koin.dsl.module
 
 val RecurringUseCaseModule = module {
     single { CreateRecurringTransactionUseCase(repository = get()) }
-    single { ProcessRecurringTransactionsUseCase(repository = get(), addTransactionUseCase = get()) }
+    single {
+        ProcessRecurringTransactionsUseCase(
+            repository = get(),
+            transactionRepository = get(),
+            addTransactionUseCase = get(),
+        )
+    }
     single {
         GetRecurringTransactionsUseCase(
             repository = get(),

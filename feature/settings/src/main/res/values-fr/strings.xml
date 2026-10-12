@@ -62,4 +62,11 @@
     <string name="no_file_picker">Aucun gestionnaire de fichiers trouvé sur cet appareil.</string>
     <string name="recurring_transactions_setting">Transactions récurrentes</string>
     <string name="recurring_transactions_setting_message">Loyer, abonnements et salaire enregistrés pour vous</string>
+    <string name="backup_passphrase_title">Protéger cette sauvegarde ?</string>
+    <string name="backup_passphrase_message">Définissez une phrase secrète pour chiffrer la sauvegarde. Elle sera nécessaire pour la restaurer et ne peut pas être récupérée en cas d\'oubli. Laissez vide pour utiliser la protection standard.</string>
+    <string name="restore_passphrase_title">Saisissez la phrase secrète de la sauvegarde</string>
+    <string name="restore_passphrase_message">Cette sauvegarde est protégée par une phrase secrète.</string>
+    <string name="passphrase_label">Phrase secrète</string>
+    <string name="restore_wrong_passphrase">Phrase secrète incorrecte. Veuillez réessayer.</string>
+    <string name="continue_action">Continuer</string>
 </resources>

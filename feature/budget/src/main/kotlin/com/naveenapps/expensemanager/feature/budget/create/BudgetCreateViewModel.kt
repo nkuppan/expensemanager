@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.fromYear
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseCase
@@ -31,10 +32,12 @@ import com.naveenapps.expensemanager.core.settings.domain.repository.NumberForma
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -80,6 +83,11 @@ class BudgetCreateViewModel(
         ),
     )
     val state = _state.asStateFlow()
+
+    // One-shot error messages (string resources) for the screen's snackbar. Save and delete
+    // failures used to be ignored, so the screen just stayed open with no feedback.
+    private val _errorMessage = Channel<Int>(Channel.BUFFERED)
+    val errorMessage = _errorMessage.receiveAsFlow()
 
     private var budget: Budget? = null
 
@@ -162,7 +170,10 @@ class BudgetCreateViewModel(
         viewModelScope.launch {
             budget?.let { budget ->
                 when (deleteBudgetUseCase.invoke(budget)) {
-                    is Resource.Error -> Unit
+                    is Resource.Error -> {
+                        _state.update { it.copy(showDeleteDialog = false) }
+                        _errorMessage.send(DesignSystemR.string.error_delete_failed)
+                    }
 
                     is Resource.Success -> {
                         closePage()
@@ -217,7 +228,7 @@ class BudgetCreateViewModel(
                 addBudgetUseCase(budget)
             }
             when (response) {
-                is Resource.Error -> Unit
+                is Resource.Error -> _errorMessage.send(DesignSystemR.string.error_save_failed)
 
                 is Resource.Success -> {
                     if (isNewBudget) {

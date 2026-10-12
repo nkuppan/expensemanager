@@ -62,4 +62,11 @@
     <string name="no_file_picker">На устройстве не найден файловый менеджер.</string>
     <string name="recurring_transactions_setting">Повторяющиеся операции</string>
     <string name="recurring_transactions_setting_message">Аренда, подписки и зарплата записываются сами</string>
+    <string name="backup_passphrase_title">Защитить эту резервную копию?</string>
+    <string name="backup_passphrase_message">Задайте кодовую фразу для шифрования копии. Она понадобится для восстановления, и её нельзя будет восстановить, если вы её забудете. Оставьте поле пустым, чтобы использовать стандартную защиту.</string>
+    <string name="restore_passphrase_title">Введите кодовую фразу резервной копии</string>
+    <string name="restore_passphrase_message">Эта резервная копия защищена кодовой фразой.</string>
+    <string name="passphrase_label">Кодовая фраза</string>
+    <string name="restore_wrong_passphrase">Неверная кодовая фраза. Попробуйте ещё раз.</string>
+    <string name="continue_action">Продолжить</string>
 </resources>

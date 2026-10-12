@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">Новые записи создаваться не будут. Уже созданные операции сохранятся.</string>
     <string name="recurring_empty_title">Пока ничего не повторяется</string>
     <string name="recurring_empty_message">Добавляя операцию, выберите в «Повторять» ежедневно, еженедельно, ежемесячно или ежегодно — и она будет записываться сама.</string>
+    <string name="edit">Изменить</string>
+    <string name="search_transactions_hint">Поиск по заметкам, категориям, счетам</string>
+    <string name="clear_search">Очистить поиск</string>
+    <string name="no_matching_transactions">Нет операций, соответствующих запросу</string>
+    <string name="transaction_deleted">Операция удалена</string>
+    <string name="undo">Отменить</string>
+    <string name="search_transactions">Поиск операций</string>
 </resources>

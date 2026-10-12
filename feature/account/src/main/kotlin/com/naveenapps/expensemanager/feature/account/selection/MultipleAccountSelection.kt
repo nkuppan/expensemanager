@@ -16,7 +16,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
@@ -49,8 +49,8 @@ private fun AccountSelectionView(
     onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)?,
 ) {
     val activity = LocalActivity.current
-    val accounts by viewModel.accounts.collectAsState()
-    val selectedAccounts by viewModel.selectedAccounts.collectAsState()
+    val accounts by viewModel.accounts.collectAsStateWithLifecycle()
+    val selectedAccounts by viewModel.selectedAccounts.collectAsStateWithLifecycle()
 
     MultipleAccountSelectionScreen(
         modifier = Modifier,

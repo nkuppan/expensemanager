@@ -159,3 +159,21 @@ internal val MIGRATION_8_9 = object : Migration(8, 9) {
         db.execSQL("CREATE INDEX IF NOT EXISTS `index_recurring_transaction_next_due_date` ON `recurring_transaction` (`next_due_date`)")
     }
 }
+
+/**
+ * Adds indices for the columns transaction queries filter, join and sort on. Indices only, so no
+ * data changes. Names follow Room's `index_<table>_<column>` convention and must match the
+ * @Index declarations on TransactionEntity and TransactionAttachmentEntity.
+ */
+internal val MIGRATION_9_10 = object : Migration(9, 10) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_created_on` ON `transaction` (`created_on`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_from_account_id` ON `transaction` (`from_account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_to_account_id` ON `transaction` (`to_account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_category_id` ON `transaction` (`category_id`)")
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS `index_transaction_attachment_transaction_id` " +
+                "ON `transaction_attachment` (`transaction_id`)",
+        )
+    }
+}

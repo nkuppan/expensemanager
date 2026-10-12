@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.naveenapps.expensemanager.core.model.TransactionType
 import java.util.Date
@@ -31,6 +32,13 @@ import java.util.Date
             onUpdate = ForeignKey.NO_ACTION,
             onDelete = ForeignKey.CASCADE,
         ),
+    ],
+    // Every list, filter and total query filters or sorts on these; see MIGRATION_9_10.
+    indices = [
+        Index(value = ["created_on"]),
+        Index(value = ["from_account_id"]),
+        Index(value = ["to_account_id"]),
+        Index(value = ["category_id"]),
     ],
 )
 data class TransactionEntity(

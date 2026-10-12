@@ -62,4 +62,11 @@
     <string name="no_file_picker">इस डिवाइस पर कोई फ़ाइल मैनेजर नहीं मिला।</string>
     <string name="recurring_transactions_setting">आवर्ती लेन-देन</string>
     <string name="recurring_transactions_setting_message">किराया, सदस्यता और वेतन अपने आप दर्ज</string>
+    <string name="backup_passphrase_title">इस बैकअप को सुरक्षित करें?</string>
+    <string name="backup_passphrase_message">बैकअप को एन्क्रिप्ट करने के लिए पासफ़्रेज़ सेट करें। रीस्टोर करने के लिए इसकी ज़रूरत होगी, और भूल जाने पर इसे वापस नहीं पाया जा सकता। सामान्य सुरक्षा के लिए इसे खाली छोड़ दें।</string>
+    <string name="restore_passphrase_title">बैकअप पासफ़्रेज़ डालें</string>
+    <string name="restore_passphrase_message">यह बैकअप पासफ़्रेज़ से सुरक्षित है।</string>
+    <string name="passphrase_label">पासफ़्रेज़</string>
+    <string name="restore_wrong_passphrase">गलत पासफ़्रेज़। कृपया फिर से कोशिश करें।</string>
+    <string name="continue_action">जारी रखें</string>
 </resources>

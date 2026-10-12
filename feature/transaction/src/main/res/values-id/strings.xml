@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">Tidak ada salinan baru yang dicatat. Transaksi yang sudah dicatat tetap ada.</string>
     <string name="recurring_empty_title">Belum ada yang berulang</string>
     <string name="recurring_empty_message">Saat menambahkan transaksi, pilih Harian, Mingguan, Bulanan, atau Tahunan di Ulangi dan transaksi akan dicatat otomatis.</string>
+    <string name="edit">Edit</string>
+    <string name="search_transactions_hint">Cari catatan, kategori, akun</string>
+    <string name="clear_search">Hapus pencarian</string>
+    <string name="no_matching_transactions">Tidak ada transaksi yang cocok dengan pencarian Anda</string>
+    <string name="transaction_deleted">Transaksi dihapus</string>
+    <string name="undo">Urungkan</string>
+    <string name="search_transactions">Cari transaksi</string>
 </resources>

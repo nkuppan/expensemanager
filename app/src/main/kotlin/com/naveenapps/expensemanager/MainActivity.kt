@@ -18,13 +18,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -115,11 +115,11 @@ internal class MainActivity :
             // with "No ActivityResultRegistryOwner was provided via LocalActivityResultRegistryOwner".
             // Providing it here up front removes that race entirely.
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides this) {
-                val currentTheme by viewModel.currentTheme.collectAsState()
-                val onBoardingStatus by viewModel.onboardingStatus.collectAsState()
-                val isAppLockEnabled by viewModel.isAppLockEnabled.collectAsState()
-                val isAuthenticated by viewModel.isAuthenticated.collectAsState()
-                val pendingQuickAdd by viewModel.pendingQuickAdd.collectAsState()
+                val currentTheme by viewModel.currentTheme.collectAsStateWithLifecycle()
+                val onBoardingStatus by viewModel.onboardingStatus.collectAsStateWithLifecycle()
+                val isAppLockEnabled by viewModel.isAppLockEnabled.collectAsStateWithLifecycle()
+                val isAuthenticated by viewModel.isAuthenticated.collectAsStateWithLifecycle()
+                val pendingQuickAdd by viewModel.pendingQuickAdd.collectAsStateWithLifecycle()
                 val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
                 if (onBoardingStatus != null) {

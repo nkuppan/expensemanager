@@ -56,4 +56,18 @@
     <string name="first_save_done">完成</string>
     <string name="shortcut_add_expense_short">添加支出</string>
     <string name="shortcut_add_expense_long">添加新支出</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">净额</string>
+    <string name="widget_net_this_period">本期净额</string>
+    <string name="widget_income">收入</string>
+    <string name="widget_expenses">支出</string>
+    <string name="widget_spent">已支出</string>
+    <string name="widget_recent">最近</string>
+    <string name="widget_no_transactions">暂无交易</string>
+    <string name="widget_refresh">刷新</string>
+    <string name="widget_saved_percent">已节省 %1$s%%</string>
+    <string name="widget_spent_more_than_earned">支出超过收入</string>
+    <string name="widget_income_spent_percent">已支出收入的 %1$d%%</string>
+    <string name="widget_amount_saved">已节省 %1$s</string>
 </resources>

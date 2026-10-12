@@ -62,4 +62,11 @@
     <string name="no_file_picker">No file manager found on this device.</string>
     <string name="recurring_transactions_setting">Recurring transactions</string>
     <string name="recurring_transactions_setting_message">Rent, subscriptions and salary logged for you</string>
+    <string name="backup_passphrase_title">Protect this backup?</string>
+    <string name="backup_passphrase_message">Set a passphrase to encrypt the backup. You\'ll need it to restore, and it can\'t be recovered if you forget it. Leave it empty to use the standard protection.</string>
+    <string name="restore_passphrase_title">Enter the backup passphrase</string>
+    <string name="restore_passphrase_message">This backup is protected with a passphrase.</string>
+    <string name="passphrase_label">Passphrase</string>
+    <string name="restore_wrong_passphrase">Wrong passphrase. Please try again.</string>
+    <string name="continue_action">Continue</string>
 </resources>

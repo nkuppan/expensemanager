@@ -56,4 +56,18 @@
     <string name="first_save_done">完了</string>
     <string name="shortcut_add_expense_short">支出を追加</string>
     <string name="shortcut_add_expense_long">新しい支出を追加</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">純額</string>
+    <string name="widget_net_this_period">この期間の純額</string>
+    <string name="widget_income">収入</string>
+    <string name="widget_expenses">支出</string>
+    <string name="widget_spent">支出額</string>
+    <string name="widget_recent">最近</string>
+    <string name="widget_no_transactions">取引なし</string>
+    <string name="widget_refresh">更新</string>
+    <string name="widget_saved_percent">%1$s%% 貯蓄</string>
+    <string name="widget_spent_more_than_earned">収入より支出が多い</string>
+    <string name="widget_income_spent_percent">収入の %1$d%% を支出</string>
+    <string name="widget_amount_saved">%1$s 貯蓄</string>
 </resources>

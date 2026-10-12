@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">将不再记录新的交易，已记录的交易会保留。</string>
     <string name="recurring_empty_title">还没有重复的交易</string>
     <string name="recurring_empty_message">添加交易时，在“重复”中选择每天、每周、每月或每年，系统会自动帮你记录。</string>
+    <string name="edit">编辑</string>
+    <string name="search_transactions_hint">搜索备注、类别、账户</string>
+    <string name="clear_search">清除搜索</string>
+    <string name="no_matching_transactions">没有与搜索匹配的交易</string>
+    <string name="transaction_deleted">交易已删除</string>
+    <string name="undo">撤消</string>
+    <string name="search_transactions">搜索交易</string>
 </resources>

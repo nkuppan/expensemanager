@@ -26,7 +26,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -170,7 +170,7 @@ fun HomeScreen(
 ) {
     val context = LocalActivity.current
 
-    val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsState()
+    val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsStateWithLifecycle()
 
     val appContext = LocalContext.current
 
@@ -181,7 +181,7 @@ fun HomeScreen(
         ) == PackageManager.PERMISSION_GRANTED
 
     var canNotify by remember { mutableStateOf(hasNotificationPermission()) }
-    val shouldOfferReminderPrimer by viewModel.shouldOfferReminderPrimer.collectAsState()
+    val shouldOfferReminderPrimer by viewModel.shouldOfferReminderPrimer.collectAsStateWithLifecycle()
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
@@ -205,7 +205,7 @@ fun HomeScreen(
         }
     }
 
-    val showFirstSaveCelebration by viewModel.showFirstSaveCelebration.collectAsState()
+    val showFirstSaveCelebration by viewModel.showFirstSaveCelebration.collectAsStateWithLifecycle()
 
     if (showFirstSaveCelebration) {
         LaunchedEffect(Unit) { viewModel.onFirstSaveCelebrationShown() }

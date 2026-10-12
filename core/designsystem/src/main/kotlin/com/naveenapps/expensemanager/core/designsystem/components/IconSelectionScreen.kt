@@ -27,7 +27,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import org.koin.compose.viewmodel.koinViewModel
@@ -47,7 +47,7 @@ fun IconSelectionScreen(
     viewModel: IconSelectionViewModel = koinViewModel(),
     onIconPicked: ((Int) -> Unit)? = null,
 ) {
-    val icons by viewModel.icons.collectAsState()
+    val icons by viewModel.icons.collectAsStateWithLifecycle()
 
     IconSelectionComponentContent(
         icons = icons,
@@ -142,7 +142,7 @@ fun IconSelectionComponentContent(
                 ) {
                     Icon(
                         painter = painterResource(id = icon),
-                        contentDescription = null,
+                        contentDescription = stringResource(R.string.a11y_select_icon),
                         tint = tintColor,
                         modifier = Modifier.size(24.dp),
                     )

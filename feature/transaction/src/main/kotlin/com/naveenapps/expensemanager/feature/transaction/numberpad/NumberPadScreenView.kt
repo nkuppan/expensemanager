@@ -25,7 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.feature.transaction.R
@@ -45,10 +46,15 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun NumberPadDialogView(
     onConfirm: ((String?) -> Unit),
+    initialAmount: Double? = null,
     viewModel: NumberPadViewModel = koinViewModel(),
 ) {
-    val calculatedAmount by viewModel.calculatedAmount.collectAsState()
-    val calculatedAmountString by viewModel.calculatedAmountString.collectAsState()
+    // The keypad's ViewModel outlives the dialog, so seed it on every open: editing starts
+    // from the transaction's amount instead of a blank (or a previous session's) value.
+    LaunchedEffect(Unit) { viewModel.setInitialAmount(initialAmount) }
+
+    val calculatedAmount by viewModel.calculatedAmount.collectAsStateWithLifecycle()
+    val calculatedAmountString by viewModel.calculatedAmountString.collectAsStateWithLifecycle()
 
     NumberPadDialog(
         onConfirm = onConfirm,

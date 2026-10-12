@@ -327,6 +327,19 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     }
 
     @Test
+    fun `opening the number pad pre-fills the current amount`() {
+        whenever(numberFormatRepository.parseToDouble("42.5")).thenReturn(42.5)
+        whenever(numberFormatRepository.parseToDouble("0.00")).thenReturn(0.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue(null))
+        viewModel.state.value.amount.onValueChange?.invoke("42.5")
+
+        viewModel.processAction(TransactionCreateAction.ShowNumberPad)
+
+        assertThat(viewModel.state.value.showNumberPad).isTrue()
+        assertThat(viewModel.state.value.numberPadInitialAmount).isEqualTo(42.5)
+    }
+
+    @Test
     fun `dismissing the number pad without a value closes it`() {
         viewModel.processAction(TransactionCreateAction.SetNumberPadValue(null))
 

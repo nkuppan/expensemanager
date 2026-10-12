@@ -45,7 +45,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -54,9 +53,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddTile
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
@@ -103,7 +104,7 @@ fun TransactionCreateScreen(
     shareRepository: ShareRepository,
     viewModel: TransactionCreateViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val resources = LocalContext.current.resources
@@ -153,6 +154,7 @@ private fun TransactionCreateScreenContent(
         )
     } else if (state.showNumberPad) {
         NumberPadDialogView(
+            initialAmount = state.numberPadInitialAmount,
             onConfirm = { amount ->
                 onAction.invoke(TransactionCreateAction.SetNumberPadValue(amount))
             },
@@ -393,7 +395,7 @@ private fun TransactionCreateContent(
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.Calculate,
-                                    contentDescription = null,
+                                    contentDescription = stringResource(DesignSystemR.string.a11y_open_calculator),
                                 )
                             }
                         },

@@ -56,4 +56,18 @@
     <string name="first_save_done">Готово</string>
     <string name="shortcut_add_expense_short">Добавить расход</string>
     <string name="shortcut_add_expense_long">Добавить новый расход</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">Итого</string>
+    <string name="widget_net_this_period">Итого за период</string>
+    <string name="widget_income">Доходы</string>
+    <string name="widget_expenses">Расходы</string>
+    <string name="widget_spent">Потрачено</string>
+    <string name="widget_recent">Недавние</string>
+    <string name="widget_no_transactions">Нет операций</string>
+    <string name="widget_refresh">Обновить</string>
+    <string name="widget_saved_percent">Сэкономлено %1$s%%</string>
+    <string name="widget_spent_more_than_earned">Расходы превысили доходы</string>
+    <string name="widget_income_spent_percent">Потрачено %1$d%% дохода</string>
+    <string name="widget_amount_saved">Сэкономлено %1$s</string>
 </resources>

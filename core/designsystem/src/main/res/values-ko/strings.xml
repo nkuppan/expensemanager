@@ -32,4 +32,15 @@
     <string name="pick_an_icon">아이콘 선택</string>
     <string name="remove_photo">사진 삭제</string>
     <string name="add_attachment">첨부 파일 추가</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">뒤로</string>
+    <string name="a11y_close">닫기</string>
+    <string name="a11y_previous_period">이전 기간</string>
+    <string name="a11y_next_period">다음 기간</string>
+    <string name="a11y_open_calculator">계산기 열기</string>
+    <string name="a11y_settings">설정</string>
+    <string name="a11y_select_icon">아이콘 선택</string>
+    <string name="error_save_failed">저장하지 못했습니다. 다시 시도해 주세요.</string>
+    <string name="error_delete_failed">삭제하지 못했습니다. 다시 시도해 주세요.</string>
 </resources>

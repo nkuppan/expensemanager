@@ -32,4 +32,15 @@
     <string name="pick_an_icon">Symbol auswählen</string>
     <string name="remove_photo">Foto entfernen</string>
     <string name="add_attachment">Anhang hinzufügen</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">Zurück</string>
+    <string name="a11y_close">Schließen</string>
+    <string name="a11y_previous_period">Vorheriger Zeitraum</string>
+    <string name="a11y_next_period">Nächster Zeitraum</string>
+    <string name="a11y_open_calculator">Rechner öffnen</string>
+    <string name="a11y_settings">Einstellungen</string>
+    <string name="a11y_select_icon">Symbol auswählen</string>
+    <string name="error_save_failed">Speichern fehlgeschlagen. Bitte versuche es erneut.</string>
+    <string name="error_delete_failed">Löschen fehlgeschlagen. Bitte versuche es erneut.</string>
 </resources>

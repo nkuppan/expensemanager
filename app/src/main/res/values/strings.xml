@@ -56,4 +56,18 @@
     <string name="first_save_done">Done</string>
     <string name="shortcut_add_expense_short">Add expense</string>
     <string name="shortcut_add_expense_long">Add a new expense</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">Net</string>
+    <string name="widget_net_this_period">Net this period</string>
+    <string name="widget_income">Income</string>
+    <string name="widget_expenses">Expenses</string>
+    <string name="widget_spent">Spent</string>
+    <string name="widget_recent">Recent</string>
+    <string name="widget_no_transactions">No transactions</string>
+    <string name="widget_refresh">Refresh</string>
+    <string name="widget_saved_percent">%1$s%% saved</string>
+    <string name="widget_spent_more_than_earned">Spent more than earned</string>
+    <string name="widget_income_spent_percent">%1$d%% of income spent</string>
+    <string name="widget_amount_saved">%1$s saved</string>
 </resources>

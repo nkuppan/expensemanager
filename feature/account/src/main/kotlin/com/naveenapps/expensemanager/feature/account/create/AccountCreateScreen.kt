@@ -25,6 +25,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.rounded.AccountBalanceWallet
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -34,18 +35,23 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
@@ -55,17 +61,25 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseMana
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.R
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountCreateScreen(
     viewModel: AccountCreateViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    ObserveAsEvents(viewModel.errorMessage) { messageRes ->
+        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageRes)) }
+    }
 
     val imagePicker = rememberImagePickerActions(
         createCaptureUri = viewModel::createImageCaptureUri,
@@ -77,6 +91,7 @@ fun AccountCreateScreen(
         onAction = viewModel::processAction,
         onCaptureRequested = imagePicker.onCaptureRequested,
         onGalleryRequested = imagePicker.onGalleryRequested,
+        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -86,14 +101,36 @@ private fun AccountCreateScaffoldView(
     onAction: (AccountCreateAction) -> Unit,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
     if (state.showDeleteDialog) {
-        DeleteDialogItem(
-            confirm = { onAction.invoke(AccountCreateAction.Delete) },
-            dismiss = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
-        )
+        val impact = state.deleteImpact
+        if (impact?.isLastAccount == true) {
+            AlertDialog(
+                onDismissRequest = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
+                title = { Text(text = stringResource(R.string.account_delete_last_title)) },
+                text = { Text(text = stringResource(R.string.account_delete_last_message)) },
+                confirmButton = {
+                    TextButton(onClick = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) }) {
+                        Text(text = stringResource(DesignSystemR.string.ok))
+                    }
+                },
+            )
+        } else {
+            DeleteDialogItem(
+                confirm = { onAction.invoke(AccountCreateAction.Delete) },
+                dismiss = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
+                message = when {
+                    impact == null -> null
+                    impact.transactionCount > 0 -> pluralStringResource(
+                        R.plurals.account_delete_message_with_transactions,
+                        impact.transactionCount,
+                        impact.transactionCount,
+                    )
+                    else -> stringResource(R.string.account_delete_message_no_transactions)
+                },
+            )
+        }
     }
 
     Scaffold(

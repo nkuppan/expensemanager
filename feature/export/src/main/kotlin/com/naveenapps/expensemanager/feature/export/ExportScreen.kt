@@ -1,10 +1,8 @@
 package com.naveenapps.expensemanager.feature.export
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
@@ -32,7 +30,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,11 +44,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.designsystem.components.SelectedItemView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -66,20 +59,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
-private fun getFileCreateIntent(fileType: ExportFileType): Intent? = if (Build.VERSION.SDK_INT > Build.VERSION_CODES.S) {
+// The system file picker (Storage Access Framework) works on every supported API level and
+// needs no storage permission. The old fallback wrote to the shared external storage root,
+// which fails on Android 10+ where WRITE_EXTERNAL_STORAGE no longer applies.
+private fun getFileCreateIntent(fileType: ExportFileType): Intent {
     val timestamp = System.currentTimeMillis()
-    Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+    return Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
         addCategory(Intent.CATEGORY_OPENABLE)
         if (fileType == ExportFileType.PDF) {
             type = "application/pdf"
             putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.pdf")
         } else {
-            type = "application/csv"
+            type = "text/csv"
             putExtra(Intent.EXTRA_TITLE, "expense_manager_$timestamp.csv")
         }
     }
-} else {
-    null
 }
 
 @Composable
@@ -87,7 +81,7 @@ fun ExportScreen(
     viewModel: ExportViewModel = koinViewModel(),
 ) {
     val context = LocalContext.current
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     ExportScreenContent(
         state = state,
@@ -106,26 +100,11 @@ fun ExportScreen(
     )
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 private fun createFileEvent(
     fileCreatorIntent: ManagedActivityResultLauncher<Intent, ActivityResult>,
-    writePermission: PermissionState,
-    onAction: (ExportAction) -> Unit,
+    fileType: ExportFileType,
 ) {
-    getFileCreateIntent(ExportFileType.CSV)?.let { intent ->
-        fileCreatorIntent.launch(intent)
-    } ?: run {
-        val permissionResult = writePermission.status
-        if (permissionResult.isGranted) {
-            onAction(ExportAction.StartExport(null))
-        } else {
-            if (permissionResult.shouldShowRationale) {
-                // TODO Show Alert to Grant Permission
-            } else {
-                writePermission.launchPermissionRequest()
-            }
-        }
-    }
+    fileCreatorIntent.launch(getFileCreateIntent(fileType))
 }
 
 private fun fileExportedProcess(
@@ -160,7 +139,7 @@ private fun fileExportedProcess(
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenContent(
     state: ExportState,
@@ -171,7 +150,6 @@ private fun ExportScreenContent(
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
-    val writePermission = rememberPermissionState(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     val fileCreatorIntent = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -183,7 +161,7 @@ private fun ExportScreenContent(
 
     ObserveAsEvents(eventFlow) { event ->
         when (event) {
-            ExportEvent.CreateFile -> createFileEvent(fileCreatorIntent, writePermission, onAction)
+            ExportEvent.CreateFile -> createFileEvent(fileCreatorIntent, state.fileType)
 
             is ExportEvent.FileExported -> fileExportedProcess(coroutineScope, snackbarHostState, event, context, shareWithUri)
 
@@ -232,9 +210,7 @@ private fun ExportScreenContent(
                 contentColor = MaterialTheme.colorScheme.onPrimary,
 
                 onClick = {
-                    getFileCreateIntent(fileType = state.fileType)?.let {
-                        fileCreatorIntent.launch(it)
-                    } ?: onAction(ExportAction.StartExport(null))
+                    fileCreatorIntent.launch(getFileCreateIntent(fileType = state.fileType))
                 },
             ) {
                 Row {

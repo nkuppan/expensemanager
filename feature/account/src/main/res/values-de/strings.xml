@@ -49,4 +49,11 @@
     <string name="liabilities">Verbindlichkeiten</string>
     <string name="total_balance">Gesamtsaldo</string>
     <string name="balance">Saldo</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">Wenn du dieses Konto löschst, werden auch seine Transaktionen (%d) gelöscht, einschließlich Überweisungen von oder zu diesem Konto. Das kann nicht rückgängig gemacht werden.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">Dieses Konto hat keine Transaktionen. Das Löschen kann nicht rückgängig gemacht werden.</string>
+    <string name="account_delete_last_title">Das ist dein einziges Konto</string>
+    <string name="account_delete_last_message">Jede Transaktion braucht ein Konto. Lege zuerst ein weiteres Konto an, dann kannst du dieses löschen.</string>
 </resources>

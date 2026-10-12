@@ -32,4 +32,15 @@
     <string name="pick_an_icon">アイコンを選択</string>
     <string name="remove_photo">写真を削除</string>
     <string name="add_attachment">添付ファイルを追加</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">戻る</string>
+    <string name="a11y_close">閉じる</string>
+    <string name="a11y_previous_period">前の期間</string>
+    <string name="a11y_next_period">次の期間</string>
+    <string name="a11y_open_calculator">電卓を開く</string>
+    <string name="a11y_settings">設定</string>
+    <string name="a11y_select_icon">アイコンを選択</string>
+    <string name="error_save_failed">保存できませんでした。もう一度お試しください。</string>
+    <string name="error_delete_failed">削除できませんでした。もう一度お試しください。</string>
 </resources>

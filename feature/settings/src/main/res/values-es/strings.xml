@@ -62,4 +62,11 @@
     <string name="no_file_picker">No se encontró un gestor de archivos en este dispositivo.</string>
     <string name="recurring_transactions_setting">Transacciones recurrentes</string>
     <string name="recurring_transactions_setting_message">Alquiler, suscripciones y sueldo registrados por ti</string>
+    <string name="backup_passphrase_title">¿Proteger esta copia de seguridad?</string>
+    <string name="backup_passphrase_message">Define una frase de contraseña para cifrar la copia. La necesitarás para restaurarla y no se puede recuperar si la olvidas. Déjala vacía para usar la protección estándar.</string>
+    <string name="restore_passphrase_title">Introduce la frase de contraseña de la copia</string>
+    <string name="restore_passphrase_message">Esta copia de seguridad está protegida con una frase de contraseña.</string>
+    <string name="passphrase_label">Frase de contraseña</string>
+    <string name="restore_wrong_passphrase">Frase de contraseña incorrecta. Inténtalo de nuevo.</string>
+    <string name="continue_action">Continuar</string>
 </resources>

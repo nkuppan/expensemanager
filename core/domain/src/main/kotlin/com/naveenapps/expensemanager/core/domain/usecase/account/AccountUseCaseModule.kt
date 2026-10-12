@@ -7,6 +7,7 @@ val AccountUseCaseModule = module {
     single { CheckAccountValidationUseCase() }
     single { DeleteAccountUseCase(repository = get(), checkAccountValidationUseCase = get()) }
     single { FindAccountByIdUseCase(get()) }
+    single { GetAccountDeleteImpactUseCase(get()) }
     single { GetAllAccountsUseCase(get()) }
     single { UpdateAccountUseCase(get(), checkAccountValidationUseCase = get()) }
     single { UpdateAllAccountUseCase(get(), checkAccountValidationUseCase = get()) }

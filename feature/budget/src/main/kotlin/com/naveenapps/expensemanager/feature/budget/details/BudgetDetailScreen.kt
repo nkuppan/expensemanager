@@ -29,14 +29,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -54,7 +55,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun BudgetDetailScreen(
     viewModel: BudgetDetailViewModel = koinViewModel(),
 ) {
-    val budget by viewModel.budget.collectAsState()
+    val budget by viewModel.budget.collectAsStateWithLifecycle()
 
     BudgetDetailsScaffoldView(
         budget = budget,
@@ -86,7 +87,7 @@ private fun BudgetDetailsScaffoldView(
                             IconButton(onClick = closePage) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
-                                    contentDescription = null,
+                                    contentDescription = stringResource(DesignSystemR.string.a11y_close),
                                 )
                             }
                         },

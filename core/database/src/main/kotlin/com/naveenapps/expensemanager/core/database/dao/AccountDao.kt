@@ -13,4 +13,11 @@ interface AccountDao : BaseDao<AccountEntity> {
 
     @Query("SELECT * FROM account WHERE id = :id")
     suspend fun findById(id: String): AccountEntity?
+
+    @Query("SELECT COUNT(*) FROM account")
+    suspend fun getAccountCount(): Int
+
+    // Both sides count: transfers into this account are cascade-deleted with it too.
+    @Query("SELECT COUNT(*) FROM `transaction` WHERE from_account_id = :id OR to_account_id = :id")
+    suspend fun getTransactionCount(id: String): Int
 }

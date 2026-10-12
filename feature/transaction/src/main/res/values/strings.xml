@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">No more copies will be logged. Transactions already logged are kept.</string>
     <string name="recurring_empty_title">Nothing repeats yet</string>
     <string name="recurring_empty_message">When you add a transaction, pick Daily, Weekly, Monthly or Yearly under Repeat and it will be logged for you.</string>
+    <string name="edit">Edit</string>
+    <string name="search_transactions_hint">Search notes, categories, accounts</string>
+    <string name="clear_search">Clear search</string>
+    <string name="no_matching_transactions">No transactions match your search</string>
+    <string name="transaction_deleted">Transaction deleted</string>
+    <string name="undo">Undo</string>
+    <string name="search_transactions">Search transactions</string>
 </resources>

@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.core.domain.usecase.account
 
 import com.google.common.truth.Truth
+import com.naveenapps.expensemanager.core.model.AccountDeleteImpact
+import com.naveenapps.expensemanager.core.model.LastAccountDeletionException
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.repository.AccountRepository
@@ -8,7 +10,10 @@ import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class DeleteAccountUseCaseTest : BaseCoroutineTest() {
@@ -29,12 +34,27 @@ class DeleteAccountUseCaseTest : BaseCoroutineTest() {
 
     @Test
     fun whenAccountIsValidShouldDeleteSuccessfully() = runTest {
+        whenever(accountRepository.getAccountDeleteImpact(FAKE_ACCOUNT.id))
+            .thenReturn(Resource.Success(AccountDeleteImpact(transactionCount = 3, isLastAccount = false)))
         whenever(accountRepository.deleteAccount(FAKE_ACCOUNT)).thenReturn(Resource.Success(true))
 
         val response = deleteAccountUseCase.invoke(FAKE_ACCOUNT)
         Truth.assertThat(response).isNotNull()
         Truth.assertThat(response).isInstanceOf(Resource.Success::class.java)
         Truth.assertThat((response as Resource.Success).data).isTrue()
+    }
+
+    @Test
+    fun whenAccountIsTheLastOneShouldNotDelete() = runTest {
+        whenever(accountRepository.getAccountDeleteImpact(FAKE_ACCOUNT.id))
+            .thenReturn(Resource.Success(AccountDeleteImpact(transactionCount = 0, isLastAccount = true)))
+
+        val response = deleteAccountUseCase.invoke(FAKE_ACCOUNT)
+
+        Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
+        Truth.assertThat((response as Resource.Error).exception)
+            .isInstanceOf(LastAccountDeletionException::class.java)
+        verify(accountRepository, never()).deleteAccount(any())
     }
 
     @Test

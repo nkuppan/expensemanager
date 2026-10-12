@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">आगे कोई प्रति दर्ज नहीं होगी। पहले से दर्ज लेन-देन बने रहेंगे।</string>
     <string name="recurring_empty_title">अभी कुछ नहीं दोहराया जा रहा</string>
     <string name="recurring_empty_message">लेन-देन जोड़ते समय दोहराएँ में रोज़, हर हफ़्ते, हर महीने या हर साल चुनें, यह अपने आप दर्ज होगा।</string>
+    <string name="edit">एडिट करें</string>
+    <string name="search_transactions_hint">नोट, श्रेणियां, खाते खोजें</string>
+    <string name="clear_search">खोज साफ़ करें</string>
+    <string name="no_matching_transactions">आपकी खोज से कोई लेन-देन मेल नहीं खाता</string>
+    <string name="transaction_deleted">लेन-देन हटाया गया</string>
+    <string name="undo">पूर्ववत करें</string>
+    <string name="search_transactions">लेन-देन खोजें</string>
 </resources>

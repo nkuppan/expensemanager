@@ -31,15 +31,17 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDate
 import com.naveenapps.expensemanager.core.common.utils.fromYear
@@ -59,6 +61,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBo
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.YearPicker
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -66,17 +69,25 @@ import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSe
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
 import java.util.Date
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BudgetCreateScreen(
     viewModel: BudgetCreateViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    ObserveAsEvents(viewModel.errorMessage) { messageRes ->
+        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageRes)) }
+    }
 
     BudgetCreateScreenContentView(
         state = state,
         onAction = viewModel::processAction,
+        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -85,9 +96,8 @@ fun BudgetCreateScreen(
 private fun BudgetCreateScreenContentView(
     state: BudgetCreateState,
     onAction: (BudgetCreateAction) -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
     if (state.showDeleteDialog) {
         DeleteDialogItem(
             confirm = {

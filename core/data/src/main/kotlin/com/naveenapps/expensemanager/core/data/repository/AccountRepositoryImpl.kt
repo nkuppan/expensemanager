@@ -5,6 +5,7 @@ import com.naveenapps.expensemanager.core.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.AccountDeleteImpact
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import kotlinx.coroutines.flow.Flow
@@ -67,6 +68,19 @@ class AccountRepositoryImpl(
         return@withContext try {
             val response = accountDao.delete(account.toEntityModel())
             Resource.Success(response > 0)
+        } catch (exception: Exception) {
+            Resource.Error(exception)
+        }
+    }
+
+    override suspend fun getAccountDeleteImpact(accountId: String): Resource<AccountDeleteImpact> = withContext(dispatchers.io) {
+        return@withContext try {
+            Resource.Success(
+                AccountDeleteImpact(
+                    transactionCount = accountDao.getTransactionCount(accountId),
+                    isLastAccount = accountDao.getAccountCount() <= 1,
+                ),
+            )
         } catch (exception: Exception) {
             Resource.Error(exception)
         }

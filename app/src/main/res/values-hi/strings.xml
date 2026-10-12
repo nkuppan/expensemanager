@@ -56,4 +56,18 @@
     <string name="first_save_done">हो गया</string>
     <string name="shortcut_add_expense_short">खर्च जोड़ें</string>
     <string name="shortcut_add_expense_long">नया खर्च जोड़ें</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">शुद्ध</string>
+    <string name="widget_net_this_period">इस अवधि में शुद्ध</string>
+    <string name="widget_income">आय</string>
+    <string name="widget_expenses">खर्च</string>
+    <string name="widget_spent">खर्च किया</string>
+    <string name="widget_recent">हाल के</string>
+    <string name="widget_no_transactions">कोई लेन-देन नहीं</string>
+    <string name="widget_refresh">रीफ़्रेश करें</string>
+    <string name="widget_saved_percent">%1$s%% बचत</string>
+    <string name="widget_spent_more_than_earned">कमाई से ज़्यादा खर्च</string>
+    <string name="widget_income_spent_percent">आय का %1$d%% खर्च</string>
+    <string name="widget_amount_saved">%1$s की बचत</string>
 </resources>

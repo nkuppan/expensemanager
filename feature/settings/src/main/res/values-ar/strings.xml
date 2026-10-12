@@ -62,4 +62,11 @@
     <string name="no_file_picker">لم يتم العثور على مدير ملفات على هذا الجهاز.</string>
     <string name="recurring_transactions_setting">المعاملات المتكررة</string>
     <string name="recurring_transactions_setting_message">الإيجار والاشتراكات والراتب تُسجَّل تلقائيًا</string>
+    <string name="backup_passphrase_title">هل تريد حماية هذه النسخة الاحتياطية؟</string>
+    <string name="backup_passphrase_message">عيّن عبارة مرور لتشفير النسخة الاحتياطية. ستحتاج إليها للاستعادة، ولا يمكن استرجاعها إذا نسيتها. اتركها فارغة لاستخدام الحماية القياسية.</string>
+    <string name="restore_passphrase_title">أدخل عبارة مرور النسخة الاحتياطية</string>
+    <string name="restore_passphrase_message">هذه النسخة الاحتياطية محمية بعبارة مرور.</string>
+    <string name="passphrase_label">عبارة المرور</string>
+    <string name="restore_wrong_passphrase">عبارة المرور غير صحيحة. يُرجى المحاولة مرة أخرى.</string>
+    <string name="continue_action">متابعة</string>
 </resources>

@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">今後は記録されません。記録済みの取引は残ります。</string>
     <string name="recurring_empty_title">繰り返しはまだありません</string>
     <string name="recurring_empty_message">取引を追加するときに「繰り返し」で毎日・毎週・毎月・毎年を選ぶと自動で記録されます。</string>
+    <string name="edit">編集</string>
+    <string name="search_transactions_hint">メモ、カテゴリ、アカウントを検索</string>
+    <string name="clear_search">検索をクリア</string>
+    <string name="no_matching_transactions">検索に一致する取引はありません</string>
+    <string name="transaction_deleted">取引を削除しました</string>
+    <string name="undo">元に戻す</string>
+    <string name="search_transactions">取引を検索</string>
 </resources>

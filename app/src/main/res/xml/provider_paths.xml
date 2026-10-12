@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <external-path
-        name="external_files"
-        path="." />
+    <!-- Exports written without a picked document (BaseExportStrategy.EXPORT_DIRECTORY).
+         Previously the whole external storage root was shared. -->
+    <cache-path
+        name="exports"
+        path="exports/" />
     <!-- Matches ImageStorageRepositoryImpl.CAPTURE_DIR (context.cacheDir/captured_images), the
          temp destination handed to the camera app for a full-resolution capture. -->
     <cache-path

@@ -8,7 +8,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,11 +42,17 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -57,6 +62,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.feature.transaction.R
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -92,6 +98,11 @@ fun TransactionItem(
         label = "swipe",
     )
     val revealFraction = (abs(animatedOffset) / swipeMax).coerceIn(0f, 1f)
+    // offset {} is mirrored in RTL (the actions sit on the left there), but drag deltas are
+    // not, so flip them to keep "swipe towards the start edge" revealing the actions.
+    val dragDirection = if (LocalLayoutDirection.current == LayoutDirection.Rtl) -1f else 1f
+    val editLabel = stringResource(R.string.edit)
+    val deleteLabel = stringResource(R.string.delete)
 
     Box(
         modifier = modifier
@@ -109,7 +120,7 @@ fun TransactionItem(
                 if (onEdit != null) {
                     SwipeAction(
                         icon = Icons.Outlined.Edit,
-                        label = "Edit",
+                        label = editLabel,
                         color = MaterialTheme.colorScheme.primary,
                         onClick = {
                             rawOffset = 0f
@@ -120,7 +131,7 @@ fun TransactionItem(
                 if (onDelete != null) {
                     SwipeAction(
                         icon = Icons.Outlined.Delete,
-                        label = "Delete",
+                        label = deleteLabel,
                         color = colorResource(
                             id = com.naveenapps.expensemanager.core.common.R.color.red_500,
                         ),
@@ -147,7 +158,7 @@ fun TransactionItem(
                                     rawOffset = if (rawOffset < -snapAt) -swipeMax else 0f
                                 },
                                 onHorizontalDrag = { _, delta ->
-                                    rawOffset = (rawOffset + delta).coerceIn(-swipeMax, 0f)
+                                    rawOffset = (rawOffset + delta * dragDirection).coerceIn(-swipeMax, 0f)
                                 },
                             )
                         }
@@ -155,13 +166,17 @@ fun TransactionItem(
                         Modifier
                     },
                 )
+                // Swipe-only actions are unreachable with TalkBack; expose them as actions.
+                .semantics {
+                    customActions = listOfNotNull(
+                        onEdit?.let { edit -> CustomAccessibilityAction(editLabel) { edit(); true } },
+                        onDelete?.let { delete -> CustomAccessibilityAction(deleteLabel) { delete(); true } },
+                    )
+                }
                 .then(
                     if (onClick != null) {
-                        Modifier.clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = onClick,
-                        )
+                        // Default ripple, so a tap gives visible feedback.
+                        Modifier.clickable(onClick = onClick)
                     } else {
                         Modifier
                     },

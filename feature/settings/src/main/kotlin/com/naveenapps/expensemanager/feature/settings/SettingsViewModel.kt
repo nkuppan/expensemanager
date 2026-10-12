@@ -244,21 +244,29 @@ class SettingsViewModel(
 
             SettingAction.Backup -> {
                 if (_state.value.isBackupInProgress) return
-                viewModelScope.launch {
-                    analyticsRepository.logEvent(AnalyticsEvents.BACKUP_STARTED, emptyMap())
-                    _event.send(SettingEvent.PickBackupDestination(backupRepository.backupFileName()))
-                }
+                // Ask for an optional passphrase first, then pick where to save.
+                _state.update { it.copy(passphrasePrompt = PassphrasePrompt.BACKUP) }
+            }
+
+            is SettingAction.SubmitPassphrase -> submitPassphrase(action.passphrase)
+
+            SettingAction.DismissPassphrasePrompt -> {
+                backupPassphrase = null
+                pendingRestoreUri = null
+                _state.update { it.copy(passphrasePrompt = null) }
             }
 
             is SettingAction.BackupDestinationSelected -> {
+                val passphrase = backupPassphrase
+                backupPassphrase = null
                 val uri = action.uri ?: return
                 runBackupTask(
-                    task = { backupRepository.backupData(uri) },
+                    task = { backupRepository.backupData(uri, passphrase) },
                     onSuccess = {
                         analyticsRepository.logEvent(AnalyticsEvents.BACKUP_COMPLETED, emptyMap())
                         _event.send(SettingEvent.ShowMessage(R.string.backup_success))
                     },
-                    failureMessage = { R.string.backup_failed },
+                    onFailure = { R.string.backup_failed },
                 )
             }
 
@@ -281,28 +289,73 @@ class SettingsViewModel(
 
             is SettingAction.RestoreSourceSelected -> {
                 val uri = action.uri ?: return
-                runBackupTask(
-                    task = { backupRepository.restoreData(uri) },
-                    onSuccess = {
-                        analyticsRepository.logEvent(AnalyticsEvents.RESTORE_COMPLETED, emptyMap())
-                        _event.send(SettingEvent.RestartApp)
-                    },
-                    failureMessage = { reason ->
-                        when (reason) {
-                            BackupException.Reason.INVALID_FILE -> R.string.restore_invalid_file
-                            BackupException.Reason.NEWER_VERSION -> R.string.restore_newer_version
-                            else -> R.string.restore_failed
-                        }
-                    },
-                )
+                restore(uri, passphrase = null)
             }
         }
+    }
+
+    // Held between the passphrase dialog and the system file picker, never persisted.
+    private var backupPassphrase: String? = null
+    private var pendingRestoreUri: String? = null
+
+    private fun submitPassphrase(passphrase: String) {
+        when (_state.value.passphrasePrompt) {
+            PassphrasePrompt.BACKUP -> {
+                backupPassphrase = passphrase.ifEmpty { null }
+                _state.update { it.copy(passphrasePrompt = null) }
+                viewModelScope.launch {
+                    analyticsRepository.logEvent(AnalyticsEvents.BACKUP_STARTED, emptyMap())
+                    _event.send(SettingEvent.PickBackupDestination(backupRepository.backupFileName()))
+                }
+            }
+
+            PassphrasePrompt.RESTORE -> {
+                val uri = pendingRestoreUri ?: return
+                if (passphrase.isEmpty()) return
+                _state.update { it.copy(passphrasePrompt = null) }
+                restore(uri, passphrase)
+            }
+
+            null -> Unit
+        }
+    }
+
+    private fun restore(uri: String, passphrase: String?) {
+        runBackupTask(
+            task = { backupRepository.restoreData(uri, passphrase) },
+            onSuccess = {
+                pendingRestoreUri = null
+                analyticsRepository.logEvent(AnalyticsEvents.RESTORE_COMPLETED, emptyMap())
+                _event.send(SettingEvent.RestartApp)
+            },
+            onFailure = { reason ->
+                when (reason) {
+                    // Protected backup: ask for the passphrase and retry with the same file.
+                    BackupException.Reason.PASSPHRASE_REQUIRED -> {
+                        pendingRestoreUri = uri
+                        _state.update { it.copy(passphrasePrompt = PassphrasePrompt.RESTORE) }
+                        null
+                    }
+
+                    BackupException.Reason.WRONG_PASSPHRASE -> {
+                        pendingRestoreUri = uri
+                        _state.update { it.copy(passphrasePrompt = PassphrasePrompt.RESTORE) }
+                        R.string.restore_wrong_passphrase
+                    }
+
+                    BackupException.Reason.INVALID_FILE -> R.string.restore_invalid_file
+                    BackupException.Reason.NEWER_VERSION -> R.string.restore_newer_version
+                    else -> R.string.restore_failed
+                }
+            },
+        )
     }
 
     private fun runBackupTask(
         task: suspend () -> Resource<Boolean>,
         onSuccess: suspend () -> Unit,
-        failureMessage: (BackupException.Reason?) -> Int,
+        /** Handles a failure; returns the message to show, or null for none. */
+        onFailure: (BackupException.Reason?) -> Int?,
     ) {
         if (_state.value.isBackupInProgress) return
         _state.update { it.copy(isBackupInProgress = true) }
@@ -313,7 +366,7 @@ class SettingsViewModel(
 
                     is Resource.Error -> {
                         val reason = (result.exception as? BackupException)?.reason
-                        _event.send(SettingEvent.ShowMessage(failureMessage(reason)))
+                        onFailure(reason)?.let { _event.send(SettingEvent.ShowMessage(it)) }
                     }
                 }
             } finally {

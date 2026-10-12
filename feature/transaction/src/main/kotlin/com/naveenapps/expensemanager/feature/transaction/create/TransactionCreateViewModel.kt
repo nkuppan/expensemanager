@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
@@ -386,6 +387,8 @@ class TransactionCreateViewModel(
                     )
                 }
                 closePage()
+            } else {
+                _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_save_failed))
             }
         }
     }
@@ -439,6 +442,9 @@ class TransactionCreateViewModel(
                 }
                 discardSessionAttachments()
                 closePage()
+            } else {
+                _state.update { it.copy(showDeleteDialog = false) }
+                _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_delete_failed))
             }
         }
     }
@@ -614,7 +620,12 @@ class TransactionCreateViewModel(
                 }
             }
 
-            TransactionCreateAction.ShowNumberPad -> _state.update { it.copy(showNumberPad = true) }
+            TransactionCreateAction.ShowNumberPad -> _state.update {
+                it.copy(
+                    showNumberPad = true,
+                    numberPadInitialAmount = numberFormatRepository.parseToDouble(it.amount.value),
+                )
+            }
 
             TransactionCreateAction.DismissNumberPad -> _state.update { it.copy(showNumberPad = false) }
 

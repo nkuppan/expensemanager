@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">더 이상 기록되지 않습니다. 이미 기록된 거래는 유지됩니다.</string>
     <string name="recurring_empty_title">반복 거래가 없습니다</string>
     <string name="recurring_empty_message">거래를 추가할 때 반복에서 매일, 매주, 매월 또는 매년을 선택하면 자동으로 기록됩니다.</string>
+    <string name="edit">수정</string>
+    <string name="search_transactions_hint">메모, 카테고리, 계좌 검색</string>
+    <string name="clear_search">검색어 지우기</string>
+    <string name="no_matching_transactions">검색과 일치하는 거래가 없습니다</string>
+    <string name="transaction_deleted">거래가 삭제되었습니다</string>
+    <string name="undo">실행취소</string>
+    <string name="search_transactions">거래 검색</string>
 </resources>

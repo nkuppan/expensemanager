@@ -49,4 +49,12 @@
     <string name="liabilities">Liabilities</string>
     <string name="total_balance">Total balance</string>
     <string name="balance">Balance</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="one">This account has %d transaction. Deleting the account also deletes it, including a transfer to or from this account. This can\'t be undone.</item>
+        <item quantity="other">This account has %d transactions. Deleting the account also deletes them, including transfers to or from this account. This can\'t be undone.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">This account has no transactions. Deleting it can\'t be undone.</string>
+    <string name="account_delete_last_title">This is your only account</string>
+    <string name="account_delete_last_message">Every transaction needs an account. Create another account first, then you can delete this one.</string>
 </resources>

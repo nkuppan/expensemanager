@@ -62,4 +62,11 @@
     <string name="no_file_picker">Auf diesem Gerät wurde kein Dateimanager gefunden.</string>
     <string name="recurring_transactions_setting">Wiederkehrende Buchungen</string>
     <string name="recurring_transactions_setting_message">Miete, Abos und Gehalt werden für dich erfasst</string>
+    <string name="backup_passphrase_title">Dieses Backup schützen?</string>
+    <string name="backup_passphrase_message">Lege eine Passphrase fest, um das Backup zu verschlüsseln. Du brauchst sie zum Wiederherstellen, und sie kann nicht zurückgesetzt werden, wenn du sie vergisst. Lass das Feld leer, um den Standardschutz zu verwenden.</string>
+    <string name="restore_passphrase_title">Backup-Passphrase eingeben</string>
+    <string name="restore_passphrase_message">Dieses Backup ist mit einer Passphrase geschützt.</string>
+    <string name="passphrase_label">Passphrase</string>
+    <string name="restore_wrong_passphrase">Falsche Passphrase. Bitte versuche es erneut.</string>
+    <string name="continue_action">Weiter</string>
 </resources>

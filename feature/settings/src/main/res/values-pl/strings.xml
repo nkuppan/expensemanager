@@ -62,4 +62,11 @@
     <string name="no_file_picker">Nie znaleziono menedżera plików na tym urządzeniu.</string>
     <string name="recurring_transactions_setting">Transakcje cykliczne</string>
     <string name="recurring_transactions_setting_message">Czynsz, subskrypcje i pensja zapisywane za Ciebie</string>
+    <string name="backup_passphrase_title">Chronić tę kopię zapasową?</string>
+    <string name="backup_passphrase_message">Ustaw hasło, aby zaszyfrować kopię. Będzie potrzebne do przywrócenia i nie da się go odzyskać, jeśli je zapomnisz. Pozostaw puste, aby użyć standardowej ochrony.</string>
+    <string name="restore_passphrase_title">Wpisz hasło kopii zapasowej</string>
+    <string name="restore_passphrase_message">Ta kopia zapasowa jest chroniona hasłem.</string>
+    <string name="passphrase_label">Hasło</string>
+    <string name="restore_wrong_passphrase">Nieprawidłowe hasło. Spróbuj ponownie.</string>
+    <string name="continue_action">Dalej</string>
 </resources>

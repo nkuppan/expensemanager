@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -47,6 +48,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -54,7 +56,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,8 +67,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
@@ -88,7 +92,7 @@ fun SettingsScreen(
     shareRepository: ShareRepository,
     viewModel: SettingsViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
@@ -187,6 +191,14 @@ private fun SettingsScreenScaffoldView(
                     Text(text = stringResource(id = android.R.string.cancel))
                 }
             },
+        )
+    }
+
+    state.passphrasePrompt?.let { prompt ->
+        BackupPassphraseDialog(
+            prompt = prompt,
+            onSubmit = { onAction.invoke(SettingAction.SubmitPassphrase(it)) },
+            onDismiss = { onAction.invoke(SettingAction.DismissPassphrasePrompt) },
         )
     }
 
@@ -556,4 +568,64 @@ private fun Context.shareApp() {
     } catch (_: ActivityNotFoundException) {
         // Nothing can receive a share; ignore.
     }
+}
+
+@Composable
+private fun BackupPassphraseDialog(
+    prompt: PassphrasePrompt,
+    onSubmit: (String) -> Unit,
+    onDismiss: () -> Unit,
+) {
+    var passphrase by remember(prompt) { mutableStateOf("") }
+    val isRestore = prompt == PassphrasePrompt.RESTORE
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = stringResource(
+                    id = if (isRestore) R.string.restore_passphrase_title else R.string.backup_passphrase_title,
+                ),
+            )
+        },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(
+                        id = if (isRestore) R.string.restore_passphrase_message else R.string.backup_passphrase_message,
+                    ),
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                OutlinedTextField(
+                    value = passphrase,
+                    onValueChange = { passphrase = it },
+                    label = { Text(text = stringResource(id = R.string.passphrase_label)) },
+                    singleLine = true,
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                        autoCorrectEnabled = false,
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onSubmit(passphrase) },
+                // A protected backup can't be opened without it; for a new backup it's optional.
+                enabled = !isRestore || passphrase.isNotEmpty(),
+            ) {
+                Text(
+                    text = stringResource(
+                        id = if (isRestore) R.string.restore_confirm_action else R.string.continue_action,
+                    ),
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(id = android.R.string.cancel))
+            }
+        },
+    )
 }

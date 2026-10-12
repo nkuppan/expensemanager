@@ -73,4 +73,11 @@
     <string name="recurring_stop_message">Non verranno registrate altre copie. Le transazioni già registrate restano.</string>
     <string name="recurring_empty_title">Ancora nulla si ripete</string>
     <string name="recurring_empty_message">Quando aggiungi una transazione, scegli Giornaliero, Settimanale, Mensile o Annuale in Ripeti e verrà registrata per te.</string>
+    <string name="edit">Modifica</string>
+    <string name="search_transactions_hint">Cerca note, categorie, conti</string>
+    <string name="clear_search">Cancella ricerca</string>
+    <string name="no_matching_transactions">Nessuna transazione corrisponde alla ricerca</string>
+    <string name="transaction_deleted">Transazione eliminata</string>
+    <string name="undo">Annulla</string>
+    <string name="search_transactions">Cerca transazioni</string>
 </resources>

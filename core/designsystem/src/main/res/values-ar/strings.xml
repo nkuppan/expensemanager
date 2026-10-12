@@ -32,4 +32,15 @@
     <string name="pick_an_icon">اختيار رمز</string>
     <string name="remove_photo">إزالة الصورة</string>
     <string name="add_attachment">إضافة مرفق</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">رجوع</string>
+    <string name="a11y_close">إغلاق</string>
+    <string name="a11y_previous_period">الفترة السابقة</string>
+    <string name="a11y_next_period">الفترة التالية</string>
+    <string name="a11y_open_calculator">فتح الآلة الحاسبة</string>
+    <string name="a11y_settings">الإعدادات</string>
+    <string name="a11y_select_icon">اختيار الأيقونة</string>
+    <string name="error_save_failed">تعذّر الحفظ. يُرجى المحاولة مرة أخرى.</string>
+    <string name="error_delete_failed">تعذّر الحذف. يُرجى المحاولة مرة أخرى.</string>
 </resources>

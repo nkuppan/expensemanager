@@ -49,4 +49,11 @@
     <string name="liabilities">Passifs</string>
     <string name="total_balance">Solde total</string>
     <string name="balance">Solde</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">Supprimer ce compte supprimera aussi ses transactions (%d), y compris les virements depuis ou vers ce compte. Cette action est irréversible.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">Ce compte n\'a aucune transaction. Sa suppression est irréversible.</string>
+    <string name="account_delete_last_title">C\'est votre seul compte</string>
+    <string name="account_delete_last_message">Chaque transaction nécessite un compte. Créez d\'abord un autre compte, puis vous pourrez supprimer celui-ci.</string>
 </resources>

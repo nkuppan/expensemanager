@@ -19,9 +19,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.CalendarMonth
-import androidx.compose.material.icons.rounded.ChevronLeft
-import androidx.compose.material.icons.rounded.ChevronRight
 import androidx.compose.material.icons.rounded.FilterList
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -31,7 +31,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +40,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.model.DateRangeType
@@ -57,7 +58,7 @@ fun FilterView(
     modifier: Modifier = Modifier,
     viewModel: FilterViewModel = koinViewModel(),
 ) {
-    val filterState by viewModel.filterState.collectAsState()
+    val filterState by viewModel.filterState.collectAsStateWithLifecycle()
 
     if (filterState.showDateFilter) {
         SafeModalBottomSheet(
@@ -108,17 +109,16 @@ private fun FilterContentView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp)
-                .height(44.dp),
+                .height(48.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(
                 onClick = { onAction.invoke(FilterAction.MoveDateBackward) },
                 enabled = filterState.showBackward,
-                modifier = Modifier.size(36.dp),
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.ChevronLeft,
-                    contentDescription = null,
+                    imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                    contentDescription = stringResource(DesignSystemR.string.a11y_previous_period),
                     modifier = Modifier.size(22.dp),
                 )
             }
@@ -153,11 +153,10 @@ private fun FilterContentView(
             IconButton(
                 onClick = { onAction.invoke(FilterAction.MoveDateForward) },
                 enabled = filterState.showForward,
-                modifier = Modifier.size(36.dp),
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.ChevronRight,
-                    contentDescription = null,
+                    imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                    contentDescription = stringResource(DesignSystemR.string.a11y_next_period),
                     modifier = Modifier.size(22.dp),
                 )
             }

@@ -62,4 +62,11 @@
     <string name="no_file_picker">Nenhum gerenciador de arquivos encontrado neste dispositivo.</string>
     <string name="recurring_transactions_setting">Transações recorrentes</string>
     <string name="recurring_transactions_setting_message">Aluguel, assinaturas e salário registrados para você</string>
+    <string name="backup_passphrase_title">Proteger esta cópia de segurança?</string>
+    <string name="backup_passphrase_message">Defina uma frase-passe para encriptar a cópia. Vai precisar dela para restaurar e não pode ser recuperada se a esquecer. Deixe em branco para usar a proteção padrão.</string>
+    <string name="restore_passphrase_title">Introduza a frase-passe da cópia</string>
+    <string name="restore_passphrase_message">Esta cópia de segurança está protegida por uma frase-passe.</string>
+    <string name="passphrase_label">Frase-passe</string>
+    <string name="restore_wrong_passphrase">Frase-passe incorreta. Tente novamente.</string>
+    <string name="continue_action">Continuar</string>
 </resources>

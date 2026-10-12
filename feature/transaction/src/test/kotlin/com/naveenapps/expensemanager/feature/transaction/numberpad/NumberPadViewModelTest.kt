@@ -100,4 +100,34 @@ class NumberPadViewModelTest : BaseCoroutineTest() {
         assertThat(viewModel.calculatedAmountString.value).isEmpty()
         assertThat(viewModel.calculatedAmount.value).isEqualTo("0")
     }
+
+    @Test
+    fun initialAmount_isShownAndCanBeEdited() = runTest {
+        viewModel.setInitialAmount(120.5)
+        advanceUntilIdle()
+        assertThat(viewModel.calculatedAmountString.value).isEqualTo("120.5")
+
+        type("+", "1", "0")
+        assertThat(viewModel.calculatedAmountString.value).isEqualTo("120.5+10")
+    }
+
+    @Test
+    fun initialAmount_wholeAndLargeNumbersHaveNoTrailingZerosOrExponent() = runTest {
+        viewModel.setInitialAmount(120.0)
+        assertThat(viewModel.calculatedAmountString.value).isEqualTo("120")
+
+        viewModel.setInitialAmount(10_000_000.0)
+        assertThat(viewModel.calculatedAmountString.value).isEqualTo("10000000")
+    }
+
+    @Test
+    fun initialAmount_missingOrZeroStartsEmpty() = runTest {
+        type("5")
+        viewModel.setInitialAmount(null)
+        assertThat(viewModel.calculatedAmountString.value).isEmpty()
+
+        viewModel.setInitialAmount(0.0)
+        assertThat(viewModel.calculatedAmountString.value).isEmpty()
+        assertThat(viewModel.calculatedAmount.value).isEqualTo("0")
+    }
 }

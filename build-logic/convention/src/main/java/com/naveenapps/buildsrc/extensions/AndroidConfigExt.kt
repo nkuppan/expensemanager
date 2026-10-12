@@ -93,5 +93,8 @@ fun Project.configureAndroidCompose(extension: CommonExtension) {
         val bom = libs.findLibrary("androidx-compose-bom").get()
         add("implementation", platform(bom))
         add("androidTestImplementation", platform(bom))
+        // collectAsStateWithLifecycle(): stop collecting Room/DataStore flows while the UI is
+        // in the background.
+        add("implementation", libs.findLibrary("androidx-lifecycle-runtimeCompose").get())
     }
 }

@@ -62,4 +62,11 @@
     <string name="no_file_picker">Bu cihazda dosya yöneticisi bulunamadı.</string>
     <string name="recurring_transactions_setting">Tekrarlayan işlemler</string>
     <string name="recurring_transactions_setting_message">Kira, abonelikler ve maaş otomatik kaydedilir</string>
+    <string name="backup_passphrase_title">Bu yedek korunsun mu?</string>
+    <string name="backup_passphrase_message">Yedeği şifrelemek için bir parola belirleyin. Geri yüklemek için gerekecek ve unutursanız kurtarılamaz. Standart korumayı kullanmak için boş bırakın.</string>
+    <string name="restore_passphrase_title">Yedek parolasını girin</string>
+    <string name="restore_passphrase_message">Bu yedek bir parola ile korunuyor.</string>
+    <string name="passphrase_label">Parola</string>
+    <string name="restore_wrong_passphrase">Parola yanlış. Lütfen tekrar deneyin.</string>
+    <string name="continue_action">Devam</string>
 </resources>

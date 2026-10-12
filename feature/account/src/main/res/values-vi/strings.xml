@@ -47,4 +47,11 @@
     <string name="liabilities">Nợ phải trả</string>
     <string name="total_balance">Tổng số dư</string>
     <string name="balance">Số dư</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">Xóa tài khoản này cũng sẽ xóa các giao dịch của nó (%d), bao gồm cả chuyển khoản đến hoặc từ tài khoản này. Không thể hoàn tác thao tác này.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">Tài khoản này không có giao dịch nào. Không thể hoàn tác khi đã xóa.</string>
+    <string name="account_delete_last_title">Đây là tài khoản duy nhất của bạn</string>
+    <string name="account_delete_last_message">Mỗi giao dịch cần một tài khoản. Hãy tạo một tài khoản khác trước, sau đó bạn có thể xóa tài khoản này.</string>
 </resources>
