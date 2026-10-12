@@ -3,15 +3,8 @@ package com.naveenapps.expensemanager.core.database.di
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
+import com.naveenapps.expensemanager.core.database.ALL_MIGRATIONS
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
-import com.naveenapps.expensemanager.core.database.MIGRATION_2_3
-import com.naveenapps.expensemanager.core.database.MIGRATION_3_4
-import com.naveenapps.expensemanager.core.database.MIGRATION_4_5
-import com.naveenapps.expensemanager.core.database.MIGRATION_5_6
-import com.naveenapps.expensemanager.core.database.MIGRATION_6_7
-import com.naveenapps.expensemanager.core.database.MIGRATION_7_8
-import com.naveenapps.expensemanager.core.database.MIGRATION_8_9
-import com.naveenapps.expensemanager.core.database.MIGRATION_9_10
 import com.naveenapps.expensemanager.core.database.PendingDatabaseRestore
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -22,16 +15,7 @@ private fun buildDatabase(context: Context): ExpenseManagerDatabase = Room.datab
     context,
     ExpenseManagerDatabase::class.java,
     DATA_BASE_NAME,
-).addMigrations(
-    MIGRATION_2_3,
-    MIGRATION_3_4,
-    MIGRATION_4_5,
-    MIGRATION_5_6,
-    MIGRATION_6_7,
-    MIGRATION_7_8,
-    MIGRATION_8_9,
-    MIGRATION_9_10,
-).build()
+).addMigrations(*ALL_MIGRATIONS).build()
 
 val DatabaseModule = module {
     single {

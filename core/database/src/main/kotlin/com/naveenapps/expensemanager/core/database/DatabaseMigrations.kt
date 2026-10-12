@@ -177,3 +177,19 @@ internal val MIGRATION_9_10 = object : Migration(9, 10) {
         )
     }
 }
+
+/**
+ * Every migration, oldest first. The database builder and the migration tests both use this list,
+ * so a new migration can't be registered in one place and forgotten in the other.
+ */
+internal val ALL_MIGRATIONS = arrayOf(
+    MIGRATION_1_2,
+    MIGRATION_2_3,
+    MIGRATION_3_4,
+    MIGRATION_4_5,
+    MIGRATION_5_6,
+    MIGRATION_6_7,
+    MIGRATION_7_8,
+    MIGRATION_8_9,
+    MIGRATION_9_10,
+)

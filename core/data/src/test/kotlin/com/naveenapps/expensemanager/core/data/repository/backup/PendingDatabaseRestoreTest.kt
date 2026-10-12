@@ -69,7 +69,7 @@ class PendingDatabaseRestoreTest {
     fun rejectsOtherSqliteFilesAndGarbage() {
         val other = databaseBytes("notes")
         assertThat(PendingDatabaseRestore.missingRequiredTables(context, other))
-            .containsExactly("account", "category", "transaction")
+            .containsExactly("category", "transaction")
         assertThat(PendingDatabaseRestore.missingRequiredTables(context, ByteArray(512) { 7 }))
             .isNotEmpty()
     }

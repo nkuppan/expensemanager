@@ -29,10 +29,10 @@ object PendingDatabaseRestore {
     private val DATABASE_SUFFIXES = listOf("") + SIDECAR_SUFFIXES
 
     /** The oldest schema version the registered migrations can bring up to date. */
-    const val OLDEST_RESTORABLE_VERSION = 2
+    const val OLDEST_RESTORABLE_VERSION = 1
 
-    /** Tables every schema version since [OLDEST_RESTORABLE_VERSION] has. */
-    private val REQUIRED_TABLES = setOf("account", "category", "transaction")
+    /** Tables every known schema version has (version 1 may lack `account`; see MIGRATION_1_2). */
+    private val REQUIRED_TABLES = setOf("category", "transaction")
 
     /**
      * Returns the required tables missing from the SQLite file in [databaseBytes], or all of them
