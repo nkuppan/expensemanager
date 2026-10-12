@@ -19,6 +19,7 @@ class DeleteAccountUseCase(
         // Without any account, new transactions fall back to a placeholder id and fail to save.
         return when (val impact = repository.getAccountDeleteImpact(account.id)) {
             is Resource.Error -> impact
+
             is Resource.Success -> if (impact.data.isLastAccount) {
                 Resource.Error(LastAccountDeletionException())
             } else {

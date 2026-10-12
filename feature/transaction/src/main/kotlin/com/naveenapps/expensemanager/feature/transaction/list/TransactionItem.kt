@@ -169,8 +169,18 @@ fun TransactionItem(
                 // Swipe-only actions are unreachable with TalkBack; expose them as actions.
                 .semantics {
                     customActions = listOfNotNull(
-                        onEdit?.let { edit -> CustomAccessibilityAction(editLabel) { edit(); true } },
-                        onDelete?.let { delete -> CustomAccessibilityAction(deleteLabel) { delete(); true } },
+                        onEdit?.let { edit ->
+                            CustomAccessibilityAction(editLabel) {
+                                edit()
+                                true
+                            }
+                        },
+                        onDelete?.let { delete ->
+                            CustomAccessibilityAction(deleteLabel) {
+                                delete()
+                                true
+                            }
+                        },
                     )
                 }
                 .then(

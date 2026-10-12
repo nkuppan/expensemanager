@@ -122,11 +122,13 @@ private fun AccountCreateScaffoldView(
                 dismiss = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
                 message = when {
                     impact == null -> null
+
                     impact.transactionCount > 0 -> pluralStringResource(
                         R.plurals.account_delete_message_with_transactions,
                         impact.transactionCount,
                         impact.transactionCount,
                     )
+
                     else -> stringResource(R.string.account_delete_message_no_transactions)
                 },
             )

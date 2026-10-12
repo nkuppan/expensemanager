@@ -344,7 +344,9 @@ class SettingsViewModel(
                     }
 
                     BackupException.Reason.INVALID_FILE -> R.string.restore_invalid_file
+
                     BackupException.Reason.NEWER_VERSION -> R.string.restore_newer_version
+
                     else -> R.string.restore_failed
                 }
             },
