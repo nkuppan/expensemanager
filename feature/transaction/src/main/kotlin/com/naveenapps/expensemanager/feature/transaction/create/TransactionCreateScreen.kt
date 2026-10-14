@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -65,6 +66,7 @@ import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogIt
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
@@ -147,7 +149,20 @@ private fun TransactionCreateScreenContent(
     onGalleryRequested: () -> Unit = {},
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    if (state.showDeleteDialog) {
+    // System back goes through the same path as the top-bar back arrow, so unsaved edits get a
+    // "Discard changes?" prompt and attachments added in this session are cleaned up.
+    BackHandler { onAction.invoke(TransactionCreateAction.ClosePage) }
+
+    if (state.showDiscardDialog) {
+        AppDialog(
+            onDismissRequest = { onAction.invoke(TransactionCreateAction.DismissDiscardDialog) },
+            onConfirmation = { onAction.invoke(TransactionCreateAction.ConfirmDiscard) },
+            dialogTitle = stringResource(R.string.discard_changes_title),
+            dialogText = stringResource(R.string.discard_changes_message),
+            positiveButtonText = stringResource(R.string.discard),
+            negativeButtonText = stringResource(R.string.keep_editing),
+        )
+    } else if (state.showDeleteDialog) {
         DeleteDialogItem(
             confirm = { onAction.invoke(TransactionCreateAction.Delete) },
             dismiss = { onAction.invoke(TransactionCreateAction.DismissDeleteDialog) },

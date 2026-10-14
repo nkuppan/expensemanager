@@ -80,4 +80,8 @@
     <string name="transaction_deleted">लेन-देन हटाया गया</string>
     <string name="undo">पूर्ववत करें</string>
     <string name="search_transactions">लेन-देन खोजें</string>
+    <string name="discard_changes_title">बदलाव हटाएं?</string>
+    <string name="discard_changes_message">इस लेन-देन में आपके बदलाव सेव नहीं हुए हैं।</string>
+    <string name="discard">हटाएं</string>
+    <string name="keep_editing">संपादन जारी रखें</string>
 </resources>

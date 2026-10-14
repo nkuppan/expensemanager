@@ -80,4 +80,8 @@
     <string name="transaction_deleted">거래가 삭제되었습니다</string>
     <string name="undo">실행취소</string>
     <string name="search_transactions">거래 검색</string>
+    <string name="discard_changes_title">변경사항을 삭제할까요?</string>
+    <string name="discard_changes_message">이 거래의 변경사항이 저장되지 않았습니다.</string>
+    <string name="discard">삭제</string>
+    <string name="keep_editing">계속 편집</string>
 </resources>

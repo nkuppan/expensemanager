@@ -33,6 +33,9 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 
+/** Activity opened when a reminder notification is tapped. */
+const val DESTINATION_CLASS = "com.naveenapps.expensemanager.MainActivity"
+
 private const val TAG = "NotificationScheduler"
 
 class NotificationScheduler(

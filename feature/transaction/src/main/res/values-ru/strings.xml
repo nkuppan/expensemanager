@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Операция удалена</string>
     <string name="undo">Отменить</string>
     <string name="search_transactions">Поиск операций</string>
+    <string name="discard_changes_title">Отменить изменения?</string>
+    <string name="discard_changes_message">Изменения в этой операции не сохранены.</string>
+    <string name="discard">Отменить</string>
+    <string name="keep_editing">Продолжить</string>
 </resources>

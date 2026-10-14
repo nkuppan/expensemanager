@@ -11,6 +11,10 @@ sealed class TransactionCreateAction {
 
     data object ClosePage : TransactionCreateAction()
 
+    data object ConfirmDiscard : TransactionCreateAction()
+
+    data object DismissDiscardDialog : TransactionCreateAction()
+
     data object ShowDeleteDialog : TransactionCreateAction()
 
     data object DismissDeleteDialog : TransactionCreateAction()

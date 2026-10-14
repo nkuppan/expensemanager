@@ -43,6 +43,8 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -438,6 +440,94 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
                 TransactionCreateEvent.ShowMessage(R.string.select_different_account),
             )
         }
+    }
+
+    // endregion
+
+    // region discard changes
+
+    @Test
+    fun `closing an untouched new transaction leaves without asking`() {
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isFalse()
+        verify(appComposeNavigator).popBackStack()
+    }
+
+    @Test
+    fun `closing a new transaction with an amount asks before discarding`() {
+        whenever(numberFormatRepository.parseToDouble("25")).thenReturn(25.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("25"))
+
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isTrue()
+        verify(appComposeNavigator, never()).popBackStack()
+    }
+
+    @Test
+    fun `keep editing hides the dialog and stays on the page`() {
+        whenever(numberFormatRepository.parseToDouble("25")).thenReturn(25.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("25"))
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        viewModel.processAction(TransactionCreateAction.DismissDiscardDialog)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isFalse()
+        verify(appComposeNavigator, never()).popBackStack()
+    }
+
+    @Test
+    fun `confirming discard leaves the page`() {
+        whenever(numberFormatRepository.parseToDouble("25")).thenReturn(25.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("25"))
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        viewModel.processAction(TransactionCreateAction.ConfirmDiscard)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isFalse()
+        verify(appComposeNavigator).popBackStack()
+    }
+
+    @Test
+    fun `new transaction with only notes counts as unsaved`() {
+        assertThat(viewModel.hasUnsavedChanges(buildState(notes = "lunch").copy(amount = zeroAmount()))).isTrue()
+        assertThat(viewModel.hasUnsavedChanges(buildState(notes = "").copy(amount = zeroAmount()))).isFalse()
+    }
+
+    private fun zeroAmount() = TextFieldValue(value = "0.00", valueError = false, onValueChange = null)
+
+    private fun editingState(original: Transaction) = buildState(
+        notes = original.notes,
+        dateTime = original.createdOn,
+        transactionType = original.type,
+        selectedCategory = fakeCategory.copy(id = original.category.id),
+        selectedFromAccount = fakeFromAccount.copy(id = original.fromAccount.id),
+    )
+
+    @Test
+    fun `editing with nothing changed is not unsaved`() {
+        val original = FAKE_EXPENSE_TRANSACTION.copy(amount = Amount(100.0))
+        whenever(numberFormatRepository.formatForEditing(100.0)).thenReturn("100.00")
+        whenever(numberFormatRepository.parseToDouble("100.00")).thenReturn(100.0)
+        setEditingTransaction(original)
+
+        assertThat(viewModel.hasUnsavedChanges(editingState(original))).isFalse()
+    }
+
+    @Test
+    fun `editing notes or amount counts as unsaved`() {
+        val original = FAKE_EXPENSE_TRANSACTION.copy(amount = Amount(100.0))
+        whenever(numberFormatRepository.formatForEditing(100.0)).thenReturn("100.00")
+        whenever(numberFormatRepository.parseToDouble("100.00")).thenReturn(100.0)
+        whenever(numberFormatRepository.parseToDouble("120.00")).thenReturn(120.0)
+        setEditingTransaction(original)
+
+        val changedNotes = editingState(original).copy(notes = zeroAmount().copy(value = "changed"))
+        assertThat(viewModel.hasUnsavedChanges(changedNotes)).isTrue()
+        assertThat(
+            viewModel.hasUnsavedChanges(editingState(original).copy(amount = zeroAmount().copy(value = "120.00"))),
+        ).isTrue()
     }
 
     // endregion

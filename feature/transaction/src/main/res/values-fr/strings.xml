@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Transaction supprimée</string>
     <string name="undo">Annuler</string>
     <string name="search_transactions">Rechercher des transactions</string>
+    <string name="discard_changes_title">Abandonner les modifications ?</string>
+    <string name="discard_changes_message">Vos modifications de cette transaction n\'ont pas été enregistrées.</string>
+    <string name="discard">Abandonner</string>
+    <string name="keep_editing">Continuer</string>
 </resources>

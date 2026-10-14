@@ -80,4 +80,8 @@
     <string name="transaction_deleted">تم حذف المعاملة</string>
     <string name="undo">تراجع</string>
     <string name="search_transactions">البحث في المعاملات</string>
+    <string name="discard_changes_title">تجاهل التغييرات؟</string>
+    <string name="discard_changes_message">لم يتم حفظ تغييراتك على هذه المعاملة.</string>
+    <string name="discard">تجاهل</string>
+    <string name="keep_editing">متابعة التعديل</string>
 </resources>

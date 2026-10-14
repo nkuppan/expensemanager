@@ -470,6 +470,47 @@ class TransactionCreateViewModel(
         closePage()
     }
 
+    /** Back / close: ask before throwing away edits, otherwise leave straight away. */
+    private fun requestClose() {
+        if (hasUnsavedChanges()) {
+            _state.update { it.copy(showDiscardDialog = true) }
+        } else {
+            cancelEditing()
+        }
+    }
+
+    /**
+     * New transaction: dirty once the user has entered anything worth keeping (defaults such as
+     * the pre-selected account/category/date don't count). Editing: dirty when any saved field
+     * differs from the loaded transaction.
+     */
+    internal fun hasUnsavedChanges(state: TransactionCreateState = _state.value): Boolean {
+        val amount = numberFormatRepository.parseToDouble(state.amount.value) ?: 0.0
+        val original = editingTransaction
+            ?: return amount > 0.0 ||
+                state.notes.value.isNotBlank() ||
+                state.attachments.isNotEmpty() ||
+                state.repeat != null
+
+        // Round-trip the stored amount through the edit formatter so precision beyond the
+        // currency's decimals doesn't register as a change.
+        val originalAmount = numberFormatRepository.parseToDouble(
+            numberFormatRepository.formatForEditing(original.amount.amount),
+        ) ?: original.amount.amount
+
+        val toAccountChanged = state.transactionType == TransactionType.TRANSFER &&
+            state.selectedToAccount.id != original.toAccount?.id
+
+        return amount != originalAmount ||
+            state.notes.value != original.notes ||
+            state.transactionType != original.type ||
+            state.dateTime.time != original.createdOn.time ||
+            state.selectedCategory.id != original.category.id ||
+            state.selectedFromAccount.id != original.fromAccount.id ||
+            toAccountChanged ||
+            state.attachments != original.attachments
+    }
+
     private fun discardSessionAttachments() {
         sessionCreatedAttachmentPaths.forEach { imageStorageRepository.deleteTransactionAttachment(it) }
         sessionCreatedAttachmentPaths.clear()
@@ -556,7 +597,14 @@ class TransactionCreateViewModel(
 
     fun processAction(action: TransactionCreateAction) {
         when (action) {
-            TransactionCreateAction.ClosePage -> cancelEditing()
+            TransactionCreateAction.ClosePage -> requestClose()
+
+            TransactionCreateAction.ConfirmDiscard -> {
+                _state.update { it.copy(showDiscardDialog = false) }
+                cancelEditing()
+            }
+
+            TransactionCreateAction.DismissDiscardDialog -> _state.update { it.copy(showDiscardDialog = false) }
 
             TransactionCreateAction.ShowDeleteDialog -> showDeleteDialog()
 

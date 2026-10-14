@@ -678,25 +678,32 @@ fun ExpandedWidget(data: ExpenseWidgetData) {
                     style = TextStyle(color = WidgetColors.TextDim, fontSize = 10.sp),
                     modifier = GlanceModifier.defaultWeight(),
                 )
-                AddExpenseButton(size = 22.dp, iconSize = 14.dp, corner = 6.dp)
-                Spacer(modifier = GlanceModifier.width(4.dp))
+                // The buttons stay small visually but each sits in a 48dp tap area, which also
+                // provides the spacing (hence no spacer between them and a smaller gap below).
+                AddExpenseButton(size = 22.dp, iconSize = 14.dp, corner = 6.dp, touchSize = MIN_TOUCH_TARGET)
                 Box(
                     modifier = GlanceModifier
-                        .size(22.dp)
-                        .background(WidgetColors.PurpleBg)
-                        .cornerRadius(6.dp)
+                        .size(MIN_TOUCH_TARGET)
                         .clickable(actionRunCallback<RefreshExpenseWidgetAction>()),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Image(
-                        provider = ImageProvider(com.naveenapps.expensemanager.R.drawable.ic_sync),
-                        contentDescription = widgetString(R.string.widget_refresh),
-                        modifier = GlanceModifier.size(13.dp),
-                        colorFilter = ColorFilter.tint(WidgetColors.Purple),
-                    )
+                    Box(
+                        modifier = GlanceModifier
+                            .size(22.dp)
+                            .background(WidgetColors.PurpleBg)
+                            .cornerRadius(6.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            provider = ImageProvider(com.naveenapps.expensemanager.R.drawable.ic_sync),
+                            contentDescription = widgetString(R.string.widget_refresh),
+                            modifier = GlanceModifier.size(13.dp),
+                            colorFilter = ColorFilter.tint(WidgetColors.Purple),
+                        )
+                    }
                 }
             }
-            Spacer(modifier = GlanceModifier.height(8.dp))
+            Spacer(modifier = GlanceModifier.height(4.dp))
 
             if (data.recentTransactions.isEmpty()) {
                 Text(
@@ -792,21 +799,31 @@ private fun AddExpenseButton(
     size: androidx.compose.ui.unit.Dp,
     iconSize: androidx.compose.ui.unit.Dp,
     corner: androidx.compose.ui.unit.Dp,
+    // Tappable area; larger than [size] when the visible button is smaller than 48dp.
+    touchSize: androidx.compose.ui.unit.Dp = size,
 ) {
     val context = LocalContext.current
     Box(
         modifier = GlanceModifier
-            .size(size)
-            .background(WidgetColors.Accent)
-            .cornerRadius(corner)
+            .size(touchSize)
             .clickable(actionStartActivity(QuickAdd.widgetIntent(context))),
         contentAlignment = Alignment.Center,
     ) {
-        Image(
-            provider = ImageProvider(com.naveenapps.expensemanager.R.drawable.ic_quick_add),
-            contentDescription = context.getString(com.naveenapps.expensemanager.R.string.shortcut_add_expense_short),
-            modifier = GlanceModifier.size(iconSize),
-            colorFilter = ColorFilter.tint(WidgetColors.OnAccent),
-        )
+        Box(
+            modifier = GlanceModifier
+                .size(size)
+                .background(WidgetColors.Accent)
+                .cornerRadius(corner),
+            contentAlignment = Alignment.Center,
+        ) {
+            Image(
+                provider = ImageProvider(com.naveenapps.expensemanager.R.drawable.ic_quick_add),
+                contentDescription = context.getString(com.naveenapps.expensemanager.R.string.shortcut_add_expense_short),
+                modifier = GlanceModifier.size(iconSize),
+                colorFilter = ColorFilter.tint(WidgetColors.OnAccent),
+            )
+        }
     }
 }
+
+private val MIN_TOUCH_TARGET = 48.dp

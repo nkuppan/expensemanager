@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Transaktion gelöscht</string>
     <string name="undo">Rückgängig</string>
     <string name="search_transactions">Transaktionen suchen</string>
+    <string name="discard_changes_title">Änderungen verwerfen?</string>
+    <string name="discard_changes_message">Deine Änderungen an dieser Transaktion wurden nicht gespeichert.</string>
+    <string name="discard">Verwerfen</string>
+    <string name="keep_editing">Weiter bearbeiten</string>
 </resources>

@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Transaksi dihapus</string>
     <string name="undo">Urungkan</string>
     <string name="search_transactions">Cari transaksi</string>
+    <string name="discard_changes_title">Buang perubahan?</string>
+    <string name="discard_changes_message">Perubahan Anda pada transaksi ini belum disimpan.</string>
+    <string name="discard">Buang</string>
+    <string name="keep_editing">Lanjut mengedit</string>
 </resources>

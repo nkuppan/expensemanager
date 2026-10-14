@@ -80,4 +80,8 @@
     <string name="transaction_deleted">取引を削除しました</string>
     <string name="undo">元に戻す</string>
     <string name="search_transactions">取引を検索</string>
+    <string name="discard_changes_title">変更を破棄しますか？</string>
+    <string name="discard_changes_message">この取引の変更は保存されていません。</string>
+    <string name="discard">破棄</string>
+    <string name="keep_editing">編集を続ける</string>
 </resources>

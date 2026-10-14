@@ -37,6 +37,8 @@ data class TransactionCreateState(
     val repeat: RecurringFrequency? = null,
     /** Only new transactions can be made recurring; editing one never changes a rule. */
     val canRepeat: Boolean = true,
+    /** "Discard changes?" confirmation, shown when leaving a form with unsaved edits. */
+    val showDiscardDialog: Boolean = false,
 )
 
 enum class AccountSelection {

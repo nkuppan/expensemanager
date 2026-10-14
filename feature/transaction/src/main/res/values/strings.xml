@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Transaction deleted</string>
     <string name="undo">Undo</string>
     <string name="search_transactions">Search transactions</string>
+    <string name="discard_changes_title">Discard changes?</string>
+    <string name="discard_changes_message">Your changes to this transaction haven\'t been saved.</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep editing</string>
 </resources>

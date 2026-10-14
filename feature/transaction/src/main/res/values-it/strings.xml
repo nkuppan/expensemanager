@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Transazione eliminata</string>
     <string name="undo">Annulla</string>
     <string name="search_transactions">Cerca transazioni</string>
+    <string name="discard_changes_title">Annullare le modifiche?</string>
+    <string name="discard_changes_message">Le modifiche a questa transazione non sono state salvate.</string>
+    <string name="discard">Annulla modifiche</string>
+    <string name="keep_editing">Continua a modificare</string>
 </resources>

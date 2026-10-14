@@ -39,9 +39,9 @@ These can silently corrupt balances or lose user data.
 | 3.3 ✅ | Errors swallowed app-wide | 14× `is Resource.Error -> Unit` (e.g. `AccountCreateViewModel.kt:171,184`, `BudgetCreateViewModel.kt:165,220`); existing error strings unused | Shared error event → snackbar | M |
 | 3.4 ✅ | Export reports success when nothing was written | `BaseExportStrategy.kt:38-49` (legacy external storage fallback, swallowed `IOException`) | Write via SAF/MediaStore; propagate errors | S |
 | 3.5 ✅ | No search / swipe actions / undo on transaction list (README promises them) | `TransactionListScreen.kt:266-283`; `GetTransactionByNameUseCase` unused | Search on notes/category; swipe edit/delete with Undo snackbar | M |
-| 3.6 | Number pad not pre-filled when editing | `NumberPadDialogView` has no initial value | Pass current amount in | S |
+| 3.6 ✅ | Number pad not pre-filled when editing | `NumberPadDialogView` has no initial value | Pass current amount in | S |
 | 3.7 ✅ | Empty-state flash on cold start | `TransactionListViewModel.kt:34` starts with `emptyList()`; dashboard/analysis lack `isLoading` | Add loading state | S |
-| 3.8 | No "Discard changes?" when leaving a filled form | `TransactionCreateViewModel.kt:400` | Confirm dialog when dirty | S |
+| 3.8 ✅ | No "Discard changes?" when leaving a filled form | `TransactionCreateViewModel.kt:400` | Confirm dialog when dirty | S |
 | 3.9 | Dashboard account tap opens edit form | `DashboardViewModel.kt:253` | Account detail/history screen | M |
 | ✅ | Number pad Cancel reset amount to 0 | `NumberPadScreenView.kt` | **Fixed** (cancel now passes `null`) | — |
 
@@ -54,7 +54,7 @@ These can silently corrupt balances or lose user data.
 | 4.3 ✅ | Hard-coded English strings & fixed dark colours (`ExpenseWidget.kt`) | Move to string resources; follow system theme | S |
 | 4.4 | 756-line file inside `:app` | Extract `:feature:widget` | M |
 
-## Phase 5 — Accessibility, RTL, localisation (✅ mostly done in sprint 2 — remaining: widget 22dp buttons, delete dead `OverallStatusOverview.kt`)
+## Phase 5 — Accessibility, RTL, localisation ✅ (sprint 2; last two items — widget 48dp tap areas, dead `OverallStatusOverview.kt` — done in sprint 4)
 
 - Add `contentDescription` to actionable icons: `FilterView.kt:114-160`, `TransactionCreateScreen.kt:383-388`, back buttons in `CategoryListScreen.kt:93`, `CategoryDetailScreen.kt:91`, `BudgetDetailScreen.kt:86`, `IconSelectionScreen.kt:140`, `AppTopNavigationBar.kt:47`. **S**
 - Touch targets ≥ 48dp (`FilterView` 36dp, widget 22dp). **S**
@@ -74,8 +74,8 @@ These can silently corrupt balances or lose user data.
 | 6.5 ✅ | `collectAsState()` → `collectAsStateWithLifecycle()` (51 call sites) | S |
 | 6.6 ✅ | Room indices on `created_on`, `from_account_id`, `category_id`; move aggregates to SQL `SUM … GROUP BY` | S / M |
 | 6.7 ✅ | Replace shared `SimpleDateFormat`/`NumberFormat` singletons with `java.time` formatters per locale (`DateUtils.kt`); stop parse failures defaulting to "today" | S |
-| 6.8 | Layering: drop unused `:core:data` dep from `core/domain`, `:core:settings` from `core/model`; reduce feature→feature deps by moving shared UI to `core:ui` | S / M |
-| 6.9 | Remove dead `BootAlarmReceiver` (disabled, WorkManager covers reboots) | S |
+| 6.8 ◐ | Layering: drop unused `:core:data` dep from `core/domain`, `:core:settings` from `core/model`; reduce feature→feature deps by moving shared UI to `core:ui` — _first two done (sprint 4); `core:ui` extraction still open_ | S / M |
+| 6.9 ✅ | Remove dead `BootAlarmReceiver` (disabled, WorkManager covers reboots) | S |
 | 6.10 | Dependencies: replace MPAndroidChart (unmaintained, JitPack) with Vico; drop deprecated accompanist-permissions; coil3; remove Sonatype snapshots repo; add detekt; drop 2023 lint baseline | M |
 | 6.11 | Split large files: `DashboardScreen.kt` (734), `TransactionCreateScreen.kt` (718), `TransactionCreateViewModel.kt` (604) | M |
 
@@ -99,4 +99,5 @@ These can silently corrupt balances or lose user data.
 | 1 ✅ | 1.1, 1.2, 1.3, 2.1, 3.1, 3.2, 6.1 + tests for each — done 12 Oct 2026, uncommitted; needs local build + test run |
 | 2 ✅ | 1.4, 1.5, 1.6, 2.3, 2.4, 3.4, 4.1–4.3, Phase 5 — done 12 Oct 2026, uncommitted; needs local build + test run |
 | 3 ✅ | 1.7, 2.2, 3.3, 3.5, 6.4–6.7 (+3.7) — done 12 Oct 2026, uncommitted; needs build, tests, release smoke test. 6.3 baseline profile still open (needs a device run); 6.6 SQL aggregates still open |
-| 4+ | 1.8 (money migration), 6.8–6.11, Phase 7 roadmap |
+| 4 ◐ | 3.8, Phase 5 leftovers, 6.8 (partial), 6.9 — done 14 Oct 2026, uncommitted; needs build + tests. (3.6 was already in the code.) Still open: 1.8, 6.3, 6.6 SQL aggregates, 3.9, 4.4, 6.8 `core:ui`, 6.10, 6.11 |
+| 5+ | 1.8 (money migration), remaining 6.x, Phase 7 roadmap |

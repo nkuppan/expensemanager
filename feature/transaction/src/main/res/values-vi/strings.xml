@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Đã xóa giao dịch</string>
     <string name="undo">Hoàn tác</string>
     <string name="search_transactions">Tìm giao dịch</string>
+    <string name="discard_changes_title">Hủy thay đổi?</string>
+    <string name="discard_changes_message">Các thay đổi đối với giao dịch này chưa được lưu.</string>
+    <string name="discard">Hủy</string>
+    <string name="keep_editing">Tiếp tục chỉnh sửa</string>
 </resources>

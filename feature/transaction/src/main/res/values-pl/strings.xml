@@ -80,4 +80,8 @@
     <string name="transaction_deleted">Transakcja usunięta</string>
     <string name="undo">Cofnij</string>
     <string name="search_transactions">Szukaj transakcji</string>
+    <string name="discard_changes_title">Odrzucić zmiany?</string>
+    <string name="discard_changes_message">Zmiany w tej transakcji nie zostały zapisane.</string>
+    <string name="discard">Odrzuć</string>
+    <string name="keep_editing">Edytuj dalej</string>
 </resources>

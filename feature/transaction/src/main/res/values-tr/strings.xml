@@ -80,4 +80,8 @@
     <string name="transaction_deleted">İşlem silindi</string>
     <string name="undo">Geri al</string>
     <string name="search_transactions">İşlem ara</string>
+    <string name="discard_changes_title">Değişiklikler silinsin mi?</string>
+    <string name="discard_changes_message">Bu işlemdeki değişiklikleriniz kaydedilmedi.</string>
+    <string name="discard">Sil</string>
+    <string name="keep_editing">Düzenlemeye devam et</string>
 </resources>
