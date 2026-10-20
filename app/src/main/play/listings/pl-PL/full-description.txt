@@ -1,0 +1,49 @@
+Przejmij kontrolę nad swoimi pieniędzmi z Expense Manager — prostą aplikacją bez reklam do śledzenia wydatków, trzymania się budżetu i sprawdzania, na co dokładnie idą Twoje pieniądze.
+
+Dodaj wydatek w kilka sekund, przypisz go do kategorii i konta, a od razu zobaczysz czytelne wykresy przychodów, wydatków i oszczędności. Bez zbędnych dodatków, bez reklam i bez rejestracji.
+
+<b>💰 Śledź każdą transakcję</b>
+• Zapisuj wydatki, przychody i przelewy między kontami
+• Dodawaj kategorie, notatki, daty i zdjęcia paragonów do każdego wpisu
+• Ustawiaj transakcje cykliczne dla rachunków, czynszu i wypłaty
+• Zarządzaj wieloma kontami: gotówka, konto bankowe, oszczędności, karty kredytowe i inne
+• Wyszukuj i filtruj transakcje według konta, typu lub daty
+
+<b>📊 Czytelne statystyki</b>
+• Pulpit z przychodami, wydatkami i saldem w jednym miejscu
+• Wykresy według kategorii pokazują, na co wydajesz
+• Trendy wydatków według dnia, tygodnia, miesiąca lub roku
+• Szczegółowe podsumowania przychodów i wydatków
+
+<b>🎯 Budżety, które pomagają trzymać kurs</b>
+• Ustal miesięczne budżety na wszystkie wydatki lub wybrane kategorie i konta
+• Od razu widać, ile wydano i ile zostało
+• Powiadomienia, gdy zbliżasz się do limitu lub go przekraczasz
+
+<b>🔔 Nie zapomnij zapisać</b>
+• Opcjonalne codzienne przypomnienie o wybranej godzinie
+• Widżet na ekranie głównym z saldem, ostatnimi transakcjami i szybkim dodawaniem
+
+<b>🔒 Prywatnie i bezpiecznie</b>
+• Twoje dane finansowe są przechowywane tylko na Twoim urządzeniu
+• Bez konta i rejestracji
+• Blokada aplikacji odciskiem palca / biometrią
+• Kopia zapasowa i przywracanie chronione hasłem — przenieś dane na nowy telefon w dowolnej chwili
+
+<b>📁 Eksport danych</b>
+• Eksport do CSV dla arkuszy kalkulacyjnych
+• Eksport do PDF do łatwego udostępniania i archiwizacji
+
+<b>🎨 Stworzona dla Ciebie</b>
+• Przejrzysty, nowoczesny Material Design
+• Jasny i ciemny motyw
+• Obsługa dowolnej waluty
+• Dostępna w 16 językach, w tym po polsku i angielsku
+
+<b>✨ Dlaczego Expense Manager?</b>
+• 100% bez reklam
+• Prosta i szybka — na co dzień
+• Działa offline
+• Open source i aktywnie rozwijana
+
+Zacznij już dziś i buduj lepsze nawyki finansowe — wydatek po wydatku.

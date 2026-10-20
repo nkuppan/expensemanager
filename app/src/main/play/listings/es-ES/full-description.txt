@@ -1,0 +1,49 @@
+Toma el control de tu dinero con Expense Manager: una forma sencilla y sin anuncios de registrar tus gastos, cumplir tus presupuestos y saber exactamente a dónde va tu dinero.
+
+Anota un gasto en segundos, organízalo por categoría y cuenta, y consulta al instante gráficos claros de tus ingresos, gastos y ahorros. Sin complicaciones, sin anuncios y sin registro.
+
+<b>💰 Registra cada movimiento</b>
+• Anota gastos, ingresos y transferencias entre cuentas
+• Añade categorías, notas, fechas y fotos de recibos a cada movimiento
+• Configura movimientos recurrentes para facturas, alquiler y nómina
+• Gestiona varias cuentas: efectivo, banco, ahorros, tarjetas de crédito y más
+• Busca y filtra movimientos por cuenta, tipo o fecha
+
+<b>📊 Estadísticas claras</b>
+• Panel con tus ingresos, gastos y saldo neto de un vistazo
+• Gráficos por categoría que muestran en qué gastas
+• Tendencias de gasto por día, semana, mes o año
+• Resúmenes detallados de ingresos frente a gastos
+
+<b>🎯 Presupuestos que te mantienen en el camino</b>
+• Define presupuestos mensuales generales o por categoría y cuenta
+• Consulta de un vistazo cuánto has gastado y cuánto te queda
+• Recibe un aviso cuando estés cerca de tu límite o lo superes
+
+<b>🔔 No olvides ningún gasto</b>
+• Recordatorio diario opcional a la hora que elijas
+• Widget de pantalla de inicio con tu saldo, últimos movimientos y botón para añadir
+
+<b>🔒 Privado y seguro</b>
+• Tus datos financieros se guardan solo en tu dispositivo
+• Sin cuentas ni registro
+• Bloqueo de la app con huella digital / biometría
+• Copia de seguridad y restauración protegidas con contraseña: pasa tus datos a un móvil nuevo cuando quieras
+
+<b>📁 Exporta tus datos</b>
+• Exporta a CSV para hojas de cálculo
+• Exporta a PDF para compartir y archivar fácilmente
+
+<b>🎨 Hecha para ti</b>
+• Diseño Material limpio y moderno
+• Temas claro y oscuro
+• Compatible con cualquier moneda
+• Disponible en 16 idiomas, incluidos español e inglés
+
+<b>✨ ¿Por qué Expense Manager?</b>
+• 100 % sin anuncios
+• Sencilla y rápida, pensada para el día a día
+• Funciona sin conexión
+• Código abierto y en desarrollo activo
+
+Empieza hoy y crea mejores hábitos financieros, gasto a gasto.

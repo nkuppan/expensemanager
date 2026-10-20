@@ -1,0 +1,49 @@
+Assuma o controle do seu dinheiro com o Expense Manager: um jeito simples e sem anúncios de registrar seus gastos, manter seus orçamentos e entender exatamente para onde vai o seu dinheiro.
+
+Registre uma despesa em segundos, organize por categoria e conta e veja na hora gráficos claros de receitas, despesas e economias. Sem complicação, sem anúncios e sem cadastro.
+
+<b>💰 Acompanhe cada transação</b>
+• Registre despesas, receitas e transferências entre contas
+• Adicione categorias, notas, datas e fotos de recibos a cada lançamento
+• Crie transações recorrentes para contas, aluguel e salário
+• Gerencie várias contas: dinheiro, banco, poupança, cartões de crédito e mais
+• Pesquise e filtre transações por conta, tipo ou data
+
+<b>📊 Relatórios e estatísticas claros</b>
+• Painel com receitas, despesas e saldo em um relance
+• Gráficos por categoria mostrando para onde vai seu dinheiro
+• Tendências de gastos por dia, semana, mês ou ano
+• Resumos detalhados de receitas x despesas
+
+<b>🎯 Orçamentos que mantêm você no caminho</b>
+• Defina orçamentos mensais gerais ou por categoria e conta
+• Veja rapidamente quanto já gastou e quanto ainda resta
+• Receba um aviso quando estiver perto do limite ou passar dele
+
+<b>🔔 Nunca esqueça de registrar</b>
+• Lembrete diário opcional no horário que você escolher
+• Widget na tela inicial com saldo, transações recentes e adição com um toque
+
+<b>🔒 Privado e seguro</b>
+• Seus dados financeiros ficam salvos apenas no seu aparelho
+• Sem conta e sem cadastro
+• Bloqueio do app com digital / biometria
+• Backup e restauração protegidos por senha: leve seus dados para um celular novo quando quiser
+
+<b>📁 Exporte seus dados</b>
+• Exporte para CSV e use em planilhas
+• Exporte para PDF para compartilhar e arquivar com facilidade
+
+<b>🎨 Feito para você</b>
+• Design Material limpo e moderno
+• Temas claro e escuro
+• Compatível com qualquer moeda
+• Disponível em 16 idiomas, incluindo português e inglês
+
+<b>✨ Por que o Expense Manager?</b>
+• 100% sem anúncios
+• Simples e rápido, feito para o dia a dia
+• Funciona offline
+• Código aberto e em desenvolvimento ativo
+
+Comece hoje e crie hábitos financeiros melhores, uma despesa de cada vez.

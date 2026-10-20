@@ -97,3 +97,9 @@ lint/tmp/
 #Keys
 keys
 
+
+# Publishing secrets written to the repo root by CI or for local runs
+play_publish.json
+credentials.properties
+android_keystore.jks
+firebase_distribution_service_account.json

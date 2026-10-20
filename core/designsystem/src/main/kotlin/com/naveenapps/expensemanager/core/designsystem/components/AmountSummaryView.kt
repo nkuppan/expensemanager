@@ -381,18 +381,18 @@ private fun CompactBalanceCell(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
-    val value = "100000.0$"
+    val AMOUNT_VALUE = "100000.0$"
     ExpenseManagerPreviewTheme {
         AmountInfoWidget(
-            expenseAmount = value,
-            incomeAmount = value,
-            balanceAmount = value,
+            expenseAmount = AMOUNT_VALUE,
+            incomeAmount = AMOUNT_VALUE,
+            balanceAmount = AMOUNT_VALUE,
             transactionPeriod = "This Month(Oct 2023)",
         )
         AmountInfoWidgetCompact(
-            expenseAmount = value,
-            incomeAmount = value,
-            balanceAmount = value,
+            expenseAmount = AMOUNT_VALUE,
+            incomeAmount = AMOUNT_VALUE,
+            balanceAmount = AMOUNT_VALUE,
             transactionPeriod = "This Month(Oct 2023)",
         )
     }

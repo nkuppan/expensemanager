@@ -1,0 +1,49 @@
+Prendi il controllo dei tuoi soldi con Expense Manager: un modo semplice e senza pubblicità per registrare le spese, rispettare i budget e capire esattamente dove finiscono i tuoi soldi.
+
+Registra una spesa in pochi secondi, organizzala per categoria e conto e visualizza subito grafici chiari di entrate, uscite e risparmi. Niente fronzoli, niente pubblicità, nessuna registrazione.
+
+<b>💰 Tieni traccia di ogni movimento</b>
+• Registra spese, entrate e trasferimenti tra conti
+• Aggiungi categorie, note, date e foto degli scontrini a ogni movimento
+• Imposta movimenti ricorrenti per bollette, affitto e stipendio
+• Gestisci più conti: contanti, banca, risparmi, carte di credito e altro
+• Cerca e filtra i movimenti per conto, tipo o data
+
+<b>📊 Statistiche chiare</b>
+• Dashboard con entrate, uscite e saldo netto a colpo d'occhio
+• Grafici per categoria che mostrano dove vanno i tuoi soldi
+• Andamento delle spese per giorno, settimana, mese o anno
+• Riepiloghi dettagliati di entrate e uscite
+
+<b>🎯 Budget che ti tengono in carreggiata</b>
+• Imposta budget mensili generali o per categorie e conti specifici
+• Vedi subito quanto hai speso e quanto ti resta
+• Ricevi un avviso quando sei vicino al limite o lo superi
+
+<b>🔔 Non dimenticare mai una spesa</b>
+• Promemoria giornaliero facoltativo all'ora che preferisci
+• Widget per la schermata Home con saldo, ultimi movimenti e aggiunta rapida
+
+<b>🔒 Privato e sicuro</b>
+• I tuoi dati finanziari restano solo sul tuo dispositivo
+• Nessun account o registrazione
+• Blocco dell'app con impronta digitale / biometria
+• Backup e ripristino protetti da passphrase: trasferisci i dati su un nuovo telefono quando vuoi
+
+<b>📁 Esporta i tuoi dati</b>
+• Esporta in CSV per i fogli di calcolo
+• Esporta in PDF per condividere e archiviare facilmente
+
+<b>🎨 Pensata per te</b>
+• Design Material pulito e moderno
+• Tema chiaro e scuro
+• Supporta qualsiasi valuta
+• Disponibile in 16 lingue, tra cui italiano e inglese
+
+<b>✨ Perché Expense Manager?</b>
+• 100% senza pubblicità
+• Semplice e veloce, pensata per l'uso quotidiano
+• Funziona offline
+• Open source e in sviluppo attivo
+
+Inizia oggi e costruisci abitudini finanziarie migliori, una spesa alla volta.
