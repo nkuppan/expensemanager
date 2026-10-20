@@ -9,7 +9,6 @@ on:
       - main
     paths:
       - 'app/src/main/play/listings/**'
-      - 'app/src/main/play/default-language.txt'
   workflow_dispatch:
 
 concurrency:
