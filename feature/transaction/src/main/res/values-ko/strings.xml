@@ -84,4 +84,17 @@
     <string name="discard_changes_message">이 거래의 변경사항이 저장되지 않았습니다.</string>
     <string name="discard">삭제</string>
     <string name="keep_editing">계속 편집</string>
+    <string name="search_recurring">반복 거래 검색</string>
+    <string name="search_recurring_hint">메모, 카테고리, 계좌, 금액 검색</string>
+    <string name="recurring_no_matches">검색과 일치하는 반복 거래가 없습니다</string>
+    <string name="recurring_more_options">더보기</string>
+    <string name="recurring_edit">편집</string>
+    <string name="edit_recurring_transaction">반복 거래 편집</string>
+    <string name="recurring_next_date">다음 날짜</string>
+    <string name="recurring_schedule_change_hint">저장하면 새 일정이 %1$s부터 시작됩니다.</string>
+    <string name="recurring_edit_future_only">변경 사항은 앞으로의 거래에만 적용됩니다. 이미 기록된 거래는 그대로 유지됩니다.</string>
+    <string name="recurring_next_date_in_past">다음 날짜를 오늘 이후로 선택하세요.</string>
+    <string name="recurring_part_of_series">반복 시리즈의 일부</string>
+    <string name="recurring_edit_series">시리즈를 편집해 앞으로의 거래 변경</string>
+    <string name="add_recurring_transaction">반복 거래 추가</string>
 </resources>

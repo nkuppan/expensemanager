@@ -25,4 +25,10 @@ sealed class DashboardAction {
     data object OpenCurrency : DashboardAction()
 
     data object DismissGettingStarted : DashboardAction()
+
+    /** "Fix" on the automatic-backup-failed banner. */
+    data object FixAutoBackup : DashboardAction()
+
+    /** "Later" on the banner: hides it for a few days, or until the next fix and failure. */
+    data object SnoozeAutoBackupWarning : DashboardAction()
 }

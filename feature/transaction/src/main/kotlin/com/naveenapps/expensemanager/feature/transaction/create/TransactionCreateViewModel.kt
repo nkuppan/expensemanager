@@ -8,6 +8,8 @@ import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.FindRecurringTransactionByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.ProcessRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -22,6 +24,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -77,9 +80,20 @@ class TransactionCreateViewModel(
     private val analyticsRepository: AnalyticsRepository,
     private val budgetAlertTrigger: BudgetAlertTrigger,
     private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase,
+    private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase,
 ) : ViewModel() {
 
     private val sessionCreatedAttachmentPaths = mutableListOf<String>()
+
+    // Repeat pre-selected by the caller (only for a new transaction). It's the starting point,
+    // so leaving it as-is doesn't count as an unsaved change.
+    private val initialRepeat: RecurringFrequency? =
+        if (savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank()) {
+            savedStateHandle.get<String>(ExpenseManagerArgsNames.REPEAT)
+                ?.let { name -> RecurringFrequency.entries.find { it.name == name } }
+        } else {
+            null
+        }
 
     private val _event = Channel<TransactionCreateEvent>()
     val event = _event.receiveAsFlow()
@@ -125,6 +139,7 @@ class TransactionCreateViewModel(
             showTimeSelection = false,
             showDateSelection = false,
             accountSelection = AccountSelection.FROM_ACCOUNT,
+            repeat = initialRepeat,
         ),
     )
     var state = _state.asStateFlow()
@@ -285,6 +300,10 @@ class TransactionCreateViewModel(
             is Resource.Success -> {
                 val transaction = response.data
                 editingTransaction = transaction
+                // Only link to the series if its rule still exists (stopped or re-scheduled
+                // rules are gone; this transaction then stands on its own).
+                val recurringRuleId = ProcessRecurringTransactionsUseCase.ruleIdFromOccurrenceId(transaction.id)
+                    ?.takeIf { findRecurringTransactionByIdUseCase.invoke(it) != null }
                 transactionType.value = transaction.type
                 _state.update { current ->
                     current.copy(
@@ -311,6 +330,7 @@ class TransactionCreateViewModel(
                         } ?: defaultAccount,
                         showDeleteButton = true,
                         canRepeat = false,
+                        recurringRuleId = recurringRuleId,
                         attachments = transaction.attachments,
                     )
                 }
@@ -502,7 +522,7 @@ class TransactionCreateViewModel(
             ?: return amount > 0.0 ||
                 state.notes.value.isNotBlank() ||
                 state.attachments.isNotEmpty() ||
-                state.repeat != null
+                state.repeat != initialRepeat
 
         // Round-trip the stored amount through the edit formatter so precision beyond the
         // currency's decimals doesn't register as a change.
@@ -627,6 +647,10 @@ class TransactionCreateViewModel(
             TransactionCreateAction.Save -> save()
 
             is TransactionCreateAction.SelectRepeat -> _state.update { it.copy(repeat = action.frequency) }
+
+            TransactionCreateAction.OpenRecurringSeries -> _state.value.recurringRuleId?.let {
+                appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactionEdit(it))
+            }
 
             is TransactionCreateAction.OpenAccountCreate -> openAccountCreate()
 

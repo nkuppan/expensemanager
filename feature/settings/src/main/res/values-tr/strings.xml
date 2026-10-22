@@ -72,4 +72,21 @@
     <string name="transaction_entry">İşlem girişi</string>
     <string name="auto_open_calculator">Hesap makinesini otomatik aç</string>
     <string name="auto_open_calculator_message">Yeni işlem eklerken hesap makinesini hemen göster</string>
+    <string name="auto_backup">Otomatik yedekleme</string>
+    <string name="auto_backup_setting_message">Bu cihazdaki bir klasöre planlı olarak yedekle</string>
+    <string name="auto_backup_toggle_message">Aşağıdaki klasöre otomatik olarak yedek kaydet</string>
+    <string name="auto_backup_destination">Hedef</string>
+    <string name="auto_backup_folder">Yedek klasörü</string>
+    <string name="auto_backup_choose_folder">Klasör seç</string>
+    <string name="auto_backup_frequency">Sıklık</string>
+    <string name="auto_backup_daily">Günlük</string>
+    <string name="auto_backup_weekly">Haftalık</string>
+    <string name="auto_backup_status">Durum</string>
+    <string name="auto_backup_last">Son yedek: %1$s, %2$s</string>
+    <string name="auto_backup_never">Henüz otomatik yedek yok</string>
+    <string name="auto_backup_now">Şimdi yedekle</string>
+    <string name="auto_backup_folder_unavailable">Yedek klasörüne erişilemiyor. Tekrar seçin.</string>
+    <string name="auto_backup_write_failed">Son yedekleme başarısız oldu. Tekrar denenecek.</string>
+    <string name="auto_backup_folder_error">O klasöre erişim alınamadı. Başka bir klasör deneyin.</string>
+    <string name="auto_backup_info">En yeni %1$d otomatik yedek saklanır, eskiler silinir. Manuel yedeklerinize asla dokunulmaz. Otomatik yedekler uygulamanın yerleşik anahtarını kullanır; bu yüzden klasörü gizli tutun. Parolayla korunan bir kopya için Ayarlar\'daki Yedekle\'yi kullanın. Geri yükleme ikisini de okur.</string>
 </resources>

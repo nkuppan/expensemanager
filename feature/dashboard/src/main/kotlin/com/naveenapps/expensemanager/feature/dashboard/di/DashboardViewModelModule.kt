@@ -19,6 +19,7 @@ val DashboardViewModelModule = module {
             settingsRepository = get(),
             feedbackRepository = get(),
             analyticsRepository = get(),
+            autoBackupRepository = get(),
         )
     }
 }

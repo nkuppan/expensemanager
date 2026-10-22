@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Bạn đã chi %1$s trên %2$s. Đã đến lúc chậm lại một chút.</string>
     <string name="budget_alert_over_title">%1$s đã vượt ngân sách</string>
     <string name="budget_alert_over_body">Bạn đã chi %1$s trên ngân sách %2$s.</string>
+    <string name="auto_backup_failed_title">Sao lưu tự động thất bại</string>
+    <string name="auto_backup_failed_folder_body">Không truy cập được thư mục sao lưu. Chạm để chọn lại.</string>
+    <string name="auto_backup_failed_write_body">Không thể sao lưu dữ liệu. Chạm để kiểm tra cài đặt sao lưu.</string>
+    <string name="auto_backup_failed_action">Khắc phục</string>
 </resources>

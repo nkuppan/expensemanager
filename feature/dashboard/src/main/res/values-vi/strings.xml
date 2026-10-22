@@ -33,4 +33,9 @@
     <string name="step_currency_title">Chọn tiền tệ</string>
     <string name="step_currency_description">Số tiền được hiển thị bằng tiền tệ này</string>
     <string name="step_currency_action">Đổi tiền tệ</string>
+    <string name="auto_backup_warning_title">Sao lưu tự động không hoạt động</string>
+    <string name="auto_backup_warning_folder">Không truy cập được thư mục sao lưu. Hãy chọn lại để giữ dữ liệu an toàn.</string>
+    <string name="auto_backup_warning_write">Các lần sao lưu gần đây thất bại. Hãy kiểm tra cài đặt để giữ dữ liệu an toàn.</string>
+    <string name="auto_backup_warning_later">Để sau</string>
+    <string name="auto_backup_warning_fix">Khắc phục</string>
 </resources>

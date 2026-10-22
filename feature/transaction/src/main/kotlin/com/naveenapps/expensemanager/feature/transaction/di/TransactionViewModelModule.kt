@@ -4,6 +4,7 @@ import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreat
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListViewModel
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadViewModel
 import com.naveenapps.expensemanager.feature.transaction.recurring.RecurringTransactionsViewModel
+import com.naveenapps.expensemanager.feature.transaction.recurring.edit.RecurringTransactionEditViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -28,6 +29,7 @@ val TransactionViewModelModule = module {
             analyticsRepository = get(),
             budgetAlertTrigger = get(),
             createRecurringTransactionUseCase = get(),
+            findRecurringTransactionByIdUseCase = get(),
         )
     }
     viewModel {
@@ -49,6 +51,21 @@ val TransactionViewModelModule = module {
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
             deleteRecurringTransactionUseCase = get(),
+            appComposeNavigator = get(),
+            analyticsRepository = get(),
+        )
+    }
+    viewModel {
+        RecurringTransactionEditViewModel(
+            savedStateHandle = get(),
+            findRecurringTransactionByIdUseCase = get(),
+            updateRecurringTransactionUseCase = get(),
+            deleteRecurringTransactionUseCase = get(),
+            getCurrencyUseCase = get(),
+            getAllAccountsUseCase = get(),
+            getAllCategoryUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            numberFormatRepository = get(),
             appComposeNavigator = get(),
             analyticsRepository = get(),
         )

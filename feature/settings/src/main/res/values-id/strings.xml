@@ -72,4 +72,21 @@
     <string name="transaction_entry">Entri transaksi</string>
     <string name="auto_open_calculator">Buka kalkulator otomatis</string>
     <string name="auto_open_calculator_message">Tampilkan kalkulator saat menambahkan transaksi baru</string>
+    <string name="auto_backup">Cadangan otomatis</string>
+    <string name="auto_backup_setting_message">Cadangkan ke folder di perangkat ini sesuai jadwal</string>
+    <string name="auto_backup_toggle_message">Simpan cadangan ke folder di bawah secara otomatis</string>
+    <string name="auto_backup_destination">Tujuan</string>
+    <string name="auto_backup_folder">Folder cadangan</string>
+    <string name="auto_backup_choose_folder">Pilih folder</string>
+    <string name="auto_backup_frequency">Seberapa sering</string>
+    <string name="auto_backup_daily">Harian</string>
+    <string name="auto_backup_weekly">Mingguan</string>
+    <string name="auto_backup_status">Status</string>
+    <string name="auto_backup_last">Cadangan terakhir: %1$s, %2$s</string>
+    <string name="auto_backup_never">Belum ada cadangan otomatis</string>
+    <string name="auto_backup_now">Cadangkan sekarang</string>
+    <string name="auto_backup_folder_unavailable">Folder cadangan tidak dapat diakses. Pilih lagi.</string>
+    <string name="auto_backup_write_failed">Cadangan terakhir gagal. Akan dicoba lagi.</string>
+    <string name="auto_backup_folder_error">Tidak bisa mendapatkan akses ke folder itu. Coba folder lain.</string>
+    <string name="auto_backup_info">%1$d cadangan otomatis terbaru disimpan dan yang lebih lama dihapus. Cadangan manual Anda tidak pernah disentuh. Cadangan otomatis memakai kunci bawaan aplikasi, jadi jaga folder tetap privat. Untuk salinan berfrasa sandi, gunakan Cadangkan di Setelan. Pulihkan dapat membaca keduanya.</string>
 </resources>

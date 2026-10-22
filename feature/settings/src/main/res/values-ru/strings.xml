@@ -72,4 +72,21 @@
     <string name="transaction_entry">Ввод операций</string>
     <string name="auto_open_calculator">Открывать калькулятор автоматически</string>
     <string name="auto_open_calculator_message">Показывать калькулятор сразу при добавлении новой операции</string>
+    <string name="auto_backup">Автоматическое резервное копирование</string>
+    <string name="auto_backup_setting_message">Сохранять копии в папку на этом устройстве по расписанию</string>
+    <string name="auto_backup_toggle_message">Автоматически сохранять копию в выбранную ниже папку</string>
+    <string name="auto_backup_destination">Место сохранения</string>
+    <string name="auto_backup_folder">Папка для копий</string>
+    <string name="auto_backup_choose_folder">Выбрать папку</string>
+    <string name="auto_backup_frequency">Как часто</string>
+    <string name="auto_backup_daily">Ежедневно</string>
+    <string name="auto_backup_weekly">Еженедельно</string>
+    <string name="auto_backup_status">Состояние</string>
+    <string name="auto_backup_last">Последняя копия: %1$s, %2$s</string>
+    <string name="auto_backup_never">Автоматических копий пока нет</string>
+    <string name="auto_backup_now">Создать копию сейчас</string>
+    <string name="auto_backup_folder_unavailable">Нет доступа к папке для копий. Выберите её снова.</string>
+    <string name="auto_backup_write_failed">Последнее копирование не удалось. Попытка будет повторена.</string>
+    <string name="auto_backup_folder_error">Не удалось получить доступ к этой папке. Выберите другую.</string>
+    <string name="auto_backup_info">Хранятся %1$d последних автоматических копий, более старые удаляются. Ручные копии не затрагиваются. Автоматические копии используют встроенный ключ приложения, поэтому храните папку в недоступном для других месте. Для копии с паролем используйте «Резервное копирование» в настройках. Восстановление читает оба вида.</string>
 </resources>

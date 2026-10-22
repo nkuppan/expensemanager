@@ -13,7 +13,9 @@ enum class RecurringFrequency {
  * A repeating transaction: the template every occurrence is copied from, and when the next one
  * is due. Occurrence n falls on [startDate] + n × [frequency] (computed from the start, so a
  * rule on the 31st lands on the last day of shorter months and goes back to the 31st after).
- * The original transaction the user saved is occurrence 0.
+ * For a rule created from a transaction, that transaction is occurrence 0 and [nextOccurrence]
+ * starts at 1. A rule re-created after a schedule edit starts at 0 (its first occurrence is
+ * [startDate] itself), see UpdateRecurringTransactionUseCase.
  */
 data class RecurringTransaction(
     val id: String,

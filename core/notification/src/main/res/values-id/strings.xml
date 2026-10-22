@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Anda sudah menghabiskan %1$s dari %2$s. Saatnya sedikit berhemat.</string>
     <string name="budget_alert_over_title">%1$s melebihi anggaran</string>
     <string name="budget_alert_over_body">Anda sudah menghabiskan %1$s dari anggaran %2$s.</string>
+    <string name="auto_backup_failed_title">Cadangan otomatis gagal</string>
+    <string name="auto_backup_failed_folder_body">Folder cadangan tidak dapat diakses. Ketuk untuk memilihnya lagi.</string>
+    <string name="auto_backup_failed_write_body">Data Anda tidak dapat dicadangkan. Ketuk untuk memeriksa setelan cadangan.</string>
+    <string name="auto_backup_failed_action">Perbaiki</string>
 </resources>

@@ -72,4 +72,21 @@
     <string name="transaction_entry">إدخال المعاملات</string>
     <string name="auto_open_calculator">فتح الآلة الحاسبة تلقائيًا</string>
     <string name="auto_open_calculator_message">عرض الآلة الحاسبة فور إضافة معاملة جديدة</string>
+    <string name="auto_backup">نسخ احتياطي تلقائي</string>
+    <string name="auto_backup_setting_message">نسخ احتياطي إلى مجلد على هذا الجهاز وفق جدول</string>
+    <string name="auto_backup_toggle_message">حفظ نسخة احتياطية في المجلد أدناه تلقائيًا</string>
+    <string name="auto_backup_destination">الوجهة</string>
+    <string name="auto_backup_folder">مجلد النسخ الاحتياطي</string>
+    <string name="auto_backup_choose_folder">اختر مجلدًا</string>
+    <string name="auto_backup_frequency">كم مرة</string>
+    <string name="auto_backup_daily">يوميًا</string>
+    <string name="auto_backup_weekly">أسبوعيًا</string>
+    <string name="auto_backup_status">الحالة</string>
+    <string name="auto_backup_last">آخر نسخة احتياطية: %1$s، %2$s</string>
+    <string name="auto_backup_never">لا توجد نسخة احتياطية تلقائية بعد</string>
+    <string name="auto_backup_now">نسخ احتياطي الآن</string>
+    <string name="auto_backup_folder_unavailable">تعذّر الوصول إلى مجلد النسخ الاحتياطي. اختره مرة أخرى.</string>
+    <string name="auto_backup_write_failed">فشلت آخر نسخة احتياطية. ستتم المحاولة مرة أخرى.</string>
+    <string name="auto_backup_folder_error">تعذّر الحصول على إذن الوصول إلى هذا المجلد. جرّب مجلدًا آخر.</string>
+    <string name="auto_backup_info">يتم الاحتفاظ بأحدث %1$d نسخ احتياطية تلقائية وحذف الأقدم. لا يتم المساس بنسخك اليدوية أبدًا. تستخدم النسخ التلقائية المفتاح المدمج في التطبيق، لذا احرص على خصوصية المجلد. للحصول على نسخة محمية بعبارة مرور، استخدم النسخ الاحتياطي في الإعدادات. الاستعادة تقرأ كليهما.</string>
 </resources>

@@ -33,4 +33,9 @@
     <string name="step_currency_title">Choose your currency</string>
     <string name="step_currency_description">Amounts are shown in this currency</string>
     <string name="step_currency_action">Change currency</string>
+    <string name="auto_backup_warning_title">Automatic backup isn\'t working</string>
+    <string name="auto_backup_warning_folder">The backup folder can\'t be reached. Choose it again to keep your data safe.</string>
+    <string name="auto_backup_warning_write">Recent backups failed. Check your backup settings to keep your data safe.</string>
+    <string name="auto_backup_warning_later">Later</string>
+    <string name="auto_backup_warning_fix">Fix</string>
 </resources>

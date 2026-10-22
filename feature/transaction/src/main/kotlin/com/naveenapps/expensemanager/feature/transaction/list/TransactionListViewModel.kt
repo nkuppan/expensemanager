@@ -20,6 +20,7 @@ import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
+import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -100,6 +101,10 @@ class TransactionListViewModel(
         )
     }
 
+    private fun openRecurringTransactions() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactions)
+    }
+
     private fun closePage() {
         appComposeNavigator.popBackStack()
     }
@@ -152,6 +157,7 @@ class TransactionListViewModel(
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
             is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
             is TransactionListAction.Search -> search(action.query)
+            TransactionListAction.OpenRecurringTransactions -> openRecurringTransactions()
             is TransactionListAction.DeleteTransaction -> deleteTransaction(action.transactionId)
             TransactionListAction.UndoDelete -> undoDelete()
             TransactionListAction.UndoExpired -> finalizePendingDelete()
@@ -164,12 +170,7 @@ class TransactionListViewModel(
  * account names. Built-in categories store an English name, so a translated category label
  * only matches by its English name.
  */
-internal fun Transaction.matches(query: String): Boolean {
-    val needle = query.trim()
-    if (needle.isEmpty()) return true
-    return listOfNotNull(notes, category.name, fromAccount.name, toAccount?.name)
-        .any { it.contains(needle, ignoreCase = true) }
-}
+internal fun Transaction.matches(query: String): Boolean = matchesSearch(query, listOf(notes, category.name, fromAccount.name, toAccount?.name))
 
 fun List<Transaction>.toTransactionSum() = this.sumOf {
     when (it.type) {

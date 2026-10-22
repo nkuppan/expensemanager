@@ -72,4 +72,21 @@
     <string name="transaction_entry">Transaktionseingabe</string>
     <string name="auto_open_calculator">Rechner automatisch öffnen</string>
     <string name="auto_open_calculator_message">Rechner direkt beim Hinzufügen einer neuen Transaktion anzeigen</string>
+    <string name="auto_backup">Automatische Sicherung</string>
+    <string name="auto_backup_setting_message">Nach Zeitplan in einen Ordner auf diesem Gerät sichern</string>
+    <string name="auto_backup_toggle_message">Automatisch eine Sicherung im unten gewählten Ordner speichern</string>
+    <string name="auto_backup_destination">Ziel</string>
+    <string name="auto_backup_folder">Sicherungsordner</string>
+    <string name="auto_backup_choose_folder">Ordner auswählen</string>
+    <string name="auto_backup_frequency">Wie oft</string>
+    <string name="auto_backup_daily">Täglich</string>
+    <string name="auto_backup_weekly">Wöchentlich</string>
+    <string name="auto_backup_status">Status</string>
+    <string name="auto_backup_last">Letzte Sicherung: %1$s, %2$s</string>
+    <string name="auto_backup_never">Noch keine automatische Sicherung</string>
+    <string name="auto_backup_now">Jetzt sichern</string>
+    <string name="auto_backup_folder_unavailable">Sicherungsordner nicht erreichbar. Bitte erneut auswählen.</string>
+    <string name="auto_backup_write_failed">Die letzte Sicherung ist fehlgeschlagen. Sie wird erneut versucht.</string>
+    <string name="auto_backup_folder_error">Kein Zugriff auf diesen Ordner. Bitte einen anderen wählen.</string>
+    <string name="auto_backup_info">Die neuesten %1$d automatischen Sicherungen werden behalten, ältere gelöscht. Manuelle Sicherungen bleiben unberührt. Automatische Sicherungen nutzen den integrierten Schlüssel der App, halte den Ordner daher privat. Für eine passwortgeschützte Kopie nutze „Sicherung“ in den Einstellungen. Wiederherstellen liest beide.</string>
 </resources>

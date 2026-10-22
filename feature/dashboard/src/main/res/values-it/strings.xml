@@ -33,4 +33,9 @@
     <string name="step_currency_title">Scegli la valuta</string>
     <string name="step_currency_description">Gli importi sono mostrati in questa valuta</string>
     <string name="step_currency_action">Cambia valuta</string>
+    <string name="auto_backup_warning_title">Il backup automatico non funziona</string>
+    <string name="auto_backup_warning_folder">Impossibile raggiungere la cartella di backup. Sceglila di nuovo per proteggere i tuoi dati.</string>
+    <string name="auto_backup_warning_write">Gli ultimi backup non sono riusciti. Controlla le impostazioni per proteggere i tuoi dati.</string>
+    <string name="auto_backup_warning_later">Più tardi</string>
+    <string name="auto_backup_warning_fix">Risolvi</string>
 </resources>

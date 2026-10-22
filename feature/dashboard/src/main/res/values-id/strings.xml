@@ -33,4 +33,9 @@
     <string name="step_currency_title">Pilih mata uang</string>
     <string name="step_currency_description">Jumlah ditampilkan dalam mata uang ini</string>
     <string name="step_currency_action">Ubah mata uang</string>
+    <string name="auto_backup_warning_title">Cadangan otomatis tidak berjalan</string>
+    <string name="auto_backup_warning_folder">Folder cadangan tidak dapat diakses. Pilih lagi agar data Anda tetap aman.</string>
+    <string name="auto_backup_warning_write">Pencadangan terakhir gagal. Periksa setelan cadangan agar data Anda tetap aman.</string>
+    <string name="auto_backup_warning_later">Nanti</string>
+    <string name="auto_backup_warning_fix">Perbaiki</string>
 </resources>

@@ -33,4 +33,9 @@
     <string name="step_currency_title">Выберите валюту</string>
     <string name="step_currency_description">Суммы показываются в этой валюте</string>
     <string name="step_currency_action">Изменить валюту</string>
+    <string name="auto_backup_warning_title">Автоматическое копирование не работает</string>
+    <string name="auto_backup_warning_folder">Нет доступа к папке для копий. Выберите её снова, чтобы данные были в безопасности.</string>
+    <string name="auto_backup_warning_write">Последние копии не удались. Проверьте настройки, чтобы данные были в безопасности.</string>
+    <string name="auto_backup_warning_later">Позже</string>
+    <string name="auto_backup_warning_fix">Исправить</string>
 </resources>

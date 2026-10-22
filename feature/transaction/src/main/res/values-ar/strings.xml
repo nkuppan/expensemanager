@@ -84,4 +84,17 @@
     <string name="discard_changes_message">لم يتم حفظ تغييراتك على هذه المعاملة.</string>
     <string name="discard">تجاهل</string>
     <string name="keep_editing">متابعة التعديل</string>
+    <string name="search_recurring">البحث في المعاملات المتكررة</string>
+    <string name="search_recurring_hint">ابحث في الملاحظات والفئات والحسابات والمبالغ</string>
+    <string name="recurring_no_matches">لا توجد معاملات متكررة تطابق بحثك</string>
+    <string name="recurring_more_options">خيارات أخرى</string>
+    <string name="recurring_edit">تعديل</string>
+    <string name="edit_recurring_transaction">تعديل المعاملة المتكررة</string>
+    <string name="recurring_next_date">التاريخ التالي</string>
+    <string name="recurring_schedule_change_hint">سيبدأ الجدول الجديد عند الحفظ من %1$s.</string>
+    <string name="recurring_edit_future_only">تنطبق التغييرات على المعاملات القادمة فقط. تبقى المعاملات المسجلة كما هي.</string>
+    <string name="recurring_next_date_in_past">اختر تاريخًا تاليًا اليوم أو بعده.</string>
+    <string name="recurring_part_of_series">جزء من سلسلة متكررة</string>
+    <string name="recurring_edit_series">عدّل السلسلة لتغيير المعاملات القادمة</string>
+    <string name="add_recurring_transaction">إضافة معاملة متكررة</string>
 </resources>

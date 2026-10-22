@@ -1,5 +1,6 @@
 import android.content.Context
 import androidx.datastore.preferences.preferencesDataStore
+import com.naveenapps.expensemanager.core.datastore.AutoBackupDataStore
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.datastore.DateRangeDataStore
 import com.naveenapps.expensemanager.core.datastore.DeviceLocalDataStore
@@ -29,4 +30,6 @@ val DatastoreModule = module {
     single { FeedbackDataStore(get()) }
     // Built directly (not via get()) so it can never pick up the backed-up DataStore by type.
     single { DeviceLocalDataStore(androidContext().deviceLocalDataStore) }
+    // Device-local for the same reason: folder access doesn't carry over to another phone.
+    single { AutoBackupDataStore(androidContext().deviceLocalDataStore) }
 }

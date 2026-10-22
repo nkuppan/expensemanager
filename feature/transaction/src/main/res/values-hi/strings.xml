@@ -84,4 +84,17 @@
     <string name="discard_changes_message">इस लेन-देन में आपके बदलाव सेव नहीं हुए हैं।</string>
     <string name="discard">हटाएं</string>
     <string name="keep_editing">संपादन जारी रखें</string>
+    <string name="search_recurring">आवर्ती लेन-देन खोजें</string>
+    <string name="search_recurring_hint">नोट्स, श्रेणियाँ, खाते, राशियाँ खोजें</string>
+    <string name="recurring_no_matches">आपकी खोज से कोई आवर्ती लेन-देन मेल नहीं खाता</string>
+    <string name="recurring_more_options">और विकल्प</string>
+    <string name="recurring_edit">संपादित करें</string>
+    <string name="edit_recurring_transaction">आवर्ती लेन-देन संपादित करें</string>
+    <string name="recurring_next_date">अगली तारीख</string>
+    <string name="recurring_schedule_change_hint">सहेजने पर नया शेड्यूल %1$s से शुरू होगा।</string>
+    <string name="recurring_edit_future_only">बदलाव केवल आने वाले लेन-देन पर लागू होते हैं। पहले से दर्ज लेन-देन वैसे ही रहते हैं।</string>
+    <string name="recurring_next_date_in_past">आज या उसके बाद की अगली तारीख चुनें।</string>
+    <string name="recurring_part_of_series">आवर्ती शृंखला का हिस्सा</string>
+    <string name="recurring_edit_series">आने वाले लेन-देन बदलने के लिए शृंखला संपादित करें</string>
+    <string name="add_recurring_transaction">आवर्ती लेन-देन जोड़ें</string>
 </resources>

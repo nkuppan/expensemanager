@@ -22,6 +22,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
@@ -170,6 +171,12 @@ private fun TransactionListScreenContent(
                         onAction(TransactionListAction.ClosePage)
                     },
                     actions = {
+                        IconButton(onClick = { onAction(TransactionListAction.OpenRecurringTransactions) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.EventRepeat,
+                                contentDescription = stringResource(R.string.recurring_transactions),
+                            )
+                        }
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(
                                 imageVector = Icons.Default.Search,
@@ -376,10 +383,11 @@ private fun TransactionGroupCard(
 }
 
 @Composable
-private fun TransactionSearchBar(
+internal fun TransactionSearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onClose: () -> Unit,
+    placeholder: String = stringResource(R.string.search_transactions_hint),
 ) {
     val focusRequester = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
@@ -410,7 +418,7 @@ private fun TransactionSearchBar(
                 textStyle = MaterialTheme.typography.titleMedium,
                 placeholder = {
                     Text(
-                        text = stringResource(R.string.search_transactions_hint),
+                        text = placeholder,
                         style = MaterialTheme.typography.titleMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,

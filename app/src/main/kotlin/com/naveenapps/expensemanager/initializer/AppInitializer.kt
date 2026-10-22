@@ -10,10 +10,13 @@ import com.naveenapps.expensemanager.core.notification.NotificationScheduler
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
+import com.naveenapps.expensemanager.core.repository.AutoBackupScheduler
 import com.naveenapps.expensemanager.widget.observeDataForWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
 
@@ -25,6 +28,8 @@ class AppInitializer : Initializer<Unit> {
         val notificationScheduler: NotificationScheduler = GlobalContext.get().get()
         val processRecurringTransactions: ProcessRecurringTransactionsUseCase = GlobalContext.get().get()
         val analyticsRepository: AnalyticsRepository = GlobalContext.get().get()
+        val autoBackupRepository: AutoBackupRepository = GlobalContext.get().get()
+        val autoBackupScheduler: AutoBackupScheduler = GlobalContext.get().get()
 
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
             applyThemeUseCase.invoke()
@@ -34,6 +39,16 @@ class AppInitializer : Initializer<Unit> {
             notificationScheduler.scheduleRecurringTransactions()
         }
         observeDataForWidget(context, CoroutineScope(SupervisorJob() + Dispatchers.IO))
+
+        // Re-creates the automatic backup schedule if it's on but WorkManager lost it. KEEP
+        // leaves an existing schedule untouched, so app starts never delay the next backup.
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            runCatching { autoBackupRepository.getSettings().first() }
+                .onFailure { Log.w("AppInitializer", "Couldn't read automatic backup settings", it) }
+                .getOrNull()
+                ?.takeIf { it.isEnabled && it.folderUri != null }
+                ?.let { autoBackupScheduler.schedule(it.frequency, replaceExisting = false) }
+        }
 
         // Off the main thread: due recurring transactions are in place by the time Home loads
         // its data (Room flows pick them up either way).

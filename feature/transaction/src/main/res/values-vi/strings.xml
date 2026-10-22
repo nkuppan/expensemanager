@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Các thay đổi đối với giao dịch này chưa được lưu.</string>
     <string name="discard">Hủy</string>
     <string name="keep_editing">Tiếp tục chỉnh sửa</string>
+    <string name="search_recurring">Tìm giao dịch định kỳ</string>
+    <string name="search_recurring_hint">Tìm ghi chú, danh mục, tài khoản, số tiền</string>
+    <string name="recurring_no_matches">Không có giao dịch định kỳ nào khớp</string>
+    <string name="recurring_more_options">Tùy chọn khác</string>
+    <string name="recurring_edit">Sửa</string>
+    <string name="edit_recurring_transaction">Sửa giao dịch định kỳ</string>
+    <string name="recurring_next_date">Ngày tiếp theo</string>
+    <string name="recurring_schedule_change_hint">Khi lưu, lịch mới bắt đầu từ %1$s.</string>
+    <string name="recurring_edit_future_only">Thay đổi chỉ áp dụng cho các giao dịch sắp tới. Giao dịch đã ghi giữ nguyên.</string>
+    <string name="recurring_next_date_in_past">Chọn ngày tiếp theo từ hôm nay trở đi.</string>
+    <string name="recurring_part_of_series">Thuộc chuỗi định kỳ</string>
+    <string name="recurring_edit_series">Sửa chuỗi để thay đổi các giao dịch sắp tới</string>
+    <string name="add_recurring_transaction">Thêm giao dịch định kỳ</string>
 </resources>

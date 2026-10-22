@@ -22,11 +22,15 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
+import com.naveenapps.expensemanager.core.model.needsAttention
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import java.util.Date
@@ -52,6 +56,7 @@ class DashboardViewModel(
     private val appComposeNavigator: AppComposeNavigator,
     private val feedbackRepository: FeedbackRepository,
     private val analyticsRepository: AnalyticsRepository,
+    private val autoBackupRepository: AutoBackupRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -77,6 +82,15 @@ class DashboardViewModel(
         feedbackRepository.getTransactionCreatedCount()
             .onEach { count ->
                 _state.update { it.copy(hasCreatedTransaction = count > 0, transactionCount = count) }
+            }
+            .launchIn(viewModelScope)
+
+        // "Automatic backup failed" banner. The snooze time is checked when settings change;
+        // a snooze that ran out shows the banner again next time Home is created.
+        autoBackupRepository.getSettings()
+            .onEach { settings ->
+                val warning = settings.lastError.takeIf { settings.needsAttention(System.currentTimeMillis()) }
+                _state.update { it.copy(backupWarning = warning) }
             }
             .launchIn(viewModelScope)
 
@@ -270,6 +284,20 @@ class DashboardViewModel(
 
             DashboardAction.DismissGettingStarted -> viewModelScope.launch {
                 feedbackRepository.setGettingStartedDismissed()
+            }
+
+            DashboardAction.FixAutoBackup -> {
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.AUTO_BACKUP_FIX_OPENED,
+                    mapOf(AnalyticsParams.SOURCE to "home_banner"),
+                )
+                appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
+            }
+
+            DashboardAction.SnoozeAutoBackupWarning -> viewModelScope.launch {
+                autoBackupRepository.snoozeFailureWarning(
+                    System.currentTimeMillis() + AutoBackupRepository.WARNING_SNOOZE_MILLIS,
+                )
             }
         }
     }

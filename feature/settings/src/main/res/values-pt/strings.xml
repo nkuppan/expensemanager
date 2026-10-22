@@ -72,4 +72,21 @@
     <string name="transaction_entry">Registro de transações</string>
     <string name="auto_open_calculator">Abrir calculadora automaticamente</string>
     <string name="auto_open_calculator_message">Mostrar a calculadora ao adicionar uma nova transação</string>
+    <string name="auto_backup">Backup automático</string>
+    <string name="auto_backup_setting_message">Faça backup em uma pasta deste dispositivo de forma programada</string>
+    <string name="auto_backup_toggle_message">Salve automaticamente um backup na pasta abaixo</string>
+    <string name="auto_backup_destination">Destino</string>
+    <string name="auto_backup_folder">Pasta de backup</string>
+    <string name="auto_backup_choose_folder">Escolher pasta</string>
+    <string name="auto_backup_frequency">Frequência</string>
+    <string name="auto_backup_daily">Diário</string>
+    <string name="auto_backup_weekly">Semanal</string>
+    <string name="auto_backup_status">Status</string>
+    <string name="auto_backup_last">Último backup: %1$s, %2$s</string>
+    <string name="auto_backup_never">Nenhum backup automático ainda</string>
+    <string name="auto_backup_now">Fazer backup agora</string>
+    <string name="auto_backup_folder_unavailable">Não foi possível acessar a pasta de backup. Escolha-a novamente.</string>
+    <string name="auto_backup_write_failed">O último backup falhou. Será tentado novamente.</string>
+    <string name="auto_backup_folder_error">Não foi possível acessar essa pasta. Tente outra.</string>
+    <string name="auto_backup_info">Os %1$d backups automáticos mais recentes são mantidos e os mais antigos são excluídos. Seus backups manuais nunca são alterados. Os backups automáticos usam a chave integrada do app, então mantenha a pasta privada. Para uma cópia protegida por senha, use Backup nas Configurações. A restauração lê os dois.</string>
 </resources>

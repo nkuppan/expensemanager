@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.data.di
 
 import com.naveenapps.expensemanager.core.data.repository.AccountRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.AnalyticsRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.AutoBackupRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.BackupRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.BudgetRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CategoryRepositoryImpl
@@ -26,6 +27,7 @@ import com.naveenapps.expensemanager.core.data.repository.export.CsvExportStrate
 import com.naveenapps.expensemanager.core.data.repository.export.PdfExportStrategy
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
@@ -60,6 +62,14 @@ val RepositoryModule = module {
         BackupRepositoryImpl(
             context = androidContext(),
             database = get(),
+            dispatchers = get(),
+        )
+    }
+    single<AutoBackupRepository> {
+        AutoBackupRepositoryImpl(
+            context = androidContext(),
+            dataStore = get(),
+            backupRepository = get(),
             dispatchers = get(),
         )
     }

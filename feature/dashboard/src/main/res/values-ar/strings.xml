@@ -33,4 +33,9 @@
     <string name="step_currency_title">اختر عملتك</string>
     <string name="step_currency_description">تُعرض المبالغ بهذه العملة</string>
     <string name="step_currency_action">تغيير العملة</string>
+    <string name="auto_backup_warning_title">النسخ الاحتياطي التلقائي لا يعمل</string>
+    <string name="auto_backup_warning_folder">تعذّر الوصول إلى مجلد النسخ الاحتياطي. اختره مرة أخرى للحفاظ على بياناتك.</string>
+    <string name="auto_backup_warning_write">فشلت النسخ الاحتياطية الأخيرة. تحقّق من إعدادات النسخ الاحتياطي للحفاظ على بياناتك.</string>
+    <string name="auto_backup_warning_later">لاحقًا</string>
+    <string name="auto_backup_warning_fix">إصلاح</string>
 </resources>

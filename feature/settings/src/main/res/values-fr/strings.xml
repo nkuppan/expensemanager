@@ -72,4 +72,21 @@
     <string name="transaction_entry">Saisie des transactions</string>
     <string name="auto_open_calculator">Ouvrir la calculatrice automatiquement</string>
     <string name="auto_open_calculator_message">Afficher la calculatrice dès l\'ajout d\'une nouvelle transaction</string>
+    <string name="auto_backup">Sauvegarde automatique</string>
+    <string name="auto_backup_setting_message">Sauvegarder dans un dossier de cet appareil selon un calendrier</string>
+    <string name="auto_backup_toggle_message">Enregistrer automatiquement une sauvegarde dans le dossier ci-dessous</string>
+    <string name="auto_backup_destination">Destination</string>
+    <string name="auto_backup_folder">Dossier de sauvegarde</string>
+    <string name="auto_backup_choose_folder">Choisir un dossier</string>
+    <string name="auto_backup_frequency">Fréquence</string>
+    <string name="auto_backup_daily">Quotidienne</string>
+    <string name="auto_backup_weekly">Hebdomadaire</string>
+    <string name="auto_backup_status">État</string>
+    <string name="auto_backup_last">Dernière sauvegarde : %1$s, %2$s</string>
+    <string name="auto_backup_never">Aucune sauvegarde automatique pour l\'instant</string>
+    <string name="auto_backup_now">Sauvegarder maintenant</string>
+    <string name="auto_backup_folder_unavailable">Dossier de sauvegarde inaccessible. Choisissez-le à nouveau.</string>
+    <string name="auto_backup_write_failed">La dernière sauvegarde a échoué. Elle sera retentée.</string>
+    <string name="auto_backup_folder_error">Impossible d\'accéder à ce dossier. Essayez-en un autre.</string>
+    <string name="auto_backup_info">Les %1$d sauvegardes automatiques les plus récentes sont conservées et les plus anciennes supprimées. Vos sauvegardes manuelles ne sont jamais touchées. Les sauvegardes automatiques utilisent la clé intégrée de l\'app : gardez le dossier privé. Pour une copie protégée par phrase secrète, utilisez Sauvegarde dans les paramètres. La restauration lit les deux.</string>
 </resources>

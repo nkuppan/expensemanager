@@ -22,6 +22,10 @@ class RecurringTransactionRepositoryImpl(
         dao.getDue(dueBefore).mapNotNull { it.toDomainModel() }
     }
 
+    override suspend fun findById(id: String): RecurringTransaction? = withContext(dispatchers.io) {
+        dao.findById(id)?.toDomainModel()
+    }
+
     override suspend fun add(recurring: RecurringTransaction) = withContext(dispatchers.io) {
         dao.insert(recurring.toEntityModel())
         Unit
@@ -33,5 +37,13 @@ class RecurringTransactionRepositoryImpl(
 
     override suspend fun delete(id: String) = withContext(dispatchers.io) {
         dao.deleteById(id)
+    }
+
+    override suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Date, updatedOn: Date) = withContext(dispatchers.io) {
+        dao.advance(id, nextOccurrence, nextDueDate, updatedOn)
+    }
+
+    override suspend fun replace(oldId: String, replacement: RecurringTransaction) = withContext(dispatchers.io) {
+        dao.replace(oldId, replacement.toEntityModel())
     }
 }

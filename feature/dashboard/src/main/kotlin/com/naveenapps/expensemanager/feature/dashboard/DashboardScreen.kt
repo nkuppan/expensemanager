@@ -28,6 +28,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -39,6 +40,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -62,6 +64,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
@@ -141,6 +144,18 @@ private fun DashboardScreenContent(
                     .fillMaxWidth()
                     .padding(end = 6.dp),
             )
+        }
+        state.backupWarning?.let { warning ->
+            item("backup_warning") {
+                AutoBackupWarningCard(
+                    error = warning,
+                    onFix = { onAction(DashboardAction.FixAutoBackup) },
+                    onLater = { onAction(DashboardAction.SnoozeAutoBackupWarning) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                )
+            }
         }
         item {
             GettingStartedSection(state = state, onAction = onAction)
@@ -451,6 +466,71 @@ fun DashboardScaffoldContentPreview() {
 
 // Only new users get the checklist; long-time users (and anyone who closed it) never see it.
 private const val GETTING_STARTED_MAX_TRANSACTIONS = 10
+
+/**
+ * Shown on Home while automatic backups are failing, so a broken backup never goes unnoticed.
+ * "Fix" opens Automatic backup; "Later" hides it for a few days. It goes away by itself once a
+ * backup succeeds or a new folder is chosen.
+ */
+@Composable
+private fun AutoBackupWarningCard(
+    error: AutoBackupError,
+    onFix: () -> Unit,
+    onLater: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.errorContainer,
+        contentColor = MaterialTheme.colorScheme.onErrorContainer,
+    ) {
+        Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 16.dp, bottom = 8.dp)) {
+            Row(verticalAlignment = Alignment.Top) {
+                Icon(
+                    imageVector = Icons.Outlined.CloudOff,
+                    contentDescription = null,
+                    modifier = Modifier.padding(top = 2.dp),
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f).padding(end = 8.dp)) {
+                    Text(
+                        text = stringResource(id = R.string.auto_backup_warning_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                    Text(
+                        text = stringResource(
+                            id = when (error) {
+                                AutoBackupError.FOLDER_UNAVAILABLE -> R.string.auto_backup_warning_folder
+                                AutoBackupError.WRITE_FAILED -> R.string.auto_backup_warning_write
+                            },
+                        ),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                TextButton(onClick = onLater) {
+                    Text(
+                        text = stringResource(id = R.string.auto_backup_warning_later),
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                    )
+                }
+                TextButton(onClick = onFix) {
+                    Text(
+                        text = stringResource(id = R.string.auto_backup_warning_fix),
+                        color = MaterialTheme.colorScheme.onErrorContainer,
+                        fontWeight = FontWeight.SemiBold,
+                    )
+                }
+            }
+        }
+    }
+}
 
 // Display order of the "Get started" checklist.
 private enum class SetupStep { FirstExpense, Accounts, Budget, Currency }

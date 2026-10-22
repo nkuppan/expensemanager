@@ -33,4 +33,9 @@
     <string name="step_currency_title">Escolha sua moeda</string>
     <string name="step_currency_description">Os valores são exibidos nesta moeda</string>
     <string name="step_currency_action">Alterar moeda</string>
+    <string name="auto_backup_warning_title">O backup automático não está funcionando</string>
+    <string name="auto_backup_warning_folder">Não foi possível acessar a pasta de backup. Escolha-a novamente para manter seus dados seguros.</string>
+    <string name="auto_backup_warning_write">Os últimos backups falharam. Verifique as configurações para manter seus dados seguros.</string>
+    <string name="auto_backup_warning_later">Depois</string>
+    <string name="auto_backup_warning_fix">Corrigir</string>
 </resources>

@@ -33,4 +33,9 @@
     <string name="step_currency_title">अपनी मुद्रा चुनें</string>
     <string name="step_currency_description">राशियाँ इसी मुद्रा में दिखती हैं</string>
     <string name="step_currency_action">मुद्रा बदलें</string>
+    <string name="auto_backup_warning_title">स्वचालित बैकअप काम नहीं कर रहा</string>
+    <string name="auto_backup_warning_folder">बैकअप फ़ोल्डर तक नहीं पहुँच पा रहे। अपना डेटा सुरक्षित रखने के लिए इसे फिर से चुनें।</string>
+    <string name="auto_backup_warning_write">हाल के बैकअप विफल रहे। अपना डेटा सुरक्षित रखने के लिए बैकअप सेटिंग जाँचें।</string>
+    <string name="auto_backup_warning_later">बाद में</string>
+    <string name="auto_backup_warning_fix">ठीक करें</string>
 </resources>

@@ -38,6 +38,7 @@ import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.SettingsApplications
+import androidx.compose.material.icons.outlined.SettingsBackupRestore
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material.icons.rounded.Check
@@ -390,6 +391,13 @@ private fun SettingsScreenContent(
                     subtitle = stringResource(id = R.string.export_message),
                     icon = Icons.Outlined.Upload,
                     showDivider = true,
+                )
+                SettingRow(
+                    title = stringResource(id = R.string.auto_backup),
+                    subtitle = stringResource(id = R.string.auto_backup_setting_message),
+                    icon = Icons.Outlined.SettingsBackupRestore,
+                    showDivider = true,
+                    onClick = { onAction.invoke(SettingAction.OpenAutoBackup) },
                 )
                 SettingRow(
                     title = stringResource(id = R.string.backup),

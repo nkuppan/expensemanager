@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">您已花费 %2$s 中的 %1$s。该稍微放慢一点了。</string>
     <string name="budget_alert_over_title">%1$s 已超出预算</string>
     <string name="budget_alert_over_body">您已花费 %2$s 预算中的 %1$s。</string>
+    <string name="auto_backup_failed_title">自动备份失败</string>
+    <string name="auto_backup_failed_folder_body">无法访问备份文件夹，点按以重新选择。</string>
+    <string name="auto_backup_failed_write_body">无法备份你的数据，点按以检查备份设置。</string>
+    <string name="auto_backup_failed_action">修复</string>
 </resources>

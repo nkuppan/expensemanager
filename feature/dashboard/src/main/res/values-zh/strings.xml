@@ -33,4 +33,9 @@
     <string name="step_currency_title">选择货币</string>
     <string name="step_currency_description">金额以此货币显示</string>
     <string name="step_currency_action">更改货币</string>
+    <string name="auto_backup_warning_title">自动备份未正常运行</string>
+    <string name="auto_backup_warning_folder">无法访问备份文件夹。请重新选择，以确保数据安全。</string>
+    <string name="auto_backup_warning_write">最近的备份失败了。请检查备份设置，以确保数据安全。</string>
+    <string name="auto_backup_warning_later">稍后</string>
+    <string name="auto_backup_warning_fix">修复</string>
 </resources>

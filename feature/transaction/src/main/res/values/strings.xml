@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Your changes to this transaction haven\'t been saved.</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
+    <string name="search_recurring">Search recurring transactions</string>
+    <string name="search_recurring_hint">Search notes, categories, accounts, amounts</string>
+    <string name="recurring_no_matches">No recurring transactions match your search</string>
+    <string name="recurring_more_options">More options</string>
+    <string name="recurring_edit">Edit</string>
+    <string name="edit_recurring_transaction">Edit recurring transaction</string>
+    <string name="recurring_next_date">Next date</string>
+    <string name="recurring_schedule_change_hint">Saving starts the new schedule from %1$s.</string>
+    <string name="recurring_edit_future_only">Changes apply to upcoming transactions only. Ones already logged stay as they are.</string>
+    <string name="recurring_next_date_in_past">Pick a next date of today or later.</string>
+    <string name="recurring_part_of_series">Part of a recurring series</string>
+    <string name="recurring_edit_series">Edit the series to change upcoming transactions</string>
+    <string name="add_recurring_transaction">Add recurring transaction</string>
 </resources>

@@ -72,4 +72,21 @@
     <string name="transaction_entry">Wprowadzanie transakcji</string>
     <string name="auto_open_calculator">Automatycznie otwieraj kalkulator</string>
     <string name="auto_open_calculator_message">Pokaż kalkulator od razu po dodaniu nowej transakcji</string>
+    <string name="auto_backup">Automatyczna kopia zapasowa</string>
+    <string name="auto_backup_setting_message">Twórz kopie w folderze na tym urządzeniu według harmonogramu</string>
+    <string name="auto_backup_toggle_message">Automatycznie zapisuj kopię w folderze poniżej</string>
+    <string name="auto_backup_destination">Miejsce docelowe</string>
+    <string name="auto_backup_folder">Folder kopii</string>
+    <string name="auto_backup_choose_folder">Wybierz folder</string>
+    <string name="auto_backup_frequency">Jak często</string>
+    <string name="auto_backup_daily">Codziennie</string>
+    <string name="auto_backup_weekly">Co tydzień</string>
+    <string name="auto_backup_status">Stan</string>
+    <string name="auto_backup_last">Ostatnia kopia: %1$s, %2$s</string>
+    <string name="auto_backup_never">Brak automatycznej kopii</string>
+    <string name="auto_backup_now">Utwórz kopię teraz</string>
+    <string name="auto_backup_folder_unavailable">Brak dostępu do folderu kopii. Wybierz go ponownie.</string>
+    <string name="auto_backup_write_failed">Ostatnia kopia nie powiodła się. Zostanie ponowiona.</string>
+    <string name="auto_backup_folder_error">Nie udało się uzyskać dostępu do tego folderu. Wybierz inny.</string>
+    <string name="auto_backup_info">Zachowywanych jest %1$d najnowszych automatycznych kopii, starsze są usuwane. Ręczne kopie nigdy nie są zmieniane. Automatyczne kopie używają wbudowanego klucza aplikacji, więc trzymaj folder w prywatności. Aby utworzyć kopię chronioną hasłem, użyj Kopii zapasowej w Ustawieniach. Przywracanie odczyta obie.</string>
 </resources>

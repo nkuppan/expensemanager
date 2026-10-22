@@ -72,4 +72,21 @@
     <string name="transaction_entry">取引の入力</string>
     <string name="auto_open_calculator">電卓を自動で開く</string>
     <string name="auto_open_calculator_message">新しい取引を追加するとすぐに電卓を表示します</string>
+    <string name="auto_backup">自動バックアップ</string>
+    <string name="auto_backup_setting_message">このデバイスのフォルダに定期的にバックアップ</string>
+    <string name="auto_backup_toggle_message">下のフォルダにバックアップを自動保存します</string>
+    <string name="auto_backup_destination">保存先</string>
+    <string name="auto_backup_folder">バックアップフォルダ</string>
+    <string name="auto_backup_choose_folder">フォルダを選択</string>
+    <string name="auto_backup_frequency">頻度</string>
+    <string name="auto_backup_daily">毎日</string>
+    <string name="auto_backup_weekly">毎週</string>
+    <string name="auto_backup_status">状態</string>
+    <string name="auto_backup_last">前回のバックアップ: %1$s %2$s</string>
+    <string name="auto_backup_never">自動バックアップはまだありません</string>
+    <string name="auto_backup_now">今すぐバックアップ</string>
+    <string name="auto_backup_folder_unavailable">バックアップフォルダにアクセスできません。もう一度選択してください。</string>
+    <string name="auto_backup_write_failed">前回のバックアップに失敗しました。再試行されます。</string>
+    <string name="auto_backup_folder_error">そのフォルダへのアクセス権を取得できませんでした。別のフォルダを選んでください。</string>
+    <string name="auto_backup_info">最新の%1$d件の自動バックアップを保持し、古いものは削除されます。手動バックアップには一切影響しません。自動バックアップはアプリの組み込みキーを使用するため、フォルダは非公開にしてください。パスフレーズで保護されたコピーが必要な場合は、設定の「バックアップ」を使用してください。復元はどちらも読み込めます。</string>
 </resources>

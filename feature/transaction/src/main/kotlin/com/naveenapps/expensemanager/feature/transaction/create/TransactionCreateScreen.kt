@@ -32,6 +32,7 @@ import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
+import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -72,6 +73,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTe
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
@@ -466,6 +468,19 @@ private fun TransactionCreateContent(
                                 focusManager.clearFocus(force = true)
                             },
                         ),
+                    )
+                }
+            }
+        }
+
+        state.recurringRuleId?.let {
+            SettingsSection(title = stringResource(R.string.repeat)) {
+                AppCardView {
+                    SettingRow(
+                        title = stringResource(R.string.recurring_part_of_series),
+                        subtitle = stringResource(R.string.recurring_edit_series),
+                        icon = Icons.Outlined.EventRepeat,
+                        onClick = { onAction.invoke(TransactionCreateAction.OpenRecurringSeries) },
                     )
                 }
             }

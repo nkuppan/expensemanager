@@ -72,4 +72,21 @@
     <string name="transaction_entry">거래 입력</string>
     <string name="auto_open_calculator">계산기 자동으로 열기</string>
     <string name="auto_open_calculator_message">새 거래를 추가할 때 바로 계산기를 표시합니다</string>
+    <string name="auto_backup">자동 백업</string>
+    <string name="auto_backup_setting_message">이 기기의 폴더에 일정에 따라 백업</string>
+    <string name="auto_backup_toggle_message">아래 폴더에 백업을 자동으로 저장합니다</string>
+    <string name="auto_backup_destination">저장 위치</string>
+    <string name="auto_backup_folder">백업 폴더</string>
+    <string name="auto_backup_choose_folder">폴더 선택</string>
+    <string name="auto_backup_frequency">빈도</string>
+    <string name="auto_backup_daily">매일</string>
+    <string name="auto_backup_weekly">매주</string>
+    <string name="auto_backup_status">상태</string>
+    <string name="auto_backup_last">마지막 백업: %1$s, %2$s</string>
+    <string name="auto_backup_never">아직 자동 백업이 없습니다</string>
+    <string name="auto_backup_now">지금 백업</string>
+    <string name="auto_backup_folder_unavailable">백업 폴더에 접근할 수 없습니다. 다시 선택하세요.</string>
+    <string name="auto_backup_write_failed">마지막 백업에 실패했습니다. 다시 시도합니다.</string>
+    <string name="auto_backup_folder_error">해당 폴더에 대한 권한을 얻지 못했습니다. 다른 폴더를 선택하세요.</string>
+    <string name="auto_backup_info">최신 자동 백업 %1$d개를 보관하고 오래된 백업은 삭제합니다. 수동 백업은 건드리지 않습니다. 자동 백업은 앱에 내장된 키를 사용하므로 폴더를 비공개로 유지하세요. 암호로 보호된 사본이 필요하면 설정의 백업을 사용하세요. 복원은 둘 다 읽을 수 있습니다.</string>
 </resources>

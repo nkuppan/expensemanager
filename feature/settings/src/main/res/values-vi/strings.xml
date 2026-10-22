@@ -72,4 +72,21 @@
     <string name="transaction_entry">Nhập giao dịch</string>
     <string name="auto_open_calculator">Tự động mở máy tính</string>
     <string name="auto_open_calculator_message">Hiển thị máy tính ngay khi thêm giao dịch mới</string>
+    <string name="auto_backup">Sao lưu tự động</string>
+    <string name="auto_backup_setting_message">Sao lưu vào thư mục trên thiết bị này theo lịch</string>
+    <string name="auto_backup_toggle_message">Tự động lưu bản sao lưu vào thư mục bên dưới</string>
+    <string name="auto_backup_destination">Nơi lưu</string>
+    <string name="auto_backup_folder">Thư mục sao lưu</string>
+    <string name="auto_backup_choose_folder">Chọn thư mục</string>
+    <string name="auto_backup_frequency">Tần suất</string>
+    <string name="auto_backup_daily">Hằng ngày</string>
+    <string name="auto_backup_weekly">Hằng tuần</string>
+    <string name="auto_backup_status">Trạng thái</string>
+    <string name="auto_backup_last">Lần sao lưu gần nhất: %1$s, %2$s</string>
+    <string name="auto_backup_never">Chưa có bản sao lưu tự động</string>
+    <string name="auto_backup_now">Sao lưu ngay</string>
+    <string name="auto_backup_folder_unavailable">Không truy cập được thư mục sao lưu. Hãy chọn lại.</string>
+    <string name="auto_backup_write_failed">Lần sao lưu gần nhất thất bại. Sẽ thử lại.</string>
+    <string name="auto_backup_folder_error">Không thể truy cập thư mục đó. Hãy thử thư mục khác.</string>
+    <string name="auto_backup_info">Giữ %1$d bản sao lưu tự động mới nhất và xóa các bản cũ hơn. Bản sao lưu thủ công không bao giờ bị động đến. Sao lưu tự động dùng khóa tích hợp của ứng dụng, vì vậy hãy giữ thư mục ở chế độ riêng tư. Để có bản được bảo vệ bằng cụm mật khẩu, hãy dùng Sao lưu trong Cài đặt. Khôi phục đọc được cả hai.</string>
 </resources>

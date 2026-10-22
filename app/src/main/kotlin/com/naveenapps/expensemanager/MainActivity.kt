@@ -35,6 +35,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.notification.ACTION_OPEN_AUTO_BACKUP
 import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
@@ -82,6 +83,7 @@ internal class MainActivity :
         // Only on a fresh launch: a recreated Activity re-delivers the same intent.
         if (savedInstanceState == null) {
             handleQuickAdd(intent)
+            handleOpenAutoBackup(intent)
         }
 
         lifecycleScope.launch {
@@ -120,6 +122,7 @@ internal class MainActivity :
                 val isAppLockEnabled by viewModel.isAppLockEnabled.collectAsStateWithLifecycle()
                 val isAuthenticated by viewModel.isAuthenticated.collectAsStateWithLifecycle()
                 val pendingQuickAdd by viewModel.pendingQuickAdd.collectAsStateWithLifecycle()
+                val pendingOpenAutoBackup by viewModel.pendingOpenAutoBackup.collectAsStateWithLifecycle()
                 val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
                 if (onBoardingStatus != null) {
@@ -150,6 +153,9 @@ internal class MainActivity :
                                 // Before onboarding there's nowhere sensible to add, so drop it.
                                 pendingQuickAdd = pendingQuickAdd && onBoardingStatus == true && !showLock,
                                 onQuickAddHandled = viewModel::onQuickAddHandled,
+                                // Same gating as quick add: after onboarding, and once unlocked.
+                                pendingOpenAutoBackup = pendingOpenAutoBackup && onBoardingStatus == true && !showLock,
+                                onOpenAutoBackupHandled = viewModel::onOpenAutoBackupHandled,
                             )
                         }
 
@@ -171,6 +177,17 @@ internal class MainActivity :
         super.onNewIntent(intent)
         setIntent(intent)
         handleQuickAdd(intent)
+        handleOpenAutoBackup(intent)
+    }
+
+    /** "Automatic backup failed" notification: open the screen where it can be fixed. */
+    private fun handleOpenAutoBackup(intent: Intent?) {
+        if (intent?.action != ACTION_OPEN_AUTO_BACKUP) return
+        analyticsRepository.logEvent(
+            AnalyticsEvents.AUTO_BACKUP_FIX_OPENED,
+            mapOf(AnalyticsParams.SOURCE to "notification"),
+        )
+        viewModel.requestOpenAutoBackup()
     }
 
     /** Widget "+", launcher shortcut or reminder tap: open straight on the keypad. */

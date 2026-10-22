@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.notification
 
+import com.naveenapps.expensemanager.core.repository.AutoBackupScheduler
 import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
@@ -12,6 +13,7 @@ val NotificationModule = module {
             reminderTimeRepository = get(),
         )
     }
+    single<AutoBackupScheduler> { AutoBackupSchedulerImpl(context = androidContext()) }
     // The transaction screen asks for budget checks through this interface (core:repository).
     single<BudgetAlertTrigger> { get<NotificationScheduler>() }
     worker {
@@ -22,6 +24,15 @@ val NotificationModule = module {
             transactionRepository = get(),
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
+            analyticsRepository = get(),
+        )
+    }
+    worker {
+        AutoBackupWorker(
+            context = androidContext(),
+            workerParams = get(),
+            autoBackupRepository = get(),
+            notificationScheduler = get(),
             analyticsRepository = get(),
         )
     }

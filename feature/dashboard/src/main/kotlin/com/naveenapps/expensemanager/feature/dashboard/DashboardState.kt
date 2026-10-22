@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.dashboard
 import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
@@ -27,4 +28,6 @@ data class DashboardState(
     val hasCurrentMonthBudget: Boolean = false,
     // Defaults to true so the checklist never flashes in before the stored value loads.
     val isGettingStartedDismissed: Boolean = true,
+    /** Set while automatic backups are failing and the warning isn't snoozed. */
+    val backupWarning: AutoBackupError? = null,
 )

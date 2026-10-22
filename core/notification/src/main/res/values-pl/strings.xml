@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Wydałeś %1$s z %2$s. Czas trochę zwolnić.</string>
     <string name="budget_alert_over_title">%1$s przekroczył budżet</string>
     <string name="budget_alert_over_body">Wydałeś %1$s ze swojego budżetu %2$s.</string>
+    <string name="auto_backup_failed_title">Automatyczna kopia nie powiodła się</string>
+    <string name="auto_backup_failed_folder_body">Brak dostępu do folderu kopii. Dotknij, aby wybrać go ponownie.</string>
+    <string name="auto_backup_failed_write_body">Nie udało się utworzyć kopii danych. Dotknij, aby sprawdzić ustawienia.</string>
+    <string name="auto_backup_failed_action">Napraw</string>
 </resources>

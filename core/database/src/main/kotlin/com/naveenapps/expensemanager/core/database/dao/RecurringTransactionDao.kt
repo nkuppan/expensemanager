@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.naveenapps.expensemanager.core.database.entity.RecurringTransactionEntity
 import java.util.Date
 import kotlinx.coroutines.flow.Flow
@@ -21,4 +22,21 @@ interface RecurringTransactionDao : BaseDao<RecurringTransactionEntity> {
 
     @Query("DELETE FROM recurring_transaction WHERE id = :id")
     suspend fun deleteById(id: String)
+
+    /**
+     * Moves a rule on to its next occurrence without touching the template columns, so a user
+     * edit saved while the background job is running is never overwritten by the job's stale copy.
+     */
+    @Query(
+        "UPDATE recurring_transaction SET next_occurrence = :nextOccurrence, " +
+            "next_due_date = :nextDueDate, updated_on = :updatedOn WHERE id = :id",
+    )
+    suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Date, updatedOn: Date)
+
+    /** Ends [oldId] and starts [replacement] in one step (used when the schedule changes). */
+    @Transaction
+    suspend fun replace(oldId: String, replacement: RecurringTransactionEntity) {
+        deleteById(oldId)
+        insert(replacement)
+    }
 }

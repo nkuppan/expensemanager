@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">%2$sのうち%1$sを使いました。少しペースを落としましょう。</string>
     <string name="budget_alert_over_title">%1$sが予算を超えました</string>
     <string name="budget_alert_over_body">%2$sの予算のうち%1$sを使いました。</string>
+    <string name="auto_backup_failed_title">自動バックアップに失敗しました</string>
+    <string name="auto_backup_failed_folder_body">バックアップフォルダにアクセスできません。タップして選び直してください。</string>
+    <string name="auto_backup_failed_write_body">データをバックアップできませんでした。タップして設定を確認してください。</string>
+    <string name="auto_backup_failed_action">修正</string>
 </resources>

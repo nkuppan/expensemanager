@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Du hast %1$s von %2$s ausgegeben. Zeit, etwas kürzerzutreten.</string>
     <string name="budget_alert_over_title">%1$s ist überschritten</string>
     <string name="budget_alert_over_body">Du hast %1$s von deinem Budget über %2$s ausgegeben.</string>
+    <string name="auto_backup_failed_title">Automatische Sicherung fehlgeschlagen</string>
+    <string name="auto_backup_failed_folder_body">Sicherungsordner nicht erreichbar. Tippe, um ihn erneut auszuwählen.</string>
+    <string name="auto_backup_failed_write_body">Deine Daten konnten nicht gesichert werden. Tippe, um die Einstellungen zu prüfen.</string>
+    <string name="auto_backup_failed_action">Beheben</string>
 </resources>

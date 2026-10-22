@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Has gastado %1$s de %2$s. Es momento de ir más despacio.</string>
     <string name="budget_alert_over_title">%1$s superó el presupuesto</string>
     <string name="budget_alert_over_body">Has gastado %1$s de tu presupuesto de %2$s.</string>
+    <string name="auto_backup_failed_title">Falló la copia de seguridad automática</string>
+    <string name="auto_backup_failed_folder_body">No se puede acceder a tu carpeta de copias. Toca para elegirla de nuevo.</string>
+    <string name="auto_backup_failed_write_body">No se pudo hacer copia de tus datos. Toca para revisar los ajustes de copia.</string>
+    <string name="auto_backup_failed_action">Arreglar</string>
 </resources>

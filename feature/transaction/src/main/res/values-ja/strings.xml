@@ -84,4 +84,17 @@
     <string name="discard_changes_message">この取引の変更は保存されていません。</string>
     <string name="discard">破棄</string>
     <string name="keep_editing">編集を続ける</string>
+    <string name="search_recurring">定期取引を検索</string>
+    <string name="search_recurring_hint">メモ、カテゴリ、口座、金額を検索</string>
+    <string name="recurring_no_matches">検索に一致する定期取引はありません</string>
+    <string name="recurring_more_options">その他のオプション</string>
+    <string name="recurring_edit">編集</string>
+    <string name="edit_recurring_transaction">定期取引を編集</string>
+    <string name="recurring_next_date">次回の日付</string>
+    <string name="recurring_schedule_change_hint">保存すると、新しいスケジュールは%1$sから始まります。</string>
+    <string name="recurring_edit_future_only">変更はこれからの取引にのみ適用されます。記録済みの取引は変わりません。</string>
+    <string name="recurring_next_date_in_past">次回の日付は今日以降を選んでください。</string>
+    <string name="recurring_part_of_series">定期取引の一部</string>
+    <string name="recurring_edit_series">シリーズを編集して今後の取引を変更</string>
+    <string name="add_recurring_transaction">定期取引を追加</string>
 </resources>

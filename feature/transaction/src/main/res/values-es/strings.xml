@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Los cambios en esta transacción no se han guardado.</string>
     <string name="discard">Descartar</string>
     <string name="keep_editing">Seguir editando</string>
+    <string name="search_recurring">Buscar transacciones recurrentes</string>
+    <string name="search_recurring_hint">Busca notas, categorías, cuentas e importes</string>
+    <string name="recurring_no_matches">Ninguna transacción recurrente coincide con tu búsqueda</string>
+    <string name="recurring_more_options">Más opciones</string>
+    <string name="recurring_edit">Editar</string>
+    <string name="edit_recurring_transaction">Editar transacción recurrente</string>
+    <string name="recurring_next_date">Próxima fecha</string>
+    <string name="recurring_schedule_change_hint">Al guardar, el nuevo calendario empieza el %1$s.</string>
+    <string name="recurring_edit_future_only">Los cambios solo afectan a las próximas transacciones. Las ya registradas no cambian.</string>
+    <string name="recurring_next_date_in_past">Elige una próxima fecha de hoy o posterior.</string>
+    <string name="recurring_part_of_series">Parte de una serie recurrente</string>
+    <string name="recurring_edit_series">Edita la serie para cambiar las próximas transacciones</string>
+    <string name="add_recurring_transaction">Añadir transacción recurrente</string>
 </resources>

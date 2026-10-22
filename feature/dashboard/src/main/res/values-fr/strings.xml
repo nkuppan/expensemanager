@@ -33,4 +33,9 @@
     <string name="step_currency_title">Choisissez votre devise</string>
     <string name="step_currency_description">Les montants s\'affichent dans cette devise</string>
     <string name="step_currency_action">Changer de devise</string>
+    <string name="auto_backup_warning_title">La sauvegarde automatique ne fonctionne pas</string>
+    <string name="auto_backup_warning_folder">Le dossier de sauvegarde est inaccessible. Choisissez-le à nouveau pour protéger vos données.</string>
+    <string name="auto_backup_warning_write">Les dernières sauvegardes ont échoué. Vérifiez les paramètres pour protéger vos données.</string>
+    <string name="auto_backup_warning_later">Plus tard</string>
+    <string name="auto_backup_warning_fix">Corriger</string>
 </resources>

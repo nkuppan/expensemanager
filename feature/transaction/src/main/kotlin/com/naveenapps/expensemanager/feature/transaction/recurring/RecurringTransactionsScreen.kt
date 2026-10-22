@@ -1,6 +1,9 @@
 package com.naveenapps.expensemanager.feature.transaction.recurring
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -8,20 +11,35 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -38,6 +56,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseMana
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.R
+import com.naveenapps.expensemanager.feature.transaction.list.TransactionSearchBar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -46,43 +65,103 @@ fun RecurringTransactionsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    state.pendingStop?.let { item ->
+    RecurringTransactionsContent(
+        state = state,
+        onAction = viewModel::processAction,
+    )
+}
+
+@Composable
+private fun RecurringTransactionsContent(
+    state: RecurringTransactionsState,
+    onAction: (RecurringTransactionsAction) -> Unit,
+) {
+    state.pendingStop?.let {
         AlertDialog(
-            onDismissRequest = viewModel::dismissStop,
+            onDismissRequest = { onAction(RecurringTransactionsAction.DismissStop) },
             icon = { Icon(Icons.Outlined.EventRepeat, contentDescription = null) },
             title = { Text(text = stringResource(R.string.recurring_stop_title)) },
             text = { Text(text = stringResource(R.string.recurring_stop_message)) },
             confirmButton = {
-                TextButton(onClick = viewModel::confirmStop) {
+                TextButton(onClick = { onAction(RecurringTransactionsAction.ConfirmStop) }) {
                     Text(text = stringResource(R.string.recurring_stop))
                 }
             },
             dismissButton = {
-                TextButton(onClick = viewModel::dismissStop) {
+                TextButton(onClick = { onAction(RecurringTransactionsAction.DismissStop) }) {
                     Text(text = stringResource(android.R.string.cancel))
                 }
             },
         )
     }
 
+    // Same top-bar search pattern as the transaction list.
+    var isSearchActive by rememberSaveable { mutableStateOf(state.searchQuery.isNotEmpty()) }
+    val closeSearch = {
+        isSearchActive = false
+        onAction(RecurringTransactionsAction.Search(""))
+    }
+    BackHandler(enabled = isSearchActive, onBack = closeSearch)
+
     Scaffold(
+        floatingActionButton = {
+            // The empty state has its own add button; avoid showing two.
+            if (state.hasAnyRules && !isSearchActive) {
+                FloatingActionButton(
+                    onClick = { onAction(RecurringTransactionsAction.OpenCreate) },
+                    shape = RoundedCornerShape(16.dp),
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(R.string.add_recurring_transaction),
+                    )
+                }
+            }
+        },
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = viewModel::closePage,
-                title = stringResource(R.string.recurring_transactions),
-            )
+            if (isSearchActive) {
+                TransactionSearchBar(
+                    query = state.searchQuery,
+                    onQueryChange = { onAction(RecurringTransactionsAction.Search(it)) },
+                    onClose = closeSearch,
+                    placeholder = stringResource(R.string.search_recurring_hint),
+                )
+            } else {
+                ExpenseManagerTopAppBar(
+                    navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                    navigationBackClick = { onAction(RecurringTransactionsAction.ClosePage) },
+                    title = stringResource(R.string.recurring_transactions),
+                    actions = {
+                        if (state.hasAnyRules) {
+                            IconButton(onClick = { isSearchActive = true }) {
+                                Icon(
+                                    imageVector = Icons.Default.Search,
+                                    contentDescription = stringResource(R.string.search_recurring),
+                                )
+                            }
+                        }
+                    },
+                )
+            }
         },
     ) { innerPadding ->
         val items = state.items ?: return@Scaffold
-        if (items.isEmpty()) {
-            RecurringEmptyState(modifier = Modifier.padding(innerPadding))
-        } else {
-            LazyColumn(
+        when {
+            !state.hasAnyRules -> RecurringEmptyState(
+                modifier = Modifier.padding(innerPadding),
+                onAdd = { onAction(RecurringTransactionsAction.OpenCreate) },
+            )
+
+            items.isEmpty() -> RecurringNoMatches(modifier = Modifier.padding(innerPadding))
+
+            else -> LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
+                // Bottom padding keeps the last row clear of the add button.
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 88.dp),
             ) {
                 itemsIndexed(items, key = { _, item -> item.rule.id }) { index, item ->
                     AppCardView(
@@ -91,7 +170,11 @@ fun RecurringTransactionsScreen(
                             .padding(bottom = 2.dp),
                         shape = AppCardViewDefaults.cardShape(index, items),
                     ) {
-                        RecurringRow(item = item, onStop = { viewModel.askToStop(item) })
+                        RecurringRow(
+                            item = item,
+                            onClick = { onAction(RecurringTransactionsAction.OpenEdit(item)) },
+                            onStop = { onAction(RecurringTransactionsAction.AskToStop(item)) },
+                        )
                     }
                 }
             }
@@ -100,7 +183,7 @@ fun RecurringTransactionsScreen(
 }
 
 @Composable
-private fun RecurringRow(item: RecurringItemUi, onStop: () -> Unit) {
+private fun RecurringRow(item: RecurringItemUi, onClick: () -> Unit, onStop: () -> Unit) {
     val rule = item.rule
     val categoryName = rule.category?.let { category -> category.titleResId?.let { stringResource(it) } ?: category.name }.orEmpty()
     val title = rule.notes.ifBlank { categoryName }
@@ -111,8 +194,12 @@ private fun RecurringRow(item: RecurringItemUi, onStop: () -> Unit) {
         else -> MaterialTheme.colorScheme.onSurface
     }
 
+    var showMenu by remember { mutableStateOf(false) }
+
     Row(
-        modifier = Modifier.padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp),
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         rule.category?.let {
@@ -159,14 +246,53 @@ private fun RecurringRow(item: RecurringItemUi, onStop: () -> Unit) {
             fontWeight = FontWeight.SemiBold,
             color = amountColor,
         )
-        TextButton(onClick = onStop) {
-            Text(text = stringResource(R.string.recurring_stop))
+        Box {
+            IconButton(onClick = { showMenu = true }) {
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = stringResource(R.string.recurring_more_options),
+                )
+            }
+            DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
+                DropdownMenuItem(
+                    text = { Text(text = stringResource(R.string.recurring_edit)) },
+                    onClick = {
+                        showMenu = false
+                        onClick()
+                    },
+                )
+                DropdownMenuItem(
+                    text = { Text(text = stringResource(R.string.recurring_stop)) },
+                    onClick = {
+                        showMenu = false
+                        onStop()
+                    },
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun RecurringEmptyState(modifier: Modifier = Modifier) {
+private fun RecurringNoMatches(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = stringResource(R.string.recurring_no_matches),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
+@Composable
+private fun RecurringEmptyState(onAdd: () -> Unit, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -193,5 +319,17 @@ private fun RecurringEmptyState(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(top = 8.dp),
             textAlign = TextAlign.Center,
         )
+        Button(
+            onClick = onAdd,
+            modifier = Modifier.padding(top = 24.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
+                modifier = Modifier.size(ButtonDefaults.IconSize),
+            )
+            Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+            Text(text = stringResource(R.string.add_recurring_transaction))
+        }
     }
 }

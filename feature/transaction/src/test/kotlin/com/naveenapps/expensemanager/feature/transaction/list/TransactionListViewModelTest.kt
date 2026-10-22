@@ -13,6 +13,7 @@ import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
@@ -86,6 +87,16 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
 
         assertThat(viewModel.state.value.isLoading).isFalse()
         assertThat(viewModel.state.value.ids()).containsExactly("groceries", "rent")
+    }
+
+    @Test
+    fun `recurring icon opens the recurring transactions list`() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        viewModel.processAction(TransactionListAction.OpenRecurringTransactions)
+
+        verify(navigator).navigate(ExpenseManagerScreens.RecurringTransactions)
     }
 
     @Test

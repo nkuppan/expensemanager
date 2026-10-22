@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Потрачено %1$s из %2$s. Пора немного притормозить.</string>
     <string name="budget_alert_over_title">%1$s: бюджет превышен</string>
     <string name="budget_alert_over_body">Потрачено %1$s из бюджета %2$s.</string>
+    <string name="auto_backup_failed_title">Автоматическое копирование не удалось</string>
+    <string name="auto_backup_failed_folder_body">Нет доступа к папке для копий. Нажмите, чтобы выбрать её снова.</string>
+    <string name="auto_backup_failed_write_body">Не удалось создать резервную копию. Нажмите, чтобы проверить настройки.</string>
+    <string name="auto_backup_failed_action">Исправить</string>
 </resources>

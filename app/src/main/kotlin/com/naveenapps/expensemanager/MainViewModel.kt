@@ -69,6 +69,18 @@ class MainViewModel(
         _pendingQuickAdd.value = false
     }
 
+    // Set when opened from the "automatic backup failed" notification; handled like quick add.
+    private val _pendingOpenAutoBackup = MutableStateFlow(false)
+    val pendingOpenAutoBackup = _pendingOpenAutoBackup.asStateFlow()
+
+    fun requestOpenAutoBackup() {
+        _pendingOpenAutoBackup.value = true
+    }
+
+    fun onOpenAutoBackupHandled() {
+        _pendingOpenAutoBackup.value = false
+    }
+
     fun onAuthenticationSuccess() {
         _isAuthenticated.value = true
     }

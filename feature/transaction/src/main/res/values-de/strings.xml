@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Deine Änderungen an dieser Transaktion wurden nicht gespeichert.</string>
     <string name="discard">Verwerfen</string>
     <string name="keep_editing">Weiter bearbeiten</string>
+    <string name="search_recurring">Wiederkehrende Transaktionen suchen</string>
+    <string name="search_recurring_hint">Notizen, Kategorien, Konten, Beträge durchsuchen</string>
+    <string name="recurring_no_matches">Keine wiederkehrenden Transaktionen gefunden</string>
+    <string name="recurring_more_options">Weitere Optionen</string>
+    <string name="recurring_edit">Bearbeiten</string>
+    <string name="edit_recurring_transaction">Wiederkehrende Transaktion bearbeiten</string>
+    <string name="recurring_next_date">Nächstes Datum</string>
+    <string name="recurring_schedule_change_hint">Beim Speichern beginnt der neue Zeitplan ab %1$s.</string>
+    <string name="recurring_edit_future_only">Änderungen gelten nur für kommende Transaktionen. Bereits erfasste bleiben unverändert.</string>
+    <string name="recurring_next_date_in_past">Wähle als nächstes Datum heute oder später.</string>
+    <string name="recurring_part_of_series">Teil einer wiederkehrenden Serie</string>
+    <string name="recurring_edit_series">Serie bearbeiten, um kommende Transaktionen zu ändern</string>
+    <string name="add_recurring_transaction">Wiederkehrende Transaktion hinzufügen</string>
 </resources>

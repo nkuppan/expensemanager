@@ -64,4 +64,7 @@ sealed class TransactionCreateAction {
     data class RemoveAttachment(val path: String) : TransactionCreateAction()
 
     data class SelectRepeat(val frequency: RecurringFrequency?) : TransactionCreateAction()
+
+    /** Opens the rule ("series") this transaction was logged by. */
+    data object OpenRecurringSeries : TransactionCreateAction()
 }

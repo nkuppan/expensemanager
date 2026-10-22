@@ -21,6 +21,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import java.time.DayOfWeek
@@ -35,6 +36,9 @@ import kotlinx.coroutines.flow.firstOrNull
 
 /** Activity opened when a reminder notification is tapped. */
 const val DESTINATION_CLASS = "com.naveenapps.expensemanager.MainActivity"
+
+/** Launch action that opens Settings → Automatic backup (from the backup-failed notification). */
+const val ACTION_OPEN_AUTO_BACKUP = "com.naveenapps.expensemanager.OPEN_AUTO_BACKUP"
 
 private const val TAG = "NotificationScheduler"
 
@@ -130,6 +134,50 @@ class NotificationScheduler(
             .build()
 
         runCatching { NotificationManagerCompat.from(context).notify(notificationId, notification) }
+    }
+
+    /**
+     * "Automatic backup failed", with a Fix action that opens the Automatic backup screen.
+     * Like the other informational notifications it only needs the OS permission: a failing
+     * backup matters whether or not the daily reminder is on.
+     */
+    @SuppressLint("MissingPermission")
+    fun showAutoBackupFailedNotification(error: AutoBackupError) {
+        if (!hasNotificationPermission()) return
+        createChannelIfRequired()
+
+        val openAutoBackup = Intent(context, Class.forName(DESTINATION_CLASS))
+            .setAction(ACTION_OPEN_AUTO_BACKUP)
+            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            NotificationId.AUTO_BACKUP_FAILED,
+            openAutoBackup,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        val content = context.getString(
+            when (error) {
+                AutoBackupError.FOLDER_UNAVAILABLE -> R.string.auto_backup_failed_folder_body
+                AutoBackupError.WRITE_FAILED -> R.string.auto_backup_failed_write_body
+            },
+        )
+
+        val notification = NotificationCompat.Builder(context, NotificationChannelId.CHANNEL_GENERAL)
+            .setContentTitle(context.getString(R.string.auto_backup_failed_title))
+            .setContentText(content)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(content))
+            .setSmallIcon(R.drawable.account_balance_wallet)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            .addAction(0, context.getString(R.string.auto_backup_failed_action), pendingIntent)
+            .build()
+
+        runCatching { NotificationManagerCompat.from(context).notify(NotificationId.AUTO_BACKUP_FAILED, notification) }
+    }
+
+    /** Clears the failure notification once backups work again. */
+    fun cancelAutoBackupFailedNotification() {
+        runCatching { NotificationManagerCompat.from(context).cancel(NotificationId.AUTO_BACKUP_FAILED) }
     }
 
     suspend fun checkAndRestartReminder() {
@@ -300,6 +348,7 @@ object NotificationId {
     const val DAILY_REMINDER_REQUEST_CODE = 101
     const val NO_SPEND_REQUEST_CODE = 102
     const val WEEKLY_SUMMARY = 103
+    const val AUTO_BACKUP_FAILED = 104
 
     /** Budget alerts use this base plus a per-budget offset, so each budget has its own. */
     const val BUDGET_ALERT_BASE = 10_000

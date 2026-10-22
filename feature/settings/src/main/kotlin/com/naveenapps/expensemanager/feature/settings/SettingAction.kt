@@ -41,6 +41,8 @@ sealed class SettingAction {
     // Data & Backup section
     data object OpenRecurringTransactions : SettingAction()
 
+    data object OpenAutoBackup : SettingAction()
+
     data object Backup : SettingAction()
 
     data object Restore : SettingAction()

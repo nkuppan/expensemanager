@@ -33,4 +33,9 @@
     <string name="step_currency_title">Wybierz walutę</string>
     <string name="step_currency_description">Kwoty są wyświetlane w tej walucie</string>
     <string name="step_currency_action">Zmień walutę</string>
+    <string name="auto_backup_warning_title">Automatyczna kopia nie działa</string>
+    <string name="auto_backup_warning_folder">Brak dostępu do folderu kopii. Wybierz go ponownie, aby chronić swoje dane.</string>
+    <string name="auto_backup_warning_write">Ostatnie kopie nie powiodły się. Sprawdź ustawienia, aby chronić swoje dane.</string>
+    <string name="auto_backup_warning_later">Później</string>
+    <string name="auto_backup_warning_fix">Napraw</string>
 </resources>

@@ -33,4 +33,9 @@
     <string name="step_currency_title">Para biriminizi seçin</string>
     <string name="step_currency_description">Tutarlar bu para biriminde gösterilir</string>
     <string name="step_currency_action">Para birimini değiştir</string>
+    <string name="auto_backup_warning_title">Otomatik yedekleme çalışmıyor</string>
+    <string name="auto_backup_warning_folder">Yedek klasörüne erişilemiyor. Verilerinizi korumak için tekrar seçin.</string>
+    <string name="auto_backup_warning_write">Son yedeklemeler başarısız oldu. Verilerinizi korumak için ayarları kontrol edin.</string>
+    <string name="auto_backup_warning_later">Daha sonra</string>
+    <string name="auto_backup_warning_fix">Düzelt</string>
 </resources>

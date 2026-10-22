@@ -84,4 +84,17 @@
     <string name="discard_changes_message">您对此交易的更改尚未保存。</string>
     <string name="discard">舍弃</string>
     <string name="keep_editing">继续编辑</string>
+    <string name="search_recurring">搜索定期交易</string>
+    <string name="search_recurring_hint">搜索备注、类别、账户、金额</string>
+    <string name="recurring_no_matches">没有与搜索匹配的定期交易</string>
+    <string name="recurring_more_options">更多选项</string>
+    <string name="recurring_edit">编辑</string>
+    <string name="edit_recurring_transaction">编辑定期交易</string>
+    <string name="recurring_next_date">下次日期</string>
+    <string name="recurring_schedule_change_hint">保存后，新计划将从%1$s开始。</string>
+    <string name="recurring_edit_future_only">更改仅适用于之后的交易，已记录的交易保持不变。</string>
+    <string name="recurring_next_date_in_past">请选择今天或之后的下次日期。</string>
+    <string name="recurring_part_of_series">属于定期系列</string>
+    <string name="recurring_edit_series">编辑系列以更改之后的交易</string>
+    <string name="add_recurring_transaction">添加定期交易</string>
 </resources>

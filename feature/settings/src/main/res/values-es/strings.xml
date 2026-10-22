@@ -72,4 +72,21 @@
     <string name="transaction_entry">Registro de transacciones</string>
     <string name="auto_open_calculator">Abrir la calculadora automáticamente</string>
     <string name="auto_open_calculator_message">Mostrar la calculadora al añadir una nueva transacción</string>
+    <string name="auto_backup">Copia de seguridad automática</string>
+    <string name="auto_backup_setting_message">Haz copias en una carpeta de este dispositivo de forma programada</string>
+    <string name="auto_backup_toggle_message">Guarda automáticamente una copia en la carpeta de abajo</string>
+    <string name="auto_backup_destination">Destino</string>
+    <string name="auto_backup_folder">Carpeta de copias</string>
+    <string name="auto_backup_choose_folder">Elegir carpeta</string>
+    <string name="auto_backup_frequency">Frecuencia</string>
+    <string name="auto_backup_daily">Diaria</string>
+    <string name="auto_backup_weekly">Semanal</string>
+    <string name="auto_backup_status">Estado</string>
+    <string name="auto_backup_last">Última copia: %1$s, %2$s</string>
+    <string name="auto_backup_never">Aún no hay copias automáticas</string>
+    <string name="auto_backup_now">Hacer copia ahora</string>
+    <string name="auto_backup_folder_unavailable">No se puede acceder a la carpeta de copias. Vuelve a elegirla.</string>
+    <string name="auto_backup_write_failed">La última copia falló. Se volverá a intentar.</string>
+    <string name="auto_backup_folder_error">No se pudo acceder a esa carpeta. Prueba con otra.</string>
+    <string name="auto_backup_info">Se conservan las %1$d copias automáticas más recientes y se eliminan las anteriores. Tus copias manuales nunca se tocan. Las copias automáticas usan la clave integrada de la app, así que mantén la carpeta privada. Para una copia protegida con contraseña, usa Copia de seguridad en Ajustes. Restaurar lee ambas.</string>
 </resources>

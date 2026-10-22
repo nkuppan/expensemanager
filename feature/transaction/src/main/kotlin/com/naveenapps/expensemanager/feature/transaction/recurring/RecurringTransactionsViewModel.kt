@@ -7,11 +7,13 @@ import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetRecurringT
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
-import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.feature.transaction.R
+import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -19,17 +21,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-data class RecurringTransactionsState(
-    /** Null until loaded, so the empty state doesn't flash in. */
-    val items: List<RecurringItemUi>? = null,
-    val pendingStop: RecurringItemUi? = null,
-)
-
-data class RecurringItemUi(
-    val rule: RecurringTransaction,
-    val amount: String,
-)
 
 class RecurringTransactionsViewModel(
     getRecurringTransactionsUseCase: GetRecurringTransactionsUseCase,
@@ -43,17 +34,57 @@ class RecurringTransactionsViewModel(
     private val _state = MutableStateFlow(RecurringTransactionsState())
     val state = _state.asStateFlow()
 
+    private val searchQuery = MutableStateFlow("")
+
     init {
-        combine(getRecurringTransactionsUseCase.invoke(), getCurrencyUseCase.invoke()) { rules, currency ->
-            rules.map { RecurringItemUi(it, getFormattedAmountUseCase.invoke(it.amount, currency).amountString.orEmpty()) }
-        }.onEach { items -> _state.update { it.copy(items = items) } }.launchIn(viewModelScope)
+        combine(
+            getRecurringTransactionsUseCase.invoke(),
+            getCurrencyUseCase.invoke(),
+            searchQuery,
+        ) { rules, currency, query ->
+            val all = rules.map {
+                RecurringItemUi(it, getFormattedAmountUseCase.invoke(it.amount, currency).amountString.orEmpty())
+            }
+            all.filter { it.matches(query) } to all.isNotEmpty()
+        }.onEach { (items, hasAny) ->
+            _state.update { it.copy(items = items, hasAnyRules = hasAny) }
+        }.launchIn(viewModelScope)
     }
 
-    fun askToStop(item: RecurringItemUi) = _state.update { it.copy(pendingStop = item) }
+    fun processAction(action: RecurringTransactionsAction) {
+        when (action) {
+            RecurringTransactionsAction.ClosePage -> appComposeNavigator.popBackStack()
 
-    fun dismissStop() = _state.update { it.copy(pendingStop = null) }
+            is RecurringTransactionsAction.Search -> search(action.query)
 
-    fun confirmStop() {
+            RecurringTransactionsAction.OpenCreate -> openCreate()
+
+            is RecurringTransactionsAction.OpenEdit -> appComposeNavigator.navigate(
+                ExpenseManagerScreens.RecurringTransactionEdit(action.item.rule.id),
+            )
+
+            is RecurringTransactionsAction.AskToStop -> _state.update { it.copy(pendingStop = action.item) }
+
+            RecurringTransactionsAction.DismissStop -> _state.update { it.copy(pendingStop = null) }
+
+            RecurringTransactionsAction.ConfirmStop -> confirmStop()
+        }
+    }
+
+    // A recurring transaction is created like any other, with Repeat already chosen; the
+    // first occurrence is the transaction itself. Monthly is the most common (rent, bills, salary).
+    private fun openCreate() {
+        appComposeNavigator.navigate(
+            ExpenseManagerScreens.TransactionCreate(id = null, repeat = RecurringFrequency.MONTHLY.name),
+        )
+    }
+
+    private fun search(query: String) {
+        searchQuery.value = query
+        _state.update { it.copy(searchQuery = query) }
+    }
+
+    private fun confirmStop() {
         val item = _state.value.pendingStop ?: return
         _state.update { it.copy(pendingStop = null) }
         viewModelScope.launch {
@@ -64,14 +95,28 @@ class RecurringTransactionsViewModel(
             )
         }
     }
-
-    fun closePage() = appComposeNavigator.popBackStack()
 }
+
+/**
+ * Notes, category name, account names and the amount (formatted, e.g. "1,200.00", or raw, e.g.
+ * "1200"). Like the transaction list, built-in categories match by their stored English name.
+ */
+internal fun RecurringItemUi.matches(query: String): Boolean = matchesSearch(
+    query,
+    listOf(
+        rule.notes,
+        rule.category?.name,
+        rule.fromAccount?.name,
+        rule.toAccount?.name,
+        amount,
+        rule.amount.toBigDecimal().stripTrailingZeros().toPlainString(),
+    ),
+)
 
 internal val RecurringFrequency.labelResId: Int
     get() = when (this) {
-        RecurringFrequency.DAILY -> com.naveenapps.expensemanager.feature.transaction.R.string.repeat_daily
-        RecurringFrequency.WEEKLY -> com.naveenapps.expensemanager.feature.transaction.R.string.repeat_weekly
-        RecurringFrequency.MONTHLY -> com.naveenapps.expensemanager.feature.transaction.R.string.repeat_monthly
-        RecurringFrequency.YEARLY -> com.naveenapps.expensemanager.feature.transaction.R.string.repeat_yearly
+        RecurringFrequency.DAILY -> R.string.repeat_daily
+        RecurringFrequency.WEEKLY -> R.string.repeat_weekly
+        RecurringFrequency.MONTHLY -> R.string.repeat_monthly
+        RecurringFrequency.YEARLY -> R.string.repeat_yearly
     }

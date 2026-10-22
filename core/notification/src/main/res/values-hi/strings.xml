@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">आपने %2$s में से %1$s खर्च कर दिए हैं। थोड़ा धीमा करने का समय है।</string>
     <string name="budget_alert_over_title">%1$s बजट से ज़्यादा हो गया</string>
     <string name="budget_alert_over_body">आपने अपने %2$s के बजट में से %1$s खर्च कर दिए हैं।</string>
+    <string name="auto_backup_failed_title">स्वचालित बैकअप विफल रहा</string>
+    <string name="auto_backup_failed_folder_body">आपके बैकअप फ़ोल्डर तक नहीं पहुँच पा रहे। फिर से चुनने के लिए टैप करें।</string>
+    <string name="auto_backup_failed_write_body">आपके डेटा का बैकअप नहीं हो सका। बैकअप सेटिंग जाँचने के लिए टैप करें।</string>
+    <string name="auto_backup_failed_action">ठीक करें</string>
 </resources>

@@ -72,4 +72,21 @@
     <string name="transaction_entry">लेन-देन प्रविष्टि</string>
     <string name="auto_open_calculator">कैलकुलेटर अपने आप खोलें</string>
     <string name="auto_open_calculator_message">नया लेन-देन जोड़ते ही कैलकुलेटर दिखाएँ</string>
+    <string name="auto_backup">स्वचालित बैकअप</string>
+    <string name="auto_backup_setting_message">इस डिवाइस के एक फ़ोल्डर में तय समय पर बैकअप लें</string>
+    <string name="auto_backup_toggle_message">नीचे दिए फ़ोल्डर में अपने आप बैकअप सहेजें</string>
+    <string name="auto_backup_destination">गंतव्य</string>
+    <string name="auto_backup_folder">बैकअप फ़ोल्डर</string>
+    <string name="auto_backup_choose_folder">फ़ोल्डर चुनें</string>
+    <string name="auto_backup_frequency">कितनी बार</string>
+    <string name="auto_backup_daily">रोज़ाना</string>
+    <string name="auto_backup_weekly">साप्ताहिक</string>
+    <string name="auto_backup_status">स्थिति</string>
+    <string name="auto_backup_last">पिछला बैकअप: %1$s, %2$s</string>
+    <string name="auto_backup_never">अभी तक कोई स्वचालित बैकअप नहीं</string>
+    <string name="auto_backup_now">अभी बैकअप लें</string>
+    <string name="auto_backup_folder_unavailable">बैकअप फ़ोल्डर तक नहीं पहुँच पा रहे। इसे फिर से चुनें।</string>
+    <string name="auto_backup_write_failed">पिछला बैकअप विफल रहा। इसे फिर से आज़माया जाएगा।</string>
+    <string name="auto_backup_folder_error">उस फ़ोल्डर की अनुमति नहीं मिल सकी। कोई दूसरा चुनें।</string>
+    <string name="auto_backup_info">सबसे नए %1$d स्वचालित बैकअप रखे जाते हैं और पुराने हटा दिए जाते हैं। आपके मैन्युअल बैकअप को कभी नहीं छुआ जाता। स्वचालित बैकअप ऐप की अंतर्निहित कुंजी का उपयोग करते हैं, इसलिए फ़ोल्डर को निजी रखें। पासफ़्रेज़-सुरक्षित कॉपी के लिए सेटिंग में बैकअप का उपयोग करें। रीस्टोर दोनों को पढ़ता है।</string>
 </resources>

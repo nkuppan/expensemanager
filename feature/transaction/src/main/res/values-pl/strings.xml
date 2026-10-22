@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Zmiany w tej transakcji nie zostały zapisane.</string>
     <string name="discard">Odrzuć</string>
     <string name="keep_editing">Edytuj dalej</string>
+    <string name="search_recurring">Szukaj transakcji cyklicznych</string>
+    <string name="search_recurring_hint">Szukaj notatek, kategorii, kont, kwot</string>
+    <string name="recurring_no_matches">Brak transakcji cyklicznych pasujących do wyszukiwania</string>
+    <string name="recurring_more_options">Więcej opcji</string>
+    <string name="recurring_edit">Edytuj</string>
+    <string name="edit_recurring_transaction">Edytuj transakcję cykliczną</string>
+    <string name="recurring_next_date">Następna data</string>
+    <string name="recurring_schedule_change_hint">Po zapisaniu nowy harmonogram zacznie się od %1$s.</string>
+    <string name="recurring_edit_future_only">Zmiany dotyczą tylko przyszłych transakcji. Już zapisane pozostają bez zmian.</string>
+    <string name="recurring_next_date_in_past">Wybierz następną datę od dzisiaj.</string>
+    <string name="recurring_part_of_series">Część serii cyklicznej</string>
+    <string name="recurring_edit_series">Edytuj serię, aby zmienić przyszłe transakcje</string>
+    <string name="add_recurring_transaction">Dodaj transakcję cykliczną</string>
 </resources>

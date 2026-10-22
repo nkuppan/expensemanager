@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">%2$s bütçenin %1$s kadarını harcadın. Biraz yavaşlama zamanı.</string>
     <string name="budget_alert_over_title">%1$s bütçeyi aştı</string>
     <string name="budget_alert_over_body">%2$s bütçenin %1$s kadarını harcadın.</string>
+    <string name="auto_backup_failed_title">Otomatik yedekleme başarısız</string>
+    <string name="auto_backup_failed_folder_body">Yedek klasörüne erişilemiyor. Tekrar seçmek için dokunun.</string>
+    <string name="auto_backup_failed_write_body">Verileriniz yedeklenemedi. Yedekleme ayarlarını kontrol etmek için dokunun.</string>
+    <string name="auto_backup_failed_action">Düzelt</string>
 </resources>

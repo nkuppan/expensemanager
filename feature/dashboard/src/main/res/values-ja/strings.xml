@@ -33,4 +33,9 @@
     <string name="step_currency_title">通貨を選択</string>
     <string name="step_currency_description">金額はこの通貨で表示されます</string>
     <string name="step_currency_action">通貨を変更</string>
+    <string name="auto_backup_warning_title">自動バックアップが機能していません</string>
+    <string name="auto_backup_warning_folder">バックアップフォルダにアクセスできません。データを守るためにもう一度選んでください。</string>
+    <string name="auto_backup_warning_write">最近のバックアップに失敗しました。データを守るために設定を確認してください。</string>
+    <string name="auto_backup_warning_later">後で</string>
+    <string name="auto_backup_warning_fix">修正</string>
 </resources>

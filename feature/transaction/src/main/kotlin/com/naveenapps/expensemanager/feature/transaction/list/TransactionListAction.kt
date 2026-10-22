@@ -10,6 +10,8 @@ sealed class TransactionListAction {
 
     data class Search(val query: String) : TransactionListAction()
 
+    data object OpenRecurringTransactions : TransactionListAction()
+
     data class DeleteTransaction(val transactionId: String) : TransactionListAction()
 
     /** The user tapped "Undo" on the snackbar shown after a delete. */

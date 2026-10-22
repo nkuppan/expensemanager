@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Bu işlemdeki değişiklikleriniz kaydedilmedi.</string>
     <string name="discard">Sil</string>
     <string name="keep_editing">Düzenlemeye devam et</string>
+    <string name="search_recurring">Tekrarlanan işlemlerde ara</string>
+    <string name="search_recurring_hint">Not, kategori, hesap ve tutar ara</string>
+    <string name="recurring_no_matches">Aramanızla eşleşen tekrarlanan işlem yok</string>
+    <string name="recurring_more_options">Diğer seçenekler</string>
+    <string name="recurring_edit">Düzenle</string>
+    <string name="edit_recurring_transaction">Tekrarlanan işlemi düzenle</string>
+    <string name="recurring_next_date">Sonraki tarih</string>
+    <string name="recurring_schedule_change_hint">Kaydettiğinizde yeni plan %1$s tarihinden başlar.</string>
+    <string name="recurring_edit_future_only">Değişiklikler yalnızca gelecek işlemlere uygulanır. Kaydedilmiş işlemler aynı kalır.</string>
+    <string name="recurring_next_date_in_past">Bugün veya sonrası için bir sonraki tarih seçin.</string>
+    <string name="recurring_part_of_series">Tekrarlanan serinin parçası</string>
+    <string name="recurring_edit_series">Gelecek işlemleri değiştirmek için seriyi düzenleyin</string>
+    <string name="add_recurring_transaction">Tekrarlanan işlem ekle</string>
 </resources>

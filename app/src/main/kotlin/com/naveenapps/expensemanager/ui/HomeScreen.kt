@@ -66,10 +66,12 @@ import com.naveenapps.expensemanager.feature.onboarding.into.IntroScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
+import com.naveenapps.expensemanager.feature.settings.autobackup.AutoBackupScreen
 import com.naveenapps.expensemanager.feature.transaction.R as TransactionR
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListScreen
 import com.naveenapps.expensemanager.feature.transaction.recurring.RecurringTransactionsScreen
+import com.naveenapps.expensemanager.feature.transaction.recurring.edit.RecurringTransactionEditScreen
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -107,8 +109,14 @@ fun NavGraphBuilder.expenseManagerNavigation(
     composable<ExpenseManagerScreens.CategoryDetails> {
         CategoryDetailScreen()
     }
+    composable<ExpenseManagerScreens.AutoBackupScreen> {
+        AutoBackupScreen()
+    }
     composable<ExpenseManagerScreens.RecurringTransactions> {
         RecurringTransactionsScreen()
+    }
+    composable<ExpenseManagerScreens.RecurringTransactionEdit> {
+        RecurringTransactionEditScreen()
     }
     composable<ExpenseManagerScreens.TransactionList> {
         TransactionListScreen(showBackNavigationIcon = true)

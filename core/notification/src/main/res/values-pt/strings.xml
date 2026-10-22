@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Você gastou %1$s de %2$s. Hora de desacelerar um pouco.</string>
     <string name="budget_alert_over_title">%1$s passou do orçamento</string>
     <string name="budget_alert_over_body">Você gastou %1$s do seu orçamento de %2$s.</string>
+    <string name="auto_backup_failed_title">Falha no backup automático</string>
+    <string name="auto_backup_failed_folder_body">Não foi possível acessar a pasta de backup. Toque para escolhê-la novamente.</string>
+    <string name="auto_backup_failed_write_body">Não foi possível fazer backup dos seus dados. Toque para verificar as configurações.</string>
+    <string name="auto_backup_failed_action">Corrigir</string>
 </resources>

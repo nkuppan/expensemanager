@@ -212,6 +212,8 @@ class SettingsViewModel(
             SettingAction.OpenRecurringTransactions ->
                 appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactions)
 
+            SettingAction.OpenAutoBackup -> appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
+
             SettingAction.OpenNotification -> openNotificationScreen()
 
             SettingAction.ShareApp -> {

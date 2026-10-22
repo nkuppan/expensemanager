@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Le modifiche a questa transazione non sono state salvate.</string>
     <string name="discard">Annulla modifiche</string>
     <string name="keep_editing">Continua a modificare</string>
+    <string name="search_recurring">Cerca transazioni ricorrenti</string>
+    <string name="search_recurring_hint">Cerca note, categorie, conti, importi</string>
+    <string name="recurring_no_matches">Nessuna transazione ricorrente corrisponde alla ricerca</string>
+    <string name="recurring_more_options">Altre opzioni</string>
+    <string name="recurring_edit">Modifica</string>
+    <string name="edit_recurring_transaction">Modifica transazione ricorrente</string>
+    <string name="recurring_next_date">Prossima data</string>
+    <string name="recurring_schedule_change_hint">Salvando, la nuova pianificazione inizia il %1$s.</string>
+    <string name="recurring_edit_future_only">Le modifiche valgono solo per le prossime transazioni. Quelle già registrate restano invariate.</string>
+    <string name="recurring_next_date_in_past">Scegli una prossima data da oggi in poi.</string>
+    <string name="recurring_part_of_series">Parte di una serie ricorrente</string>
+    <string name="recurring_edit_series">Modifica la serie per cambiare le prossime transazioni</string>
+    <string name="add_recurring_transaction">Aggiungi transazione ricorrente</string>
 </resources>

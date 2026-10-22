@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">You have spent %1$s of %2$s. Time to slow down a little.</string>
     <string name="budget_alert_over_title">%1$s is over budget</string>
     <string name="budget_alert_over_body">You have spent %1$s of your %2$s budget.</string>
+    <string name="auto_backup_failed_title">Automatic backup failed</string>
+    <string name="auto_backup_failed_folder_body">Can\'t reach your backup folder. Tap to choose it again.</string>
+    <string name="auto_backup_failed_write_body">Your data couldn\'t be backed up. Tap to check your backup settings.</string>
+    <string name="auto_backup_failed_action">Fix</string>
 </resources>

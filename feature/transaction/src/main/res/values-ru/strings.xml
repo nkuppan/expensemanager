@@ -84,4 +84,17 @@
     <string name="discard_changes_message">Изменения в этой операции не сохранены.</string>
     <string name="discard">Отменить</string>
     <string name="keep_editing">Продолжить</string>
+    <string name="search_recurring">Поиск регулярных операций</string>
+    <string name="search_recurring_hint">Поиск по заметкам, категориям, счетам, суммам</string>
+    <string name="recurring_no_matches">Нет регулярных операций, подходящих под запрос</string>
+    <string name="recurring_more_options">Ещё</string>
+    <string name="recurring_edit">Изменить</string>
+    <string name="edit_recurring_transaction">Изменить регулярную операцию</string>
+    <string name="recurring_next_date">Следующая дата</string>
+    <string name="recurring_schedule_change_hint">После сохранения новое расписание начнётся с %1$s.</string>
+    <string name="recurring_edit_future_only">Изменения применяются только к будущим операциям. Уже записанные остаются без изменений.</string>
+    <string name="recurring_next_date_in_past">Выберите следующую дату не раньше сегодняшней.</string>
+    <string name="recurring_part_of_series">Часть регулярной серии</string>
+    <string name="recurring_edit_series">Измените серию, чтобы изменить будущие операции</string>
+    <string name="add_recurring_transaction">Добавить регулярную операцию</string>
 </resources>

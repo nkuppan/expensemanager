@@ -16,4 +16,8 @@
     <string name="budget_alert_warning_body">Vous avez dépensé %1$s sur %2$s. Il est temps de ralentir un peu.</string>
     <string name="budget_alert_over_title">%1$s est dépassé</string>
     <string name="budget_alert_over_body">Vous avez dépensé %1$s sur votre budget de %2$s.</string>
+    <string name="auto_backup_failed_title">Échec de la sauvegarde automatique</string>
+    <string name="auto_backup_failed_folder_body">Dossier de sauvegarde inaccessible. Touchez pour le choisir à nouveau.</string>
+    <string name="auto_backup_failed_write_body">Vos données n\'ont pas pu être sauvegardées. Touchez pour vérifier les paramètres.</string>
+    <string name="auto_backup_failed_action">Corriger</string>
 </resources>

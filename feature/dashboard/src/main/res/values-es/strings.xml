@@ -33,4 +33,9 @@
     <string name="step_currency_title">Elige tu moneda</string>
     <string name="step_currency_description">Los importes se muestran en esta moneda</string>
     <string name="step_currency_action">Cambiar moneda</string>
+    <string name="auto_backup_warning_title">La copia automática no funciona</string>
+    <string name="auto_backup_warning_folder">No se puede acceder a la carpeta de copias. Vuelve a elegirla para mantener tus datos seguros.</string>
+    <string name="auto_backup_warning_write">Las últimas copias fallaron. Revisa los ajustes de copia para mantener tus datos seguros.</string>
+    <string name="auto_backup_warning_later">Más tarde</string>
+    <string name="auto_backup_warning_fix">Arreglar</string>
 </resources>

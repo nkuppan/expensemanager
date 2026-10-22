@@ -82,4 +82,21 @@
     <string name="transaction_entry">Transaction entry</string>
     <string name="auto_open_calculator">Open calculator automatically</string>
     <string name="auto_open_calculator_message">Show the calculator as soon as you add a new transaction</string>
+    <string name="auto_backup">Automatic backup</string>
+    <string name="auto_backup_setting_message">Back up to a folder on this device on a schedule</string>
+    <string name="auto_backup_toggle_message">Save a backup to the folder below automatically</string>
+    <string name="auto_backup_destination">Destination</string>
+    <string name="auto_backup_folder">Backup folder</string>
+    <string name="auto_backup_choose_folder">Choose a folder</string>
+    <string name="auto_backup_frequency">How often</string>
+    <string name="auto_backup_daily">Daily</string>
+    <string name="auto_backup_weekly">Weekly</string>
+    <string name="auto_backup_status">Status</string>
+    <string name="auto_backup_last">Last backup: %1$s, %2$s</string>
+    <string name="auto_backup_never">No automatic backup yet</string>
+    <string name="auto_backup_now">Back up now</string>
+    <string name="auto_backup_folder_unavailable">Can\'t reach the backup folder. Choose it again.</string>
+    <string name="auto_backup_write_failed">The last backup failed. It will be tried again.</string>
+    <string name="auto_backup_folder_error">Couldn\'t get access to that folder. Try another one.</string>
+    <string name="auto_backup_info">The newest %1$d automatic backups are kept and older ones are deleted. Your manual backups are never touched. Automatic backups use the app\'s built-in key, so keep the folder private. For a passphrase-protected copy, use Backup in Settings. Restore reads both.</string>
 </resources>

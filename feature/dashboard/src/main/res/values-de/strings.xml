@@ -33,4 +33,9 @@
     <string name="step_currency_title">Währung wählen</string>
     <string name="step_currency_description">Beträge werden in dieser Währung angezeigt</string>
     <string name="step_currency_action">Währung ändern</string>
+    <string name="auto_backup_warning_title">Automatische Sicherung funktioniert nicht</string>
+    <string name="auto_backup_warning_folder">Der Sicherungsordner ist nicht erreichbar. Wähle ihn erneut, damit deine Daten sicher bleiben.</string>
+    <string name="auto_backup_warning_write">Die letzten Sicherungen sind fehlgeschlagen. Prüfe die Einstellungen, damit deine Daten sicher bleiben.</string>
+    <string name="auto_backup_warning_later">Später</string>
+    <string name="auto_backup_warning_fix">Beheben</string>
 </resources>

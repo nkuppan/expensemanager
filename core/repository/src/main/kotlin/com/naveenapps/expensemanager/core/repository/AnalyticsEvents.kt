@@ -34,9 +34,15 @@ object AnalyticsEvents {
     const val RESTORE_STARTED = "restore_started"
     const val BACKUP_COMPLETED = "backup_completed"
     const val RESTORE_COMPLETED = "restore_completed"
+    const val AUTO_BACKUP_ENABLED = "auto_backup_enabled"
+    const val AUTO_BACKUP_DISABLED = "auto_backup_disabled"
+    const val AUTO_BACKUP_COMPLETED = "auto_backup_completed"
+    const val AUTO_BACKUP_FAILED = "auto_backup_failed"
+    const val AUTO_BACKUP_FIX_OPENED = "auto_backup_fix_opened"
     const val RECURRING_CREATED = "recurring_created"
     const val RECURRING_GENERATED = "recurring_generated"
     const val RECURRING_STOPPED = "recurring_stopped"
+    const val RECURRING_EDITED = "recurring_edited"
 
     // Referral / store
     const val FIRST_SAVE_CELEBRATION_SHOWN = "first_save_celebration_shown"
@@ -70,5 +76,6 @@ object AnalyticsParams {
     const val DAYS = "days"
     const val REMINDER_ENABLED = "reminder_enabled"
     const val COUNT = "count"
+    const val REASON = "reason"
     const val FREQUENCY = "frequency"
 }

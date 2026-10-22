@@ -23,6 +23,8 @@ fun MainScreen(
     landingScreen: ExpenseManagerScreens,
     pendingQuickAdd: Boolean = false,
     onQuickAddHandled: () -> Unit = {},
+    pendingOpenAutoBackup: Boolean = false,
+    onOpenAutoBackupHandled: () -> Unit = {},
 ) {
     ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
         val navHostController = rememberNavController()
@@ -59,6 +61,16 @@ fun MainScreen(
                 launchSingleTop = true
             }
             onQuickAddHandled()
+        }
+
+        // "Automatic backup failed" notification: same direct navigation as quick add.
+        LaunchedEffect(pendingOpenAutoBackup) {
+            if (!pendingOpenAutoBackup) return@LaunchedEffect
+            snapshotFlow { navHostController.currentBackStackEntry }.filterNotNull().first()
+            navHostController.navigate(ExpenseManagerScreens.AutoBackupScreen) {
+                launchSingleTop = true
+            }
+            onOpenAutoBackupHandled()
         }
 
         HomePageNavHostContainer(

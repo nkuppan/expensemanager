@@ -72,4 +72,21 @@
     <string name="transaction_entry">交易录入</string>
     <string name="auto_open_calculator">自动打开计算器</string>
     <string name="auto_open_calculator_message">添加新交易时立即显示计算器</string>
+    <string name="auto_backup">自动备份</string>
+    <string name="auto_backup_setting_message">按计划备份到此设备上的文件夹</string>
+    <string name="auto_backup_toggle_message">自动将备份保存到下方文件夹</string>
+    <string name="auto_backup_destination">保存位置</string>
+    <string name="auto_backup_folder">备份文件夹</string>
+    <string name="auto_backup_choose_folder">选择文件夹</string>
+    <string name="auto_backup_frequency">频率</string>
+    <string name="auto_backup_daily">每天</string>
+    <string name="auto_backup_weekly">每周</string>
+    <string name="auto_backup_status">状态</string>
+    <string name="auto_backup_last">上次备份：%1$s %2$s</string>
+    <string name="auto_backup_never">尚无自动备份</string>
+    <string name="auto_backup_now">立即备份</string>
+    <string name="auto_backup_folder_unavailable">无法访问备份文件夹，请重新选择。</string>
+    <string name="auto_backup_write_failed">上次备份失败，将重试。</string>
+    <string name="auto_backup_folder_error">无法获取该文件夹的访问权限，请换一个文件夹。</string>
+    <string name="auto_backup_info">保留最新的 %1$d 个自动备份，较旧的会被删除。手动备份不会受到影响。自动备份使用应用内置密钥，请确保文件夹不被他人访问。如需受密码保护的副本，请使用设置中的“备份”。恢复可读取两者。</string>
 </resources>
