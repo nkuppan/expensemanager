@@ -69,4 +69,17 @@
     <string name="passphrase_label">Passphrase</string>
     <string name="restore_wrong_passphrase">Wrong passphrase. Please try again.</string>
     <string name="continue_action">Continue</string>
+    <!-- Developer section: debug builds only, so these aren't translated. -->
+    <string name="developer" translatable="false">Developer</string>
+    <string name="demo_data" translatable="false">Load demo data</string>
+    <string name="demo_data_message" translatable="false">Replace everything with 3 months of sample data for screenshots (uses your current currency and language)</string>
+    <string name="demo_data_loading" translatable="false">Loading demo data…</string>
+    <string name="demo_data_confirm_title" translatable="false">Replace all data?</string>
+    <string name="demo_data_confirm_message" translatable="false">This deletes every account, transaction, budget and recurring rule in this debug app and adds sample data instead. Set the currency and app language you want first.</string>
+    <string name="demo_data_confirm_action" translatable="false">Replace</string>
+    <string name="demo_data_loaded" translatable="false">Demo data loaded</string>
+    <string name="demo_data_failed" translatable="false">Couldn\'t load demo data — see Logcat (tag DemoData)</string>
+    <string name="transaction_entry">Transaction entry</string>
+    <string name="auto_open_calculator">Open calculator automatically</string>
+    <string name="auto_open_calculator_message">Show the calculator as soon as you add a new transaction</string>
 </resources>

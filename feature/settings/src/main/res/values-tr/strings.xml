@@ -69,4 +69,7 @@
     <string name="passphrase_label">Parola</string>
     <string name="restore_wrong_passphrase">Parola yanlış. Lütfen tekrar deneyin.</string>
     <string name="continue_action">Devam</string>
+    <string name="transaction_entry">İşlem girişi</string>
+    <string name="auto_open_calculator">Hesap makinesini otomatik aç</string>
+    <string name="auto_open_calculator_message">Yeni işlem eklerken hesap makinesini hemen göster</string>
 </resources>

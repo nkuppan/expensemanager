@@ -69,4 +69,7 @@
     <string name="passphrase_label">パスフレーズ</string>
     <string name="restore_wrong_passphrase">パスフレーズが正しくありません。もう一度お試しください。</string>
     <string name="continue_action">続行</string>
+    <string name="transaction_entry">取引の入力</string>
+    <string name="auto_open_calculator">電卓を自動で開く</string>
+    <string name="auto_open_calculator_message">新しい取引を追加するとすぐに電卓を表示します</string>
 </resources>

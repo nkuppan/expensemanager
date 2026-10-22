@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Reorder
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,6 +27,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingToggleRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.settings.R
@@ -86,6 +88,20 @@ private fun AdvancedSettingsScaffoldView(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Spacer(modifier = Modifier.height(0.dp))
+
+            SettingsSection(
+                title = stringResource(id = R.string.transaction_entry),
+            ) {
+                AppCardView {
+                    SettingToggleRow(
+                        title = stringResource(id = R.string.auto_open_calculator),
+                        subtitle = stringResource(id = R.string.auto_open_calculator_message),
+                        icon = Icons.Outlined.Calculate,
+                        checked = state.isAutoOpenCalculator,
+                        onCheckedChange = { onAction.invoke(AdvancedSettingAction.ToggleAutoOpenCalculator) },
+                    )
+                }
+            }
 
             SettingsSection(
                 title = stringResource(id = R.string.others),

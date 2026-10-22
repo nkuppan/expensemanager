@@ -81,4 +81,11 @@ class SettingsRepositoryImpl(
         dataStore.setAppLockEnabled(enabled)
         return@withContext Resource.Success(true)
     }
+
+    override fun isAutoOpenCalculator(): Flow<Boolean> = dataStore.isAutoOpenCalculator()
+
+    override suspend fun setAutoOpenCalculator(enabled: Boolean): Resource<Boolean> = withContext(dispatchers.io) {
+        dataStore.setAutoOpenCalculator(enabled)
+        return@withContext Resource.Success(true)
+    }
 }

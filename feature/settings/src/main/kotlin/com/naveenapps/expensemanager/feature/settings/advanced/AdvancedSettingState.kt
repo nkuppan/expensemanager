@@ -5,4 +5,5 @@ package com.naveenapps.expensemanager.feature.settings.advanced
 // now only holds the genuinely rare, set-once-and-forget items.
 data class AdvancedSettingState(
     val showDateFilter: Boolean = false,
+    val isAutoOpenCalculator: Boolean = true,
 )

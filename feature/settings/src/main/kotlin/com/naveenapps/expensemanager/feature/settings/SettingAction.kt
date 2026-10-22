@@ -62,4 +62,11 @@ sealed class SettingAction {
 
     // Security section
     data object ToggleAppLock : SettingAction()
+
+    // Developer section (debug builds only)
+    data object LoadDemoData : SettingAction()
+
+    data object ConfirmDemoData : SettingAction()
+
+    data object DismissDemoData : SettingAction()
 }

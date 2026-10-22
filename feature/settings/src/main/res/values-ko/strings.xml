@@ -69,4 +69,7 @@
     <string name="passphrase_label">암호 문구</string>
     <string name="restore_wrong_passphrase">암호 문구가 올바르지 않습니다. 다시 시도해 주세요.</string>
     <string name="continue_action">계속</string>
+    <string name="transaction_entry">거래 입력</string>
+    <string name="auto_open_calculator">계산기 자동으로 열기</string>
+    <string name="auto_open_calculator_message">새 거래를 추가할 때 바로 계산기를 표시합니다</string>
 </resources>

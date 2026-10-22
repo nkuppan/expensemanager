@@ -18,6 +18,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.BackupException
 import com.naveenapps.expensemanager.core.repository.BackupRepository
+import com.naveenapps.expensemanager.core.repository.DemoDataRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,6 +41,8 @@ class SettingsViewModel(
     private val appComposeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
     private val backupRepository: BackupRepository,
+    /** Null in release builds, which hides the debug-only "Load demo data" option. */
+    private val demoDataRepository: DemoDataRepository? = null,
 ) : ViewModel() {
 
     private val _event = Channel<SettingEvent>()
@@ -50,6 +53,7 @@ class SettingsViewModel(
             currency = getDefaultCurrencyUseCase.invoke(),
             theme = null,
             showThemeSelection = false,
+            isDemoDataAvailable = demoDataRepository != null,
         ),
     )
     val state = _state.asStateFlow()
@@ -173,8 +177,28 @@ class SettingsViewModel(
         }
     }
 
+    private fun loadDemoData() {
+        val repository = demoDataRepository ?: return
+        _state.update { it.copy(showDemoDataConfirmation = false, isDemoDataLoading = true) }
+        viewModelScope.launch {
+            val result = repository.loadDemoData()
+            _state.update { it.copy(isDemoDataLoading = false) }
+            _event.send(
+                SettingEvent.ShowMessage(
+                    if (result.isSuccess) R.string.demo_data_loaded else R.string.demo_data_failed,
+                ),
+            )
+        }
+    }
+
     fun processAction(action: SettingAction) {
         when (action) {
+            SettingAction.LoadDemoData -> _state.update { it.copy(showDemoDataConfirmation = true) }
+
+            SettingAction.ConfirmDemoData -> loadDemoData()
+
+            SettingAction.DismissDemoData -> _state.update { it.copy(showDemoDataConfirmation = false) }
+
             SettingAction.ClosePage -> closePage()
 
             SettingAction.OpenAboutUs -> openAboutUs()

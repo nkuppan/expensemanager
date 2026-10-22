@@ -45,4 +45,9 @@ interface SettingsRepository {
     fun isAppLockEnabled(): Flow<Boolean>
 
     suspend fun setAppLockEnabled(enabled: Boolean): Resource<Boolean>
+
+    /** Whether the calculator opens automatically when creating a new transaction. */
+    fun isAutoOpenCalculator(): Flow<Boolean>
+
+    suspend fun setAutoOpenCalculator(enabled: Boolean): Resource<Boolean>
 }

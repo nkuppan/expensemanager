@@ -30,6 +30,10 @@ data class SettingState(
     val isBackupInProgress: Boolean = false,
     // Non-null while the backup/restore passphrase dialog is showing.
     val passphrasePrompt: PassphrasePrompt? = null,
+    // Developer section — debug builds only (see DemoDataRepository).
+    val isDemoDataAvailable: Boolean = false,
+    val showDemoDataConfirmation: Boolean = false,
+    val isDemoDataLoading: Boolean = false,
 )
 
 enum class PassphrasePrompt {

@@ -244,6 +244,10 @@ dependencies {
     implementation(libs.androidx.glance.appwidget)
     implementation(libs.androidx.glance.material3)
 
+    // Debug-only demo data (app/src/debug) wipes the database with RoomDatabase.clearAllTables(),
+    // which needs Room on this module's classpath (core:database keeps it as an implementation detail).
+    debugImplementation(libs.room.runtime)
+
     testImplementation(project(":core:testing"))
     androidTestImplementation(project(":core:testing"))
 }

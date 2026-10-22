@@ -94,6 +94,16 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_APP_LOCK_ENABLED] ?: false
     }
 
+    suspend fun setAutoOpenCalculator(enabled: Boolean) = dataStore.edit { preferences ->
+        preferences[KEY_AUTO_OPEN_CALCULATOR] = enabled
+    }
+
+    // Defaults to true: a new transaction opening straight onto the calculator is the
+    // existing behaviour, so users who never touch the setting see no change.
+    fun isAutoOpenCalculator(): Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[KEY_AUTO_OPEN_CALCULATOR] ?: true
+    }
+
     companion object {
         private val KEY_IS_PRELOAD = booleanPreferencesKey("is_preloaded")
         private val KEY_IS_ON_BOARDING_COMPLETED = booleanPreferencesKey("is_on_boarding_completed")
@@ -107,5 +117,6 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         private val KEY_DEFAULT_INCOME_CATEGORY = stringPreferencesKey("default_income_category")
         private val KEY_HOME_SUMMARY_COMPACT = booleanPreferencesKey("home_summary_compact")
         private val KEY_APP_LOCK_ENABLED = booleanPreferencesKey("app_lock_enabled")
+        private val KEY_AUTO_OPEN_CALCULATOR = booleanPreferencesKey("auto_open_calculator")
     }
 }

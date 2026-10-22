@@ -18,11 +18,14 @@ val SettingsViewModelModule = module {
             appComposeNavigator = get(),
             analyticsRepository = get(),
             backupRepository = get(),
+            // Only bound in debug builds.
+            demoDataRepository = getOrNull(),
         )
     }
     viewModel {
         AdvancedSettingsViewModel(
             appComposeNavigator = get(),
+            settingsRepository = get(),
         )
     }
 }

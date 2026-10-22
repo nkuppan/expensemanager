@@ -69,4 +69,7 @@
     <string name="passphrase_label">عبارة المرور</string>
     <string name="restore_wrong_passphrase">عبارة المرور غير صحيحة. يُرجى المحاولة مرة أخرى.</string>
     <string name="continue_action">متابعة</string>
+    <string name="transaction_entry">إدخال المعاملات</string>
+    <string name="auto_open_calculator">فتح الآلة الحاسبة تلقائيًا</string>
+    <string name="auto_open_calculator_message">عرض الآلة الحاسبة فور إضافة معاملة جديدة</string>
 </resources>

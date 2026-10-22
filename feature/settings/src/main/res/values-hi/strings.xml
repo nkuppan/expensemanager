@@ -69,4 +69,7 @@
     <string name="passphrase_label">पासफ़्रेज़</string>
     <string name="restore_wrong_passphrase">गलत पासफ़्रेज़। कृपया फिर से कोशिश करें।</string>
     <string name="continue_action">जारी रखें</string>
+    <string name="transaction_entry">लेन-देन प्रविष्टि</string>
+    <string name="auto_open_calculator">कैलकुलेटर अपने आप खोलें</string>
+    <string name="auto_open_calculator_message">नया लेन-देन जोड़ते ही कैलकुलेटर दिखाएँ</string>
 </resources>

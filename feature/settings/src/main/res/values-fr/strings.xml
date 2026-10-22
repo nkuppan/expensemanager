@@ -69,4 +69,7 @@
     <string name="passphrase_label">Phrase secrète</string>
     <string name="restore_wrong_passphrase">Phrase secrète incorrecte. Veuillez réessayer.</string>
     <string name="continue_action">Continuer</string>
+    <string name="transaction_entry">Saisie des transactions</string>
+    <string name="auto_open_calculator">Ouvrir la calculatrice automatiquement</string>
+    <string name="auto_open_calculator_message">Afficher la calculatrice dès l\'ajout d\'une nouvelle transaction</string>
 </resources>

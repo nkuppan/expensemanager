@@ -69,4 +69,7 @@
     <string name="passphrase_label">Cụm mật khẩu</string>
     <string name="restore_wrong_passphrase">Cụm mật khẩu không đúng. Vui lòng thử lại.</string>
     <string name="continue_action">Tiếp tục</string>
+    <string name="transaction_entry">Nhập giao dịch</string>
+    <string name="auto_open_calculator">Tự động mở máy tính</string>
+    <string name="auto_open_calculator_message">Hiển thị máy tính ngay khi thêm giao dịch mới</string>
 </resources>

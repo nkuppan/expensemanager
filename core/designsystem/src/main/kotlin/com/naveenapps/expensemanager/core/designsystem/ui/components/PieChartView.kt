@@ -47,6 +47,8 @@ fun PieChartView(
             factory = { context ->
                 PieChart(context).apply {
                     layoutParams = LinearLayout.LayoutParams(chartWidth, chartHeight)
+                    // Outside labels are laid out without overlapping (see renderer).
+                    renderer = NonOverlappingPieChartRenderer(this, animator, viewPortHandler)
 
                     // ── Disable chrome ──────────────────────────────
                     description.isEnabled = false

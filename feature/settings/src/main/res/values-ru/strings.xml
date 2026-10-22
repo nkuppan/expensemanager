@@ -69,4 +69,7 @@
     <string name="passphrase_label">Кодовая фраза</string>
     <string name="restore_wrong_passphrase">Неверная кодовая фраза. Попробуйте ещё раз.</string>
     <string name="continue_action">Продолжить</string>
+    <string name="transaction_entry">Ввод операций</string>
+    <string name="auto_open_calculator">Открывать калькулятор автоматически</string>
+    <string name="auto_open_calculator_message">Показывать калькулятор сразу при добавлении новой операции</string>
 </resources>

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.AccountBalance
 import androidx.compose.material.icons.outlined.Backup
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.DashboardCustomize
 import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.EventRepeat
@@ -188,6 +189,24 @@ private fun SettingsScreenScaffoldView(
             },
             dismissButton = {
                 TextButton(onClick = { onAction.invoke(SettingAction.DismissRestoreConfirmation) }) {
+                    Text(text = stringResource(id = android.R.string.cancel))
+                }
+            },
+        )
+    }
+
+    if (state.showDemoDataConfirmation) {
+        AlertDialog(
+            onDismissRequest = { onAction.invoke(SettingAction.DismissDemoData) },
+            title = { Text(text = stringResource(id = R.string.demo_data_confirm_title)) },
+            text = { Text(text = stringResource(id = R.string.demo_data_confirm_message)) },
+            confirmButton = {
+                TextButton(onClick = { onAction.invoke(SettingAction.ConfirmDemoData) }) {
+                    Text(text = stringResource(id = R.string.demo_data_confirm_action))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { onAction.invoke(SettingAction.DismissDemoData) }) {
                     Text(text = stringResource(id = android.R.string.cancel))
                 }
             },
@@ -410,6 +429,23 @@ private fun SettingsScreenContent(
                     subtitle = stringResource(id = R.string.advanced_config_message),
                     icon = Icons.Outlined.SettingsApplications,
                 )
+            }
+        }
+
+        // Developer — debug builds only (no DemoDataRepository is bound in release).
+        if (state.isDemoDataAvailable) {
+            SettingsSection(title = stringResource(R.string.developer)) {
+                AppCardView {
+                    SettingRow(
+                        onClick = { onAction.invoke(SettingAction.LoadDemoData) },
+                        title = stringResource(id = R.string.demo_data),
+                        subtitle = stringResource(
+                            id = if (state.isDemoDataLoading) R.string.demo_data_loading else R.string.demo_data_message,
+                        ),
+                        icon = Icons.Outlined.BugReport,
+                        enabled = !state.isDemoDataLoading,
+                    )
+                }
             }
         }
 

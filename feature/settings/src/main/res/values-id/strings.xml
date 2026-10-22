@@ -69,4 +69,7 @@
     <string name="passphrase_label">Frasa sandi</string>
     <string name="restore_wrong_passphrase">Frasa sandi salah. Coba lagi.</string>
     <string name="continue_action">Lanjutkan</string>
+    <string name="transaction_entry">Entri transaksi</string>
+    <string name="auto_open_calculator">Buka kalkulator otomatis</string>
+    <string name="auto_open_calculator_message">Tampilkan kalkulator saat menambahkan transaksi baru</string>
 </resources>

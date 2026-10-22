@@ -69,4 +69,7 @@
     <string name="passphrase_label">Hasło</string>
     <string name="restore_wrong_passphrase">Nieprawidłowe hasło. Spróbuj ponownie.</string>
     <string name="continue_action">Dalej</string>
+    <string name="transaction_entry">Wprowadzanie transakcji</string>
+    <string name="auto_open_calculator">Automatycznie otwieraj kalkulator</string>
+    <string name="auto_open_calculator_message">Pokaż kalkulator od razu po dodaniu nowej transakcji</string>
 </resources>

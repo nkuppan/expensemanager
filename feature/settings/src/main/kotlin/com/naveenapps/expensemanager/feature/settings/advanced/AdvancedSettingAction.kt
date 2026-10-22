@@ -9,4 +9,6 @@ sealed class AdvancedSettingAction {
     data object ShowDateFilterDialog : AdvancedSettingAction()
 
     data object DismissDateFilterDialog : AdvancedSettingAction()
+
+    data object ToggleAutoOpenCalculator : AdvancedSettingAction()
 }

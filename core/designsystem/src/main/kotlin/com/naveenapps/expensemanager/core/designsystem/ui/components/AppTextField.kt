@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,22 +51,36 @@ fun AutoSelectTextField(
     }
 
     if (textFieldValue.text != text) {
+        // Text changed from outside (e.g. calculator, restored state): keep the caret valid.
         textFieldValue = textFieldValue.copy(
             text = text,
+            selection = TextRange(text.length),
         )
     }
 
-    var hasFocusedOnce by remember { mutableStateOf(false) }
+    var isFocused by remember { mutableStateOf(false) }
+
+    // Select everything once per focus gain. Doing it in an effect (after the frame) instead of
+    // inside onFocusChanged means the tap that focused the field has already placed its caret,
+    // so this select-all wins without us having to drop later selection/caret updates.
+    LaunchedEffect(isFocused) {
+        if (isFocused) {
+            textFieldValue = textFieldValue.copy(
+                selection = TextRange(0, textFieldValue.text.length),
+            )
+        }
+    }
 
     AppTextField(
         trailingIcon = trailingIcon,
         leadingIcon = leadingIcon,
         value = textFieldValue,
         onValueChange = {
-            // When text is updated externally (from outside), update internal state
+            // Always keep the latest value so caret moves / selection changes are applied
+            // (dropping them left the field stuck in select-all with no visible cursor).
+            textFieldValue = it
             if (it.text != text) {
                 onTextChange(it.text)
-                textFieldValue = it.copy(text = it.text)
             }
         },
         placeholder = placeholder,
@@ -73,19 +88,7 @@ fun AutoSelectTextField(
         label = label,
         singleLine = singleLine,
         modifier = modifier
-            .onFocusChanged { focusState ->
-                if (focusState.isFocused) {
-                    // Select all only the first time the field is focused
-                    if (!hasFocusedOnce) {
-                        hasFocusedOnce = true
-                        textFieldValue = textFieldValue.copy(
-                            selection = TextRange(0, textFieldValue.text.length),
-                        )
-                    }
-                } else {
-                    hasFocusedOnce = false
-                }
-            },
+            .onFocusChanged { focusState -> isFocused = focusState.isFocused },
         errorMessage = errorMessage,
         isError = isError,
         minLines = minLines,

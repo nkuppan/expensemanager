@@ -69,4 +69,7 @@
     <string name="passphrase_label">密码短语</string>
     <string name="restore_wrong_passphrase">密码短语错误，请重试。</string>
     <string name="continue_action">继续</string>
+    <string name="transaction_entry">交易录入</string>
+    <string name="auto_open_calculator">自动打开计算器</string>
+    <string name="auto_open_calculator_message">添加新交易时立即显示计算器</string>
 </resources>

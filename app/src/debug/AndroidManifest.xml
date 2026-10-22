@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Debug builds only: demo data for Play Store screenshots.
+    - DemoDataInitializer binds DemoDataRepository, which shows Settings → Developer → "Load demo data".
+    - DemoDataActivity lets a script load it over adb (no launcher icon):
+      adb shell am start -n com.naveenapps.expensemanager.debug/com.naveenapps.expensemanager.demo.DemoDataActivity \
+          -e currency INR -e lang hi
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <activity
+            android:name="com.naveenapps.expensemanager.demo.DemoDataActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity="com.naveenapps.expensemanager.demo"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            tools:node="merge">
+            <meta-data
+                android:name="com.naveenapps.expensemanager.demo.DemoDataInitializer"
+                android:value="androidx.startup" />
+        </provider>
+    </application>
+</manifest>

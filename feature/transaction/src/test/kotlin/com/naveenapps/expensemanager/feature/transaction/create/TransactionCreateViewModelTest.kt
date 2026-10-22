@@ -108,6 +108,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         whenever(settingsRepository.getDefaultAccount()).thenReturn(flowOf(null))
         whenever(settingsRepository.getDefaultIncomeCategory()).thenReturn(flowOf(null))
         whenever(settingsRepository.getDefaultExpenseCategory()).thenReturn(flowOf(null))
+        whenever(settingsRepository.isAutoOpenCalculator()).thenReturn(flowOf(true))
         whenever(feedbackRepository.getTransactionCreatedCount()).thenReturn(flowOf(1))
         whenever(feedbackRepository.shouldShowFeedbackDialog()).thenReturn(flowOf(false))
         whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0))
@@ -326,6 +327,15 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     @Test
     fun `new transaction opens straight on the number pad`() {
         assertThat(viewModel.state.value.showNumberPad).isTrue()
+    }
+
+    @Test
+    fun `new transaction stays on the form when auto-open calculator is disabled`() {
+        whenever(settingsRepository.isAutoOpenCalculator()).thenReturn(flowOf(false))
+
+        val viewModel = createViewModel()
+
+        assertThat(viewModel.state.value.showNumberPad).isFalse()
     }
 
     @Test

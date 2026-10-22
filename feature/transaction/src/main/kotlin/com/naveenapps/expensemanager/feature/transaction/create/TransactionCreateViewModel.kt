@@ -119,10 +119,9 @@ class TransactionCreateViewModel(
             showDeleteDialog = false,
             showCategorySelection = false,
             showAccountSelection = false,
-            // A new transaction opens straight onto the keypad: the amount is the one field
-            // every entry needs, so this saves a tap on the app's most frequent action.
-            // Editing (an id was passed) opens on the form as before.
-            showNumberPad = savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank(),
+            // Opened in init once the "auto-open calculator" preference is known (see
+            // openCalculatorIfEnabled), so users who turned it off never see it flash up.
+            showNumberPad = false,
             showTimeSelection = false,
             showDateSelection = false,
             accountSelection = AccountSelection.FROM_ACCOUNT,
@@ -141,6 +140,19 @@ class TransactionCreateViewModel(
         observeAccountsAndCurrency(getCurrencyUseCase, getAllAccountsUseCase)
         observeCategories(getAllCategoryUseCase)
         loadTransactionWhenReady(savedStateHandle)
+        openCalculatorIfEnabled(savedStateHandle)
+    }
+
+    // A new transaction opens straight onto the keypad by default: the amount is the one field
+    // every entry needs, so this saves a tap on the app's most frequent action. Users can turn
+    // it off in Advanced settings. Editing (an id was passed) always opens on the form.
+    private fun openCalculatorIfEnabled(savedStateHandle: SavedStateHandle) {
+        if (!savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank()) return
+        viewModelScope.launch {
+            if (settingsRepository.isAutoOpenCalculator().first()) {
+                _state.update { it.copy(showNumberPad = true) }
+            }
+        }
     }
 
     // region Observers

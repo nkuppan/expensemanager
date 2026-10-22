@@ -69,4 +69,7 @@
     <string name="passphrase_label">Frase-passe</string>
     <string name="restore_wrong_passphrase">Frase-passe incorreta. Tente novamente.</string>
     <string name="continue_action">Continuar</string>
+    <string name="transaction_entry">Registro de transações</string>
+    <string name="auto_open_calculator">Abrir calculadora automaticamente</string>
+    <string name="auto_open_calculator_message">Mostrar a calculadora ao adicionar uma nova transação</string>
 </resources>
