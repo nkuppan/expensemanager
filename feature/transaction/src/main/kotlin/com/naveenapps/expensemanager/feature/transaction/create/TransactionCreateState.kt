@@ -25,6 +25,8 @@ data class TransactionCreateState(
     val showDeleteDialog: Boolean,
     val showDeleteButton: Boolean,
     val showNumberPad: Boolean,
+    // Current amount as a number, pre-filled into the keypad when it opens (null = empty).
+    val numberPadInitialAmount: Double? = null,
     val showCategorySelection: Boolean,
     val showAccountSelection: Boolean,
     val showDateSelection: Boolean,
@@ -35,6 +37,8 @@ data class TransactionCreateState(
     val repeat: RecurringFrequency? = null,
     /** Only new transactions can be made recurring; editing one never changes a rule. */
     val canRepeat: Boolean = true,
+    /** "Discard changes?" confirmation, shown when leaving a form with unsaved edits. */
+    val showDiscardDialog: Boolean = false,
 )
 
 enum class AccountSelection {

@@ -9,9 +9,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.designsystem.components.AppTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 @Composable
@@ -45,7 +47,7 @@ private fun AppTopPreview() {
             navigationIcon = null,
             actions = {
                 IconButton(onClick = {}) {
-                    Icon(imageVector = Icons.Outlined.Settings, contentDescription = null)
+                    Icon(imageVector = Icons.Outlined.Settings, contentDescription = stringResource(R.string.a11y_settings))
                 }
             },
         )

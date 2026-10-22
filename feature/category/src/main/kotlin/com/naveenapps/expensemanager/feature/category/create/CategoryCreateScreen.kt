@@ -23,13 +23,15 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
@@ -39,16 +41,24 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseMana
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.category.R
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CategoryCreateScreen(
     viewModel: CategoryCreateViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    ObserveAsEvents(viewModel.errorMessage) { messageRes ->
+        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageRes)) }
+    }
 
     val imagePicker = rememberImagePickerActions(
         createCaptureUri = viewModel::createImageCaptureUri,
@@ -60,6 +70,7 @@ fun CategoryCreateScreen(
         onAction = viewModel::processAction,
         onCaptureRequested = imagePicker.onCaptureRequested,
         onGalleryRequested = imagePicker.onGalleryRequested,
+        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -69,9 +80,8 @@ private fun CategoryCreateScreenContentView(
     onAction: (CategoryCreateAction) -> Unit,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-
     if (state.showDeleteDialog) {
         DeleteDialogItem(
             confirm = { onAction.invoke(CategoryCreateAction.Delete) },

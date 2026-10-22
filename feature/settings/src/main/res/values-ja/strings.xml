@@ -62,4 +62,11 @@
     <string name="no_file_picker">この端末にファイルマネージャーが見つかりません。</string>
     <string name="recurring_transactions_setting">定期的な取引</string>
     <string name="recurring_transactions_setting_message">家賃・サブスク・給料を自動で記録</string>
+    <string name="backup_passphrase_title">このバックアップを保護しますか？</string>
+    <string name="backup_passphrase_message">バックアップを暗号化するパスフレーズを設定します。復元時に必要で、忘れると復旧できません。標準の保護を使う場合は空欄のままにしてください。</string>
+    <string name="restore_passphrase_title">バックアップのパスフレーズを入力</string>
+    <string name="restore_passphrase_message">このバックアップはパスフレーズで保護されています。</string>
+    <string name="passphrase_label">パスフレーズ</string>
+    <string name="restore_wrong_passphrase">パスフレーズが正しくありません。もう一度お試しください。</string>
+    <string name="continue_action">続行</string>
 </resources>

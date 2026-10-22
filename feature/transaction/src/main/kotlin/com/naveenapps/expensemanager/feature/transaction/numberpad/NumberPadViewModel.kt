@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.transaction.numberpad
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import java.math.BigDecimal
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -167,12 +168,31 @@ class NumberPadViewModel : ViewModel() {
             return
         }
 
-        val newString = String.format(
-            "%s",
-            calculatorString.substring(0, calculatorString.length - 1),
-        )
+        val newString = calculatorString.dropLast(1)
+
+        // Removing the last character leaves nothing to evaluate. evaluate("") throws, and the
+        // failure branch keeps the previous result, so reset the result to 0 here instead.
+        if (newString.isEmpty()) {
+            _calculatedAmount.value = "0"
+            _calculatedAmountString.value = ""
+            return
+        }
 
         calculateString(newString)
+    }
+
+    /**
+     * Starts the keypad from [amount] (e.g. the amount of a transaction being edited), or empty
+     * when there is none. The expression always uses '.' as the decimal separator, as typed.
+     */
+    fun setInitialAmount(amount: Double?) {
+        if (amount == null || amount <= 0.0 || amount.isNaN() || amount.isInfinite()) {
+            _calculatedAmount.value = "0"
+            _calculatedAmountString.value = ""
+            return
+        }
+        // toPlainString avoids "1.0E7"; stripTrailingZeros turns 120.0 into "120".
+        calculateString(BigDecimal.valueOf(amount).stripTrailingZeros().toPlainString())
     }
 
     fun clearAmount() {

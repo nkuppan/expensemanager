@@ -56,4 +56,18 @@
     <string name="first_save_done">Fertig</string>
     <string name="shortcut_add_expense_short">Ausgabe hinzufügen</string>
     <string name="shortcut_add_expense_long">Neue Ausgabe hinzufügen</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">Netto</string>
+    <string name="widget_net_this_period">Netto in diesem Zeitraum</string>
+    <string name="widget_income">Einnahmen</string>
+    <string name="widget_expenses">Ausgaben</string>
+    <string name="widget_spent">Ausgegeben</string>
+    <string name="widget_recent">Zuletzt</string>
+    <string name="widget_no_transactions">Keine Transaktionen</string>
+    <string name="widget_refresh">Aktualisieren</string>
+    <string name="widget_saved_percent">%1$s %% gespart</string>
+    <string name="widget_spent_more_than_earned">Mehr ausgegeben als eingenommen</string>
+    <string name="widget_income_spent_percent">%1$d %% der Einnahmen ausgegeben</string>
+    <string name="widget_amount_saved">%1$s gespart</string>
 </resources>

@@ -6,14 +6,5 @@
         <receiver
             android:name="com.naveenapps.expensemanager.core.notification.ReminderActionReceiver"
             android:exported="false" />
-
-        <receiver
-            android:name="com.naveenapps.expensemanager.core.notification.BootAlarmReceiver"
-            android:enabled="false"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
     </application>
 </manifest>

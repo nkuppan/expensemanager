@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.data.repository.backup.BackupArchive
 import com.naveenapps.expensemanager.core.data.repository.backup.BackupCipher
 import com.naveenapps.expensemanager.core.data.repository.backup.isSqliteDatabase
 import com.naveenapps.expensemanager.core.data.repository.backup.sqliteUserVersion
@@ -44,27 +45,59 @@ class BackupRepositoryImpl(
         return "expense-manager-$stamp.$BACKUP_EXTENSION"
     }
 
-    override suspend fun backupData(uri: String): Resource<Boolean> = withContext(dispatchers.io) {
+    override suspend fun backupData(uri: String, passphrase: String?): Resource<Boolean> = withContext(dispatchers.io) {
         runCatchingBackup {
-            val encrypted = BackupCipher.encrypt(snapshotDatabase(), BACKUP_PASSWORD)
+            val archive = BackupArchive.write(snapshotDatabase(), context.filesDir)
+            val encrypted = if (passphrase.isNullOrEmpty()) {
+                BackupCipher.encrypt(archive, BACKUP_PASSWORD)
+            } else {
+                BackupCipher.encryptWithPassphrase(archive, passphrase)
+            }
             val output = context.contentResolver.openOutputStream(Uri.parse(uri))
                 ?: throw BackupException(Reason.IO)
             output.use { it.write(encrypted) }
         }
     }
 
-    override suspend fun restoreData(uri: String): Resource<Boolean> = withContext(dispatchers.io) {
+    override suspend fun restoreData(uri: String, passphrase: String?): Resource<Boolean> = withContext(dispatchers.io) {
         runCatchingBackup {
             val raw = context.contentResolver.openInputStream(Uri.parse(uri))?.use { it.readBytes() }
                 ?: throw BackupException(Reason.IO)
             // Old unencrypted .sqlite3 backups are accepted too.
-            val restored = if (raw.isSqliteDatabase()) raw else decrypt(raw)
+            val payload = when {
+                raw.isSqliteDatabase() -> raw
+                BackupCipher.isPassphraseProtected(raw) -> decryptWithPassphrase(raw, passphrase)
+                else -> decrypt(raw)
+            }
+            // Format 2 is a zip of the database plus images; format 1 was the bare database.
+            val contents = if (BackupArchive.isArchive(payload)) {
+                try {
+                    BackupArchive.read(payload)
+                } catch (e: IOException) {
+                    throw BackupException(Reason.INVALID_FILE, e)
+                }
+            } else {
+                BackupArchive.Contents(payload, emptyMap())
+            }
+            val restored = contents.database
             if (!restored.isSqliteDatabase()) throw BackupException(Reason.INVALID_FILE)
-            // Room can migrate an older schema up, but can't open a newer one.
-            if (restored.sqliteUserVersion() > database.openHelper.readableDatabase.version) {
+            // Room can migrate an older schema up, but can't open a newer one, nor one older than
+            // the oldest registered migration.
+            val version = restored.sqliteUserVersion()
+            if (version > database.openHelper.readableDatabase.version) {
                 throw BackupException(Reason.NEWER_VERSION)
             }
+            if (version < PendingDatabaseRestore.OLDEST_RESTORABLE_VERSION) {
+                throw BackupException(Reason.INVALID_FILE)
+            }
+            // Any SQLite file passes the header check; make sure it's actually ours.
+            if (PendingDatabaseRestore.missingRequiredTables(context, restored).isNotEmpty()) {
+                throw BackupException(Reason.INVALID_FILE)
+            }
             PendingDatabaseRestore.stage(context, databaseName(), restored)
+            // Images get new random names when saved, so restoring them alongside the
+            // current ones can't overwrite anything the user still has.
+            BackupArchive.extractFiles(contents.files, context.filesDir)
         }
     }
 
@@ -93,6 +126,17 @@ class BackupRepositoryImpl(
         throw BackupException(Reason.INVALID_FILE, e)
     }
 
+    private fun decryptWithPassphrase(data: ByteArray, passphrase: String?): ByteArray {
+        if (passphrase.isNullOrEmpty()) throw BackupException(Reason.PASSPHRASE_REQUIRED)
+        return try {
+            BackupCipher.decryptWithPassphrase(data, passphrase)
+        } catch (e: GeneralSecurityException) {
+            throw BackupException(Reason.WRONG_PASSPHRASE, e)
+        } catch (e: IllegalArgumentException) {
+            throw BackupException(Reason.INVALID_FILE, e)
+        }
+    }
+
     private fun databaseName(): String = requireNotNull(database.openHelper.databaseName)
 
     private inline fun runCatchingBackup(block: () -> Unit): Resource<Boolean> = try {
@@ -116,8 +160,8 @@ class BackupRepositoryImpl(
         private const val TAG = "Backup"
         private const val BACKUP_EXTENSION = "sqlite3.aes"
 
-        // Kept as-is so backups made with earlier versions still decrypt. Moving to a per-user
-        // passphrase would need a versioned file format; see the note in the PR/changelog.
+        // Kept as-is so backups made with earlier versions still decrypt. It ships in the APK,
+        // so it only obfuscates; users who want real encryption set a passphrase (format 2).
         private const val BACKUP_PASSWORD = "YOUR_SECRET_PASSWORD"
     }
 }

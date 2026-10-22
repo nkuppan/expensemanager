@@ -1,0 +1,49 @@
+Kendalikan keuangan Anda dengan Expense Manager — cara sederhana dan bebas iklan untuk mencatat pengeluaran, menjaga anggaran, dan tahu persis ke mana uang Anda pergi.
+
+Catat pengeluaran dalam hitungan detik, kelompokkan berdasarkan kategori dan akun, lalu lihat grafik pemasukan, pengeluaran, dan tabungan yang jelas secara instan. Tanpa ribet, tanpa iklan, tanpa daftar akun.
+
+<b>💰 Catat setiap transaksi</b>
+• Catat pengeluaran, pemasukan, dan transfer antar akun
+• Tambahkan kategori, catatan, tanggal, dan foto struk di setiap entri
+• Atur transaksi berulang untuk tagihan, sewa, dan gaji
+• Kelola banyak akun — tunai, bank, tabungan, kartu kredit, dan lainnya
+• Cari dan filter transaksi berdasarkan akun, jenis, atau tanggal
+
+<b>📊 Statistik yang jelas</b>
+• Dasbor berisi pemasukan, pengeluaran, dan saldo bersih sekilas
+• Grafik per kategori yang menunjukkan ke mana uang Anda pergi
+• Tren pengeluaran harian, mingguan, bulanan, atau tahunan
+• Ringkasan rinci pemasukan vs. pengeluaran
+
+<b>🎯 Anggaran yang menjaga Anda tetap di jalur</b>
+• Atur anggaran bulanan untuk semua pengeluaran atau kategori dan akun tertentu
+• Lihat sekilas berapa yang sudah terpakai dan sisanya
+• Dapatkan notifikasi saat mendekati atau melewati batas anggaran
+
+<b>🔔 Jangan lupa mencatat</b>
+• Pengingat harian opsional di jam pilihan Anda
+• Widget layar utama dengan saldo, transaksi terbaru, dan tambah sekali ketuk
+
+<b>🔒 Privat & aman</b>
+• Data keuangan Anda hanya disimpan di perangkat Anda
+• Tanpa akun atau pendaftaran
+• Kunci aplikasi dengan sidik jari / biometrik
+• Cadangkan dan pulihkan dengan frasa sandi — pindahkan data ke ponsel baru kapan saja
+
+<b>📁 Ekspor data Anda</b>
+• Ekspor ke CSV untuk spreadsheet
+• Ekspor ke PDF untuk berbagi dan arsip dengan mudah
+
+<b>🎨 Dibuat untuk Anda</b>
+• Desain Material yang bersih dan modern
+• Tema terang dan gelap
+• Mendukung semua mata uang
+• Tersedia dalam 16 bahasa, termasuk Bahasa Indonesia dan Inggris
+
+<b>✨ Kenapa Expense Manager?</b>
+• 100% bebas iklan
+• Sederhana dan cepat — untuk pemakaian sehari-hari
+• Bisa digunakan offline
+• Open source dan terus dikembangkan
+
+Mulai hari ini dan bangun kebiasaan keuangan yang lebih baik — satu pengeluaran demi satu.

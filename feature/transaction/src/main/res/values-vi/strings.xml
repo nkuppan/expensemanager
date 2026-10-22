@@ -73,4 +73,15 @@
     <string name="recurring_stop_message">Sẽ không ghi thêm bản nào. Các giao dịch đã ghi vẫn được giữ.</string>
     <string name="recurring_empty_title">Chưa có gì lặp lại</string>
     <string name="recurring_empty_message">Khi thêm giao dịch, chọn Hằng ngày, Hằng tuần, Hằng tháng hoặc Hằng năm ở mục Lặp lại và giao dịch sẽ được ghi tự động.</string>
+    <string name="edit">Sửa</string>
+    <string name="search_transactions_hint">Tìm ghi chú, danh mục, tài khoản</string>
+    <string name="clear_search">Xóa tìm kiếm</string>
+    <string name="no_matching_transactions">Không có giao dịch nào khớp với tìm kiếm</string>
+    <string name="transaction_deleted">Đã xóa giao dịch</string>
+    <string name="undo">Hoàn tác</string>
+    <string name="search_transactions">Tìm giao dịch</string>
+    <string name="discard_changes_title">Hủy thay đổi?</string>
+    <string name="discard_changes_message">Các thay đổi đối với giao dịch này chưa được lưu.</string>
+    <string name="discard">Hủy</string>
+    <string name="keep_editing">Tiếp tục chỉnh sửa</string>
 </resources>

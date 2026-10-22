@@ -49,4 +49,11 @@
     <string name="liabilities">Borçlar</string>
     <string name="total_balance">Toplam bakiye</string>
     <string name="balance">Bakiye</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">Bu hesabı silmek, bu hesaptan veya bu hesaba yapılan transferler dahil işlemlerini (%d) de siler. Bu işlem geri alınamaz.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">Bu hesapta işlem yok. Silme işlemi geri alınamaz.</string>
+    <string name="account_delete_last_title">Bu sizin tek hesabınız</string>
+    <string name="account_delete_last_message">Her işlem bir hesap gerektirir. Önce başka bir hesap oluşturun, ardından bunu silebilirsiniz.</string>
 </resources>

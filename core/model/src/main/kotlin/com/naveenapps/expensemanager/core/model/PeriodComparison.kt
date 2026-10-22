@@ -27,5 +27,4 @@ data class CategoryChange(
 }
 
 /** Relative change from [previous] to [current], or null when there's nothing to compare against. */
-fun changeRatio(current: Double, previous: Double): Double? =
-    if (previous > 0.0) (current - previous) / previous else null
+fun changeRatio(current: Double, previous: Double): Double? = if (previous > 0.0) (current - previous) / previous else null

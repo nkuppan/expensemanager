@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.DeleteCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.FindCategoryByIdUseCase
@@ -18,8 +19,10 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import java.util.Calendar
 import java.util.UUID
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -60,6 +63,11 @@ class CategoryCreateViewModel(
         ),
     )
     val state = _state.asStateFlow()
+
+    // One-shot error messages (string resources) for the screen's snackbar. Save and delete
+    // failures used to be ignored, so the screen just stayed open with no feedback.
+    private val _errorMessage = Channel<Int>(Channel.BUFFERED)
+    val errorMessage = _errorMessage.receiveAsFlow()
 
     private var category: Category? = null
 
@@ -112,7 +120,10 @@ class CategoryCreateViewModel(
         viewModelScope.launch {
             category?.let { category ->
                 when (deleteCategoryUseCase.invoke(category)) {
-                    is Resource.Error -> Unit
+                    is Resource.Error -> {
+                        _state.update { it.copy(showDeleteDialog = false) }
+                        _errorMessage.send(DesignSystemR.string.error_delete_failed)
+                    }
 
                     is Resource.Success -> {
                         category.storedIcon.customImagePath?.let {
@@ -163,7 +174,7 @@ class CategoryCreateViewModel(
                 addCategoryUseCase(category)
             }
             when (response) {
-                is Resource.Error -> Unit
+                is Resource.Error -> _errorMessage.send(DesignSystemR.string.error_save_failed)
 
                 is Resource.Success -> {
                     // The old persisted image is only safe to delete now that the new value has

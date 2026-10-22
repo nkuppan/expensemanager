@@ -17,8 +17,7 @@ class CalculatePeriodComparisonTest {
     private val categories = listOf(food, travel, rent).associateBy { it.id }
     private val windows = ComparisonWindows(DateRangeType.THIS_MONTH, 0, 10, -10, 0, isToDate = true)
 
-    private fun tx(amount: Double, categoryId: String = food.id, type: TransactionType = TransactionType.EXPENSE) =
-        FAKE_EXPENSE_TRANSACTION.copy(categoryId = categoryId, type = type, amount = Amount(amount))
+    private fun tx(amount: Double, categoryId: String = food.id, type: TransactionType = TransactionType.EXPENSE) = FAKE_EXPENSE_TRANSACTION.copy(categoryId = categoryId, type = type, amount = Amount(amount))
 
     @Test
     fun `totals are split by type for both periods`() {

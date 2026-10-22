@@ -62,4 +62,11 @@
     <string name="no_file_picker">Không tìm thấy trình quản lý tệp trên thiết bị này.</string>
     <string name="recurring_transactions_setting">Giao dịch định kỳ</string>
     <string name="recurring_transactions_setting_message">Tiền thuê, gói đăng ký và lương được ghi tự động</string>
+    <string name="backup_passphrase_title">Bảo vệ bản sao lưu này?</string>
+    <string name="backup_passphrase_message">Đặt cụm mật khẩu để mã hóa bản sao lưu. Bạn sẽ cần nó để khôi phục và không thể lấy lại nếu quên. Để trống để dùng chế độ bảo vệ tiêu chuẩn.</string>
+    <string name="restore_passphrase_title">Nhập cụm mật khẩu của bản sao lưu</string>
+    <string name="restore_passphrase_message">Bản sao lưu này được bảo vệ bằng cụm mật khẩu.</string>
+    <string name="passphrase_label">Cụm mật khẩu</string>
+    <string name="restore_wrong_passphrase">Cụm mật khẩu không đúng. Vui lòng thử lại.</string>
+    <string name="continue_action">Tiếp tục</string>
 </resources>

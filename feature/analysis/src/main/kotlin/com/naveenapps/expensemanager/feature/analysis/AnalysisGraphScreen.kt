@@ -12,7 +12,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
@@ -54,15 +54,15 @@ import org.koin.compose.viewmodel.koinViewModel
 fun AnalysisGraphScreen(
     viewModel: AnalysisScreenViewModel = koinViewModel(),
 ) {
-    val graphData by viewModel.graphItems.collectAsState()
-    val averageData by viewModel.averageData.collectAsState()
-    val amountUiState by viewModel.amountUiState.collectAsState()
-    val transactionPeriod by viewModel.transactionPeriod.collectAsState()
-    val isCompactSummary by viewModel.isCompactSummary.collectAsState()
-    val insights by viewModel.insights.collectAsState()
-    val comparison by viewModel.comparison.collectAsState()
+    val graphData by viewModel.graphItems.collectAsStateWithLifecycle()
+    val averageData by viewModel.averageData.collectAsStateWithLifecycle()
+    val amountUiState by viewModel.amountUiState.collectAsStateWithLifecycle()
+    val transactionPeriod by viewModel.transactionPeriod.collectAsStateWithLifecycle()
+    val isCompactSummary by viewModel.isCompactSummary.collectAsStateWithLifecycle()
+    val insights by viewModel.insights.collectAsStateWithLifecycle()
+    val comparison by viewModel.comparison.collectAsStateWithLifecycle()
 
-    val currentTheme by viewModel.currentTheme.collectAsState()
+    val currentTheme by viewModel.currentTheme.collectAsStateWithLifecycle()
     val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
     ChartScreenContent(

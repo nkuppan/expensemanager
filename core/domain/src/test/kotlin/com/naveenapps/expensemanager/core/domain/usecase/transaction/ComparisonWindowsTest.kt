@@ -2,17 +2,16 @@ package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
 import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.model.DateRangeType
-import kotlinx.datetime.TimeZone
-import org.junit.Test
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import kotlinx.datetime.TimeZone
+import org.junit.Test
 
 class ComparisonWindowsTest {
 
     private val utc = TimeZone.UTC
 
-    private fun millis(y: Int, m: Int, d: Int, h: Int = 0) =
-        LocalDateTime.of(y, m, d, h, 0).toInstant(ZoneOffset.UTC).toEpochMilli()
+    private fun millis(y: Int, m: Int, d: Int, h: Int = 0) = LocalDateTime.of(y, m, d, h, 0).toInstant(ZoneOffset.UTC).toEpochMilli()
 
     @Test
     fun `month in progress is compared with the same days of last month`() {

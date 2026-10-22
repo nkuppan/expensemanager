@@ -8,10 +8,12 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCa
 import com.naveenapps.expensemanager.core.domain.usecase.account.CheckAccountValidationUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountDeleteImpactUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.UpdateAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.model.AccountDeleteImpact
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.Resource
@@ -34,6 +36,7 @@ import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -55,6 +58,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     private val findAccountByIdUseCase = FindAccountByIdUseCase(accountRepository)
     private val addAccountUseCase = AddAccountUseCase(accountRepository, validate)
     private val deleteAccountUseCase = DeleteAccountUseCase(accountRepository, validate)
+    private val getAccountDeleteImpactUseCase = GetAccountDeleteImpactUseCase(accountRepository)
     private val updateAccountUseCase = UpdateAccountUseCase(accountRepository, validate)
     private val numberFormatRepository = NumberFormatRepositoryImpl(
         coroutineScope = CoroutineScope(testCoroutineDispatcher.dispatcher),
@@ -97,6 +101,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             addAccountUseCase = addAccountUseCase,
             updateAccountUseCase = updateAccountUseCase,
             deleteAccountUseCase = deleteAccountUseCase,
+            getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
             imageStorageRepository = imageStorageRepository,
             composeNavigator = appComposeNavigator,
             numberFormatRepository = numberFormatRepository,
@@ -289,6 +294,9 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         )
 
         whenever(accountRepository.deleteAccount(any())).thenReturn(Resource.Success(true))
+        whenever(accountRepository.getAccountDeleteImpact(any())).thenReturn(
+            Resource.Success(AccountDeleteImpact(transactionCount = 2, isLastAccount = false)),
+        )
 
         accountCreateViewModel = AccountCreateViewModel(
             savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
@@ -299,6 +307,7 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             addAccountUseCase = addAccountUseCase,
             updateAccountUseCase = updateAccountUseCase,
             deleteAccountUseCase = deleteAccountUseCase,
+            getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
             imageStorageRepository = imageStorageRepository,
             composeNavigator = appComposeNavigator,
             numberFormatRepository = numberFormatRepository,
@@ -313,5 +322,54 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
         verify(accountRepository, times(1)).deleteAccount(eq(FAKE_ACCOUNT))
         verify(appComposeNavigator, times(1)).popBackStack()
+    }
+
+    private fun editViewModel(accountId: String) = AccountCreateViewModel(
+        savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
+        getCurrencyUseCase = getCurrencyUseCase,
+        getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
+        getFormattedAmountUseCase = getFormattedAmountUseCase,
+        findAccountByIdUseCase = findAccountByIdUseCase,
+        addAccountUseCase = addAccountUseCase,
+        updateAccountUseCase = updateAccountUseCase,
+        deleteAccountUseCase = deleteAccountUseCase,
+        getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
+        imageStorageRepository = imageStorageRepository,
+        composeNavigator = appComposeNavigator,
+        numberFormatRepository = numberFormatRepository,
+        analyticsRepository = analyticsRepository,
+    )
+
+    @Test
+    fun `opening the delete dialog loads how many transactions will be deleted`() = runTest {
+        whenever(accountRepository.findAccount("accountId")).thenReturn(Resource.Success(FAKE_ACCOUNT))
+        whenever(accountRepository.getAccountDeleteImpact(FAKE_ACCOUNT.id)).thenReturn(
+            Resource.Success(AccountDeleteImpact(transactionCount = 7, isLastAccount = false)),
+        )
+        accountCreateViewModel = editViewModel("accountId")
+        advanceUntilIdle()
+
+        accountCreateViewModel.processAction(AccountCreateAction.ShowDeleteDialog)
+        advanceUntilIdle()
+
+        val state = accountCreateViewModel.state.value
+        Truth.assertThat(state.showDeleteDialog).isTrue()
+        Truth.assertThat(state.deleteImpact?.transactionCount).isEqualTo(7)
+    }
+
+    @Test
+    fun `the last account is never deleted`() = runTest {
+        whenever(accountRepository.findAccount("accountId")).thenReturn(Resource.Success(FAKE_ACCOUNT))
+        whenever(accountRepository.getAccountDeleteImpact(FAKE_ACCOUNT.id)).thenReturn(
+            Resource.Success(AccountDeleteImpact(transactionCount = 0, isLastAccount = true)),
+        )
+        accountCreateViewModel = editViewModel("accountId")
+        advanceUntilIdle()
+
+        accountCreateViewModel.processAction(AccountCreateAction.Delete)
+        advanceUntilIdle()
+
+        verify(accountRepository, never()).deleteAccount(any())
+        verify(appComposeNavigator, never()).popBackStack()
     }
 }

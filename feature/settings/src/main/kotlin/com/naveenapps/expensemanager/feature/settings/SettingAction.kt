@@ -55,6 +55,11 @@ sealed class SettingAction {
     /** Result of the "open document" picker; null when the user backed out. */
     data class RestoreSourceSelected(val uri: String?) : SettingAction()
 
+    /** Confirms the passphrase dialog; an empty value on backup means "no passphrase". */
+    data class SubmitPassphrase(val passphrase: String) : SettingAction()
+
+    data object DismissPassphrasePrompt : SettingAction()
+
     // Security section
     data object ToggleAppLock : SettingAction()
 }

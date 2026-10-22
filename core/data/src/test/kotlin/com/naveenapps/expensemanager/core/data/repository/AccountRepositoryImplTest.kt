@@ -9,10 +9,12 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.AccountDeleteImpact
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
+import com.naveenapps.expensemanager.core.testing.FAKE_SECOND_ACCOUNT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -164,6 +166,20 @@ class AccountRepositoryImplTest : BaseCoroutineTest() {
         val foundData = (newResult as Resource.Success).data
         Truth.assertThat(foundData).isNotNull()
         Truth.assertThat(foundData.id).isEqualTo(accountId)
+    }
+
+    @Test
+    fun deleteImpactFlagsTheLastAccount() = runTest {
+        addAccountAndAssert(FAKE_ACCOUNT)
+
+        val single = accountRepository.getAccountDeleteImpact(FAKE_ACCOUNT.id)
+        Truth.assertThat((single as Resource.Success).data)
+            .isEqualTo(AccountDeleteImpact(transactionCount = 0, isLastAccount = true))
+
+        addAccountAndAssert(FAKE_SECOND_ACCOUNT)
+
+        val two = accountRepository.getAccountDeleteImpact(FAKE_ACCOUNT.id)
+        Truth.assertThat((two as Resource.Success).data.isLastAccount).isFalse()
     }
 
     private suspend fun addAccountAndAssert(account: Account) {

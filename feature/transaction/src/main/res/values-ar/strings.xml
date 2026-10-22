@@ -73,4 +73,15 @@
     <string name="recurring_stop_message">لن تُسجَّل نسخ أخرى. تبقى المعاملات المسجلة كما هي.</string>
     <string name="recurring_empty_title">لا شيء يتكرر بعد</string>
     <string name="recurring_empty_message">عند إضافة معاملة، اختر يوميًا أو أسبوعيًا أو شهريًا أو سنويًا ضمن التكرار وستُسجَّل تلقائيًا.</string>
+    <string name="edit">تعديل</string>
+    <string name="search_transactions_hint">ابحث في الملاحظات والفئات والحسابات</string>
+    <string name="clear_search">مسح البحث</string>
+    <string name="no_matching_transactions">لا توجد معاملات تطابق بحثك</string>
+    <string name="transaction_deleted">تم حذف المعاملة</string>
+    <string name="undo">تراجع</string>
+    <string name="search_transactions">البحث في المعاملات</string>
+    <string name="discard_changes_title">تجاهل التغييرات؟</string>
+    <string name="discard_changes_message">لم يتم حفظ تغييراتك على هذه المعاملة.</string>
+    <string name="discard">تجاهل</string>
+    <string name="keep_editing">متابعة التعديل</string>
 </resources>

@@ -12,7 +12,6 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:repository"))
-    implementation(project(":core:data"))
 
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)

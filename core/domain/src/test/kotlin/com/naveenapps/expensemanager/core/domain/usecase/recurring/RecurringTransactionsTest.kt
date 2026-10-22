@@ -9,21 +9,20 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.util.Date
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.util.Date
 
 class RecurringTransactionsTest {
 
     private val zone = ZoneId.systemDefault()
 
-    private fun date(y: Int, m: Int, d: Int, h: Int = 9) =
-        Date.from(LocalDateTime.of(y, m, d, h, 0).atZone(zone).toInstant())
+    private fun date(y: Int, m: Int, d: Int, h: Int = 9) = Date.from(LocalDateTime.of(y, m, d, h, 0).atZone(zone).toInstant())
 
     private fun Date.local() = toInstant().atZone(zone).toLocalDateTime()
 
@@ -68,7 +67,7 @@ class RecurringTransactionsTest {
     fun `missed occurrences are caught up and the rule moves past now`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 7, 1)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, AddTransactionUseCase(transactions))
+        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
 
         val created = process(now = date(2026, 10, 3))
 
@@ -87,7 +86,7 @@ class RecurringTransactionsTest {
     fun `running again creates nothing new`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 9, 1)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, AddTransactionUseCase(transactions))
+        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
 
         process(now = date(2026, 10, 3))
         val second = process(now = date(2026, 10, 3))
@@ -97,10 +96,40 @@ class RecurringTransactionsTest {
     }
 
     @Test
+    fun `an interrupted run never logs the same occurrence twice`() = runTest {
+        val original = rule(date(2026, 7, 1))
+        val rules = FakeRecurringRepository(original)
+        val transactions = FakeTransactionRepository()
+        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+
+        process(now = date(2026, 8, 15))
+        // Simulate the process dying after the Aug 1 transaction was saved but before the
+        // rule was advanced: the stored rule still points at occurrence 1.
+        rules.rules.value = listOf(original)
+        val created = process(now = date(2026, 10, 3))
+
+        assertThat(created).isEqualTo(2)
+        assertThat(transactions.added.map { it.createdOn.local().toLocalDate().toString() })
+            .containsExactly("2026-08-01", "2026-09-01", "2026-10-01").inOrder()
+        assertThat(rules.rules.value.single().nextOccurrence).isEqualTo(4)
+    }
+
+    @Test
+    fun `progress is saved after every occurrence`() = runTest {
+        val rules = FakeRecurringRepository(rule(date(2026, 7, 1)))
+        val transactions = FakeTransactionRepository(failAfter = 1)
+        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+
+        assertThat(process(now = date(2026, 10, 3))).isEqualTo(1)
+        // Aug 1 was saved, Sep 1 failed: the rule now points at Sep 1, not back at Aug 1.
+        assertThat(rules.rules.value.single().nextOccurrence).isEqualTo(2)
+    }
+
+    @Test
     fun `a failed save stops that rule without skipping the occurrence`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 8, 1)))
         val transactions = FakeTransactionRepository(fail = true)
-        val process = ProcessRecurringTransactionsUseCase(rules, AddTransactionUseCase(transactions))
+        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
 
         assertThat(process(now = date(2026, 10, 3))).isEqualTo(0)
         assertThat(rules.rules.value.single().nextOccurrence).isEqualTo(1)
@@ -112,21 +141,29 @@ class RecurringTransactionsTest {
         val rules = MutableStateFlow(initial.toList())
         override fun getAll(): Flow<List<RecurringTransaction>> = rules
         override suspend fun getDue(dueBefore: Date) = rules.value.filter { !it.nextDueDate.after(dueBefore) }
-        override suspend fun add(recurring: RecurringTransaction) { rules.value = rules.value + recurring }
+        override suspend fun add(recurring: RecurringTransaction) {
+            rules.value = rules.value + recurring
+        }
         override suspend fun update(recurring: RecurringTransaction) {
             rules.value = rules.value.map { if (it.id == recurring.id) recurring else it }
         }
-        override suspend fun delete(id: String) { rules.value = rules.value.filterNot { it.id == id } }
+        override suspend fun delete(id: String) {
+            rules.value = rules.value.filterNot { it.id == id }
+        }
     }
 
-    private class FakeTransactionRepository(private val fail: Boolean = false) : TransactionRepository {
+    private class FakeTransactionRepository(
+        private val fail: Boolean = false,
+        private val failAfter: Int = Int.MAX_VALUE,
+    ) : TransactionRepository {
         val added = mutableListOf<Transaction>()
         override suspend fun addTransaction(transaction: Transaction): Resource<Boolean> {
-            if (fail) return Resource.Error(Exception("fail"))
+            if (fail || added.size >= failAfter) return Resource.Error(Exception("fail"))
             added += transaction
             return Resource.Success(true)
         }
-        override suspend fun findTransactionById(transactionId: String): Resource<Transaction> = error("unused")
+        override suspend fun findTransactionById(transactionId: String): Resource<Transaction> = added.firstOrNull { it.id == transactionId }?.let { Resource.Success(it) }
+            ?: Resource.Error(NoSuchElementException(transactionId))
         override suspend fun updateTransaction(transaction: Transaction): Resource<Boolean> = error("unused")
         override suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean> = error("unused")
         override fun getAllTransaction(): Flow<List<Transaction>?> = flowOf(added)

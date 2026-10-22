@@ -73,4 +73,15 @@
     <string name="recurring_stop_message">Es werden keine weiteren Buchungen erfasst. Bereits erfasste bleiben erhalten.</string>
     <string name="recurring_empty_title">Noch nichts wiederholt sich</string>
     <string name="recurring_empty_message">Wähle beim Hinzufügen einer Buchung unter Wiederholen Täglich, Wöchentlich, Monatlich oder Jährlich – sie wird dann für dich erfasst.</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="search_transactions_hint">Notizen, Kategorien, Konten suchen</string>
+    <string name="clear_search">Suche löschen</string>
+    <string name="no_matching_transactions">Keine Transaktionen passen zu deiner Suche</string>
+    <string name="transaction_deleted">Transaktion gelöscht</string>
+    <string name="undo">Rückgängig</string>
+    <string name="search_transactions">Transaktionen suchen</string>
+    <string name="discard_changes_title">Änderungen verwerfen?</string>
+    <string name="discard_changes_message">Deine Änderungen an dieser Transaktion wurden nicht gespeichert.</string>
+    <string name="discard">Verwerfen</string>
+    <string name="keep_editing">Weiter bearbeiten</string>
 </resources>

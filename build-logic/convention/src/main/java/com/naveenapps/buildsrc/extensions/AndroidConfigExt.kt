@@ -10,7 +10,7 @@ const val TARGET_SDK = 37
 const val COMPILE_SDK: Int = 37
 const val MIN_SDK = 26
 
-const val VERSION_NAME = "1.4.17"
+const val VERSION_NAME = "1.4.19"
 val versions = VERSION_NAME.split(".")
 val VERSION_CODE = 1000000 * versions[0].toInt() + 1000 * versions[1].toInt() + versions[2].toInt()
 
@@ -93,5 +93,8 @@ fun Project.configureAndroidCompose(extension: CommonExtension) {
         val bom = libs.findLibrary("androidx-compose-bom").get()
         add("implementation", platform(bom))
         add("androidTestImplementation", platform(bom))
+        // collectAsStateWithLifecycle(): stop collecting Room/DataStore flows while the UI is
+        // in the background.
+        add("implementation", libs.findLibrary("androidx-lifecycle-runtimeCompose").get())
     }
 }

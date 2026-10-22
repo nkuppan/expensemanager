@@ -56,4 +56,18 @@
     <string name="first_save_done">Xong</string>
     <string name="shortcut_add_expense_short">Thêm khoản chi</string>
     <string name="shortcut_add_expense_long">Thêm khoản chi mới</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">Ròng</string>
+    <string name="widget_net_this_period">Ròng trong kỳ này</string>
+    <string name="widget_income">Thu nhập</string>
+    <string name="widget_expenses">Chi tiêu</string>
+    <string name="widget_spent">Đã chi</string>
+    <string name="widget_recent">Gần đây</string>
+    <string name="widget_no_transactions">Không có giao dịch</string>
+    <string name="widget_refresh">Làm mới</string>
+    <string name="widget_saved_percent">Đã tiết kiệm %1$s%%</string>
+    <string name="widget_spent_more_than_earned">Chi nhiều hơn thu</string>
+    <string name="widget_income_spent_percent">Đã chi %1$d%% thu nhập</string>
+    <string name="widget_amount_saved">Đã tiết kiệm %1$s</string>
 </resources>

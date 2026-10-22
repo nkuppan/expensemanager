@@ -53,4 +53,11 @@
     <string name="liabilities">Обязательства</string>
     <string name="total_balance">Общий баланс</string>
     <string name="balance">Баланс</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">При удалении этого счёта будут удалены и его операции (%d), включая переводы с этого счёта и на него. Это действие нельзя отменить.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">На этом счёте нет операций. Удаление нельзя отменить.</string>
+    <string name="account_delete_last_title">Это ваш единственный счёт</string>
+    <string name="account_delete_last_message">Для каждой операции нужен счёт. Сначала создайте другой счёт — тогда этот можно будет удалить.</string>
 </resources>

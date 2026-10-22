@@ -7,16 +7,17 @@ plugins {
 
 group = "com.naveenapps.buildlogic"
 
-// Configure the build-logic plugins to target JDK 19
-// This matches the JDK used to build the project, and is not related to what is running on device.
+// Configure the build-logic plugins to target JDK 17, the oldest JDK the build may run on
+// (CI uses 17; AGP needs at least 17). Targeting a newer bytecode level makes Gradle refuse to
+// load these plugins on an older JVM. Not related to what runs on device.
 java {
-    sourceCompatibility = JavaVersion.VERSION_19
-    targetCompatibility = JavaVersion.VERSION_19
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_19
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 

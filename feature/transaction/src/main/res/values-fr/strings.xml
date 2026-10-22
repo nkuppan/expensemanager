@@ -73,4 +73,15 @@
     <string name="recurring_stop_message">Plus aucune copie ne sera enregistrée. Les transactions déjà enregistrées sont conservées.</string>
     <string name="recurring_empty_title">Rien ne se répète encore</string>
     <string name="recurring_empty_message">En ajoutant une transaction, choisissez Quotidien, Hebdomadaire, Mensuel ou Annuel sous Répéter et elle sera enregistrée pour vous.</string>
+    <string name="edit">Modifier</string>
+    <string name="search_transactions_hint">Rechercher notes, catégories, comptes</string>
+    <string name="clear_search">Effacer la recherche</string>
+    <string name="no_matching_transactions">Aucune transaction ne correspond à votre recherche</string>
+    <string name="transaction_deleted">Transaction supprimée</string>
+    <string name="undo">Annuler</string>
+    <string name="search_transactions">Rechercher des transactions</string>
+    <string name="discard_changes_title">Abandonner les modifications ?</string>
+    <string name="discard_changes_message">Vos modifications de cette transaction n\'ont pas été enregistrées.</string>
+    <string name="discard">Abandonner</string>
+    <string name="keep_editing">Continuer</string>
 </resources>

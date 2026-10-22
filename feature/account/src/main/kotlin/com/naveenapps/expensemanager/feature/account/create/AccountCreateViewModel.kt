@@ -5,9 +5,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.R
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountDeleteImpactUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.UpdateAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
@@ -28,10 +30,12 @@ import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import java.util.Calendar
 import java.util.UUID
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -44,6 +48,7 @@ class AccountCreateViewModel(
     private val addAccountUseCase: AddAccountUseCase,
     private val updateAccountUseCase: UpdateAccountUseCase,
     private val deleteAccountUseCase: DeleteAccountUseCase,
+    private val getAccountDeleteImpactUseCase: GetAccountDeleteImpactUseCase,
     private val imageStorageRepository: ImageStorageRepository,
     private val composeNavigator: AppComposeNavigator,
     private val numberFormatRepository: NumberFormatRepository,
@@ -92,6 +97,11 @@ class AccountCreateViewModel(
         ),
     )
     val state = _state.asStateFlow()
+
+    // One-shot error messages (string resources) for the screen's snackbar. Save and delete
+    // failures used to be ignored, so the screen just stayed open with no feedback.
+    private val _errorMessage = Channel<Int>(Channel.BUFFERED)
+    val errorMessage = _errorMessage.receiveAsFlow()
 
     private var account: Account? = null
 
@@ -181,7 +191,10 @@ class AccountCreateViewModel(
         viewModelScope.launch {
             account?.let { account ->
                 when (deleteAccountUseCase.invoke(account)) {
-                    is Resource.Error -> Unit
+                    is Resource.Error -> {
+                        dismissDeleteDialog()
+                        _errorMessage.send(DesignSystemR.string.error_delete_failed)
+                    }
 
                     is Resource.Success -> {
                         account.storedIcon.customImagePath?.let {
@@ -260,7 +273,7 @@ class AccountCreateViewModel(
                 addAccountUseCase(account)
             }
             when (response) {
-                is Resource.Error -> Unit
+                is Resource.Error -> _errorMessage.send(DesignSystemR.string.error_save_failed)
 
                 is Resource.Success -> {
                     if (isNewAccount) {
@@ -367,7 +380,13 @@ class AccountCreateViewModel(
     }
 
     private fun showDeleteDialog() {
-        _state.update { it.copy(showDeleteDialog = true) }
+        val accountId = account?.id ?: return
+        viewModelScope.launch {
+            // Accounts cascade-delete their transactions, so tell the user how many will go
+            // (and refuse outright for the last account) before they confirm.
+            val impact = (getAccountDeleteImpactUseCase(accountId) as? Resource.Success)?.data
+            _state.update { it.copy(showDeleteDialog = true, deleteImpact = impact) }
+        }
     }
 
     fun processAction(action: AccountCreateAction) {

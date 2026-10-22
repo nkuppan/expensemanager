@@ -73,4 +73,15 @@
     <string name="recurring_stop_message">Nie będą zapisywane kolejne kopie. Już zapisane transakcje zostaną.</string>
     <string name="recurring_empty_title">Nic się jeszcze nie powtarza</string>
     <string name="recurring_empty_message">Dodając transakcję, wybierz w Powtarzaj: Codziennie, Co tydzień, Co miesiąc lub Co rok, a będzie zapisywana za Ciebie.</string>
+    <string name="edit">Edytuj</string>
+    <string name="search_transactions_hint">Szukaj w notatkach, kategoriach, kontach</string>
+    <string name="clear_search">Wyczyść wyszukiwanie</string>
+    <string name="no_matching_transactions">Brak transakcji pasujących do wyszukiwania</string>
+    <string name="transaction_deleted">Transakcja usunięta</string>
+    <string name="undo">Cofnij</string>
+    <string name="search_transactions">Szukaj transakcji</string>
+    <string name="discard_changes_title">Odrzucić zmiany?</string>
+    <string name="discard_changes_message">Zmiany w tej transakcji nie zostały zapisane.</string>
+    <string name="discard">Odrzuć</string>
+    <string name="keep_editing">Edytuj dalej</string>
 </resources>

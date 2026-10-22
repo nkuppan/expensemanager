@@ -56,4 +56,18 @@
     <string name="first_save_done">Concluído</string>
     <string name="shortcut_add_expense_short">Adicionar despesa</string>
     <string name="shortcut_add_expense_long">Adicionar nova despesa</string>
+
+    <!-- Home-screen widget -->
+    <string name="widget_net">Líquido</string>
+    <string name="widget_net_this_period">Líquido neste período</string>
+    <string name="widget_income">Receitas</string>
+    <string name="widget_expenses">Despesas</string>
+    <string name="widget_spent">Gasto</string>
+    <string name="widget_recent">Recentes</string>
+    <string name="widget_no_transactions">Sem transações</string>
+    <string name="widget_refresh">Atualizar</string>
+    <string name="widget_saved_percent">%1$s%% poupado</string>
+    <string name="widget_spent_more_than_earned">Gastou mais do que ganhou</string>
+    <string name="widget_income_spent_percent">%1$d%% das receitas gasto</string>
+    <string name="widget_amount_saved">%1$s poupado</string>
 </resources>

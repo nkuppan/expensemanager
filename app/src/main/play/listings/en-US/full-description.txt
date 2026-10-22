@@ -1,0 +1,49 @@
+Take control of your money with Expense Manager — a simple, ad-free way to track your spending, stick to your budgets and understand exactly where your money goes.
+
+Log an expense in seconds, organise it by category and account, and instantly see clear charts of your income, expenses and savings. No clutter, no ads, no sign-up required.
+
+<b>💰 Track every transaction</b>
+• Record expenses, income and transfers between accounts
+• Add categories, notes, dates and receipt photos to every entry
+• Set up recurring transactions for bills, rent and salary
+• Manage multiple accounts — cash, bank, savings, credit cards and more
+• Search and filter transactions by account, type or date
+
+<b>📊 Clear insights & statistics</b>
+• Dashboard with your income, expenses and net balance at a glance
+• Category breakdown charts showing where your money goes
+• Spending trends by day, week, month or year
+• Detailed income vs. expense summaries
+
+<b>🎯 Budgets that keep you on track</b>
+• Set monthly budgets for all spending or specific categories and accounts
+• See how much you've spent and what's left at a glance
+• Get notified when you're close to or over a budget
+
+<b>🔔 Never forget to log</b>
+• Optional daily reminder at a time you choose
+• Home screen widget with your balance, recent transactions and one-tap add
+
+<b>🔒 Private & secure</b>
+• Your financial data is stored only on your device
+• No account or sign-up needed
+• App lock with fingerprint / biometric protection
+• Passphrase-protected backup and restore — move your data to a new phone anytime
+
+<b>📁 Export your data</b>
+• Export transactions to CSV for spreadsheets
+• Export to PDF for easy sharing and record-keeping
+
+<b>🎨 Made for you</b>
+• Clean, modern Material design
+• Light and dark themes
+• Supports any currency
+• Available in 16 languages, including English, Hindi, Spanish, German, French, Portuguese, Japanese, Korean, Chinese, Arabic and more
+
+<b>✨ Why Expense Manager?</b>
+• 100% ad-free
+• Simple and fast — built for everyday use
+• Works offline
+• Open source and actively maintained
+
+Start tracking today and build better money habits — one expense at a time.

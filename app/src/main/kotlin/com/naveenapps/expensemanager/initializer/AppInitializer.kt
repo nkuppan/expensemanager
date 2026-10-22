@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.notification.NotificationScheduler
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.widget.observeDataForWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -32,6 +33,8 @@ class AppInitializer : Initializer<Unit> {
             notificationScheduler.scheduleWeeklySummary()
             notificationScheduler.scheduleRecurringTransactions()
         }
+        observeDataForWidget(context, CoroutineScope(SupervisorJob() + Dispatchers.IO))
+
         // Off the main thread: due recurring transactions are in place by the time Home loads
         // its data (Room flows pick them up either way).
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {

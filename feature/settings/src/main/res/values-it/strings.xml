@@ -62,4 +62,11 @@
     <string name="no_file_picker">Nessun gestore di file trovato su questo dispositivo.</string>
     <string name="recurring_transactions_setting">Transazioni ricorrenti</string>
     <string name="recurring_transactions_setting_message">Affitto, abbonamenti e stipendio registrati per te</string>
+    <string name="backup_passphrase_title">Proteggere questo backup?</string>
+    <string name="backup_passphrase_message">Imposta una passphrase per cifrare il backup. Ti servirà per il ripristino e non può essere recuperata se la dimentichi. Lascia vuoto per usare la protezione standard.</string>
+    <string name="restore_passphrase_title">Inserisci la passphrase del backup</string>
+    <string name="restore_passphrase_message">Questo backup è protetto da una passphrase.</string>
+    <string name="passphrase_label">Passphrase</string>
+    <string name="restore_wrong_passphrase">Passphrase errata. Riprova.</string>
+    <string name="continue_action">Continua</string>
 </resources>

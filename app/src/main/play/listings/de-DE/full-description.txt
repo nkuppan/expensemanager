@@ -1,0 +1,49 @@
+Behalte dein Geld im Griff mit Expense Manager – der einfachen, werbefreien App, um Ausgaben zu erfassen, Budgets einzuhalten und genau zu sehen, wohin dein Geld fließt.
+
+Erfasse eine Ausgabe in Sekunden, ordne sie Kategorie und Konto zu und sieh sofort übersichtliche Diagramme zu Einnahmen, Ausgaben und Ersparnissen. Kein Ballast, keine Werbung, keine Registrierung.
+
+<b>💰 Jede Buchung im Blick</b>
+• Ausgaben, Einnahmen und Umbuchungen zwischen Konten erfassen
+• Kategorien, Notizen, Datum und Belegfotos zu jedem Eintrag hinzufügen
+• Wiederkehrende Buchungen für Rechnungen, Miete und Gehalt einrichten
+• Mehrere Konten verwalten – Bargeld, Girokonto, Sparkonto, Kreditkarten und mehr
+• Buchungen nach Konto, Typ oder Datum suchen und filtern
+
+<b>📊 Klare Auswertungen & Statistiken</b>
+• Dashboard mit Einnahmen, Ausgaben und Saldo auf einen Blick
+• Diagramme nach Kategorien zeigen, wohin dein Geld geht
+• Ausgabentrends nach Tag, Woche, Monat oder Jahr
+• Detaillierte Übersicht von Einnahmen und Ausgaben
+
+<b>🎯 Budgets, die dich auf Kurs halten</b>
+• Monatsbudgets für alle Ausgaben oder bestimmte Kategorien und Konten festlegen
+• Auf einen Blick sehen, was ausgegeben ist und was übrig bleibt
+• Benachrichtigung, wenn ein Budget fast erreicht oder überschritten ist
+
+<b>🔔 Nie mehr vergessen einzutragen</b>
+• Optionale tägliche Erinnerung zur Uhrzeit deiner Wahl
+• Startbildschirm-Widget mit Saldo, letzten Buchungen und Schnell-Hinzufügen
+
+<b>🔒 Privat & sicher</b>
+• Deine Finanzdaten werden nur auf deinem Gerät gespeichert
+• Kein Konto und keine Registrierung nötig
+• App-Sperre mit Fingerabdruck / Biometrie
+• Sicherung und Wiederherstellung mit Passphrase – Daten jederzeit auf ein neues Handy übertragen
+
+<b>📁 Daten exportieren</b>
+• Buchungen als CSV für Tabellenkalkulationen exportieren
+• Als PDF exportieren – ideal zum Teilen und Archivieren
+
+<b>🎨 Für dich gemacht</b>
+• Klares, modernes Material Design
+• Helles und dunkles Design
+• Unterstützt jede Währung
+• In 16 Sprachen verfügbar, darunter Deutsch und Englisch
+
+<b>✨ Warum Expense Manager?</b>
+• 100 % werbefrei
+• Einfach und schnell – gemacht für den Alltag
+• Funktioniert offline
+• Open Source und aktiv weiterentwickelt
+
+Starte noch heute und entwickle bessere Geldgewohnheiten – eine Ausgabe nach der anderen.

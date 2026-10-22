@@ -4,9 +4,10 @@ import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -42,6 +43,7 @@ import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
+import com.naveenapps.expensemanager.feature.transaction.R
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -131,6 +133,10 @@ class TransactionCreateViewModel(
     // Non-null only when editing an existing transaction.
     private var editingTransaction: Transaction? = null
 
+    // Ids seen in the previous accounts/categories emission; null until the first one.
+    private var knownAccountIds: Set<String>? = null
+    private var knownCategoryIds: Set<String>? = null
+
     init {
         observeAccountsAndCurrency(getCurrencyUseCase, getAllAccountsUseCase)
         observeCategories(getAllCategoryUseCase)
@@ -149,15 +155,48 @@ class TransactionCreateViewModel(
         ) { currency, accounts ->
             val mappedAccounts = mapAccountsToUiModels(accounts, currency)
             val defaultAccountId = settingsRepository.getDefaultAccount().firstOrNull()
-            val selectedAccount = mappedAccounts.find { it.id == defaultAccountId }
+            val preferredAccount = mappedAccounts.find { it.id == defaultAccountId }
                 ?: mappedAccounts.firstOrNull()
                 ?: defaultAccount
-            _state.update {
-                it.copy(
+
+            // This flow re-emits whenever any account changes (including one created from the
+            // picker on this screen). Only apply defaults on the first emission; afterwards
+            // keep the user's choice, refreshed from the new list, and auto-select a newly
+            // created account for whichever side the picker was opened for.
+            val previousIds = knownAccountIds
+            knownAccountIds = mappedAccounts.map { it.id }.toSet()
+            val newAccount = previousIds?.takeIf { it.isNotEmpty() }?.let { ids ->
+                mappedAccounts.firstOrNull { it.id !in ids }
+            }
+
+            _state.update { current ->
+                val from: AccountUiModel
+                val to: AccountUiModel
+                if (previousIds.isNullOrEmpty()) {
+                    from = preferredAccount
+                    to = firstOtherAccount(mappedAccounts, from.id) ?: from
+                } else {
+                    val refreshedFrom = mappedAccounts.find { it.id == current.selectedFromAccount.id }
+                        ?: preferredAccount
+                    val refreshedTo = mappedAccounts.find { it.id == current.selectedToAccount.id }
+                        ?: firstOtherAccount(mappedAccounts, refreshedFrom.id)
+                        ?: refreshedFrom
+                    from = if (newAccount != null && current.accountSelection == AccountSelection.FROM_ACCOUNT) {
+                        newAccount
+                    } else {
+                        refreshedFrom
+                    }
+                    to = if (newAccount != null && current.accountSelection == AccountSelection.TO_ACCOUNT) {
+                        newAccount
+                    } else {
+                        refreshedTo
+                    }
+                }
+                current.copy(
                     currency = currency,
                     accounts = mappedAccounts,
-                    selectedFromAccount = selectedAccount,
-                    selectedToAccount = selectedAccount,
+                    selectedFromAccount = from,
+                    selectedToAccount = to,
                 )
             }
             syncState.update { it.copy(isAccountSyncCompleted = true) }
@@ -181,11 +220,31 @@ class TransactionCreateViewModel(
             }
             val matchedCategory = filteredCategories.find { it.id == preferredCategoryId }
 
-            _state.update {
-                it.copy(
+            // Re-emits on every category change and on type switches. A category the user
+            // just created is selected; otherwise the current choice is kept while it is still
+            // valid for this type, and the default is used only when it isn't.
+            val previousIds = knownCategoryIds
+            knownCategoryIds = categories.map { it.id }.toSet()
+            val isFirstLoad = previousIds.isNullOrEmpty()
+            val newCategory = if (isFirstLoad) {
+                null
+            } else {
+                filteredCategories.firstOrNull { it.id !in previousIds.orEmpty() }
+            }
+
+            _state.update { current ->
+                val keptCategory = if (isFirstLoad) {
+                    null
+                } else {
+                    filteredCategories.find { it.id == current.selectedCategory.id }
+                }
+                current.copy(
                     transactionType = type,
                     categories = filteredCategories,
-                    selectedCategory = matchedCategory ?: filteredCategories.firstOrNull()
+                    selectedCategory = newCategory
+                        ?: keptCategory
+                        ?: matchedCategory
+                        ?: filteredCategories.firstOrNull()
                         ?: defaultCategory,
                 )
             }
@@ -264,6 +323,10 @@ class TransactionCreateViewModel(
         if (currentState.transactionType.isTransfer() &&
             currentState.selectedFromAccount.id == currentState.selectedToAccount.id
         ) {
+            // Previously returned silently, so tapping Save appeared to do nothing.
+            viewModelScope.launch {
+                _event.send(TransactionCreateEvent.ShowMessage(R.string.select_different_account))
+            }
             return
         }
 
@@ -324,6 +387,8 @@ class TransactionCreateViewModel(
                     )
                 }
                 closePage()
+            } else {
+                _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_save_failed))
             }
         }
     }
@@ -377,6 +442,9 @@ class TransactionCreateViewModel(
                 }
                 discardSessionAttachments()
                 closePage()
+            } else {
+                _state.update { it.copy(showDeleteDialog = false) }
+                _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_delete_failed))
             }
         }
     }
@@ -400,6 +468,47 @@ class TransactionCreateViewModel(
     private fun cancelEditing() {
         discardSessionAttachments()
         closePage()
+    }
+
+    /** Back / close: ask before throwing away edits, otherwise leave straight away. */
+    private fun requestClose() {
+        if (hasUnsavedChanges()) {
+            _state.update { it.copy(showDiscardDialog = true) }
+        } else {
+            cancelEditing()
+        }
+    }
+
+    /**
+     * New transaction: dirty once the user has entered anything worth keeping (defaults such as
+     * the pre-selected account/category/date don't count). Editing: dirty when any saved field
+     * differs from the loaded transaction.
+     */
+    internal fun hasUnsavedChanges(state: TransactionCreateState = _state.value): Boolean {
+        val amount = numberFormatRepository.parseToDouble(state.amount.value) ?: 0.0
+        val original = editingTransaction
+            ?: return amount > 0.0 ||
+                state.notes.value.isNotBlank() ||
+                state.attachments.isNotEmpty() ||
+                state.repeat != null
+
+        // Round-trip the stored amount through the edit formatter so precision beyond the
+        // currency's decimals doesn't register as a change.
+        val originalAmount = numberFormatRepository.parseToDouble(
+            numberFormatRepository.formatForEditing(original.amount.amount),
+        ) ?: original.amount.amount
+
+        val toAccountChanged = state.transactionType == TransactionType.TRANSFER &&
+            state.selectedToAccount.id != original.toAccount?.id
+
+        return amount != originalAmount ||
+            state.notes.value != original.notes ||
+            state.transactionType != original.type ||
+            state.dateTime.time != original.createdOn.time ||
+            state.selectedCategory.id != original.category.id ||
+            state.selectedFromAccount.id != original.fromAccount.id ||
+            toAccountChanged ||
+            state.attachments != original.attachments
     }
 
     private fun discardSessionAttachments() {
@@ -444,8 +553,25 @@ class TransactionCreateViewModel(
 
     private fun changeTransactionType(type: TransactionType) {
         transactionType.update { type }
-        _state.update { it.copy(transactionType = type) }
+        _state.update { current ->
+            // Switching to Transfer with both sides on the same account would only fail on
+            // save; pick a different destination up front when one exists.
+            val toAccount = if (type.isTransfer() &&
+                current.selectedToAccount.id == current.selectedFromAccount.id
+            ) {
+                firstOtherAccount(current.accounts, current.selectedFromAccount.id)
+                    ?: current.selectedToAccount
+            } else {
+                current.selectedToAccount
+            }
+            current.copy(transactionType = type, selectedToAccount = toAccount)
+        }
     }
+
+    private fun firstOtherAccount(
+        accounts: List<AccountUiModel>,
+        accountId: String,
+    ): AccountUiModel? = accounts.firstOrNull { it.id != accountId }
 
     private fun closePage() {
         appComposeNavigator.popBackStack()
@@ -471,7 +597,14 @@ class TransactionCreateViewModel(
 
     fun processAction(action: TransactionCreateAction) {
         when (action) {
-            TransactionCreateAction.ClosePage -> cancelEditing()
+            TransactionCreateAction.ClosePage -> requestClose()
+
+            TransactionCreateAction.ConfirmDiscard -> {
+                _state.update { it.copy(showDiscardDialog = false) }
+                cancelEditing()
+            }
+
+            TransactionCreateAction.DismissDiscardDialog -> _state.update { it.copy(showDiscardDialog = false) }
 
             TransactionCreateAction.ShowDeleteDialog -> showDeleteDialog()
 
@@ -535,7 +668,12 @@ class TransactionCreateViewModel(
                 }
             }
 
-            TransactionCreateAction.ShowNumberPad -> _state.update { it.copy(showNumberPad = true) }
+            TransactionCreateAction.ShowNumberPad -> _state.update {
+                it.copy(
+                    showNumberPad = true,
+                    numberPadInitialAmount = numberFormatRepository.parseToDouble(it.amount.value),
+                )
+            }
 
             TransactionCreateAction.DismissNumberPad -> _state.update { it.copy(showNumberPad = false) }
 

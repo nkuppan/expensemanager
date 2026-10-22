@@ -32,25 +32,34 @@ import kotlinx.datetime.toLocalDateTime
 // MonthAndYearFormat is the one exception that's used for *both* roles (see MonthAndYearKeyFormat
 // below for the round-tripped one, used for Budget.selectedMonth).
 
-private val YearDataFormat by lazy {
-    SimpleDateFormat("yyyy", Locale.US)
+/**
+ * SimpleDateFormat is not thread-safe, and these are used from use cases running on background
+ * dispatchers as well as from the UI, so each thread gets its own instance. Formats without a
+ * fixed locale follow the current default locale, so an in-app language switch is picked up
+ * without restarting the process (they used to keep the locale they were first created with).
+ */
+private class ThreadSafeDateFormat(
+    private val pattern: String,
+    private val fixedLocale: Locale? = null,
+) {
+    private val perThread = ThreadLocal<Pair<Locale, SimpleDateFormat>>()
+
+    fun get(): SimpleDateFormat {
+        val locale = fixedLocale ?: Locale.getDefault()
+        perThread.get()?.let { (cachedLocale, format) -> if (cachedLocale == locale) return format }
+        return SimpleDateFormat(pattern, locale).also { perThread.set(locale to it) }
+    }
 }
 
-private val HourAndMinutesIn24HoursFormat by lazy {
-    SimpleDateFormat("HH:mm", Locale.US)
-}
+private val YearDataFormat = ThreadSafeDateFormat("yyyy", Locale.US)
 
-private val HourAndMinutesIn12HoursFormat by lazy {
-    SimpleDateFormat("hh:mm a", Locale.getDefault())
-}
+private val HourAndMinutesIn24HoursFormat = ThreadSafeDateFormat("HH:mm", Locale.US)
 
-private val MonthFormat by lazy {
-    SimpleDateFormat("MM", Locale.US)
-}
+private val HourAndMinutesIn12HoursFormat = ThreadSafeDateFormat("hh:mm a")
 
-private val MonthAndYearFormat by lazy {
-    SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-}
+private val MonthFormat = ThreadSafeDateFormat("MM", Locale.US)
+
+private val MonthAndYearFormat = ThreadSafeDateFormat("MMMM yyyy")
 
 /**
  * Same pattern as [MonthAndYearFormat] but always English, used only for values that get
@@ -58,33 +67,19 @@ private val MonthAndYearFormat by lazy {
  * compared against). Never use this to show text to the user — use [Date.toMonthAndYear] for
  * that instead.
  */
-private val MonthAndYearKeyFormat by lazy {
-    SimpleDateFormat("MMMM yyyy", Locale.ENGLISH)
-}
+private val MonthAndYearKeyFormat = ThreadSafeDateFormat("MMMM yyyy", Locale.ENGLISH)
 
-private val DateMonthAndYearFormat by lazy {
-    SimpleDateFormat("dd/MM/yyyy", Locale.US)
-}
+private val DateMonthAndYearFormat = ThreadSafeDateFormat("dd/MM/yyyy", Locale.US)
 
-private val DateFormat by lazy {
-    SimpleDateFormat("dd", Locale.US)
-}
+private val DateFormat = ThreadSafeDateFormat("dd", Locale.US)
 
-private val DateAndMonthFormat by lazy {
-    SimpleDateFormat("dd/MM", Locale.US)
-}
+private val DateAndMonthFormat = ThreadSafeDateFormat("dd/MM", Locale.US)
 
-private val ElabratedMonthDataFormat by lazy {
-    SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
-}
+private val ElabratedMonthDataFormat = ThreadSafeDateFormat("MMMM dd, yyyy")
 
-private val DayFormat by lazy {
-    SimpleDateFormat("EEEE", Locale.getDefault())
-}
+private val DayFormat = ThreadSafeDateFormat("EEEE")
 
-private val ShortMontAndYearFormat by lazy {
-    SimpleDateFormat("MM-yyyy", Locale.US)
-}
+private val ShortMontAndYearFormat = ThreadSafeDateFormat("MM-yyyy", Locale.US)
 
 @OptIn(ExperimentalTime::class)
 fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
@@ -196,21 +191,21 @@ fun Date.getEndOfTheYear(): Long {
 
 fun Long.toCompleteDate(): Date = Date(this)
 
-fun Date.toDate(): String = DateFormat.format(this)
+fun Date.toDate(): String = DateFormat.get().format(this)
 
-fun Date.toDateAndMonth(): String = DateAndMonthFormat.format(this)
+fun Date.toDateAndMonth(): String = DateAndMonthFormat.get().format(this)
 
-fun Date.toCompleteDate(): String = ElabratedMonthDataFormat.format(this)
+fun Date.toCompleteDate(): String = ElabratedMonthDataFormat.get().format(this)
 
-fun Date.toCompleteDateWithDate(): String = DateMonthAndYearFormat.format(this)
+fun Date.toCompleteDateWithDate(): String = DateMonthAndYearFormat.get().format(this)
 
 fun String.fromCompleteDate(): Date = kotlin.runCatching {
-    DateMonthAndYearFormat.parse(this)
+    DateMonthAndYearFormat.get().parse(this)
 }.getOrNull() ?: Date()
 
-fun Date.toMonthAndYear(): String = MonthAndYearFormat.format(this)
+fun Date.toMonthAndYear(): String = MonthAndYearFormat.get().format(this)
 
-fun String.fromMonthAndYear(): Date? = kotlin.runCatching { MonthAndYearFormat.parse(this) }.getOrNull()
+fun String.fromMonthAndYear(): Date? = kotlin.runCatching { MonthAndYearFormat.get().parse(this) }.getOrNull()
 
 /**
  * Locale-independent counterpart of [toMonthAndYear], for values that get persisted or compared
@@ -218,16 +213,16 @@ fun String.fromMonthAndYear(): Date? = kotlin.runCatching { MonthAndYearFormat.p
  * the app was in one language can still be read back correctly after the user switches to
  * another — see [MonthAndYearKeyFormat].
  */
-fun Date.toMonthAndYearKey(): String = MonthAndYearKeyFormat.format(this)
+fun Date.toMonthAndYearKey(): String = MonthAndYearKeyFormat.get().format(this)
 
 /** See [Date.toMonthAndYearKey]. Returns null instead of throwing on unparseable input. */
-fun String.fromMonthAndYearKey(): Date? = kotlin.runCatching { MonthAndYearKeyFormat.parse(this) }.getOrNull()
+fun String.fromMonthAndYearKey(): Date? = kotlin.runCatching { MonthAndYearKeyFormat.get().parse(this) }.getOrNull()
 
-fun Date.toMonth(): Int = MonthFormat.format(this).toInt()
+fun Date.toMonth(): Int = MonthFormat.get().format(this).toInt()
 
 fun Date.toYearInt(): Int = this.toYear().toInt()
 
-fun Date.toYear(): String = YearDataFormat.format(this)
+fun Date.toYear(): String = YearDataFormat.get().format(this)
 
 /**
  * See [Date.toYear]. Returns null instead of throwing on unparseable input. Used as the
@@ -235,20 +230,20 @@ fun Date.toYear(): String = YearDataFormat.format(this)
  * [fromMonthAndYearKey]. Safe to round-trip like the other purely-numeric formats in this file
  * (see the file header comment) since [YearDataFormat] is already pinned to `Locale.US`.
  */
-fun String.fromYear(): Date? = kotlin.runCatching { YearDataFormat.parse(this) }.getOrNull()
+fun String.fromYear(): Date? = kotlin.runCatching { YearDataFormat.get().parse(this) }.getOrNull()
 
-fun Date.toTimeAndMinutes(): String = HourAndMinutesIn24HoursFormat.format(this)
+fun Date.toTimeAndMinutes(): String = HourAndMinutesIn24HoursFormat.get().format(this)
 
-fun Date.toMonthYear(): String = MonthAndYearFormat.format(this)
+fun Date.toMonthYear(): String = MonthAndYearFormat.get().format(this)
 
-fun Date.toDay(): String = DayFormat.format(this)
+fun Date.toDay(): String = DayFormat.get().format(this)
 
 fun String.fromTimeAndHour(): Date = kotlin.runCatching {
-    HourAndMinutesIn24HoursFormat.parse(this)
+    HourAndMinutesIn24HoursFormat.get().parse(this)
 }.getOrNull() ?: Date()
 
-fun Date.toTimeAndMinutesWithAMPM(): String = HourAndMinutesIn12HoursFormat.format(this)
+fun Date.toTimeAndMinutesWithAMPM(): String = HourAndMinutesIn12HoursFormat.get().format(this)
 
 fun String.fromShortMonthAndYearToDate(): Date? = kotlin.runCatching {
-    ShortMontAndYearFormat.parse(this)
+    ShortMontAndYearFormat.get().parse(this)
 }.getOrNull()

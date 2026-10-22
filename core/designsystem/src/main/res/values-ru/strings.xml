@@ -32,4 +32,15 @@
     <string name="pick_an_icon">Выбрать значок</string>
     <string name="remove_photo">Удалить фото</string>
     <string name="add_attachment">Добавить вложение</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">Назад</string>
+    <string name="a11y_close">Закрыть</string>
+    <string name="a11y_previous_period">Предыдущий период</string>
+    <string name="a11y_next_period">Следующий период</string>
+    <string name="a11y_open_calculator">Открыть калькулятор</string>
+    <string name="a11y_settings">Настройки</string>
+    <string name="a11y_select_icon">Выбрать значок</string>
+    <string name="error_save_failed">Не удалось сохранить. Попробуйте ещё раз.</string>
+    <string name="error_delete_failed">Не удалось удалить. Попробуйте ещё раз.</string>
 </resources>

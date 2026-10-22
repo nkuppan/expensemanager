@@ -22,6 +22,11 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Query("SELECT * from `transaction` WHERE id=:id")
     fun findById(id: String): TransactionEntity?
 
+    // Suspend variant used inside the suspending @Transaction write methods below, so the
+    // balance bookkeeping never mixes blocking queries into a coroutine transaction.
+    @Query("SELECT * from `transaction` WHERE id=:id")
+    suspend fun findEntityById(id: String): TransactionEntity?
+
     // @Transaction is required here (not just on writes) because TransactionRelation embeds
     // multiple @Relation fields (category, fromAccount, toAccount, attachments). Room fetches
     // each relation via a separate sub-query and stitches the results back onto the parent rows
@@ -128,8 +133,14 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         return id
     }
 
+    /**
+     * Reverses the balance effect of the transaction as it is currently stored. Must only be
+     * called from inside a @Transaction method (see [updateTransaction] and
+     * [deleteTransaction]) so the reversal and the write that follows are atomic; otherwise a
+     * crash between the two leaves account balances permanently off.
+     */
     suspend fun removePreviousEnteredAmount(transactionEntity: TransactionEntity) {
-        val previousTransaction = findById(transactionEntity.id)
+        val previousTransaction = findEntityById(transactionEntity.id)
 
         if (previousTransaction != null) {
             val previousAmountToDetect = if (previousTransaction.type == TransactionType.INCOME) {
@@ -161,6 +172,20 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         }
     }
 
+    /**
+     * Atomically deletes a transaction and reverses its effect on the account balance(s).
+     * Returns the number of deleted rows.
+     */
+    @Transaction
+    suspend fun deleteTransaction(transactionEntity: TransactionEntity): Int {
+        removePreviousEnteredAmount(transactionEntity)
+        return delete(transactionEntity)
+    }
+
+    /**
+     * Atomically updates a transaction: reverses the previously stored amount from the old
+     * account(s), writes the new row and attachments, then applies the new amount.
+     */
     @Transaction
     suspend fun updateTransaction(
         transactionEntity: TransactionEntity,
@@ -168,6 +193,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         isTransfer: Boolean,
         attachmentPaths: List<String> = emptyList(),
     ) {
+        removePreviousEnteredAmount(transactionEntity)
         update(transactionEntity)
 
         removeTransactionAttachments(transactionEntity.id)

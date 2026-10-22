@@ -62,4 +62,11 @@
     <string name="no_file_picker">此设备上未找到文件管理器。</string>
     <string name="recurring_transactions_setting">周期性交易</string>
     <string name="recurring_transactions_setting_message">房租、订阅和工资自动记录</string>
+    <string name="backup_passphrase_title">保护此备份？</string>
+    <string name="backup_passphrase_message">设置密码短语来加密备份。恢复时需要它，忘记后无法找回。留空则使用标准保护。</string>
+    <string name="restore_passphrase_title">输入备份密码短语</string>
+    <string name="restore_passphrase_message">此备份受密码短语保护。</string>
+    <string name="passphrase_label">密码短语</string>
+    <string name="restore_wrong_passphrase">密码短语错误，请重试。</string>
+    <string name="continue_action">继续</string>
 </resources>

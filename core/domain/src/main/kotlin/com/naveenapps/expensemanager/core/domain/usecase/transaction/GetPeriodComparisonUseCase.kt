@@ -7,10 +7,10 @@ import com.naveenapps.expensemanager.core.model.PeriodComparison
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
+import kotlin.math.abs
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
-import kotlin.math.abs
 
 /**
  * The Analysis period compared with the one before it, using the same filters.

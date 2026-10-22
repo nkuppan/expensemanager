@@ -1,47 +1,80 @@
 package com.naveenapps.expensemanager.feature.transaction.list
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionGroup
@@ -50,6 +83,7 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.R
 import java.util.Date
+import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -59,13 +93,42 @@ fun TransactionListScreen(
     showAddButton: Boolean = true,
     viewModel: TransactionListViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    ObserveAsEvents(viewModel.event) { event ->
+        when (event) {
+            TransactionListEvent.ShowUndoDelete -> coroutineScope.launch {
+                // Replace any undo snackbar still showing; its delete becomes final.
+                snackbarHostState.currentSnackbarData?.dismiss()
+                val result = snackbarHostState.showSnackbar(
+                    message = context.getString(R.string.transaction_deleted),
+                    actionLabel = context.getString(R.string.undo),
+                    duration = SnackbarDuration.Long,
+                )
+                viewModel.processAction(
+                    if (result == SnackbarResult.ActionPerformed) {
+                        TransactionListAction.UndoDelete
+                    } else {
+                        TransactionListAction.UndoExpired
+                    },
+                )
+            }
+
+            is TransactionListEvent.ShowMessage -> coroutineScope.launch {
+                snackbarHostState.showSnackbar(context.getString(event.messageRes))
+            }
+        }
+    }
 
     TransactionListScreenContent(
         showBackNavigationIcon,
         showAddButton,
         state,
         viewModel::processAction,
+        snackbarHostState,
     )
 }
 
@@ -75,20 +138,47 @@ private fun TransactionListScreenContent(
     showAddButton: Boolean = true,
     state: TransactionListState,
     onAction: (TransactionListAction) -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
+    // Search lives in the top bar: a search icon that turns the bar into a text field, the
+    // usual Android pattern, instead of a permanent box in the list.
+    var isSearchActive by rememberSaveable { mutableStateOf(state.searchQuery.isNotEmpty()) }
+    val closeSearch = {
+        isSearchActive = false
+        onAction(TransactionListAction.Search(""))
+    }
+    BackHandler(enabled = isSearchActive, onBack = closeSearch)
+
     Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
-            ExpenseManagerTopAppBar(
-                title = stringResource(R.string.transaction),
-                navigationIcon = if (showBackNavigationIcon) {
-                    Icons.AutoMirrored.Default.ArrowBack
-                } else {
-                    null
-                },
-                navigationBackClick = {
-                    onAction(TransactionListAction.ClosePage)
-                },
-            )
+            if (isSearchActive) {
+                TransactionSearchBar(
+                    query = state.searchQuery,
+                    onQueryChange = { onAction(TransactionListAction.Search(it)) },
+                    onClose = closeSearch,
+                )
+            } else {
+                ExpenseManagerTopAppBar(
+                    title = stringResource(R.string.transaction),
+                    navigationIcon = if (showBackNavigationIcon) {
+                        Icons.AutoMirrored.Default.ArrowBack
+                    } else {
+                        null
+                    },
+                    navigationBackClick = {
+                        onAction(TransactionListAction.ClosePage)
+                    },
+                    actions = {
+                        IconButton(onClick = { isSearchActive = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = stringResource(R.string.search_transactions),
+                            )
+                        }
+                    },
+                )
+            }
         },
         floatingActionButton = {
             if (showAddButton) {
@@ -115,6 +205,7 @@ private fun TransactionListScreenContent(
                 .fillMaxSize()
                 .padding(top = innerPadding.calculateTopPadding()),
             state = state,
+            onDelete = { onAction(TransactionListAction.DeleteTransaction(it.id)) },
         ) { transaction ->
             onAction(TransactionListAction.OpenEdiTransaction(transaction.id))
         }
@@ -129,6 +220,7 @@ private fun TransactionListScreenContent(
 private fun TransactionListScreen(
     state: TransactionListState,
     modifier: Modifier = Modifier,
+    onDelete: ((TransactionUiItem) -> Unit)? = null,
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
     LazyColumn(
@@ -143,13 +235,28 @@ private fun TransactionListScreen(
             )
         }
 
-        if (state.transactionListItem.isEmpty()) {
+        if (state.isLoading) {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 80.dp),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+        } else if (state.transactionListItem.isEmpty()) {
             item {
                 EmptyItem(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = 80.dp),
-                    emptyItemText = stringResource(id = R.string.no_transactions_available),
+                    emptyItemText = if (state.searchQuery.isNotBlank()) {
+                        stringResource(id = R.string.no_matching_transactions)
+                    } else {
+                        stringResource(id = R.string.no_transactions_available)
+                    },
                     icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
                 )
             }
@@ -173,6 +280,7 @@ private fun TransactionListScreen(
                             TransactionGroupCard(
                                 transactions = section.items,
                                 onItemClick = onItemClick,
+                                onDelete = onDelete,
                             )
                         }
                     }
@@ -222,6 +330,7 @@ private fun buildSections(items: List<TransactionListItem>): List<Section> {
 private fun TransactionGroupCard(
     transactions: List<TransactionUiItem>,
     onItemClick: ((TransactionUiItem) -> Unit)?,
+    onDelete: ((TransactionUiItem) -> Unit)? = null,
 ) {
     Column(
         modifier = Modifier
@@ -250,12 +359,78 @@ private fun TransactionGroupCard(
                     onClick = {
                         onItemClick?.invoke(item)
                     },
+                    // Swipe to reveal edit/delete (also offered to TalkBack as actions).
+                    onEdit = onItemClick?.let { click -> { click(item) } },
+                    onDelete = onDelete?.let { delete -> { delete(item) } },
                 )
 
                 // Thin inset divider between rows — not after the last one
                 if (index < transactions.lastIndex) {
                     HorizontalDivider(
                         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TransactionSearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    onClose: () -> Unit,
+) {
+    val focusRequester = remember { FocusRequester() }
+    val keyboard = LocalSoftwareKeyboardController.current
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+
+    Surface(color = MaterialTheme.colorScheme.background) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(TopAppBarDefaults.windowInsets)
+                .height(64.dp)
+                .padding(horizontal = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            IconButton(onClick = onClose) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                    contentDescription = stringResource(DesignSystemR.string.a11y_close),
+                )
+            }
+            TextField(
+                value = query,
+                onValueChange = onQueryChange,
+                modifier = Modifier
+                    .weight(1f)
+                    .focusRequester(focusRequester),
+                singleLine = true,
+                textStyle = MaterialTheme.typography.titleMedium,
+                placeholder = {
+                    Text(
+                        text = stringResource(R.string.search_transactions_hint),
+                        style = MaterialTheme.typography.titleMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+                // Blend into the app bar: no filled box, no underline.
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                ),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
+            )
+            if (query.isNotEmpty()) {
+                IconButton(onClick = { onQueryChange("") }) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.clear_search),
                     )
                 }
             }

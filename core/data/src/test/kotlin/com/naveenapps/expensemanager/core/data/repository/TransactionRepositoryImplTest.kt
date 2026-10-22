@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -142,6 +143,52 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
         updateTransactionAndAssert(updatedTransaction)
 
         validateTransaction(updatedTransaction)
+    }
+
+    @Test
+    fun updateTransactionAmountKeepsAccountBalanceConsistent() = runTest {
+        setupBasicAppData()
+
+        insertTransactionAndAssert(FAKE_EXPENSE_TRANSACTION)
+        updateTransactionAndAssert(FAKE_EXPENSE_TRANSACTION.copy(amount = Amount(50.0)))
+
+        // The old 200 is reversed and only the new 50 is applied.
+        Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(-50.0)
+    }
+
+    @Test
+    fun updateTransactionToAnotherAccountMovesBalance() = runTest {
+        setupBasicAppData()
+
+        insertTransactionAndAssert(FAKE_EXPENSE_TRANSACTION)
+        updateTransactionAndAssert(
+            FAKE_EXPENSE_TRANSACTION.copy(fromAccountId = FAKE_SECOND_ACCOUNT.id),
+        )
+
+        Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(0.0)
+        Truth.assertThat(accountDao.findById(FAKE_SECOND_ACCOUNT.id)!!.amount).isEqualTo(-200.0)
+    }
+
+    @Test
+    fun deleteTransactionRestoresAccountBalances() = runTest {
+        setupBasicAppData()
+
+        insertTransactionAndAssert(FAKE_TRANSFER_TRANSACTION)
+        deleteTransactionAndAssert(FAKE_TRANSFER_TRANSACTION)
+
+        Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(0.0)
+        Truth.assertThat(accountDao.findById(FAKE_SECOND_ACCOUNT.id)!!.amount).isEqualTo(0.0)
+    }
+
+    @Test
+    fun deleteUnknownTransactionReportsFailure() = runTest {
+        setupBasicAppData()
+
+        val result = transactionRepository.deleteTransaction(FAKE_EXPENSE_TRANSACTION)
+
+        Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
+        Truth.assertThat((result as Resource.Success).data).isFalse()
+        Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(0.0)
     }
 
     @Test

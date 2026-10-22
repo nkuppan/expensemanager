@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import java.util.Date
 
@@ -23,6 +24,7 @@ import java.util.Date
             onDelete = ForeignKey.CASCADE,
         ),
     ],
+    indices = [Index(value = ["transaction_id"])],
 )
 data class TransactionAttachmentEntity(
     @PrimaryKey(autoGenerate = false)

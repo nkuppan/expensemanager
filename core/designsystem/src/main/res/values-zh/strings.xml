@@ -32,4 +32,15 @@
     <string name="pick_an_icon">选择图标</string>
     <string name="remove_photo">删除照片</string>
     <string name="add_attachment">添加附件</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">返回</string>
+    <string name="a11y_close">关闭</string>
+    <string name="a11y_previous_period">上一期间</string>
+    <string name="a11y_next_period">下一期间</string>
+    <string name="a11y_open_calculator">打开计算器</string>
+    <string name="a11y_settings">设置</string>
+    <string name="a11y_select_icon">选择图标</string>
+    <string name="error_save_failed">无法保存，请重试。</string>
+    <string name="error_delete_failed">无法删除，请重试。</string>
 </resources>

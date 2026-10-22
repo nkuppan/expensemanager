@@ -1,0 +1,49 @@
+Expense Manager ile paranızın kontrolünü elinize alın: harcamalarınızı takip etmenin, bütçenize sadık kalmanın ve paranızın tam olarak nereye gittiğini görmenin basit ve reklamsız yolu.
+
+Bir harcamayı saniyeler içinde kaydedin, kategoriye ve hesaba göre düzenleyin, gelir, gider ve birikimlerinizi anında net grafiklerle görün. Karmaşa yok, reklam yok, kayıt yok.
+
+<b>💰 Her işlemi takip edin</b>
+• Giderleri, gelirleri ve hesaplar arası transferleri kaydedin
+• Her kayda kategori, not, tarih ve fiş fotoğrafı ekleyin
+• Faturalar, kira ve maaş için tekrarlayan işlemler oluşturun
+• Birden fazla hesap yönetin: nakit, banka, birikim, kredi kartı ve daha fazlası
+• İşlemleri hesaba, türe veya tarihe göre arayın ve filtreleyin
+
+<b>📊 Net analizler ve istatistikler</b>
+• Gelir, gider ve net bakiyenizi tek bakışta gösteren panel
+• Paranızın nereye gittiğini gösteren kategori grafikleri
+• Günlük, haftalık, aylık veya yıllık harcama eğilimleri
+• Ayrıntılı gelir-gider özetleri
+
+<b>🎯 Sizi rotada tutan bütçeler</b>
+• Tüm harcamalar ya da belirli kategoriler ve hesaplar için aylık bütçe belirleyin
+• Ne kadar harcadığınızı ve ne kaldığını tek bakışta görün
+• Bütçe sınırına yaklaştığınızda veya aştığınızda bildirim alın
+
+<b>🔔 Kaydetmeyi unutmayın</b>
+• Seçtiğiniz saatte isteğe bağlı günlük hatırlatıcı
+• Bakiye, son işlemler ve tek dokunuşla ekleme sunan ana ekran widget'ı
+
+<b>🔒 Gizli ve güvenli</b>
+• Finansal verileriniz yalnızca cihazınızda saklanır
+• Hesap veya kayıt gerekmez
+• Parmak izi / biyometrik uygulama kilidi
+• Parola korumalı yedekleme ve geri yükleme: verilerinizi istediğiniz zaman yeni telefona taşıyın
+
+<b>📁 Verilerinizi dışa aktarın</b>
+• Tablolar için CSV olarak dışa aktarın
+• Kolay paylaşım ve arşiv için PDF olarak dışa aktarın
+
+<b>🎨 Sizin için tasarlandı</b>
+• Sade ve modern Material tasarım
+• Açık ve koyu tema
+• Her para birimini destekler
+• Türkçe ve İngilizce dahil 16 dilde kullanılabilir
+
+<b>✨ Neden Expense Manager?</b>
+• %100 reklamsız
+• Basit ve hızlı, günlük kullanım için
+• Çevrimdışı çalışır
+• Açık kaynak ve aktif olarak geliştiriliyor
+
+Bugün başlayın ve her harcamayla daha iyi para alışkanlıkları edinin.

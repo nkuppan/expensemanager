@@ -47,4 +47,11 @@
     <string name="liabilities">Liabilitas</string>
     <string name="total_balance">Total saldo</string>
     <string name="balance">Saldo</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">Menghapus akun ini juga akan menghapus transaksinya (%d), termasuk transfer dari atau ke akun ini. Tindakan ini tidak dapat dibatalkan.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">Akun ini tidak memiliki transaksi. Penghapusan tidak dapat dibatalkan.</string>
+    <string name="account_delete_last_title">Ini satu-satunya akun Anda</string>
+    <string name="account_delete_last_message">Setiap transaksi memerlukan akun. Buat akun lain terlebih dahulu, lalu Anda dapat menghapus akun ini.</string>
 </resources>

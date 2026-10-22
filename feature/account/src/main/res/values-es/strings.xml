@@ -49,4 +49,11 @@
     <string name="liabilities">Pasivos</string>
     <string name="total_balance">Saldo total</string>
     <string name="balance">Saldo</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">Al eliminar esta cuenta también se eliminarán sus transacciones (%d), incluidas las transferencias desde o hacia ella. Esta acción no se puede deshacer.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">Esta cuenta no tiene transacciones. Eliminarla no se puede deshacer.</string>
+    <string name="account_delete_last_title">Esta es tu única cuenta</string>
+    <string name="account_delete_last_message">Cada transacción necesita una cuenta. Crea otra cuenta primero y luego podrás eliminar esta.</string>
 </resources>

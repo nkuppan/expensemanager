@@ -1,0 +1,49 @@
+Prenez le contrôle de votre argent avec Expense Manager : une application simple et sans publicité pour suivre vos dépenses, respecter vos budgets et savoir exactement où va votre argent.
+
+Enregistrez une dépense en quelques secondes, classez-la par catégorie et par compte, et visualisez instantanément vos revenus, dépenses et économies grâce à des graphiques clairs. Pas de superflu, pas de pub, pas d'inscription.
+
+<b>💰 Suivez chaque transaction</b>
+• Enregistrez dépenses, revenus et virements entre comptes
+• Ajoutez catégories, notes, dates et photos de reçus à chaque opération
+• Programmez des transactions récurrentes pour les factures, le loyer ou le salaire
+• Gérez plusieurs comptes : espèces, compte courant, épargne, cartes de crédit et plus
+• Recherchez et filtrez par compte, type ou date
+
+<b>📊 Analyses et statistiques claires</b>
+• Tableau de bord avec revenus, dépenses et solde en un coup d'œil
+• Graphiques par catégorie pour voir où part votre argent
+• Tendances de dépenses par jour, semaine, mois ou année
+• Récapitulatifs détaillés des revenus et des dépenses
+
+<b>🎯 Des budgets pour garder le cap</b>
+• Définissez des budgets mensuels globaux ou par catégorie et par compte
+• Voyez d'un coup d'œil ce que vous avez dépensé et ce qu'il reste
+• Recevez une alerte à l'approche ou au dépassement d'un budget
+
+<b>🔔 N'oubliez plus rien</b>
+• Rappel quotidien facultatif à l'heure de votre choix
+• Widget d'écran d'accueil avec solde, dernières opérations et ajout en un geste
+
+<b>🔒 Confidentiel et sécurisé</b>
+• Vos données financières sont stockées uniquement sur votre appareil
+• Aucun compte ni inscription nécessaire
+• Verrouillage de l'app par empreinte digitale / biométrie
+• Sauvegarde et restauration protégées par phrase secrète : transférez vos données sur un nouveau téléphone à tout moment
+
+<b>📁 Exportez vos données</b>
+• Export CSV pour vos tableurs
+• Export PDF pour partager et archiver facilement
+
+<b>🎨 Pensée pour vous</b>
+• Design Material moderne et épuré
+• Thèmes clair et sombre
+• Compatible avec toutes les devises
+• Disponible en 16 langues, dont le français et l'anglais
+
+<b>✨ Pourquoi Expense Manager ?</b>
+• 100 % sans publicité
+• Simple et rapide, conçue pour le quotidien
+• Fonctionne hors ligne
+• Open source et activement maintenue
+
+Commencez dès aujourd'hui et prenez de meilleures habitudes financières, une dépense à la fois.

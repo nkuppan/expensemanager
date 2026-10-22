@@ -28,4 +28,14 @@ data class SettingState(
     // Data & Backup section
     val showRestoreConfirmation: Boolean = false,
     val isBackupInProgress: Boolean = false,
+    // Non-null while the backup/restore passphrase dialog is showing.
+    val passphrasePrompt: PassphrasePrompt? = null,
 )
+
+enum class PassphrasePrompt {
+    /** Optional passphrase before creating a backup; empty means the built-in key. */
+    BACKUP,
+
+    /** The chosen backup is passphrase-protected; required to restore it. */
+    RESTORE,
+}

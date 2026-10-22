@@ -1,10 +1,11 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
-import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -12,6 +13,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransact
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
+import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
@@ -30,11 +33,18 @@ import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
+import com.naveenapps.expensemanager.feature.transaction.R
 import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -100,28 +110,31 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         whenever(settingsRepository.getDefaultExpenseCategory()).thenReturn(flowOf(null))
         whenever(feedbackRepository.getTransactionCreatedCount()).thenReturn(flowOf(1))
         whenever(feedbackRepository.shouldShowFeedbackDialog()).thenReturn(flowOf(false))
+        whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0))
 
-        viewModel = TransactionCreateViewModel(
-            savedStateHandle = SavedStateHandle(),
-            getCurrencyUseCase = getCurrencyUseCase,
-            getAllAccountsUseCase = getAllAccountsUseCase,
-            getAllCategoryUseCase = getAllCategoryUseCase,
-            getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
-            getFormattedAmountUseCase = getFormattedAmountUseCase,
-            findTransactionByIdUseCase = findTransactionByIdUseCase,
-            addTransactionUseCase = addTransactionUseCase,
-            updateTransactionUseCase = updateTransactionUseCase,
-            deleteTransactionUseCase = deleteTransactionUseCase,
-            settingsRepository = settingsRepository,
-            imageStorageRepository = imageStorageRepository,
-            appComposeNavigator = appComposeNavigator,
-            numberFormatRepository = numberFormatRepository,
-            feedbackRepository = feedbackRepository,
-            analyticsRepository = analyticsRepository,
-            budgetAlertTrigger = budgetAlertTrigger,
-            createRecurringTransactionUseCase = createRecurringTransactionUseCase,
-        )
+        viewModel = createViewModel()
     }
+
+    private fun createViewModel() = TransactionCreateViewModel(
+        savedStateHandle = SavedStateHandle(),
+        getCurrencyUseCase = getCurrencyUseCase,
+        getAllAccountsUseCase = getAllAccountsUseCase,
+        getAllCategoryUseCase = getAllCategoryUseCase,
+        getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
+        getFormattedAmountUseCase = getFormattedAmountUseCase,
+        findTransactionByIdUseCase = findTransactionByIdUseCase,
+        addTransactionUseCase = addTransactionUseCase,
+        updateTransactionUseCase = updateTransactionUseCase,
+        deleteTransactionUseCase = deleteTransactionUseCase,
+        settingsRepository = settingsRepository,
+        imageStorageRepository = imageStorageRepository,
+        appComposeNavigator = appComposeNavigator,
+        numberFormatRepository = numberFormatRepository,
+        feedbackRepository = feedbackRepository,
+        analyticsRepository = analyticsRepository,
+        budgetAlertTrigger = budgetAlertTrigger,
+        createRecurringTransactionUseCase = createRecurringTransactionUseCase,
+    )
 
     // region helpers
 
@@ -316,10 +329,205 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     }
 
     @Test
+    fun `opening the number pad pre-fills the current amount`() {
+        whenever(numberFormatRepository.parseToDouble("42.5")).thenReturn(42.5)
+        whenever(numberFormatRepository.parseToDouble("0.00")).thenReturn(0.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue(null))
+        viewModel.state.value.amount.onValueChange?.invoke("42.5")
+
+        viewModel.processAction(TransactionCreateAction.ShowNumberPad)
+
+        assertThat(viewModel.state.value.showNumberPad).isTrue()
+        assertThat(viewModel.state.value.numberPadInitialAmount).isEqualTo(42.5)
+    }
+
+    @Test
     fun `dismissing the number pad without a value closes it`() {
         viewModel.processAction(TransactionCreateAction.SetNumberPadValue(null))
 
         assertThat(viewModel.state.value.showNumberPad).isFalse()
+    }
+
+    // endregion
+
+    // region account / category selection
+
+    private fun account(id: String) = Account(
+        id = id,
+        name = id,
+        type = AccountType.REGULAR,
+        storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
+        createdOn = Date(),
+        updatedOn = Date(),
+    )
+
+    private fun category(id: String) = fakeCategory.copy(id = id, name = id)
+
+    @Test
+    fun `transfer defaults the to-account to a different account`() = runTest {
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(flowOf(listOf(account("a"), account("b"))))
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.processAction(TransactionCreateAction.ChangeTransactionType(TransactionType.TRANSFER))
+
+        assertThat(viewModel.state.value.selectedFromAccount.id).isEqualTo("a")
+        assertThat(viewModel.state.value.selectedToAccount.id).isEqualTo("b")
+    }
+
+    @Test
+    fun `account list update keeps the user's selection`() = runTest {
+        val accounts = MutableStateFlow(listOf(account("a"), account("b")))
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(accounts)
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        val chosen = viewModel.state.value.accounts.first { it.id == "b" }
+        viewModel.processAction(TransactionCreateAction.ShowAccountSelection(AccountSelection.FROM_ACCOUNT))
+        viewModel.processAction(TransactionCreateAction.SelectAccount(chosen))
+        // e.g. a balance changed somewhere — same ids, new emission
+        accounts.value = listOf(account("a"), account("b").copy(amount = 10.0))
+        advanceUntilIdle()
+
+        assertThat(viewModel.state.value.selectedFromAccount.id).isEqualTo("b")
+    }
+
+    @Test
+    fun `newly created account is selected for the side being picked`() = runTest {
+        val accounts = MutableStateFlow(listOf(account("a"), account("b")))
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(accounts)
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.processAction(TransactionCreateAction.ShowAccountSelection(AccountSelection.TO_ACCOUNT))
+        accounts.value = listOf(account("a"), account("b"), account("new"))
+        advanceUntilIdle()
+
+        assertThat(viewModel.state.value.selectedToAccount.id).isEqualTo("new")
+        assertThat(viewModel.state.value.selectedFromAccount.id).isEqualTo("a")
+    }
+
+    @Test
+    fun `category list update keeps the selection and selects a newly created category`() = runTest {
+        val categories = MutableStateFlow(listOf(category("c1"), category("c2")))
+        whenever(getAllCategoryUseCase.invoke()).thenReturn(categories)
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.processAction(TransactionCreateAction.SelectCategory(category("c2")))
+        categories.value = listOf(category("c1"), category("c2").copy(name = "renamed"))
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.selectedCategory.id).isEqualTo("c2")
+
+        categories.value = categories.value + category("c3")
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.selectedCategory.id).isEqualTo("c3")
+    }
+
+    @Test
+    fun `saving a transfer between the same account shows an error`() = runTest {
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(flowOf(listOf(account("only"))))
+        whenever(numberFormatRepository.parseToDouble("50")).thenReturn(50.0)
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.event.test {
+            viewModel.processAction(TransactionCreateAction.SetNumberPadValue("50"))
+            viewModel.processAction(TransactionCreateAction.ChangeTransactionType(TransactionType.TRANSFER))
+            viewModel.processAction(TransactionCreateAction.Save)
+
+            assertThat(awaitItem()).isEqualTo(
+                TransactionCreateEvent.ShowMessage(R.string.select_different_account),
+            )
+        }
+    }
+
+    // endregion
+
+    // region discard changes
+
+    @Test
+    fun `closing an untouched new transaction leaves without asking`() {
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isFalse()
+        verify(appComposeNavigator).popBackStack()
+    }
+
+    @Test
+    fun `closing a new transaction with an amount asks before discarding`() {
+        whenever(numberFormatRepository.parseToDouble("25")).thenReturn(25.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("25"))
+
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isTrue()
+        verify(appComposeNavigator, never()).popBackStack()
+    }
+
+    @Test
+    fun `keep editing hides the dialog and stays on the page`() {
+        whenever(numberFormatRepository.parseToDouble("25")).thenReturn(25.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("25"))
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        viewModel.processAction(TransactionCreateAction.DismissDiscardDialog)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isFalse()
+        verify(appComposeNavigator, never()).popBackStack()
+    }
+
+    @Test
+    fun `confirming discard leaves the page`() {
+        whenever(numberFormatRepository.parseToDouble("25")).thenReturn(25.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("25"))
+        viewModel.processAction(TransactionCreateAction.ClosePage)
+
+        viewModel.processAction(TransactionCreateAction.ConfirmDiscard)
+
+        assertThat(viewModel.state.value.showDiscardDialog).isFalse()
+        verify(appComposeNavigator).popBackStack()
+    }
+
+    @Test
+    fun `new transaction with only notes counts as unsaved`() {
+        assertThat(viewModel.hasUnsavedChanges(buildState(notes = "lunch").copy(amount = zeroAmount()))).isTrue()
+        assertThat(viewModel.hasUnsavedChanges(buildState(notes = "").copy(amount = zeroAmount()))).isFalse()
+    }
+
+    private fun zeroAmount() = TextFieldValue(value = "0.00", valueError = false, onValueChange = null)
+
+    private fun editingState(original: Transaction) = buildState(
+        notes = original.notes,
+        dateTime = original.createdOn,
+        transactionType = original.type,
+        selectedCategory = fakeCategory.copy(id = original.category.id),
+        selectedFromAccount = fakeFromAccount.copy(id = original.fromAccount.id),
+    )
+
+    @Test
+    fun `editing with nothing changed is not unsaved`() {
+        val original = FAKE_EXPENSE_TRANSACTION.copy(amount = Amount(100.0))
+        whenever(numberFormatRepository.formatForEditing(100.0)).thenReturn("100.00")
+        whenever(numberFormatRepository.parseToDouble("100.00")).thenReturn(100.0)
+        setEditingTransaction(original)
+
+        assertThat(viewModel.hasUnsavedChanges(editingState(original))).isFalse()
+    }
+
+    @Test
+    fun `editing notes or amount counts as unsaved`() {
+        val original = FAKE_EXPENSE_TRANSACTION.copy(amount = Amount(100.0))
+        whenever(numberFormatRepository.formatForEditing(100.0)).thenReturn("100.00")
+        whenever(numberFormatRepository.parseToDouble("100.00")).thenReturn(100.0)
+        whenever(numberFormatRepository.parseToDouble("120.00")).thenReturn(120.0)
+        setEditingTransaction(original)
+
+        val changedNotes = editingState(original).copy(notes = zeroAmount().copy(value = "changed"))
+        assertThat(viewModel.hasUnsavedChanges(changedNotes)).isTrue()
+        assertThat(
+            viewModel.hasUnsavedChanges(editingState(original).copy(amount = zeroAmount().copy(value = "120.00"))),
+        ).isTrue()
     }
 
     // endregion

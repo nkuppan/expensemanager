@@ -47,4 +47,11 @@
     <string name="liabilities">負債</string>
     <string name="total_balance">合計残高</string>
     <string name="balance">残高</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">このアカウントを削除すると、このアカウントとの振替を含む取引（%d 件）も削除されます。この操作は元に戻せません。</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">このアカウントには取引がありません。削除すると元に戻せません。</string>
+    <string name="account_delete_last_title">これが唯一のアカウントです</string>
+    <string name="account_delete_last_message">取引にはアカウントが必要です。先に別のアカウントを作成してから、このアカウントを削除してください。</string>
 </resources>

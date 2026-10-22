@@ -57,4 +57,11 @@
     <string name="liabilities">الالتزامات</string>
     <string name="total_balance">الرصيد الإجمالي</string>
     <string name="balance">الرصيد</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">سيؤدي حذف هذا الحساب أيضًا إلى حذف معاملاته (%d)، بما في ذلك التحويلات من هذا الحساب أو إليه. لا يمكن التراجع عن ذلك.</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">لا توجد معاملات في هذا الحساب. لا يمكن التراجع عن الحذف.</string>
+    <string name="account_delete_last_title">هذا هو حسابك الوحيد</string>
+    <string name="account_delete_last_message">تحتاج كل معاملة إلى حساب. أنشئ حسابًا آخر أولاً، ثم يمكنك حذف هذا الحساب.</string>
 </resources>

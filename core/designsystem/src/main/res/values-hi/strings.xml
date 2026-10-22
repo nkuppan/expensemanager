@@ -32,4 +32,15 @@
     <string name="pick_an_icon">आइकन चुनें</string>
     <string name="remove_photo">फ़ोटो हटाएं</string>
     <string name="add_attachment">अनुलग्नक जोड़ें</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">वापस</string>
+    <string name="a11y_close">बंद करें</string>
+    <string name="a11y_previous_period">पिछली अवधि</string>
+    <string name="a11y_next_period">अगली अवधि</string>
+    <string name="a11y_open_calculator">कैलकुलेटर खोलें</string>
+    <string name="a11y_settings">सेटिंग</string>
+    <string name="a11y_select_icon">आइकन चुनें</string>
+    <string name="error_save_failed">सेव नहीं हो सका। कृपया फिर से कोशिश करें।</string>
+    <string name="error_delete_failed">हटाया नहीं जा सका। कृपया फिर से कोशिश करें।</string>
 </resources>

@@ -62,4 +62,11 @@
     <string name="no_file_picker">Tidak ada pengelola file di perangkat ini.</string>
     <string name="recurring_transactions_setting">Transaksi berulang</string>
     <string name="recurring_transactions_setting_message">Sewa, langganan, dan gaji dicatat otomatis</string>
+    <string name="backup_passphrase_title">Lindungi cadangan ini?</string>
+    <string name="backup_passphrase_message">Tetapkan frasa sandi untuk mengenkripsi cadangan. Anda memerlukannya untuk memulihkan, dan frasa sandi tidak dapat dipulihkan jika lupa. Biarkan kosong untuk memakai perlindungan standar.</string>
+    <string name="restore_passphrase_title">Masukkan frasa sandi cadangan</string>
+    <string name="restore_passphrase_message">Cadangan ini dilindungi frasa sandi.</string>
+    <string name="passphrase_label">Frasa sandi</string>
+    <string name="restore_wrong_passphrase">Frasa sandi salah. Coba lagi.</string>
+    <string name="continue_action">Lanjutkan</string>
 </resources>

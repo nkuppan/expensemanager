@@ -32,4 +32,15 @@
     <string name="pick_an_icon">Pilih Ikon</string>
     <string name="remove_photo">Hapus Foto</string>
     <string name="add_attachment">Tambah Lampiran</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">Kembali</string>
+    <string name="a11y_close">Tutup</string>
+    <string name="a11y_previous_period">Periode sebelumnya</string>
+    <string name="a11y_next_period">Periode berikutnya</string>
+    <string name="a11y_open_calculator">Buka kalkulator</string>
+    <string name="a11y_settings">Setelan</string>
+    <string name="a11y_select_icon">Pilih ikon</string>
+    <string name="error_save_failed">Tidak dapat menyimpan. Coba lagi.</string>
+    <string name="error_delete_failed">Tidak dapat menghapus. Coba lagi.</string>
 </resources>

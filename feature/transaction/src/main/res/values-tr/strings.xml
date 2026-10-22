@@ -73,4 +73,15 @@
     <string name="recurring_stop_message">Yeni kopya kaydedilmez. Kaydedilmiş işlemler kalır.</string>
     <string name="recurring_empty_title">Henüz tekrarlayan işlem yok</string>
     <string name="recurring_empty_message">İşlem eklerken Tekrarla altında Günlük, Haftalık, Aylık veya Yıllık seçin; sizin için kaydedilir.</string>
+    <string name="edit">Düzenle</string>
+    <string name="search_transactions_hint">Notlarda, kategorilerde, hesaplarda ara</string>
+    <string name="clear_search">Aramayı temizle</string>
+    <string name="no_matching_transactions">Aramanızla eşleşen işlem yok</string>
+    <string name="transaction_deleted">İşlem silindi</string>
+    <string name="undo">Geri al</string>
+    <string name="search_transactions">İşlem ara</string>
+    <string name="discard_changes_title">Değişiklikler silinsin mi?</string>
+    <string name="discard_changes_message">Bu işlemdeki değişiklikleriniz kaydedilmedi.</string>
+    <string name="discard">Sil</string>
+    <string name="keep_editing">Düzenlemeye devam et</string>
 </resources>

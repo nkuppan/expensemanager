@@ -381,6 +381,7 @@ private fun CompactBalanceCell(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
+    val AMOUNT_VALUE = "100000.0$"
     ExpenseManagerPreviewTheme {
         AmountInfoWidget(
             expenseAmount = AMOUNT_VALUE,

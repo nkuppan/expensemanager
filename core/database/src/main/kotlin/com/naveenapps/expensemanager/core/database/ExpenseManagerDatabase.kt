@@ -35,7 +35,7 @@ import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverte
         TransactionAttachmentEntity::class,
         RecurringTransactionEntity::class,
     ],
-    version = 9,
+    version = 10,
     exportSchema = true,
 )
 @TypeConverters(

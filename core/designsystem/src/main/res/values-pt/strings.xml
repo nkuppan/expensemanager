@@ -32,4 +32,15 @@
     <string name="pick_an_icon">Escolher um ícone</string>
     <string name="remove_photo">Remover foto</string>
     <string name="add_attachment">Adicionar anexo</string>
+
+    <!-- Accessibility labels for icon-only controls -->
+    <string name="a11y_back">Voltar</string>
+    <string name="a11y_close">Fechar</string>
+    <string name="a11y_previous_period">Período anterior</string>
+    <string name="a11y_next_period">Período seguinte</string>
+    <string name="a11y_open_calculator">Abrir calculadora</string>
+    <string name="a11y_settings">Definições</string>
+    <string name="a11y_select_icon">Selecionar ícone</string>
+    <string name="error_save_failed">Não foi possível guardar. Tente novamente.</string>
+    <string name="error_delete_failed">Não foi possível eliminar. Tente novamente.</string>
 </resources>

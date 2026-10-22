@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -45,17 +46,19 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddTile
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
@@ -63,6 +66,7 @@ import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogIt
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
@@ -92,24 +96,32 @@ import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefa
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Calendar
 import java.util.Date
+import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionCreateScreen(
     shareRepository: ShareRepository,
     viewModel: TransactionCreateViewModel = koinViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val resources = LocalContext.current.resources
 
     ObserveAsEvents(viewModel.event) {
         when (it) {
             TransactionCreateEvent.RequestReview -> {
                 coroutineScope.launch {
                     shareRepository.requestInAppReview()
+                }
+            }
+
+            is TransactionCreateEvent.ShowMessage -> {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(resources.getString(it.messageRes))
                 }
             }
         }
@@ -125,6 +137,7 @@ fun TransactionCreateScreen(
         onAction = viewModel::processAction,
         onCaptureRequested = attachmentPicker.onCaptureRequested,
         onGalleryRequested = attachmentPicker.onGalleryRequested,
+        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -134,16 +147,29 @@ private fun TransactionCreateScreenContent(
     onAction: (TransactionCreateAction) -> Unit,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
+    // System back goes through the same path as the top-bar back arrow, so unsaved edits get a
+    // "Discard changes?" prompt and attachments added in this session are cleaned up.
+    BackHandler { onAction.invoke(TransactionCreateAction.ClosePage) }
 
-    if (state.showDeleteDialog) {
+    if (state.showDiscardDialog) {
+        AppDialog(
+            onDismissRequest = { onAction.invoke(TransactionCreateAction.DismissDiscardDialog) },
+            onConfirmation = { onAction.invoke(TransactionCreateAction.ConfirmDiscard) },
+            dialogTitle = stringResource(R.string.discard_changes_title),
+            dialogText = stringResource(R.string.discard_changes_message),
+            positiveButtonText = stringResource(R.string.discard),
+            negativeButtonText = stringResource(R.string.keep_editing),
+        )
+    } else if (state.showDeleteDialog) {
         DeleteDialogItem(
             confirm = { onAction.invoke(TransactionCreateAction.Delete) },
             dismiss = { onAction.invoke(TransactionCreateAction.DismissDeleteDialog) },
         )
     } else if (state.showNumberPad) {
         NumberPadDialogView(
+            initialAmount = state.numberPadInitialAmount,
             onConfirm = { amount ->
                 onAction.invoke(TransactionCreateAction.SetNumberPadValue(amount))
             },
@@ -384,7 +410,7 @@ private fun TransactionCreateContent(
                             ) {
                                 Icon(
                                     imageVector = Icons.Outlined.Calculate,
-                                    contentDescription = null,
+                                    contentDescription = stringResource(DesignSystemR.string.a11y_open_calculator),
                                 )
                             }
                         },

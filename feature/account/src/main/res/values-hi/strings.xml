@@ -49,4 +49,11 @@
     <string name="liabilities">देनदारियां</string>
     <string name="total_balance">कुल शेष राशि</string>
     <string name="balance">शेष राशि</string>
+
+    <plurals name="account_delete_message_with_transactions">
+        <item quantity="other">इस खाते को हटाने से इसके लेन-देन (%d) भी हट जाएंगे, जिनमें इस खाते से या इसमें किए गए ट्रांसफ़र भी शामिल हैं। इसे पूर्ववत नहीं किया जा सकता।</item>
+    </plurals>
+    <string name="account_delete_message_no_transactions">इस खाते में कोई लेन-देन नहीं है। इसे हटाने के बाद पूर्ववत नहीं किया जा सकता।</string>
+    <string name="account_delete_last_title">यह आपका एकमात्र खाता है</string>
+    <string name="account_delete_last_message">हर लेन-देन के लिए एक खाता ज़रूरी है। पहले एक और खाता बनाएं, फिर आप इसे हटा सकते हैं।</string>
 </resources>

@@ -88,14 +88,16 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
                         transaction.createdOn.toCompleteDate(),
                         transaction.createdOn.toTimeAndMinutes(),
                         transaction.type.toCapitalize(),
-                        transaction.category.titleResId?.let { context.getString(it) }
-                            ?: transaction.category.name,
+                        (
+                            transaction.category.titleResId?.let { context.getString(it) }
+                                ?: transaction.category.name
+                            ).toCsvSafeText(),
                         transaction.category.type.toCapitalize(),
-                        transaction.fromAccount.name,
+                        transaction.fromAccount.name.toCsvSafeText(),
                         transaction.fromAccount.type.toCapitalize(),
-                        transaction.toAccount?.name ?: "",
+                        (transaction.toAccount?.name ?: "").toCsvSafeText(),
                         signedAmount.toTrimAmount(),
-                        transaction.notes,
+                        transaction.notes.toCsvSafeText(),
                     ),
                 )
             }
