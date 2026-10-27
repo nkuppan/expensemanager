@@ -19,6 +19,7 @@ class MainViewModelTest : BaseCoroutineTest() {
 
     private val settingsRepository: SettingsRepository = mock {
         whenever(it.isAppLockEnabled()).thenReturn(flowOf(true))
+        whenever(it.isScreenshotBlocked()).thenReturn(flowOf(false))
         whenever(it.isOnboardingCompleted()).thenReturn(flowOf(true))
     }
     private val themeRepository: ThemeRepository = mock {

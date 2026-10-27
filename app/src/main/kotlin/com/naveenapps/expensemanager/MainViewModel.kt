@@ -36,6 +36,9 @@ class MainViewModel(
     private val _isAppLockEnabled = MutableStateFlow(false)
     val isAppLockEnabled = _isAppLockEnabled.asStateFlow()
 
+    private val _isScreenshotBlocked = MutableStateFlow(false)
+    val isScreenshotBlocked = _isScreenshotBlocked.asStateFlow()
+
     private val _isAuthenticated = MutableStateFlow(false)
     val isAuthenticated = _isAuthenticated.asStateFlow()
 
@@ -53,6 +56,10 @@ class MainViewModel(
 
         settingsRepository.isAppLockEnabled().onEach {
             _isAppLockEnabled.value = it
+        }.launchIn(viewModelScope)
+
+        settingsRepository.isScreenshotBlocked().onEach {
+            _isScreenshotBlocked.value = it
         }.launchIn(viewModelScope)
     }
 

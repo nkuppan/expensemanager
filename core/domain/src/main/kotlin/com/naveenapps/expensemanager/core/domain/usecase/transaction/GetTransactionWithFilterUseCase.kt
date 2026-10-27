@@ -65,7 +65,8 @@ class GetTransactionWithFilterUseCase(
         end,
     )
 
-    private fun filterValues(): Flow<FilterValue> = combine(
+    /** The current filter selection (date range, accounts, categories, types). */
+    fun filterValues(): Flow<FilterValue> = combine(
         settingsRepository.getTransactionTypes(),
         settingsRepository.getCategories(),
         settingsRepository.getAccounts(),

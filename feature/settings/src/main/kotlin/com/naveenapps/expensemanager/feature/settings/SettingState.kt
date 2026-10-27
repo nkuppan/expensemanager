@@ -25,21 +25,9 @@ data class SettingState(
     val isCompactSummary: Boolean = false,
     // Security section
     val isAppLockEnabled: Boolean = false,
-    // Data & Backup section
-    val showRestoreConfirmation: Boolean = false,
-    val isBackupInProgress: Boolean = false,
-    // Non-null while the backup/restore passphrase dialog is showing.
-    val passphrasePrompt: PassphrasePrompt? = null,
+    val isScreenshotBlocked: Boolean = false,
     // Developer section — debug builds only (see DemoDataRepository).
     val isDemoDataAvailable: Boolean = false,
     val showDemoDataConfirmation: Boolean = false,
     val isDemoDataLoading: Boolean = false,
 )
-
-enum class PassphrasePrompt {
-    /** Optional passphrase before creating a backup; empty means the built-in key. */
-    BACKUP,
-
-    /** The chosen backup is passphrase-protected; required to restore it. */
-    RESTORE,
-}

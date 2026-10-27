@@ -3,9 +3,6 @@ package com.naveenapps.expensemanager.feature.settings
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -37,8 +33,8 @@ import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.Restore
+import androidx.compose.material.icons.outlined.ScreenshotMonitor
 import androidx.compose.material.icons.outlined.SettingsApplications
-import androidx.compose.material.icons.outlined.SettingsBackupRestore
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material.icons.rounded.Check
@@ -50,7 +46,6 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -69,8 +64,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -100,21 +93,6 @@ fun SettingsScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    // The pickers are registered from Compose so their results survive Activity recreation
-    // (rotation, theme/locale change, or the process being killed while the picker is open).
-    // The old backup library registered them in an object that was recreated with no state,
-    // and crashed in onResume when the result came back.
-    val backupLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.CreateDocument(BACKUP_MIME_TYPE),
-    ) { uri: Uri? ->
-        viewModel.processAction(SettingAction.BackupDestinationSelected(uri?.toString()))
-    }
-    val restoreLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.OpenDocument(),
-    ) { uri: Uri? ->
-        viewModel.processAction(SettingAction.RestoreSourceSelected(uri?.toString()))
-    }
-
     fun showMessage(messageResId: Int) {
         scope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }
     }
@@ -129,29 +107,8 @@ fun SettingsScreen(
                 context.shareApp()
             }
 
-            is SettingEvent.PickBackupDestination -> {
-                try {
-                    backupLauncher.launch(it.fileName)
-                } catch (e: ActivityNotFoundException) {
-                    showMessage(R.string.no_file_picker)
-                }
-            }
-
-            SettingEvent.PickRestoreSource -> {
-                try {
-                    // .aes files have no registered MIME type, so filtering would hide them.
-                    restoreLauncher.launch(arrayOf("*/*"))
-                } catch (e: ActivityNotFoundException) {
-                    showMessage(R.string.no_file_picker)
-                }
-            }
-
             is SettingEvent.ShowMessage -> {
                 showMessage(it.messageResId)
-            }
-
-            SettingEvent.RestartApp -> {
-                context.restartApp()
             }
         }
     }
@@ -163,39 +120,12 @@ fun SettingsScreen(
     )
 }
 
-private const val BACKUP_MIME_TYPE = "application/octet-stream"
-
-/** Cold restart so the staged restore is swapped in before the database is opened. */
-private fun Context.restartApp() {
-    val launchIntent = packageManager.getLaunchIntentForPackage(packageName) ?: return
-    startActivity(Intent.makeRestartActivityTask(launchIntent.component))
-    Runtime.getRuntime().exit(0)
-}
-
 @Composable
 private fun SettingsScreenScaffoldView(
     state: SettingState,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onAction: (SettingAction) -> Unit,
 ) {
-    if (state.showRestoreConfirmation) {
-        AlertDialog(
-            onDismissRequest = { onAction.invoke(SettingAction.DismissRestoreConfirmation) },
-            title = { Text(text = stringResource(id = R.string.restore_confirm_title)) },
-            text = { Text(text = stringResource(id = R.string.restore_confirm_message)) },
-            confirmButton = {
-                TextButton(onClick = { onAction.invoke(SettingAction.ConfirmRestore) }) {
-                    Text(text = stringResource(id = R.string.restore_confirm_action))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction.invoke(SettingAction.DismissRestoreConfirmation) }) {
-                    Text(text = stringResource(id = android.R.string.cancel))
-                }
-            },
-        )
-    }
-
     if (state.showDemoDataConfirmation) {
         AlertDialog(
             onDismissRequest = { onAction.invoke(SettingAction.DismissDemoData) },
@@ -211,14 +141,6 @@ private fun SettingsScreenScaffoldView(
                     Text(text = stringResource(id = android.R.string.cancel))
                 }
             },
-        )
-    }
-
-    state.passphrasePrompt?.let { prompt ->
-        BackupPassphraseDialog(
-            prompt = prompt,
-            onSubmit = { onAction.invoke(SettingAction.SubmitPassphrase(it)) },
-            onDismiss = { onAction.invoke(SettingAction.DismissPassphrasePrompt) },
         )
     }
 
@@ -374,8 +296,7 @@ private fun SettingsScreenContent(
             }
         }
 
-        // Data & Backup — export, backup, and restore all live together now (previously split
-        // between the main screen and "Advanced").
+        // Data & Backup
         SettingsSection(title = stringResource(R.string.data_and_backup)) {
             AppCardView {
                 SettingRow(
@@ -393,24 +314,17 @@ private fun SettingsScreenContent(
                     showDivider = true,
                 )
                 SettingRow(
-                    title = stringResource(id = R.string.auto_backup),
-                    subtitle = stringResource(id = R.string.auto_backup_setting_message),
-                    icon = Icons.Outlined.SettingsBackupRestore,
-                    showDivider = true,
-                    onClick = { onAction.invoke(SettingAction.OpenAutoBackup) },
-                )
-                SettingRow(
                     title = stringResource(id = R.string.backup),
-                    subtitle = stringResource(id = R.string.backup_message),
+                    subtitle = stringResource(id = R.string.backup_setting_message),
                     icon = Icons.Outlined.Backup,
+                    onClick = { onAction.invoke(SettingAction.OpenBackup) },
                     showDivider = true,
-                    onClick = { onAction.invoke(SettingAction.Backup) },
                 )
                 SettingRow(
                     title = stringResource(id = R.string.restore),
-                    subtitle = stringResource(id = R.string.restore_message),
+                    subtitle = stringResource(id = R.string.restore_setting_message),
                     icon = Icons.Outlined.Restore,
-                    onClick = { onAction.invoke(SettingAction.Restore) },
+                    onClick = { onAction.invoke(SettingAction.OpenRestore) },
                 )
             }
         }
@@ -424,6 +338,14 @@ private fun SettingsScreenContent(
                     icon = Icons.Outlined.Lock,
                     checked = state.isAppLockEnabled,
                     onCheckedChange = { onAction.invoke(SettingAction.ToggleAppLock) },
+                    showDivider = true,
+                )
+                SettingToggleRow(
+                    title = stringResource(id = R.string.block_screenshots),
+                    subtitle = stringResource(id = R.string.block_screenshots_message),
+                    icon = Icons.Outlined.ScreenshotMonitor,
+                    checked = state.isScreenshotBlocked,
+                    onCheckedChange = { onAction.invoke(SettingAction.ToggleScreenshotBlock) },
                 )
             }
         }
@@ -612,64 +534,4 @@ private fun Context.shareApp() {
     } catch (_: ActivityNotFoundException) {
         // Nothing can receive a share; ignore.
     }
-}
-
-@Composable
-private fun BackupPassphraseDialog(
-    prompt: PassphrasePrompt,
-    onSubmit: (String) -> Unit,
-    onDismiss: () -> Unit,
-) {
-    var passphrase by remember(prompt) { mutableStateOf("") }
-    val isRestore = prompt == PassphrasePrompt.RESTORE
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(
-                text = stringResource(
-                    id = if (isRestore) R.string.restore_passphrase_title else R.string.backup_passphrase_title,
-                ),
-            )
-        },
-        text = {
-            Column {
-                Text(
-                    text = stringResource(
-                        id = if (isRestore) R.string.restore_passphrase_message else R.string.backup_passphrase_message,
-                    ),
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = passphrase,
-                    onValueChange = { passphrase = it },
-                    label = { Text(text = stringResource(id = R.string.passphrase_label)) },
-                    singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        autoCorrectEnabled = false,
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-        },
-        confirmButton = {
-            TextButton(
-                onClick = { onSubmit(passphrase) },
-                // A protected backup can't be opened without it; for a new backup it's optional.
-                enabled = !isRestore || passphrase.isNotEmpty(),
-            ) {
-                Text(
-                    text = stringResource(
-                        id = if (isRestore) R.string.restore_confirm_action else R.string.continue_action,
-                    ),
-                )
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(id = android.R.string.cancel))
-            }
-        },
-    )
 }

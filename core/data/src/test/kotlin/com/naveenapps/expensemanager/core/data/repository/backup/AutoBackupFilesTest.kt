@@ -54,4 +54,27 @@ class AutoBackupFilesTest {
 
         assertThat(AutoBackupFiles.toDelete(names, keep = 7)).isEmpty()
     }
+
+    @Test
+    fun `manual backups use the backup file name`() {
+        assertThat(AutoBackupFiles.manualFileName(date(2026, 10, 3, 7, 5, 9)))
+            .isEqualTo("expense-manager-2026-10-03-070509.sqlite3.aes")
+    }
+
+    @Test
+    fun `parses kind and time from both names`() {
+        val time = date(2026, 10, 3, 7, 5, 9).time
+
+        assertThat(AutoBackupFiles.parse(auto("2026-10-03-070509")))
+            .isEqualTo(AutoBackupFiles.Parsed(isAuto = true, createdAt = time))
+        assertThat(AutoBackupFiles.parse("expense-manager-2026-10-03-070509 (1).sqlite3.aes"))
+            .isEqualTo(AutoBackupFiles.Parsed(isAuto = false, createdAt = time))
+    }
+
+    @Test
+    fun `ignores files the app didn't write`() {
+        assertThat(AutoBackupFiles.parse("holiday.jpg")).isNull()
+        assertThat(AutoBackupFiles.parse("expense-manager-notes.txt")).isNull()
+        assertThat(AutoBackupFiles.parse("expense-manager-2026-13-45-990000.sqlite3.aes")).isNull()
+    }
 }

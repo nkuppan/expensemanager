@@ -3,6 +3,8 @@ package com.naveenapps.expensemanager.feature.transaction.list
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetUpcomingRecurringTransactionsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.ProcessRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
@@ -40,6 +42,7 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
     private val addTransactionUseCase: AddTransactionUseCase = mock()
     private val imageStorageRepository: ImageStorageRepository = mock()
     private val navigator: AppComposeNavigator = mock()
+    private val getUpcomingRecurringTransactionsUseCase: GetUpcomingRecurringTransactionsUseCase = mock()
 
     private val groceries = FAKE_EXPENSE_TRANSACTION.copy(
         id = "groceries",
@@ -54,7 +57,11 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
         fromAccount = FAKE_ACCOUNT
     }
 
-    private fun viewModel(transactions: List<Transaction> = listOf(groceries, rent)): TransactionListViewModel {
+    private fun viewModel(
+        transactions: List<Transaction> = listOf(groceries, rent),
+        upcoming: List<Transaction> = emptyList(),
+    ): TransactionListViewModel {
+        whenever(getUpcomingRecurringTransactionsUseCase.invoke(any(), any())).thenReturn(flowOf(upcoming))
         whenever(getCurrencyUseCase.invoke()).thenReturn(flowOf(Currency("$", "USD")))
         whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0, "$0"))
         whenever(getTransactionWithFilterUseCase.invoke()).thenReturn(flowOf(transactions))
@@ -62,6 +69,7 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
             getCurrencyUseCase = getCurrencyUseCase,
             getFormattedAmountUseCase = getFormattedAmountUseCase,
             getTransactionWithFilterUseCase = getTransactionWithFilterUseCase,
+            getUpcomingRecurringTransactionsUseCase = getUpcomingRecurringTransactionsUseCase,
             appCoroutineDispatchers = AppCoroutineDispatchers(
                 testCoroutineDispatcher.dispatcher,
                 testCoroutineDispatcher.dispatcher,
@@ -87,6 +95,61 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
 
         assertThat(viewModel.state.value.isLoading).isFalse()
         assertThat(viewModel.state.value.ids()).containsExactly("groceries", "rent")
+    }
+
+    private fun upcomingRent() = FAKE_EXPENSE_TRANSACTION.copy(
+        id = ProcessRecurringTransactionsUseCase.occurrenceTransactionId("rule-1", 3),
+        notes = "Rent",
+        createdOn = java.util.Date(System.currentTimeMillis() + 10L * 24 * 60 * 60 * 1000),
+    ).apply {
+        category = FAKE_CATEGORY
+        fromAccount = FAKE_ACCOUNT
+    }
+
+    private fun TransactionListState.uiItems() = transactionListItem
+        .filterIsInstance<TransactionListItem.TransactionItem>()
+        .map { it.date }
+
+    @Test
+    fun `planned recurring occurrences are listed and marked upcoming`() = runTest {
+        val viewModel = viewModel(upcoming = listOf(upcomingRent()))
+        advanceUntilIdle()
+
+        val items = viewModel.state.value.uiItems()
+        assertThat(items.map { it.id }).contains(upcomingRent().id)
+        assertThat(items.single { it.id == upcomingRent().id }.isUpcoming).isTrue()
+        assertThat(items.filter { it.id != upcomingRent().id }.none { it.isUpcoming }).isTrue()
+    }
+
+    @Test
+    fun `an occurrence that is already logged is not shown again as upcoming`() = runTest {
+        val logged = upcomingRent()
+        val viewModel = viewModel(transactions = listOf(logged), upcoming = listOf(upcomingRent()))
+        advanceUntilIdle()
+
+        val items = viewModel.state.value.uiItems()
+        assertThat(items).hasSize(1)
+        assertThat(items.single().isUpcoming).isFalse()
+    }
+
+    @Test
+    fun `tapping an upcoming occurrence opens its recurring rule`() = runTest {
+        val viewModel = viewModel(upcoming = listOf(upcomingRent()))
+        advanceUntilIdle()
+
+        viewModel.processAction(TransactionListAction.OpenEdiTransaction(upcomingRent().id))
+
+        verify(navigator).navigate(ExpenseManagerScreens.RecurringTransactionEdit("rule-1"))
+    }
+
+    @Test
+    fun `tapping a real transaction still opens it for editing`() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        viewModel.processAction(TransactionListAction.OpenEdiTransaction("rent"))
+
+        verify(navigator).navigate(ExpenseManagerScreens.TransactionCreate("rent"))
     }
 
     @Test

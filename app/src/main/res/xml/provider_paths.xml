@@ -10,4 +10,8 @@
     <cache-path
         name="captured_images"
         path="captured_images/" />
+    <!-- AutoBackupRepositoryImpl.SHARE_DIRECTORY: the copy of a backup being shared. -->
+    <cache-path
+        name="shared_backups"
+        path="shared_backups/" />
 </paths>

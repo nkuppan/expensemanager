@@ -3,12 +3,15 @@ package com.naveenapps.expensemanager.core.repository
 import com.naveenapps.expensemanager.core.model.AutoBackupFrequency
 import com.naveenapps.expensemanager.core.model.AutoBackupResult
 import com.naveenapps.expensemanager.core.model.AutoBackupSettings
+import com.naveenapps.expensemanager.core.model.BackupFile
+import com.naveenapps.expensemanager.core.model.BackupKind
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Automatic backups into a folder the user picked. Each run writes a new file in the same
- * format as a manual backup (so Restore reads it), then keeps only the newest
- * [KEEP_LAST_BACKUPS] automatic backups. Manual backups in the same folder are never touched.
+ * Backups into a folder the user picked, or into the app's own storage until they pick one.
+ * Each run writes a new file in the same format as a backup file (so Restore reads it). After an
+ * automatic run only the newest [KEEP_LAST_BACKUPS] automatic backups are kept; "Back up now"
+ * backups are never deleted.
  */
 interface AutoBackupRepository {
 
@@ -25,8 +28,17 @@ interface AutoBackupRepository {
      */
     suspend fun setFolder(treeUri: String): Boolean
 
-    /** Writes one backup now. Runs whether or not the schedule is on; needs a folder. */
-    suspend fun backupNow(): AutoBackupResult
+    /** Writes one backup now, into the folder or, without one, the app's own storage. */
+    suspend fun backupNow(kind: BackupKind = BackupKind.MANUAL): AutoBackupResult
+
+    /** Backups in the folder and in the app's own storage, newest first. */
+    suspend fun getBackups(): List<BackupFile>
+
+    /**
+     * Copies [backup] somewhere other apps can read it and returns a content:// URI to share,
+     * or null if that failed. With a [passphrase] the copy is encrypted with it.
+     */
+    suspend fun prepareShare(backup: BackupFile, passphrase: String?): String?
 
     /** Hides Home's failure banner until [untilMillis] ("Later"). */
     suspend fun snoozeFailureWarning(untilMillis: Long)

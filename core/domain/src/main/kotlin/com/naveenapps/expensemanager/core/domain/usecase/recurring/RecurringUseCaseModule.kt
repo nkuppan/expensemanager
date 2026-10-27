@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.recurring
 import org.koin.dsl.module
 
 val RecurringUseCaseModule = module {
-    single { CreateRecurringTransactionUseCase(repository = get()) }
+    single { CreateRecurringTransactionUseCase(repository = get(), processRecurringTransactions = get()) }
     single {
         ProcessRecurringTransactionsUseCase(
             repository = get(),
@@ -20,5 +20,11 @@ val RecurringUseCaseModule = module {
     }
     single { DeleteRecurringTransactionUseCase(repository = get()) }
     single { FindRecurringTransactionByIdUseCase(repository = get()) }
-    single { UpdateRecurringTransactionUseCase(repository = get()) }
+    single { UpdateRecurringTransactionUseCase(repository = get(), processRecurringTransactions = get()) }
+    single {
+        GetUpcomingRecurringTransactionsUseCase(
+            getTransactionWithFilterUseCase = get(),
+            getRecurringTransactionsUseCase = get(),
+        )
+    }
 }

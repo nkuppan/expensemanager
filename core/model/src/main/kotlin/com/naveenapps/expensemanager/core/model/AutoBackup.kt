@@ -4,6 +4,7 @@ package com.naveenapps.expensemanager.core.model
 enum class AutoBackupFrequency(val intervalDays: Long) {
     DAILY(1),
     WEEKLY(7),
+    MONTHLY(30),
 }
 
 /** Why the most recent automatic backup didn't complete. */
@@ -31,13 +32,18 @@ enum class AutoBackupResult {
  */
 data class AutoBackupSettings(
     val isEnabled: Boolean = false,
-    /** A Storage Access Framework tree URI the app holds a persistable permission for. */
+    /**
+     * A Storage Access Framework tree URI the app holds a persistable permission for. Null means
+     * backups are kept inside the app's own storage.
+     */
     val folderUri: String? = null,
     /** The folder's display name, for showing in Settings. */
     val folderName: String? = null,
     val frequency: AutoBackupFrequency = AutoBackupFrequency.DAILY,
     /** Epoch millis of the last successful automatic or manual-now backup. */
     val lastBackupAt: Long? = null,
+    /** Epoch millis of the last successful scheduled backup; the schedule counts from it. */
+    val lastAutoBackupAt: Long? = null,
     /** Set when the latest attempt failed; cleared on the next success or folder change. */
     val lastError: AutoBackupError? = null,
     /** Home's failure banner stays hidden until this time (epoch millis) after "Later". */
@@ -53,3 +59,34 @@ data class AutoBackupSettings(
 fun AutoBackupSettings.needsAttention(nowMillis: Long): Boolean = isEnabled &&
     lastError != null &&
     (warningSnoozedUntil ?: 0L) <= nowMillis
+
+/**
+ * When the next scheduled backup is expected, or null when it's off or hasn't run yet (the
+ * first run starts as soon as it's turned on). An overdue run reports [nowMillis].
+ */
+fun AutoBackupSettings.nextAutoBackupAt(nowMillis: Long): Long? {
+    if (!isEnabled) return null
+    val last = lastAutoBackupAt ?: return null
+    return maxOf(last + frequency.intervalDays * DAY_MILLIS, nowMillis)
+}
+
+private const val DAY_MILLIS = 24L * 60 * 60 * 1000
+
+/** Made by "Back up now" or by the schedule. */
+enum class BackupKind {
+    MANUAL,
+    AUTO,
+}
+
+/** One backup file in the backup folder or in the app's own storage. */
+data class BackupFile(
+    /** A content:// document or file:// URI that Restore and Share can read. */
+    val uri: String,
+    val name: String,
+    /** Epoch millis the backup was made. */
+    val createdAt: Long,
+    val sizeBytes: Long,
+    val kind: BackupKind,
+    /** Kept in the app's own storage (removed with the app) rather than in the chosen folder. */
+    val isInsideApp: Boolean,
+)

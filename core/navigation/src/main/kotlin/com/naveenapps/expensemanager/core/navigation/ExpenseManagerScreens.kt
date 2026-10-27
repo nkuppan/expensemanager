@@ -54,8 +54,12 @@ sealed class ExpenseManagerScreens {
     @Serializable
     data object RecurringTransactions : ExpenseManagerScreens()
 
+    /** The Backup page: back up now, folder, automatic backup and recent backups. */
     @Serializable
     data object AutoBackupScreen : ExpenseManagerScreens()
+
+    @Serializable
+    data object RestoreScreen : ExpenseManagerScreens()
 
     @Serializable
     data class AccountCreate(val id: String?) : ExpenseManagerScreens()

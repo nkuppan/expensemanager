@@ -19,6 +19,12 @@ interface BackupRepository {
      * database replaces the current one before Room opens it again.
      */
     suspend fun restoreData(uri: String, passphrase: String? = null): Resource<Boolean>
+
+    /**
+     * Writes the backup at [sourceUri] to [destinationUri] re-encrypted with [passphrase]. The
+     * source must use the built-in key (as automatic and "Back up now" backups do).
+     */
+    suspend fun protectBackup(sourceUri: String, destinationUri: String, passphrase: String): Resource<Boolean>
 }
 
 class BackupException(val reason: Reason, cause: Throwable? = null) : Exception(reason.name, cause) {

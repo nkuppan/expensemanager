@@ -29,6 +29,7 @@ class AutoBackupDataStore(private val dataStore: DataStore<Preferences>) {
                 ?.let { name -> AutoBackupFrequency.entries.find { it.name == name } }
                 ?: AutoBackupFrequency.DAILY,
             lastBackupAt = preferences[KEY_LAST_BACKUP_AT],
+            lastAutoBackupAt = preferences[KEY_LAST_AUTO_BACKUP_AT],
             lastError = preferences[KEY_LAST_ERROR]
                 ?.let { name -> AutoBackupError.entries.find { it.name == name } },
             warningSnoozedUntil = preferences[KEY_WARNING_SNOOZED_UNTIL],
@@ -47,8 +48,9 @@ class AutoBackupDataStore(private val dataStore: DataStore<Preferences>) {
         preferences.clearFailure()
     }
 
-    suspend fun recordSuccess(timeMillis: Long) = dataStore.edit { preferences ->
+    suspend fun recordSuccess(timeMillis: Long, isAuto: Boolean) = dataStore.edit { preferences ->
         preferences[KEY_LAST_BACKUP_AT] = timeMillis
+        if (isAuto) preferences[KEY_LAST_AUTO_BACKUP_AT] = timeMillis
         preferences.clearFailure()
     }
 
@@ -71,6 +73,7 @@ class AutoBackupDataStore(private val dataStore: DataStore<Preferences>) {
         private val KEY_FOLDER_NAME = stringPreferencesKey("auto_backup_folder_name")
         private val KEY_FREQUENCY = stringPreferencesKey("auto_backup_frequency")
         private val KEY_LAST_BACKUP_AT = longPreferencesKey("auto_backup_last_backup_at")
+        private val KEY_LAST_AUTO_BACKUP_AT = longPreferencesKey("auto_backup_last_auto_backup_at")
         private val KEY_LAST_ERROR = stringPreferencesKey("auto_backup_last_error")
         private val KEY_WARNING_SNOOZED_UNTIL = longPreferencesKey("auto_backup_warning_snoozed_until")
         private val KEY_FAILURE_NOTIFIED = booleanPreferencesKey("auto_backup_failure_notified")

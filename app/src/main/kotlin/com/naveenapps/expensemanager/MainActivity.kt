@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -43,6 +44,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.ui.AppLockScreen
 import com.naveenapps.expensemanager.ui.MainScreen
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.scope.AndroidScopeComponent
@@ -96,15 +98,21 @@ internal class MainActivity :
             }
         }
 
-        // With app lock on, keep balances out of the recent-apps preview and screenshots.
+        // App lock keeps balances out of the recent-apps preview (Android 13+) while still
+        // allowing screenshots. "Block screenshots" in Settings → Security blocks screenshots
+        // and screen recording too (FLAG_SECURE also hides the preview on every version).
         lifecycleScope.launch {
-            viewModel.isAppLockEnabled.collect { enabled ->
-                if (enabled) {
-                    window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-                } else {
-                    window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            combine(viewModel.isAppLockEnabled, viewModel.isScreenshotBlocked, ::Pair)
+                .collect { (isLocked, isScreenshotBlocked) ->
+                    if (isScreenshotBlocked) {
+                        window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                    } else {
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        setRecentsScreenshotEnabled(!isLocked)
+                    }
                 }
-            }
         }
 
         setContent {

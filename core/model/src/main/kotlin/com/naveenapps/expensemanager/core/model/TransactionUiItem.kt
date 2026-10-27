@@ -26,6 +26,8 @@ data class TransactionUiItem(
     val toAccountName: String? = null,
     val toAccountIcon: StoredIcon? = null,
     val categoryTitleResId: Int? = null,
+    /** A planned recurring occurrence that hasn't happened yet: shown, but not a real transaction. */
+    val isUpcoming: Boolean = false,
 )
 
 fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = TransactionUiItem(

@@ -97,4 +97,5 @@
     <string name="recurring_part_of_series">Bagian dari rangkaian berulang</string>
     <string name="recurring_edit_series">Edit rangkaian untuk mengubah transaksi mendatang</string>
     <string name="add_recurring_transaction">Tambah transaksi berulang</string>
+    <string name="upcoming">Mendatang</string>
 </resources>

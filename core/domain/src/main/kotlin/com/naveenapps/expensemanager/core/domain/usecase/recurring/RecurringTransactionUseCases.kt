@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
+import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
 import kotlinx.coroutines.flow.Flow
@@ -23,12 +24,17 @@ import kotlinx.coroutines.sync.withLock
  */
 internal val recurringRulesLock = Mutex()
 
-/** Makes [transaction] (already saved, occurrence 0) repeat every [frequency]. */
+/**
+ * Makes [transaction] (already saved, occurrence 0) repeat every [frequency], then logs any
+ * occurrences that are already due. Without that, a transaction dated in the past (rent "since
+ * August") would show only its first month until the next app start or background run, which
+ * can be days away because Android keeps the app's process alive.
+ */
 class CreateRecurringTransactionUseCase(
     private val repository: RecurringTransactionRepository,
+    private val processRecurringTransactions: ProcessRecurringTransactionsUseCase,
 ) {
-    suspend operator fun invoke(transaction: Transaction, frequency: RecurringFrequency) {
-        val now = Date()
+    suspend operator fun invoke(transaction: Transaction, frequency: RecurringFrequency, now: Date = Date()) {
         repository.add(
             RecurringTransaction(
                 id = UUID.randomUUID().toString(),
@@ -46,13 +52,20 @@ class CreateRecurringTransactionUseCase(
                 updatedOn = now,
             ),
         )
+        processRecurringTransactions(now)
     }
 }
 
 /**
  * Logs every occurrence that has come due, including ones missed while the app wasn't opened,
- * through the normal add path so account balances stay right. Safe to call often (app start,
- * background job) and safe to interrupt:
+ * through the normal add path so account balances stay right.
+ *
+ * An occurrence is due from the start of its day, not the exact minute: a rule created at 6 pm
+ * repeats "on the 1st", so opening the app on the morning of the 1st logs it then. (It keeps its
+ * time of day, so the transaction's date and time are the same as before.) Nothing is ever
+ * logged a day early.
+ *
+ * Safe to call often (app start, background job) and safe to interrupt:
  * - each occurrence gets a deterministic id (rule id + occurrence index) and is skipped if it
  *   already exists, so a run killed after saving a transaction but before advancing the rule
  *   never creates it twice;
@@ -69,12 +82,13 @@ class ProcessRecurringTransactionsUseCase(
     private val addTransactionUseCase: AddTransactionUseCase,
 ) {
     /** Returns how many transactions were created. */
-    suspend operator fun invoke(now: Date = Date()): Int = recurringRulesLock.withLock {
+    suspend operator fun invoke(now: Date = Date(), zone: ZoneId = ZoneId.systemDefault()): Int = recurringRulesLock.withLock {
+        val dueBy = endOfDay(now, zone)
         var created = 0
-        repository.getDue(now).forEach { rule ->
+        repository.getDue(dueBy).forEach { rule ->
             var current = rule
             var processedForRule = 0
-            while (!current.nextDueDate.after(now) && processedForRule < MAX_CATCH_UP_PER_RUN) {
+            while (!current.nextDueDate.after(dueBy) && processedForRule < MAX_CATCH_UP_PER_RUN) {
                 val transaction = current.toTransaction(current.nextOccurrence, current.nextDueDate, now)
                 val alreadyCreated =
                     transactionRepository.findTransactionById(transaction.id) is Resource.Success
@@ -108,6 +122,12 @@ class ProcessRecurringTransactionsUseCase(
         createdOn = due,
         updatedOn = now,
     )
+
+    /** The last millisecond of [now]'s calendar day in [zone]. */
+    private fun endOfDay(now: Date, zone: ZoneId): Date {
+        val nextDay = now.toInstant().atZone(zone).toLocalDate().plusDays(1).atStartOfDay(zone)
+        return Date(nextDay.toInstant().toEpochMilli() - 1)
+    }
 
     companion object {
         // A year of daily entries; anything older is caught up on the next run.
@@ -192,6 +212,7 @@ data class RecurringTransactionChanges(
  */
 class UpdateRecurringTransactionUseCase(
     private val repository: RecurringTransactionRepository,
+    private val processRecurringTransactions: ProcessRecurringTransactionsUseCase,
 ) {
     suspend operator fun invoke(
         id: String,
@@ -233,6 +254,10 @@ class UpdateRecurringTransactionUseCase(
         )
         repository.replace(oldId = id, replacement = replacement)
         Resource.Success(replacement)
+    }.also { result ->
+        // Outside the lock (processing takes it too): log anything already due under the new
+        // schedule, e.g. a next date of today, instead of waiting for the next app start.
+        if (result is Resource.Success) processRecurringTransactions(now)
     }
 
     private fun startOfDay(date: Date): Date {

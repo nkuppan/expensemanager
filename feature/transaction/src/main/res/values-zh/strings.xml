@@ -97,4 +97,5 @@
     <string name="recurring_part_of_series">属于定期系列</string>
     <string name="recurring_edit_series">编辑系列以更改之后的交易</string>
     <string name="add_recurring_transaction">添加定期交易</string>
+    <string name="upcoming">即将到来</string>
 </resources>

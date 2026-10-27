@@ -97,4 +97,5 @@
     <string name="recurring_part_of_series">Parte di una serie ricorrente</string>
     <string name="recurring_edit_series">Modifica la serie per cambiare le prossime transazioni</string>
     <string name="add_recurring_transaction">Aggiungi transazione ricorrente</string>
+    <string name="upcoming">In arrivo</string>
 </resources>

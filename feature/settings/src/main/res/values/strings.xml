@@ -29,10 +29,7 @@
     <string name="default_income_category">Default Income Category</string>
     <string name="accounts_re_order">Accounts Re-Order</string>
     <string name="accounts_re_order_message">Can change the order of the accounts list on the dashboard.</string>
-    <string name="backup">Backup</string>
-    <string name="backup_message">Create your data backup and restore them at any devices.</string>
     <string name="restore">Restore</string>
-    <string name="restore_message">Restore your data to retrieve your data back into devices.</string>
     <string name="defaults">Defaults</string>
     <string name="others">Other Settings</string>
 
@@ -47,6 +44,8 @@
 
     <string name="app_lock">App Lock</string>
     <string name="app_lock_message">Require biometric or device credentials when opening the app</string>
+    <string name="block_screenshots">Block screenshots</string>
+    <string name="block_screenshots_message">Stop screenshots and screen recording, and hide the app in recent apps</string>
     <string name="share_app">Share the app</string>
     <string name="share_app_message">Tell a friend about Expense Manager</string>
     <string name="share_app_text">I use Expense Manager to track my spending. It is free and keeps my data on my phone: %1$s</string>
@@ -57,18 +56,14 @@
     <string name="restore_invalid_file">This file isn\'t an Expense Manager backup.</string>
     <string name="restore_newer_version">This backup is from a newer version of the app. Update the app and try again.</string>
     <string name="restore_confirm_title">Restore this backup?</string>
-    <string name="restore_confirm_message">Your current data will be replaced with the backup, and the app will restart.</string>
     <string name="restore_confirm_action">Restore</string>
     <string name="no_file_picker">No file manager found on this device.</string>
     <string name="recurring_transactions_setting">Recurring transactions</string>
     <string name="recurring_transactions_setting_message">Rent, subscriptions and salary logged for you</string>
-    <string name="backup_passphrase_title">Protect this backup?</string>
-    <string name="backup_passphrase_message">Set a passphrase to encrypt the backup. You\'ll need it to restore, and it can\'t be recovered if you forget it. Leave it empty to use the standard protection.</string>
     <string name="restore_passphrase_title">Enter the backup passphrase</string>
     <string name="restore_passphrase_message">This backup is protected with a passphrase.</string>
     <string name="passphrase_label">Passphrase</string>
     <string name="restore_wrong_passphrase">Wrong passphrase. Please try again.</string>
-    <string name="continue_action">Continue</string>
     <!-- Developer section: debug builds only, so these aren't translated. -->
     <string name="developer" translatable="false">Developer</string>
     <string name="demo_data" translatable="false">Load demo data</string>
@@ -83,20 +78,42 @@
     <string name="auto_open_calculator">Open calculator automatically</string>
     <string name="auto_open_calculator_message">Show the calculator as soon as you add a new transaction</string>
     <string name="auto_backup">Automatic backup</string>
-    <string name="auto_backup_setting_message">Back up to a folder on this device on a schedule</string>
-    <string name="auto_backup_toggle_message">Save a backup to the folder below automatically</string>
-    <string name="auto_backup_destination">Destination</string>
     <string name="auto_backup_folder">Backup folder</string>
-    <string name="auto_backup_choose_folder">Choose a folder</string>
-    <string name="auto_backup_frequency">How often</string>
     <string name="auto_backup_daily">Daily</string>
     <string name="auto_backup_weekly">Weekly</string>
-    <string name="auto_backup_status">Status</string>
-    <string name="auto_backup_last">Last backup: %1$s, %2$s</string>
-    <string name="auto_backup_never">No automatic backup yet</string>
     <string name="auto_backup_now">Back up now</string>
     <string name="auto_backup_folder_unavailable">Can\'t reach the backup folder. Choose it again.</string>
     <string name="auto_backup_write_failed">The last backup failed. It will be tried again.</string>
     <string name="auto_backup_folder_error">Couldn\'t get access to that folder. Try another one.</string>
-    <string name="auto_backup_info">The newest %1$d automatic backups are kept and older ones are deleted. Your manual backups are never touched. Automatic backups use the app\'s built-in key, so keep the folder private. For a passphrase-protected copy, use Backup in Settings. Restore reads both.</string>
+    <string name="backup">Backup</string>
+    <string name="backup_setting_message">Back up now, auto backup and recent backups</string>
+    <string name="restore_setting_message">Bring your data back from a backup</string>
+    <string name="backup_status_ok">Your data is backed up</string>
+    <string name="backup_status_none">No backup yet</string>
+    <string name="backup_status_none_message">Back up now to keep a copy of your data</string>
+    <string name="backup_status_failed">Last backup failed</string>
+    <string name="backup_last">Last backup: %1$s</string>
+    <string name="backup_folder_inside_app">Inside the app (removed if you uninstall it)</string>
+    <string name="backup_folder_change">Change</string>
+    <string name="backup_folder_choose">Choose</string>
+    <string name="auto_backup_subtitle">Back up all your data automatically</string>
+    <string name="auto_backup_monthly">Monthly</string>
+    <string name="auto_backup_next">Next auto backup: %1$s</string>
+    <string name="auto_backup_next_soon">The first auto backup runs shortly</string>
+    <string name="recent_backups">Recent backups</string>
+    <string name="no_backups_yet">No backups yet</string>
+    <string name="backup_kind_manual">Manual</string>
+    <string name="backup_kind_auto">Auto</string>
+    <string name="backup_inside_app">Inside the app</string>
+    <string name="share_backup">Share backup</string>
+    <string name="share_backup_message">Add a passphrase to encrypt the shared copy. You\'ll need it to restore, and it can\'t be recovered if you forget it. Leave it empty to share the backup as it is.</string>
+    <string name="share_action">Share</string>
+    <string name="share_backup_failed">Couldn\'t prepare the backup to share.</string>
+    <string name="restore_warning_title">Restoring replaces your data</string>
+    <string name="restore_warning_message">Everything in the app now is replaced by the backup you choose. Back up first if you want to keep it.</string>
+    <string name="restore_choose_file">Choose a backup file</string>
+    <string name="restore_choose_file_message">From Files, Drive, email or another app</string>
+    <string name="backups_on_device">Backups on this device</string>
+    <string name="restore_confirm_backup_message">Your current data will be replaced with the backup from %1$s, and the app will restart.</string>
+    <string name="auto_backup_info">The newest %1$d auto backups are kept and older ones are deleted; manual backups are never deleted. Backups inside the app are removed if you uninstall it, so choose a folder to keep them safe. Backups use the app\'s built-in key; share one with a passphrase for extra protection.</string>
 </resources>

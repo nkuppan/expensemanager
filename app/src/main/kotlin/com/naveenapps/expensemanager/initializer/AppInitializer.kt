@@ -46,7 +46,7 @@ class AppInitializer : Initializer<Unit> {
             runCatching { autoBackupRepository.getSettings().first() }
                 .onFailure { Log.w("AppInitializer", "Couldn't read automatic backup settings", it) }
                 .getOrNull()
-                ?.takeIf { it.isEnabled && it.folderUri != null }
+                ?.takeIf { it.isEnabled }
                 ?.let { autoBackupScheduler.schedule(it.frequency, replaceExisting = false) }
         }
 

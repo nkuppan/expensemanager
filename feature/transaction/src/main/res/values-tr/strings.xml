@@ -97,4 +97,5 @@
     <string name="recurring_part_of_series">Tekrarlanan serinin parçası</string>
     <string name="recurring_edit_series">Gelecek işlemleri değiştirmek için seriyi düzenleyin</string>
     <string name="add_recurring_transaction">Tekrarlanan işlem ekle</string>
+    <string name="upcoming">Yaklaşan</string>
 </resources>

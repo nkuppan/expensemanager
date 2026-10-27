@@ -101,6 +101,25 @@ class BackupRepositoryImpl(
         }
     }
 
+    override suspend fun protectBackup(
+        sourceUri: String,
+        destinationUri: String,
+        passphrase: String,
+    ): Resource<Boolean> = withContext(dispatchers.io) {
+        runCatchingBackup {
+            val raw = context.contentResolver.openInputStream(Uri.parse(sourceUri))?.use { it.readBytes() }
+                ?: throw BackupException(Reason.IO)
+            val payload = when {
+                BackupCipher.isPassphraseProtected(raw) -> throw BackupException(Reason.INVALID_FILE)
+                raw.isSqliteDatabase() -> raw
+                else -> decrypt(raw)
+            }
+            val output = context.contentResolver.openOutputStream(Uri.parse(destinationUri))
+                ?: throw BackupException(Reason.IO)
+            output.use { it.write(BackupCipher.encryptWithPassphrase(payload, passphrase)) }
+        }
+    }
+
     /**
      * A consistent copy of the database file while Room keeps it open. The checkpoint moves WAL
      * frames into the main file; the (empty) write transaction then blocks writers, and so any

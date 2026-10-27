@@ -5,13 +5,14 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.AutoBackupResult
+import com.naveenapps.expensemanager.core.model.BackupKind
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import kotlinx.coroutines.flow.first
 
-/** Periodic automatic backup into the folder chosen in Settings → Automatic backup. */
+/** Periodic automatic backup into the folder chosen in Settings → Backup (or the app's storage). */
 class AutoBackupWorker(
     context: Context,
     workerParams: WorkerParameters,
@@ -24,7 +25,7 @@ class AutoBackupWorker(
         // A stale schedule (e.g. turned off while this run was already queued) does nothing.
         if (!autoBackupRepository.getSettings().first().isEnabled) return Result.success()
 
-        return when (val result = autoBackupRepository.backupNow()) {
+        return when (val result = autoBackupRepository.backupNow(BackupKind.AUTO)) {
             AutoBackupResult.SUCCESS -> {
                 notificationScheduler.cancelAutoBackupFailedNotification()
                 analyticsRepository.logEvent(AnalyticsEvents.AUTO_BACKUP_COMPLETED, mapOf(AnalyticsParams.SOURCE to "background"))
