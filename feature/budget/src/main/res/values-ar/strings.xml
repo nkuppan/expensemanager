@@ -32,4 +32,8 @@
     <string name="annual">سنوي</string>
     <string name="budget_for">ميزانية لـ</string>
     <string name="what_is_your_budget_limit">ما هو الحد الإجمالي لميزانيتك</string>
+    <string name="budget_title_this_month">ميزانية هذا الشهر</string>
+    <string name="budget_title_this_year">ميزانية هذا العام</string>
+    <string name="budget_title_period">ميزانية %1$s</string>
+    <string name="budget_name_optional">الاسم (اختياري)</string>
 </resources>

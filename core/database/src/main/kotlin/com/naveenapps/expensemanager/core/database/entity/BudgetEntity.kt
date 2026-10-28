@@ -12,6 +12,9 @@ data class BudgetEntity(
     val id: String,
     @ColumnInfo(name = "selected_month")
     val selectedMonth: String,
+    /** Optional user-given name (MIGRATION_10_11); NULL shows an automatic name. */
+    @ColumnInfo(name = "name", defaultValue = "NULL")
+    val name: String? = null,
     @ColumnInfo(name = "amount")
     val amount: Double,
     /** Raw ordinal of `core.model.BudgetPeriod` (0 = MONTHLY, 1 = YEARLY). Defaults to 0 so rows

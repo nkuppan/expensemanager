@@ -32,4 +32,8 @@
     <string name="annual">Ежегодно</string>
     <string name="budget_for">Бюджет на</string>
     <string name="what_is_your_budget_limit">Какой у вас общий лимит бюджета</string>
+    <string name="budget_title_this_month">Бюджет на этот месяц</string>
+    <string name="budget_title_this_year">Бюджет на этот год</string>
+    <string name="budget_title_period">Бюджет: %1$s</string>
+    <string name="budget_name_optional">Название (необязательно)</string>
 </resources>

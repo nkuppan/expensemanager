@@ -44,9 +44,11 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.budget.list.BudgetItem
+import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import org.koin.compose.viewmodel.koinViewModel
@@ -107,7 +109,7 @@ private fun BudgetDetailsScaffoldView(
                     )
                     budget?.let {
                         BudgetItem(
-                            name = budget.name,
+                            name = budget.title.text(),
                             progressBarColor = budget.progressBarColor,
                             amount = budget.amount,
                             transactionAmount = budget.transactionAmount,
@@ -219,7 +221,7 @@ fun BudgetDetailsScaffoldViewPreview() {
         BudgetDetailsScaffoldView(
             budget = BudgetUiModel(
                 id = "sample",
-                name = "Jun 2026 Budget",
+                title = BudgetTitle.Custom("Groceries"),
                 selectedMonth = "June 2026",
                 progressBarColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = Amount(100.0, "$100.00"),

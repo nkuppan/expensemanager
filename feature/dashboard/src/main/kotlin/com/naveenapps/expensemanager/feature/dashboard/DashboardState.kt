@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.AutoBackupError
+import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
@@ -17,7 +18,7 @@ data class DashboardState(
     val accounts: List<AccountUiModel>,
     val categoryTransactionState: CategoryTransactionState,
     val isCompactSummary: Boolean = false,
-    val showCreateBudgetForMonth: String? = null,
+    val showCreateBudgetForMonth: BudgetTitle? = null,
     /**
      * False only for a brand-new user who has never saved a transaction. Defaults to true so
      * the first-run card never flashes up for existing users while the count loads.

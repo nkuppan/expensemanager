@@ -97,5 +97,4 @@
     <string name="recurring_part_of_series">جزء من سلسلة متكررة</string>
     <string name="recurring_edit_series">عدّل السلسلة لتغيير المعاملات القادمة</string>
     <string name="add_recurring_transaction">إضافة معاملة متكررة</string>
-    <string name="upcoming">قادمة</string>
 </resources>

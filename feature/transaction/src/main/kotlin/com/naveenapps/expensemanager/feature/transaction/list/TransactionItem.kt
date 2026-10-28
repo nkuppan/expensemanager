@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -83,8 +82,6 @@ fun TransactionItem(
     toAccountIcon: String? = null,
     toAccountColor: String? = null,
     transactionType: TransactionType = TransactionType.EXPENSE,
-    /** A planned recurring occurrence: drawn faded, labelled "Upcoming" instead of a date. */
-    isUpcoming: Boolean = false,
     onEdit: (() -> Unit)? = null,
     onDelete: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
@@ -153,8 +150,6 @@ fun TransactionItem(
                 .fillMaxWidth()
                 .offset { IntOffset(animatedOffset.roundToInt(), 0) }
                 .background(MaterialTheme.colorScheme.surfaceContainerLowest)
-                // After the background, so only the content fades, not the card.
-                .alpha(if (isUpcoming) UPCOMING_ALPHA else 1f)
                 .then(
                     if (onEdit != null || onDelete != null) {
                         Modifier.pointerInput(Unit) {
@@ -300,17 +295,13 @@ fun TransactionItem(
 
                 Spacer(Modifier.height(2.dp))
 
-                if (isUpcoming) {
-                    UpcomingLabel()
-                } else {
-                    Text(
-                        text = date,
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                            fontSize = 11.sp,
-                        ),
-                    )
-                }
+                Text(
+                    text = date,
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                        fontSize = 11.sp,
+                    ),
+                )
             }
         }
     }
@@ -319,30 +310,6 @@ fun TransactionItem(
 // ═══════════════════════════════════════════════════════════════════════
 //  Sub-components
 // ═══════════════════════════════════════════════════════════════════════
-
-private const val UPCOMING_ALPHA = 0.6f
-
-/** "↻ Upcoming": marks a recurring occurrence that will be added on its date. */
-@Composable
-private fun UpcomingLabel() {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = Icons.Outlined.EventRepeat,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(12.dp),
-        )
-        Spacer(Modifier.width(3.dp))
-        Text(
-            text = stringResource(R.string.upcoming),
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = MaterialTheme.colorScheme.primary,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.Medium,
-            ),
-        )
-    }
-}
 
 /**
  * Rounded-rect icon container with a tinted background derived from the

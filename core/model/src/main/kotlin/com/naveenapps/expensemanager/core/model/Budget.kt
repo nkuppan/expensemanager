@@ -4,6 +4,8 @@ import java.util.Date
 
 data class Budget(
     val id: String,
+    /** What the user called it; null shows an automatic name (see `BudgetTitle`). */
+    val name: String? = null,
     val amount: Double = 0.0,
     /**
      * Round-trip key identifying the period this budget covers. For [BudgetPeriod.MONTHLY]

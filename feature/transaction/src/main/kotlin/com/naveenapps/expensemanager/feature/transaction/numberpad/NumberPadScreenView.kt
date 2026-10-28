@@ -3,10 +3,12 @@ package com.naveenapps.expensemanager.feature.transaction.numberpad
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Backspace
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +43,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SingleLineText
 import com.naveenapps.expensemanager.feature.transaction.R
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -230,31 +234,41 @@ private fun NumberPadScreenView(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            // Cancel and Done share the width, and their labels stay on one line (shrinking if
+            // needed): with a large font size Done used to be squeezed into a narrow column with
+            // its label wrapping letter by letter.
             TextButton(
                 onClick = { clear.invoke() },
+                contentPadding = ButtonDefaults.TextButtonWithIconContentPadding,
             ) {
-                Text(
+                SingleLineText(
                     text = stringResource(id = R.string.clear),
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium),
                     color = MaterialTheme.colorScheme.error,
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
-
             OutlinedButton(
                 onClick = { cancel.invoke() },
                 shape = MaterialTheme.shapes.medium,
+                contentPadding = CompactButtonPadding,
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = 48.dp),
             ) {
-                Text(
+                SingleLineText(
                     text = stringResource(id = R.string.cancel),
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium),
                 )
             }
 
             Button(
                 onClick = { confirm.invoke() },
                 shape = MaterialTheme.shapes.medium,
+                contentPadding = CompactButtonPadding,
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = 48.dp),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Check,
@@ -262,14 +276,16 @@ private fun NumberPadScreenView(
                     modifier = Modifier.size(18.dp),
                 )
                 Spacer(modifier = Modifier.width(6.dp))
-                Text(
+                SingleLineText(
                     text = stringResource(id = R.string.done),
-                    fontWeight = FontWeight.SemiBold,
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
                 )
             }
         }
     }
 }
+
+private val CompactButtonPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
 
 @Composable
 private fun NumberPadButton(

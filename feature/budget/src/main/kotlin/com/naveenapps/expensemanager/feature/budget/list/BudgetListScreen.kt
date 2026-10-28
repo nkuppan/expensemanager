@@ -54,7 +54,9 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseMana
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.feature.budget.R
+import com.naveenapps.expensemanager.feature.budget.text
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -140,7 +142,7 @@ private fun BudgetListScreenContent(
                 key = { _, item -> item.id },
             ) { index, budget ->
                 BudgetItemWithCard(
-                    name = budget.name,
+                    name = budget.title.text(),
                     progressBarColor = budget.progressBarColor,
                     amount = budget.amount,
                     transactionAmount = budget.transactionAmount,
@@ -436,7 +438,7 @@ fun getRandomBudgetUiModel(size: Int): List<BudgetUiModel> = buildList {
 
 private fun getBudgetUiModel(id: String) = BudgetUiModel(
     id = id,
-    name = "Jun 2026 Budget",
+    title = BudgetTitle.ThisMonth,
     selectedMonth = "June 2026",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),

@@ -7,7 +7,7 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetName
+import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetTitle
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
@@ -206,7 +206,7 @@ class DashboardViewModel(
             // an active yearly budget shouldn't suppress it.
             val hasMonthlyBudget = filtered.any { it.periodType == BudgetPeriod.MONTHLY }
             val showCreateBudgetForMonth = if (activeMonth != null && !hasMonthlyBudget) {
-                budgetName(activeMonth)
+                budgetTitle(name = null, selectedMonth = activeMonth)
             } else {
                 null
             }

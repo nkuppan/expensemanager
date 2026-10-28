@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -47,12 +48,14 @@ import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDa
 import com.naveenapps.expensemanager.core.common.utils.fromYear
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
+import com.naveenapps.expensemanager.core.designsystem.ui.components.AutoSelectTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -62,11 +65,13 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.YearPicker
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
+import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetTitle
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.budget.R
+import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
 import java.util.Date
 import kotlinx.coroutines.launch
@@ -236,6 +241,7 @@ private fun BudgetCreateScreenContentView(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
+            nameField = state.name,
             amountField = state.amount,
             currencyIconField = state.currency.symbol,
             selectedDate = state.month,
@@ -258,6 +264,7 @@ private fun BudgetCreateScreenContentView(
 @Composable
 fun BudgetCreateScreen(
     amountField: TextFieldValue<String>,
+    nameField: TextFieldValue<String>,
     currencyIconField: String,
     selectedDate: TextFieldValue<Date>,
     accountCount: String,
@@ -312,6 +319,24 @@ fun BudgetCreateScreen(
                             },
                         )
                     }
+                    // Optional: left empty, the budget is called what the hint says ("This
+                    // month's budget", "October 2026 budget", ...), following the period above.
+                    val selectedPeriodKey = if (periodType == BudgetPeriod.YEARLY) {
+                        selectedDate.value.toYear()
+                    } else {
+                        selectedDate.value.toMonthAndYearKey()
+                    }
+                    AutoSelectTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = nameField.value,
+                        onTextChange = { nameField.onValueChange?.invoke(it) },
+                        label = { Text(text = stringResource(id = R.string.budget_name_optional)) },
+                        placeholder = budgetTitle(name = null, selectedMonth = selectedPeriodKey, periodType = periodType).text(),
+                        keyboardOptions = KeyboardOptions(
+                            capitalization = KeyboardCapitalization.Sentences,
+                            imeAction = ImeAction.Next,
+                        ),
+                    )
                     ClickableTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = if (periodType == BudgetPeriod.YEARLY) {
@@ -401,6 +426,7 @@ private fun BudgetCreateStatePreview() {
         BudgetCreateScreenContentView(
             state = BudgetCreateState(
                 isLoading = false,
+                name = TextFieldValue(value = "", onValueChange = {}),
                 amount = amountField,
                 month = dateField,
                 isAllCategorySelected = true,

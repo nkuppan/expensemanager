@@ -3,23 +3,18 @@ package com.naveenapps.expensemanager.core.domain.usecase.budget
 import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
+import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -45,7 +40,7 @@ class GetBudgetsUseCase(
             val transactionAmount = transactions?.sumOf { it.amount.amount } ?: 0.0
             val percent = (transactionAmount / budget.amount).toFloat() * 100
             budget.toBudgetUiModel(
-                name = budgetName(budget.selectedMonth, budget.periodType),
+                title = budget.title(),
                 budgetAmount = getFormattedAmountUseCase(budget.amount, currency),
                 transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
                 percent,
@@ -57,37 +52,15 @@ class GetBudgetsUseCase(
     }.flowOn(appCoroutineDispatchers.computation)
 }
 
-private val shortMonthFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
-
-fun budgetName(selectedMonth: String, periodType: BudgetPeriod = BudgetPeriod.MONTHLY): String {
-    if (periodType == BudgetPeriod.YEARLY) {
-        val currentYear = Date().toYear()
-        return if (selectedMonth == currentYear) {
-            "This Year Budget"
-        } else {
-            "$selectedMonth Budget"
-        }
-    }
-    val currentMonth = Date().toMonthAndYearKey()
-    return if (selectedMonth == currentMonth) {
-        "This Month Budget"
-    } else {
-        val short = selectedMonth.fromMonthAndYearKey()
-            ?.let { shortMonthFormat.format(it) }
-            ?: selectedMonth
-        "$short Budget"
-    }
-}
-
 fun Budget.toBudgetUiModel(
-    name: String,
+    title: BudgetTitle,
     budgetAmount: Amount,
     transactionAmount: Amount,
     percent: Float,
     transactions: List<TransactionUiItem>? = null,
 ) = BudgetUiModel(
     id = this.id,
-    name = name,
+    title = title,
     selectedMonth = this.selectedMonth,
     periodType = this.periodType,
     progressBarColor = when {
@@ -106,7 +79,7 @@ fun Budget.toBudgetUiModel(
 @Stable
 data class BudgetUiModel(
     val id: String,
-    val name: String,
+    val title: BudgetTitle,
     val selectedMonth: String,
     val periodType: BudgetPeriod = BudgetPeriod.MONTHLY,
     val progressBarColor: Int,

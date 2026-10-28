@@ -6,8 +6,6 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetUpcomingRecurringTransactionsUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.recurring.ProcessRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
@@ -37,7 +35,6 @@ class TransactionListViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
-    getUpcomingRecurringTransactionsUseCase: GetUpcomingRecurringTransactionsUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
     private val appComposeNavigator: AppComposeNavigator,
     private val deleteTransactionUseCase: DeleteTransactionUseCase,
@@ -56,9 +53,6 @@ class TransactionListViewModel(
     // The transactions currently listed, by id, so a swipe-delete can act on the full model.
     private var visibleTransactions: Map<String, Transaction> = emptyMap()
 
-    // Planned recurring occurrences currently listed: their id -> the rule that will log them.
-    private var visibleUpcoming: Map<String, String> = emptyMap()
-
     // Deleted but still undoable. Its attachment files are only removed once the undo window
     // has passed; otherwise "Undo" would bring back a transaction pointing at missing photos.
     private var pendingUndo: Transaction? = null
@@ -67,25 +61,16 @@ class TransactionListViewModel(
         combine(
             getCurrencyUseCase.invoke(),
             getTransactionWithFilterUseCase.invoke(),
-            getUpcomingRecurringTransactionsUseCase.invoke(),
             searchQuery,
-        ) { currency, transactions, upcoming, query ->
+        ) { currency, transactions, query ->
 
             val matching = transactions.orEmpty().filter { it.matches(query) }
             visibleTransactions = matching.associateBy { it.id }
 
-            // Planned recurring occurrences in the selected range, so a future month isn't empty.
-            // A real transaction with the same id (already logged) always wins.
-            val matchingUpcoming = upcoming.filter { it.matches(query) && it.id !in visibleTransactions }
-            visibleUpcoming = matchingUpcoming.mapNotNull { transaction ->
-                ProcessRecurringTransactionsUseCase.ruleIdFromOccurrenceId(transaction.id)?.let { transaction.id to it }
-            }.toMap()
-
-            val all = (matching + matchingUpcoming).sortedByDescending { it.createdOn }
-            val groupedItem = all.groupBy {
+            // Only what has actually happened: a recurring rule logs each occurrence on its day.
+            val groupedItem = matching.sortedByDescending { it.createdOn }.groupBy {
                 it.createdOn.toCompleteDateWithDate()
             }.map {
-                // Day totals include planned amounts, so a future day shows what's coming.
                 val totalAmount = it.value.toTransactionSum()
                 TransactionGroup(
                     date = it.key,
@@ -97,7 +82,7 @@ class TransactionListViewModel(
                                 transaction.amount.amount,
                                 currency,
                             ),
-                        ).copy(isUpcoming = transaction.id in visibleUpcoming)
+                        )
                     },
                 )
             }
@@ -115,16 +100,6 @@ class TransactionListViewModel(
         appComposeNavigator.navigate(
             ExpenseManagerScreens.TransactionCreate(transactionId),
         )
-    }
-
-    /** A planned occurrence opens its recurring rule; anything else opens the transaction. */
-    private fun openTransaction(transactionId: String) {
-        val ruleId = visibleUpcoming[transactionId]
-        if (ruleId != null) {
-            appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactionEdit(ruleId))
-        } else {
-            openCreateScreen(transactionId)
-        }
     }
 
     private fun openRecurringTransactions() {
@@ -181,7 +156,7 @@ class TransactionListViewModel(
         when (action) {
             TransactionListAction.ClosePage -> closePage()
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
-            is TransactionListAction.OpenEdiTransaction -> openTransaction(action.transactionId)
+            is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
             is TransactionListAction.Search -> search(action.query)
             TransactionListAction.OpenRecurringTransactions -> openRecurringTransactions()
             is TransactionListAction.DeleteTransaction -> deleteTransaction(action.transactionId)

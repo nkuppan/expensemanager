@@ -21,10 +21,4 @@ val RecurringUseCaseModule = module {
     single { DeleteRecurringTransactionUseCase(repository = get()) }
     single { FindRecurringTransactionByIdUseCase(repository = get()) }
     single { UpdateRecurringTransactionUseCase(repository = get(), processRecurringTransactions = get()) }
-    single {
-        GetUpcomingRecurringTransactionsUseCase(
-            getTransactionWithFilterUseCase = get(),
-            getRecurringTransactionsUseCase = get(),
-        )
-    }
 }

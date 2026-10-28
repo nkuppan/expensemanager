@@ -11,6 +11,8 @@ import java.util.Date
 @Stable
 data class BudgetCreateState(
     val isLoading: Boolean,
+    /** Optional; empty shows the automatic name, which the field offers as its hint. */
+    val name: TextFieldValue<String> = TextFieldValue(value = "", onValueChange = null),
     val amount: TextFieldValue<String>,
     val month: TextFieldValue<Date>,
     val periodType: BudgetPeriod = BudgetPeriod.MONTHLY,

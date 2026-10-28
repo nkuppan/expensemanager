@@ -32,4 +32,8 @@
     <string name="annual">연간</string>
     <string name="budget_for">예산 대상</string>
     <string name="what_is_your_budget_limit">총 예산 한도는 얼마인가요</string>
+    <string name="budget_title_this_month">이번 달 예산</string>
+    <string name="budget_title_this_year">올해 예산</string>
+    <string name="budget_title_period">%1$s 예산</string>
+    <string name="budget_name_optional">이름(선택 사항)</string>
 </resources>

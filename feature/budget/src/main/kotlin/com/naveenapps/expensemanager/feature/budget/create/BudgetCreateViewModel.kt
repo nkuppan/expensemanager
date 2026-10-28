@@ -59,6 +59,11 @@ class BudgetCreateViewModel(
     private val _state = MutableStateFlow(
         BudgetCreateState(
             isLoading = true,
+            name = TextFieldValue(
+                value = "",
+                valueError = false,
+                onValueChange = this::setNameChange,
+            ),
             amount = TextFieldValue(
                 value = "",
                 valueError = false,
@@ -141,6 +146,7 @@ class BudgetCreateViewModel(
         _state.update { state ->
             state.copy(
                 isLoading = false,
+                name = state.name.copy(value = budget.name.orEmpty()),
                 amount = state.amount.copy(value = numberFormatRepository.formatForEditing(budget.amount)),
                 month = state.month.copy(value = loadedDate),
                 periodType = budget.periodType,
@@ -205,6 +211,7 @@ class BudgetCreateViewModel(
         val periodType = _state.value.periodType
         val budget = Budget(
             id = budget?.id ?: UUID.randomUUID().toString(),
+            name = _state.value.name.value.trim().ifEmpty { null },
             amount = amount ?: 0.0,
             selectedMonth = if (periodType == BudgetPeriod.YEARLY) {
                 date.toYear()
@@ -250,6 +257,10 @@ class BudgetCreateViewModel(
                 ),
             )
         }
+    }
+
+    private fun setNameChange(name: String) {
+        _state.update { it.copy(name = it.name.copy(value = name.take(MAX_NAME_LENGTH))) }
     }
 
     private fun setDateChange(date: Date) {
@@ -378,5 +389,6 @@ class BudgetCreateViewModel(
     companion object {
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "account_balance"
+        private const val MAX_NAME_LENGTH = 40
     }
 }

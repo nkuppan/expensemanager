@@ -37,7 +37,6 @@ val TransactionViewModelModule = module {
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
             getTransactionWithFilterUseCase = get(),
-            getUpcomingRecurringTransactionsUseCase = get(),
             appCoroutineDispatchers = get(),
             appComposeNavigator = get(),
             deleteTransactionUseCase = get(),

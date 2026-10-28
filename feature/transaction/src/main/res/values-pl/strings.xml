@@ -97,5 +97,4 @@
     <string name="recurring_part_of_series">Część serii cyklicznej</string>
     <string name="recurring_edit_series">Edytuj serię, aby zmienić przyszłe transakcje</string>
     <string name="add_recurring_transaction">Dodaj transakcję cykliczną</string>
-    <string name="upcoming">Nadchodzące</string>
 </resources>

@@ -97,5 +97,4 @@
     <string name="recurring_part_of_series">आवर्ती शृंखला का हिस्सा</string>
     <string name="recurring_edit_series">आने वाले लेन-देन बदलने के लिए शृंखला संपादित करें</string>
     <string name="add_recurring_transaction">आवर्ती लेन-देन जोड़ें</string>
-    <string name="upcoming">आगामी</string>
 </resources>

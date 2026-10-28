@@ -32,4 +32,8 @@
     <string name="annual">Anual</string>
     <string name="budget_for">Presupuesto para</string>
     <string name="what_is_your_budget_limit">Cuál es tu límite de presupuesto total</string>
+    <string name="budget_title_this_month">Presupuesto de este mes</string>
+    <string name="budget_title_this_year">Presupuesto de este año</string>
+    <string name="budget_title_period">Presupuesto de %1$s</string>
+    <string name="budget_name_optional">Nombre (opcional)</string>
 </resources>

@@ -363,14 +363,12 @@ private fun TransactionGroupCard(
                     toAccountName = item.toAccountName,
                     toAccountIcon = item.toAccountIcon?.name,
                     toAccountColor = item.toAccountIcon?.backgroundColor,
-                    isUpcoming = item.isUpcoming,
                     onClick = {
                         onItemClick?.invoke(item)
                     },
-                    // Swipe to reveal edit/delete (also offered to TalkBack as actions). A planned
-                    // occurrence isn't a transaction yet: tapping it opens its recurring rule.
-                    onEdit = onItemClick?.takeUnless { item.isUpcoming }?.let { click -> { click(item) } },
-                    onDelete = onDelete?.takeUnless { item.isUpcoming }?.let { delete -> { delete(item) } },
+                    // Swipe to reveal edit/delete (also offered to TalkBack as actions).
+                    onEdit = onItemClick?.let { click -> { click(item) } },
+                    onDelete = onDelete?.let { delete -> { delete(item) } },
                 )
 
                 // Thin inset divider between rows — not after the last one

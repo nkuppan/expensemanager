@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.widget
 
-import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.util.Log
 import androidx.annotation.StringRes
@@ -60,17 +59,14 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.dateran
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.launch
 import org.koin.core.context.GlobalContext
 
 internal fun fixedColor(color: Color): ColorProvider = androidx.glance.color.ColorProvider(day = color, night = color)
@@ -157,24 +153,14 @@ private fun iconResForName(name: String): Int = when (name) {
     else -> com.naveenapps.expensemanager.core.designsystem.R.drawable.wallet
 }
 
+/**
+ * No onUpdate override: GlanceAppWidgetReceiver already holds the broadcast open (goAsync) while
+ * it updates the widget, and finishes it itself. A second goAsync()/finish() here crashed with
+ * "Broadcast already finished". Fresh data is loaded in [ExpenseWidget.provideGlance] instead,
+ * which runs for every update in Glance's own background session.
+ */
 class ExpenseWidgetReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = ExpenseWidget()
-
-    override fun onUpdate(
-        context: Context,
-        appWidgetManager: AppWidgetManager,
-        appWidgetIds: IntArray,
-    ) {
-        super.onUpdate(context, appWidgetManager, appWidgetIds)
-        val pending = goAsync()
-        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            try {
-                refreshExpenseWidgetData(context)
-            } finally {
-                pending?.finish()
-            }
-        }
-    }
 }
 
 private data class WidgetRefreshData(
@@ -186,15 +172,16 @@ private data class WidgetRefreshData(
     val recentStr: String,
 )
 
-internal suspend fun refreshExpenseWidgetData(context: Context) {
-    val koin = runCatching { GlobalContext.get() }.getOrNull() ?: return
+/** Reads the current totals and recent transactions, or null if the app isn't set up yet. */
+private suspend fun loadWidgetData(context: Context): WidgetRefreshData? {
+    val koin = runCatching { GlobalContext.get() }.getOrNull() ?: return null
 
     val getCurrency = koin.get<GetCurrencyUseCase>()
     val getTransactions = koin.get<GetTransactionWithFilterUseCase>()
     val getDateRange = koin.get<GetDateRangeUseCase>()
     val formatAmount = koin.get<GetFormattedAmountUseCase>()
 
-    combine(
+    return combine(
         getCurrency.invoke(),
         getTransactions.invoke(),
         getDateRange.invoke(),
@@ -210,36 +197,44 @@ internal suspend fun refreshExpenseWidgetData(context: Context) {
         val expenseStr = formatAmount.invoke(expenseValue, currency).amountString.orEmpty()
         val balanceStr = formatAmount.invoke(incomeValue - expenseValue, currency).amountString.orEmpty()
 
-        // Serialize last 3 transactions;  = field sep,  = record sep
+        // Serialize last 3 transactions; \u0001 = field sep, \u0002 = record sep
         val recentStr = (transactions ?: emptyList())
             .sortedByDescending { it.createdOn }
             .take(3)
-            .joinToString("") { tx ->
+            .joinToString("\u0002") { tx ->
                 val categoryName = tx.category.titleResId?.let { context.getString(it) }
                     ?: tx.category.name
                 val displayName = tx.notes.ifBlank { categoryName }
                 val amtStr = formatAmount.invoke(tx.amount.amount, currency).amountString.orEmpty()
-                "$displayName${tx.category.storedIcon.name}${tx.category.storedIcon.backgroundColor}$amtStr${tx.type == TransactionType.INCOME}"
+                "$displayName\u0001${tx.category.storedIcon.name}\u0001${tx.category.storedIcon.backgroundColor}\u0001$amtStr\u0001${tx.type == TransactionType.INCOME}"
             }
 
         WidgetRefreshData(incomeValue, expenseValue, incomeStr, expenseStr, balanceStr, recentStr)
-    }.take(1).collect { data ->
-        GlanceAppWidgetManager(context)
-            .getGlanceIds(ExpenseWidget::class.java)
-            .forEach { id ->
-                updateAppWidgetState(context, PreferencesGlanceStateDefinition, id) { prefs ->
-                    prefs.toMutablePreferences().also {
-                        it[ExpenseWidget.PREF_INCOME] = data.income.toString()
-                        it[ExpenseWidget.PREF_EXPENSE] = data.expenses.toString()
-                        it[ExpenseWidget.PREF_INCOME_STR] = data.incomeStr
-                        it[ExpenseWidget.PREF_EXPENSE_STR] = data.expenseStr
-                        it[ExpenseWidget.PREF_BALANCE_STR] = data.balanceStr
-                        it[ExpenseWidget.PREF_RECENT_TXN] = data.recentStr
-                    }
-                }
-                ExpenseWidget().update(context, id)
-            }
+    }.first()
+}
+
+private suspend fun saveWidgetData(context: Context, id: GlanceId, data: WidgetRefreshData) {
+    updateAppWidgetState(context, PreferencesGlanceStateDefinition, id) { prefs ->
+        prefs.toMutablePreferences().also {
+            it[ExpenseWidget.PREF_INCOME] = data.income.toString()
+            it[ExpenseWidget.PREF_EXPENSE] = data.expenses.toString()
+            it[ExpenseWidget.PREF_INCOME_STR] = data.incomeStr
+            it[ExpenseWidget.PREF_EXPENSE_STR] = data.expenseStr
+            it[ExpenseWidget.PREF_BALANCE_STR] = data.balanceStr
+            it[ExpenseWidget.PREF_RECENT_TXN] = data.recentStr
+        }
     }
+}
+
+/** Reloads the data and redraws every placed widget (app changes, the refresh button). */
+internal suspend fun refreshExpenseWidgetData(context: Context) {
+    val data = loadWidgetData(context) ?: return
+    GlanceAppWidgetManager(context)
+        .getGlanceIds(ExpenseWidget::class.java)
+        .forEach { id ->
+            saveWidgetData(context, id, data)
+            ExpenseWidget().update(context, id)
+        }
 }
 
 /**
@@ -304,6 +299,13 @@ class ExpenseWidget : GlanceAppWidget() {
     }
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
+        // Runs for every update (system period, widget placed, update() calls) inside Glance's
+        // own background session, so loading here needs no goAsync. If loading fails the last
+        // saved figures are shown.
+        runCatching { loadWidgetData(context) }
+            .onFailure { Log.w("ExpenseWidget", "Widget data load failed", it) }
+            .getOrNull()
+            ?.let { saveWidgetData(context, id, it) }
         provideContent {
             val prefs = currentState<Preferences>()
             val income = prefs[PREF_INCOME]?.toDoubleOrNull() ?: 0.0
@@ -317,10 +319,10 @@ class ExpenseWidget : GlanceAppWidget() {
                 0.0
             }
             val recentTxns = prefs[PREF_RECENT_TXN]
-                ?.split("")
+                ?.split("\u0002")
                 ?.filter { it.isNotBlank() }
                 ?.mapNotNull { record ->
-                    val parts = record.split("")
+                    val parts = record.split("\u0001")
                     if (parts.size >= 5) {
                         WidgetTransaction(
                             name = parts[0],

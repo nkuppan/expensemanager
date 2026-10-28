@@ -35,6 +35,7 @@ import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SingleLineText
 
 @Composable
 fun WidgetHeader(
@@ -190,7 +191,7 @@ fun SummaryCard(
                 )
             }
             Spacer(Modifier.width(8.dp))
-            Text(
+            SingleLineText(
                 text = label,
                 style = MaterialTheme.typography.bodySmall.copy(
                     fontWeight = FontWeight.Medium,

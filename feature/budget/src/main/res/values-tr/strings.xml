@@ -32,4 +32,8 @@
     <string name="annual">Yıllık</string>
     <string name="budget_for">Bütçe:</string>
     <string name="what_is_your_budget_limit">Toplam bütçe limitiniz nedir</string>
+    <string name="budget_title_this_month">Bu ayın bütçesi</string>
+    <string name="budget_title_this_year">Bu yılın bütçesi</string>
+    <string name="budget_title_period">%1$s bütçesi</string>
+    <string name="budget_name_optional">Ad (isteğe bağlı)</string>
 </resources>

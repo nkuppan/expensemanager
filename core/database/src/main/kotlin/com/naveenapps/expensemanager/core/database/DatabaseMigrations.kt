@@ -179,6 +179,16 @@ internal val MIGRATION_9_10 = object : Migration(9, 10) {
 }
 
 /**
+ * Adds an optional `name` to `budget`. NULL for every existing row, which shows the automatic
+ * name ("This month's budget", "October 2026 budget", ...) exactly as before.
+ */
+internal val MIGRATION_10_11 = object : Migration(10, 11) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL("ALTER TABLE `budget` ADD COLUMN `name` TEXT DEFAULT NULL")
+    }
+}
+
+/**
  * Every migration, oldest first. The database builder and the migration tests both use this list,
  * so a new migration can't be registered in one place and forgotten in the other.
  */
@@ -192,4 +202,5 @@ internal val ALL_MIGRATIONS = arrayOf(
     MIGRATION_7_8,
     MIGRATION_8_9,
     MIGRATION_9_10,
+    MIGRATION_10_11,
 )

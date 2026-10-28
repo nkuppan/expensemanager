@@ -74,6 +74,7 @@ import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
 import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
+import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
@@ -257,7 +258,7 @@ private fun DashboardScreenContent(
                         items(state.budgets, key = { it.id }) { budget ->
                             DashBoardBudgetItem(
                                 modifier = Modifier,
-                                name = budget.name,
+                                name = budget.title.text(),
                                 progressBarColor = budget.progressBarColor,
                                 amount = budget.amount.amountString,
                                 transactionAmount = budget.transactionAmount.amountString,
@@ -304,7 +305,7 @@ private fun DashboardScreenContent(
                                 Text(
                                     text = stringResource(
                                         id = R.string.no_budget_for_month,
-                                        state.showCreateBudgetForMonth,
+                                        state.showCreateBudgetForMonth.text(),
                                     ),
                                     style = MaterialTheme.typography.titleSmall.copy(
                                         fontWeight = FontWeight.SemiBold,

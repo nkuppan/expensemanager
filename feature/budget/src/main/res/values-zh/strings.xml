@@ -32,4 +32,8 @@
     <string name="annual">每年</string>
     <string name="budget_for">预算适用于</string>
     <string name="what_is_your_budget_limit">您的总预算限额是多少</string>
+    <string name="budget_title_this_month">本月预算</string>
+    <string name="budget_title_this_year">本年预算</string>
+    <string name="budget_title_period">%1$s预算</string>
+    <string name="budget_name_optional">名称（可选）</string>
 </resources>
