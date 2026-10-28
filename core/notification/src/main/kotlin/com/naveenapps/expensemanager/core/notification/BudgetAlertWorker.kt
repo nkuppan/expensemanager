@@ -11,9 +11,9 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
-import kotlinx.coroutines.flow.first
 import java.util.Date
 import kotlin.math.abs
+import kotlinx.coroutines.flow.first
 
 /**
  * Runs shortly after a transaction is saved. For each budget covering the current month/year,
