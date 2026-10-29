@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">아이콘 선택</string>
     <string name="error_save_failed">저장하지 못했습니다. 다시 시도해 주세요.</string>
     <string name="error_delete_failed">삭제하지 못했습니다. 다시 시도해 주세요.</string>
+    <string name="a11y_clear_search">검색어 지우기</string>
+    <string name="no_search_results">일치하는 항목 없음</string>
+    <string name="selection_select_all">모두 선택</string>
+    <string name="selection_done">완료</string>
 </resources>

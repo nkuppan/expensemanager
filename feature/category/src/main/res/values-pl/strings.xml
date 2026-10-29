@@ -52,4 +52,5 @@
         <item quantity="many">Wybrano: %d</item>
         <item quantity="other">Wybrano: %d</item>
     </plurals>
+    <string name="search_categories">Szukaj kategorii</string>
 </resources>

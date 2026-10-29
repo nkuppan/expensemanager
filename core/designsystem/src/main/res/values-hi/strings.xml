@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">आइकन चुनें</string>
     <string name="error_save_failed">सेव नहीं हो सका। कृपया फिर से कोशिश करें।</string>
     <string name="error_delete_failed">हटाया नहीं जा सका। कृपया फिर से कोशिश करें।</string>
+    <string name="a11y_clear_search">खोज साफ़ करें</string>
+    <string name="no_search_results">कोई मिलान नहीं</string>
+    <string name="selection_select_all">सभी चुनें</string>
+    <string name="selection_done">हो गया</string>
 </resources>

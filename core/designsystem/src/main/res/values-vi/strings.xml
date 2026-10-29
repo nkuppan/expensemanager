@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Chọn biểu tượng</string>
     <string name="error_save_failed">Không thể lưu. Vui lòng thử lại.</string>
     <string name="error_delete_failed">Không thể xóa. Vui lòng thử lại.</string>
+    <string name="a11y_clear_search">Xóa tìm kiếm</string>
+    <string name="no_search_results">Không có kết quả</string>
+    <string name="selection_select_all">Chọn tất cả</string>
+    <string name="selection_done">Xong</string>
 </resources>

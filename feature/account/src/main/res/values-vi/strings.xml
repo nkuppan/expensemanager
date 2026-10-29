@@ -54,4 +54,5 @@
     <string name="account_delete_message_no_transactions">Tài khoản này không có giao dịch nào. Không thể hoàn tác khi đã xóa.</string>
     <string name="account_delete_last_title">Đây là tài khoản duy nhất của bạn</string>
     <string name="account_delete_last_message">Mỗi giao dịch cần một tài khoản. Hãy tạo một tài khoản khác trước, sau đó bạn có thể xóa tài khoản này.</string>
+    <string name="search_accounts">Tìm tài khoản</string>
 </resources>

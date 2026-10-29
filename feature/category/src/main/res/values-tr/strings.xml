@@ -48,4 +48,5 @@
         <item quantity="one">%d seçildi</item>
         <item quantity="other">%d seçildi</item>
     </plurals>
+    <string name="search_categories">Kategori ara</string>
 </resources>

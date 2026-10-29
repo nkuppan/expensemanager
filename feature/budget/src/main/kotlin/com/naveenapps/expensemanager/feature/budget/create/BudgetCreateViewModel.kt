@@ -122,20 +122,12 @@ class BudgetCreateViewModel(
             }
         }.filterNotNull()
 
-        if (accounts.isNotEmpty()) {
-            setAccounts(accounts, budget.isAllAccountsSelected)
-        }
-
         val categories = budget.categories.map {
             return@map when (val response = findCategoryByIdUseCase.invoke(it)) {
                 is Resource.Error -> null
                 is Resource.Success -> response.data
             }
         }.filterNotNull()
-
-        if (categories.isNotEmpty()) {
-            setCategories(categories, budget.isAllAccountsSelected)
-        }
 
         val loadedDate = if (budget.periodType == BudgetPeriod.YEARLY) {
             budget.selectedMonth.fromYear()
@@ -150,10 +142,13 @@ class BudgetCreateViewModel(
                 amount = state.amount.copy(value = numberFormatRepository.formatForEditing(budget.amount)),
                 month = state.month.copy(value = loadedDate),
                 periodType = budget.periodType,
+                // The saved selections. They used to be loaded and then wiped by emptyList()
+                // here (and categories took the accounts' "all" flag), so editing a budget
+                // forgot which categories and accounts it covered.
                 isAllAccountSelected = budget.isAllAccountsSelected,
-                selectedAccounts = emptyList(),
+                selectedAccounts = accounts,
                 isAllCategorySelected = budget.isAllCategoriesSelected,
-                selectedCategories = emptyList(),
+                selectedCategories = categories,
                 showDeleteButton = true,
             )
         }
@@ -223,7 +218,8 @@ class BudgetCreateViewModel(
             accounts = accounts,
             isAllCategoriesSelected = _state.value.isAllCategorySelected,
             isAllAccountsSelected = _state.value.isAllAccountSelected,
-            createdOn = Calendar.getInstance().time,
+            // Editing keeps the original creation date.
+            createdOn = this.budget?.createdOn ?: Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time,
         )
 

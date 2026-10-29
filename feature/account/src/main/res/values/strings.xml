@@ -57,4 +57,5 @@
     <string name="account_delete_message_no_transactions">This account has no transactions. Deleting it can\'t be undone.</string>
     <string name="account_delete_last_title">This is your only account</string>
     <string name="account_delete_last_message">Every transaction needs an account. Create another account first, then you can delete this one.</string>
+    <string name="search_accounts">Search accounts</string>
 </resources>

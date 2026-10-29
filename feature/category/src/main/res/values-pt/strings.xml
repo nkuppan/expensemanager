@@ -48,4 +48,5 @@
         <item quantity="one">%d selecionado</item>
         <item quantity="other">%d selecionados</item>
     </plurals>
+    <string name="search_categories">Pesquisar categorias</string>
 </resources>

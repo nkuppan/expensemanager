@@ -48,4 +48,5 @@
         <item quantity="one">%d चयनित</item>
         <item quantity="other">%d चयनित</item>
     </plurals>
+    <string name="search_categories">श्रेणियाँ खोजें</string>
 </resources>

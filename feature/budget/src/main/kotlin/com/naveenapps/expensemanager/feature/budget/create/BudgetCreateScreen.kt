@@ -122,9 +122,11 @@ private fun BudgetCreateScreenContentView(
         ) {
             MultipleAccountSelectionScreen(
                 selectedAccounts = state.selectedAccounts,
-            ) { items, selected ->
-                onAction.invoke(BudgetCreateAction.SelectAccounts(selected, items))
-            }
+                onItemSelection = { items, selected ->
+                    onAction.invoke(BudgetCreateAction.SelectAccounts(selected, items))
+                },
+                onClose = { onAction.invoke(BudgetCreateAction.CloseAccountSelectionDialog) },
+            )
         }
     }
 
@@ -139,6 +141,7 @@ private fun BudgetCreateScreenContentView(
                 onItemSelection = { items, selected ->
                     onAction.invoke(BudgetCreateAction.SelectCategories(selected, items))
                 },
+                onClose = { onAction.invoke(BudgetCreateAction.CloseCategorySelectionDialog) },
             )
         }
     }

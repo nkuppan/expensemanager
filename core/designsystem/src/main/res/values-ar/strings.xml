@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">اختيار الأيقونة</string>
     <string name="error_save_failed">تعذّر الحفظ. يُرجى المحاولة مرة أخرى.</string>
     <string name="error_delete_failed">تعذّر الحذف. يُرجى المحاولة مرة أخرى.</string>
+    <string name="a11y_clear_search">مسح البحث</string>
+    <string name="no_search_results">لا توجد نتائج</string>
+    <string name="selection_select_all">تحديد الكل</string>
+    <string name="selection_done">تم</string>
 </resources>

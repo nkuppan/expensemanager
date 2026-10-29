@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Simge seç</string>
     <string name="error_save_failed">Kaydedilemedi. Lütfen tekrar deneyin.</string>
     <string name="error_delete_failed">Silinemedi. Lütfen tekrar deneyin.</string>
+    <string name="a11y_clear_search">Aramayı temizle</string>
+    <string name="no_search_results">Eşleşme yok</string>
+    <string name="selection_select_all">Tümünü seç</string>
+    <string name="selection_done">Bitti</string>
 </resources>

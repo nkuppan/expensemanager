@@ -60,4 +60,5 @@
     <string name="account_delete_message_no_transactions">To konto nie ma transakcji. Usunięcia nie można cofnąć.</string>
     <string name="account_delete_last_title">To jest Twoje jedyne konto</string>
     <string name="account_delete_last_message">Każda transakcja wymaga konta. Najpierw utwórz inne konto, a potem możesz usunąć to.</string>
+    <string name="search_accounts">Szukaj kont</string>
 </resources>

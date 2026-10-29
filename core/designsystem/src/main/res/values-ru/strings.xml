@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Выбрать значок</string>
     <string name="error_save_failed">Не удалось сохранить. Попробуйте ещё раз.</string>
     <string name="error_delete_failed">Не удалось удалить. Попробуйте ещё раз.</string>
+    <string name="a11y_clear_search">Очистить поиск</string>
+    <string name="no_search_results">Ничего не найдено</string>
+    <string name="selection_select_all">Выбрать все</string>
+    <string name="selection_done">Готово</string>
 </resources>

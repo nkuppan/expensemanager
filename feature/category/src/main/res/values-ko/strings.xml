@@ -46,4 +46,5 @@
     <plurals name="items_selected">
         <item quantity="other">%d개 선택됨</item>
     </plurals>
+    <string name="search_categories">카테고리 검색</string>
 </resources>

@@ -2,31 +2,22 @@ package com.naveenapps.expensemanager.feature.account.selection
 
 import android.widget.Toast
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.util.fastAny
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.components.MultiSelectionSheet
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
@@ -37,16 +28,19 @@ fun MultipleAccountSelectionScreen(
     viewModel: AccountSelectionViewModel = koinViewModel(),
     selectedAccounts: List<AccountUiModel> = emptyList(),
     onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)? = null,
+    /** Closes the sheet without applying; shown as an × in the header when set. */
+    onClose: (() -> Unit)? = null,
 ) {
     viewModel.selectAllThisAccount(selectedAccounts)
 
-    AccountSelectionView(viewModel, onItemSelection)
+    AccountSelectionView(viewModel, onItemSelection, onClose)
 }
 
 @Composable
 private fun AccountSelectionView(
     viewModel: AccountSelectionViewModel,
     onItemSelection: ((List<AccountUiModel>, Boolean) -> Unit)?,
+    onClose: (() -> Unit)?,
 ) {
     val activity = LocalActivity.current
     val accounts by viewModel.accounts.collectAsStateWithLifecycle()
@@ -72,8 +66,9 @@ private fun AccountSelectionView(
                 }
             }
         },
-        onClearChanges = viewModel::clearChanges,
+        onSetSelection = viewModel::setSelection,
         onItemSelection = viewModel::selectThisAccount,
+        onClose = onClose,
     )
 }
 
@@ -83,92 +78,58 @@ fun MultipleAccountSelectionScreen(
     accounts: List<AccountUiModel>,
     selectedAccounts: List<AccountUiModel>,
     onApplyChanges: (() -> Unit),
-    onClearChanges: (() -> Unit),
+    onSetSelection: ((List<AccountUiModel>, Boolean) -> Unit),
     onItemSelection: ((AccountUiModel, Boolean) -> Unit)? = null,
+    onClose: (() -> Unit)? = null,
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        // Header
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = stringResource(id = R.string.select_account),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.weight(1f),
+    // Search only narrows what's listed; "Select all" acts on what's listed.
+    var query by rememberSaveable { mutableStateOf("") }
+    val visibleAccounts = remember(accounts, query) {
+        val search = query.trim()
+        if (search.isEmpty()) accounts else accounts.filter { it.name.contains(search, ignoreCase = true) }
+    }
+    val selectedIds = remember(selectedAccounts) { selectedAccounts.map { it.id }.toSet() }
+    val selectedVisible = visibleAccounts.count { it.id in selectedIds }
+    val selectAllState = when {
+        visibleAccounts.isEmpty() || selectedVisible == 0 -> ToggleableState.Off
+        selectedVisible == visibleAccounts.size -> ToggleableState.On
+        else -> ToggleableState.Indeterminate
+    }
+
+    MultiSelectionSheet(
+        title = stringResource(id = R.string.select_account),
+        searchPlaceholder = stringResource(id = R.string.search_accounts),
+        query = query,
+        onQueryChange = { query = it },
+        selectedText = pluralStringResource(
+            id = R.plurals.items_selected,
+            count = selectedAccounts.size,
+            selectedAccounts.size,
+        ),
+        selectAllState = selectAllState,
+        onSelectAllClick = { onSetSelection(visibleAccounts, selectAllState != ToggleableState.On) },
+        showNoResults = visibleAccounts.isEmpty() && query.isNotBlank(),
+        onDone = onApplyChanges,
+        onClose = onClose,
+        modifier = modifier,
+    ) {
+        items(visibleAccounts, key = { it.id }) { account ->
+            val isSelected = account.id in selectedIds
+            AccountItem(
+                name = account.name,
+                icon = account.storedIcon.name,
+                iconBackgroundColor = account.storedIcon.backgroundColor,
+                amount = account.amount.amountString,
+                amountTextColor = account.amountTextColor,
+                customImagePath = account.storedIcon.customImagePath,
+                border = AccountItemDefaults.border(isSelected),
+                onClick = {
+                    onItemSelection?.invoke(account, isSelected.not())
+                },
+                trailingContent = {
+                    AccountItemDefaults.MultiCheckedTrailing(isSelected)
+                },
             )
-            if (selectedAccounts.isNotEmpty()) {
-                Text(
-                    text = pluralStringResource(
-                        id = R.plurals.items_selected,
-                        count = selectedAccounts.size,
-                        selectedAccounts.size,
-                    ),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-        }
-
-        // Account list
-        LazyColumn(
-            modifier = Modifier.weight(1f, fill = false),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(accounts, key = { it.id }) { account ->
-                val isSelected = selectedAccounts.fastAny { it.id == account.id }
-                AccountItem(
-                    name = account.name,
-                    icon = account.storedIcon.name,
-                    iconBackgroundColor = account.storedIcon.backgroundColor,
-                    amount = account.amount.amountString,
-                    amountTextColor = account.amountTextColor,
-                    customImagePath = account.storedIcon.customImagePath,
-                    border = AccountItemDefaults.border(isSelected),
-                    onClick = {
-                        onItemSelection?.invoke(account, isSelected.not())
-                    },
-                    trailingContent = {
-                        AccountItemDefaults.MultiCheckedTrailing(isSelected)
-                    },
-                )
-            }
-        }
-
-        // Bottom actions
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            TextButton(
-                onClick = onClearChanges,
-                enabled = selectedAccounts.isNotEmpty(),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.clear_all),
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            TextButton(onClick = onApplyChanges) {
-                Text(
-                    text = stringResource(id = R.string.apply),
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
         }
     }
 }
@@ -182,7 +143,7 @@ private fun MultipleAccountSelectionScreenPreview() {
             accounts = accounts,
             selectedAccounts = listOf(accounts[0], accounts[1]),
             onApplyChanges = {},
-            onClearChanges = {},
+            onSetSelection = { _, _ -> },
             onItemSelection = null,
         )
     }

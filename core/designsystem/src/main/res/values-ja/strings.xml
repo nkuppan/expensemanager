@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">アイコンを選択</string>
     <string name="error_save_failed">保存できませんでした。もう一度お試しください。</string>
     <string name="error_delete_failed">削除できませんでした。もう一度お試しください。</string>
+    <string name="a11y_clear_search">検索をクリア</string>
+    <string name="no_search_results">一致する項目はありません</string>
+    <string name="selection_select_all">すべて選択</string>
+    <string name="selection_done">完了</string>
 </resources>

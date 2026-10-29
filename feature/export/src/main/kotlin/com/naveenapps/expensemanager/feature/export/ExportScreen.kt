@@ -163,7 +163,13 @@ private fun ExportScreenContent(
         when (event) {
             ExportEvent.CreateFile -> createFileEvent(fileCreatorIntent, state.fileType)
 
-            is ExportEvent.FileExported -> fileExportedProcess(coroutineScope, snackbarHostState, event, context, shareWithUri)
+            is ExportEvent.FileExported -> fileExportedProcess(
+                coroutineScope,
+                snackbarHostState,
+                event,
+                context,
+                shareWithUri,
+            )
 
             is ExportEvent.Error -> coroutineScope.launch {
                 snackbarHostState.showSnackbar(message = event.message.asString(context))
@@ -175,9 +181,11 @@ private fun ExportScreenContent(
         SafeModalBottomSheet(
             onDismissRequest = { onAction(ExportAction.CloseAccountSelection) },
         ) {
-            MultipleAccountSelectionScreen { selectedAccounts, isAllSelected ->
-                onAction(ExportAction.AccountSelection(selectedAccounts, isAllSelected))
-            }
+            MultipleAccountSelectionScreen(
+                onItemSelection = { selectedAccounts, isAllSelected ->
+                    onAction(ExportAction.AccountSelection(selectedAccounts, isAllSelected))
+                },
+            )
         }
     }
 

@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">选择图标</string>
     <string name="error_save_failed">无法保存，请重试。</string>
     <string name="error_delete_failed">无法删除，请重试。</string>
+    <string name="a11y_clear_search">清除搜索</string>
+    <string name="no_search_results">没有匹配项</string>
+    <string name="selection_select_all">全选</string>
+    <string name="selection_done">完成</string>
 </resources>

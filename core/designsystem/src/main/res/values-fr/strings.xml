@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Choisir l\'icône</string>
     <string name="error_save_failed">Impossible d\'enregistrer. Veuillez réessayer.</string>
     <string name="error_delete_failed">Impossible de supprimer. Veuillez réessayer.</string>
+    <string name="a11y_clear_search">Effacer la recherche</string>
+    <string name="no_search_results">Aucun résultat</string>
+    <string name="selection_select_all">Tout sélectionner</string>
+    <string name="selection_done">OK</string>
 </resources>

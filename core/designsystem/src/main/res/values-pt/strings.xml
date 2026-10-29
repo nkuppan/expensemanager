@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Selecionar ícone</string>
     <string name="error_save_failed">Não foi possível guardar. Tente novamente.</string>
     <string name="error_delete_failed">Não foi possível eliminar. Tente novamente.</string>
+    <string name="a11y_clear_search">Limpar pesquisa</string>
+    <string name="no_search_results">Nenhum resultado</string>
+    <string name="selection_select_all">Selecionar tudo</string>
+    <string name="selection_done">Concluído</string>
 </resources>

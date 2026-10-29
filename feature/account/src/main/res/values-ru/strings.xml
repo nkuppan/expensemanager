@@ -60,4 +60,5 @@
     <string name="account_delete_message_no_transactions">На этом счёте нет операций. Удаление нельзя отменить.</string>
     <string name="account_delete_last_title">Это ваш единственный счёт</string>
     <string name="account_delete_last_message">Для каждой операции нужен счёт. Сначала создайте другой счёт — тогда этот можно будет удалить.</string>
+    <string name="search_accounts">Поиск счетов</string>
 </resources>

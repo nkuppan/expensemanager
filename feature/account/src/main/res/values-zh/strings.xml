@@ -54,4 +54,5 @@
     <string name="account_delete_message_no_transactions">此账户没有交易。删除后无法撤消。</string>
     <string name="account_delete_last_title">这是您唯一的账户</string>
     <string name="account_delete_last_message">每笔交易都需要一个账户。请先创建另一个账户，然后才能删除此账户。</string>
+    <string name="search_accounts">搜索账户</string>
 </resources>

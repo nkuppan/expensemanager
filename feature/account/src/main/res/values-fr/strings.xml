@@ -56,4 +56,5 @@
     <string name="account_delete_message_no_transactions">Ce compte n\'a aucune transaction. Sa suppression est irréversible.</string>
     <string name="account_delete_last_title">C\'est votre seul compte</string>
     <string name="account_delete_last_message">Chaque transaction nécessite un compte. Créez d\'abord un autre compte, puis vous pourrez supprimer celui-ci.</string>
+    <string name="search_accounts">Rechercher des comptes</string>
 </resources>

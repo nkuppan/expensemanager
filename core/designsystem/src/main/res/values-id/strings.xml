@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Pilih ikon</string>
     <string name="error_save_failed">Tidak dapat menyimpan. Coba lagi.</string>
     <string name="error_delete_failed">Tidak dapat menghapus. Coba lagi.</string>
+    <string name="a11y_clear_search">Hapus pencarian</string>
+    <string name="no_search_results">Tidak ada yang cocok</string>
+    <string name="selection_select_all">Pilih semua</string>
+    <string name="selection_done">Selesai</string>
 </resources>

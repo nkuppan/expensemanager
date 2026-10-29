@@ -54,4 +54,5 @@
     <string name="account_delete_message_no_transactions">このアカウントには取引がありません。削除すると元に戻せません。</string>
     <string name="account_delete_last_title">これが唯一のアカウントです</string>
     <string name="account_delete_last_message">取引にはアカウントが必要です。先に別のアカウントを作成してから、このアカウントを削除してください。</string>
+    <string name="search_accounts">口座を検索</string>
 </resources>

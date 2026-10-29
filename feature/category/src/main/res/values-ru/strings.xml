@@ -52,4 +52,5 @@
         <item quantity="many">%d элементов выбрано</item>
         <item quantity="other">%d элемента выбрано</item>
     </plurals>
+    <string name="search_categories">Поиск категорий</string>
 </resources>

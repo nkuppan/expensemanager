@@ -56,4 +56,5 @@
     <string name="account_delete_message_no_transactions">इस खाते में कोई लेन-देन नहीं है। इसे हटाने के बाद पूर्ववत नहीं किया जा सकता।</string>
     <string name="account_delete_last_title">यह आपका एकमात्र खाता है</string>
     <string name="account_delete_last_message">हर लेन-देन के लिए एक खाता ज़रूरी है। पहले एक और खाता बनाएं, फिर आप इसे हटा सकते हैं।</string>
+    <string name="search_accounts">खाते खोजें</string>
 </resources>

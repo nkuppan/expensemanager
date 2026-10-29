@@ -56,4 +56,5 @@
         <item quantity="many">تم تحديد %d عنصرًا</item>
         <item quantity="other">تم تحديد %d عنصر</item>
     </plurals>
+    <string name="search_categories">البحث في الفئات</string>
 </resources>

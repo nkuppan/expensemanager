@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Select icon</string>
     <string name="error_save_failed">Couldn\'t save. Please try again.</string>
     <string name="error_delete_failed">Couldn\'t delete. Please try again.</string>
+    <string name="a11y_clear_search">Clear search</string>
+    <string name="no_search_results">No matches</string>
+    <string name="selection_select_all">Select all</string>
+    <string name="selection_done">Done</string>
 </resources>

@@ -46,4 +46,5 @@
     <plurals name="items_selected">
         <item quantity="other">%d đã chọn</item>
     </plurals>
+    <string name="search_categories">Tìm danh mục</string>
 </resources>

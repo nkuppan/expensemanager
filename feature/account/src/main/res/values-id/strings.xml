@@ -54,4 +54,5 @@
     <string name="account_delete_message_no_transactions">Akun ini tidak memiliki transaksi. Penghapusan tidak dapat dibatalkan.</string>
     <string name="account_delete_last_title">Ini satu-satunya akun Anda</string>
     <string name="account_delete_last_message">Setiap transaksi memerlukan akun. Buat akun lain terlebih dahulu, lalu Anda dapat menghapus akun ini.</string>
+    <string name="search_accounts">Cari akun</string>
 </resources>

@@ -43,4 +43,8 @@
     <string name="a11y_select_icon">Wybierz ikonę</string>
     <string name="error_save_failed">Nie udało się zapisać. Spróbuj ponownie.</string>
     <string name="error_delete_failed">Nie udało się usunąć. Spróbuj ponownie.</string>
+    <string name="a11y_clear_search">Wyczyść wyszukiwanie</string>
+    <string name="no_search_results">Brak wyników</string>
+    <string name="selection_select_all">Zaznacz wszystko</string>
+    <string name="selection_done">Gotowe</string>
 </resources>

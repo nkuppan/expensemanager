@@ -320,7 +320,7 @@ private fun CompactAmountCell(
                 modifier = Modifier.size(12.dp),
             )
             Spacer(Modifier.width(4.dp))
-            Text(
+            SingleLineText(
                 text = label,
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Medium,
@@ -382,19 +382,24 @@ private fun CompactBalanceCell(
 @AppPreviewsLightAndDarkMode
 @Composable
 private fun AmountViewPreview() {
-    val AMOUNT_VALUE = "100000.0$"
+    val amount = "100000.0$"
     ExpenseManagerPreviewTheme {
-        AmountInfoWidget(
-            expenseAmount = AMOUNT_VALUE,
-            incomeAmount = AMOUNT_VALUE,
-            balanceAmount = AMOUNT_VALUE,
-            transactionPeriod = "This Month(Oct 2023)",
-        )
-        AmountInfoWidgetCompact(
-            expenseAmount = AMOUNT_VALUE,
-            incomeAmount = AMOUNT_VALUE,
-            balanceAmount = AMOUNT_VALUE,
-            transactionPeriod = "This Month(Oct 2023)",
-        )
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            AmountInfoWidget(
+                expenseAmount = amount,
+                incomeAmount = amount,
+                balanceAmount = amount,
+                transactionPeriod = "This Month(Oct 2023)",
+            )
+            AmountInfoWidgetCompact(
+                expenseAmount = amount,
+                incomeAmount = amount,
+                balanceAmount = amount,
+                transactionPeriod = "This Month(Oct 2023)",
+            )
+        }
     }
 }

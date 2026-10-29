@@ -56,4 +56,5 @@
     <string name="account_delete_message_no_transactions">Esta conta não tem transações. A eliminação não pode ser anulada.</string>
     <string name="account_delete_last_title">Esta é a sua única conta</string>
     <string name="account_delete_last_message">Cada transação precisa de uma conta. Crie primeiro outra conta e depois poderá eliminar esta.</string>
+    <string name="search_accounts">Pesquisar contas</string>
 </resources>

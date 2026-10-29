@@ -56,4 +56,5 @@
     <string name="account_delete_message_no_transactions">Bu hesapta işlem yok. Silme işlemi geri alınamaz.</string>
     <string name="account_delete_last_title">Bu sizin tek hesabınız</string>
     <string name="account_delete_last_message">Her işlem bir hesap gerektirir. Önce başka bir hesap oluşturun, ardından bunu silebilirsiniz.</string>
+    <string name="search_accounts">Hesap ara</string>
 </resources>

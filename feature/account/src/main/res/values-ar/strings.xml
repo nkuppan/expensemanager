@@ -64,4 +64,5 @@
     <string name="account_delete_message_no_transactions">لا توجد معاملات في هذا الحساب. لا يمكن التراجع عن الحذف.</string>
     <string name="account_delete_last_title">هذا هو حسابك الوحيد</string>
     <string name="account_delete_last_message">تحتاج كل معاملة إلى حساب. أنشئ حسابًا آخر أولاً، ثم يمكنك حذف هذا الحساب.</string>
+    <string name="search_accounts">البحث في الحسابات</string>
 </resources>

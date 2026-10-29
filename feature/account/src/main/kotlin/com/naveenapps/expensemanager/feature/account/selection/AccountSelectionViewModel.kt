@@ -75,6 +75,13 @@ class AccountSelectionViewModel(
         _selectedAccounts.value = emptyList()
     }
 
+    /** Ticks or unticks all of [accounts] at once ("Select all" for what's listed). */
+    fun setSelection(accounts: List<AccountUiModel>, selected: Boolean) {
+        val ids = accounts.map { it.id }.toSet()
+        val others = _selectedAccounts.value.filterNot { it.id in ids }
+        _selectedAccounts.value = if (selected) others + accounts else others
+    }
+
     fun selectThisAccount(account: AccountUiModel, selected: Boolean) {
         viewModelScope.launch {
             val selectedAccounts = _selectedAccounts.value.toMutableList()
