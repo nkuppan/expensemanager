@@ -8,12 +8,15 @@ import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_CATEGORY
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CategorySelectionViewModelTest : BaseCoroutineTest() {
 
     private val repository: CategoryRepository = mock()
@@ -125,11 +128,13 @@ class CategorySelectionViewModelTest : BaseCoroutineTest() {
         whenever(repository.getCategories()).thenReturn(flowOf(listOf(rent, salary, food, bonus)))
 
         val viewModel = CategorySelectionViewModel(getCategoriesUseCase)
+        // The list starts empty and is filled once the categories load on the test dispatcher.
+        advanceUntilIdle()
 
-        viewModel.categories.test {
-            // Income first, then expense; each group stays alphabetical.
-            Truth.assertThat(awaitItem().map { it.id }).containsExactly("bonus", "salary", "food", "rent").inOrder()
-        }
+        // Income first, then expense; each group stays alphabetical (the use case sorts by name).
+        Truth.assertThat(viewModel.categories.value.map { it.id })
+            .containsExactly("bonus", "salary", "food", "rent")
+            .inOrder()
     }
 
     @Test
