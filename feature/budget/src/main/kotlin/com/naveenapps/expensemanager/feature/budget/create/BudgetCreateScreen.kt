@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.budget.create
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,7 +33,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -54,13 +52,13 @@ import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AutoSelectTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SegmentedSwitch
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.YearPicker
@@ -71,6 +69,7 @@ import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.budget.R
+import com.naveenapps.expensemanager.feature.budget.label
 import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
 import java.util.Date
@@ -291,37 +290,12 @@ fun BudgetCreateScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        AppFilterChip(
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .weight(1f),
-                            centerAlign = true,
-                            filterName = stringResource(id = R.string.monthly),
-                            isSelected = periodType == BudgetPeriod.MONTHLY,
-                            onClick = {
-                                onAction.invoke(
-                                    BudgetCreateAction.SelectPeriodType(BudgetPeriod.MONTHLY),
-                                )
-                            },
-                        )
-                        AppFilterChip(
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .weight(1f),
-                            centerAlign = true,
-                            filterName = stringResource(id = R.string.annual),
-                            isSelected = periodType == BudgetPeriod.YEARLY,
-                            onClick = {
-                                onAction.invoke(
-                                    BudgetCreateAction.SelectPeriodType(BudgetPeriod.YEARLY),
-                                )
-                            },
-                        )
-                    }
+                    SegmentedSwitch(
+                        options = BudgetPeriod.entries,
+                        selected = periodType,
+                        onSelect = { onAction.invoke(BudgetCreateAction.SelectPeriodType(it)) },
+                        label = { it.label() },
+                    )
                     // Optional: left empty, the budget is called what the hint says ("This
                     // month's budget", "October 2026 budget", ...), following the period above.
                     val selectedPeriodKey = if (periodType == BudgetPeriod.YEARLY) {

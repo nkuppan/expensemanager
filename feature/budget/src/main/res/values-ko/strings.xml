@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">올해 예산</string>
     <string name="budget_title_period">%1$s 예산</string>
     <string name="budget_name_optional">이름(선택 사항)</string>
+    <string name="budget_remaining">남은 금액</string>
+    <string name="budget_over">예산 초과</string>
+    <string name="budget_spent">지출</string>
+    <string name="budget_limit">한도</string>
+    <string name="budget_per_day">%1$s/일</string>
+    <string name="budget_safe_to_spend">사용 가능 금액: %2$s 남은 기간 동안 %1$s</string>
+    <string name="a11y_edit_budget">예산 편집</string>
+    <string name="budget_percent_used">%1$d%% 사용</string>
+    <string name="budget_over_hint">이 예산보다 더 많이 지출했습니다.</string>
+    <string name="budget_spending_by_category">카테고리별 지출</string>
+    <string name="budget_transactions">거래</string>
+    <string name="budget_show_all_transactions">모든 거래 보기</string>
 </resources>

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
-import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 
 sealed class DashboardAction {
@@ -14,9 +14,12 @@ sealed class DashboardAction {
 
     data object OpenBudgetList : DashboardAction()
 
-    data object OpenBudgetCreate : DashboardAction()
+    /** [period] preselects Monthly or Annual on the create screen. */
+    data class OpenBudgetCreate(val period: BudgetPeriod? = null) : DashboardAction()
 
-    data class OpenBudgetDetails(val budgetUiModel: BudgetUiModel) : DashboardAction()
+    data class OpenBudgetDetails(val id: String) : DashboardAction()
+
+    data class EditBudget(val id: String) : DashboardAction()
 
     data class OpenAccountEdit(val account: AccountUiModel) : DashboardAction()
 

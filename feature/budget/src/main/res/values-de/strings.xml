@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">Budget für dieses Jahr</string>
     <string name="budget_title_period">Budget %1$s</string>
     <string name="budget_name_optional">Name (optional)</string>
+    <string name="budget_remaining">Verbleibend</string>
+    <string name="budget_over">Budget überschritten</string>
+    <string name="budget_spent">Ausgegeben</string>
+    <string name="budget_limit">Limit</string>
+    <string name="budget_per_day">%1$s/Tag</string>
+    <string name="budget_safe_to_spend">Sicher ausgeben: %1$s für den Rest von %2$s</string>
+    <string name="a11y_edit_budget">Budget bearbeiten</string>
+    <string name="budget_percent_used">%1$d %% genutzt</string>
+    <string name="budget_over_hint">Du hast mehr ausgegeben, als dieses Budget erlaubt.</string>
+    <string name="budget_spending_by_category">Ausgaben nach Kategorie</string>
+    <string name="budget_transactions">Buchungen</string>
+    <string name="budget_show_all_transactions">Alle Buchungen anzeigen</string>
 </resources>

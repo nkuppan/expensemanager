@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">ميزانية هذا العام</string>
     <string name="budget_title_period">ميزانية %1$s</string>
     <string name="budget_name_optional">الاسم (اختياري)</string>
+    <string name="budget_remaining">المتبقي</string>
+    <string name="budget_over">تجاوز الميزانية</string>
+    <string name="budget_spent">المُنفق</string>
+    <string name="budget_limit">الحد</string>
+    <string name="budget_per_day">%1$s/يوم</string>
+    <string name="budget_safe_to_spend">آمن للإنفاق: %1$s لبقية %2$s</string>
+    <string name="a11y_edit_budget">تعديل الميزانية</string>
+    <string name="budget_percent_used">تم استخدام %1$d%%</string>
+    <string name="budget_over_hint">لقد أنفقت أكثر مما تسمح به هذه الميزانية.</string>
+    <string name="budget_spending_by_category">الإنفاق حسب الفئة</string>
+    <string name="budget_transactions">المعاملات</string>
+    <string name="budget_show_all_transactions">عرض كل المعاملات</string>
 </resources>

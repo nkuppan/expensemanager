@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,7 +44,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.colorResource
@@ -72,9 +70,6 @@ import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
-import com.naveenapps.expensemanager.feature.budget.list.DashBoardBudgetItem
-import com.naveenapps.expensemanager.feature.budget.list.getRandomBudgetUiModel
-import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
@@ -248,88 +243,11 @@ private fun DashboardScreenContent(
                         onAction.invoke(DashboardAction.OpenBudgetList)
                     },
                 )
-                if (state.budgets.isNotEmpty()) {
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        contentPadding = PaddingValues(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        items(state.budgets, key = { it.id }) { budget ->
-                            DashBoardBudgetItem(
-                                modifier = Modifier,
-                                name = budget.title.text(),
-                                progressBarColor = budget.progressBarColor,
-                                amount = budget.amount.amountString,
-                                transactionAmount = budget.transactionAmount.amountString,
-                                percentage = budget.percent,
-                                onItemClick = {
-                                    onAction.invoke(DashboardAction.OpenBudgetDetails(budget))
-                                },
-                            )
-                        }
-                    }
-                } else if (state.showCreateBudgetForMonth != null) {
-                    AppCardView(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp),
-                        border = BorderStroke(
-                            width = 1.dp,
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
-                        ),
-                        onClick = { onAction.invoke(DashboardAction.OpenBudgetCreate) },
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 18.dp, vertical = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp),
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(44.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.primaryContainer),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    modifier = Modifier.size(20.dp),
-                                )
-                            }
-                            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-                                Text(
-                                    text = stringResource(
-                                        id = R.string.no_budget_for_month,
-                                        state.showCreateBudgetForMonth.text(),
-                                    ),
-                                    style = MaterialTheme.typography.titleSmall.copy(
-                                        fontWeight = FontWeight.SemiBold,
-                                    ),
-                                    color = MaterialTheme.colorScheme.onSurface,
-                                )
-                                Text(
-                                    text = stringResource(id = R.string.tap_to_set_spending_limit),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        .copy(alpha = 0.7f),
-                                )
-                            }
-                        }
-                    }
-                } else {
-                    EmptyItem(
-                        emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.no_budget_available_short),
-                        icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.CenterHorizontally),
-                    )
-                }
+                HomeBudgetCard(
+                    budgets = state.homeBudgets,
+                    onAction = onAction,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
         }
 
@@ -452,7 +370,6 @@ fun DashboardScaffoldContentPreview() {
                     }.take(5),
                     categoryType = CategoryType.EXPENSE,
                 ),
-                budgets = getRandomBudgetUiModel(5),
                 transactions = listOf(
                     getTransactionItem("1"),
                     getTransactionItem("2"),
@@ -562,7 +479,7 @@ private fun GettingStartedSection(
             when (step) {
                 SetupStep.FirstExpense -> onAction(DashboardAction.OpenTransactionEdit(null))
                 SetupStep.Accounts -> onAction(DashboardAction.OpenAccountList)
-                SetupStep.Budget -> onAction(DashboardAction.OpenBudgetCreate)
+                SetupStep.Budget -> onAction(DashboardAction.OpenBudgetCreate())
                 SetupStep.Currency -> onAction(DashboardAction.OpenCurrency)
             }
         },

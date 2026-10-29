@@ -103,6 +103,10 @@ class BudgetCreateViewModel(
             }
         }.launchIn(viewModelScope)
 
+        // A new budget opened from Home's Annual tab starts as annual.
+        savedStateHandle.get<String>(ExpenseManagerArgsNames.PERIOD)
+            ?.let { name -> BudgetPeriod.entries.find { it.name == name } }
+            ?.let { period -> _state.update { it.copy(periodType = period) } }
         readBudgetInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
     }
 

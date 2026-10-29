@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"Thêm chi tiêu, thu nhập và chuyển khoản của bạn tại đây. "</string>
     <string name="help"><![CDATA[Trợ giúp & thông tin]]></string>
     <string name="ok">OK</string>
-    <string name="no_budget_for_month">Không có %1$s</string>
     <string name="tap_to_set_spending_limit">Nhấn để đặt hạn mức chi tiêu</string>
     <string name="first_expense_action">Thêm khoản chi</string>
     <string name="getting_started_title">Bắt đầu</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">Các lần sao lưu gần đây thất bại. Hãy kiểm tra cài đặt để giữ dữ liệu an toàn.</string>
     <string name="auto_backup_warning_later">Để sau</string>
     <string name="auto_backup_warning_fix">Khắc phục</string>
+    <string name="home_budget_none">Chưa có ngân sách cho %1$s</string>
+    <string name="home_budget_create">Đặt ngân sách</string>
 </resources>

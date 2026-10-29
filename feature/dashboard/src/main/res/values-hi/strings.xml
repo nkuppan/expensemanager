@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"अपने खर्च, आय और ट्रांसफर यहां जोड़ें। "</string>
     <string name="help"><![CDATA[मदद और जानकारी]]></string>
     <string name="ok">OK</string>
-    <string name="no_budget_for_month">कोई %1$s नहीं</string>
     <string name="tap_to_set_spending_limit">खर्च की सीमा तय करने के लिए टैप करें</string>
     <string name="first_expense_action">खर्च जोड़ें</string>
     <string name="getting_started_title">शुरू करें</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">हाल के बैकअप विफल रहे। अपना डेटा सुरक्षित रखने के लिए बैकअप सेटिंग जाँचें।</string>
     <string name="auto_backup_warning_later">बाद में</string>
     <string name="auto_backup_warning_fix">ठीक करें</string>
+    <string name="home_budget_none">%1$s के लिए अभी कोई बजट नहीं</string>
+    <string name="home_budget_create">बजट तय करें</string>
 </resources>

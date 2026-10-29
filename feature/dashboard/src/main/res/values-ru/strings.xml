@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"Добавляйте здесь свои расходы, доходы и переводы. "</string>
     <string name="help"><![CDATA[Помощь и информация]]></string>
     <string name="ok">ОК</string>
-    <string name="no_budget_for_month">Нет %1$s</string>
     <string name="tap_to_set_spending_limit">Нажмите, чтобы установить лимит расходов</string>
     <string name="first_expense_action">Добавить расход</string>
     <string name="getting_started_title">Начало работы</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">Последние копии не удались. Проверьте настройки, чтобы данные были в безопасности.</string>
     <string name="auto_backup_warning_later">Позже</string>
     <string name="auto_backup_warning_fix">Исправить</string>
+    <string name="home_budget_none">Бюджета на %1$s пока нет</string>
+    <string name="home_budget_create">Задать бюджет</string>
 </resources>

@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">Anggaran tahun ini</string>
     <string name="budget_title_period">Anggaran %1$s</string>
     <string name="budget_name_optional">Nama (opsional)</string>
+    <string name="budget_remaining">Sisa</string>
+    <string name="budget_over">Melebihi anggaran</string>
+    <string name="budget_spent">Terpakai</string>
+    <string name="budget_limit">Batas</string>
+    <string name="budget_per_day">%1$s/hari</string>
+    <string name="budget_safe_to_spend">Aman dibelanjakan: %1$s untuk sisa %2$s</string>
+    <string name="a11y_edit_budget">Edit anggaran</string>
+    <string name="budget_percent_used">%1$d%% terpakai</string>
+    <string name="budget_over_hint">Pengeluaran Anda melebihi anggaran ini.</string>
+    <string name="budget_spending_by_category">Pengeluaran per kategori</string>
+    <string name="budget_transactions">Transaksi</string>
+    <string name="budget_show_all_transactions">Tampilkan semua transaksi</string>
 </resources>

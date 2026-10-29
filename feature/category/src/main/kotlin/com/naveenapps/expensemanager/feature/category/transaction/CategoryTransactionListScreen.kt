@@ -1,7 +1,5 @@
 package com.naveenapps.expensemanager.feature.category.transaction
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -26,10 +24,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -37,17 +33,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.toColorInt
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.UiState
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
-import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
@@ -176,7 +167,6 @@ private fun CategoryTransactionListScreenContent(
         }
 
         is UiState.Success -> {
-            val indicationSource = remember { MutableInteractionSource() }
             val isExpense = state.data.categoryType.isExpense()
             val categoryTransactions = state.data.categoryTransactions
 
@@ -195,39 +185,16 @@ private fun CategoryTransactionListScreenContent(
                 }
                 // ── Pie chart card ─────────────────────────────────
                 item(key = "chart") {
-                    AppCardView(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 16.dp),
-                    ) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            PieChartView(
-                                totalAmountText = (
-                                    if (isExpense) {
-                                        stringResource(id = R.string.expense)
-                                    } else {
-                                        stringResource(id = R.string.income)
-                                    }
-                                    ) + "\n" + state.data.totalAmount.amountString,
-                                chartData = state.data.pieChartData.map {
-                                    PieChartUiData(
-                                        it.titleResId?.let { resId -> stringResource(resId) } ?: it.name,
-                                        it.value,
-                                        it.color.toColorInt(),
-                                    )
-                                },
-                                chartHeight = 600,
-                                hideValues = state.data.hideValues,
-                                modifier = Modifier
-                                    .padding(vertical = 12.dp)
-                                    .clickable(indicationSource, null) {
-                                        changeChart.invoke()
-                                    },
-                            )
-
+                    CategorySpendingChartCard(
+                        state = state.data,
+                        centerLabel = if (isExpense) {
+                            stringResource(id = R.string.expense)
+                        } else {
+                            stringResource(id = R.string.income)
+                        },
+                        onChartClick = changeChart,
+                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+                        footer = {
                             // Tap hint
                             Text(
                                 text = stringResource(R.string.tap_chart_to_switch_to) +
@@ -236,8 +203,8 @@ private fun CategoryTransactionListScreenContent(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
                                 modifier = Modifier.padding(bottom = 14.dp),
                             )
-                        }
-                    }
+                        },
+                    )
                 }
 
                 item(key = "section_header") {
@@ -283,40 +250,10 @@ private fun CategoryTransactionListScreenContent(
                     }
                 } else {
                     // ── Category list — single grouped card ────────
-                    item(key = "category_list") {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(16.dp)),
-                        ) {
-                            categoryTransactions.forEachIndexed { index, categoryTransaction ->
-                                AppCardView(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 16.dp, end = 16.dp, bottom = 2.dp),
-                                    shape = AppCardViewDefaults.cardShape(
-                                        index,
-                                        categoryTransactions,
-                                    ),
-                                ) {
-                                    CategoryTransactionItem(
-                                        modifier = Modifier
-                                            .clickable {
-                                                onItemClick.invoke(categoryTransaction)
-                                            },
-                                        name = categoryTransaction.category.titleResId?.let {
-                                            stringResource(it)
-                                        } ?: categoryTransaction.category.name,
-                                        icon = categoryTransaction.category.storedIcon.name,
-                                        iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
-                                        customImagePath = categoryTransaction.category.storedIcon.customImagePath,
-                                        amount = categoryTransaction.amount.amountString ?: "",
-                                        percentage = categoryTransaction.percent,
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    categorySpendingItems(
+                        categoryTransactions = categoryTransactions,
+                        onItemClick = onItemClick,
+                    )
                 }
             }
         }

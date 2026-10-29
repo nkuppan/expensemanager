@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">今年の予算</string>
     <string name="budget_title_period">%1$sの予算</string>
     <string name="budget_name_optional">名前（任意）</string>
+    <string name="budget_remaining">残り</string>
+    <string name="budget_over">予算超過</string>
+    <string name="budget_spent">支出</string>
+    <string name="budget_limit">上限</string>
+    <string name="budget_per_day">%1$s/日</string>
+    <string name="budget_safe_to_spend">使える金額：%2$sの残り期間は%1$s</string>
+    <string name="a11y_edit_budget">予算を編集</string>
+    <string name="budget_percent_used">%1$d%% 使用</string>
+    <string name="budget_over_hint">この予算を超えて支出しています。</string>
+    <string name="budget_spending_by_category">カテゴリ別の支出</string>
+    <string name="budget_transactions">取引</string>
+    <string name="budget_show_all_transactions">すべての取引を表示</string>
 </resources>

@@ -70,8 +70,9 @@ sealed class ExpenseManagerScreens {
     @Serializable
     data class CategoryDetails(val id: String?) : ExpenseManagerScreens()
 
+    /** [period] (a BudgetPeriod name) preselects Monthly or Annual for a new budget. */
     @Serializable
-    data class BudgetCreate(val id: String?) : ExpenseManagerScreens()
+    data class BudgetCreate(val id: String?, val period: String? = null) : ExpenseManagerScreens()
 
     @Serializable
     data class BudgetDetails(val id: String?) : ExpenseManagerScreens()
@@ -91,4 +92,5 @@ sealed class ExpenseManagerScreens {
 object ExpenseManagerArgsNames {
     const val ID: String = "id"
     const val REPEAT: String = "repeat"
+    const val PERIOD: String = "period"
 }

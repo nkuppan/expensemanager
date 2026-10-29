@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">Бюджет на этот год</string>
     <string name="budget_title_period">Бюджет: %1$s</string>
     <string name="budget_name_optional">Название (необязательно)</string>
+    <string name="budget_remaining">Осталось</string>
+    <string name="budget_over">Бюджет превышен</string>
+    <string name="budget_spent">Потрачено</string>
+    <string name="budget_limit">Лимит</string>
+    <string name="budget_per_day">%1$s/день</string>
+    <string name="budget_safe_to_spend">Можно тратить: %1$s до конца периода %2$s</string>
+    <string name="a11y_edit_budget">Изменить бюджет</string>
+    <string name="budget_percent_used">Использовано %1$d%%</string>
+    <string name="budget_over_hint">Вы потратили больше, чем позволяет этот бюджет.</string>
+    <string name="budget_spending_by_category">Расходы по категориям</string>
+    <string name="budget_transactions">Операции</string>
+    <string name="budget_show_all_transactions">Показать все операции</string>
 </resources>

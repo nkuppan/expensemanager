@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"Agrega aquí tus gastos, ingresos y transferencias. "</string>
     <string name="help"><![CDATA[Ayuda e información]]></string>
     <string name="ok">Aceptar</string>
-    <string name="no_budget_for_month">No %1$s</string>
     <string name="tap_to_set_spending_limit">Toca para establecer un límite de gasto</string>
     <string name="first_expense_action">Añadir gasto</string>
     <string name="getting_started_title">Primeros pasos</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">Las últimas copias fallaron. Revisa los ajustes de copia para mantener tus datos seguros.</string>
     <string name="auto_backup_warning_later">Más tarde</string>
     <string name="auto_backup_warning_fix">Arreglar</string>
+    <string name="home_budget_none">Aún no hay presupuesto para %1$s</string>
+    <string name="home_budget_create">Fijar un presupuesto</string>
 </resources>

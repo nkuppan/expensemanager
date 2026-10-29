@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"Dodawaj tutaj swoje wydatki, przychody i przelewy. "</string>
     <string name="help"><![CDATA[Pomoc i informacje]]></string>
     <string name="ok">OK</string>
-    <string name="no_budget_for_month">Brak %1$s</string>
     <string name="tap_to_set_spending_limit">Dotknij, aby ustawić limit wydatków</string>
     <string name="first_expense_action">Dodaj wydatek</string>
     <string name="getting_started_title">Pierwsze kroki</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">Ostatnie kopie nie powiodły się. Sprawdź ustawienia, aby chronić swoje dane.</string>
     <string name="auto_backup_warning_later">Później</string>
     <string name="auto_backup_warning_fix">Napraw</string>
+    <string name="home_budget_none">Brak budżetu na %1$s</string>
+    <string name="home_budget_create">Ustaw budżet</string>
 </resources>

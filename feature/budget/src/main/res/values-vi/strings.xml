@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">Ngân sách năm nay</string>
     <string name="budget_title_period">Ngân sách %1$s</string>
     <string name="budget_name_optional">Tên (không bắt buộc)</string>
+    <string name="budget_remaining">Còn lại</string>
+    <string name="budget_over">Vượt ngân sách</string>
+    <string name="budget_spent">Đã chi</string>
+    <string name="budget_limit">Hạn mức</string>
+    <string name="budget_per_day">%1$s/ngày</string>
+    <string name="budget_safe_to_spend">Có thể chi: %1$s cho phần còn lại của %2$s</string>
+    <string name="a11y_edit_budget">Sửa ngân sách</string>
+    <string name="budget_percent_used">Đã dùng %1$d%%</string>
+    <string name="budget_over_hint">Bạn đã chi nhiều hơn ngân sách này cho phép.</string>
+    <string name="budget_spending_by_category">Chi tiêu theo danh mục</string>
+    <string name="budget_transactions">Giao dịch</string>
+    <string name="budget_show_all_transactions">Hiện tất cả giao dịch</string>
 </resources>

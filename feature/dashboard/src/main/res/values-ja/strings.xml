@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"支出、収入、振替をここに記録しましょう。 "</string>
     <string name="help"><![CDATA[ヘルプ&情報]]></string>
     <string name="ok">OK</string>
-    <string name="no_budget_for_month">%1$s なし</string>
     <string name="tap_to_set_spending_limit">支出上限を設定するにはタップしてください</string>
     <string name="first_expense_action">支出を追加</string>
     <string name="getting_started_title">はじめに</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">最近のバックアップに失敗しました。データを守るために設定を確認してください。</string>
     <string name="auto_backup_warning_later">後で</string>
     <string name="auto_backup_warning_fix">修正</string>
+    <string name="home_budget_none">%1$sの予算はまだありません</string>
+    <string name="home_budget_create">予算を設定</string>
 </resources>

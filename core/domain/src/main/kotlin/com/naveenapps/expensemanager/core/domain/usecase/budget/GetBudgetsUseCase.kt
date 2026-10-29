@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.BudgetTitle
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
@@ -87,4 +88,6 @@ data class BudgetUiModel(
     val transactionAmount: Amount,
     val percent: Float,
     val transactions: List<TransactionUiItem>? = null,
+    /** Spending per category (pie chart and list); only filled for a budget's details. */
+    val categorySpending: CategoryTransactionState? = null,
 )

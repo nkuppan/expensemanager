@@ -3,6 +3,10 @@ package com.naveenapps.expensemanager.core.domain.usecase.budget
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.groupByCategory
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.toChartModel
+import com.naveenapps.expensemanager.core.model.CategoryTransactionState
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
@@ -38,6 +42,8 @@ class GetBudgetDetailUseCase(
                 }
             val transactionAmount = budgetTransactions?.sumOf { it.amount.amount } ?: 0.0
             val percent = (transactionAmount / budget.amount).toFloat() * 100
+            val (byCategory, total) = budgetTransactions.orEmpty()
+                .groupByCategory(CategoryType.EXPENSE) { getFormattedAmountUseCase(it, currency) }
             budget.toBudgetUiModel(
                 title = budget.title(),
                 budgetAmount = getFormattedAmountUseCase(budget.amount, currency),
@@ -48,6 +54,13 @@ class GetBudgetDetailUseCase(
                         getFormattedAmountUseCase(it.amount.amount, currency),
                     )
                 },
+            ).copy(
+                categorySpending = CategoryTransactionState(
+                    totalAmount = getFormattedAmountUseCase(total, currency),
+                    pieChartData = byCategory.map { it.toChartModel() },
+                    categoryTransactions = byCategory,
+                    categoryType = CategoryType.EXPENSE,
+                ),
             )
         }
     }

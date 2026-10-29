@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"Add your expenses, incomes and transfers here. "</string>
     <string name="help"><![CDATA[Help & info]]></string>
     <string name="ok">OK</string>
-    <string name="no_budget_for_month">No %1$s</string>
     <string name="tap_to_set_spending_limit">Tap to set a spending limit</string>
     <string name="first_expense_action">Add expense</string>
     <string name="getting_started_title">Get started</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">Recent backups failed. Check your backup settings to keep your data safe.</string>
     <string name="auto_backup_warning_later">Later</string>
     <string name="auto_backup_warning_fix">Fix</string>
+    <string name="home_budget_none">No budget for %1$s yet</string>
+    <string name="home_budget_create">Set a budget</string>
 </resources>

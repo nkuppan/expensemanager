@@ -4,10 +4,12 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.PieChartData
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.core.model.isTransfer
 import kotlinx.coroutines.flow.Flow
@@ -27,30 +29,9 @@ class GetTransactionGroupByCategoryUseCase(
         getTransactionWithFilterUseCase.invoke(),
     ) { currency, transactions ->
 
-        // Single pass: filter transfers, group by category, filter by type
-        val byCategory = transactions
-            ?.filterNot { it.type.isTransfer() }
-            ?.groupBy { it.category }
-            ?.filterKeys { it.type == categoryType }
-            ?: emptyMap()
-
-        // Compute per-category sums once; derive total from those — no double iteration
-        val categoryAmounts = byCategory.mapValues { (_, txns) ->
-            txns.sumOf { it.amount.amount }
+        val (categoryTransactions, totalAmount) = transactions.orEmpty().groupByCategory(categoryType) {
+            getFormattedAmountUseCase.invoke(amount = it, currency = currency)
         }
-        val totalAmount = categoryAmounts.values.sum()
-
-        val categoryTransactions = byCategory.entries
-            .map { (category, txns) ->
-                val spent = categoryAmounts.getValue(category)
-                CategoryTransaction(
-                    category = category,
-                    percent = if (totalAmount > 0.0) (spent / totalAmount).toFloat() * 100 else 0f,
-                    amount = getFormattedAmountUseCase.invoke(amount = spent, currency = currency),
-                    transaction = txns,
-                )
-            }
-            .sortedByDescending { it.percent }
 
         val pieChartData: List<PieChartData>
         val newCategoryTransaction: List<CategoryTransaction>
@@ -90,3 +71,34 @@ fun CategoryTransaction.toChartModel(): PieChartData = PieChartData(
     color = this.category.storedIcon.backgroundColor,
     titleResId = this.category.titleResId,
 )
+
+/**
+ * Spending (or income) of [categoryType] per category, largest share first, with the total.
+ * Transfers are left out. Shared by the Categories tab and a budget's details.
+ */
+fun List<Transaction>.groupByCategory(
+    categoryType: CategoryType,
+    formatAmount: (Double) -> Amount,
+): Pair<List<CategoryTransaction>, Double> {
+    // Single pass: filter transfers, group by category, filter by type
+    val byCategory = filterNot { it.type.isTransfer() }
+        .groupBy { it.category }
+        .filterKeys { it.type == categoryType }
+
+    // Compute per-category sums once; derive total from those — no double iteration
+    val categoryAmounts = byCategory.mapValues { (_, txns) -> txns.sumOf { it.amount.amount } }
+    val totalAmount = categoryAmounts.values.sum()
+
+    val categoryTransactions = byCategory.entries
+        .map { (category, txns) ->
+            val spent = categoryAmounts.getValue(category)
+            CategoryTransaction(
+                category = category,
+                percent = if (totalAmount > 0.0) (spent / totalAmount).toFloat() * 100 else 0f,
+                amount = formatAmount(spent),
+                transaction = txns,
+            )
+        }
+        .sortedByDescending { it.percent }
+    return categoryTransactions to totalAmount
+}

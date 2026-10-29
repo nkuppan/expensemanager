@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"Erfasse hier deine Ausgaben, Einnahmen und Überweisungen. "</string>
     <string name="help"><![CDATA[Hilfe & Infos]]></string>
     <string name="ok">OK</string>
-    <string name="no_budget_for_month">Kein %1$s</string>
     <string name="tap_to_set_spending_limit">Tippen, um ein Ausgabenlimit festzulegen</string>
     <string name="first_expense_action">Ausgabe hinzufügen</string>
     <string name="getting_started_title">Los geht\'s</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">Die letzten Sicherungen sind fehlgeschlagen. Prüfe die Einstellungen, damit deine Daten sicher bleiben.</string>
     <string name="auto_backup_warning_later">Später</string>
     <string name="auto_backup_warning_fix">Beheben</string>
+    <string name="home_budget_none">Noch kein Budget für %1$s</string>
+    <string name="home_budget_create">Budget festlegen</string>
 </resources>

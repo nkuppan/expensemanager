@@ -36,4 +36,16 @@
     <string name="budget_title_this_year">Bu yılın bütçesi</string>
     <string name="budget_title_period">%1$s bütçesi</string>
     <string name="budget_name_optional">Ad (isteğe bağlı)</string>
+    <string name="budget_remaining">Kalan</string>
+    <string name="budget_over">Bütçe aşıldı</string>
+    <string name="budget_spent">Harcanan</string>
+    <string name="budget_limit">Limit</string>
+    <string name="budget_per_day">%1$s/gün</string>
+    <string name="budget_safe_to_spend">Güvenle harcanabilir: %2$s sonuna kadar %1$s</string>
+    <string name="a11y_edit_budget">Bütçeyi düzenle</string>
+    <string name="budget_percent_used">%%%1$d kullanıldı</string>
+    <string name="budget_over_hint">Bu bütçenin izin verdiğinden fazla harcadınız.</string>
+    <string name="budget_spending_by_category">Kategoriye göre harcama</string>
+    <string name="budget_transactions">İşlemler</string>
+    <string name="budget_show_all_transactions">Tüm işlemleri göster</string>
 </resources>

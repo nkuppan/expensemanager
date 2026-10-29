@@ -15,7 +15,6 @@
     <string name="transaction_create_message">"أضف مصروفاتك ودخلك وتحويلاتك هنا. "</string>
     <string name="help"><![CDATA[المساعدة والمعلومات]]></string>
     <string name="ok">موافق</string>
-    <string name="no_budget_for_month">لا يوجد %1$s</string>
     <string name="tap_to_set_spending_limit">انقر لتعيين حد للإنفاق</string>
     <string name="first_expense_action">إضافة مصروف</string>
     <string name="getting_started_title">ابدأ الآن</string>
@@ -38,4 +37,6 @@
     <string name="auto_backup_warning_write">فشلت النسخ الاحتياطية الأخيرة. تحقّق من إعدادات النسخ الاحتياطي للحفاظ على بياناتك.</string>
     <string name="auto_backup_warning_later">لاحقًا</string>
     <string name="auto_backup_warning_fix">إصلاح</string>
+    <string name="home_budget_none">لا توجد ميزانية لـ %1$s بعد</string>
+    <string name="home_budget_create">تعيين ميزانية</string>
 </resources>
