@@ -2,35 +2,16 @@ package com.naveenapps.expensemanager.feature.analysis
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
-import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
-import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
-import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
@@ -58,7 +39,6 @@ fun AnalysisGraphScreen(
     val averageData by viewModel.averageData.collectAsStateWithLifecycle()
     val amountUiState by viewModel.amountUiState.collectAsStateWithLifecycle()
     val transactionPeriod by viewModel.transactionPeriod.collectAsStateWithLifecycle()
-    val isCompactSummary by viewModel.isCompactSummary.collectAsStateWithLifecycle()
     val insights by viewModel.insights.collectAsStateWithLifecycle()
     val comparison by viewModel.comparison.collectAsStateWithLifecycle()
 
@@ -71,7 +51,6 @@ fun AnalysisGraphScreen(
         amountUiState = amountUiState,
         transactionPeriod = transactionPeriod,
         averageData = averageData,
-        isCompactSummary = isCompactSummary,
         insights = insights,
         comparison = comparison,
         onTransactionClick = viewModel::openTransaction,
@@ -87,240 +66,45 @@ private fun ChartScreenContent(
     amountUiState: ExpenseFlowState,
     transactionPeriod: String,
     averageData: WholeAverageData,
-    isCompactSummary: Boolean = false,
     insights: AnalysisInsightsUi? = null,
     comparison: PeriodComparisonUi? = null,
     onTransactionClick: (String) -> Unit = {},
     onCategoryClick: (String) -> Unit = {},
     onViewAllCategories: () -> Unit = {},
 ) {
+    // One clear order: the overview first, then where the money goes, how it changed, when it
+    // was spent and the averages, ending with the biggest single expenses.
     Column(
         modifier = Modifier
-            .padding(top = 16.dp, bottom = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp)
             .fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        graphData?.chartData?.let {
-            AppCardView(
-                Modifier.padding(horizontal = 16.dp),
-            ) {
-                ChartScreen(
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-                    chart = it,
-                    isDarkTheme = isDarkTheme,
-                )
-            }
-        } ?: run {
-            EmptyItem(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                emptyItemText = stringResource(id = R.string.no_chart_available),
-                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_analysis,
-            )
+        OverviewCard(
+            flow = amountUiState,
+            comparison = comparison,
+            chart = graphData?.chartData,
+            isDarkTheme = isDarkTheme,
+            period = transactionPeriod,
+        )
+
+        val shownInsights = insights?.takeIf { it.hasExpenses }
+        shownInsights?.let { HighlightsCard(it) }
+        shownInsights?.let {
+            CategoryBreakdownSection(it.categories, onCategoryClick, onViewAllCategories)
         }
 
-        IncomeExpenseBalanceView(
-            expenseFlowState = amountUiState,
-            transactionPeriod = transactionPeriod,
-            isCompact = isCompactSummary,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-        )
-
-        comparison?.let {
-            PeriodComparisonCard(
-                comparison = it,
-                onCategoryClick = onCategoryClick,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
+        comparison?.takeIf { it.categoryChanges.isNotEmpty() }?.let {
+            PeriodComparisonCard(comparison = it, onCategoryClick = onCategoryClick)
         }
 
-        TransactionAverageItem(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            averageData = averageData,
-        )
+        shownInsights?.let { WeekdayCard(it.weekdays, it.busiestWeekday) }
 
-        insights?.let {
-            AnalysisInsightsSection(
-                insights = it,
-                onTransactionClick = onTransactionClick,
-                onCategoryClick = onCategoryClick,
-                onViewAllCategories = onViewAllCategories,
-                modifier = Modifier.padding(horizontal = 16.dp),
-            )
+        AveragesCard(averageData = averageData)
+
+        shownInsights?.takeIf { it.biggestExpenses.isNotEmpty() }?.let {
+            BiggestExpensesSection(it.biggestExpenses, onTransactionClick)
         }
-    }
-}
-
-@Composable
-fun IncomeExpenseBalanceView(
-    expenseFlowState: ExpenseFlowState,
-    transactionPeriod: String,
-    modifier: Modifier = Modifier,
-    isCompact: Boolean = false,
-) {
-    if (isCompact) {
-        AmountInfoWidgetCompact(
-            expenseAmount = expenseFlowState.expense,
-            incomeAmount = expenseFlowState.income,
-            balanceAmount = expenseFlowState.balance,
-            transactionPeriod = transactionPeriod,
-            modifier = modifier,
-        )
-    } else {
-        AmountInfoWidget(
-            expenseAmount = expenseFlowState.expense,
-            incomeAmount = expenseFlowState.income,
-            balanceAmount = expenseFlowState.balance,
-            transactionPeriod = transactionPeriod,
-            modifier = modifier,
-        )
-    }
-}
-
-@Composable
-fun TransactionAverageItem(
-    averageData: WholeAverageData,
-    modifier: Modifier = Modifier,
-) {
-    val incomeColor = colorResource(
-        id = com.naveenapps.expensemanager.core.common.R.color.green_500,
-    )
-    val expenseColor = colorResource(
-        id = com.naveenapps.expensemanager.core.common.R.color.red_500,
-    )
-    val labelColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f)
-
-    AppCardView(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        ) {
-            DashboardWidgetTitle(
-                title = stringResource(id = R.string.average_and_projected),
-            )
-
-            Spacer(Modifier.height(16.dp))
-
-            // ── Column headers ─────────────────────────────────────
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                // Period column — same weight as data rows
-                Spacer(Modifier.weight(1f))
-
-                Text(
-                    text = stringResource(id = com.naveenapps.expensemanager.core.designsystem.R.string.income),
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 0.5.sp,
-                    ),
-                    color = incomeColor.copy(alpha = 0.7f),
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.weight(1f),
-                )
-                Text(
-                    text = stringResource(id = com.naveenapps.expensemanager.core.designsystem.R.string.expense),
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 0.5.sp,
-                    ),
-                    color = expenseColor.copy(alpha = 0.7f),
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-
-            Spacer(Modifier.height(10.dp))
-
-            HorizontalDivider(
-                thickness = 0.5.dp,
-                color = MaterialTheme.colorScheme.outlineVariant
-                    .copy(alpha = 0.35f),
-            )
-
-            Spacer(Modifier.height(10.dp))
-
-            // ── Data rows ──────────────────────────────────────────
-            AverageRow(
-                label = stringResource(id = R.string.day),
-                income = averageData.incomeAverageData.perDay,
-                expense = averageData.expenseAverageData.perDay,
-                incomeColor = incomeColor,
-                expenseColor = expenseColor,
-                labelColor = labelColor,
-            )
-
-            Spacer(Modifier.height(12.dp))
-
-            AverageRow(
-                label = stringResource(id = R.string.week),
-                income = averageData.incomeAverageData.perWeek,
-                expense = averageData.expenseAverageData.perWeek,
-                incomeColor = incomeColor,
-                expenseColor = expenseColor,
-                labelColor = labelColor,
-            )
-
-            Spacer(Modifier.height(12.dp))
-
-            AverageRow(
-                label = stringResource(id = R.string.month),
-                income = averageData.incomeAverageData.perMonth,
-                expense = averageData.expenseAverageData.perMonth,
-                incomeColor = incomeColor,
-                expenseColor = expenseColor,
-                labelColor = labelColor,
-            )
-        }
-    }
-}
-
-@Composable
-private fun AverageRow(
-    label: String,
-    income: String,
-    expense: String,
-    incomeColor: Color,
-    expenseColor: Color,
-    labelColor: Color,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium,
-            ),
-            color = labelColor,
-            modifier = Modifier.weight(1f),
-        )
-        Text(
-            text = income,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = (-0.3).sp,
-            ),
-            color = incomeColor,
-            textAlign = TextAlign.End,
-            modifier = Modifier.weight(1f),
-        )
-        Text(
-            text = expense,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = (-0.3).sp,
-            ),
-            color = expenseColor,
-            textAlign = TextAlign.End,
-            modifier = Modifier.weight(1f),
-        )
     }
 }
 

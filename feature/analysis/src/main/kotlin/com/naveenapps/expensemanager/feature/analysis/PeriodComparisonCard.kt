@@ -2,12 +2,9 @@ package com.naveenapps.expensemanager.feature.analysis
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -21,34 +18,30 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SmallIconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import java.util.Date
-import kotlin.math.abs
-import kotlin.math.roundToInt
 
 /**
- * The selected period against the previous one: spending and income side by side with a change
- * badge, then the categories that moved most. Colours follow the app's meaning, not the
- * direction: more spending is red, more income is green.
+ * The categories whose spending moved most since the previous period (income and expense
+ * totals with their change are on the overview card). More spending is red, less is green.
  */
 @Composable
 fun PeriodComparisonCard(
@@ -56,135 +49,32 @@ fun PeriodComparisonCard(
     modifier: Modifier = Modifier,
     onCategoryClick: (String) -> Unit = {},
 ) {
-    val good = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
-    val bad = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
+    val good = getIncomeColor()
+    val bad = getExpenseColor()
 
-    AppCardView(modifier = modifier.fillMaxWidth()) {
+    AppCardView(modifier = modifier.fillMaxWidth(), cornerSize = AnalysisCardCorner) {
         Column(modifier = Modifier.padding(16.dp)) {
-            DashboardWidgetTitle(title = stringResource(comparison.titleResId))
-            Spacer(modifier = Modifier.height(2.dp))
+            DashboardWidgetTitle(title = stringResource(R.string.compare_biggest_changes))
             Text(
-                text = comparison.periodsLabel,
+                text = stringResource(comparison.titleResId) + " · " + comparison.periodsLabel,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(modifier = Modifier.height(IntrinsicSize.Min)) {
-                ComparisonMetric(
-                    label = stringResource(com.naveenapps.expensemanager.core.designsystem.R.string.expense),
-                    metric = comparison.expense,
-                    upColor = bad,
-                    downColor = good,
-                    modifier = Modifier.weight(1f),
-                )
-                VerticalDivider(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(horizontal = 12.dp),
-                    thickness = 0.5.dp,
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                )
-                ComparisonMetric(
-                    label = stringResource(com.naveenapps.expensemanager.core.designsystem.R.string.income),
-                    metric = comparison.income,
-                    upColor = good,
-                    downColor = bad,
-                    modifier = Modifier.weight(1f),
-                )
-            }
-
-            if (comparison.categoryChanges.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(16.dp))
-                HorizontalDivider(
-                    thickness = 0.5.dp,
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = stringResource(R.string.compare_biggest_changes),
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                comparison.categoryChanges.forEach { change ->
-                    CategoryChangeRow(
-                        change = change,
-                        color = if (change.isIncrease) bad else good,
-                        onClick = { onCategoryClick(change.category.id) },
+            Spacer(modifier = Modifier.height(8.dp))
+            comparison.categoryChanges.forEachIndexed { index, change ->
+                if (index > 0) {
+                    HorizontalDivider(
+                        thickness = 0.5.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
                     )
                 }
+                CategoryChangeRow(
+                    change = change,
+                    color = if (change.isIncrease) bad else good,
+                    onClick = { onCategoryClick(change.category.id) },
+                )
             }
         }
-    }
-}
-
-@Composable
-private fun ComparisonMetric(
-    label: String,
-    metric: ComparisonMetricUi,
-    upColor: Color,
-    downColor: Color,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier.semantics(mergeDescendants = true) {},
-        verticalArrangement = Arrangement.spacedBy(2.dp),
-    ) {
-        Text(
-            text = label.uppercase(),
-            style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 0.5.sp),
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = metric.current,
-            style = MaterialTheme.typography.titleMedium.copy(letterSpacing = (-0.3).sp),
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        ChangeBadge(change = metric.change, upColor = upColor, downColor = downColor)
-        Text(
-            text = stringResource(R.string.compare_was, metric.previous),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-    }
-}
-
-/** "↑ 12%" / "↓ 8%" in a tinted pill, "Same" when flat, or "New" when there was nothing before. */
-@Composable
-private fun ChangeBadge(change: Double?, upColor: Color, downColor: Color) {
-    val percent = change?.let { (abs(it) * 100).roundToInt() }
-    val (text, color, icon) = when {
-        change == null -> Triple(stringResource(R.string.compare_new), MaterialTheme.colorScheme.primary, null)
-        percent == 0 -> Triple(stringResource(R.string.compare_same), MaterialTheme.colorScheme.onSurfaceVariant, null)
-        change > 0 -> Triple("$percent%", upColor, Icons.AutoMirrored.Filled.TrendingUp)
-        else -> Triple("$percent%", downColor, Icons.AutoMirrored.Filled.TrendingDown)
-    }
-    Row(
-        modifier = Modifier
-            .padding(vertical = 2.dp)
-            .background(color.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
-            .padding(horizontal = 8.dp, vertical = 3.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        if (icon != null) {
-            Icon(imageVector = icon, contentDescription = null, tint = color, modifier = Modifier.size(14.dp))
-            Spacer(modifier = Modifier.width(4.dp))
-        }
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = color,
-        )
     }
 }
 
@@ -199,7 +89,7 @@ private fun CategoryChangeRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(vertical = 8.dp)
+            .padding(vertical = 10.dp)
             .semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -229,12 +119,30 @@ private fun CategoryChangeRow(
             )
         }
         Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = change.difference,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = color,
-        )
+        Row(
+            modifier = Modifier
+                .background(color.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
+                .padding(horizontal = 8.dp, vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = if (change.isIncrease) {
+                    Icons.AutoMirrored.Filled.TrendingUp
+                } else {
+                    Icons.AutoMirrored.Filled.TrendingDown
+                },
+                contentDescription = null,
+                tint = color,
+                modifier = Modifier.size(14.dp),
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = change.difference,
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = color,
+            )
+        }
     }
 }
 

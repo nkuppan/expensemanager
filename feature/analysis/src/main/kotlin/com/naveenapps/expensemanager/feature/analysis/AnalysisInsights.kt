@@ -5,9 +5,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -20,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.MoneyOff
 import androidx.compose.material.icons.outlined.Savings
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,10 +32,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLocale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -49,6 +51,8 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
@@ -123,156 +127,119 @@ private fun DayOfWeek.fullName(): String = getDisplayName(DayNameStyle.FULL, Loc
 // region Highlights
 
 /**
- * Three stat rows instead of sentences, so the specific numbers stand out: a tile, a small
- * label, the subject in bold (category / day) and a big percentage on the right. Savings uses the
- * app's income/expense colours; everything else stays in text colours plus the brand accent.
+ * Up to three tiles side by side: top category, busiest weekday and savings rate, each with a
+ * big percentage so the key numbers can be read at a glance.
  */
 @Composable
-private fun HighlightsCard(insights: AnalysisInsightsUi) {
+internal fun HighlightsCard(insights: AnalysisInsightsUi) {
     val top = insights.categories.firstOrNull()
     val busiest = insights.busiestWeekday
-    val busiestAmount = insights.weekdays.firstOrNull { it.dayOfWeek == busiest }?.amount
     val savingsRate = insights.savingsRate
     if (top == null && busiest == null && savingsRate == null) return
 
-    val incomeColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
-    val expenseColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
+    val incomeColor = getIncomeColor()
+    val expenseColor = getExpenseColor()
     val accent = MaterialTheme.colorScheme.primary
 
-    AppCardView(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            SectionTitle(stringResource(R.string.insights_title))
-            Spacer(modifier = Modifier.height(8.dp))
-
-            val rows = buildList<@Composable () -> Unit> {
-                if (top != null) {
-                    add {
-                        HighlightRow(
-                            icon = {
-                                IconAndBackgroundView(
-                                    icon = top.category.storedIcon.name,
-                                    iconBackgroundColor = top.category.storedIcon.backgroundColor,
-                                    name = top.category.displayName(),
-                                    customImagePath = top.category.storedIcon.customImagePath,
-                                )
-                            },
-                            label = stringResource(R.string.highlight_top_category),
-                            value = top.category.displayName(),
-                            detail = top.amount,
-                            percent = (top.share * 100).roundToInt(),
-                            percentCaption = stringResource(R.string.highlight_of_spending),
-                            percentColor = accent,
+    Column {
+        SectionTitle(stringResource(R.string.insights_title), modifier = ListTitleModifier)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Min),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            if (top != null) {
+                HighlightTile(
+                    icon = {
+                        IconAndBackgroundView(
+                            icon = top.category.storedIcon.name,
+                            iconBackgroundColor = top.category.storedIcon.backgroundColor,
+                            name = top.category.displayName(),
+                            customImagePath = top.category.storedIcon.customImagePath,
                         )
-                    }
-                }
-                if (busiest != null) {
-                    add {
-                        HighlightRow(
-                            icon = { HighlightIconTile(Icons.Outlined.CalendarMonth, accent) },
-                            label = stringResource(R.string.highlight_busiest_day),
-                            value = busiest.fullName(),
-                            detail = busiestAmount,
-                            percent = (insights.busiestWeekdayShare * 100).roundToInt(),
-                            percentCaption = stringResource(R.string.highlight_of_spending),
-                            percentColor = accent,
-                        )
-                    }
-                }
-                if (savingsRate != null) {
-                    val saved = savingsRate >= 0
-                    val color = if (saved) incomeColor else expenseColor
-                    add {
-                        HighlightRow(
-                            icon = {
-                                HighlightIconTile(
-                                    if (saved) Icons.Outlined.Savings else Icons.Outlined.MoneyOff,
-                                    color,
-                                )
-                            },
-                            label = stringResource(R.string.highlight_savings),
-                            value = stringResource(
-                                if (saved) R.string.highlight_saved_value else R.string.highlight_overspent_value,
-                            ),
-                            detail = null,
-                            percent = (abs(savingsRate) * 100).roundToInt(),
-                            percentCaption = stringResource(R.string.highlight_of_income),
-                            percentColor = color,
-                        )
-                    }
-                }
+                    },
+                    percent = (top.share * 100).roundToInt(),
+                    color = accent,
+                    label = stringResource(R.string.highlight_top_category),
+                    value = top.category.displayName(),
+                    modifier = Modifier.weight(1f),
+                )
             }
-            rows.forEachIndexed { index, row ->
-                row()
-                if (index < rows.lastIndex) {
-                    HorizontalDivider(
-                        thickness = 0.5.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-                    )
-                }
+            if (busiest != null) {
+                HighlightTile(
+                    icon = { HighlightIconTile(Icons.Outlined.CalendarMonth, accent) },
+                    percent = (insights.busiestWeekdayShare * 100).roundToInt(),
+                    color = accent,
+                    label = stringResource(R.string.highlight_busiest_day),
+                    value = busiest.fullName(),
+                    modifier = Modifier.weight(1f),
+                )
+            }
+            if (savingsRate != null) {
+                val saved = savingsRate >= 0
+                val color = if (saved) incomeColor else expenseColor
+                HighlightTile(
+                    icon = {
+                        HighlightIconTile(if (saved) Icons.Outlined.Savings else Icons.Outlined.MoneyOff, color)
+                    },
+                    percent = (abs(savingsRate) * 100).roundToInt(),
+                    color = color,
+                    label = stringResource(R.string.highlight_savings),
+                    value = stringResource(
+                        if (saved) R.string.highlight_saved_value else R.string.highlight_overspent_value,
+                    ),
+                    modifier = Modifier.weight(1f),
+                )
             }
         }
     }
 }
 
 @Composable
-private fun HighlightRow(
+private fun HighlightTile(
     icon: @Composable () -> Unit,
+    percent: Int,
+    color: Color,
     label: String,
     value: String,
-    detail: String?,
-    percent: Int,
-    percentCaption: String,
-    percentColor: Color,
+    modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 10.dp)
-            .semantics(mergeDescendants = true) {},
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        icon()
-        Spacer(modifier = Modifier.width(14.dp))
-        Column(modifier = Modifier.weight(1f)) {
+    AppCardView(modifier = modifier.fillMaxHeight(), cornerSize = AnalysisCardCorner) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(12.dp)
+                .semantics(mergeDescendants = true) {},
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            icon()
+            Text(
+                text = "$percent%",
+                style = MaterialTheme.typography.titleLarge.copy(letterSpacing = (-0.3).sp),
+                fontWeight = FontWeight.Bold,
+                color = color,
+            )
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Text(
-                text = value,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            if (detail != null) {
-                Text(
-                    text = detail,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(horizontalAlignment = Alignment.End) {
             Text(
-                text = "$percent%",
-                style = MaterialTheme.typography.titleLarge.copy(letterSpacing = (-0.3).sp),
+                text = value,
+                style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.SemiBold,
-                color = percentColor,
-            )
-            Text(
-                text = percentCaption,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
 }
 
-/** Tinted round tile, same size and shape as the category icon so all three rows line up. */
+/** Tinted round tile, same size and shape as the category icon so all tiles line up. */
 @Composable
 private fun HighlightIconTile(icon: ImageVector, tint: Color) {
     Box(
@@ -298,7 +265,7 @@ private fun HighlightIconTile(icon: ImageVector, tint: Color) {
  * that category's details; "View all" opens the full category list for the same filter.
  */
 @Composable
-private fun CategoryBreakdownSection(
+internal fun CategoryBreakdownSection(
     categories: List<CategoryRowUi>,
     onCategoryClick: (String) -> Unit,
     onViewAllCategories: () -> Unit,
@@ -339,27 +306,38 @@ private fun CategoryBreakdownSection(
 // region Weekday pattern
 
 @Composable
-private fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
+internal fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
     // Selected column (tap to inspect); defaults to the busiest day.
     var selected by remember(busiest) { mutableStateOf(busiest) }
     val selectedBar = weekdays.firstOrNull { it.dayOfWeek == selected }
+    val accent = MaterialTheme.colorScheme.primary
 
-    AppCardView(modifier = Modifier.fillMaxWidth()) {
+    AppCardView(modifier = Modifier.fillMaxWidth(), cornerSize = AnalysisCardCorner) {
         Column(modifier = Modifier.padding(16.dp)) {
             SectionTitle(stringResource(R.string.spending_by_weekday))
             if (selectedBar != null) {
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = "${selectedBar.dayOfWeek.fullName()} · ${selectedBar.amount}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text(
+                        text = selectedBar.amount,
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = selectedBar.dayOfWeek.fullName(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(bottom = 2.dp),
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(120.dp),
+                    .height(132.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalAlignment = Alignment.Bottom,
             ) {
@@ -371,6 +349,7 @@ private fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()
+                            .clip(RoundedCornerShape(10.dp))
                             // Whole column is the touch target, much larger than the bar.
                             .clickable { selected = bar.dayOfWeek }
                             .semantics { contentDescription = "${bar.dayOfWeek.fullName()}, ${bar.amount}" },
@@ -385,30 +364,25 @@ private fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
                         ) {
                             Box(
                                 modifier = Modifier
-                                    .fillMaxWidth(0.72f)
-                                    .fillMaxHeight(bar.relative.coerceIn(0.02f, 1f))
+                                    .fillMaxWidth(0.7f)
+                                    .fillMaxHeight(bar.relative.coerceIn(0.04f, 1f))
                                     .background(
-                                        color = when {
-                                            isBusiest -> MaterialTheme.colorScheme.primary
-                                            isSelected -> MaterialTheme.colorScheme.outline
-                                            else -> MaterialTheme.colorScheme.surfaceContainerHigh
-                                        },
-                                        // Rounded data end only; flat on the baseline.
-                                        shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
+                                        brush = Brush.verticalGradient(
+                                            listOf(
+                                                accent.copy(alpha = if (isSelected || isBusiest) 1f else 0.35f),
+                                                accent.copy(alpha = if (isSelected || isBusiest) 0.6f else 0.18f),
+                                            ),
+                                        ),
+                                        shape = RoundedCornerShape(8.dp),
                                     ),
                             )
                         }
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                        Spacer(modifier = Modifier.height(6.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = dayName,
                             style = MaterialTheme.typography.labelSmall,
-                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                            color = if (isSelected) {
-                                MaterialTheme.colorScheme.onSurface
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
+                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                            color = if (isSelected) accent else MaterialTheme.colorScheme.onSurfaceVariant,
                             maxLines = 1,
                         )
                     }
@@ -427,7 +401,7 @@ private fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
  * grouped cards, and a tap opens the transaction for editing.
  */
 @Composable
-private fun BiggestExpensesSection(
+internal fun BiggestExpensesSection(
     expenses: List<TransactionUiItem>,
     onTransactionClick: (String) -> Unit,
 ) {

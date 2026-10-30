@@ -9,11 +9,13 @@
 <h1 align="center">Expense Manager</h1>
 
 <p align="center">
-  A beautifully crafted, open-source expense tracking app built entirely with Kotlin & Jetpack Compose.
+  Track expenses &amp; budgets, see where your money goes. Simple, private, ad-free.<br/>
+  An open-source Android app built entirely with Kotlin &amp; Jetpack Compose.
 </p>
 
 <p align="center">
-  <a href="https://android-arsenal.com/api?level=21"><img src="https://img.shields.io/badge/API-21%2B-brightgreen.svg?style=flat" alt="API 21+"></a>
+  <a href="https://developer.android.com/about/versions/oreo"><img src="https://img.shields.io/badge/API-26%2B-brightgreen.svg?style=flat" alt="API 26+"></a>
+  <img src="https://img.shields.io/badge/version-1.4.23-informational.svg?style=flat" alt="Version 1.4.23">
   <a href="https://github.com/nkuppan/expensemanager/actions/workflows/build.yml"><img src="https://github.com/nkuppan/expensemanager/actions/workflows/build.yml/badge.svg" alt="Build"></a>
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/Kotlin-100%25-7F52FF.svg?style=flat&logo=kotlin&logoColor=white" alt="Kotlin"></a>
   <a href="https://developer.android.com/jetpack/compose"><img src="https://img.shields.io/badge/Jetpack%20Compose-UI-4285F4.svg?style=flat&logo=jetpackcompose&logoColor=white" alt="Compose"></a>
@@ -24,91 +26,114 @@
 
 ## About
 
-**Expense Manager** is a fully functional Android app for personal finance tracking. It follows modern Android design and development best practices, making it both a useful daily-driver and a reference project for developers looking to learn production-grade Compose architecture.
+**Expense Manager** is a simple, ad-free personal finance app for Android. Log an expense in seconds, organise it by category and account, set budgets, and see clear charts of your income, expenses and savings. Everything stays on your device — no account, no sign-up, works offline.
 
-> 🚧 **Work in progress** — actively maintained and accepting contributions.
+It is also a reference project for modern Android development: a multi-module Clean Architecture codebase with Jetpack Compose, MVI-style state management, Koin, Room and type-safe Compose Navigation.
 
 ---
 
 ## Screenshots
 
-|                    Home Screen                    |                  Analysis Screen                  |                Transaction Screen                 |               Category Chart Screen               |
-|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
-| <img src="docs/images/image1.png" width="250px"/> | <img src="docs/images/image2.png" width="250px"/> | <img src="docs/images/image3.png" width="250px"/> | <img src="docs/images/image4.png" width="250px"/> |
+|                                Home                                 |                                Transactions                                 |                                Analysis                                 |
+|:-------------------------------------------------------------------:|:---------------------------------------------------------------------------:|:-----------------------------------------------------------------------:|
+| <img src="docs/images/screenshots/home.webp" width="250px" alt="Home"/> | <img src="docs/images/screenshots/transactions.webp" width="250px" alt="Transactions"/> | <img src="docs/images/screenshots/analysis.webp" width="250px" alt="Analysis"/> |
 
-|                Transaction Create                 |                  Account Create                   |                   Budget Create                   |                    Dark Theme                     |
+|                                Categories                                 |                                Budgets                                 |                                New Transaction                                 |
+|:-------------------------------------------------------------------------:|:----------------------------------------------------------------------:|:------------------------------------------------------------------------------:|
+| <img src="docs/images/screenshots/categories.webp" width="250px" alt="Categories"/> | <img src="docs/images/screenshots/budget.webp" width="250px" alt="Budgets"/> | <img src="docs/images/screenshots/add-transaction.webp" width="250px" alt="New Transaction"/> |
+
+<details>
+<summary><b>More screens</b> (settings, currency, account re-order, dark theme)</summary>
+<br/>
+
+|                     Settings                      |                     Currency                      |                 Account Re-order                  |                    Dark Theme                     |
 |:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
-| <img src="docs/images/image5.png" width="250px"/> | <img src="docs/images/image6.png" width="250px"/> | <img src="docs/images/image7.png" width="250px"/> | <img src="docs/images/image8.png" width="250px"/> |
+| <img src="docs/images/image11.png" width="200px"/> | <img src="docs/images/image12.png" width="200px"/> | <img src="docs/images/image10.png" width="200px"/> | <img src="docs/images/image8.png" width="200px"/> |
+
+</details>
 
 ---
 
 ## Features
 
-### Core Functionality
-- **Multi-account management** — create and organise transactions across Checking, Savings, Cash, Credit Card, and custom accounts
-- **Budget tracking** — set monthly budgets with flexible customisation options and track spending against your targets
-- **Transaction management** — log income, expenses, and transfers between accounts with category tagging, notes, and timestamps
-- **CSV export** — export your transaction data for use in spreadsheets or other tools (PDF export coming soon)
-- **Multi-currency support** — switch display currencies in the UI (full conversion support is planned)
+### 💰 Track every transaction
+- Record **expenses, income and transfers** between accounts
+- Add a category, notes, date/time and **receipt photo attachments** to every entry
+- **Recurring transactions** for bills, rent and salary — daily, weekly, monthly or yearly
+- **Multiple accounts** — cash, bank, savings, credit cards (with available-limit tracking) and more, with drag-to-reorder
+- Search and filter by account, type or date range
+- Optional built-in **calculator** for the amount field (Settings → Advanced)
 
-### Analytics & Insights
-- **Trend analysis** — visualise your spending patterns across daily, weekly, and monthly timeframes
-- **Category breakdown** — interactive pie chart showing where your money goes, grouped by category
-- **Income vs. Expense summaries** — at-a-glance totals with colour-coded indicators
+### 📊 Insights & statistics
+- **Dashboard** with income, expenses and net balance for the selected period, plus account, category and budget summaries
+- **Category breakdown** donut chart — tap to switch between expense and income
+- **Spending trends** by day, week, month or year
+- **Period comparison** — this month vs. last month with the biggest changes highlighted
 
-### Redesigned Transaction List Screen
-The transaction list has been rebuilt from the ground up with a focus on usability and polish:
+### 🎯 Budgets
+- Monthly budgets for all spending, or for specific categories and accounts (optional budget name)
+- Progress at a glance — spent, remaining and percentage used
+- Notifications when you're close to or over a budget
 
-- **Income / Expense summary cards** — gradient-backed cards at the top showing period totals with glowing accent indicators
-- **Account filter pills** — horizontally scrollable chips for quick filtering by account
-- **Type filter tabs** — segmented control (All / Expense / Income) with animated selection and count badges
-- **Collapsible search** — tap-to-reveal search bar with clear button for fast transaction lookup
-- **Date-grouped layout** — transactions grouped by date with daily net totals in each header
-- **Swipe-to-reveal actions** — gesture-driven Edit and Delete actions on each row (spring-animated, no external library)
-- **Staggered entrance animations** — header, cards, and groups animate in sequentially on load
-- **Empty state** — friendly messaging when filters return no results
-- **Floating Action Button** — quick-access button for adding new transactions
+### 🔔 Reminders & widget
+- Optional **daily reminder** at a time you choose
+- **Home screen widget** (Jetpack Glance) with your balance, recent transactions and one-tap add
 
-### Improved Transaction Item Component
-Each transaction row has been refined for better visual hierarchy and interaction:
+### 🔒 Private & secure
+- Data stored **only on your device** — no account, no ads, works offline
+- **App lock** with fingerprint / biometric protection
+- **Passphrase-protected backup & restore**, plus scheduled **auto backup**
 
-- **Rounded icon container** — 44dp badge with category-tinted background and subtle border
-- **Colour-coded amount prefix** — `+` for income (green), `−` for expenses (red) for instant scanning
-- **Transfer arrow indicator** — clear `↓` flow between From → To accounts on transfer transactions
-- **Notes preview** — single-line muted note text beneath the subtitle
-- **Swipe actions** — integrated Edit / Delete reveal with spring physics animation
-- **Smooth content transitions** — `animateContentSize()` for expanding/collapsing notes
-- **Backward-compatible API** — all new callbacks (`onEdit`, `onDelete`, `onClick`) default to `null`, so existing call sites remain unchanged
+### 📁 Export
+- Export transactions to **CSV** for spreadsheets
+- Export to **PDF** for sharing and record-keeping
 
-### Theming
-- Full **Material 3** design system with dynamic color support
-- Complete **Dark Theme** implementation
+### 🎨 Made for you
+- Material 3 design with **light and dark themes**
+- Any currency, with configurable symbol position (prefix/suffix) and number formatting
+- In-app language switching — available in **16 languages**: English, Arabic, Chinese (Simplified), French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese (Brazil), Russian, Spanish, Turkish and Vietnamese
+- Guided onboarding to pick your country, currency and first account
 
 ---
 
 ## Architecture & Tech Stack
 
-Expense Manager is structured as a multi-module project following clean architecture principles.
+Expense Manager is a single-Activity, multi-module app following Clean Architecture with a strict one-way dependency direction: `feature:*` → `core:domain` (use cases) → `core:repository` (interfaces) ← `core:data` (implementations) → `core:database` / `core:datastore`.
 
-| Layer | Libraries / Tools |
+Every screen uses the same **MVI-flavoured MVVM** pattern:
+
+```
+<Screen>State   — immutable data class rendered by the UI
+<Screen>Action  — sealed class of user intents
+<Screen>ViewModel — StateFlow<State> + a single processAction(action) entry point
+<Screen>Event   — one-off effects via Channel (snackbars, rate flow, …)
+```
+
+ViewModels never touch `NavController`; they emit commands through an `AppComposeNavigator` abstraction that a single `LaunchedEffect` applies to the one `NavHost`. Routes are type-safe `@Serializable` objects.
+
+| Area | Libraries / Tools |
 |---|---|
-| **UI** | [Jetpack Compose](https://developer.android.com/jetpack/compose), [Material 3](https://m3.material.io/) |
-| **Navigation** | [Compose Navigation](https://developer.android.com/jetpack/compose/navigation) |
+| **UI** | [Jetpack Compose](https://developer.android.com/jetpack/compose) (BOM 2026.09), [Material 3](https://m3.material.io/), [Glance](https://developer.android.com/jetpack/compose/glance) widgets, [Lottie](https://airbnb.io/lottie/), [Coil](https://coil-kt.github.io/coil/) |
+| **Navigation** | [Compose Navigation](https://developer.android.com/jetpack/compose/navigation) with type-safe routes (kotlinx.serialization) |
 | **State management** | [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel), [Kotlin Flow](https://kotlinlang.org/docs/flow.html), [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) |
-| **Persistence** | [Room](https://developer.android.com/training/data-storage/room), [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) |
-| **Background work** | [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) |
-| **Dependency injection** | [Koin](https://insert-koin.io/) |
-| **Code style** | [Spotless](https://github.com/diffplug/spotless) |
-| **Language** | 100% [Kotlin](https://kotlinlang.org/) |
+| **Persistence** | [Room](https://developer.android.com/training/data-storage/room) (hand-written, tested migrations), [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) |
+| **Background work** | [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) (reminders, recurring transactions, auto backup) |
+| **Dependency injection** | [Koin](https://insert-koin.io/), started via [App Startup](https://developer.android.com/topic/libraries/app-startup) |
+| **Security** | [AndroidX Biometric](https://developer.android.com/jetpack/androidx/releases/biometric) |
+| **Export** | [OpenCSV](https://opencsv.sourceforge.net/), PDF |
+| **Quality** | JUnit, [Robolectric](https://robolectric.org/), [Turbine](https://github.com/cashapp/turbine), [Truth](https://truth.dev/), Mockito, Jacoco coverage, [Macrobenchmark](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview) + Baseline Profiles |
+| **Code style** | [Spotless](https://github.com/diffplug/spotless) + ktlint |
+| **Release** | GitHub Actions, [Gradle Play Publisher](https://github.com/Triple-T/gradle-play-publisher), Firebase App Distribution / Crashlytics |
+| **Language** | 100% [Kotlin](https://kotlinlang.org/) 2.4 |
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-- Android Studio Hedgehog (2023.1.1) or later
+- Latest stable Android Studio (AGP 9.x)
 - JDK 17+
-- Android SDK with minimum API 21
+- Android SDK 37 (compile/target), device or emulator running API 26+
 
 ### Build & Run
 
@@ -117,11 +142,18 @@ Expense Manager is structured as a multi-module project following clean architec
 git clone https://github.com/nkuppan/expensemanager.git
 cd expensemanager
 
-# Build the debug variant
+# Build and install the debug variant
 ./gradlew assembleDebug
-
-# Install on a connected device
 ./gradlew installDebug
+```
+
+### Tests & checks
+
+```bash
+./gradlew test                                   # unit tests, all modules
+./gradlew :core:database:connectedDebugAndroidTest  # Room migration tests (device needed)
+./gradlew allDebugCoverage                       # aggregated Jacoco report
+./gradlew spotlessCheck                          # lint / format (spotlessApply to fix)
 ```
 
 ---
@@ -130,46 +162,54 @@ cd expensemanager
 
 ```
 expensemanager/
-├── app/                    # Application module (entry point)
+├── app/                 # Single Activity, NavHost, Koin bootstrap, app lock, widget
+├── build-logic/         # Gradle convention plugins (SDK versions, Compose, Room, DI)
 ├── core/
-│   ├── common/             # Shared utilities, colour resources, extensions
-│   ├── data/               # Repository implementations, data sources
-│   ├── database/           # Room database, DAOs, entities
-│   ├── datastore/          # DataStore preferences
-│   └── model/              # Domain models
-├── feature/
-│   ├── transaction/        # Transaction list, create/edit, item components
-│   ├── account/            # Account management
-│   ├── budget/             # Budget tracking
-│   ├── analysis/           # Charts and analytics
-│   └── category/           # Category management
-└── docs/                   # Documentation and screenshots
+│   ├── model/           # Plain domain models
+│   ├── repository/      # Repository interfaces
+│   ├── domain/          # Use cases (one class per operation)
+│   ├── data/            # Repository implementations, mappers, Koin modules
+│   ├── database/        # Room database, DAOs, entities, migrations
+│   ├── datastore/       # DataStore preference wrappers
+│   ├── navigation/      # AppComposeNavigator + type-safe routes
+│   ├── designsystem/    # Shared Compose components & theme
+│   ├── notification/    # Reminders, auto backup & recurring workers
+│   ├── settings/        # Number formatting settings
+│   ├── common/          # Utilities & extensions
+│   └── testing/         # Test fixtures
+├── feature/             # account, analysis, budget, category, country, currency,
+│                        # dashboard, export, filter, language, onboarding,
+│                        # reminder, settings, theme, transaction, about
+├── macrobenchmark/      # Startup benchmarks & baseline profile generation
+└── docs/                # Documentation and screenshots
 ```
 
 ---
 
 ## Contributing
 
-Contributions are welcome and encouraged! Whether it's a bug fix, new feature, or documentation improvement — every PR helps.
+Contributions are welcome! Whether it's a bug fix, new feature, translation or documentation improvement — every PR helps.
 
 1. **Fork** the repository
 2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
+3. **Run** `./gradlew spotlessApply test` before committing
+4. **Commit** your changes and **push** the branch
 5. **Open** a Pull Request
 
-Please feel free to [file an issue](https://github.com/nkuppan/expensemanager/issues) for bugs, suggestions, or feature requests.
+Please [file an issue](https://github.com/nkuppan/expensemanager/issues) for bugs, suggestions, or feature requests.
 
 ---
 
 ## Roadmap
 
-- [x] PDF export for transaction reports
-- [ ] Full multi-currency conversion with live exchange rates
-- [ ] Recurring transactions (auto-generated on schedule)
+- [x] CSV & PDF export
 - [x] Biometric app lock
-- [x] Widget for home screen balance overview
-- [ ] Cloud sync/backup
+- [x] Home screen widget
+- [x] Recurring transactions
+- [x] Encrypted backup & restore with auto backup
+- [x] 16 languages with in-app language switching
+- [ ] Full multi-currency conversion with live exchange rates
+- [ ] Cloud sync
 
 ---
 
