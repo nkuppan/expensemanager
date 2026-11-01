@@ -1,0 +1,44 @@
+Expense Manager is a free, ad-free expense tracker for everyday spending in India. Log every UPI payment, cash spend and card bill in ₹ in a few taps, set monthly budgets and see exactly where your money goes.
+
+No sign-up, no ads and no SMS or bank access: your financial data stays on your phone, and the app works fully offline. Use it in English or Hindi, or any of 14 other languages.
+
+<b>💰 Track every rupee</b>
+• Log UPI, cash and card spends in a few taps: chai, auto, groceries, recharges, rent
+• Record expenses, income and transfers between accounts
+• Manage multiple accounts: cash, bank, savings, credit cards and more
+• Add categories, notes, dates and receipt photos to every entry
+• Recurring transactions for rent, EMIs, salary and subscriptions
+• Search and filter transactions by account, type or date
+
+<b>📊 See where your money goes</b>
+• Dashboard with your income, expenses and balance at a glance
+• Category charts showing where your money goes each month
+• Spending trends by day, week, month or year
+• This month vs. last month, with the biggest changes highlighted
+
+<b>🎯 Budgets that keep you on track</b>
+• Monthly budgets for all spending or for specific categories
+• See how much you've spent and what's left
+• Get notified when you're close to or over a budget
+
+<b>🔔 Build the habit</b>
+• Optional daily reminder at a time you choose
+• Home screen widget with one-tap add
+
+<b>🔒 Private by design</b>
+• Your financial data is stored only on your device
+• No account, no sign-up, no cloud sync
+• The app never reads your SMS or bank account: you add each spend yourself
+• App lock with fingerprint protection
+• Passphrase-protected backup and restore, e.g. to Google Drive, to move to a new phone
+
+<b>📁 Export your data</b>
+• Export to CSV for spreadsheets or to PDF for your records
+
+<b>✨ Why Expense Manager?</b>
+• Free, with no ads, no subscription and no paid features
+• Works offline
+• ₹ and any other currency, light and dark themes
+• Open source (Apache 2.0) and actively maintained
+
+Start tracking today and see where your money really goes, one spend at a time.

@@ -1,1 +1,1 @@
-Expense Manager
+Expense Manager: 家計簿・支出管理

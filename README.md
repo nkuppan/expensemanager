@@ -28,26 +28,36 @@
 
 **Expense Manager** is a simple, ad-free personal finance app for Android. Log an expense in seconds, organise it by category and account, set budgets, and see clear charts of your income, expenses and savings. Everything stays on your device — no account, no sign-up, works offline.
 
+### At a glance
+
+- **Expense Manager by [Naveen Apps](https://expensemanager.naveenapps.com)**, available on [Google Play](https://play.google.com/store/apps/details?id=com.naveenapps.expensemanager)
+- **Free.** No ads, no in-app purchases, no subscription; every feature is available to everyone
+- **No account.** No sign-up and no cloud sync; works fully offline
+- **Private.** Transactions, notes and receipt photos stay on your phone. The app sends only anonymous usage statistics and crash reports (Firebase), and never reads your SMS or bank account
+- **Any currency**, including ₹; UPI, cash and card spends are logged manually in a few taps (no automatic SMS/UPI tracking)
+- **16 languages**, open source under Apache 2.0
+- **Android only** for now; an iPhone version is planned
+
 It is also a reference project for modern Android development: a multi-module Clean Architecture codebase with Jetpack Compose, MVI-style state management, Koin, Room and type-safe Compose Navigation.
 
 ---
 
 ## Screenshots
 
-|                                Home                                 |                                Transactions                                 |                                Analysis                                 |
-|:-------------------------------------------------------------------:|:---------------------------------------------------------------------------:|:-----------------------------------------------------------------------:|
+|                                  Home                                   |                                      Transactions                                       |                                    Analysis                                     |
+|:-----------------------------------------------------------------------:|:---------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------:|
 | <img src="docs/images/screenshots/home.webp" width="250px" alt="Home"/> | <img src="docs/images/screenshots/transactions.webp" width="250px" alt="Transactions"/> | <img src="docs/images/screenshots/analysis.webp" width="250px" alt="Analysis"/> |
 
-|                                Categories                                 |                                Budgets                                 |                                New Transaction                                 |
-|:-------------------------------------------------------------------------:|:----------------------------------------------------------------------:|:------------------------------------------------------------------------------:|
+|                                     Categories                                      |                                   Budgets                                    |                                        New Transaction                                        |
+|:-----------------------------------------------------------------------------------:|:----------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------:|
 | <img src="docs/images/screenshots/categories.webp" width="250px" alt="Categories"/> | <img src="docs/images/screenshots/budget.webp" width="250px" alt="Budgets"/> | <img src="docs/images/screenshots/add-transaction.webp" width="250px" alt="New Transaction"/> |
 
 <details>
 <summary><b>More screens</b> (settings, currency, account re-order, dark theme)</summary>
 <br/>
 
-|                     Settings                      |                     Currency                      |                 Account Re-order                  |                    Dark Theme                     |
-|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|:-------------------------------------------------:|
+|                      Settings                      |                      Currency                      |                  Account Re-order                  |                    Dark Theme                     |
+|:--------------------------------------------------:|:--------------------------------------------------:|:--------------------------------------------------:|:-------------------------------------------------:|
 | <img src="docs/images/image11.png" width="200px"/> | <img src="docs/images/image12.png" width="200px"/> | <img src="docs/images/image10.png" width="200px"/> | <img src="docs/images/image8.png" width="200px"/> |
 
 </details>
@@ -111,20 +121,20 @@ Every screen uses the same **MVI-flavoured MVVM** pattern:
 
 ViewModels never touch `NavController`; they emit commands through an `AppComposeNavigator` abstraction that a single `LaunchedEffect` applies to the one `NavHost`. Routes are type-safe `@Serializable` objects.
 
-| Area | Libraries / Tools |
-|---|---|
-| **UI** | [Jetpack Compose](https://developer.android.com/jetpack/compose) (BOM 2026.09), [Material 3](https://m3.material.io/), [Glance](https://developer.android.com/jetpack/compose/glance) widgets, [Lottie](https://airbnb.io/lottie/), [Coil](https://coil-kt.github.io/coil/) |
-| **Navigation** | [Compose Navigation](https://developer.android.com/jetpack/compose/navigation) with type-safe routes (kotlinx.serialization) |
-| **State management** | [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel), [Kotlin Flow](https://kotlinlang.org/docs/flow.html), [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html) |
-| **Persistence** | [Room](https://developer.android.com/training/data-storage/room) (hand-written, tested migrations), [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) |
-| **Background work** | [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) (reminders, recurring transactions, auto backup) |
-| **Dependency injection** | [Koin](https://insert-koin.io/), started via [App Startup](https://developer.android.com/topic/libraries/app-startup) |
-| **Security** | [AndroidX Biometric](https://developer.android.com/jetpack/androidx/releases/biometric) |
-| **Export** | [OpenCSV](https://opencsv.sourceforge.net/), PDF |
-| **Quality** | JUnit, [Robolectric](https://robolectric.org/), [Turbine](https://github.com/cashapp/turbine), [Truth](https://truth.dev/), Mockito, Jacoco coverage, [Macrobenchmark](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview) + Baseline Profiles |
-| **Code style** | [Spotless](https://github.com/diffplug/spotless) + ktlint |
-| **Release** | GitHub Actions, [Gradle Play Publisher](https://github.com/Triple-T/gradle-play-publisher), Firebase App Distribution / Crashlytics |
-| **Language** | 100% [Kotlin](https://kotlinlang.org/) 2.4 |
+| Area                     | Libraries / Tools                                                                                                                                                                                                                                                                |
+|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **UI**                   | [Jetpack Compose](https://developer.android.com/jetpack/compose) (BOM 2026.09), [Material 3](https://m3.material.io/), [Glance](https://developer.android.com/jetpack/compose/glance) widgets, [Lottie](https://airbnb.io/lottie/), [Coil](https://coil-kt.github.io/coil/)      |
+| **Navigation**           | [Compose Navigation](https://developer.android.com/jetpack/compose/navigation) with type-safe routes (kotlinx.serialization)                                                                                                                                                     |
+| **State management**     | [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel), [Kotlin Flow](https://kotlinlang.org/docs/flow.html), [Coroutines](https://kotlinlang.org/docs/coroutines-overview.html)                                                                      |
+| **Persistence**          | [Room](https://developer.android.com/training/data-storage/room) (hand-written, tested migrations), [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)                                                                                            |
+| **Background work**      | [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) (reminders, recurring transactions, auto backup)                                                                                                                                           |
+| **Dependency injection** | [Koin](https://insert-koin.io/), started via [App Startup](https://developer.android.com/topic/libraries/app-startup)                                                                                                                                                            |
+| **Security**             | [AndroidX Biometric](https://developer.android.com/jetpack/androidx/releases/biometric)                                                                                                                                                                                          |
+| **Export**               | [OpenCSV](https://opencsv.sourceforge.net/), PDF                                                                                                                                                                                                                                 |
+| **Quality**              | JUnit, [Robolectric](https://robolectric.org/), [Turbine](https://github.com/cashapp/turbine), [Truth](https://truth.dev/), Mockito, Jacoco coverage, [Macrobenchmark](https://developer.android.com/topic/performance/benchmarking/macrobenchmark-overview) + Baseline Profiles |
+| **Code style**           | [Spotless](https://github.com/diffplug/spotless) + ktlint                                                                                                                                                                                                                        |
+| **Release**              | GitHub Actions, [Gradle Play Publisher](https://github.com/Triple-T/gradle-play-publisher), Firebase App Distribution / Crashlytics                                                                                                                                              |
+| **Language**             | 100% [Kotlin](https://kotlinlang.org/) 2.4                                                                                                                                                                                                                                       |
 
 ---
 
