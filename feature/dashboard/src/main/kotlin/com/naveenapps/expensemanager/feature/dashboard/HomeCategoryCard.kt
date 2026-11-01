@@ -337,12 +337,10 @@ private fun slicesOf(state: CategoryTransactionState): List<Pair<Color, Float>> 
 
 /** Expense in the theme's error red, income in its primary colour. */
 @Composable
-private fun CategoryType.color(): Color =
-    if (this == CategoryType.EXPENSE) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+private fun CategoryType.color(): Color = if (this == CategoryType.EXPENSE) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 
 /** The category's own colour, as used for its icon; [fallback] if it isn't a valid colour. */
-private fun CategoryTransaction.color(fallback: Color): Color =
-    runCatching { Color(category.storedIcon.backgroundColor.toColorInt()) }.getOrDefault(fallback)
+private fun CategoryTransaction.color(fallback: Color): Color = runCatching { Color(category.storedIcon.backgroundColor.toColorInt()) }.getOrDefault(fallback)
 
 @AppPreviewsLightAndDarkMode
 @Composable

@@ -45,6 +45,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
@@ -55,9 +56,8 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItem
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefaults
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Date
-import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import org.koin.compose.viewmodel.koinViewModel
 
 enum class CategoryTabItems(
     val labelResourceID: Int,

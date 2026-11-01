@@ -410,9 +410,11 @@ private fun AutoBackupWarningCard(
                     modifier = Modifier.padding(top = 2.dp),
                 )
                 Spacer(modifier = Modifier.width(12.dp))
-                Column(modifier = Modifier
-                    .weight(1f)
-                    .padding(end = 8.dp)) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                ) {
                     Text(
                         text = stringResource(id = R.string.auto_backup_warning_title),
                         style = MaterialTheme.typography.titleSmall,
