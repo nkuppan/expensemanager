@@ -40,4 +40,9 @@
     <string name="home_budget_none">%1$s के लिए अभी कोई बजट नहीं</string>
     <string name="home_budget_create">बजट तय करें</string>
     <string name="home_budget_page">%2$d में से बजट %1$d</string>
+    <string name="home_categories_none_expense">इस अवधि में अभी तक कोई खर्च नहीं</string>
+    <string name="home_categories_none_income">इस अवधि में अभी तक कोई आय नहीं</string>
+    <string name="home_categories_add">लेन-देन जोड़ें</string>
+    <string name="home_categories_show_income">आय दिखाएं</string>
+    <string name="home_categories_show_expense">खर्च दिखाएं</string>
 </resources>

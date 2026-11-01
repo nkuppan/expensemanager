@@ -283,7 +283,7 @@ val getPieChartData = listOf(
 
 fun getRandomCategoryTransactionData(): CategoryTransactionState = CategoryTransactionState(
     pieChartData = emptyList(),
-    totalAmount = Amount(300.0, "300.00$"),
+    totalAmount = Amount(3000000.0, "3000000.00$"),
     categoryTransactions = buildList {
         repeat(15) {
             add(

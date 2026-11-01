@@ -40,4 +40,9 @@
     <string name="home_budget_none">Бюджета на %1$s пока нет</string>
     <string name="home_budget_create">Задать бюджет</string>
     <string name="home_budget_page">Бюджет %1$d из %2$d</string>
+    <string name="home_categories_none_expense">В этом периоде пока нет расходов</string>
+    <string name="home_categories_none_income">В этом периоде пока нет доходов</string>
+    <string name="home_categories_add">Добавить операцию</string>
+    <string name="home_categories_show_income">Показать доходы</string>
+    <string name="home_categories_show_expense">Показать расходы</string>
 </resources>

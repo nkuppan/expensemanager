@@ -40,4 +40,9 @@
     <string name="home_budget_none">Brak budżetu na %1$s</string>
     <string name="home_budget_create">Ustaw budżet</string>
     <string name="home_budget_page">Budżet %1$d z %2$d</string>
+    <string name="home_categories_none_expense">Brak wydatków w tym okresie</string>
+    <string name="home_categories_none_income">Brak przychodów w tym okresie</string>
+    <string name="home_categories_add">Dodaj transakcję</string>
+    <string name="home_categories_show_income">Pokaż przychody</string>
+    <string name="home_categories_show_expense">Pokaż wydatki</string>
 </resources>

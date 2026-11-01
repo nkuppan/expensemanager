@@ -40,4 +40,9 @@
     <string name="home_budget_none">لا توجد ميزانية لـ %1$s بعد</string>
     <string name="home_budget_create">تعيين ميزانية</string>
     <string name="home_budget_page">الميزانية %1$d من %2$d</string>
+    <string name="home_categories_none_expense">لا توجد مصروفات في هذه الفترة بعد</string>
+    <string name="home_categories_none_income">لا يوجد دخل في هذه الفترة بعد</string>
+    <string name="home_categories_add">أضف معاملة</string>
+    <string name="home_categories_show_income">عرض الدخل</string>
+    <string name="home_categories_show_expense">عرض المصروفات</string>
 </resources>

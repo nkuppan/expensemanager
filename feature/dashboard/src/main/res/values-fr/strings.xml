@@ -40,4 +40,9 @@
     <string name="home_budget_none">Pas encore de budget pour %1$s</string>
     <string name="home_budget_create">Définir un budget</string>
     <string name="home_budget_page">Budget %1$d sur %2$d</string>
+    <string name="home_categories_none_expense">Aucune dépense sur cette période pour l’instant</string>
+    <string name="home_categories_none_income">Aucun revenu sur cette période pour l’instant</string>
+    <string name="home_categories_add">Ajouter une transaction</string>
+    <string name="home_categories_show_income">Afficher les revenus</string>
+    <string name="home_categories_show_expense">Afficher les dépenses</string>
 </resources>

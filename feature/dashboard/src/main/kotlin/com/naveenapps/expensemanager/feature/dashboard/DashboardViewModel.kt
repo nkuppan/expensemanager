@@ -170,12 +170,13 @@ class DashboardViewModel(
         }.flowOn(appCoroutineDispatchers.computation)
             .launchIn(viewModelScope)
 
-        getTransactionGroupByCategoryUseCase.invoke(CategoryType.EXPENSE).onEach {
-            val categoryTransaction = it.copy(
-                pieChartData = it.pieChartData.take(4),
-                categoryTransactions = it.categoryTransactions.take(4),
-            )
-            _state.update { it.copy(categoryTransactionState = categoryTransaction) }
+        // Full lists: the categories card shows the top few and groups the rest into one slice.
+        getTransactionGroupByCategoryUseCase.invoke(CategoryType.EXPENSE).onEach { expense ->
+            _state.update { it.copy(categoryTransactionState = expense) }
+        }.launchIn(viewModelScope)
+
+        getTransactionGroupByCategoryUseCase.invoke(CategoryType.INCOME).onEach { income ->
+            _state.update { it.copy(incomeCategoryTransactionState = income) }
         }.launchIn(viewModelScope)
 
         combine(

@@ -40,4 +40,9 @@
     <string name="home_budget_none">Belum ada anggaran untuk %1$s</string>
     <string name="home_budget_create">Atur anggaran</string>
     <string name="home_budget_page">Anggaran %1$d dari %2$d</string>
+    <string name="home_categories_none_expense">Belum ada pengeluaran di periode ini</string>
+    <string name="home_categories_none_income">Belum ada pemasukan di periode ini</string>
+    <string name="home_categories_add">Tambah transaksi</string>
+    <string name="home_categories_show_income">Tampilkan pemasukan</string>
+    <string name="home_categories_show_expense">Tampilkan pengeluaran</string>
 </resources>

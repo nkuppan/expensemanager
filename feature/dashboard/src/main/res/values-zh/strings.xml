@@ -40,4 +40,9 @@
     <string name="home_budget_none">%1$s 还没有预算</string>
     <string name="home_budget_create">设置预算</string>
     <string name="home_budget_page">第 %1$d 个预算，共 %2$d 个</string>
+    <string name="home_categories_none_expense">此期间暂无支出</string>
+    <string name="home_categories_none_income">此期间暂无收入</string>
+    <string name="home_categories_add">添加交易</string>
+    <string name="home_categories_show_income">显示收入</string>
+    <string name="home_categories_show_expense">显示支出</string>
 </resources>

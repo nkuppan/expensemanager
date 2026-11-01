@@ -40,4 +40,9 @@
     <string name="home_budget_none">%1$s için henüz bütçe yok</string>
     <string name="home_budget_create">Bütçe belirle</string>
     <string name="home_budget_page">Bütçe %1$d / %2$d</string>
+    <string name="home_categories_none_expense">Bu dönemde henüz gider yok</string>
+    <string name="home_categories_none_income">Bu dönemde henüz gelir yok</string>
+    <string name="home_categories_add">İşlem ekle</string>
+    <string name="home_categories_show_income">Geliri göster</string>
+    <string name="home_categories_show_expense">Giderleri göster</string>
 </resources>

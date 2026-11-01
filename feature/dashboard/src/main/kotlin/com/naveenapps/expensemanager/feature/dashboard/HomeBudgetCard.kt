@@ -84,7 +84,7 @@ internal fun HomeBudgetCard(
 
     AppCardView(
         modifier = modifier.fillMaxWidth(),
-        cornerSize = 24.dp,
+        cornerSize = 16.dp,
         onClick = shownBudget?.let { budget -> { onAction(DashboardAction.OpenBudgetDetails(budget.id)) } },
     ) {
         Column(

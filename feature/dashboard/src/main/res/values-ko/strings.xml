@@ -40,4 +40,9 @@
     <string name="home_budget_none">%1$s 예산이 아직 없습니다</string>
     <string name="home_budget_create">예산 설정</string>
     <string name="home_budget_page">예산 %2$d개 중 %1$d번째</string>
+    <string name="home_categories_none_expense">이 기간에 아직 지출이 없습니다</string>
+    <string name="home_categories_none_income">이 기간에 아직 수입이 없습니다</string>
+    <string name="home_categories_add">거래 추가</string>
+    <string name="home_categories_show_income">수입 보기</string>
+    <string name="home_categories_show_expense">지출 보기</string>
 </resources>

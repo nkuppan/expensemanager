@@ -2,8 +2,10 @@ package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
+import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 
@@ -14,7 +16,15 @@ data class DashboardState(
     val transactions: List<TransactionUiItem>,
     val homeBudgets: HomeBudgets = HomeBudgets(),
     val accounts: List<AccountUiModel>,
+    /** Spending by category for the selected period (the categories card's Expense side). */
     val categoryTransactionState: CategoryTransactionState,
+    /** Income by category for the selected period (the categories card's Income side). */
+    val incomeCategoryTransactionState: CategoryTransactionState = CategoryTransactionState(
+        totalAmount = Amount(0.0),
+        pieChartData = emptyList(),
+        categoryTransactions = emptyList(),
+        categoryType = CategoryType.INCOME,
+    ),
     val isCompactSummary: Boolean = false,
     /**
      * False only for a brand-new user who has never saved a transaction. Defaults to true so

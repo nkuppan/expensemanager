@@ -40,4 +40,9 @@
     <string name="home_budget_none">%1$sの予算はまだありません</string>
     <string name="home_budget_create">予算を設定</string>
     <string name="home_budget_page">予算 %2$d件中%1$d件目</string>
+    <string name="home_categories_none_expense">この期間の支出はまだありません</string>
+    <string name="home_categories_none_income">この期間の収入はまだありません</string>
+    <string name="home_categories_add">取引を追加</string>
+    <string name="home_categories_show_income">収入を表示</string>
+    <string name="home_categories_show_expense">支出を表示</string>
 </resources>
