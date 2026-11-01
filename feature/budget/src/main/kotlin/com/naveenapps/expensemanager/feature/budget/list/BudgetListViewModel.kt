@@ -36,8 +36,14 @@ class BudgetListViewModel(
     }
 
     private fun openCreateScreen(budgetId: String? = null) {
+        if (budgetId.isNullOrBlank()) {
+            appComposeNavigator.navigate(
+                ExpenseManagerScreens.BudgetCreate(budgetId),
+            )
+            return
+        }
         appComposeNavigator.navigate(
-            ExpenseManagerScreens.BudgetCreate(budgetId),
+            ExpenseManagerScreens.BudgetDetails(budgetId),
         )
     }
 

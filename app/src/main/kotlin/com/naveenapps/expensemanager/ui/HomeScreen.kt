@@ -203,9 +203,10 @@ fun HomeScreen(
     )
 
     LaunchedEffect(Unit) {
-        // Never force the reminder on and never ask cold on launch. If we can already notify,
-        // only reschedule (which respects a reminder the user switched off). Otherwise wait:
-        // the explainer below asks once, after the first saved transaction.
+        // Never force the reminder on and never show the system dialog cold. If we can already
+        // notify, only reschedule (which respects a reminder the user switched off). Otherwise
+        // the explainer below asks once: after the first saved transaction, or on arriving here
+        // with nothing logged yet.
         if (canNotify) {
             viewModel.restartReminderIfEnabled()
         }

@@ -3,9 +3,9 @@ package com.naveenapps.expensemanager.core.common.utils
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlinx.datetime.isoDayNumber
@@ -37,17 +37,28 @@ import kotlinx.datetime.toLocalDateTime
  * dispatchers as well as from the UI, so each thread gets its own instance. Formats without a
  * fixed locale follow the current default locale, so an in-app language switch is picked up
  * without restarting the process (they used to keep the locale they were first created with).
+ *
+ * A SimpleDateFormat also keeps the device time zone it was created in, so the cache is keyed on
+ * the zone too. Otherwise a zone change while the app is running (travel, automatic time-zone
+ * updates) kept formatting and parsing budget keys in the old zone, while the period bounds
+ * (kotlinx-datetime) used the new one, and a budget could pick up the wrong month.
  */
 private class ThreadSafeDateFormat(
     private val pattern: String,
     private val fixedLocale: Locale? = null,
 ) {
-    private val perThread = ThreadLocal<Pair<Locale, SimpleDateFormat>>()
+    private class Cached(val locale: Locale, val timeZone: java.util.TimeZone, val format: SimpleDateFormat)
+
+    private val perThread = ThreadLocal<Cached>()
 
     fun get(): SimpleDateFormat {
         val locale = fixedLocale ?: Locale.getDefault()
-        perThread.get()?.let { (cachedLocale, format) -> if (cachedLocale == locale) return format }
-        return SimpleDateFormat(pattern, locale).also { perThread.set(locale to it) }
+        val timeZone = java.util.TimeZone.getDefault()
+        perThread.get()?.let { if (it.locale == locale && it.timeZone == timeZone) return it.format }
+        return SimpleDateFormat(pattern, locale).also {
+            it.timeZone = timeZone
+            perThread.set(Cached(locale, timeZone, it))
+        }
     }
 }
 
@@ -81,7 +92,6 @@ private val DayFormat = ThreadSafeDateFormat("EEEE")
 
 private val ShortMontAndYearFormat = ThreadSafeDateFormat("MM-yyyy", Locale.US)
 
-@OptIn(ExperimentalTime::class)
 fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = kotlin.time.Clock.System.now()
     val todayStartTime = clock.toLocalDateTime(timeZone).date
@@ -92,7 +102,6 @@ fun getTodayRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Lo
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun getThisWeekRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = kotlin.time.Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
@@ -105,7 +114,6 @@ fun getThisWeekRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = kotlin.time.Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
@@ -117,7 +125,6 @@ fun getThisMonthRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): Lis
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List<Long> {
     val clock = kotlin.time.Clock.System.now()
     val todayDateTime = clock.toLocalDateTime(timeZone)
@@ -129,13 +136,11 @@ fun getThisYearRange(timeZone: TimeZone = TimeZone.currentSystemDefault()): List
     )
 }
 
-@OptIn(ExperimentalTime::class)
 fun Long.fromLocalToUTCTimeStamp(): Long = Instant.fromEpochMilliseconds(this)
     .toLocalDateTime(TimeZone.currentSystemDefault())
     .toInstant(TimeZone.UTC)
     .toEpochMilliseconds()
 
-@OptIn(ExperimentalTime::class)
 fun Long.fromUTCToLocalTimeStamp(): Long = Instant.fromEpochMilliseconds(this)
     .toLocalDateTime(TimeZone.UTC)
     .toInstant(TimeZone.currentSystemDefault())
@@ -143,50 +148,47 @@ fun Long.fromUTCToLocalTimeStamp(): Long = Instant.fromEpochMilliseconds(this)
 
 fun Long.fromUTCToLocalDate(): Date = Date(this.fromUTCToLocalTimeStamp())
 
-@OptIn(ExperimentalTime::class)
 fun Long.toExactStartOfTheDay(): Date {
     val dateTime = Instant.fromEpochMilliseconds(this).toLocalDateTime(TimeZone.UTC)
     return Date(dateTime.date.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds())
 }
 
-@OptIn(ExperimentalTime::class)
+// Period bounds for budgets. Transactions are matched with SQL `BETWEEN start AND end`, so
+// both ends are inclusive: start is the first millisecond of the period, end is the last one.
+// (These used to start on the last day of the *previous* period and stop at 00:00 on a day near
+// the end of this one, so a month's last 1–4 days and 31 December never counted towards a budget.)
+
+/** First millisecond of this date's month, in the device time zone. */
+
 fun Date.getStartOfTheMonth(): Long {
-    val dateTime =
-        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
-    return dateTime.date.minus(dateTime.dayOfMonth, DateTimeUnit.DAY)
-        .atStartOfDayIn(TimeZone.currentSystemDefault())
-        .toEpochMilliseconds()
+    val timeZone = TimeZone.currentSystemDefault()
+    val date = Instant.fromEpochMilliseconds(this.time).toLocalDateTime(timeZone).date
+    return LocalDate(date.year, date.month, 1).atStartOfDayIn(timeZone).toEpochMilliseconds()
 }
 
-@OptIn(ExperimentalTime::class)
+/** Last millisecond of this date's month, in the device time zone (inclusive, see above). */
+
 fun Date.getEndOfTheMonth(): Long {
-    val dateTime =
-        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
-    val startOfTheWeekDay = dateTime.date.minus(dateTime.dayOfMonth, DateTimeUnit.DAY)
-        .atStartOfDayIn(TimeZone.currentSystemDefault())
-    return startOfTheWeekDay.plus(1, DateTimeUnit.MONTH, TimeZone.currentSystemDefault())
-        .toEpochMilliseconds()
+    val timeZone = TimeZone.currentSystemDefault()
+    val date = Instant.fromEpochMilliseconds(this.time).toLocalDateTime(timeZone).date
+    val firstOfNextMonth = LocalDate(date.year, date.month, 1).plus(1, DateTimeUnit.MONTH)
+    return firstOfNextMonth.atStartOfDayIn(timeZone).toEpochMilliseconds() - 1
 }
 
 /** Year-scoped counterpart of [getStartOfTheMonth], used for yearly (`BudgetPeriod.YEARLY`) budgets. */
-@OptIn(ExperimentalTime::class)
+
 fun Date.getStartOfTheYear(): Long {
-    val dateTime =
-        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
-    return dateTime.date.minus(dateTime.dayOfYear, DateTimeUnit.DAY)
-        .atStartOfDayIn(TimeZone.currentSystemDefault())
-        .toEpochMilliseconds()
+    val timeZone = TimeZone.currentSystemDefault()
+    val date = Instant.fromEpochMilliseconds(this.time).toLocalDateTime(timeZone).date
+    return LocalDate(date.year, 1, 1).atStartOfDayIn(timeZone).toEpochMilliseconds()
 }
 
 /** Year-scoped counterpart of [getEndOfTheMonth], used for yearly (`BudgetPeriod.YEARLY`) budgets. */
-@OptIn(ExperimentalTime::class)
+
 fun Date.getEndOfTheYear(): Long {
-    val dateTime =
-        Instant.fromEpochMilliseconds(this.time).toLocalDateTime(TimeZone.currentSystemDefault())
-    val startOfTheYear = dateTime.date.minus(dateTime.dayOfYear, DateTimeUnit.DAY)
-        .atStartOfDayIn(TimeZone.currentSystemDefault())
-    return startOfTheYear.plus(1, DateTimeUnit.YEAR, TimeZone.currentSystemDefault())
-        .toEpochMilliseconds()
+    val timeZone = TimeZone.currentSystemDefault()
+    val date = Instant.fromEpochMilliseconds(this.time).toLocalDateTime(timeZone).date
+    return LocalDate(date.year + 1, 1, 1).atStartOfDayIn(timeZone).toEpochMilliseconds() - 1
 }
 
 fun Long.toCompleteDate(): Date = Date(this)

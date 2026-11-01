@@ -1,10 +1,5 @@
 package com.naveenapps.expensemanager.feature.onboarding
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
-import androidx.compose.material.icons.outlined.NotificationsActive
 import androidx.compose.material.icons.outlined.Payments
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Button
@@ -36,17 +30,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
@@ -57,7 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
@@ -69,15 +57,11 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
-import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.toDisplayValue
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionBottomSheet
 import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import org.koin.compose.viewmodel.koinViewModel
 
 // Matches the literal %1$s placeholder left in privacy_text when it's read via stringResource()
@@ -124,38 +108,11 @@ private fun OnboardingContentView(
         )
     }
 
-    // Both buttons finish setup. If the reminder switch is on and Android 13+ still needs the
-    // notification permission, ask now (the reminder card explains why), then continue with
-    // whichever button was tapped, whatever the answer.
-    val context = LocalContext.current
-    var pendingFinish by remember { mutableStateOf<OnboardingAction?>(null) }
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ) { granted ->
-        onAction.invoke(OnboardingAction.NotificationPermissionResult(granted))
-        pendingFinish?.let(onAction)
-        pendingFinish = null
-    }
-    val finish: (OnboardingAction) -> Unit = { action ->
-        val needsPermission = state.reminderEnabled &&
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS,
-            ) != PackageManager.PERMISSION_GRANTED
-        if (needsPermission) {
-            pendingFinish = action
-            permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        } else {
-            onAction.invoke(action)
-        }
-    }
-
     Scaffold(
         bottomBar = {
             OnboardingBottomBar(
-                onAddFirstExpense = { finish(OnboardingAction.AddFirstExpense) },
-                onExplore = { finish(OnboardingAction.Next) },
+                onAddFirstExpense = { onAction.invoke(OnboardingAction.AddFirstExpense) },
+                onExplore = { onAction.invoke(OnboardingAction.Next) },
                 shareRepository = shareRepository,
             )
         },
@@ -185,16 +142,6 @@ private fun OnboardingContentView(
                 AccountsSummaryCard(
                     accounts = state.accounts,
                     onClick = { onAction.invoke(OnboardingAction.OpenAccounts) },
-                )
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            StepSection(title = stringResource(id = R.string.onboarding_reminder_title)) {
-                ReminderCard(
-                    enabled = state.reminderEnabled,
-                    time = state.reminderTime,
-                    onToggle = { onAction.invoke(OnboardingAction.SetReminderEnabled(it)) },
                 )
             }
 
@@ -349,60 +296,6 @@ private fun SetupRowCard(
         }
     }
 }
-
-@Composable
-private fun ReminderCard(
-    enabled: Boolean,
-    time: ReminderTimeState?,
-    onToggle: (Boolean) -> Unit,
-) {
-    AppCardView(
-        onClick = { onToggle(!enabled) },
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Surface(
-                modifier = Modifier.size(40.dp),
-                shape = RoundedCornerShape(10.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = Icons.Outlined.NotificationsActive,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.width(14.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(
-                        id = R.string.onboarding_reminder_time,
-                        time?.toDisplayTime().orEmpty(),
-                    ),
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Text(
-                    text = stringResource(id = R.string.onboarding_reminder_description),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Switch(checked = enabled, onCheckedChange = onToggle)
-        }
-    }
-}
-
-/** Locale-aware short time, e.g. "10:00 AM" or "10:00". */
-private fun ReminderTimeState.toDisplayTime(): String = LocalTime.of(hour, minute).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
 
 @Composable
 private fun OnboardingBottomBar(

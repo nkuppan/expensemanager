@@ -17,10 +17,6 @@ val OnboardingViewModelModule = module {
             getFormattedAmountUseCase = get(),
             composeNavigator = get(),
             analyticsRepository = get(),
-            getReminderStatusUseCase = get(),
-            getReminderTimeUseCase = get(),
-            updateReminderStatusUseCase = get(),
-            reminderTimeRepository = get(),
         )
     }
     viewModel {

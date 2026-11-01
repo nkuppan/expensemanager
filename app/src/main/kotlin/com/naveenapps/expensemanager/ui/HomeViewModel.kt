@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -32,16 +33,28 @@ class HomeViewModel(
     val homeScreenBottomBarItems = _homeScreenBottomBarItems.asStateFlow()
 
     /**
-     * True when we should offer the "turn on reminders" explainer: the user has saved at least
-     * one transaction (so they've seen the app's value) and hasn't answered the explainer yet.
+     * When to offer the "turn on reminders" explainer (setup no longer asks), once either way:
+     * - right after the first saved transaction, when the user has just seen the app's value; or
+     * - on reaching Home with nothing logged yet (chose "Explore", or backed out of the first
+     *   expense). A reminder that evening is the main thing likely to bring that user back.
      * The screen still checks the OS permission, since there's nothing to ask if it's granted.
      */
-    val shouldOfferReminderPrimer: StateFlow<Boolean> = combine(
+    private val reminderPrimer: StateFlow<ReminderPrimerOffer> = combine(
         feedbackRepository.getTransactionCreatedCount(),
         reminderTimeRepository.isNotificationPrimerShown(),
     ) { transactionCount, primerShown ->
-        transactionCount >= 1 && !primerShown
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+        ReminderPrimerOffer(show = !primerShown, hasTransactions = transactionCount >= 1)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ReminderPrimerOffer())
+
+    val shouldOfferReminderPrimer: StateFlow<Boolean> = reminderPrimer
+        .map { it.show }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /** Which situation the explainer was offered in, so grant rates can be compared per trigger. */
+    private fun primerSource(): Map<String, String> = mapOf(
+        AnalyticsParams.SOURCE to
+            if (reminderPrimer.value.hasTransactions) PRIMER_SOURCE_AFTER_FIRST_SAVE else PRIMER_SOURCE_NO_TRANSACTIONS,
+    )
 
     /** One-shot celebration after the install's very first saved transaction. */
     val showFirstSaveCelebration: StateFlow<Boolean> = feedbackRepository
@@ -85,18 +98,18 @@ class HomeViewModel(
     }
 
     fun onReminderPrimerShown() {
-        analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_SHOWN, emptyMap())
+        analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_SHOWN, primerSource())
     }
 
     /** User tapped "Turn on reminders": the screen launches the system dialog next. */
     fun onReminderPrimerAccepted() {
-        analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_ACCEPTED, emptyMap())
+        analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_ACCEPTED, primerSource())
         markPrimerAnswered()
     }
 
     /** "Not now" or swiped away: respect it and never show the explainer again. */
     fun onReminderPrimerDismissed() {
-        analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_DISMISSED, emptyMap())
+        analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_DISMISSED, primerSource())
         markPrimerAnswered()
     }
 
@@ -109,7 +122,7 @@ class HomeViewModel(
     fun onNotificationPermissionResult(granted: Boolean) {
         analyticsRepository.logEvent(
             AnalyticsEvents.NOTIFICATION_PERMISSION_RESULT,
-            mapOf(AnalyticsParams.GRANTED to granted.toString()),
+            mapOf(AnalyticsParams.GRANTED to granted.toString()) + primerSource(),
         )
     }
 
@@ -130,3 +143,8 @@ class HomeViewModel(
         }
     }
 }
+
+private data class ReminderPrimerOffer(val show: Boolean = false, val hasTransactions: Boolean = false)
+
+private const val PRIMER_SOURCE_AFTER_FIRST_SAVE = "after_first_save"
+private const val PRIMER_SOURCE_NO_TRANSACTIONS = "no_transactions"

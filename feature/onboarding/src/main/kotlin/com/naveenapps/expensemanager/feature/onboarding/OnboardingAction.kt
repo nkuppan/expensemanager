@@ -14,11 +14,6 @@ sealed class OnboardingAction {
     /** Accounts come preloaded; this opens the full list to rename, add or remove. */
     data object OpenAccounts : OnboardingAction()
 
-    data class SetReminderEnabled(val enabled: Boolean) : OnboardingAction()
-
-    /** Result of the system notification dialog the screen showed before finishing setup. */
-    data class NotificationPermissionResult(val granted: Boolean) : OnboardingAction()
-
     data class AccountCreate(val account: AccountUiModel?) : OnboardingAction()
 
     data object ShowCurrencySelection : OnboardingAction()
