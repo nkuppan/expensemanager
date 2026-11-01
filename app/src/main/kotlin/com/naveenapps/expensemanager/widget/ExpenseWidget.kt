@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.widget
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
@@ -360,13 +361,15 @@ class ExpenseWidget : GlanceAppWidget() {
 
 @Composable
 fun CompactWidget(data: ExpenseWidgetData) {
+    // Tapping anywhere opens the app. The figures refresh on their own after every change, so the
+    // compact size no longer spends its whole surface on a manual refresh.
     Box(
         modifier = GlanceModifier
             .fillMaxSize()
             .background(WidgetColors.Background)
             .cornerRadius(20.dp)
             .padding(horizontal = 16.dp, vertical = 12.dp)
-            .clickable(actionRunCallback<RefreshExpenseWidgetAction>()),
+            .clickable(actionStartActivity(openAppIntent(LocalContext.current))),
     ) {
         Row(
             modifier = GlanceModifier.fillMaxSize(),
@@ -454,7 +457,8 @@ fun StandardWidget(data: ExpenseWidgetData) {
             .fillMaxSize()
             .background(WidgetColors.Background)
             .cornerRadius(20.dp)
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable(actionStartActivity(openAppIntent(LocalContext.current))),
     ) {
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
@@ -617,7 +621,8 @@ fun ExpandedWidget(data: ExpenseWidgetData) {
             .fillMaxSize()
             .background(WidgetColors.Background)
             .cornerRadius(20.dp)
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable(actionStartActivity(openAppIntent(LocalContext.current))),
     ) {
         Column(
             modifier = GlanceModifier
@@ -794,7 +799,7 @@ private fun TransactionRow(tx: WidgetTransaction) {
 
 /**
  * Quick add: opens the app straight on the new-transaction keypad (see QuickAdd). Its own
- * clickable wins over a parent's, so it still works inside the tap-to-refresh compact widget.
+ * clickable wins over the widget's tap-to-open background, as does the refresh button's.
  */
 @Composable
 private fun AddExpenseButton(
@@ -829,3 +834,13 @@ private fun AddExpenseButton(
 }
 
 private val MIN_TOUCH_TARGET = 48.dp
+
+/**
+ * Tapping the widget body opens the app the way its launcher icon does: an app already running
+ * comes to the front as it was (no second MainActivity on top), otherwise it starts on Home.
+ */
+private fun openAppIntent(context: Context): Intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
+    ?: Intent(context, com.naveenapps.expensemanager.MainActivity::class.java)
+        .setAction(Intent.ACTION_MAIN)
+        .addCategory(Intent.CATEGORY_LAUNCHER)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

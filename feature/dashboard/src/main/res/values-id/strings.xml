@@ -39,4 +39,5 @@
     <string name="auto_backup_warning_fix">Perbaiki</string>
     <string name="home_budget_none">Belum ada anggaran untuk %1$s</string>
     <string name="home_budget_create">Atur anggaran</string>
+    <string name="home_budget_page">Anggaran %1$d dari %2$d</string>
 </resources>

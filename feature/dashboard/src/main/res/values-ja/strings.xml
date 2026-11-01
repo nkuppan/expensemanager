@@ -39,4 +39,5 @@
     <string name="auto_backup_warning_fix">修正</string>
     <string name="home_budget_none">%1$sの予算はまだありません</string>
     <string name="home_budget_create">予算を設定</string>
+    <string name="home_budget_page">予算 %2$d件中%1$d件目</string>
 </resources>

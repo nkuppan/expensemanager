@@ -39,4 +39,5 @@
     <string name="auto_backup_warning_fix">Fix</string>
     <string name="home_budget_none">No budget for %1$s yet</string>
     <string name="home_budget_create">Set a budget</string>
+    <string name="home_budget_page">Budget %1$d of %2$d</string>
 </resources>

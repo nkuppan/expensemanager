@@ -55,8 +55,13 @@ object QuickAdd {
         }
     }
 
+    /**
+     * SINGLE_TOP with CLEAR_TOP reuses a running MainActivity (the intent arrives in onNewIntent)
+     * instead of finishing and recreating it, so the user keeps their place and isn't asked to
+     * unlock again when app lock is on.
+     */
     fun widgetIntent(context: Context): Intent = Intent(context, MainActivity::class.java)
         .setAction(ACTION_ADD_TRANSACTION)
         .putExtra(EXTRA_SOURCE, SOURCE_WIDGET)
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
 }

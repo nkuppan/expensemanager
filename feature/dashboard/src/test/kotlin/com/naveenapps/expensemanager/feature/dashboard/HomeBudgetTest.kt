@@ -34,24 +34,46 @@ class HomeBudgetTest {
     )
 
     @Test
-    fun `home shows the viewed month's and this year's budget, largest first`() {
+    fun `home shows every budget for the viewed month and this year, largest first`() {
         val small = budget("groceries", 5_000.0)
         val overall = budget("overall", 25_000.0)
+        val transport = budget("transport", 3_000.0)
         val lastMonth = budget("september", 30_000.0, key = "September 2026")
         val yearly = budget("year", 300_000.0, period = BudgetPeriod.YEARLY, key = "2026")
+        val travel = budget("travel", 60_000.0, period = BudgetPeriod.YEARLY, key = "2026")
+        val lastYear = budget("2025", 250_000.0, period = BudgetPeriod.YEARLY, key = "2025")
 
-        val (monthly, annual) = pickHomeBudgets(listOf(small, overall, lastMonth, yearly), "October 2026", "2026")
+        val (monthly, annual) = pickHomeBudgets(
+            listOf(small, overall, transport, lastMonth, yearly, travel, lastYear),
+            "October 2026",
+            "2026",
+        )
 
-        assertThat(monthly?.id).isEqualTo("overall")
-        assertThat(annual?.id).isEqualTo("year")
+        assertThat(monthly.map { it.id }).containsExactly("overall", "groceries", "transport").inOrder()
+        assertThat(annual.map { it.id }).containsExactly("year", "travel").inOrder()
+    }
+
+    @Test
+    fun `a single budget for a period is the only card`() {
+        val (monthly, annual) = pickHomeBudgets(listOf(budget("overall", 25_000.0)), "October 2026", "2026")
+
+        assertThat(monthly.map { it.id }).containsExactly("overall")
+        assertThat(annual).isEmpty()
     }
 
     @Test
     fun `no budget for a period leaves that tab empty`() {
         val (monthly, annual) = pickHomeBudgets(listOf(budget("overall", 25_000.0)), "November 2026", "2026")
 
-        assertThat(monthly).isNull()
-        assertThat(annual).isNull()
+        assertThat(monthly).isEmpty()
+        assertThat(annual).isEmpty()
+    }
+
+    @Test
+    fun `no month in view shows no monthly budgets`() {
+        val (monthly, _) = pickHomeBudgets(listOf(budget("overall", 25_000.0)), null, "2026")
+
+        assertThat(monthly).isEmpty()
     }
 
     @Test

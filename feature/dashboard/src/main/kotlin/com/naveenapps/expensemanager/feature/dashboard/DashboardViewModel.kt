@@ -191,16 +191,16 @@ class DashboardViewModel(
             }
             val activeMonth = activeMonthDate.toMonthAndYearKey()
             val currentYear = Date().toYear()
-            // Home shows one monthly budget (the month being viewed) and one yearly budget (this
-            // year); "View all" still lists every budget.
+            // Home shows every monthly budget for the month being viewed and every yearly budget
+            // for this year, one card each.
             val (monthly, yearly) = pickHomeBudgets(allBudgets, activeMonth, currentYear)
             val today = LocalDate.now()
             val format = { value: Double -> getFormattedAmountUseCase.invoke(value, currency).amountString.orEmpty() }
             _state.update {
                 it.copy(
                     homeBudgets = HomeBudgets(
-                        monthly = monthly?.toBudgetProgress(today, format),
-                        yearly = yearly?.toBudgetProgress(today, format),
+                        monthly = monthly.mapNotNull { budget -> budget.toBudgetProgress(today, format) },
+                        yearly = yearly.mapNotNull { budget -> budget.toBudgetProgress(today, format) },
                         month = activeMonthDate,
                         year = currentYear,
                     ),
