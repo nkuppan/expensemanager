@@ -37,6 +37,8 @@
 
     <string name="add_category">श्रेणी जोड़ें</string>
     <string name="add_transaction">लेन-देन जोड़ें</string>
+    <string name="category_transactions">लेन-देन</string>
+    <string name="category_share_of_total">कुल का %1$s</string>
     <string name="tap_chart_to_switch_to">"इसमें बदलने के लिए चार्ट पर टैप करें "</string>
 
     <plurals name="category_count">

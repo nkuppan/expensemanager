@@ -15,6 +15,7 @@
     <string name="total">Gesamt</string>
 
     <string name="delete">Löschen</string>
+    <string name="edit">Bearbeiten</string>
     <string name="delete_item_message">Möchtest du diesen Eintrag wirklich löschen? Gelöschte Einträge können nicht wiederhergestellt werden.</string>
     <string name="yes_delete">Ja, löschen</string>
     <string name="no_keep">Nein, behalten</string>

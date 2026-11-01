@@ -15,6 +15,7 @@
     <string name="total">Totale</string>
 
     <string name="delete">Elimina</string>
+    <string name="edit">Modifica</string>
     <string name="delete_item_message">Sei sicuro di voler eliminare questo elemento? L\'elemento eliminato non potrà essere recuperato.</string>
     <string name="yes_delete">Sì, elimina</string>
     <string name="no_keep">No, mantieni</string>

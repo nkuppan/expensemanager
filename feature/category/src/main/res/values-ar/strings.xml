@@ -37,6 +37,8 @@
 
     <string name="add_category">إضافة فئة</string>
     <string name="add_transaction">إضافة معاملة</string>
+    <string name="category_transactions">المعاملات</string>
+    <string name="category_share_of_total">%1$s من الإجمالي</string>
     <string name="tap_chart_to_switch_to">"انقر على الرسم البياني للتبديل إلى "</string>
 
     <plurals name="category_count">

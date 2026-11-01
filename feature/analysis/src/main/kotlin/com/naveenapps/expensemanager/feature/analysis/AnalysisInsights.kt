@@ -50,6 +50,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPrevi
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
@@ -58,7 +59,6 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionItem
-import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import java.time.DayOfWeek
 import java.time.format.TextStyle as DayNameStyle

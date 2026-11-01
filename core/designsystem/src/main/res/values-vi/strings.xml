@@ -15,6 +15,7 @@
     <string name="total">Tổng</string>
 
     <string name="delete">Xóa</string>
+    <string name="edit">Sửa</string>
     <string name="delete_item_message">Bạn có chắc chắn muốn xóa mục này không? Mục đã xóa không thể khôi phục.</string>
     <string name="yes_delete">Có, xóa</string>
     <string name="no_keep">Không, giữ lại</string>

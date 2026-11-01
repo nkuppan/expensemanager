@@ -37,6 +37,8 @@
 
     <string name="add_category">Thêm danh mục</string>
     <string name="add_transaction">Thêm giao dịch</string>
+    <string name="category_transactions">Giao dịch</string>
+    <string name="category_share_of_total">%1$s tổng số</string>
     <string name="tap_chart_to_switch_to">"Chạm vào biểu đồ để chuyển sang "</string>
 
     <plurals name="category_count">

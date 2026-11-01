@@ -15,6 +15,7 @@
     <string name="total">कुल</string>
 
     <string name="delete">हटाएं</string>
+    <string name="edit">एडिट करें</string>
     <string name="delete_item_message">क्या आप वाकई इस आइटम को हटाना चाहते हैं? हटाए गए आइटम को वापस नहीं लाया जा सकता।</string>
     <string name="yes_delete">हां, हटाएं</string>
     <string name="no_keep">नहीं, रहने दें</string>

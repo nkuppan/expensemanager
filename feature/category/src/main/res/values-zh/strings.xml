@@ -37,6 +37,8 @@
 
     <string name="add_category">添加分类</string>
     <string name="add_transaction">添加交易</string>
+    <string name="category_transactions">交易记录</string>
+    <string name="category_share_of_total">占总额 %1$s</string>
     <string name="tap_chart_to_switch_to">"点击图表切换到 "</string>
 
     <plurals name="category_count">

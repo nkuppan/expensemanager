@@ -37,6 +37,8 @@
 
     <string name="add_category">Aggiungi categoria</string>
     <string name="add_transaction">Aggiungi transazione</string>
+    <string name="category_transactions">Transazioni</string>
+    <string name="category_share_of_total">%1$s del totale</string>
     <string name="tap_chart_to_switch_to">"Tocca il grafico per passare a "</string>
 
     <plurals name="category_count">

@@ -37,6 +37,8 @@
 
     <string name="add_category">カテゴリを追加</string>
     <string name="add_transaction">取引を追加</string>
+    <string name="category_transactions">取引</string>
+    <string name="category_share_of_total">合計の%1$s</string>
     <string name="tap_chart_to_switch_to">"グラフをタップして切り替え: "</string>
 
     <plurals name="category_count">

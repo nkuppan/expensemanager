@@ -61,6 +61,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPrevi
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
@@ -72,10 +73,9 @@ import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
 import com.naveenapps.expensemanager.feature.filter.FilterView
-import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
-import org.koin.compose.viewmodel.koinViewModel
 import kotlin.random.Random
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun DashboardScreen(

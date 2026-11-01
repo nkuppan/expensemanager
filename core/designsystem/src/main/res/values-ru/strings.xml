@@ -15,6 +15,7 @@
     <string name="total">Итого</string>
 
     <string name="delete">Удалить</string>
+    <string name="edit">Изменить</string>
     <string name="delete_item_message">Вы уверены, что хотите удалить этот элемент? Удалённый элемент нельзя восстановить.</string>
     <string name="yes_delete">Да, удалить</string>
     <string name="no_keep">Нет, оставить</string>

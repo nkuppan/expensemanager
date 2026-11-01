@@ -42,47 +42,46 @@ class CategoryDetailViewModel(
                 findCategoryByIdFlowUseCase.invoke(it),
                 getTransactionWithFilterUseCase.invoke(),
             ) { currency, category, transactions ->
-                if (category != null && transactions?.isNotEmpty() == true) {
-                    val filterTransaction = transactions.filter { transaction ->
-                        transaction.type.ordinal == category.type.ordinal
-                    }
+                if (category == null) {
+                    _state.update { it.copy(categoryTransaction = null, transactions = emptyList()) }
+                    return@combine
+                }
 
-                    val totalSpent = filterTransaction.sumOf { it.amount.amount }
+                // Only the same type counts towards the share: an expense category's share of all
+                // spending, an income category's share of all income, in the selected period.
+                val sameTypeTransactions = transactions.orEmpty().filter { transaction ->
+                    transaction.type.ordinal == category.type.ordinal
+                }
+                val total = sameTypeTransactions.sumOf { it.amount.amount }
 
-                    val categoryTransaction = filterTransaction
-                        .filter { it.categoryId == category.id }
-                        .map { transaction ->
-                            transaction.toTransactionUIModel(
-                                getFormattedAmountUseCase.invoke(
-                                    transaction.amount.amount,
-                                    currency,
-                                ),
-                            )
-                        }
-
-                    val categoryAmount = categoryTransaction.sumOf { it.amount.amount }
-
-                    _state.update {
-                        it.copy(
-                            categoryTransaction = CategoryTransaction(
-                                category = category,
-                                percent = (categoryAmount / totalSpent).toFloat() * 100,
-                                amount = getFormattedAmountUseCase.invoke(
-                                    amount = categoryAmount,
-                                    currency = currency,
-                                ),
-                                transaction = filterTransaction,
+                val categoryTransactions = sameTypeTransactions
+                    .filter { it.categoryId == category.id }
+                    .map { transaction ->
+                        transaction.toTransactionUIModel(
+                            getFormattedAmountUseCase.invoke(
+                                transaction.amount.amount,
+                                currency,
                             ),
-                            transactions = categoryTransaction,
                         )
                     }
-                } else {
-                    _state.update {
-                        it.copy(
-                            categoryTransaction = null,
-                            transactions = emptyList(),
-                        )
-                    }
+
+                val categoryAmount = categoryTransactions.sumOf { it.amount.amount }
+
+                // The category is shown even with nothing in the period, so the screen keeps its
+                // title, summary and edit button (with a zero total) instead of losing them.
+                _state.update {
+                    it.copy(
+                        categoryTransaction = CategoryTransaction(
+                            category = category,
+                            percent = if (total > 0.0) (categoryAmount / total).toFloat() * 100 else 0f,
+                            amount = getFormattedAmountUseCase.invoke(
+                                amount = categoryAmount,
+                                currency = currency,
+                            ),
+                            transaction = sameTypeTransactions,
+                        ),
+                        transactions = categoryTransactions,
+                    )
                 }
             }.launchIn(viewModelScope)
         }

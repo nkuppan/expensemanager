@@ -44,6 +44,7 @@ import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
+import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.BudgetTitle
@@ -54,7 +55,6 @@ import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
 import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.transaction.CategorySpendingChartCard
 import com.naveenapps.expensemanager.feature.category.transaction.categorySpendingItems
-import com.naveenapps.expensemanager.feature.transaction.list.TransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import java.time.LocalDate
 import org.koin.compose.viewmodel.koinViewModel

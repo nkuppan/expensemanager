@@ -37,6 +37,8 @@
 
     <string name="add_category">Kategori Ekle</string>
     <string name="add_transaction">İşlem Ekle</string>
+    <string name="category_transactions">İşlemler</string>
+    <string name="category_share_of_total">Toplam içinde %1$s</string>
     <string name="tap_chart_to_switch_to">"Değiştirmek için grafiğe dokunun "</string>
 
     <plurals name="category_count">

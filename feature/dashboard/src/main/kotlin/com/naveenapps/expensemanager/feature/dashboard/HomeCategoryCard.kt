@@ -45,7 +45,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -125,8 +124,9 @@ internal fun HomeCategoryCard(
 }
 
 /**
- * Full-circle counterpart of the budget gauge (rounded ends, tinted track, grow-in animation),
- * sized for a side-by-side layout. Tapping it switches between expense and income.
+ * Full-circle counterpart of the budget gauge (same tinted track and grow-in animation), with
+ * square-ended slices so small categories keep their true size. Sized for a side-by-side layout;
+ * tapping it switches between expense and income.
  */
 @Composable
 private fun CategoryDonut(
@@ -163,32 +163,22 @@ private fun CategoryDonut(
         Canvas(modifier = Modifier.fillMaxSize()) {
             val stroke = 14.dp.toPx()
             val diameter = size.minDimension - stroke
-            val radius = diameter / 2
             val topLeft = Offset((size.width - diameter) / 2, (size.height - diameter) / 2)
             val arcSize = Size(diameter, diameter)
+            val style = Stroke(width = stroke)
 
-            drawArc(trackColor, 0f, 360f, false, topLeft, arcSize, style = Stroke(width = stroke))
+            drawArc(trackColor, 0f, 360f, false, topLeft, arcSize, style = style)
 
-            // Round caps reach past an arc's ends, so pull each slice in by the cap and leave a small
-            // gap between neighbours. A single slice is drawn as a plain ring.
-            val capDegrees = Math.toDegrees((stroke / 2 / radius).toDouble()).toFloat()
-            val gapDegrees = if (slices.size > 1) 4f else 0f
+            // Square-ended slices with a thin, even gap between neighbours, so each slice keeps its
+            // true size. (Rounded ends overhang the slice, and trimming them to fit made small
+            // categories into blobs and visibly distorted the proportions on a ring this size.)
+            // A slice narrower than two gaps keeps at least half its width, so 1% still shows.
+            val gapDegrees = if (slices.size > 1) 2.5f else 0f
             var start = -90f
             slices.forEach { (color, fraction) ->
                 val sweep = 360f * fraction * reveal.value
-                if (slices.size == 1) {
-                    drawArc(color, start, sweep, false, topLeft, arcSize, style = Stroke(width = stroke))
-                } else {
-                    drawArc(
-                        color = color,
-                        startAngle = start + gapDegrees / 2 + capDegrees,
-                        sweepAngle = (sweep - gapDegrees - 2 * capDegrees).coerceAtLeast(0.1f),
-                        useCenter = false,
-                        topLeft = topLeft,
-                        size = arcSize,
-                        style = Stroke(width = stroke, cap = StrokeCap.Round),
-                    )
-                }
+                val drawn = (sweep - gapDegrees).coerceAtLeast(sweep / 2)
+                drawArc(color, start + (sweep - drawn) / 2, drawn, false, topLeft, arcSize, style = style)
                 start += sweep
             }
         }
@@ -320,11 +310,9 @@ private fun NoCategorySpending(type: CategoryType, onAddTransaction: () -> Unit,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
         )
         Spacer(modifier = Modifier.height(10.dp))
         FilledTonalButton(
-            modifier = Modifier.align(Alignment.CenterHorizontally),
             onClick = onAddTransaction,
             contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
         ) {

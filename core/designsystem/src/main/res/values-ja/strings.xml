@@ -15,6 +15,7 @@
     <string name="total">合計</string>
 
     <string name="delete">削除</string>
+    <string name="edit">編集</string>
     <string name="delete_item_message">このアイテムを削除してもよろしいですか?削除したアイテムは復元できません。</string>
     <string name="yes_delete">はい、削除する</string>
     <string name="no_keep">いいえ、保持する</string>

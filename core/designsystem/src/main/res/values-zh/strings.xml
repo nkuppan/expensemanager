@@ -15,6 +15,7 @@
     <string name="total">总计</string>
 
     <string name="delete">删除</string>
+    <string name="edit">编辑</string>
     <string name="delete_item_message">确定要删除此项目吗？删除后将无法恢复。</string>
     <string name="yes_delete">是，删除</string>
     <string name="no_keep">否，保留</string>

@@ -15,6 +15,7 @@
     <string name="total">Toplam</string>
 
     <string name="delete">Sil</string>
+    <string name="edit">Düzenle</string>
     <string name="delete_item_message">Bu öğeyi silmek istediğinizden emin misiniz? Silinen öğe geri getirilemez.</string>
     <string name="yes_delete">Evet, Sil</string>
     <string name="no_keep">Hayır, Tut</string>

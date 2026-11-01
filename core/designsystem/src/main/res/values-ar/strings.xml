@@ -15,6 +15,7 @@
     <string name="total">الإجمالي</string>
 
     <string name="delete">حذف</string>
+    <string name="edit">تعديل</string>
     <string name="delete_item_message">هل أنت متأكد أنك تريد حذف هذا العنصر؟ لا يمكن استرجاع العنصر المحذوف.</string>
     <string name="yes_delete">نعم، احذف</string>
     <string name="no_keep">لا، احتفظ به</string>

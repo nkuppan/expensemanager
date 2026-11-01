@@ -29,10 +29,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -45,7 +45,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
@@ -56,8 +55,9 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItem
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefaults
-import java.util.Date
 import org.koin.compose.viewmodel.koinViewModel
+import java.util.Date
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 
 enum class CategoryTabItems(
     val labelResourceID: Int,
@@ -86,49 +86,57 @@ private fun CategoryListScreenContentView(
 ) {
     Scaffold(
         topBar = {
-            Surface {
-                Column {
-                    TopAppBar(
-                        navigationIcon = {
-                            IconButton(
-                                onClick = {
-                                    onAction.invoke(CategoryListAction.ClosePage)
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                    contentDescription = stringResource(DesignSystemR.string.a11y_back),
-                                )
-                            }
-                        },
-                        title = {
-                            Text(stringResource(R.string.category))
-                        },
-                    )
-                    PrimaryTabRow(selectedTabIndex = state.selectedTab.index) {
-                        state.tabs.forEach { item ->
-                            Tab(
-                                selected = state.selectedTab.categoryType == item.categoryType,
-                                onClick = {
-                                    onAction.invoke(
-                                        CategoryListAction.ChangeCategory(item),
-                                    )
-                                },
-                                text = {
-                                    Text(
-                                        text = stringResource(id = item.labelResourceID).uppercase(),
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        style = MaterialTheme.typography.labelLarge,
-                                        fontWeight = if (state.selectedTab.categoryType == item.categoryType) {
-                                            FontWeight.Bold
-                                        } else {
-                                            FontWeight.Normal
-                                        },
-                                    )
-                                },
+            Column {
+                TopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    ),
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                onAction.invoke(CategoryListAction.ClosePage)
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = stringResource(DesignSystemR.string.a11y_back),
                             )
                         }
+                    },
+                    title = {
+                        Text(stringResource(R.string.category))
+                    },
+                )
+                // Explicit colours: by default both tabs use the accent colour and differ only in
+                // weight, which makes the unselected one hard to tell apart (and read).
+                PrimaryTabRow(
+                    selectedTabIndex = state.selectedTab.index,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+                ) {
+                    state.tabs.forEach { item ->
+                        Tab(
+                            selected = state.selectedTab.categoryType == item.categoryType,
+                            selectedContentColor = MaterialTheme.colorScheme.primary,
+                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            onClick = {
+                                onAction.invoke(
+                                    CategoryListAction.ChangeCategory(item),
+                                )
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(id = item.labelResourceID).uppercase(),
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    style = MaterialTheme.typography.labelLarge,
+                                    fontWeight = if (state.selectedTab.categoryType == item.categoryType) {
+                                        FontWeight.Bold
+                                    } else {
+                                        FontWeight.Normal
+                                    },
+                                )
+                            },
+                        )
                     }
                 }
             }
