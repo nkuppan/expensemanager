@@ -8,7 +8,6 @@
     <string name="select_main_currency">Ana Para Birimini Seç</string>
     <string name="add_new">Yeni Ekle</string>
     <string name="proceed">Devam Et</string>
-    <string name="get_started">Başlayın</string>
     <string name="setup">Uygulama Ayarlarını Yapılandır</string>
     <string name="create_new">Yeni Oluştur</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">Para birimini ayarlayın</string>
     <string name="not_set_up_yet">Henüz ayarlanmadı</string>
 
-    <string name="track">Takip Et</string>
-    <string name="organize">Düzenle</string>
-    <string name="grow">Büyüt</string>
     <string name="onboarding_add_first_expense">İlk harcamanı ekle</string>
     <string name="onboarding_explore_first">Önce uygulamayı keşfet</string>
 </resources>

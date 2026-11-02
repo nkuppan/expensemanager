@@ -67,4 +67,6 @@ sealed class TransactionCreateAction {
 
     /** Opens the rule ("series") this transaction was logged by. */
     data object OpenRecurringSeries : TransactionCreateAction()
+
+    data class ApplyQuickPick(val pick: QuickPick) : TransactionCreateAction()
 }

@@ -8,7 +8,6 @@
     <string name="select_main_currency">اختيار العملة الرئيسية</string>
     <string name="add_new">إضافة جديد</string>
     <string name="proceed">متابعة</string>
-    <string name="get_started">البدء</string>
     <string name="setup">إعداد إعدادات التطبيق</string>
     <string name="create_new">إنشاء جديد</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">إعداد العملة</string>
     <string name="not_set_up_yet">لم يتم الإعداد بعد</string>
 
-    <string name="track">تتبع</string>
-    <string name="organize">نظّم</string>
-    <string name="grow">نمِّ</string>
     <string name="onboarding_add_first_expense">أضف أول مصروف لك</string>
     <string name="onboarding_explore_first">استكشف التطبيق أولًا</string>
 </resources>

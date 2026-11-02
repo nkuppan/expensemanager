@@ -24,6 +24,7 @@ import com.naveenapps.expensemanager.core.testing.FAKE_INCOME_TRANSACTION
 import com.naveenapps.expensemanager.core.testing.FAKE_SECOND_ACCOUNT
 import com.naveenapps.expensemanager.core.testing.FAKE_SECOND_CATEGORY
 import com.naveenapps.expensemanager.core.testing.FAKE_TRANSFER_TRANSACTION
+import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -249,6 +250,38 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
         val data = (result as Resource.Success).data
         Truth.assertThat(data).isNotNull()
         Truth.assertThat(data).isTrue()
+    }
+
+    @Test
+    fun frequentTransactionsGroupIdenticalEntriesMostUsedFirst() = runTest {
+        setupBasicAppData()
+        val tea = FAKE_EXPENSE_TRANSACTION.copy(notes = "Tea", amount = Amount(20.0))
+        val lunch = FAKE_EXPENSE_TRANSACTION.copy(notes = "Lunch", amount = Amount(150.0))
+        listOf(
+            tea.copy(id = "t1"),
+            tea.copy(id = "t2", notes = "Tea "),
+            tea.copy(id = "t3"),
+            lunch.copy(id = "l1"),
+            lunch.copy(id = "l2"),
+            // Logged once only, so not frequent.
+            FAKE_EXPENSE_TRANSACTION.copy(id = "o1", notes = "Movie", amount = Amount(300.0)),
+            // Same details but older than the window.
+            tea.copy(id = "old", createdOn = Date(0), updatedOn = Date(0)),
+        ).forEach { transactionRepository.addTransaction(it) }
+
+        transactionRepository.getFrequentTransactions(
+            transactionTypes = listOf(TransactionType.EXPENSE, TransactionType.INCOME),
+            since = System.currentTimeMillis() - 86_400_000L,
+            minCount = 2,
+            limit = 6,
+        ).test {
+            val frequent = awaitItem()
+            Truth.assertThat(frequent.map { it.notes to it.useCount })
+                .containsExactly("Tea" to 3, "Lunch" to 2)
+                .inOrder()
+            Truth.assertThat(frequent.first().amount).isEqualTo(20.0)
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     private suspend fun setupBasicAppData() {

@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
 import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionRelation
+import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -160,5 +161,28 @@ class TransactionRepositoryImpl(
         endDate.fromLocalToUTCTimeStamp(),
     ).map {
         convertTransactionAndCategory(it)
+    }
+
+    override fun getFrequentTransactions(
+        transactionTypes: List<TransactionType>,
+        since: Long,
+        minCount: Int,
+        limit: Int,
+    ): Flow<List<FrequentTransaction>> = transactionDao.getFrequentTransactions(
+        transactionTypes.map { it.ordinal },
+        since.fromLocalToUTCTimeStamp(),
+        minCount,
+        limit,
+    ).map { rows ->
+        rows.map {
+            FrequentTransaction(
+                type = it.type,
+                categoryId = it.categoryId,
+                fromAccountId = it.fromAccountId,
+                amount = it.amount,
+                notes = it.notes,
+                useCount = it.useCount,
+            )
+        }
     }
 }

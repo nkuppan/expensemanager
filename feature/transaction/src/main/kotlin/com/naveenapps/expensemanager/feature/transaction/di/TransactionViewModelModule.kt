@@ -5,10 +5,15 @@ import com.naveenapps.expensemanager.feature.transaction.list.TransactionListVie
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadViewModel
 import com.naveenapps.expensemanager.feature.transaction.recurring.RecurringTransactionsViewModel
 import com.naveenapps.expensemanager.feature.transaction.recurring.edit.RecurringTransactionEditViewModel
+import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
+import com.naveenapps.expensemanager.feature.transaction.search.LocalizedCategoryDisplayNames
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val TransactionViewModelModule = module {
+    // Category names as shown in the app's language, so search matches translated names.
+    factory<CategoryDisplayNames> { LocalizedCategoryDisplayNames(androidContext(), get()) }
     viewModel {
         TransactionCreateViewModel(
             savedStateHandle = get(),
@@ -30,6 +35,7 @@ val TransactionViewModelModule = module {
             budgetAlertTrigger = get(),
             createRecurringTransactionUseCase = get(),
             findRecurringTransactionByIdUseCase = get(),
+            getFrequentTransactionsUseCase = get(),
         )
     }
     viewModel {
@@ -42,6 +48,7 @@ val TransactionViewModelModule = module {
             deleteTransactionUseCase = get(),
             addTransactionUseCase = get(),
             imageStorageRepository = get(),
+            categoryDisplayNames = get(),
         )
     }
     viewModel { NumberPadViewModel() }
@@ -53,6 +60,7 @@ val TransactionViewModelModule = module {
             deleteRecurringTransactionUseCase = get(),
             appComposeNavigator = get(),
             analyticsRepository = get(),
+            categoryDisplayNames = get(),
         )
     }
     viewModel {

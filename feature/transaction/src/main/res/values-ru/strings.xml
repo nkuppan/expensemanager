@@ -75,6 +75,15 @@
     <string name="recurring_empty_message">Добавляя операцию, выберите в «Повторять» ежедневно, еженедельно, ежемесячно или ежегодно — и она будет записываться сама.</string>
     <string name="edit">Изменить</string>
     <string name="search_transactions_hint">Поиск по заметкам, категориям, счетам</string>
+    <string name="search_spent">Потрачено %1$s</string>
+    <string name="search_earned">Получено %1$s</string>
+    <string name="search_all_time">За всё время</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d результат</item>
+        <item quantity="few">%d результата</item>
+        <item quantity="many">%d результатов</item>
+        <item quantity="other">%d результата</item>
+    </plurals>
     <string name="clear_search">Очистить поиск</string>
     <string name="no_matching_transactions">Нет операций, соответствующих запросу</string>
     <string name="transaction_deleted">Операция удалена</string>
@@ -97,4 +106,6 @@
     <string name="recurring_part_of_series">Часть регулярной серии</string>
     <string name="recurring_edit_series">Измените серию, чтобы изменить будущие операции</string>
     <string name="add_recurring_transaction">Добавить регулярную операцию</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Частые</string>
 </resources>

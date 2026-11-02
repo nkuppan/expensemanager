@@ -75,6 +75,13 @@
     <string name="recurring_empty_message">Wähle beim Hinzufügen einer Buchung unter Wiederholen Täglich, Wöchentlich, Monatlich oder Jährlich – sie wird dann für dich erfasst.</string>
     <string name="edit">Bearbeiten</string>
     <string name="search_transactions_hint">Notizen, Kategorien, Konten suchen</string>
+    <string name="search_spent">Ausgegeben %1$s</string>
+    <string name="search_earned">Eingenommen %1$s</string>
+    <string name="search_all_time">Gesamter Zeitraum</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d Ergebnis</item>
+        <item quantity="other">%d Ergebnisse</item>
+    </plurals>
     <string name="clear_search">Suche löschen</string>
     <string name="no_matching_transactions">Keine Transaktionen passen zu deiner Suche</string>
     <string name="transaction_deleted">Transaktion gelöscht</string>
@@ -97,4 +104,6 @@
     <string name="recurring_part_of_series">Teil einer wiederkehrenden Serie</string>
     <string name="recurring_edit_series">Serie bearbeiten, um kommende Transaktionen zu ändern</string>
     <string name="add_recurring_transaction">Wiederkehrende Transaktion hinzufügen</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Häufig</string>
 </resources>

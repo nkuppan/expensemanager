@@ -8,7 +8,6 @@
     <string name="select_main_currency">मुख्य मुद्रा चुनें</string>
     <string name="add_new">नया जोड़ें</string>
     <string name="proceed">आगे बढ़ें</string>
-    <string name="get_started">शुरू करें</string>
     <string name="setup">ऐप सेटिंग्स सेट करें</string>
     <string name="create_new">नया बनाएं</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">मुद्रा सेट करें</string>
     <string name="not_set_up_yet">अभी सेट नहीं किया गया</string>
 
-    <string name="track">ट्रैक करें</string>
-    <string name="organize">व्यवस्थित करें</string>
-    <string name="grow">आगे बढ़ें</string>
     <string name="onboarding_add_first_expense">अपना पहला खर्च जोड़ें</string>
     <string name="onboarding_explore_first">पहले ऐप देखें</string>
 </resources>

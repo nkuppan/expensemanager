@@ -35,6 +35,7 @@ val TransactionUseCaseModule = module {
     }
     single { DeleteTransactionUseCase(repository = get()) }
     single { FindTransactionByIdUseCase(repository = get()) }
+    single { GetFrequentTransactionsUseCase(repository = get()) }
     single {
         GetAmountStateUseCase(
             getCurrencyUseCase = get(),

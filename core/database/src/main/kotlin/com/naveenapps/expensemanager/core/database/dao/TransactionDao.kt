@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.naveenapps.expensemanager.core.database.entity.AccountEntity
+import com.naveenapps.expensemanager.core.database.entity.FrequentTransactionRow
 import com.naveenapps.expensemanager.core.database.entity.TransactionAttachmentEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionRelation
@@ -72,6 +73,28 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         fromDate: Long,
         toDate: Long,
     ): Flow<List<TransactionRelation>?>
+
+    // Entries logged more than once with the same type, category, account, amount and notes,
+    // most used first (ties: most recently used). Notes are trimmed so "Tea" and "Tea " match.
+    // Uses the created_on index; grouping runs over the window only, so it stays cheap.
+    @Query(
+        """
+        SELECT type, category_id, from_account_id, amount, TRIM(notes) AS notes, COUNT(*) AS use_count
+        FROM `transaction`
+        WHERE `transaction`.type IN(:transactionTypes)
+        AND `transaction`.created_on >= :since
+        GROUP BY type, category_id, from_account_id, amount, TRIM(notes)
+        HAVING COUNT(*) >= :minCount
+        ORDER BY use_count DESC, MAX(created_on) DESC
+        LIMIT :limit
+        """,
+    )
+    fun getFrequentTransactions(
+        transactionTypes: List<Int>,
+        since: Long,
+        minCount: Int,
+        limit: Int,
+    ): Flow<List<FrequentTransactionRow>>
 
     @Update
     suspend fun updateAccount(accountEntity: AccountEntity)

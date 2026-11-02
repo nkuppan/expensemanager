@@ -67,4 +67,22 @@ class RecurringSearchTest {
     fun `does not match unrelated text`() {
         assertThat(item.matches("groceries")).isFalse()
     }
+
+    // A built-in category is shown translated (e.g. in Hindi) but stores an English name.
+    private val translatedName: (Category) -> String = { if (it.name == "Entertainment") "मनोरंजन" else it.name }
+
+    @Test
+    fun matchesTheTranslatedCategoryNameShown() {
+        assertThat(item.matches("मनोरंजन", translatedName)).isTrue()
+    }
+
+    @Test
+    fun stillMatchesTheStoredEnglishNameWhenTranslated() {
+        assertThat(item.matches("entertain", translatedName)).isTrue()
+    }
+
+    @Test
+    fun translatedNameDoesNotMatchUnrelatedText() {
+        assertThat(item.matches("किराया", translatedName)).isFalse()
+    }
 }

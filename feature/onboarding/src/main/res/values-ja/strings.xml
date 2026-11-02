@@ -8,7 +8,6 @@
     <string name="select_main_currency">メイン通貨を選択</string>
     <string name="add_new">新規追加</string>
     <string name="proceed">次へ</string>
-    <string name="get_started">はじめる</string>
     <string name="setup">アプリ設定のセットアップ</string>
     <string name="create_new">新規作成</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">通貨を設定</string>
     <string name="not_set_up_yet">まだ設定されていません</string>
 
-    <string name="track">記録する</string>
-    <string name="organize">整理する</string>
-    <string name="grow">増やす</string>
     <string name="onboarding_add_first_expense">最初の支出を追加</string>
     <string name="onboarding_explore_first">まずアプリを見てみる</string>
 </resources>

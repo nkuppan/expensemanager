@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -24,13 +26,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.R
 
-/** A filled, rounded search box for filtering a list inside a bottom sheet, with a clear button. */
+/**
+ * A filled, rounded search box for filtering a list (in a bottom sheet or at the top of a screen),
+ * with a clear button while there's text.
+ *
+ * @param trailingAction optional extra action shown at the end of the box, after the clear button
+ * (e.g. a shortcut related to the list being searched).
+ */
 @Composable
 fun SheetSearchField(
     query: String,
     onQueryChange: (String) -> Unit,
     placeholder: String,
     modifier: Modifier = Modifier,
+    trailingAction: (@Composable () -> Unit)? = null,
 ) {
     val focusManager = LocalFocusManager.current
     TextField(
@@ -48,13 +57,18 @@ fun SheetSearchField(
         leadingIcon = {
             Icon(imageVector = Icons.Rounded.Search, contentDescription = null)
         },
-        trailingIcon = if (query.isNotEmpty()) {
+        trailingIcon = if (query.isNotEmpty() || trailingAction != null) {
             {
-                IconButton(onClick = { onQueryChange("") }) {
-                    Icon(
-                        imageVector = Icons.Rounded.Close,
-                        contentDescription = stringResource(R.string.a11y_clear_search),
-                    )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { onQueryChange("") }) {
+                            Icon(
+                                imageVector = Icons.Rounded.Close,
+                                contentDescription = stringResource(R.string.a11y_clear_search),
+                            )
+                        }
+                    }
+                    trailingAction?.invoke()
                 }
             }
         } else {

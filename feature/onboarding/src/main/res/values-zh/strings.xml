@@ -8,7 +8,6 @@
     <string name="select_main_currency">选择主货币</string>
     <string name="add_new">新增</string>
     <string name="proceed">继续</string>
-    <string name="get_started">开始使用</string>
     <string name="setup">设置应用配置</string>
     <string name="create_new">新建</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">设置货币</string>
     <string name="not_set_up_yet">尚未设置</string>
 
-    <string name="track">追踪</string>
-    <string name="organize">整理</string>
-    <string name="grow">增长</string>
     <string name="onboarding_add_first_expense">添加第一笔支出</string>
     <string name="onboarding_explore_first">先看看应用</string>
 </resources>

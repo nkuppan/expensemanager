@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.recurring.DeleteRecurri
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -13,6 +14,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.feature.transaction.R
+import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,6 +31,7 @@ class RecurringTransactionsViewModel(
     private val deleteRecurringTransactionUseCase: DeleteRecurringTransactionUseCase,
     private val appComposeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
+    categoryDisplayNames: CategoryDisplayNames = CategoryDisplayNames.Stored,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RecurringTransactionsState())
@@ -41,11 +44,12 @@ class RecurringTransactionsViewModel(
             getRecurringTransactionsUseCase.invoke(),
             getCurrencyUseCase.invoke(),
             searchQuery,
-        ) { rules, currency, query ->
+            categoryDisplayNames.lookup(),
+        ) { rules, currency, query, displayName ->
             val all = rules.map {
                 RecurringItemUi(it, getFormattedAmountUseCase.invoke(it.amount, currency).amountString.orEmpty())
             }
-            all.filter { it.matches(query) } to all.isNotEmpty()
+            all.filter { it.matches(query, displayName) } to all.isNotEmpty()
         }.onEach { (items, hasAny) ->
             _state.update { it.copy(items = items, hasAnyRules = hasAny) }
         }.launchIn(viewModelScope)
@@ -99,13 +103,18 @@ class RecurringTransactionsViewModel(
 
 /**
  * Notes, category name, account names and the amount (formatted, e.g. "1,200.00", or raw, e.g.
- * "1200"). Like the transaction list, built-in categories match by their stored English name.
+ * "1200"). Like the transaction list, a built-in category matches both by the name shown
+ * ([displayName]) and by its stored English name.
  */
-internal fun RecurringItemUi.matches(query: String): Boolean = matchesSearch(
+internal fun RecurringItemUi.matches(
+    query: String,
+    displayName: (Category) -> String = { it.name },
+): Boolean = matchesSearch(
     query,
     listOf(
         rule.notes,
         rule.category?.name,
+        rule.category?.let(displayName),
         rule.fromAccount?.name,
         rule.toAccount?.name,
         amount,

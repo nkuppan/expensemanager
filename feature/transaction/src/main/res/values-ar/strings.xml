@@ -75,6 +75,17 @@
     <string name="recurring_empty_message">عند إضافة معاملة، اختر يوميًا أو أسبوعيًا أو شهريًا أو سنويًا ضمن التكرار وستُسجَّل تلقائيًا.</string>
     <string name="edit">تعديل</string>
     <string name="search_transactions_hint">ابحث في الملاحظات والفئات والحسابات</string>
+    <string name="search_spent">المصروف %1$s</string>
+    <string name="search_earned">الدخل %1$s</string>
+    <string name="search_all_time">كل الأوقات</string>
+    <plurals name="search_result_count">
+        <item quantity="zero">%d نتيجة</item>
+        <item quantity="one">نتيجة واحدة</item>
+        <item quantity="two">نتيجتان</item>
+        <item quantity="few">%d نتائج</item>
+        <item quantity="many">%d نتيجة</item>
+        <item quantity="other">%d نتيجة</item>
+    </plurals>
     <string name="clear_search">مسح البحث</string>
     <string name="no_matching_transactions">لا توجد معاملات تطابق بحثك</string>
     <string name="transaction_deleted">تم حذف المعاملة</string>
@@ -97,4 +108,6 @@
     <string name="recurring_part_of_series">جزء من سلسلة متكررة</string>
     <string name="recurring_edit_series">عدّل السلسلة لتغيير المعاملات القادمة</string>
     <string name="add_recurring_transaction">إضافة معاملة متكررة</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">متكرر</string>
 </resources>

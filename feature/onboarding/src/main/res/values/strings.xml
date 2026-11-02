@@ -8,7 +8,6 @@
     <string name="select_main_currency">Select Main Currency</string>
     <string name="add_new">Add New</string>
     <string name="proceed">Proceed</string>
-    <string name="get_started">Get Started</string>
     <string name="setup">Setup App Settings</string>
     <string name="create_new">Create New</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">Setup the currency</string>
     <string name="not_set_up_yet">Not set up yet</string>
 
-    <string name="track">Track</string>
-    <string name="organize">Organize</string>
-    <string name="grow">Grow</string>
     <string name="onboarding_add_first_expense">Add your first expense</string>
     <string name="onboarding_explore_first">Explore the app first</string>
 </resources>

@@ -43,6 +43,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.ui.AppLockScreen
 import com.naveenapps.expensemanager.ui.MainScreen
+import com.naveenapps.expensemanager.widget.ACTION_OPEN_FROM_WIDGET
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -86,6 +87,7 @@ internal class MainActivity :
         if (savedInstanceState == null) {
             handleQuickAdd(intent)
             handleOpenAutoBackup(intent)
+            handleWidgetOpen(intent)
         }
 
         lifecycleScope.launch {
@@ -186,6 +188,13 @@ internal class MainActivity :
         setIntent(intent)
         handleQuickAdd(intent)
         handleOpenAutoBackup(intent)
+        handleWidgetOpen(intent)
+    }
+
+    /** Home-screen widget body tapped: just count it; the app opens wherever it was. */
+    private fun handleWidgetOpen(intent: Intent?) {
+        if (intent?.action != ACTION_OPEN_FROM_WIDGET) return
+        analyticsRepository.logEvent(AnalyticsEvents.WIDGET_OPENED, emptyMap())
     }
 
     /** "Automatic backup failed" notification: open the screen where it can be fixed. */

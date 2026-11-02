@@ -13,10 +13,16 @@ object AnalyticsEvents {
     const val TRANSACTION_UPDATED = "transaction_updated"
     const val TRANSACTION_DELETED = "transaction_deleted"
 
+    /** A frequent-entry chip filled the add form ("transaction_created" then carries source). */
+    const val QUICK_PICK_USED = "quick_pick_used"
+
     // Re-engagement
     const val NOTIFICATION_PERMISSION_RESULT = "notification_permission_result"
     const val REMINDER_OPENED = "reminder_opened"
     const val QUICK_ADD_OPENED = "quick_add_opened"
+
+    /** The home-screen widget's body was tapped to open the app (its "+" logs QUICK_ADD_OPENED). */
+    const val WIDGET_OPENED = "widget_opened"
     const val REMINDER_SHOWN = "reminder_shown"
     const val REMINDER_SKIPPED_ALREADY_LOGGED = "reminder_skipped_already_logged"
     const val REMINDER_NO_SPEND = "reminder_no_spend"

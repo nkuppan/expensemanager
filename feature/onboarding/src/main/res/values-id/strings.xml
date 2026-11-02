@@ -8,7 +8,6 @@
     <string name="select_main_currency">Pilih Mata Uang Utama</string>
     <string name="add_new">Tambah Baru</string>
     <string name="proceed">Lanjutkan</string>
-    <string name="get_started">Mulai</string>
     <string name="setup">Atur Pengaturan Aplikasi</string>
     <string name="create_new">Buat Baru</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">Atur mata uang</string>
     <string name="not_set_up_yet">Belum diatur</string>
 
-    <string name="track">Lacak</string>
-    <string name="organize">Atur</string>
-    <string name="grow">Kembangkan</string>
     <string name="onboarding_add_first_expense">Tambahkan pengeluaran pertama</string>
     <string name="onboarding_explore_first">Jelajahi aplikasi dulu</string>
 </resources>

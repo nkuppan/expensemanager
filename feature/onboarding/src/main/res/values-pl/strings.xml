@@ -8,7 +8,6 @@
     <string name="select_main_currency">Wybierz walutę główną</string>
     <string name="add_new">Dodaj nowe</string>
     <string name="proceed">Kontynuuj</string>
-    <string name="get_started">Rozpocznij</string>
     <string name="setup">Skonfiguruj ustawienia aplikacji</string>
     <string name="create_new">Utwórz nowe</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">Skonfiguruj walutę</string>
     <string name="not_set_up_yet">Jeszcze nie skonfigurowano</string>
 
-    <string name="track">Śledź</string>
-    <string name="organize">Organizuj</string>
-    <string name="grow">Rozwijaj się</string>
     <string name="onboarding_add_first_expense">Dodaj pierwszy wydatek</string>
     <string name="onboarding_explore_first">Najpierw poznaj aplikację</string>
 </resources>

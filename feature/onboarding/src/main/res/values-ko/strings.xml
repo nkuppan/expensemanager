@@ -8,7 +8,6 @@
     <string name="select_main_currency">주 통화 선택</string>
     <string name="add_new">새로 추가</string>
     <string name="proceed">계속</string>
-    <string name="get_started">시작하기</string>
     <string name="setup">앱 설정 구성</string>
     <string name="create_new">새로 만들기</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">통화 설정</string>
     <string name="not_set_up_yet">아직 설정되지 않음</string>
 
-    <string name="track">추적</string>
-    <string name="organize">정리</string>
-    <string name="grow">성장</string>
     <string name="onboarding_add_first_expense">첫 지출 추가하기</string>
     <string name="onboarding_explore_first">먼저 앱 둘러보기</string>
 </resources>

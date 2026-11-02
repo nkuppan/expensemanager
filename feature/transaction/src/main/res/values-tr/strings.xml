@@ -75,6 +75,13 @@
     <string name="recurring_empty_message">İşlem eklerken Tekrarla altında Günlük, Haftalık, Aylık veya Yıllık seçin; sizin için kaydedilir.</string>
     <string name="edit">Düzenle</string>
     <string name="search_transactions_hint">Notlarda, kategorilerde, hesaplarda ara</string>
+    <string name="search_spent">Harcanan %1$s</string>
+    <string name="search_earned">Kazanılan %1$s</string>
+    <string name="search_all_time">Tüm zamanlar</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d sonuç</item>
+        <item quantity="other">%d sonuç</item>
+    </plurals>
     <string name="clear_search">Aramayı temizle</string>
     <string name="no_matching_transactions">Aramanızla eşleşen işlem yok</string>
     <string name="transaction_deleted">İşlem silindi</string>
@@ -97,4 +104,6 @@
     <string name="recurring_part_of_series">Tekrarlanan serinin parçası</string>
     <string name="recurring_edit_series">Gelecek işlemleri değiştirmek için seriyi düzenleyin</string>
     <string name="add_recurring_transaction">Tekrarlanan işlem ekle</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Sık kullanılanlar</string>
 </resources>

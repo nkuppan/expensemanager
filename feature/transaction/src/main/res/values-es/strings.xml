@@ -75,6 +75,14 @@
     <string name="recurring_empty_message">Al añadir una transacción, elige Diario, Semanal, Mensual o Anual en Repetir y se registrará por ti.</string>
     <string name="edit">Editar</string>
     <string name="search_transactions_hint">Buscar notas, categorías, cuentas</string>
+    <string name="search_spent">Gastado %1$s</string>
+    <string name="search_earned">Ingresado %1$s</string>
+    <string name="search_all_time">Todo el tiempo</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d resultado</item>
+        <item quantity="many">%d resultados</item>
+        <item quantity="other">%d resultados</item>
+    </plurals>
     <string name="clear_search">Borrar búsqueda</string>
     <string name="no_matching_transactions">Ninguna transacción coincide con tu búsqueda</string>
     <string name="transaction_deleted">Transacción eliminada</string>
@@ -97,4 +105,6 @@
     <string name="recurring_part_of_series">Parte de una serie recurrente</string>
     <string name="recurring_edit_series">Edita la serie para cambiar las próximas transacciones</string>
     <string name="add_recurring_transaction">Añadir transacción recurrente</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Frecuentes</string>
 </resources>

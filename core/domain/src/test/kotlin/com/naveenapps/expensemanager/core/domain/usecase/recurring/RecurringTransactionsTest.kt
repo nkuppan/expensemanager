@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.recurring
 
 import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
+import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.Resource
@@ -393,5 +394,11 @@ class RecurringTransactionsTest {
             startDate: Long,
             endDate: Long,
         ): Flow<List<Transaction>?> = flowOf(added)
+        override fun getFrequentTransactions(
+            transactionTypes: List<TransactionType>,
+            since: Long,
+            minCount: Int,
+            limit: Int,
+        ): Flow<List<FrequentTransaction>> = flowOf(emptyList())
     }
 }

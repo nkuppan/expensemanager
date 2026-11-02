@@ -8,7 +8,6 @@
     <string name="select_main_currency">Выберите основную валюту</string>
     <string name="add_new">Добавить</string>
     <string name="proceed">Продолжить</string>
-    <string name="get_started">Начать</string>
     <string name="setup">Настройка приложения</string>
     <string name="create_new">Создать новый</string>
 
@@ -17,9 +16,6 @@
     <string name="setup_currency">Настройте валюту</string>
     <string name="not_set_up_yet">Ещё не настроено</string>
 
-    <string name="track">Отслеживайте</string>
-    <string name="organize">Организуйте</string>
-    <string name="grow">Развивайтесь</string>
     <string name="onboarding_add_first_expense">Добавить первый расход</string>
     <string name="onboarding_explore_first">Сначала изучить приложение</string>
 </resources>

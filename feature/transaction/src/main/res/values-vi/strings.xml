@@ -75,6 +75,12 @@
     <string name="recurring_empty_message">Khi thêm giao dịch, chọn Hằng ngày, Hằng tuần, Hằng tháng hoặc Hằng năm ở mục Lặp lại và giao dịch sẽ được ghi tự động.</string>
     <string name="edit">Sửa</string>
     <string name="search_transactions_hint">Tìm ghi chú, danh mục, tài khoản</string>
+    <string name="search_spent">Đã chi %1$s</string>
+    <string name="search_earned">Đã thu %1$s</string>
+    <string name="search_all_time">Mọi thời điểm</string>
+    <plurals name="search_result_count">
+        <item quantity="other">%d kết quả</item>
+    </plurals>
     <string name="clear_search">Xóa tìm kiếm</string>
     <string name="no_matching_transactions">Không có giao dịch nào khớp với tìm kiếm</string>
     <string name="transaction_deleted">Đã xóa giao dịch</string>
@@ -97,4 +103,6 @@
     <string name="recurring_part_of_series">Thuộc chuỗi định kỳ</string>
     <string name="recurring_edit_series">Sửa chuỗi để thay đổi các giao dịch sắp tới</string>
     <string name="add_recurring_transaction">Thêm giao dịch định kỳ</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Thường dùng</string>
 </resources>

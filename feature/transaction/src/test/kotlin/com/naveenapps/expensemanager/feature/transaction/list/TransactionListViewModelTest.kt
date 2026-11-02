@@ -60,6 +60,8 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
         whenever(getCurrencyUseCase.invoke()).thenReturn(flowOf(Currency("$", "USD")))
         whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0, "$0"))
         whenever(getTransactionWithFilterUseCase.invoke()).thenReturn(flowOf(transactions))
+        // Search reads all dates by default.
+        whenever(getTransactionWithFilterUseCase.allTime()).thenReturn(flowOf(transactions))
         return TransactionListViewModel(
             getCurrencyUseCase = getCurrencyUseCase,
             getFormattedAmountUseCase = getFormattedAmountUseCase,
@@ -121,6 +123,47 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
 
         assertThat(viewModel.state.value.ids()).containsExactly("groceries")
         assertThat(viewModel.state.value.searchQuery).isEqualTo("GROCER")
+    }
+
+    @Test
+    fun `search shows a summary of what matched and clears it with the search`() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.searchSummary).isNull()
+
+        viewModel.processAction(TransactionListAction.Search("rent"))
+        advanceUntilIdle()
+
+        val summary = viewModel.state.value.searchSummary!!
+        assertThat(summary.count).isEqualTo(1)
+        assertThat(summary.spent).isNotNull() // an expense matched
+        assertThat(summary.earned).isNull() // no income among the results
+
+        viewModel.processAction(TransactionListAction.Search(""))
+        advanceUntilIdle()
+
+        assertThat(viewModel.state.value.searchSummary).isNull()
+    }
+
+    @Test
+    fun `search covers all time by default and the selected period on request`() = runTest {
+        val lastYearsRent = FAKE_EXPENSE_TRANSACTION.copy(id = "old-rent", notes = "Rent").apply {
+            category = FAKE_CATEGORY
+            fromAccount = FAKE_ACCOUNT
+        }
+        val viewModel = viewModel()
+        advanceUntilIdle()
+        // Outside the selected period, so only the all-time source has it.
+        whenever(getTransactionWithFilterUseCase.allTime()).thenReturn(flowOf(listOf(groceries, rent, lastYearsRent)))
+
+        viewModel.processAction(TransactionListAction.Search("rent"))
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.searchScope).isEqualTo(SearchScope.ALL_TIME)
+        assertThat(viewModel.state.value.ids()).containsExactly("rent", "old-rent")
+
+        viewModel.processAction(TransactionListAction.SetSearchScope(SearchScope.SELECTED_PERIOD))
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.ids()).containsExactly("rent")
     }
 
     @Test

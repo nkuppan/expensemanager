@@ -13,6 +13,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetFrequentTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -21,6 +22,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
@@ -28,6 +30,7 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
@@ -45,6 +48,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
@@ -71,6 +75,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val budgetAlertTrigger: BudgetAlertTrigger = mock()
     private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase = mock()
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase = mock()
+    private val getFrequentTransactionsUseCase: GetFrequentTransactionsUseCase = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
 
@@ -116,6 +121,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         whenever(feedbackRepository.getTransactionCreatedCount()).thenReturn(flowOf(1))
         whenever(feedbackRepository.shouldShowFeedbackDialog()).thenReturn(flowOf(false))
         whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0))
+        whenever(getFrequentTransactionsUseCase.invoke(any())).thenReturn(flowOf(emptyList()))
 
         viewModel = createViewModel()
     }
@@ -140,6 +146,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         budgetAlertTrigger = budgetAlertTrigger,
         createRecurringTransactionUseCase = createRecurringTransactionUseCase,
         findRecurringTransactionByIdUseCase = findRecurringTransactionByIdUseCase,
+        getFrequentTransactionsUseCase = getFrequentTransactionsUseCase,
     )
 
     // region helpers
@@ -573,6 +580,51 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         assertThat(
             viewModel.hasUnsavedChanges(editingState(original).copy(amount = zeroAmount().copy(value = "120.00"))),
         ).isTrue()
+    }
+
+    // endregion
+
+    // region quick picks
+
+    @Test
+    fun `frequent entries become quick picks and a tap fills the form`() = runTest {
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(flowOf(listOf(account("cash"), account("card"))))
+        whenever(getAllCategoryUseCase.invoke()).thenReturn(flowOf(listOf(category("food"))))
+        whenever(getFrequentTransactionsUseCase.invoke(any())).thenReturn(
+            flowOf(
+                listOf(
+                    FrequentTransaction(TransactionType.EXPENSE, "food", "card", 20.0, "Tea", useCount = 4),
+                    // Its category was deleted, so it can't be offered.
+                    FrequentTransaction(TransactionType.EXPENSE, "gone", "cash", 5.0, "", useCount = 2),
+                ),
+            ),
+        )
+        whenever(numberFormatRepository.formatForEditing(20.0)).thenReturn("20.00")
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        val picks = viewModel.state.value.quickPicks
+        assertThat(picks.map { it.notes }).containsExactly("Tea")
+
+        viewModel.processAction(TransactionCreateAction.ApplyQuickPick(picks.single()))
+        advanceUntilIdle()
+
+        val state = viewModel.state.value
+        assertThat(state.amount.value).isEqualTo("20.00")
+        assertThat(state.amount.valueError).isFalse()
+        assertThat(state.notes.value).isEqualTo("Tea")
+        assertThat(state.selectedCategory.id).isEqualTo("food")
+        assertThat(state.selectedFromAccount.id).isEqualTo("card")
+        assertThat(state.transactionType).isEqualTo(TransactionType.EXPENSE)
+        assertThat(state.showNumberPad).isFalse()
+        verify(analyticsRepository).logEvent(eq(AnalyticsEvents.QUICK_PICK_USED), any())
+    }
+
+    @Test
+    fun `editing a transaction offers no quick picks`() {
+        createViewModel(SavedStateHandle(mapOf(ExpenseManagerArgsNames.ID to "existing")))
+
+        verify(getFrequentTransactionsUseCase, never()).invoke(any())
     }
 
     // endregion

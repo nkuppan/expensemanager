@@ -75,6 +75,12 @@
     <string name="recurring_empty_message">거래를 추가할 때 반복에서 매일, 매주, 매월 또는 매년을 선택하면 자동으로 기록됩니다.</string>
     <string name="edit">수정</string>
     <string name="search_transactions_hint">메모, 카테고리, 계좌 검색</string>
+    <string name="search_spent">지출 %1$s</string>
+    <string name="search_earned">수입 %1$s</string>
+    <string name="search_all_time">전체 기간</string>
+    <plurals name="search_result_count">
+        <item quantity="other">결과 %d개</item>
+    </plurals>
     <string name="clear_search">검색어 지우기</string>
     <string name="no_matching_transactions">검색과 일치하는 거래가 없습니다</string>
     <string name="transaction_deleted">거래가 삭제되었습니다</string>
@@ -97,4 +103,6 @@
     <string name="recurring_part_of_series">반복 시리즈의 일부</string>
     <string name="recurring_edit_series">시리즈를 편집해 앞으로의 거래 변경</string>
     <string name="add_recurring_transaction">반복 거래 추가</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">자주 사용</string>
 </resources>

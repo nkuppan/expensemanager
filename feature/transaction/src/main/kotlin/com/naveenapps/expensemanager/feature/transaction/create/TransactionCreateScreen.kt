@@ -175,6 +175,18 @@ private fun TransactionCreateScreenContent(
             onConfirm = { amount ->
                 onAction.invoke(TransactionCreateAction.SetNumberPadValue(amount))
             },
+            header = if (state.quickPicks.isEmpty()) {
+                null
+            } else {
+                {
+                    QuickPickRow(
+                        modifier = Modifier.padding(top = 16.dp),
+                        picks = state.quickPicks,
+                        onPick = { onAction.invoke(TransactionCreateAction.ApplyQuickPick(it)) },
+                        contentPadding = PaddingValues(horizontal = 16.dp),
+                    )
+                }
+            },
         )
     } else if (state.showCategorySelection) {
         CategorySelectionView(state, onAction)
@@ -417,6 +429,17 @@ private fun TransactionCreateContent(
                             }
                         },
                     )
+
+                    if (state.quickPicks.isNotEmpty()) {
+                        QuickPickRow(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            picks = state.quickPicks,
+                            onPick = {
+                                focusManager.clearFocus(force = true)
+                                onAction.invoke(TransactionCreateAction.ApplyQuickPick(it))
+                            },
+                        )
+                    }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),

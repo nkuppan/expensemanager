@@ -9,21 +9,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -35,31 +31,18 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -74,7 +57,7 @@ import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearchField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Amount
@@ -142,46 +125,48 @@ private fun TransactionListScreenContent(
     onAction: (TransactionListAction) -> Unit,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    // Search lives in the top bar: a search icon that turns the bar into a text field, the
-    // usual Android pattern, instead of a permanent box in the list.
-    var isSearchActive by rememberSaveable { mutableStateOf(state.searchQuery.isNotEmpty()) }
-    val closeSearch = {
-        isSearchActive = false
+    // Search is always visible under the title (no tap to open it, and it doesn't grab focus, so
+    // the keyboard only appears when the user taps it). Back clears an active search first.
+    BackHandler(enabled = state.searchQuery.isNotEmpty()) {
         onAction(TransactionListAction.Search(""))
     }
-    BackHandler(enabled = isSearchActive, onBack = closeSearch)
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         topBar = {
-            if (isSearchActive) {
-                TransactionSearchBar(
+            // The app draws edge to edge and there's no app bar to take the status-bar inset, so this
+            // row keeps clear of the status bar itself.
+            Row(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(
+                        start = if (showBackNavigationIcon) 4.dp else 16.dp,
+                        end = 16.dp,
+                        top = 16.dp,
+                        bottom = 8.dp,
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // Opened as its own screen (not the Home tab): a way back, at the start of the row.
+                if (showBackNavigationIcon) {
+                    IconButton(onClick = { onAction(TransactionListAction.ClosePage) }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                            contentDescription = stringResource(DesignSystemR.string.a11y_back),
+                        )
+                    }
+                }
+                SheetSearchField(
                     query = state.searchQuery,
                     onQueryChange = { onAction(TransactionListAction.Search(it)) },
-                    onClose = closeSearch,
-                )
-            } else {
-                ExpenseManagerTopAppBar(
-                    title = stringResource(R.string.transaction),
-                    navigationIcon = if (showBackNavigationIcon) {
-                        Icons.AutoMirrored.Default.ArrowBack
-                    } else {
-                        null
-                    },
-                    navigationBackClick = {
-                        onAction(TransactionListAction.ClosePage)
-                    },
-                    actions = {
+                    placeholder = stringResource(R.string.search_transactions_hint),
+                    modifier = Modifier.weight(1f),
+                    // Recurring transactions sit at the end of the search box.
+                    trailingAction = {
                         IconButton(onClick = { onAction(TransactionListAction.OpenRecurringTransactions) }) {
                             Icon(
                                 imageVector = Icons.Outlined.EventRepeat,
                                 contentDescription = stringResource(R.string.recurring_transactions),
-                            )
-                        }
-                        IconButton(onClick = { isSearchActive = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = stringResource(R.string.search_transactions),
                             )
                         }
                     },
@@ -214,6 +199,7 @@ private fun TransactionListScreenContent(
                 .padding(top = innerPadding.calculateTopPadding()),
             state = state,
             onDelete = { onAction(TransactionListAction.DeleteTransaction(it.id)) },
+            onSearchScopeChange = { onAction(TransactionListAction.SetSearchScope(it)) },
         ) { transaction ->
             onAction(TransactionListAction.OpenEdiTransaction(transaction.id))
         }
@@ -229,6 +215,7 @@ private fun TransactionListScreen(
     state: TransactionListState,
     modifier: Modifier = Modifier,
     onDelete: ((TransactionUiItem) -> Unit)? = null,
+    onSearchScopeChange: (SearchScope) -> Unit = {},
     onItemClick: ((TransactionUiItem) -> Unit)? = null,
 ) {
     LazyColumn(
@@ -241,6 +228,16 @@ private fun TransactionListScreen(
                     .fillMaxWidth()
                     .padding(end = 6.dp),
             )
+        }
+
+        state.searchSummary?.let { summary ->
+            item(key = "search_summary") {
+                SearchSummaryRow(
+                    summary = summary,
+                    scope = state.searchScope,
+                    onScopeChange = onSearchScopeChange,
+                )
+            }
         }
 
         if (state.isLoading) {
@@ -383,67 +380,52 @@ private fun TransactionGroupCard(
     }
 }
 
+/**
+ * Shown while searching: how many transactions matched and what they add up to, which answers
+ * "how much did I spend on X?". The chip switches between all time (the default) and the period
+ * selected in the filter above.
+ */
 @Composable
-internal fun TransactionSearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    onClose: () -> Unit,
-    placeholder: String = stringResource(R.string.search_transactions_hint),
+private fun SearchSummaryRow(
+    summary: SearchSummary,
+    scope: SearchScope,
+    onScopeChange: (SearchScope) -> Unit,
 ) {
-    val focusRequester = remember { FocusRequester() }
-    val keyboard = LocalSoftwareKeyboardController.current
-    LaunchedEffect(Unit) { focusRequester.requestFocus() }
-
-    Surface(color = MaterialTheme.colorScheme.background) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .windowInsetsPadding(TopAppBarDefaults.windowInsets)
-                .height(64.dp)
-                .padding(horizontal = 4.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            IconButton(onClick = onClose) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = stringResource(DesignSystemR.string.a11y_close),
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, end = 16.dp, top = 4.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = pluralStringResource(R.plurals.search_result_count, summary.count, summary.count),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            val totals = listOfNotNull(
+                summary.spent?.let { stringResource(R.string.search_spent, it) },
+                summary.earned?.let { stringResource(R.string.search_earned, it) },
+            )
+            if (totals.isNotEmpty()) {
+                Text(
+                    text = totals.joinToString(" · "),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            TextField(
-                value = query,
-                onValueChange = onQueryChange,
-                modifier = Modifier
-                    .weight(1f)
-                    .focusRequester(focusRequester),
-                singleLine = true,
-                textStyle = MaterialTheme.typography.titleMedium,
-                placeholder = {
-                    Text(
-                        text = placeholder,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
-                // Blend into the app bar: no filled box, no underline.
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = { keyboard?.hide() }),
-            )
-            if (query.isNotEmpty()) {
-                IconButton(onClick = { onQueryChange("") }) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(R.string.clear_search),
-                    )
-                }
-            }
         }
+        Spacer(modifier = Modifier.width(12.dp))
+        FilterChip(
+            selected = scope == SearchScope.ALL_TIME,
+            onClick = {
+                onScopeChange(
+                    if (scope == SearchScope.ALL_TIME) SearchScope.SELECTED_PERIOD else SearchScope.ALL_TIME,
+                )
+            },
+            label = { Text(text = stringResource(R.string.search_all_time)) },
+        )
     }
 }
 

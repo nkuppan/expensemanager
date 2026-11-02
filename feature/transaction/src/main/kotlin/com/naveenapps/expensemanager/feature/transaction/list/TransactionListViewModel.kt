@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionGroup
@@ -20,17 +21,22 @@ import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
+import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TransactionListViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
@@ -40,6 +46,7 @@ class TransactionListViewModel(
     private val deleteTransactionUseCase: DeleteTransactionUseCase,
     private val addTransactionUseCase: AddTransactionUseCase,
     private val imageStorageRepository: ImageStorageRepository,
+    categoryDisplayNames: CategoryDisplayNames = CategoryDisplayNames.Stored,
 ) : ViewModel() {
 
     private val _transactions = MutableStateFlow(TransactionListState(emptyList(), isLoading = true))
@@ -49,6 +56,7 @@ class TransactionListViewModel(
     val event = _event.receiveAsFlow()
 
     private val searchQuery = MutableStateFlow("")
+    private val searchScope = MutableStateFlow(SearchScope.ALL_TIME)
 
     // The transactions currently listed, by id, so a swipe-delete can act on the full model.
     private var visibleTransactions: Map<String, Transaction> = emptyMap()
@@ -58,14 +66,39 @@ class TransactionListViewModel(
     private var pendingUndo: Transaction? = null
 
     init {
+        // While searching all time, read every date; otherwise the selected period. The other
+        // filters (accounts, categories, types) apply either way.
+        val source = combine(searchQuery, searchScope) { query, scope ->
+            query.isNotBlank() && scope == SearchScope.ALL_TIME
+        }.distinctUntilChanged().flatMapLatest { allTime ->
+            if (allTime) getTransactionWithFilterUseCase.allTime() else getTransactionWithFilterUseCase.invoke()
+        }
+
         combine(
             getCurrencyUseCase.invoke(),
-            getTransactionWithFilterUseCase.invoke(),
+            source,
             searchQuery,
-        ) { currency, transactions, query ->
+            categoryDisplayNames.lookup(),
+        ) { currency, transactions, query, displayName ->
 
-            val matching = transactions.orEmpty().filter { it.matches(query) }
+            val matching = transactions.orEmpty().filter { it.matches(query, displayName) }
             visibleTransactions = matching.associateBy { it.id }
+
+            val summary = if (query.isBlank()) {
+                null
+            } else {
+                // A total that's zero isn't shown (e.g. no income among the results).
+                fun totalOf(type: TransactionType): String? = matching
+                    .filter { it.type == type }
+                    .sumOf { it.amount.amount }
+                    .takeIf { it > 0.0 }
+                    ?.let { getFormattedAmountUseCase.invoke(it, currency).amountString }
+                SearchSummary(
+                    count = matching.size,
+                    spent = totalOf(TransactionType.EXPENSE),
+                    earned = totalOf(TransactionType.INCOME),
+                )
+            }
 
             // Only what has actually happened: a recurring rule logs each occurrence on its day.
             val groupedItem = matching.sortedByDescending { it.createdOn }.groupBy {
@@ -91,6 +124,7 @@ class TransactionListViewModel(
                 it.copy(
                     transactionListItem = groupedItem.convertGroupToTransactionListItems(),
                     isLoading = false,
+                    searchSummary = summary,
                 )
             }
         }.flowOn(appCoroutineDispatchers.computation).launchIn(viewModelScope)
@@ -113,6 +147,11 @@ class TransactionListViewModel(
     private fun search(query: String) {
         searchQuery.value = query
         _transactions.update { it.copy(searchQuery = query) }
+    }
+
+    private fun setSearchScope(scope: SearchScope) {
+        searchScope.value = scope
+        _transactions.update { it.copy(searchScope = scope) }
     }
 
     private fun deleteTransaction(transactionId: String) {
@@ -158,6 +197,7 @@ class TransactionListViewModel(
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
             is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
             is TransactionListAction.Search -> search(action.query)
+            is TransactionListAction.SetSearchScope -> setSearchScope(action.scope)
             TransactionListAction.OpenRecurringTransactions -> openRecurringTransactions()
             is TransactionListAction.DeleteTransaction -> deleteTransaction(action.transactionId)
             TransactionListAction.UndoDelete -> undoDelete()
@@ -168,10 +208,10 @@ class TransactionListViewModel(
 
 /**
  * Case-insensitive match on the free-text parts of a transaction: notes, category name and
- * account names. Built-in categories store an English name, so a translated category label
- * only matches by its English name.
+ * account names. A built-in category matches both by the name shown ([displayName], e.g. its
+ * Hindi label) and by its stored English name.
  */
-internal fun Transaction.matches(query: String): Boolean = matchesSearch(query, listOf(notes, category.name, fromAccount.name, toAccount?.name))
+internal fun Transaction.matches(query: String, displayName: (Category) -> String = { it.name }): Boolean = matchesSearch(query, listOf(notes, category.name, displayName(category), fromAccount.name, toAccount?.name))
 
 fun List<Transaction>.toTransactionSum() = this.sumOf {
     when (it.type) {

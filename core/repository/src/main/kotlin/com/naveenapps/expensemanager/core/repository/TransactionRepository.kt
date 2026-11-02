@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.core.repository
 
+import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
@@ -29,4 +31,12 @@ interface TransactionRepository {
         startDate: Long,
         endDate: Long,
     ): Flow<List<Transaction>?>
+
+    /** Transactions logged at least [minCount] times with identical details since [since]. */
+    fun getFrequentTransactions(
+        transactionTypes: List<TransactionType>,
+        since: Long,
+        minCount: Int,
+        limit: Int,
+    ): Flow<List<FrequentTransaction>>
 }

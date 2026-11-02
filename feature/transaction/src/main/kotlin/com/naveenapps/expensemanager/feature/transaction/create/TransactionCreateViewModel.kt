@@ -16,6 +16,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetFrequentTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -54,9 +55,12 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -81,6 +85,7 @@ class TransactionCreateViewModel(
     private val budgetAlertTrigger: BudgetAlertTrigger,
     private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase,
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase,
+    private val getFrequentTransactionsUseCase: GetFrequentTransactionsUseCase,
 ) : ViewModel() {
 
     private val sessionCreatedAttachmentPaths = mutableListOf<String>()
@@ -147,6 +152,9 @@ class TransactionCreateViewModel(
     // Non-null only when editing an existing transaction.
     private var editingTransaction: Transaction? = null
 
+    // Set when a frequent-entry chip filled the form, so the save is attributed to it.
+    private var usedQuickPick = false
+
     // Ids seen in the previous accounts/categories emission; null until the first one.
     private var knownAccountIds: Set<String>? = null
     private var knownCategoryIds: Set<String>? = null
@@ -156,6 +164,60 @@ class TransactionCreateViewModel(
         observeCategories(getAllCategoryUseCase)
         loadTransactionWhenReady(savedStateHandle)
         openCalculatorIfEnabled(savedStateHandle)
+        observeQuickPicks(savedStateHandle, getAllCategoryUseCase)
+    }
+
+    // Frequent entries become chips on a new transaction. They're resolved against the live
+    // categories and accounts, so a pick whose category or account is gone is simply dropped.
+    private fun observeQuickPicks(
+        savedStateHandle: SavedStateHandle,
+        getAllCategoryUseCase: GetAllCategoryUseCase,
+    ) {
+        if (!savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank()) return
+        combine(
+            getFrequentTransactionsUseCase.invoke(),
+            getAllCategoryUseCase.invoke(),
+            _state.map { it.accounts to it.currency }.distinctUntilChanged(),
+        ) { frequent, categories, (accounts, currency) ->
+            frequent.mapNotNull { entry ->
+                val category = categories.find { it.id == entry.categoryId } ?: return@mapNotNull null
+                val account = accounts.find { it.id == entry.fromAccountId } ?: return@mapNotNull null
+                QuickPick(
+                    type = entry.type,
+                    category = category,
+                    account = account,
+                    amount = entry.amount,
+                    amountText = getFormattedAmountUseCase.invoke(entry.amount, currency).amountString.orEmpty(),
+                    notes = entry.notes,
+                )
+            }
+        }.onEach { picks ->
+            _state.update { it.copy(quickPicks = picks) }
+        }.launchIn(viewModelScope)
+    }
+
+    // Fills the whole form from a chip; the date stays "now" and the user still taps Save, so
+    // nothing is logged by accident and every field can be tweaked first.
+    private fun applyQuickPick(pick: QuickPick) {
+        usedQuickPick = true
+        transactionType.update { pick.type }
+        _state.update {
+            it.copy(
+                transactionType = pick.type,
+                amount = it.amount.copy(
+                    value = numberFormatRepository.formatForEditing(pick.amount),
+                    valueError = false,
+                ),
+                notes = it.notes.copy(value = pick.notes),
+                selectedCategory = pick.category,
+                selectedFromAccount = pick.account,
+                showNumberPad = false,
+            )
+        }
+        analyticsRepository.logEvent(
+            AnalyticsEvents.QUICK_PICK_USED,
+            mapOf(AnalyticsParams.TYPE to pick.type.name.lowercase()),
+        )
     }
 
     // A new transaction opens straight onto the keypad by default: the amount is the one field
@@ -457,6 +519,7 @@ class TransactionCreateViewModel(
                 AnalyticsParams.TRANSACTION_COUNT to count.toString(),
                 AnalyticsParams.HAS_NOTES to transaction.notes.isNotBlank().toString(),
                 AnalyticsParams.HAS_ATTACHMENT to transaction.attachments.isNotEmpty().toString(),
+                AnalyticsParams.SOURCE to if (usedQuickPick) SOURCE_QUICK_PICK else SOURCE_MANUAL,
             ),
         )
     }
@@ -743,6 +806,8 @@ class TransactionCreateViewModel(
             }
 
             is TransactionCreateAction.RemoveAttachment -> removeAttachment(action.path)
+
+            is TransactionCreateAction.ApplyQuickPick -> applyQuickPick(action.pick)
         }
     }
 
@@ -752,6 +817,9 @@ class TransactionCreateViewModel(
     }
 
     companion object {
+        private const val SOURCE_QUICK_PICK = "quick_pick"
+        private const val SOURCE_MANUAL = "manual"
+
         private val defaultCategory = Category(
             id = "1",
             name = "Shopping",

@@ -14,7 +14,6 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
@@ -116,7 +115,7 @@ class NotificationScheduler(
         createChannelIfRequired()
 
         val openApp = Intent(context, Class.forName(DESTINATION_CLASS))
-            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            .setFlags(OPEN_APP_FLAGS)
         val pendingIntent = PendingIntent.getActivity(
             context,
             notificationId,
@@ -148,7 +147,7 @@ class NotificationScheduler(
 
         val openAutoBackup = Intent(context, Class.forName(DESTINATION_CLASS))
             .setAction(ACTION_OPEN_AUTO_BACKUP)
-            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            .setFlags(OPEN_APP_FLAGS)
         val pendingIntent = PendingIntent.getActivity(
             context,
             NotificationId.AUTO_BACKUP_FAILED,
@@ -253,15 +252,16 @@ class NotificationScheduler(
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationIntent = Intent(context, Class.forName(destinationClass))
-        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        notificationIntent.action = "add_transaction"
+            .setAction("add_transaction")
+            .setFlags(OPEN_APP_FLAGS)
 
-        val stackBuilder = TaskStackBuilder.create(context)
-        stackBuilder.addParentStack(Class.forName(destinationClass))
-        stackBuilder.addNextIntent(notificationIntent)
-
-        val pendingIntent = stackBuilder.getPendingIntent(
+        // A plain activity PendingIntent, not TaskStackBuilder: the builder always clears the task,
+        // so tapping the reminder restarted an open app (and asked to unlock again). The app has a
+        // single activity, so there is no parent stack to build anyway.
+        val pendingIntent = PendingIntent.getActivity(
+            context,
             NotificationId.DAILY_REMINDER_REQUEST_CODE,
+            notificationIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
@@ -365,3 +365,11 @@ private const val BUDGET_CHECK_DELAY_SECONDS = 5L
 object NotificationChannelId {
     const val CHANNEL_GENERAL = "General"
 }
+
+/**
+ * How notification taps open the app. SINGLE_TOP with CLEAR_TOP reuses a running MainActivity (the
+ * intent arrives in onNewIntent, which handles quick add and the backup screen) instead of finishing
+ * and recreating it, so the user keeps their place and isn't asked to unlock again.
+ */
+private const val OPEN_APP_FLAGS =
+    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP

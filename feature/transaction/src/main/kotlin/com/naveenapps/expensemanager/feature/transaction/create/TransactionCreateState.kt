@@ -41,6 +41,8 @@ data class TransactionCreateState(
     val recurringRuleId: String? = null,
     /** "Discard changes?" confirmation, shown when leaving a form with unsaved edits. */
     val showDiscardDialog: Boolean = false,
+    /** Frequent entries offered as one-tap chips; only for a new transaction. */
+    val quickPicks: List<QuickPick> = emptyList(),
 )
 
 enum class AccountSelection {

@@ -36,6 +36,19 @@ class GetTransactionWithFilterUseCase(
     }
 
     /**
+     * Same account / category / type filters as [invoke], but over all dates. Used by search, so
+     * looking for "rent" finds every month's rent, not only the selected period's.
+     */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun allTime(): Flow<List<Transaction>?> = filterValues().flatMapLatest { filter ->
+        transactionRepository.getAllFilteredTransaction(
+            filter.accounts,
+            filter.categories,
+            filter.transactionTypes,
+        )
+    }
+
+    /**
      * The selected period next to the one before it, with the same account / category / type
      * filters. Emits null when there's nothing to compare (the "All" range, or a future period).
      */

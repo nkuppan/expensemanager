@@ -90,7 +90,6 @@ fun DashboardScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun DashboardScaffoldContent(
     state: DashboardState,
     onAction: (DashboardAction) -> Unit,
