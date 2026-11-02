@@ -3,6 +3,8 @@ package com.naveenapps.expensemanager.feature.settings.di
 import com.naveenapps.expensemanager.feature.settings.SettingsViewModel
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsViewModel
 import com.naveenapps.expensemanager.feature.settings.autobackup.AutoBackupViewModel
+import com.naveenapps.expensemanager.feature.settings.currencyapi.CurrencyApiProfileViewModel
+import com.naveenapps.expensemanager.feature.settings.exchangemethod.ExchangeMethodViewModel
 import com.naveenapps.expensemanager.feature.settings.restore.RestoreViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -37,12 +39,30 @@ val SettingsViewModelModule = module {
             backupRepository = get(),
             appComposeNavigator = get(),
             analyticsRepository = get(),
+            setRestoreCurrencyUseCase = get(),
         )
     }
     viewModel {
         AdvancedSettingsViewModel(
             appComposeNavigator = get(),
             settingsRepository = get(),
+        )
+    }
+    viewModel {
+        ExchangeMethodViewModel(
+            exchangeRateRepository = get(),
+            saveStaticExchangeRateUseCase = get(),
+            getCurrencyApiProfileUseCase = get(),
+            getAllAccountsUseCase = get(),
+            getCurrencyUseCase = get(),
+            appComposeNavigator = get(),
+        )
+    }
+    viewModel {
+        CurrencyApiProfileViewModel(
+            getCurrencyApiProfileUseCase = get(),
+            saveCurrencyApiProfileUseCase = get(),
+            appComposeNavigator = get(),
         )
     }
 }

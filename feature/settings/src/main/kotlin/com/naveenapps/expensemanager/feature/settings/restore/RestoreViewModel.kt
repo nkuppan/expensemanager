@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.settings.restore
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SetRestoreCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
@@ -27,6 +28,7 @@ class RestoreViewModel(
     private val backupRepository: BackupRepository,
     private val appComposeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
+    private val setRestoreCurrencyUseCase: SetRestoreCurrencyUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(RestoreState())
@@ -37,6 +39,9 @@ class RestoreViewModel(
 
     // The protected backup waiting for its passphrase; never persisted.
     private var pendingUri: String? = null
+
+    // The backup waiting for the user to say which currency its amounts are in.
+    private var pendingCurrencyUri: String? = null
 
     init {
         autoBackupRepository.getSettings()
@@ -62,7 +67,7 @@ class RestoreViewModel(
             }
 
             // The warning on the page is the confirmation for a file the user went and picked.
-            is RestoreAction.FileSelected -> action.uri?.let { restore(it, passphrase = null) }
+            is RestoreAction.FileSelected -> action.uri?.let { askForCurrency(it) }
 
             is RestoreAction.SelectBackup -> {
                 if (_state.value.isRestoring) return
@@ -73,7 +78,22 @@ class RestoreViewModel(
                 val backup = _state.value.confirmBackup ?: return
                 _state.update { it.copy(confirmBackup = null) }
                 analyticsRepository.logEvent(AnalyticsEvents.RESTORE_STARTED, emptyMap())
-                restore(backup.uri, passphrase = null)
+                askForCurrency(backup.uri)
+            }
+
+            is RestoreAction.ConfirmRestoreCurrency -> {
+                val uri = pendingCurrencyUri ?: return
+                pendingCurrencyUri = null
+                _state.update { it.copy(showCurrencySelection = false) }
+                viewModelScope.launch {
+                    setRestoreCurrencyUseCase(action.currencyCode)
+                    restore(uri, passphrase = null)
+                }
+            }
+
+            RestoreAction.DismissRestoreCurrency -> {
+                pendingCurrencyUri = null
+                _state.update { it.copy(showCurrencySelection = false) }
             }
 
             RestoreAction.DismissConfirmation -> _state.update { it.copy(confirmBackup = null) }
@@ -133,6 +153,16 @@ class RestoreViewModel(
         BackupException.Reason.NEWER_VERSION -> R.string.restore_newer_version
 
         else -> R.string.restore_failed
+    }
+
+    /**
+     * Backups made before multi-currency don't record which currency their amounts are in, so
+     * the user confirms it before the restore (never guessed); newer backups ignore it.
+     */
+    private fun askForCurrency(uri: String) {
+        if (_state.value.isRestoring) return
+        pendingCurrencyUri = uri
+        _state.update { it.copy(showCurrencySelection = true) }
     }
 
     private fun askForPassphrase(uri: String) {

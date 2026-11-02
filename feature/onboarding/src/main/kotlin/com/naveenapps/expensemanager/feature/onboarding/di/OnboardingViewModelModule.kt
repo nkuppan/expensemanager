@@ -13,8 +13,10 @@ val OnboardingViewModelModule = module {
             getDefaultCurrencyUseCase = get(),
             getCurrencyUseCase = get(),
             saveCurrencyUseCase = get(),
+            addAccountUseCase = get(),
+            deleteAccountUseCase = get(),
             setOnboardingStatusUseCase = get(),
-            getFormattedAmountUseCase = get(),
+            getAccountUiModelUseCase = get(),
             composeNavigator = get(),
             analyticsRepository = get(),
         )

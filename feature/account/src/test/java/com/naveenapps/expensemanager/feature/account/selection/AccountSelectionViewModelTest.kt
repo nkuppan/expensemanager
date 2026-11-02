@@ -3,12 +3,15 @@ package com.naveenapps.expensemanager.feature.account.selection
 import androidx.compose.ui.util.fastAny
 import app.cash.turbine.test
 import com.google.common.truth.Truth
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountUiModelUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.repository.AccountRepository
+import com.naveenapps.expensemanager.core.repository.CountryRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountData
@@ -16,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -30,6 +34,10 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
 
     private lateinit var accountSelectionViewModel: AccountSelectionViewModel
 
+    private val countryRepository: CountryRepository = mock {
+        onBlocking { readCountries() } doReturn emptyList()
+    }
+
     private val accountFlow = MutableStateFlow(getRandomAccountData(10))
     private val currencyFlow = MutableStateFlow(Currency("1", "1"))
 
@@ -41,19 +49,17 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
         whenever(accountRepository.getAccounts()).thenReturn(accountFlow)
 
         accountSelectionViewModel = AccountSelectionViewModel(
-            getCurrencyUseCase,
-            getFormattedAmountUseCase,
-            getAllAccountsUseCase,
+            getAccountUiModelUseCase = GetAccountUiModelUseCase(
+                FormatAmountInCurrencyUseCase(countryRepository, currencyRepository),
+            ),
+            getAllAccountsUseCase = getAllAccountsUseCase,
         )
     }
 
     @Test
     fun whenAccountsAvailableState() = runTest {
         accountSelectionViewModel.accounts.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isEmpty()
-
+            // Accounts load straight away, so the first emission is the loaded list.
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem).isNotEmpty()
@@ -64,10 +70,7 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
     @Test
     fun whenSelectedAccountsAvailableState() = runTest {
         accountSelectionViewModel.selectedAccounts.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isEmpty()
-
+            // Accounts load straight away, so the first emission is the loaded list.
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem).isNotEmpty()
@@ -78,10 +81,7 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
     @Test
     fun whenClearAllShouldRemoveAllSelectedAccounts() = runTest {
         accountSelectionViewModel.selectedAccounts.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isEmpty()
-
+            // Accounts load straight away, so the first emission is the loaded list.
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem).isNotEmpty()
@@ -98,10 +98,7 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
     @Test
     fun whenDeSelectingTheAccountShouldReflectInSelectedAccounts() = runTest {
         accountSelectionViewModel.selectedAccounts.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isEmpty()
-
+            // Accounts load straight away, so the first emission is the loaded list.
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem).isNotEmpty()
@@ -130,10 +127,7 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
     @Test
     fun whenSelectingAccountsAtBeginningShouldReflect() = runTest {
         accountSelectionViewModel.selectedAccounts.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isEmpty()
-
+            // Accounts load straight away, so the first emission is the loaded list.
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem).isNotEmpty()
@@ -159,10 +153,7 @@ class AccountSelectionViewModelTest : BaseCoroutineTest() {
     @Test
     fun whenSelectingEmptyAccountsAtBeginningShouldNotReflect() = runTest {
         accountSelectionViewModel.selectedAccounts.test {
-            val firstItem = awaitItem()
-            Truth.assertThat(firstItem).isNotNull()
-            Truth.assertThat(firstItem).isEmpty()
-
+            // Accounts load straight away, so the first emission is the loaded list.
             val secondItem = awaitItem()
             Truth.assertThat(secondItem).isNotNull()
             Truth.assertThat(secondItem).isNotEmpty()

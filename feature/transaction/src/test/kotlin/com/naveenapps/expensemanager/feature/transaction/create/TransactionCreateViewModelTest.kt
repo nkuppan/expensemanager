@@ -3,13 +3,16 @@ package com.naveenapps.expensemanager.feature.transaction.create
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountUiModelUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.FindRecurringTransactionByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.GetCurrentExchangeRateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
@@ -21,11 +24,13 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.ExchangeRateSource
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
@@ -41,6 +46,7 @@ import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -70,6 +76,9 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val analyticsRepository: AnalyticsRepository = mock()
     private val budgetAlertTrigger: BudgetAlertTrigger = mock()
     private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase = mock()
+    private val getAccountUiModelUseCase: GetAccountUiModelUseCase = mock()
+    private val formatAmountInCurrencyUseCase: FormatAmountInCurrencyUseCase = mock()
+    private val getCurrentExchangeRateUseCase: GetCurrentExchangeRateUseCase = mock()
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
@@ -82,6 +91,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
         amount = Amount(1000.0),
         amountTextColor = 0,
+        currencyCode = "USD",
     )
 
     private val fakeToAccount = AccountUiModel(
@@ -90,6 +100,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
         amount = Amount(500.0),
         amountTextColor = 0,
+        currencyCode = "USD",
     )
 
     private val fakeCategory = Category(
@@ -115,7 +126,15 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         whenever(settingsRepository.isAutoOpenCalculator()).thenReturn(flowOf(true))
         whenever(feedbackRepository.getTransactionCreatedCount()).thenReturn(flowOf(1))
         whenever(feedbackRepository.shouldShowFeedbackDialog()).thenReturn(flowOf(false))
-        whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0))
+        whenever(getFormattedAmountUseCase.invoke(any<Double>(), any<Currency>())).thenReturn(Amount(0.0))
+
+        runBlocking {
+            whenever(formatAmountInCurrencyUseCase.currencyFor(any()))
+                .thenReturn(Currency("$", "US Dollar", code = "USD"))
+            whenever(getAccountUiModelUseCase.invoke(any())).thenAnswer { invocation ->
+                invocation.getArgument<Account>(0).toAccountUiModel(Amount(0.0))
+            }
+        }
 
         viewModel = createViewModel()
     }
@@ -139,6 +158,9 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         analyticsRepository = analyticsRepository,
         budgetAlertTrigger = budgetAlertTrigger,
         createRecurringTransactionUseCase = createRecurringTransactionUseCase,
+        getAccountUiModelUseCase = getAccountUiModelUseCase,
+        formatAmountInCurrencyUseCase = formatAmountInCurrencyUseCase,
+        getCurrentExchangeRateUseCase = getCurrentExchangeRateUseCase,
         findRecurringTransactionByIdUseCase = findRecurringTransactionByIdUseCase,
     )
 
@@ -151,6 +173,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         selectedCategory: Category = fakeCategory,
         selectedFromAccount: AccountUiModel = fakeFromAccount,
         selectedToAccount: AccountUiModel = fakeToAccount,
+        exchangeRate: ExchangeRateInputState? = null,
     ) = TransactionCreateState(
         amount = TextFieldValue(value = "100.00", valueError = false, onValueChange = null),
         notes = TextFieldValue(value = notes, valueError = false, onValueChange = null),
@@ -170,6 +193,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         showAccountSelection = false,
         showDateSelection = false,
         showTimeSelection = false,
+        exchangeRate = exchangeRate,
     )
 
     private fun setEditingTransaction(transaction: Transaction) {
@@ -404,6 +428,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
         createdOn = Date(),
         updatedOn = Date(),
+        currencyCode = "USD",
     )
 
     private fun category(id: String) = fakeCategory.copy(id = id, name = id)
@@ -573,6 +598,101 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         assertThat(
             viewModel.hasUnsavedChanges(editingState(original).copy(amount = zeroAmount().copy(value = "120.00"))),
         ).isTrue()
+    }
+
+    // endregion
+
+    // region currencies & rate snapshot
+
+    @Test
+    fun `expense keeps a single currency and no rate`() {
+        val result = viewModel.buildTransactionFromState(buildState(), amountValue = 100.0)
+
+        assertThat(result.fromCurrencyCode).isEqualTo("USD")
+        assertThat(result.toCurrencyCode).isEqualTo("USD")
+        assertThat(result.rateSnapshot).isNull()
+    }
+
+    @Test
+    fun `cross currency transfer keeping the fetched rate stores a fetched snapshot`() {
+        whenever(numberFormatRepository.parseToDouble("137.5")).thenReturn(137.5)
+        val result = viewModel.buildTransactionFromState(
+            buildState(
+                transactionType = TransactionType.TRANSFER,
+                selectedToAccount = fakeToAccount.copy(currencyCode = "SYP"),
+                exchangeRate = ExchangeRateInputState(
+                    baseCode = "USD",
+                    quoteCode = "SYP",
+                    rateText = "137.5",
+                    source = ExchangeRateSource.FETCHED,
+                    provider = "BUY_SELL_QUOTES",
+                    fetchedAt = 42L,
+                    fetchedRate = 137.5,
+                    suggestedSource = ExchangeRateSource.FETCHED,
+                ),
+            ),
+            amountValue = 100.0,
+        )
+
+        assertThat(result.toCurrencyCode).isEqualTo("SYP")
+        val snapshot = result.rateSnapshot!!
+        assertThat(snapshot.source).isEqualTo(ExchangeRateSource.FETCHED)
+        assertThat(snapshot.provider).isEqualTo("BUY_SELL_QUOTES")
+        assertThat(snapshot.capturedAt).isEqualTo(42L)
+        assertThat(snapshot.rate).isEqualTo(137.5)
+    }
+
+    @Test
+    fun `cross currency transfer keeping the fixed rate stores a static snapshot`() {
+        whenever(numberFormatRepository.parseToDouble("138")).thenReturn(138.0)
+        val result = viewModel.buildTransactionFromState(
+            buildState(
+                transactionType = TransactionType.TRANSFER,
+                selectedToAccount = fakeToAccount.copy(currencyCode = "SYP"),
+                exchangeRate = ExchangeRateInputState(
+                    baseCode = "USD",
+                    quoteCode = "SYP",
+                    rateText = "138",
+                    source = ExchangeRateSource.STATIC,
+                    fetchedRate = 138.0,
+                    suggestedSource = ExchangeRateSource.STATIC,
+                ),
+            ),
+            amountValue = 100.0,
+        )
+
+        val snapshot = result.rateSnapshot!!
+        assertThat(snapshot.source).isEqualTo(ExchangeRateSource.STATIC)
+        assertThat(snapshot.provider).isNull()
+        assertThat(snapshot.rate).isEqualTo(138.0)
+    }
+
+    @Test
+    fun `overriding the fetched rate stores a user snapshot of the same shape`() {
+        whenever(numberFormatRepository.parseToDouble("140")).thenReturn(140.0)
+        val result = viewModel.buildTransactionFromState(
+            buildState(
+                transactionType = TransactionType.TRANSFER,
+                selectedToAccount = fakeToAccount.copy(currencyCode = "SYP"),
+                exchangeRate = ExchangeRateInputState(
+                    baseCode = "USD",
+                    quoteCode = "SYP",
+                    rateText = "140",
+                    source = ExchangeRateSource.USER,
+                    provider = "BUY_SELL_QUOTES",
+                    fetchedAt = 42L,
+                    fetchedRate = 137.5,
+                ),
+            ),
+            amountValue = 100.0,
+        )
+
+        val snapshot = result.rateSnapshot!!
+        assertThat(snapshot.source).isEqualTo(ExchangeRateSource.USER)
+        assertThat(snapshot.provider).isNull()
+        assertThat(snapshot.baseCode).isEqualTo("USD")
+        assertThat(snapshot.quoteCode).isEqualTo("SYP")
+        assertThat(snapshot.rate).isEqualTo(140.0)
     }
 
     // endregion

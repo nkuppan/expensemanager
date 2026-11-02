@@ -23,12 +23,6 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
             val writer = CSVWriter(output.writer())
             val data = mutableListOf<Array<String>>()
 
-            val totalIncome = transactions
-                .filter { it.type == TransactionType.INCOME }
-                .sumOf { it.amount.amount }
-            val totalExpense = transactions
-                .filter { it.type == TransactionType.EXPENSE }
-                .sumOf { it.amount.amount }
             val now = Date()
 
             data.add(
@@ -43,24 +37,27 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
                     transactions.size.toString(),
                 ),
             )
-            data.add(
-                arrayOf(
-                    context.getString(R.string.total_income),
-                    totalIncome.toTrimAmount(),
-                ),
-            )
-            data.add(
-                arrayOf(
-                    context.getString(R.string.total_expense),
-                    totalExpense.toTrimAmount(),
-                ),
-            )
-            data.add(
-                arrayOf(
-                    context.getString(R.string.net_balance),
-                    (totalIncome - totalExpense).toTrimAmount(),
-                ),
-            )
+            transactions.totalsByCurrency().forEach { totals ->
+                val code = totals.currencyCode
+                data.add(
+                    arrayOf(
+                        "${context.getString(R.string.total_income)} ($code)",
+                        totals.income.toTrimAmount(),
+                    ),
+                )
+                data.add(
+                    arrayOf(
+                        "${context.getString(R.string.total_expense)} ($code)",
+                        totals.expense.toTrimAmount(),
+                    ),
+                )
+                data.add(
+                    arrayOf(
+                        "${context.getString(R.string.net_balance)} ($code)",
+                        totals.net.toTrimAmount(),
+                    ),
+                )
+            }
             data.add(arrayOf())
 
             data.add(
@@ -74,6 +71,10 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
                     context.getString(R.string.account_type),
                     context.getString(R.string.to_account),
                     context.getString(R.string.amount),
+                    context.getString(R.string.currency),
+                    context.getString(R.string.received_amount),
+                    context.getString(R.string.received_currency),
+                    context.getString(R.string.exchange_rate),
                     context.getString(R.string.notes),
                 ),
             )
@@ -97,6 +98,10 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
                         transaction.fromAccount.type.toCapitalize(),
                         (transaction.toAccount?.name ?: "").toCsvSafeText(),
                         signedAmount.toTrimAmount(),
+                        transaction.fromCurrencyCode,
+                        transaction.receivedAmount()?.toTrimAmount().orEmpty(),
+                        if (transaction.rateSnapshot != null) transaction.toCurrencyCode else "",
+                        transaction.rateSnapshot?.rate?.toString().orEmpty(),
                         transaction.notes.toCsvSafeText(),
                     ),
                 )

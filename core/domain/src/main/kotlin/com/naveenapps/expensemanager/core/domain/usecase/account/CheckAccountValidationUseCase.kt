@@ -26,6 +26,10 @@ class CheckAccountValidationUseCase {
             return Resource.Error(Exception("Account name shouldn't be blank"))
         }
 
+        if (account.currencyCode.isBlank()) {
+            return Resource.Error(Exception("Account currency shouldn't be blank"))
+        }
+
         return Resource.Success(true)
     }
 }

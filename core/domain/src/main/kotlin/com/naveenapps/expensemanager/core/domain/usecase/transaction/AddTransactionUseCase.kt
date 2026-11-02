@@ -6,21 +6,12 @@ import com.naveenapps.expensemanager.core.repository.TransactionRepository
 
 class AddTransactionUseCase(
     private val repository: TransactionRepository,
+    private val checkTransactionValidationUseCase: CheckTransactionValidationUseCase,
 ) {
 
     suspend operator fun invoke(transaction: Transaction): Resource<Boolean> {
-        if (transaction.id.isBlank()) {
-            return Resource.Error(Exception("ID shouldn't be blank"))
-        }
-
-        if (transaction.categoryId.isBlank()) {
-            return Resource.Error(Exception("Category type color shouldn't be blank"))
-        }
-
-        if (transaction.amount.amount < 0.0) {
-            return Resource.Error(Exception("Amount should be greater than 0"))
-        }
-
+        val validation = checkTransactionValidationUseCase(transaction)
+        if (validation is Resource.Error) return validation
         return repository.addTransaction(transaction)
     }
 }

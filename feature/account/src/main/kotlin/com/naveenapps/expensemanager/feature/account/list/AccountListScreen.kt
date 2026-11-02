@@ -36,6 +36,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -144,6 +145,7 @@ internal fun AccountListContentView(
                 .padding(innerPadding)
                 .fillMaxSize(),
             state = state,
+            onUnarchive = { onAction.invoke(AccountListAction.Unarchive(it)) },
             onItemClick = {
                 onAction.invoke(AccountListAction.EditAccount(it))
             },
@@ -156,9 +158,10 @@ private fun AccountListScreenContent(
     state: AccountListState,
     onItemClick: ((AccountUiModel) -> Unit)?,
     modifier: Modifier = Modifier,
+    onUnarchive: (AccountUiModel) -> Unit = {},
 ) {
     Box(modifier = modifier) {
-        if (state.accounts.isEmpty()) {
+        if (state.accounts.isEmpty() && state.archivedAccounts.isEmpty()) {
             EmptyItem(
                 emptyItemText = stringResource(id = R.string.no_account_available),
                 icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
@@ -210,6 +213,40 @@ private fun AccountListScreenContent(
                             AccountItemDefaults.ChevronTrailing()
                         },
                     )
+                }
+
+                if (state.archivedAccounts.isNotEmpty()) {
+                    item("archived_header") {
+                        Text(
+                            modifier = Modifier.padding(start = 4.dp, top = 24.dp, bottom = 8.dp),
+                            text = stringResource(id = R.string.archived_accounts),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    itemsIndexed(
+                        items = state.archivedAccounts,
+                        key = { _, item -> "archived_${item.id}" },
+                    ) { index, account ->
+                        AccountItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItem(),
+                            onClick = null,
+                            name = account.name,
+                            icon = account.storedIcon.name,
+                            iconBackgroundColor = account.storedIcon.backgroundColor,
+                            amount = account.amount.amountString,
+                            amountTextColor = account.amountTextColor,
+                            customImagePath = account.storedIcon.customImagePath,
+                            shape = AppCardViewDefaults.cardShape(index, state.archivedAccounts),
+                            trailingContent = {
+                                TextButton(onClick = { onUnarchive(account) }) {
+                                    Text(text = stringResource(id = R.string.unarchive))
+                                }
+                            },
+                        )
+                    }
                 }
             }
         }
@@ -427,6 +464,7 @@ fun getAccountData(
     creditLimit = creditLimit,
     createdOn = Date(),
     updatedOn = Date(),
+    currencyCode = "USD",
 )
 
 fun getRandomAccountData(totalCount: Int = 10): List<Account> = buildList {

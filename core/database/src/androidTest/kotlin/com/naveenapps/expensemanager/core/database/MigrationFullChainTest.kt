@@ -10,6 +10,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/** The app's list, with a fixed currency for rows from before multi-currency (v10 and older). */
+private val ALL_MIGRATIONS = allMigrations { "USD" }
+
 private const val TEST_DB = "migration_chain_test"
 
 /**

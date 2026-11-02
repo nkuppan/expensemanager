@@ -224,6 +224,13 @@ private fun SettingsScreenContent(
                     title = stringResource(id = R.string.currency),
                     subtitle = "${state.currency.name} (${state.currency.symbol})",
                     icon = Icons.Outlined.Payments,
+                    showDivider = true,
+                )
+                SettingRow(
+                    onClick = { onAction.invoke(SettingAction.OpenExchangeMethod) },
+                    title = stringResource(id = R.string.exchange_method),
+                    subtitle = stringResource(id = R.string.exchange_method_subtitle),
+                    icon = Icons.Outlined.Payments,
                 )
             }
         }

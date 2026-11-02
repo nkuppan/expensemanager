@@ -64,6 +64,31 @@
     <string name="restore_passphrase_message">This backup is protected with a passphrase.</string>
     <string name="passphrase_label">Passphrase</string>
     <string name="restore_wrong_passphrase">Wrong passphrase. Please try again.</string>
+    <string name="continue_action">Continue</string>
+    <string name="restore_currency_message">Which currency are this backup\'s amounts in? Backups made before multi-currency support don\'t record it. Newer backups keep their own currencies.</string>
+    <string name="exchange_method">Exchange method</string>
+    <string name="exchange_method_subtitle">How amounts in other currencies are converted</string>
+    <string name="exchange_method_description">Choose where conversion rates come from. This applies to totals, charts, budgets and transfers between currencies.</string>
+    <string name="exchange_method_api">Exchange API</string>
+    <string name="exchange_method_api_description">Rates are fetched from an exchange-rate provider.</string>
+    <string name="exchange_method_static">Fixed rates</string>
+    <string name="exchange_method_static_description">Your own buy and sell rate for each currency pair, used for all dates until you change it.</string>
+    <string name="exchange_method_disabled">No conversion</string>
+    <string name="exchange_method_disabled_description">Nothing is converted. Each currency is totalled on its own, and a transfer between currencies needs its rate typed in.</string>
+    <string name="exchange_method_provider">Provider: %1$s</string>
+    <string name="exchange_method_no_provider">No provider is set up yet, so no rate can be fetched.</string>
+    <string name="exchange_method_configure_provider">Set up provider</string>
+    <string name="exchange_method_no_pairs">No fixed rates yet. Add one for each pair of currencies you use.</string>
+    <string name="exchange_method_buy_sell">Buy %1$s · Sell %2$s</string>
+    <string name="exchange_method_add_pair">Add a currency pair</string>
+    <string name="exchange_method_edit_pair">Edit currency pair</string>
+    <string name="exchange_method_delete_pair">Delete pair</string>
+    <string name="exchange_method_base_currency">Currency (1 unit of)</string>
+    <string name="exchange_method_quote_currency">Priced in</string>
+    <string name="exchange_method_buy_label">Buy: you get this many %2$s for 1 %1$s</string>
+    <string name="exchange_method_sell_label">Sell: 1 %1$s costs you this many %2$s</string>
+    <string name="exchange_method_save">Save</string>
+    <string name="exchange_method_cancel">Cancel</string>
     <!-- Developer section: debug builds only, so these aren't translated. -->
     <string name="developer" translatable="false">Developer</string>
     <string name="demo_data" translatable="false">Load demo data</string>

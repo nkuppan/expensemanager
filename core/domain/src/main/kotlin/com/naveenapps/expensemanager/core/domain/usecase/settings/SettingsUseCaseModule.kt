@@ -1,9 +1,17 @@
 package com.naveenapps.expensemanager.core.domain.usecase.settings
 
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SetRestoreCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.FetchLatestExchangeRatesUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.GetCurrencyApiProfileUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.GetCurrentExchangeRateUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.SaveCurrencyApiProfileUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.SaveStaticExchangeRateUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.export.ExportFileUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.ApplyLocaleUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.GetCurrentLocaleUseCase
@@ -25,10 +33,20 @@ import org.koin.dsl.module
 
 val SettingsUseCaseModule = module {
     // Currency
-    single { GetCurrencyUseCase(get()) }
+    single { GetCurrencyUseCase(repository = get(), countryRepository = get()) }
     single { GetDefaultCurrencyUseCase(get()) }
     single { GetFormattedAmountUseCase(get()) }
     single { SaveCurrencyUseCase(get()) }
+    single { SetRestoreCurrencyUseCase(get()) }
+    single { FormatAmountInCurrencyUseCase(countryRepository = get(), currencyRepository = get()) }
+
+    // Currency API profile
+    single { GetCurrencyApiProfileUseCase(get()) }
+    single { SaveCurrencyApiProfileUseCase(get()) }
+    single { FetchLatestExchangeRatesUseCase(get()) }
+    single { ConvertAmountUseCase(get(), get()) }
+    single { GetCurrentExchangeRateUseCase(get()) }
+    single { SaveStaticExchangeRateUseCase(get()) }
 
     // Export
     single {

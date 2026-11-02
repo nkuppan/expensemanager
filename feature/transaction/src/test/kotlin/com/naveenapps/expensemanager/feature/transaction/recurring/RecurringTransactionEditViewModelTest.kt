@@ -94,6 +94,7 @@ class RecurringTransactionEditViewModelTest : BaseCoroutineTest() {
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
         createdOn = Date(),
         updatedOn = Date(),
+        currencyCode = "USD",
     )
 
     override fun onCreate() {
@@ -101,7 +102,7 @@ class RecurringTransactionEditViewModelTest : BaseCoroutineTest() {
         whenever(getCurrencyUseCase.invoke()).thenReturn(flowOf(currency))
         whenever(getAllAccountsUseCase.invoke()).thenReturn(flowOf(listOf(bank)))
         whenever(getAllCategoryUseCase.invoke()).thenReturn(flowOf(listOf(rentCategory)))
-        whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0))
+        whenever(getFormattedAmountUseCase.invoke(any<Double>(), any<Currency>())).thenReturn(Amount(0.0))
         whenever(numberFormatRepository.formatForEditing(1000.0)).thenReturn("1000.00")
         whenever(numberFormatRepository.parseToDouble("1000.00")).thenReturn(1000.0)
         whenever(numberFormatRepository.parseToDouble("1200")).thenReturn(1200.0)

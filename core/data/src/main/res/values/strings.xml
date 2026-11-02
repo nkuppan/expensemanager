@@ -60,4 +60,8 @@
     <string name="category_salary">Salary</string>
     <string name="category_gift">Gift</string>
     <string name="category_coupons">Coupons</string>
+    <string name="currency">Currency</string>
+    <string name="received_amount">Received amount</string>
+    <string name="received_currency">Received currency</string>
+    <string name="exchange_rate">Exchange rate</string>
 </resources>

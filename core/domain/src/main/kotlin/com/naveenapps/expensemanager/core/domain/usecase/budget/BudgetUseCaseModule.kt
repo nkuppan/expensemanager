@@ -20,10 +20,12 @@ val BudgetUseCaseModule = module {
     single {
         GetBudgetDetailUseCase(
             budgetRepository = get(),
-            getCurrencyUseCase = get(),
-            getFormattedAmountUseCase = get(),
-            getBudgetTransactionsUseCase = get(),
+            calculateBudgetUseCase = get(),
             getTransactionWithFilterUseCase = get(),
+            getBudgetTransactionsUseCase = get(),
+            convertAmountUseCase = get(),
+            formatAmountInCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
         )
     }
     single {
@@ -37,9 +39,7 @@ val BudgetUseCaseModule = module {
         GetBudgetsUseCase(
             budgetRepository = get(),
             getTransactionWithFilterUseCase = get(),
-            getCurrencyUseCase = get(),
-            getFormattedAmountUseCase = get(),
-            getBudgetTransactionsUseCase = get(),
+            calculateBudgetUseCase = get(),
             appCoroutineDispatchers = get(),
         )
     }
@@ -47,6 +47,14 @@ val BudgetUseCaseModule = module {
         UpdateBudgetUseCase(
             repository = get(),
             checkBudgetValidateUseCase = get(),
+        )
+    }
+    single {
+        CalculateBudgetUseCase(
+            getBudgetTransactionsUseCase = get(),
+            convertAmountUseCase = get(),
+            formatAmountInCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
         )
     }
 }

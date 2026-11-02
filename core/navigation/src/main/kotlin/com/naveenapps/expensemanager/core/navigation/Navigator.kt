@@ -37,6 +37,9 @@ abstract class AppComposeNavigator : Navigator() {
 
     abstract fun popBackStack()
 
+    /** Closes the current screen and opens [route] in its place. */
+    abstract fun replaceCurrent(route: Any)
+
     suspend fun handleNavigationCommands(navController: NavController) {
         navigationCommands
             .onSubscription { this@AppComposeNavigator.navControllerFlow.value = navController }
@@ -93,6 +96,13 @@ abstract class AppComposeNavigator : Navigator() {
 
             is NavigationCommand.NavigateTo -> {
                 navigate(navigationCommand.route)
+            }
+
+            is NavigationCommand.ReplaceCurrent -> {
+                val current = currentDestination?.id
+                navigate(navigationCommand.route) {
+                    if (current != null) popUpTo(current) { inclusive = true }
+                }
             }
 
             is NavigationCommand.ResetBackStack -> {

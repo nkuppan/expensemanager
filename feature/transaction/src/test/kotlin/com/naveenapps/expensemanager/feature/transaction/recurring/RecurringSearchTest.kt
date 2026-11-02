@@ -44,6 +44,7 @@ class RecurringSearchTest {
                 storedIcon = StoredIcon(name = "ic", backgroundColor = "#000000"),
                 createdOn = Date(),
                 updatedOn = Date(),
+                currencyCode = "USD",
             ),
         ),
         amount = "$1,200.00",

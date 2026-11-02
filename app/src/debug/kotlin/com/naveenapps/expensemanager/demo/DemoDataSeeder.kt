@@ -76,6 +76,7 @@ class DemoDataSeeder {
                     sequence = index,
                     amount = money(demo.openingUsd),
                     creditLimit = money(demo.creditLimitUsd),
+                    currencyCode = currency.code,
                 ),
             )
         }
@@ -95,6 +96,8 @@ class DemoDataSeeder {
                 type = demo.type,
                 createdOn = demo.date,
                 updatedOn = demo.date,
+                fromCurrencyCode = currency.code,
+                toCurrencyCode = currency.code,
             )
             addTransaction(transaction)
             demo.repeat?.let { createRecurring(transaction, it) }
@@ -114,6 +117,7 @@ class DemoDataSeeder {
                     isAllCategoriesSelected = demo.categoryIds.isEmpty(),
                     createdOn = now,
                     updatedOn = now,
+                    currencyCode = currency.code,
                 ),
             )
         }

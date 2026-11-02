@@ -17,7 +17,10 @@ class NumberFormatSettingsDatastore(
     }
 
     fun getNumberFormatType(): Flow<NumberFormatType> = dataStore.data.map { preferences ->
-        toEnumValue<NumberFormatType>(preferences[KEY_NUMBER_FORMAT_TYPE] ?: 0)
+        // Unset means the default: thousands grouped with commas (1,000,000).
+        toEnumValue<NumberFormatType>(
+            preferences[KEY_NUMBER_FORMAT_TYPE] ?: NumberFormatType.WITH_COMMA_SEPARATOR.ordinal,
+        )
     }
 
     companion object {

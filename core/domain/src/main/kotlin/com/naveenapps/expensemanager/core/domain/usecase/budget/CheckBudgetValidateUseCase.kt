@@ -22,6 +22,10 @@ class CheckBudgetValidateUseCase {
             return Resource.Error(Exception("Amount shouldn't be zero"))
         }
 
+        if (budget.currencyCode.isBlank()) {
+            return Resource.Error(Exception("Budget currency shouldn't be blank"))
+        }
+
         return Resource.Success(true)
     }
 }

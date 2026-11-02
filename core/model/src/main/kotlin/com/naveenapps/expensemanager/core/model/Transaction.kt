@@ -13,6 +13,12 @@ data class Transaction(
     val type: TransactionType,
     val createdOn: Date,
     val updatedOn: Date,
+    /** Currency of [amount]: the from-account's currency. */
+    val fromCurrencyCode: String,
+    /** Currency credited to the to-account; equals [fromCurrencyCode] unless a cross-currency transfer. */
+    val toCurrencyCode: String,
+    /** The rate used for a cross-currency transfer (to-account gets `amount * rate`); null = 1.0. */
+    val rateSnapshot: ExchangeRateSnapshot? = null,
     var category: Category = Category(
         "",
         "",
@@ -28,6 +34,7 @@ data class Transaction(
         StoredIcon("", ""),
         Date(),
         Date(),
+        currencyCode = "",
     ),
     var toAccount: Account? = null,
     var attachments: List<String> = emptyList(),

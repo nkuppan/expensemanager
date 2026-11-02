@@ -29,4 +29,11 @@ data class BudgetEntity(
     val createdOn: Date,
     @ColumnInfo(name = "updated_on")
     val updatedOn: Date,
+    /**
+     * Currency the limit ([amount]) is expressed in, fixed at creation. Spending from linked
+     * accounts in other currencies is converted into it; the app's display currency never
+     * changes what the limit means.
+     */
+    @ColumnInfo(name = "currency_code")
+    val currencyCode: String,
 )

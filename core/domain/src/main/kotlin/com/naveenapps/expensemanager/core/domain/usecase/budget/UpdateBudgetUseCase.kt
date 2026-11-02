@@ -9,13 +9,16 @@ class UpdateBudgetUseCase(
     private val checkBudgetValidateUseCase: CheckBudgetValidateUseCase,
 ) {
 
-    suspend operator fun invoke(budget: Budget): Resource<Boolean> = when (val validationResult = checkBudgetValidateUseCase(budget)) {
-        is Resource.Error -> {
-            validationResult
-        }
+    suspend operator fun invoke(budget: Budget): Resource<Boolean> {
+        val validationResult = checkBudgetValidateUseCase(budget)
+        if (validationResult is Resource.Error) return validationResult
 
-        is Resource.Success -> {
-            repository.updateBudget(budget)
+        // The limit is defined in the budget's currency: that can never change, or the
+        // same number would silently mean a different amount of money.
+        val existing = repository.findBudgetById(budget.id)
+        if (existing is Resource.Success && existing.data.currencyCode != budget.currencyCode) {
+            return Resource.Error(Exception("A budget's currency can't be changed"))
         }
+        return repository.updateBudget(budget)
     }
 }

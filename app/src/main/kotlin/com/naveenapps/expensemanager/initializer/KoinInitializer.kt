@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.initializer
 
 import DatastoreModule
 import DispatcherModule
+import NetworkModule
 import android.content.Context
 import androidx.startup.Initializer
 import com.naveenapps.expensemanager.core.data.di.ActivityModule
@@ -26,6 +27,7 @@ class KoinInitializer : Initializer<KoinApplication> {
             ActivityModule,
             DispatcherModule,
             DatastoreModule,
+            NetworkModule,
             RepositoryModule,
             UseCaseModule,
             DatabaseModule,

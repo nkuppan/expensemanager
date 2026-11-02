@@ -16,4 +16,5 @@ dependencies {
     implementation(project(":feature:theme"))
     implementation(project(":feature:language"))
     implementation(project(":feature:about"))
+    implementation(project(":feature:country"))
 }

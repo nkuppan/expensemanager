@@ -59,6 +59,7 @@ val FAKE_ACCOUNT = Account(
     ),
     createdOn = Date(),
     updatedOn = Date(),
+    currencyCode = "USD",
 )
 
 val FAKE_SECOND_ACCOUNT = Account(
@@ -71,6 +72,7 @@ val FAKE_SECOND_ACCOUNT = Account(
     ),
     createdOn = Date(),
     updatedOn = Date(),
+    currencyCode = "USD",
 )
 
 val FAKE_EXPENSE_TRANSACTION = Transaction(
@@ -84,6 +86,8 @@ val FAKE_EXPENSE_TRANSACTION = Transaction(
     imagePath = "",
     createdOn = Date(),
     updatedOn = Date(),
+    fromCurrencyCode = "USD",
+    toCurrencyCode = "USD",
 )
 
 val FAKE_INCOME_TRANSACTION = Transaction(
@@ -97,6 +101,8 @@ val FAKE_INCOME_TRANSACTION = Transaction(
     imagePath = "",
     createdOn = Date(),
     updatedOn = Date(),
+    fromCurrencyCode = "USD",
+    toCurrencyCode = "USD",
 )
 
 val FAKE_TRANSFER_TRANSACTION = Transaction(
@@ -110,6 +116,8 @@ val FAKE_TRANSFER_TRANSACTION = Transaction(
     imagePath = "",
     createdOn = Date(),
     updatedOn = Date(),
+    fromCurrencyCode = "USD",
+    toCurrencyCode = "USD",
 )
 
 val FAKE_BUDGET = Budget(
@@ -124,4 +132,5 @@ val FAKE_BUDGET = Budget(
     isAllCategoriesSelected = true,
     createdOn = Date(),
     updatedOn = Date(),
+    currencyCode = "USD",
 )

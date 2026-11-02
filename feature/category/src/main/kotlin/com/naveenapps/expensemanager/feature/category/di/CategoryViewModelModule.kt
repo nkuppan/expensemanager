@@ -39,6 +39,8 @@ val CategoryViewModelModule = module {
             getTransactionWithFilterUseCase = get(),
             getFormattedAmountUseCase = get(),
             appComposeNavigator = get(),
+            convertAmountUseCase = get(),
+            formatAmountInCurrencyUseCase = get(),
         )
     }
     viewModel {

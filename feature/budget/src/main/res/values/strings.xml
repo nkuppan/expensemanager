@@ -32,6 +32,9 @@
     <string name="annual">Annual</string>
     <string name="budget_for">Budget for</string>
     <string name="what_is_your_budget_limit">What is your total budget limit</string>
+    <string name="budget_currency">Budget currency</string>
+    <string name="budget_currency_locked">%1$s · fixed after creation</string>
+    <string name="budget_other_currencies_excluded">Currency conversion is off: spending in other currencies is not counted.</string>
     <string name="budget_title_this_month">This month\'s budget</string>
     <string name="budget_title_this_year">This year\'s budget</string>
     <string name="budget_title_period">%1$s budget</string>

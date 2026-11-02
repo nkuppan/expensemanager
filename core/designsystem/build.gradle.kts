@@ -20,4 +20,6 @@ dependencies {
     api(libs.mpcharts)
     implementation(libs.coil.compose)
     implementation(libs.androidx.compose.material.iconsExtended)
+
+    testImplementation(project(":core:testing"))
 }

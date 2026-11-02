@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.naveenapps.expensemanager.core.database.entity.AccountEntity
+import com.naveenapps.expensemanager.core.database.entity.ExchangeRateSnapshotEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionAttachmentEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionRelation
@@ -90,13 +91,42 @@ interface TransactionDao : BaseDao<TransactionEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTransactionAttachment(attachmentEntity: TransactionAttachmentEntity): Long
 
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun insertRateSnapshot(snapshot: ExchangeRateSnapshotEntity)
+
+    @Query("SELECT * FROM exchange_rate_snapshot WHERE id = :id")
+    suspend fun findRateSnapshot(id: String): ExchangeRateSnapshotEntity?
+
+    @Query("SELECT rate FROM exchange_rate_snapshot WHERE id = :id")
+    suspend fun findRateSnapshotRate(id: String): Double?
+
+    /** Drops snapshots no transaction links to any more (its rate was replaced, or it was deleted). */
+    @Query(
+        "DELETE FROM exchange_rate_snapshot WHERE id NOT IN " +
+            "(SELECT rate_snapshot_id FROM `transaction` WHERE rate_snapshot_id IS NOT NULL)",
+    )
+    suspend fun deleteUnreferencedRateSnapshots()
+
+    /**
+     * Multiplier applied to [TransactionEntity.amount] when crediting the to-account:
+     * the linked snapshot's rate for a cross-currency transfer, otherwise 1.0.
+     */
+    suspend fun toAccountRate(transactionEntity: TransactionEntity): Double {
+        val snapshotId = transactionEntity.rateSnapshotId ?: return 1.0
+        return checkNotNull(findRateSnapshotRate(snapshotId)) {
+            "Transaction ${transactionEntity.id} links a missing rate snapshot $snapshotId"
+        }
+    }
+
     @Transaction
     suspend fun insertTransaction(
         transactionEntity: TransactionEntity,
         amountToDetect: Double,
         isTransfer: Boolean,
         attachmentPaths: List<String> = emptyList(),
+        rateSnapshot: ExchangeRateSnapshotEntity? = null,
     ): Long {
+        rateSnapshot?.let { insertRateSnapshot(it) }
         val id = insert(transactionEntity)
         if (id != -1L) {
             attachmentPaths.forEach { path ->
@@ -124,7 +154,8 @@ interface TransactionDao : BaseDao<TransactionEntity> {
                 if (toAccountEntity != null) {
                     updateAccount(
                         toAccountEntity.copy(
-                            amount = toAccountEntity.amount + (amountToDetect * -1),
+                            amount = toAccountEntity.amount +
+                                (amountToDetect * -1 * toAccountRate(transactionEntity)),
                         ),
                     )
                 }
@@ -164,7 +195,8 @@ interface TransactionDao : BaseDao<TransactionEntity> {
                 if (toAccountEntity != null) {
                     updateAccount(
                         toAccountEntity.copy(
-                            amount = toAccountEntity.amount + (previousAmountToDetect * -1),
+                            amount = toAccountEntity.amount +
+                                (previousAmountToDetect * -1 * toAccountRate(previousTransaction)),
                         ),
                     )
                 }
@@ -192,8 +224,10 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         amountToDetect: Double,
         isTransfer: Boolean,
         attachmentPaths: List<String> = emptyList(),
+        rateSnapshot: ExchangeRateSnapshotEntity? = null,
     ) {
         removePreviousEnteredAmount(transactionEntity)
+        rateSnapshot?.let { insertRateSnapshot(it) }
         update(transactionEntity)
 
         removeTransactionAttachments(transactionEntity.id)
@@ -223,7 +257,8 @@ interface TransactionDao : BaseDao<TransactionEntity> {
             if (toAccountEntity != null) {
                 updateAccount(
                     toAccountEntity.copy(
-                        amount = toAccountEntity.amount + (amountToDetect * -1),
+                        amount = toAccountEntity.amount +
+                            (amountToDetect * -1 * toAccountRate(transactionEntity)),
                     ),
                 )
             }

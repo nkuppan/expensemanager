@@ -192,6 +192,17 @@ private fun BudgetDetailContent(
             }
         }
 
+        if (budget.otherCurrenciesExcluded) {
+            item(key = "other_currencies_excluded") {
+                Text(
+                    text = stringResource(R.string.budget_other_currencies_excluded),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
+                )
+            }
+        }
+
         // ── Spending by category ───────────────────────────────
         if (spending != null && categories.isNotEmpty()) {
             item(key = "chart_header") {

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Paid
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -67,11 +68,14 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetTitle
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
+import com.naveenapps.expensemanager.core.model.toDisplayValue
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.budget.label
 import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
+import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionBottomSheet
+import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import java.util.Date
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
@@ -143,6 +147,20 @@ private fun BudgetCreateScreenContentView(
                 onClose = { onAction.invoke(BudgetCreateAction.CloseCategorySelectionDialog) },
             )
         }
+    }
+
+    if (state.showCurrencySelection) {
+        CountryCurrencySelectionBottomSheet(
+            onEvent = { event ->
+                when (event) {
+                    CountrySelectionEvent.Dismiss ->
+                        onAction.invoke(BudgetCreateAction.DismissCurrencySelection)
+
+                    is CountrySelectionEvent.CountrySelected ->
+                        onAction.invoke(BudgetCreateAction.SelectCurrency(event.country))
+                }
+            },
+        )
     }
 
     if (state.showMonthSelection) {
@@ -246,6 +264,8 @@ private fun BudgetCreateScreenContentView(
             nameField = state.name,
             amountField = state.amount,
             currencyIconField = state.currency.symbol,
+            currencyLabel = state.currency.toDisplayValue(),
+            isCurrencyLocked = state.isCurrencyLocked,
             selectedDate = state.month,
             periodType = state.periodType,
             accountCount = if (state.isAllAccountSelected) {
@@ -269,6 +289,8 @@ fun BudgetCreateScreen(
     nameField: TextFieldValue<String>,
     currencyIconField: String,
     selectedDate: TextFieldValue<Date>,
+    currencyLabel: String = "",
+    isCurrencyLocked: Boolean = false,
     accountCount: String,
     categoriesCount: String,
     onAction: (BudgetCreateAction) -> Unit,
@@ -281,6 +303,18 @@ fun BudgetCreateScreen(
         modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        // The limit is always in the budget's own currency; it's fixed once the budget exists.
+        SettingRow(
+            onClick = { onAction.invoke(BudgetCreateAction.OpenCurrencySelection) },
+            title = stringResource(id = R.string.budget_currency),
+            subtitle = if (isCurrencyLocked) {
+                stringResource(id = R.string.budget_currency_locked, currencyLabel)
+            } else {
+                currencyLabel
+            },
+            icon = Icons.Outlined.Paid,
+            enabled = !isCurrencyLocked,
+        )
         SettingsSection(
             title = stringResource(R.string.budget_for),
             modifier = Modifier.padding(top = 8.dp),

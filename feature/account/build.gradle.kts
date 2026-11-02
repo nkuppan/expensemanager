@@ -19,6 +19,7 @@ android {
 dependencies {
 
     implementation(project(":core:settings"))
+    implementation(project(":feature:country"))
 
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.test.espresso.core)

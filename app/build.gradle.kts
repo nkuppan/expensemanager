@@ -198,6 +198,9 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:database"))
+    // Room types for the dev-database reset callback and forcing the database open at startup.
+    implementation(libs.room.runtime)
+    implementation(project(":core:network"))
     implementation(project(":core:domain"))
     implementation(project(":core:data"))
     implementation(project(":core:datastore"))

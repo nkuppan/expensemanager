@@ -4,6 +4,8 @@ import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.ExchangeRateSnapshot
+import com.naveenapps.expensemanager.core.model.ExchangeRateSource
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -41,6 +43,36 @@ data class TransactionCreateState(
     val recurringRuleId: String? = null,
     /** "Discard changes?" confirmation, shown when leaving a form with unsaved edits. */
     val showDiscardDialog: Boolean = false,
+    /** Present only for a transfer between accounts in different currencies. */
+    val exchangeRate: ExchangeRateInputState? = null,
+    /** Why the last save was rejected, shown on screen (validation is strict). */
+    val saveError: String? = null,
+)
+
+/**
+ * The rate for a cross-currency transfer: 1 [baseCode] = [rateText] [quoteCode]. Copied from the
+ * provider's fetch (only for transfers dated today), from the user's fixed rate for the pair,
+ * or typed by the user; all are saved as the same snapshot shape, with [source] recording which.
+ */
+data class ExchangeRateInputState(
+    val baseCode: String,
+    val quoteCode: String,
+    val rateText: String,
+    val source: ExchangeRateSource,
+    /** Provider + fetch time of the fetched rate, when one was fetched. */
+    val provider: String? = null,
+    val fetchedAt: Long? = null,
+    val fetchedRate: Double? = null,
+    /** Where [fetchedRate] came from (fetched, or the user's fixed rate); null when none. */
+    val suggestedSource: ExchangeRateSource? = null,
+    /** The transaction's existing snapshot, kept as-is while nothing it depends on changed. */
+    val existingSnapshot: ExchangeRateSnapshot? = null,
+    /** Why no rate was pre-filled (backdated / unavailable), or null. */
+    val hint: String? = null,
+    /** "≈ 13,787.5 SYP": what the destination account will receive. */
+    val receivedAmount: String? = null,
+    val isLoading: Boolean = false,
+    val rateError: Boolean = false,
 )
 
 enum class AccountSelection {

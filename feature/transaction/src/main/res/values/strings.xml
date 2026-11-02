@@ -84,6 +84,15 @@
     <string name="discard_changes_message">Your changes to this transaction haven\'t been saved.</string>
     <string name="discard">Discard</string>
     <string name="keep_editing">Keep editing</string>
+    <string name="exchange_rate">Exchange rate</string>
+    <string name="exchange_rate_required">Enter a rate greater than 0</string>
+    <string name="exchange_rate_loading">Fetching today\'s rate…</string>
+    <string name="exchange_rate_fetched_from">Fetched from %1$s at %2$s. You can change it to the rate you actually got.</string>
+    <string name="exchange_rate_entered_by_you">Entered by you</string>
+    <string name="exchange_rate_received">The destination account receives %1$s</string>
+    <string name="exchange_rate_use_fetched">Use the fetched rate</string>
+    <string name="exchange_rate_fixed">Your fixed rate for this pair. You can change it to the rate you actually got.</string>
+    <string name="exchange_rate_use_fixed">Use your fixed rate</string>
     <string name="search_recurring">Search recurring transactions</string>
     <string name="search_recurring_hint">Search notes, categories, accounts, amounts</string>
     <string name="recurring_no_matches">No recurring transactions match your search</string>

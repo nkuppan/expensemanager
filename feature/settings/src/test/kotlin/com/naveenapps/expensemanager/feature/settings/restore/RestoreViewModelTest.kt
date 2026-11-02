@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.settings.restore
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SetRestoreCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.AutoBackupSettings
 import com.naveenapps.expensemanager.core.model.BackupFile
 import com.naveenapps.expensemanager.core.model.BackupKind
@@ -32,6 +33,7 @@ class RestoreViewModelTest : BaseCoroutineTest() {
     private val backupRepository: BackupRepository = mock()
     private val navigator: AppComposeNavigator = mock()
     private val analytics: AnalyticsRepository = mock()
+    private val setRestoreCurrencyUseCase: SetRestoreCurrencyUseCase = mock()
 
     private val backup = BackupFile(
         uri = "content://tree/b/document/1",
@@ -45,7 +47,7 @@ class RestoreViewModelTest : BaseCoroutineTest() {
     private suspend fun viewModel(): RestoreViewModel {
         whenever(autoBackupRepository.getSettings()).thenReturn(flowOf(AutoBackupSettings()))
         whenever(autoBackupRepository.getBackups()).thenReturn(listOf(backup))
-        return RestoreViewModel(autoBackupRepository, backupRepository, navigator, analytics)
+        return RestoreViewModel(autoBackupRepository, backupRepository, navigator, analytics, setRestoreCurrencyUseCase)
     }
 
     @Test
@@ -68,6 +70,7 @@ class RestoreViewModelTest : BaseCoroutineTest() {
 
         viewModel.event.test {
             viewModel.processAction(RestoreAction.ConfirmRestore)
+            viewModel.processAction(RestoreAction.ConfirmRestoreCurrency("USD"))
             assertThat(awaitItem()).isEqualTo(RestoreEvent.RestartApp)
         }
         assertThat(viewModel.state.value.confirmBackup).isNull()
@@ -96,6 +99,7 @@ class RestoreViewModelTest : BaseCoroutineTest() {
             assertThat(awaitItem()).isEqualTo(RestoreEvent.PickFile)
 
             viewModel.processAction(RestoreAction.FileSelected("content://picked"))
+            viewModel.processAction(RestoreAction.ConfirmRestoreCurrency("USD"))
             assertThat(awaitItem()).isEqualTo(RestoreEvent.RestartApp)
         }
     }
@@ -109,6 +113,7 @@ class RestoreViewModelTest : BaseCoroutineTest() {
         advanceUntilIdle()
 
         viewModel.processAction(RestoreAction.FileSelected("content://picked"))
+        viewModel.processAction(RestoreAction.ConfirmRestoreCurrency("USD"))
         advanceUntilIdle()
         assertThat(viewModel.state.value.showPassphrasePrompt).isTrue()
 
@@ -127,8 +132,24 @@ class RestoreViewModelTest : BaseCoroutineTest() {
 
         viewModel.event.test {
             viewModel.processAction(RestoreAction.FileSelected("content://picked"))
+            viewModel.processAction(RestoreAction.ConfirmRestoreCurrency("USD"))
             assertThat(awaitItem()).isEqualTo(RestoreEvent.ShowMessage(R.string.restore_invalid_file))
         }
         assertThat(viewModel.state.value.isRestoring).isFalse()
+    }
+
+    @Test
+    fun `asks which currency the backup is in before restoring`() = runTest {
+        val viewModel = viewModel()
+        advanceUntilIdle()
+
+        viewModel.processAction(RestoreAction.FileSelected("content://picked"))
+        assertThat(viewModel.state.value.showCurrencySelection).isTrue()
+        verify(backupRepository, never()).restoreData(any(), anyOrNull())
+
+        viewModel.processAction(RestoreAction.DismissRestoreCurrency)
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.showCurrencySelection).isFalse()
+        verify(backupRepository, never()).restoreData(any(), anyOrNull())
     }
 }

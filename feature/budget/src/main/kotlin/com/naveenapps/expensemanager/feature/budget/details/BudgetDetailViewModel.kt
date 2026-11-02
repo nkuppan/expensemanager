@@ -43,7 +43,10 @@ class BudgetDetailViewModel(
             combine(getBudgetDetailUseCase.invoke(id), getCurrencyUseCase.invoke()) { budget, currency ->
                 val progress = budget?.toBudgetProgress(
                     today = LocalDate.now(),
-                    format = { value -> getFormattedAmountUseCase(value, currency).amountString.orEmpty() },
+                    format = { value ->
+                        // The budget's own currency, not the app's.
+                        getFormattedAmountUseCase(value, budget.amount.currency ?: currency).amountString.orEmpty()
+                    },
                 )
                 _state.update { state ->
                     // Drop a filter whose category no longer has spending in this budget.
