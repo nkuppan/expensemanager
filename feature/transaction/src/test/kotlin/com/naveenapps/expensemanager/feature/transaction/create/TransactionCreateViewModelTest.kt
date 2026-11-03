@@ -50,6 +50,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.clearInvocations
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
@@ -626,6 +627,9 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `editing a transaction offers no quick picks`() {
+        // onCreate already built a new-transaction view model, which does load quick picks.
+        clearInvocations(getFrequentTransactionsUseCase)
+
         createViewModel(SavedStateHandle(mapOf(ExpenseManagerArgsNames.ID to "existing")))
 
         verify(getFrequentTransactionsUseCase, never()).invoke(any())

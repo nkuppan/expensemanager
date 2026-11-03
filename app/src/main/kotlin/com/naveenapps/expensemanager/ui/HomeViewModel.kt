@@ -65,8 +65,7 @@ class HomeViewModel(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     /** Which situation the explainer was offered in, so grant rates can be compared per trigger. */
-    private fun primerSource(): Map<String, String> =
-        mapOf(AnalyticsParams.SOURCE to (shownSource ?: reminderPrimer.value.source))
+    private fun primerSource(): Map<String, String> = mapOf(AnalyticsParams.SOURCE to (shownSource ?: reminderPrimer.value.source))
 
     /** Notifications are already allowed, so there's nothing to ask after the first expense. */
     fun onFirstSaveNothingToAsk() {

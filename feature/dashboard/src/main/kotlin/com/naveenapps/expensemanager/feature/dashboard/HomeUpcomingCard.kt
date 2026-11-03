@@ -260,7 +260,9 @@ private fun DuePill(daysAway: Long, highlighted: Boolean) {
     val text = when {
         // Due but not logged yet (the app was closed): it's added on the next start, so "Today".
         daysAway <= 0 -> stringResource(R.string.upcoming_today)
+
         daysAway == 1L -> stringResource(R.string.upcoming_tomorrow)
+
         else -> pluralStringResource(R.plurals.upcoming_in_days, daysAway.toInt(), daysAway.toInt())
     }
     Text(

@@ -78,18 +78,17 @@ class GetTransactionWithFilterUseCaseTest {
     }
 
     @Test
-    fun `the query stops after the last collector leaves and starts fresh on return`() =
-        runTest(UnconfinedTestDispatcher()) {
-            val useCase = useCase()
+    fun `the query stops after the last collector leaves and starts fresh on return`() = runTest(UnconfinedTestDispatcher()) {
+        val useCase = useCase()
 
-            useCase.invoke().test { assertThat(awaitItem()).hasSize(1) }
-            advanceTimeBy(6_000)
-            runCurrent()
+        useCase.invoke().test { assertThat(awaitItem()).hasSize(1) }
+        advanceTimeBy(6_000)
+        runCurrent()
 
-            transactions.value = emptyList()
-            // No stale list is replayed first: the next collector sees only the current data.
-            useCase.invoke().test { assertThat(awaitItem()).isEmpty() }
+        transactions.value = emptyList()
+        // No stale list is replayed first: the next collector sees only the current data.
+        useCase.invoke().test { assertThat(awaitItem()).isEmpty() }
 
-            verify(transactionRepository, times(2)).getFilteredTransaction(any(), any(), any(), any(), any())
-        }
+        verify(transactionRepository, times(2)).getFilteredTransaction(any(), any(), any(), any(), any())
+    }
 }
