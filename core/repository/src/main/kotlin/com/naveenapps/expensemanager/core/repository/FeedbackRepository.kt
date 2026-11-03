@@ -19,17 +19,10 @@ interface FeedbackRepository {
     /** "Nothing spent today" from the reminder: counts as logging for that day. */
     suspend fun recordNoSpendDay(epochDay: Long)
 
-    fun getNoSpendDays(): Flow<Set<Long>>
-
     /** Keys of budget alerts already sent ("<budgetId>:<period>:<threshold>"). */
     fun getSentBudgetAlerts(): Flow<Set<String>>
 
     suspend fun markBudgetAlertSent(key: String)
-
-    /** "yyyyMM" of the monthly recap card the user closed. */
-    fun getDismissedRecapMonth(): Flow<String?>
-
-    suspend fun setDismissedRecapMonth(monthKey: String)
 
     /** True between saving the install's first transaction and Home celebrating it. */
     fun isFirstSaveCelebrationPending(): Flow<Boolean>

@@ -26,18 +26,10 @@ class FeedbackRepositoryImpl(
         feedbackDataStore.addNoSpendDay(epochDay)
     }
 
-    override fun getNoSpendDays(): Flow<Set<Long>> = feedbackDataStore.getNoSpendDays()
-
     override fun getSentBudgetAlerts(): Flow<Set<String>> = feedbackDataStore.getSentBudgetAlerts()
 
     override suspend fun markBudgetAlertSent(key: String) {
         feedbackDataStore.addSentBudgetAlert(key)
-    }
-
-    override fun getDismissedRecapMonth(): Flow<String?> = feedbackDataStore.getDismissedRecapMonth()
-
-    override suspend fun setDismissedRecapMonth(monthKey: String) {
-        feedbackDataStore.setDismissedRecapMonth(monthKey)
     }
 
     override suspend fun setFeedbackDialogShown(shown: Boolean) {

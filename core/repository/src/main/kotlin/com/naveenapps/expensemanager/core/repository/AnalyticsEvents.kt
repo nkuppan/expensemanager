@@ -55,12 +55,7 @@ object AnalyticsEvents {
     const val FIRST_SAVE_ADD_ANOTHER = "first_save_add_another"
     const val FIRST_SAVE_DONE = "first_save_done"
 
-    const val RECAP_CARD_SHOWN = "recap_card_shown"
-    const val RECAP_SHARED = "recap_shared"
-    const val RECAP_DISMISSED = "recap_dismissed"
     const val SHARE_APP = "share_app"
-    const val STREAK_NO_SPEND = "streak_no_spend"
-    const val STREAK_MILESTONE = "streak_milestone"
 
     const val REVIEW_REQUESTED = "review_requested"
     const val RATE_US_CLICKED = "rate_us_clicked"

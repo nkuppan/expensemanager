@@ -1,5 +1,8 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
+import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
 import org.koin.dsl.module
 
 val TransactionUseCaseModule = module {
@@ -17,8 +20,6 @@ val TransactionUseCaseModule = module {
         )
     }
     single { AddTransactionUseCase(repository = get()) }
-    single { GetMonthlyRecapUseCase(transactionRepository = get(), categoryRepository = get()) }
-    single { GetLoggingStreakUseCase(transactionRepository = get(), feedbackRepository = get()) }
     single {
         GetSpendingInsightsUseCase(
             getTransactionWithFilterUseCase = get(),
@@ -65,7 +66,6 @@ val TransactionUseCaseModule = module {
         )
     }
     single { GetExpenseAmountUseCase(getTransactionWithFilterUseCase = get()) }
-    single { GetTransactionByNameUseCase(repository = get()) }
     single {
         GetTransactionGroupByCategoryUseCase(
             getAllCategoryUseCase = get(),
@@ -82,6 +82,8 @@ val TransactionUseCaseModule = module {
             settingsRepository = get(),
             getDateRangeUseCase = get(),
             transactionRepository = get(),
+            // Lives as long as the app: the shared period query outlives any one screen.
+            sharingScope = CoroutineScope(SupervisorJob() + get<AppCoroutineDispatchers>().io),
         )
     }
     single { UpdateTransactionUseCase(get()) }

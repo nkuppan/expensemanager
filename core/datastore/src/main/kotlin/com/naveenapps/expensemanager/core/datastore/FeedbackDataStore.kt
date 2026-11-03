@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -59,17 +58,6 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[sentBudgetAlertsKey].orEmpty()
     }
 
-    // "yyyyMM" of the monthly recap card the user closed, so it stays closed for that month.
-    private val dismissedRecapMonthKey = stringPreferencesKey("dismissed_recap_month")
-
-    suspend fun setDismissedRecapMonth(monthKey: String) = dataStore.edit { preferences ->
-        preferences[dismissedRecapMonthKey] = monthKey
-    }
-
-    fun getDismissedRecapMonth(): Flow<String?> = dataStore.data.map { preferences ->
-        preferences[dismissedRecapMonthKey]
-    }
-
     suspend fun setLastActiveDay(epochDay: Long) = dataStore.edit { preferences ->
         preferences[lastActiveDayKey] = epochDay
     }
@@ -85,10 +73,6 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
             .take(MAX_NO_SPEND_DAYS)
         preferences[noSpendDaysKey] = days.map { it.toString() }.toSet()
         preferences[lastActiveDayKey] = epochDay
-    }
-
-    fun getNoSpendDays(): Flow<Set<Long>> = dataStore.data.map { preferences ->
-        preferences[noSpendDaysKey].orEmpty().mapNotNull { it.toLongOrNull() }.toSet()
     }
 
     suspend fun increaseTransactionCreatedCount() = dataStore.edit { preferences ->

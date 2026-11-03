@@ -8,12 +8,16 @@ import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.shareIn
 
 class GetTransactionWithFilterUseCase(
     private val accountRepository: AccountRepository,
@@ -21,19 +25,35 @@ class GetTransactionWithFilterUseCase(
     private val settingsRepository: SettingsRepository,
     private val getDateRangeUseCase: GetDateRangeUseCase,
     private val transactionRepository: TransactionRepository,
+    sharingScope: CoroutineScope,
 ) {
+    // One query for the selected period, shared by everything that shows it: the dashboard
+    // summary, both category donuts, budgets, the transaction list and the widget. Each
+    // collector used to run its own query (with four joined lookups per row), and every save
+    // re-ran all of them. It keeps running 5 s after the last collector leaves, so rotation and
+    // quick screen switches reuse it; the cached list is dropped when it stops, so a later
+    // collector never sees a stale period or filter first.
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun invoke(): Flow<List<Transaction>?> = filterValues().flatMapLatest { filter ->
-        if (filter.dateRangeType == DateRangeType.ALL) {
-            transactionRepository.getAllFilteredTransaction(
-                filter.accounts,
-                filter.categories,
-                filter.transactionTypes,
-            )
-        } else {
-            query(filter, filter.filterRange[0], filter.filterRange[1])
+    private val selectedPeriod: SharedFlow<List<Transaction>?> = filterValues()
+        .flatMapLatest { filter ->
+            if (filter.dateRangeType == DateRangeType.ALL) {
+                transactionRepository.getAllFilteredTransaction(
+                    filter.accounts,
+                    filter.categories,
+                    filter.transactionTypes,
+                )
+            } else {
+                query(filter, filter.filterRange[0], filter.filterRange[1])
+            }
         }
-    }
+        .shareIn(
+            scope = sharingScope,
+            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000, replayExpirationMillis = 0),
+            replay = 1,
+        )
+
+    /** Transactions in the selected period that match the current filters. Shared; see above. */
+    fun invoke(): Flow<List<Transaction>?> = selectedPeriod
 
     /**
      * Same account / category / type filters as [invoke], but over all dates. Used by search, so
