@@ -110,4 +110,6 @@
     <string name="add_recurring_transaction">إضافة معاملة متكررة</string>
     <!-- Label above the one-tap chips of frequent entries on the add screen. -->
     <string name="quick_picks">متكرر</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">مخطط: تُضاف أول مرة في %1$s. لا يُسجَّل شيء قبل ذلك.</string>
 </resources>

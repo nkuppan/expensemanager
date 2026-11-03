@@ -25,3 +25,10 @@ fun occurrenceDate(
     }
     return Date.from(shifted.atZone(zone).toInstant())
 }
+
+/**
+ * True when [date] falls on a later calendar day than [now]. A repeating entry dated like that is
+ * planned: only the rule is saved, and its first entry is logged automatically on that day.
+ */
+fun isOnLaterDay(date: Date, now: Date = Date(), zone: ZoneId = ZoneId.systemDefault()): Boolean =
+    date.toInstant().atZone(zone).toLocalDate().isAfter(now.toInstant().atZone(zone).toLocalDate())

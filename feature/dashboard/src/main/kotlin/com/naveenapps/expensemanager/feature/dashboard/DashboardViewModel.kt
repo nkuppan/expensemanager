@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetUpcomingRecurringUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
@@ -19,6 +20,7 @@ import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
+import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.needsAttention
@@ -58,6 +60,7 @@ class DashboardViewModel(
     private val feedbackRepository: FeedbackRepository,
     private val analyticsRepository: AnalyticsRepository,
     private val autoBackupRepository: AutoBackupRepository,
+    getUpcomingRecurringUseCase: GetUpcomingRecurringUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -216,6 +219,23 @@ class DashboardViewModel(
         }.flowOn(appCoroutineDispatchers.computation)
             .launchIn(viewModelScope)
 
+        // Upcoming card. Rules and their totals don't depend on the selected period or filters.
+        combine(
+            getUpcomingRecurringUseCase.invoke(),
+            getCurrencyUseCase.invoke(),
+        ) { upcoming, currency ->
+            val format = { value: Double -> getFormattedAmountUseCase.invoke(value, currency).amountString.orEmpty() }
+            UpcomingUi(
+                items = upcoming.rules.take(MAX_UPCOMING_IN_LIST).map { UpcomingItemUi(it, format(it.amount)) },
+                expenseDue = upcoming.expenseDue.takeIf { it > 0.0 }?.let(format),
+                incomeDue = upcoming.incomeDue.takeIf { it > 0.0 }?.let(format),
+                windowDays = upcoming.windowDays,
+            )
+        }.onEach { upcoming ->
+            _state.update { it.copy(upcoming = upcoming) }
+        }.flowOn(appCoroutineDispatchers.computation)
+            .launchIn(viewModelScope)
+
         settingsRepository.getHomeSummaryCompact().onEach { compact ->
             _state.update { it.copy(isCompactSummary = compact) }
         }.launchIn(viewModelScope)
@@ -273,8 +293,6 @@ class DashboardViewModel(
 
             DashboardAction.OpenTransactionList -> openTransactionList()
 
-            DashboardAction.OpenCurrency -> appComposeNavigator.navigate(ExpenseManagerScreens.CurrencyCustomiseScreen)
-
             DashboardAction.DismissGettingStarted -> viewModelScope.launch {
                 feedbackRepository.setGettingStartedDismissed()
             }
@@ -287,6 +305,16 @@ class DashboardViewModel(
                 appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
             }
 
+            DashboardAction.OpenRecurringList ->
+                appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactions)
+
+            is DashboardAction.OpenRecurringEdit ->
+                appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactionEdit(action.id))
+
+            DashboardAction.PlanRecurring -> appComposeNavigator.navigate(
+                ExpenseManagerScreens.TransactionCreate(id = null, repeat = RecurringFrequency.MONTHLY.name),
+            )
+
             DashboardAction.SnoozeAutoBackupWarning -> viewModelScope.launch {
                 autoBackupRepository.snoozeFailureWarning(
                     System.currentTimeMillis() + AutoBackupRepository.WARNING_SNOOZE_MILLIS,
@@ -297,5 +325,6 @@ class DashboardViewModel(
 
     companion object {
         private const val MAX_TRANSACTIONS_IN_LIST = 10
+        private const val MAX_UPCOMING_IN_LIST = 3
     }
 }

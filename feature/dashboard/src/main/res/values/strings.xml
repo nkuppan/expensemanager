@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Tap to set a spending limit</string>
     <string name="first_expense_action">Add expense</string>
     <string name="getting_started_title">Get started</string>
-    <string name="getting_started_subtitle">Four quick steps to get the most out of Expense Manager</string>
     <string name="getting_started_progress">%1$d of %2$d</string>
     <string name="getting_started_hide">Hide</string>
     <string name="step_expense_title">Log your first expense</string>
-    <string name="step_expense_description">It takes a few seconds</string>
     <string name="step_budget_title">Create a monthly budget</string>
-    <string name="step_budget_description">See how much you have left to spend</string>
     <string name="step_budget_action">Create budget</string>
-    <string name="step_accounts_title">Add your accounts</string>
-    <string name="step_accounts_description">Cash, bank and cards you spend from</string>
-    <string name="step_accounts_action">Add account</string>
-    <string name="step_currency_title">Choose your currency</string>
-    <string name="step_currency_description">Amounts are shown in this currency</string>
-    <string name="step_currency_action">Change currency</string>
     <string name="auto_backup_warning_title">Automatic backup isn\'t working</string>
     <string name="auto_backup_warning_folder">The backup folder can\'t be reached. Choose it again to keep your data safe.</string>
     <string name="auto_backup_warning_write">Recent backups failed. Check your backup settings to keep your data safe.</string>
@@ -45,4 +36,23 @@
     <string name="home_categories_add">Add a transaction</string>
     <string name="home_categories_show_income">Show income</string>
     <string name="home_categories_show_expense">Show expenses</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Upcoming</string>
+    <string name="upcoming_spend">Expenses</string>
+    <string name="upcoming_income">Income</string>
+    <string name="upcoming_today">Today</string>
+    <string name="upcoming_tomorrow">Tomorrow</string>
+    <string name="upcoming_empty_title">Nothing planned yet</string>
+    <string name="upcoming_empty_description">Set rent, bills or salary to repeat. They\'re added on their day, and you\'ll see them here first.</string>
+    <string name="upcoming_plan">Plan a payment</string>
+    <!-- Frequency · when it's next added, e.g. "Monthly · Tomorrow". -->
+    <string name="upcoming_schedule" translatable="false">%1$s · %2$s</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Next %d day</item>
+        <item quantity="other">Next %d days</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">In %d day</item>
+        <item quantity="other">In %d days</item>
+    </plurals>
 </resources>

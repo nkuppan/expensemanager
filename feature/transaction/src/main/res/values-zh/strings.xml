@@ -105,4 +105,6 @@
     <string name="add_recurring_transaction">添加定期交易</string>
     <!-- Label above the one-tap chips of frequent entries on the add screen. -->
     <string name="quick_picks">常用</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">已计划：将于 %1$s 首次添加。在此之前不会记录。</string>
 </resources>

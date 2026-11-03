@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">支出上限を設定するにはタップしてください</string>
     <string name="first_expense_action">支出を追加</string>
     <string name="getting_started_title">はじめに</string>
-    <string name="getting_started_subtitle">アプリを最大限に活用するための4つのステップ</string>
     <string name="getting_started_progress">%1$d / %2$d</string>
     <string name="getting_started_hide">非表示</string>
     <string name="step_expense_title">最初の支出を記録</string>
-    <string name="step_expense_description">数秒で完了します</string>
     <string name="step_budget_title">月の予算を作成</string>
-    <string name="step_budget_description">使えるお金がいくら残っているか分かります</string>
     <string name="step_budget_action">予算を作成</string>
-    <string name="step_accounts_title">口座を追加</string>
-    <string name="step_accounts_description">支払いに使う現金・銀行・カード</string>
-    <string name="step_accounts_action">口座を追加</string>
-    <string name="step_currency_title">通貨を選択</string>
-    <string name="step_currency_description">金額はこの通貨で表示されます</string>
-    <string name="step_currency_action">通貨を変更</string>
     <string name="auto_backup_warning_title">自動バックアップが機能していません</string>
     <string name="auto_backup_warning_folder">バックアップフォルダにアクセスできません。データを守るためにもう一度選んでください。</string>
     <string name="auto_backup_warning_write">最近のバックアップに失敗しました。データを守るために設定を確認してください。</string>
@@ -45,4 +36,19 @@
     <string name="home_categories_add">取引を追加</string>
     <string name="home_categories_show_income">収入を表示</string>
     <string name="home_categories_show_expense">支出を表示</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">今後の予定</string>
+    <string name="upcoming_spend">支出</string>
+    <string name="upcoming_income">収入</string>
+    <string name="upcoming_today">今日</string>
+    <string name="upcoming_tomorrow">明日</string>
+    <string name="upcoming_empty_title">予定はまだありません</string>
+    <string name="upcoming_empty_description">家賃や請求書、給料を繰り返し設定しましょう。当日に自動で追加され、事前にここで確認できます。</string>
+    <string name="upcoming_plan">支払いを予定する</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">今後%d日間</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">%d日後</item>
+    </plurals>
 </resources>

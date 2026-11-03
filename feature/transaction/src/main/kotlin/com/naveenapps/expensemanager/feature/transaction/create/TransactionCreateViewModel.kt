@@ -9,7 +9,9 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsU
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.FindRecurringTransactionByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.PlanRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.ProcessRecurringTransactionsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.isOnLaterDay
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -86,6 +88,7 @@ class TransactionCreateViewModel(
     private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase,
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase,
     private val getFrequentTransactionsUseCase: GetFrequentTransactionsUseCase,
+    private val planRecurringTransactionUseCase: PlanRecurringTransactionUseCase,
 ) : ViewModel() {
 
     private val sessionCreatedAttachmentPaths = mutableListOf<String>()
@@ -425,7 +428,13 @@ class TransactionCreateViewModel(
         }
 
         // amountValue is smart-cast to Double after the null check above
-        persistTransaction(buildTransactionFromState(currentState, amountValue))
+        val transaction = buildTransactionFromState(currentState, amountValue)
+        val repeat = currentState.repeat
+        if (editingTransaction == null && repeat != null && isOnLaterDay(transaction.createdOn)) {
+            planRecurringTransaction(transaction, repeat)
+        } else {
+            persistTransaction(transaction)
+        }
     }
 
     internal fun buildTransactionFromState(
@@ -444,6 +453,30 @@ class TransactionCreateViewModel(
         updatedOn = Calendar.getInstance().time,
         attachments = state.attachments,
     )
+
+    // A repeating entry dated on a later day is planned, not logged: only the rule is saved, and
+    // the first entry is added automatically on that day, so balances and budgets don't move
+    // early. Attachments belong to a logged transaction, so any picked here are discarded.
+    private fun planRecurringTransaction(transaction: Transaction, frequency: RecurringFrequency) {
+        viewModelScope.launch {
+            runCatching { planRecurringTransactionUseCase.invoke(transaction, frequency) }
+                .onSuccess {
+                    discardSessionAttachments()
+                    analyticsRepository.logEvent(
+                        AnalyticsEvents.RECURRING_CREATED,
+                        mapOf(
+                            AnalyticsParams.FREQUENCY to frequency.name.lowercase(),
+                            AnalyticsParams.TYPE to transaction.type.name.lowercase(),
+                            AnalyticsParams.SOURCE to SOURCE_PLANNED,
+                        ),
+                    )
+                    closePage()
+                }
+                .onFailure {
+                    _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_save_failed))
+                }
+        }
+    }
 
     private fun persistTransaction(transaction: Transaction) {
         val isNewTransaction = editingTransaction == null
@@ -508,7 +541,7 @@ class TransactionCreateViewModel(
     private suspend fun logTransactionCreated(transaction: Transaction) {
         val count = feedbackRepository.getTransactionCreatedCount().first()
         if (count == 1) {
-            // Very first transaction of this install: Home celebrates it once.
+            // Very first transaction of this install: Home offers the daily reminder once.
             feedbackRepository.setFirstSaveCelebrationPending(true)
         }
         analyticsRepository.logEvent(
@@ -819,6 +852,7 @@ class TransactionCreateViewModel(
     companion object {
         private const val SOURCE_QUICK_PICK = "quick_pick"
         private const val SOURCE_MANUAL = "manual"
+        private const val SOURCE_PLANNED = "planned"
 
         private val defaultCategory = Category(
             id = "1",

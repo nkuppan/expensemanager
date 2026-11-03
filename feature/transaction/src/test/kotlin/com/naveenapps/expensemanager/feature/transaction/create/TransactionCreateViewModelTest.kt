@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsU
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.FindRecurringTransactionByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.PlanRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -24,6 +25,7 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
@@ -76,6 +78,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase = mock()
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase = mock()
     private val getFrequentTransactionsUseCase: GetFrequentTransactionsUseCase = mock()
+    private val planRecurringTransactionUseCase: PlanRecurringTransactionUseCase = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
 
@@ -147,6 +150,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         createRecurringTransactionUseCase = createRecurringTransactionUseCase,
         findRecurringTransactionByIdUseCase = findRecurringTransactionByIdUseCase,
         getFrequentTransactionsUseCase = getFrequentTransactionsUseCase,
+        planRecurringTransactionUseCase = planRecurringTransactionUseCase,
     )
 
     // region helpers
@@ -625,6 +629,42 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         createViewModel(SavedStateHandle(mapOf(ExpenseManagerArgsNames.ID to "existing")))
 
         verify(getFrequentTransactionsUseCase, never()).invoke(any())
+    }
+
+    // endregion
+
+    // region planned recurring
+
+    private fun daysFromNow(days: Int) = Date(System.currentTimeMillis() + days * 86_400_000L)
+
+    @Test
+    fun `a repeating entry dated on a later day is planned, not logged`() = runTest {
+        whenever(numberFormatRepository.parseToDouble("1500")).thenReturn(1500.0)
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("1500"))
+        viewModel.processAction(TransactionCreateAction.SelectDate(daysFromNow(3)))
+        viewModel.processAction(TransactionCreateAction.SelectRepeat(RecurringFrequency.MONTHLY))
+
+        viewModel.processAction(TransactionCreateAction.Save)
+        advanceUntilIdle()
+
+        verify(planRecurringTransactionUseCase).invoke(any(), eq(RecurringFrequency.MONTHLY), any())
+        verify(addTransactionUseCase, never()).invoke(any())
+        verify(createRecurringTransactionUseCase, never()).invoke(any(), any(), any())
+        verify(appComposeNavigator).popBackStack()
+    }
+
+    @Test
+    fun `a repeating entry dated today is logged now as before`() = runTest {
+        whenever(numberFormatRepository.parseToDouble("1500")).thenReturn(1500.0)
+        whenever(addTransactionUseCase.invoke(any())).thenReturn(Resource.Success(true))
+        viewModel.processAction(TransactionCreateAction.SetNumberPadValue("1500"))
+        viewModel.processAction(TransactionCreateAction.SelectRepeat(RecurringFrequency.MONTHLY))
+
+        viewModel.processAction(TransactionCreateAction.Save)
+        advanceUntilIdle()
+
+        verify(addTransactionUseCase).invoke(any())
+        verify(planRecurringTransactionUseCase, never()).invoke(any(), any(), any())
     }
 
     // endregion

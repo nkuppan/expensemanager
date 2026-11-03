@@ -122,7 +122,7 @@ internal fun RecurringItemUi.matches(
     ),
 )
 
-internal val RecurringFrequency.labelResId: Int
+val RecurringFrequency.labelResId: Int
     get() = when (this) {
         RecurringFrequency.DAILY -> R.string.repeat_daily
         RecurringFrequency.WEEKLY -> R.string.repeat_weekly

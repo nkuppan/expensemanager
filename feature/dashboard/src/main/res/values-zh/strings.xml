@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">点击设置消费限额</string>
     <string name="first_expense_action">添加支出</string>
     <string name="getting_started_title">开始使用</string>
-    <string name="getting_started_subtitle">四个简单步骤，充分利用应用</string>
     <string name="getting_started_progress">%1$d / %2$d</string>
     <string name="getting_started_hide">隐藏</string>
     <string name="step_expense_title">记录第一笔支出</string>
-    <string name="step_expense_description">只需几秒钟</string>
     <string name="step_budget_title">创建月度预算</string>
-    <string name="step_budget_description">查看还剩多少可以花</string>
     <string name="step_budget_action">创建预算</string>
-    <string name="step_accounts_title">添加账户</string>
-    <string name="step_accounts_description">您用于支出的现金、银行和卡</string>
-    <string name="step_accounts_action">添加账户</string>
-    <string name="step_currency_title">选择货币</string>
-    <string name="step_currency_description">金额以此货币显示</string>
-    <string name="step_currency_action">更改货币</string>
     <string name="auto_backup_warning_title">自动备份未正常运行</string>
     <string name="auto_backup_warning_folder">无法访问备份文件夹。请重新选择，以确保数据安全。</string>
     <string name="auto_backup_warning_write">最近的备份失败了。请检查备份设置，以确保数据安全。</string>
@@ -45,4 +36,19 @@
     <string name="home_categories_add">添加交易</string>
     <string name="home_categories_show_income">显示收入</string>
     <string name="home_categories_show_expense">显示支出</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">即将到来</string>
+    <string name="upcoming_spend">支出</string>
+    <string name="upcoming_income">收入</string>
+    <string name="upcoming_today">今天</string>
+    <string name="upcoming_tomorrow">明天</string>
+    <string name="upcoming_empty_title">还没有计划</string>
+    <string name="upcoming_empty_description">将房租、账单或工资设为重复。到期当天会自动添加，你会提前在这里看到。</string>
+    <string name="upcoming_plan">计划一笔付款</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">未来 %d 天</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">%d 天后</item>
+    </plurals>
 </resources>

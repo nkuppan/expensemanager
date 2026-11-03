@@ -51,10 +51,6 @@ object AnalyticsEvents {
     const val RECURRING_EDITED = "recurring_edited"
 
     // Referral / store
-    const val FIRST_SAVE_CELEBRATION_SHOWN = "first_save_celebration_shown"
-    const val FIRST_SAVE_ADD_ANOTHER = "first_save_add_another"
-    const val FIRST_SAVE_DONE = "first_save_done"
-
     const val SHARE_APP = "share_app"
 
     const val REVIEW_REQUESTED = "review_requested"

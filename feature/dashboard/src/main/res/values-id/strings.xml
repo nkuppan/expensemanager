@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Ketuk untuk menetapkan batas pengeluaran</string>
     <string name="first_expense_action">Tambah pengeluaran</string>
     <string name="getting_started_title">Mulai</string>
-    <string name="getting_started_subtitle">Empat langkah cepat untuk memaksimalkan aplikasi</string>
     <string name="getting_started_progress">%1$d dari %2$d</string>
     <string name="getting_started_hide">Sembunyikan</string>
     <string name="step_expense_title">Catat pengeluaran pertama</string>
-    <string name="step_expense_description">Hanya butuh beberapa detik</string>
     <string name="step_budget_title">Buat anggaran bulanan</string>
-    <string name="step_budget_description">Lihat berapa sisa yang bisa dibelanjakan</string>
     <string name="step_budget_action">Buat anggaran</string>
-    <string name="step_accounts_title">Tambahkan akun Anda</string>
-    <string name="step_accounts_description">Tunai, bank, dan kartu yang Anda gunakan</string>
-    <string name="step_accounts_action">Tambah akun</string>
-    <string name="step_currency_title">Pilih mata uang</string>
-    <string name="step_currency_description">Jumlah ditampilkan dalam mata uang ini</string>
-    <string name="step_currency_action">Ubah mata uang</string>
     <string name="auto_backup_warning_title">Cadangan otomatis tidak berjalan</string>
     <string name="auto_backup_warning_folder">Folder cadangan tidak dapat diakses. Pilih lagi agar data Anda tetap aman.</string>
     <string name="auto_backup_warning_write">Pencadangan terakhir gagal. Periksa setelan cadangan agar data Anda tetap aman.</string>
@@ -45,4 +36,19 @@
     <string name="home_categories_add">Tambah transaksi</string>
     <string name="home_categories_show_income">Tampilkan pemasukan</string>
     <string name="home_categories_show_expense">Tampilkan pengeluaran</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Mendatang</string>
+    <string name="upcoming_spend">Pengeluaran</string>
+    <string name="upcoming_income">Pemasukan</string>
+    <string name="upcoming_today">Hari ini</string>
+    <string name="upcoming_tomorrow">Besok</string>
+    <string name="upcoming_empty_title">Belum ada rencana</string>
+    <string name="upcoming_empty_description">Atur sewa, tagihan, atau gaji agar berulang. Semuanya ditambahkan pada harinya, dan kamu melihatnya di sini lebih dulu.</string>
+    <string name="upcoming_plan">Rencanakan pembayaran</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">%d hari ke depan</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">Dalam %d hari</item>
+    </plurals>
 </resources>

@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Toque para definir um limite de gastos</string>
     <string name="first_expense_action">Adicionar despesa</string>
     <string name="getting_started_title">Primeiros passos</string>
-    <string name="getting_started_subtitle">Quatro passos rápidos para aproveitar ao máximo o app</string>
     <string name="getting_started_progress">%1$d de %2$d</string>
     <string name="getting_started_hide">Ocultar</string>
     <string name="step_expense_title">Registre sua primeira despesa</string>
-    <string name="step_expense_description">Leva poucos segundos</string>
     <string name="step_budget_title">Crie um orçamento mensal</string>
-    <string name="step_budget_description">Veja quanto ainda pode gastar</string>
     <string name="step_budget_action">Criar orçamento</string>
-    <string name="step_accounts_title">Adicione suas contas</string>
-    <string name="step_accounts_description">Dinheiro, banco e cartões que você usa</string>
-    <string name="step_accounts_action">Adicionar conta</string>
-    <string name="step_currency_title">Escolha sua moeda</string>
-    <string name="step_currency_description">Os valores são exibidos nesta moeda</string>
-    <string name="step_currency_action">Alterar moeda</string>
     <string name="auto_backup_warning_title">O backup automático não está funcionando</string>
     <string name="auto_backup_warning_folder">Não foi possível acessar a pasta de backup. Escolha-a novamente para manter seus dados seguros.</string>
     <string name="auto_backup_warning_write">Os últimos backups falharam. Verifique as configurações para manter seus dados seguros.</string>
@@ -45,4 +36,23 @@
     <string name="home_categories_add">Adicionar transação</string>
     <string name="home_categories_show_income">Mostrar receitas</string>
     <string name="home_categories_show_expense">Mostrar despesas</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Próximos</string>
+    <string name="upcoming_spend">Despesas</string>
+    <string name="upcoming_income">Receitas</string>
+    <string name="upcoming_today">Hoje</string>
+    <string name="upcoming_tomorrow">Amanhã</string>
+    <string name="upcoming_empty_title">Nada planejado ainda</string>
+    <string name="upcoming_empty_description">Defina aluguel, contas ou salário para repetir. Eles são adicionados no dia certo, e antes você os vê aqui.</string>
+    <string name="upcoming_plan">Planejar um pagamento</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Próximo %d dia</item>
+        <item quantity="many">Próximos %d dias</item>
+        <item quantity="other">Próximos %d dias</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">Em %d dia</item>
+        <item quantity="many">Em %d dias</item>
+        <item quantity="other">Em %d dias</item>
+    </plurals>
 </resources>

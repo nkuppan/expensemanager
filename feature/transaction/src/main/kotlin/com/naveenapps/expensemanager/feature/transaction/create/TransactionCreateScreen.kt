@@ -77,6 +77,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.isOnLaterDay
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.occurrenceDate
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -671,9 +672,15 @@ private fun RepeatSelector(
                 }
             }
             if (selected != null) {
+                // Dated on a later day: only the plan is saved, and the first entry is added then.
+                val planned = remember(startDate) { isOnLaterDay(startDate) }
                 val next = remember(selected, startDate) { occurrenceDate(startDate, selected, 1) }
                 Text(
-                    text = stringResource(id = R.string.repeat_next, next.toCompleteDateWithDate()),
+                    text = if (planned) {
+                        stringResource(id = R.string.repeat_planned, startDate.toCompleteDateWithDate())
+                    } else {
+                        stringResource(id = R.string.repeat_next, next.toCompleteDateWithDate())
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp),

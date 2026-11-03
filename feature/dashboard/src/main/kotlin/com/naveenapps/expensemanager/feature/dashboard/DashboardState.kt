@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
+import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 
 @Stable
@@ -38,4 +39,22 @@ data class DashboardState(
     val isGettingStartedDismissed: Boolean = true,
     /** Set while automatic backups are failing and the warning isn't snoozed. */
     val backupWarning: AutoBackupError? = null,
+    /** The "Upcoming" card: planned recurring entries, below the transactions. */
+    val upcoming: UpcomingUi = UpcomingUi(),
+)
+
+/** The next few recurring rules, soonest first, and what all rules add up to over [windowDays]. */
+@Stable
+data class UpcomingUi(
+    val items: List<UpcomingItemUi> = emptyList(),
+    /** Formatted totals over the window; null when nothing of that type is due. */
+    val expenseDue: String? = null,
+    val incomeDue: String? = null,
+    val windowDays: Int = 30,
+)
+
+@Stable
+data class UpcomingItemUi(
+    val rule: RecurringTransaction,
+    val amount: String,
 )

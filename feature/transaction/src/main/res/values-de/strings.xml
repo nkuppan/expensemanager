@@ -106,4 +106,6 @@
     <string name="add_recurring_transaction">Wiederkehrende Transaktion hinzufügen</string>
     <!-- Label above the one-tap chips of frequent entries on the add screen. -->
     <string name="quick_picks">Häufig</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">Geplant: zuerst am %1$s hinzugefügt. Bis dahin wird nichts erfasst.</string>
 </resources>

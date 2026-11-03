@@ -105,4 +105,6 @@
     <string name="add_recurring_transaction">반복 거래 추가</string>
     <!-- Label above the one-tap chips of frequent entries on the add screen. -->
     <string name="quick_picks">자주 사용</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">예정: %1$s에 처음 추가돼요. 그 전에는 기록되지 않아요.</string>
 </resources>

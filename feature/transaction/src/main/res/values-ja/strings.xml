@@ -105,4 +105,6 @@
     <string name="add_recurring_transaction">定期取引を追加</string>
     <!-- Label above the one-tap chips of frequent entries on the add screen. -->
     <string name="quick_picks">よく使う</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">予定: 初回は%1$sに追加されます。それまでは記録されません。</string>
 </resources>

@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">탭하여 지출 한도를 설정하세요</string>
     <string name="first_expense_action">지출 추가</string>
     <string name="getting_started_title">시작하기</string>
-    <string name="getting_started_subtitle">앱을 최대한 활용하기 위한 4가지 간단한 단계</string>
     <string name="getting_started_progress">%1$d / %2$d</string>
     <string name="getting_started_hide">숨기기</string>
     <string name="step_expense_title">첫 지출 기록하기</string>
-    <string name="step_expense_description">몇 초면 충분해요</string>
     <string name="step_budget_title">월 예산 만들기</string>
-    <string name="step_budget_description">남은 지출 가능 금액을 확인하세요</string>
     <string name="step_budget_action">예산 만들기</string>
-    <string name="step_accounts_title">계좌 추가</string>
-    <string name="step_accounts_description">지출에 쓰는 현금, 은행, 카드</string>
-    <string name="step_accounts_action">계좌 추가</string>
-    <string name="step_currency_title">통화 선택</string>
-    <string name="step_currency_description">금액이 이 통화로 표시됩니다</string>
-    <string name="step_currency_action">통화 변경</string>
     <string name="auto_backup_warning_title">자동 백업이 작동하지 않습니다</string>
     <string name="auto_backup_warning_folder">백업 폴더에 접근할 수 없습니다. 데이터를 안전하게 지키려면 다시 선택하세요.</string>
     <string name="auto_backup_warning_write">최근 백업에 실패했습니다. 데이터를 안전하게 지키려면 백업 설정을 확인하세요.</string>
@@ -45,4 +36,19 @@
     <string name="home_categories_add">거래 추가</string>
     <string name="home_categories_show_income">수입 보기</string>
     <string name="home_categories_show_expense">지출 보기</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">예정</string>
+    <string name="upcoming_spend">지출</string>
+    <string name="upcoming_income">수입</string>
+    <string name="upcoming_today">오늘</string>
+    <string name="upcoming_tomorrow">내일</string>
+    <string name="upcoming_empty_title">아직 예정된 항목이 없어요</string>
+    <string name="upcoming_empty_description">월세, 공과금, 월급을 반복으로 설정하세요. 해당 날짜에 추가되며, 미리 여기에서 확인할 수 있어요.</string>
+    <string name="upcoming_plan">결제 예약하기</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">향후 %d일</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">%d일 후</item>
+    </plurals>
 </resources>

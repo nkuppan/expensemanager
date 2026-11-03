@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">انقر لتعيين حد للإنفاق</string>
     <string name="first_expense_action">إضافة مصروف</string>
     <string name="getting_started_title">ابدأ الآن</string>
-    <string name="getting_started_subtitle">أربع خطوات سريعة للاستفادة القصوى من التطبيق</string>
     <string name="getting_started_progress">%1$d من %2$d</string>
     <string name="getting_started_hide">إخفاء</string>
     <string name="step_expense_title">سجّل أول مصروف لك</string>
-    <string name="step_expense_description">يستغرق بضع ثوانٍ</string>
     <string name="step_budget_title">أنشئ ميزانية شهرية</string>
-    <string name="step_budget_description">اعرف كم تبقّى لك للإنفاق</string>
     <string name="step_budget_action">إنشاء ميزانية</string>
-    <string name="step_accounts_title">أضف حساباتك</string>
-    <string name="step_accounts_description">النقد والبنك والبطاقات التي تنفق منها</string>
-    <string name="step_accounts_action">إضافة حساب</string>
-    <string name="step_currency_title">اختر عملتك</string>
-    <string name="step_currency_description">تُعرض المبالغ بهذه العملة</string>
-    <string name="step_currency_action">تغيير العملة</string>
     <string name="auto_backup_warning_title">النسخ الاحتياطي التلقائي لا يعمل</string>
     <string name="auto_backup_warning_folder">تعذّر الوصول إلى مجلد النسخ الاحتياطي. اختره مرة أخرى للحفاظ على بياناتك.</string>
     <string name="auto_backup_warning_write">فشلت النسخ الاحتياطية الأخيرة. تحقّق من إعدادات النسخ الاحتياطي للحفاظ على بياناتك.</string>
@@ -45,4 +36,29 @@
     <string name="home_categories_add">أضف معاملة</string>
     <string name="home_categories_show_income">عرض الدخل</string>
     <string name="home_categories_show_expense">عرض المصروفات</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">القادمة</string>
+    <string name="upcoming_spend">مصروفات</string>
+    <string name="upcoming_income">دخل</string>
+    <string name="upcoming_today">اليوم</string>
+    <string name="upcoming_tomorrow">غدًا</string>
+    <string name="upcoming_empty_title">لا شيء مخطط بعد</string>
+    <string name="upcoming_empty_description">اجعل الإيجار أو الفواتير أو الراتب متكررًا. تُضاف في يومها، وستراها هنا أولًا.</string>
+    <string name="upcoming_plan">خطط لدفعة</string>
+    <plurals name="upcoming_window">
+        <item quantity="zero">الأيام الـ%d القادمة</item>
+        <item quantity="one">الأيام الـ%d القادمة</item>
+        <item quantity="two">الأيام الـ%d القادمة</item>
+        <item quantity="few">الأيام الـ%d القادمة</item>
+        <item quantity="many">الأيام الـ%d القادمة</item>
+        <item quantity="other">الأيام الـ%d القادمة</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="zero">خلال %d يوم</item>
+        <item quantity="one">خلال %d يوم</item>
+        <item quantity="two">خلال يومين</item>
+        <item quantity="few">خلال %d أيام</item>
+        <item quantity="many">خلال %d يومًا</item>
+        <item quantity="other">خلال %d يوم</item>
+    </plurals>
 </resources>

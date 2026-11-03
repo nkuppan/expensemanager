@@ -49,11 +49,6 @@
     <string name="reminder_primer_turn_on">Aktifkan pengingat harian</string>
     <string name="reminder_primer_not_now">Nanti saja</string>
     <string name="reminder_primer_footnote">Anda dapat mengubah waktunya atau mematikannya kapan saja di Pengaturan.</string>
-    <string name="first_save_title">Pengeluaran pertama tersimpan!</string>
-    <string name="first_save_description">Awal yang bagus. Catat pengeluaran selama 7 hari dan Anda akan tahu persis ke mana uang Anda pergi.</string>
-    <string name="first_save_progress">Hari %1$d dari %2$d</string>
-    <string name="first_save_add_another">Tambah lagi</string>
-    <string name="first_save_done">Selesai</string>
     <string name="shortcut_add_expense_short">Tambah pengeluaran</string>
     <string name="shortcut_add_expense_long">Tambah pengeluaran baru</string>
 

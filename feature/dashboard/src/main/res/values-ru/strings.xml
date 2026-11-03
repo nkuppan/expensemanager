@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Нажмите, чтобы установить лимит расходов</string>
     <string name="first_expense_action">Добавить расход</string>
     <string name="getting_started_title">Начало работы</string>
-    <string name="getting_started_subtitle">Четыре быстрых шага, чтобы получить максимум от приложения</string>
     <string name="getting_started_progress">%1$d из %2$d</string>
     <string name="getting_started_hide">Скрыть</string>
     <string name="step_expense_title">Запишите первый расход</string>
-    <string name="step_expense_description">Это займёт пару секунд</string>
     <string name="step_budget_title">Создайте месячный бюджет</string>
-    <string name="step_budget_description">Узнайте, сколько ещё можно потратить</string>
     <string name="step_budget_action">Создать бюджет</string>
-    <string name="step_accounts_title">Добавьте счета</string>
-    <string name="step_accounts_description">Наличные, банк и карты, с которых вы тратите</string>
-    <string name="step_accounts_action">Добавить счёт</string>
-    <string name="step_currency_title">Выберите валюту</string>
-    <string name="step_currency_description">Суммы показываются в этой валюте</string>
-    <string name="step_currency_action">Изменить валюту</string>
     <string name="auto_backup_warning_title">Автоматическое копирование не работает</string>
     <string name="auto_backup_warning_folder">Нет доступа к папке для копий. Выберите её снова, чтобы данные были в безопасности.</string>
     <string name="auto_backup_warning_write">Последние копии не удались. Проверьте настройки, чтобы данные были в безопасности.</string>
@@ -45,4 +36,25 @@
     <string name="home_categories_add">Добавить операцию</string>
     <string name="home_categories_show_income">Показать доходы</string>
     <string name="home_categories_show_expense">Показать расходы</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Предстоящие</string>
+    <string name="upcoming_spend">Расходы</string>
+    <string name="upcoming_income">Доходы</string>
+    <string name="upcoming_today">Сегодня</string>
+    <string name="upcoming_tomorrow">Завтра</string>
+    <string name="upcoming_empty_title">Пока ничего не запланировано</string>
+    <string name="upcoming_empty_description">Сделайте аренду, счета или зарплату повторяющимися. Они добавятся в свой день, а заранее вы увидите их здесь.</string>
+    <string name="upcoming_plan">Запланировать платёж</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Ближайший %d день</item>
+        <item quantity="few">Ближайшие %d дня</item>
+        <item quantity="many">Ближайшие %d дней</item>
+        <item quantity="other">Ближайшие %d дня</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">Через %d день</item>
+        <item quantity="few">Через %d дня</item>
+        <item quantity="many">Через %d дней</item>
+        <item quantity="other">Через %d дня</item>
+    </plurals>
 </resources>

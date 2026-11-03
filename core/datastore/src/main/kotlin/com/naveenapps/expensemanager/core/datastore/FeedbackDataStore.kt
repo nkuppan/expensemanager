@@ -16,8 +16,9 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
 
     private val feedbackDialogShownKey = booleanPreferencesKey("feedback_dialog_shown")
 
-    // Set when the install's very first transaction is saved; cleared once Home has shown the
-    // celebration. A one-shot flag (not "count == 1") so existing users never see it.
+    // Set when the install's very first transaction is saved; cleared once Home has asked about
+    // reminders (or found them already allowed). A one-shot flag (not "count == 1") so existing
+    // users never see it. The key keeps its old "celebration" name so stored values still apply.
     private val firstSaveCelebrationPendingKey = booleanPreferencesKey("first_save_celebration_pending")
 
     // Home's "Get started" checklist, hidden for good once the user taps its close button.

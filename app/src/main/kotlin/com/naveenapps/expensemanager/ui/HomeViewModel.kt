@@ -32,52 +32,48 @@ class HomeViewModel(
     private val _homeScreenBottomBarItems = MutableStateFlow(HomeScreenBottomBarItems.Home)
     val homeScreenBottomBarItems = _homeScreenBottomBarItems.asStateFlow()
 
+    // The situation the explainer was shown in, kept for its answer and the permission result
+    // (answering clears the first-save flag, so it can't be worked out again afterwards).
+    private var shownSource: String? = null
+
     /**
-     * When to offer the "turn on reminders" explainer (setup no longer asks), once either way:
-     * - right after the first saved transaction, when the user has just seen the app's value; or
-     * - on reaching Home with nothing logged yet (chose "Explore", or backed out of the first
-     *   expense). A reminder that evening is the main thing likely to bring that user back.
-     * The screen still checks the OS permission, since there's nothing to ask if it's granted.
+     * The "turn on reminders" explainer (setup no longer asks) is offered once, right after the
+     * install's first saved expense, while the value is fresh. Most users are on Android 13+,
+     * where this is the only way to get a reminder on the first evening, the moment most likely
+     * to bring a new user back. It stays offered until answered; reminders can also be turned
+     * on any time in Settings. The screen still checks the OS permission, since there's nothing
+     * to ask if it's granted.
      */
     private val reminderPrimer: StateFlow<ReminderPrimerOffer> = combine(
-        feedbackRepository.getTransactionCreatedCount(),
         reminderTimeRepository.isNotificationPrimerShown(),
-    ) { transactionCount, primerShown ->
-        ReminderPrimerOffer(show = !primerShown, hasTransactions = transactionCount >= 1)
+        feedbackRepository.isFirstSaveCelebrationPending(),
+    ) { primerShown, firstSavePending ->
+        ReminderPrimerOffer(
+            show = !primerShown && firstSavePending,
+            source = PRIMER_SOURCE_FIRST_SAVE,
+            firstSavePending = firstSavePending,
+        )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ReminderPrimerOffer())
 
     val shouldOfferReminderPrimer: StateFlow<Boolean> = reminderPrimer
         .map { it.show }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
-    /** Which situation the explainer was offered in, so grant rates can be compared per trigger. */
-    private fun primerSource(): Map<String, String> = mapOf(
-        AnalyticsParams.SOURCE to
-            if (reminderPrimer.value.hasTransactions) PRIMER_SOURCE_AFTER_FIRST_SAVE else PRIMER_SOURCE_NO_TRANSACTIONS,
-    )
-
-    /** One-shot celebration after the install's very first saved transaction. */
-    val showFirstSaveCelebration: StateFlow<Boolean> = feedbackRepository
-        .isFirstSaveCelebrationPending()
+    /** Set by the first saved expense until Home has asked about reminders (or had no need to). */
+    val firstSavePending: StateFlow<Boolean> = reminderPrimer
+        .map { it.firstSavePending }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
-    fun onFirstSaveCelebrationShown() {
-        analyticsRepository.logEvent(AnalyticsEvents.FIRST_SAVE_CELEBRATION_SHOWN, emptyMap())
+    /** Which situation the explainer was offered in, so grant rates can be compared per trigger. */
+    private fun primerSource(): Map<String, String> =
+        mapOf(AnalyticsParams.SOURCE to (shownSource ?: reminderPrimer.value.source))
+
+    /** Notifications are already allowed, so there's nothing to ask after the first expense. */
+    fun onFirstSaveNothingToAsk() {
+        clearFirstSavePending()
     }
 
-    /** "Add another": keep the momentum going, straight back to the keypad. */
-    fun onFirstSaveAddAnother() {
-        analyticsRepository.logEvent(AnalyticsEvents.FIRST_SAVE_ADD_ANOTHER, emptyMap())
-        clearFirstSaveCelebration()
-        openAddTransaction()
-    }
-
-    fun onFirstSaveDone() {
-        analyticsRepository.logEvent(AnalyticsEvents.FIRST_SAVE_DONE, emptyMap())
-        clearFirstSaveCelebration()
-    }
-
-    private fun clearFirstSaveCelebration() {
+    private fun clearFirstSavePending() {
         viewModelScope.launch { feedbackRepository.setFirstSaveCelebrationPending(false) }
     }
 
@@ -98,6 +94,7 @@ class HomeViewModel(
     }
 
     fun onReminderPrimerShown() {
+        shownSource = reminderPrimer.value.source
         analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_SHOWN, primerSource())
     }
 
@@ -116,6 +113,7 @@ class HomeViewModel(
     private fun markPrimerAnswered() {
         viewModelScope.launch {
             reminderTimeRepository.setNotificationPrimerShown()
+            feedbackRepository.setFirstSaveCelebrationPending(false)
         }
     }
 
@@ -144,7 +142,10 @@ class HomeViewModel(
     }
 }
 
-private data class ReminderPrimerOffer(val show: Boolean = false, val hasTransactions: Boolean = false)
+private data class ReminderPrimerOffer(
+    val show: Boolean = false,
+    val source: String = PRIMER_SOURCE_FIRST_SAVE,
+    val firstSavePending: Boolean = false,
+)
 
-private const val PRIMER_SOURCE_AFTER_FIRST_SAVE = "after_first_save"
-private const val PRIMER_SOURCE_NO_TRANSACTIONS = "no_transactions"
+private const val PRIMER_SOURCE_FIRST_SAVE = "first_save"

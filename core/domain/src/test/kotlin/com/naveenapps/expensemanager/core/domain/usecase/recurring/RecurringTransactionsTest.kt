@@ -215,6 +215,99 @@ class RecurringTransactionsTest {
         assertThat(rules.rules.value.single().nextDueDate.local().toLocalDate().toString()).isEqualTo("2026-11-01")
     }
 
+    // region planned (future start) and upcoming
+
+    private fun rentDated(date: Date) = Transaction(
+        id = "plan",
+        notes = "Rent",
+        categoryId = "rent",
+        fromAccountId = "bank",
+        toAccountId = null,
+        type = TransactionType.EXPENSE,
+        amount = com.naveenapps.expensemanager.core.model.Amount(1000.0),
+        imagePath = "",
+        createdOn = date,
+        updatedOn = date,
+    )
+
+    @Test
+    fun `a planned rule logs nothing before its start day and its first entry on that day`() = runTest {
+        val rules = FakeRecurringRepository()
+        val transactions = FakeTransactionRepository()
+        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+
+        val plan = PlanRecurringTransactionUseCase(rules)
+        plan(rentDated(date(2026, 12, 5)), RecurringFrequency.MONTHLY, now = date(2026, 11, 3))
+
+        assertThat(transactions.added).isEmpty()
+        assertThat(process(now = date(2026, 12, 4, h = 23))).isEqualTo(0)
+
+        assertThat(process(now = date(2026, 12, 5, h = 7))).isEqualTo(1)
+        assertThat(transactions.added.single().createdOn.local().toLocalDate().toString()).isEqualTo("2026-12-05")
+        assertThat(rules.rules.value.single().nextDueDate.local().toLocalDate().toString()).isEqualTo("2027-01-05")
+
+        // Processing again the same day never doubles it.
+        assertThat(process(now = date(2026, 12, 5, h = 20))).isEqualTo(0)
+    }
+
+    @Test
+    fun `only a later calendar day counts as planned`() {
+        val now = date(2026, 11, 3, h = 9)
+        assertThat(isOnLaterDay(date(2026, 11, 3, h = 23), now, zone)).isFalse()
+        assertThat(isOnLaterDay(date(2026, 11, 2), now, zone)).isFalse()
+        assertThat(isOnLaterDay(date(2026, 11, 4, h = 0), now, zone)).isTrue()
+    }
+
+    @Test
+    fun `upcoming totals count every occurrence in the next 30 days, soonest rule first`() {
+        val now = date(2026, 11, 3)
+        val rent = rule(date(2026, 10, 5)).copy(id = "rent", nextOccurrence = 1, nextDueDate = date(2026, 11, 5))
+        val tea = rule(date(2026, 11, 4), RecurringFrequency.WEEKLY).copy(
+            id = "tea",
+            amount = 20.0,
+            nextOccurrence = 0,
+            nextDueDate = date(2026, 11, 4),
+        )
+        val salary = rule(date(2026, 11, 30)).copy(
+            id = "salary",
+            type = TransactionType.INCOME,
+            amount = 50_000.0,
+            nextOccurrence = 0,
+            nextDueDate = date(2026, 11, 30),
+        )
+        val transfer = rule(date(2026, 11, 10)).copy(
+            id = "savings",
+            type = TransactionType.TRANSFER,
+            toAccountId = "savings",
+            nextOccurrence = 0,
+            nextDueDate = date(2026, 11, 10),
+        )
+        val yearly = rule(date(2026, 1, 15), RecurringFrequency.YEARLY).copy(
+            id = "insurance",
+            nextOccurrence = 1,
+            nextDueDate = date(2027, 1, 15),
+        )
+
+        val upcoming = summarizeUpcoming(listOf(yearly, salary, transfer, tea, rent), now, zone)
+
+        assertThat(upcoming.rules.map { it.id })
+            .containsExactly("tea", "rent", "savings", "salary", "insurance").inOrder()
+        // Rent once (Nov 5) + tea on Nov 4, 11, 18, 25 and Dec 2 (window ends Dec 3).
+        assertThat(upcoming.expenseDue).isEqualTo(1000.0 + 5 * 20.0)
+        assertThat(upcoming.incomeDue).isEqualTo(50_000.0)
+    }
+
+    @Test
+    fun `an overdue rule not yet logged still counts as due`() {
+        val now = date(2026, 11, 3)
+        val overdue = rule(date(2026, 10, 1)).copy(nextOccurrence = 1, nextDueDate = date(2026, 11, 1))
+
+        // Nov 1 (logged on the next app start) and Dec 1, both inside the window.
+        assertThat(summarizeUpcoming(listOf(overdue), now, zone).expenseDue).isEqualTo(2000.0)
+    }
+
+    // endregion
+
     @Test
     fun `moving the next date to today logs it straight away`() = runTest {
         val original = rule(date(2026, 9, 1)).copy(nextOccurrence = 1, nextDueDate = date(2026, 10, 1))

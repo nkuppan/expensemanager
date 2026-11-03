@@ -36,6 +36,7 @@ val TransactionViewModelModule = module {
             createRecurringTransactionUseCase = get(),
             findRecurringTransactionByIdUseCase = get(),
             getFrequentTransactionsUseCase = get(),
+            planRecurringTransactionUseCase = get(),
         )
     }
     viewModel {

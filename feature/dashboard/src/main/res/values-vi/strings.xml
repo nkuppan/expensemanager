@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Nhấn để đặt hạn mức chi tiêu</string>
     <string name="first_expense_action">Thêm khoản chi</string>
     <string name="getting_started_title">Bắt đầu</string>
-    <string name="getting_started_subtitle">Bốn bước nhanh để tận dụng tối đa ứng dụng</string>
     <string name="getting_started_progress">%1$d / %2$d</string>
     <string name="getting_started_hide">Ẩn</string>
     <string name="step_expense_title">Ghi khoản chi đầu tiên</string>
-    <string name="step_expense_description">Chỉ mất vài giây</string>
     <string name="step_budget_title">Tạo ngân sách tháng</string>
-    <string name="step_budget_description">Xem bạn còn bao nhiêu để chi tiêu</string>
     <string name="step_budget_action">Tạo ngân sách</string>
-    <string name="step_accounts_title">Thêm tài khoản</string>
-    <string name="step_accounts_description">Tiền mặt, ngân hàng và thẻ bạn dùng để chi tiêu</string>
-    <string name="step_accounts_action">Thêm tài khoản</string>
-    <string name="step_currency_title">Chọn tiền tệ</string>
-    <string name="step_currency_description">Số tiền được hiển thị bằng tiền tệ này</string>
-    <string name="step_currency_action">Đổi tiền tệ</string>
     <string name="auto_backup_warning_title">Sao lưu tự động không hoạt động</string>
     <string name="auto_backup_warning_folder">Không truy cập được thư mục sao lưu. Hãy chọn lại để giữ dữ liệu an toàn.</string>
     <string name="auto_backup_warning_write">Các lần sao lưu gần đây thất bại. Hãy kiểm tra cài đặt để giữ dữ liệu an toàn.</string>
@@ -45,4 +36,19 @@
     <string name="home_categories_add">Thêm giao dịch</string>
     <string name="home_categories_show_income">Hiện khoản thu</string>
     <string name="home_categories_show_expense">Hiện khoản chi</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Sắp tới</string>
+    <string name="upcoming_spend">Chi tiêu</string>
+    <string name="upcoming_income">Thu nhập</string>
+    <string name="upcoming_today">Hôm nay</string>
+    <string name="upcoming_tomorrow">Ngày mai</string>
+    <string name="upcoming_empty_title">Chưa có kế hoạch nào</string>
+    <string name="upcoming_empty_description">Đặt tiền thuê nhà, hóa đơn hoặc lương lặp lại. Chúng được thêm vào đúng ngày và bạn sẽ thấy trước ở đây.</string>
+    <string name="upcoming_plan">Lên kế hoạch thanh toán</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">%d ngày tới</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">Sau %d ngày</item>
+    </plurals>
 </resources>

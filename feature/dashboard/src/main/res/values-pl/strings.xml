@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Dotknij, aby ustawić limit wydatków</string>
     <string name="first_expense_action">Dodaj wydatek</string>
     <string name="getting_started_title">Pierwsze kroki</string>
-    <string name="getting_started_subtitle">Cztery szybkie kroki, by w pełni wykorzystać aplikację</string>
     <string name="getting_started_progress">%1$d z %2$d</string>
     <string name="getting_started_hide">Ukryj</string>
     <string name="step_expense_title">Zapisz pierwszy wydatek</string>
-    <string name="step_expense_description">To zajmie kilka sekund</string>
     <string name="step_budget_title">Utwórz budżet miesięczny</string>
-    <string name="step_budget_description">Zobacz, ile jeszcze możesz wydać</string>
     <string name="step_budget_action">Utwórz budżet</string>
-    <string name="step_accounts_title">Dodaj swoje konta</string>
-    <string name="step_accounts_description">Gotówka, bank i karty, z których płacisz</string>
-    <string name="step_accounts_action">Dodaj konto</string>
-    <string name="step_currency_title">Wybierz walutę</string>
-    <string name="step_currency_description">Kwoty są wyświetlane w tej walucie</string>
-    <string name="step_currency_action">Zmień walutę</string>
     <string name="auto_backup_warning_title">Automatyczna kopia nie działa</string>
     <string name="auto_backup_warning_folder">Brak dostępu do folderu kopii. Wybierz go ponownie, aby chronić swoje dane.</string>
     <string name="auto_backup_warning_write">Ostatnie kopie nie powiodły się. Sprawdź ustawienia, aby chronić swoje dane.</string>
@@ -45,4 +36,25 @@
     <string name="home_categories_add">Dodaj transakcję</string>
     <string name="home_categories_show_income">Pokaż przychody</string>
     <string name="home_categories_show_expense">Pokaż wydatki</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Nadchodzące</string>
+    <string name="upcoming_spend">Wydatki</string>
+    <string name="upcoming_income">Przychody</string>
+    <string name="upcoming_today">Dzisiaj</string>
+    <string name="upcoming_tomorrow">Jutro</string>
+    <string name="upcoming_empty_title">Nic jeszcze nie zaplanowano</string>
+    <string name="upcoming_empty_description">Ustaw czynsz, rachunki lub pensję jako cykliczne. Zostaną dodane w swoim dniu, a wcześniej zobaczysz je tutaj.</string>
+    <string name="upcoming_plan">Zaplanuj płatność</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Najbliższy %d dzień</item>
+        <item quantity="few">Najbliższe %d dni</item>
+        <item quantity="many">Najbliższe %d dni</item>
+        <item quantity="other">Najbliższe %d dnia</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">Za %d dzień</item>
+        <item quantity="few">Za %d dni</item>
+        <item quantity="many">Za %d dni</item>
+        <item quantity="other">Za %d dnia</item>
+    </plurals>
 </resources>

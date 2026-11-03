@@ -24,7 +24,7 @@ interface FeedbackRepository {
 
     suspend fun markBudgetAlertSent(key: String)
 
-    /** True between saving the install's first transaction and Home celebrating it. */
+    /** True between saving the install's first transaction and Home asking about reminders. */
     fun isFirstSaveCelebrationPending(): Flow<Boolean>
 
     suspend fun setFirstSaveCelebrationPending(pending: Boolean)

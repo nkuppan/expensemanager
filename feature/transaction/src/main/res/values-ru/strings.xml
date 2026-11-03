@@ -108,4 +108,6 @@
     <string name="add_recurring_transaction">Добавить регулярную операцию</string>
     <!-- Label above the one-tap chips of frequent entries on the add screen. -->
     <string name="quick_picks">Частые</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">Запланировано: впервые добавится %1$s. До этого ничего не записывается.</string>
 </resources>

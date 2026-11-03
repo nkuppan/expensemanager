@@ -201,23 +201,20 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         // Never force the reminder on and never show the system dialog cold. If we can already
         // notify, only reschedule (which respects a reminder the user switched off). Otherwise
-        // the explainer below asks once: after the first saved transaction, or on arriving here
-        // with nothing logged yet.
+        // the explainer below asks once, right after the first saved transaction.
         if (canNotify) {
             viewModel.restartReminderIfEnabled()
         }
     }
 
-    val showFirstSaveCelebration by viewModel.showFirstSaveCelebration.collectAsStateWithLifecycle()
+    val firstSavePending by viewModel.firstSavePending.collectAsStateWithLifecycle()
 
-    if (showFirstSaveCelebration) {
-        LaunchedEffect(Unit) { viewModel.onFirstSaveCelebrationShown() }
-        FirstSaveCelebrationSheet(
-            onAddAnother = viewModel::onFirstSaveAddAnother,
-            onDone = viewModel::onFirstSaveDone,
-        )
-    } else if (shouldOfferReminderPrimer && !canNotify) {
-        // Never stacked on the celebration; the reminder sheet waits until it's dismissed.
+    // After the first expense there's nothing to ask when notifications are already allowed.
+    LaunchedEffect(firstSavePending, canNotify) {
+        if (firstSavePending && canNotify) viewModel.onFirstSaveNothingToAsk()
+    }
+
+    if (shouldOfferReminderPrimer && !canNotify) {
         LaunchedEffect(Unit) { viewModel.onReminderPrimerShown() }
         ReminderPrimerSheet(
             onTurnOn = {

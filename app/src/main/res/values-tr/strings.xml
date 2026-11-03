@@ -49,11 +49,6 @@
     <string name="reminder_primer_turn_on">Günlük hatırlatmayı aç</string>
     <string name="reminder_primer_not_now">Şimdi değil</string>
     <string name="reminder_primer_footnote">Saati istediğiniz zaman Ayarlar\'dan değiştirebilir veya kapatabilirsiniz.</string>
-    <string name="first_save_title">İlk harcama kaydedildi!</string>
-    <string name="first_save_description">Harika bir başlangıç. 7 gün boyunca harcamalarını kaydet, paranın tam olarak nereye gittiğini gör.</string>
-    <string name="first_save_progress">%2$d günün %1$d. günü</string>
-    <string name="first_save_add_another">Bir tane daha ekle</string>
-    <string name="first_save_done">Tamam</string>
     <string name="shortcut_add_expense_short">Harcama ekle</string>
     <string name="shortcut_add_expense_long">Yeni harcama ekle</string>
 

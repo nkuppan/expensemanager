@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Harcama limiti belirlemek için dokunun</string>
     <string name="first_expense_action">Harcama ekle</string>
     <string name="getting_started_title">Başlarken</string>
-    <string name="getting_started_subtitle">Uygulamadan en iyi şekilde yararlanmak için dört hızlı adım</string>
     <string name="getting_started_progress">%1$d / %2$d</string>
     <string name="getting_started_hide">Gizle</string>
     <string name="step_expense_title">İlk harcamanı kaydet</string>
-    <string name="step_expense_description">Sadece birkaç saniye sürer</string>
     <string name="step_budget_title">Aylık bütçe oluştur</string>
-    <string name="step_budget_description">Harcayabileceğin ne kadar kaldığını gör</string>
     <string name="step_budget_action">Bütçe oluştur</string>
-    <string name="step_accounts_title">Hesaplarınızı ekleyin</string>
-    <string name="step_accounts_description">Harcama yaptığınız nakit, banka ve kartlar</string>
-    <string name="step_accounts_action">Hesap ekle</string>
-    <string name="step_currency_title">Para biriminizi seçin</string>
-    <string name="step_currency_description">Tutarlar bu para biriminde gösterilir</string>
-    <string name="step_currency_action">Para birimini değiştir</string>
     <string name="auto_backup_warning_title">Otomatik yedekleme çalışmıyor</string>
     <string name="auto_backup_warning_folder">Yedek klasörüne erişilemiyor. Verilerinizi korumak için tekrar seçin.</string>
     <string name="auto_backup_warning_write">Son yedeklemeler başarısız oldu. Verilerinizi korumak için ayarları kontrol edin.</string>
@@ -45,4 +36,21 @@
     <string name="home_categories_add">İşlem ekle</string>
     <string name="home_categories_show_income">Geliri göster</string>
     <string name="home_categories_show_expense">Giderleri göster</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Yaklaşan</string>
+    <string name="upcoming_spend">Giderler</string>
+    <string name="upcoming_income">Gelirler</string>
+    <string name="upcoming_today">Bugün</string>
+    <string name="upcoming_tomorrow">Yarın</string>
+    <string name="upcoming_empty_title">Henüz plan yok</string>
+    <string name="upcoming_empty_description">Kira, fatura veya maaşı yinelenen olarak ayarlayın. Günü gelince eklenir, önceden burada görürsünüz.</string>
+    <string name="upcoming_plan">Ödeme planla</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Önümüzdeki %d gün</item>
+        <item quantity="other">Önümüzdeki %d gün</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">%d gün içinde</item>
+        <item quantity="other">%d gün içinde</item>
+    </plurals>
 </resources>
