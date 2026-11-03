@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.EventRepeat
+import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -27,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -34,20 +37,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.naveenapps.expensemanager.core.common.R as CommonR
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.recurring.labelResId
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Date
 
 /**
- * Home's "Upcoming" card, styled like the budget card: what the recurring rules will add over
- * the next 30 days, then the next few rules, soonest first, each with when it's added.
+ * Home's "Upcoming" card, styled like the budget card. On top, two tinted tiles with what the
+ * recurring rules will spend and bring in over the next 30 days. Then the next few rules, soonest
+ * first: a calendar tile with the day it's added, the name with its frequency, and the amount with
+ * a "Tomorrow" / "In 3 days" pill (highlighted when it's today or tomorrow).
  * With no rules yet, it invites the user to plan one.
  */
 @Composable
@@ -66,9 +71,15 @@ internal fun HomeUpcomingCard(
             Column(modifier = Modifier.fillMaxWidth()) {
                 if (upcoming.expenseDue != null || upcoming.incomeDue != null) {
                     UpcomingTotals(upcoming)
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
                 }
-                upcoming.items.forEach { item ->
+                upcoming.items.forEachIndexed { index, item ->
+                    if (index > 0) {
+                        HorizontalDivider(
+                            // Starts after the date tile, like a list divider.
+                            modifier = Modifier.padding(start = 76.dp, end = 16.dp),
+                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
+                        )
+                    }
                     UpcomingRow(item = item, onClick = { onAction(DashboardAction.OpenRecurringEdit(item.rule.id)) })
                 }
             }
@@ -78,40 +89,51 @@ internal fun HomeUpcomingCard(
 
 @Composable
 private fun UpcomingTotals(upcoming: UpcomingUi) {
-    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 12.dp)) {
+    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)) {
         Text(
             text = pluralStringResource(R.plurals.upcoming_window, upcoming.windowDays, upcoming.windowDays),
             style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        Spacer(modifier = Modifier.height(6.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             upcoming.expenseDue?.let {
-                UpcomingTotal(
+                UpcomingTotalTile(
                     label = stringResource(R.string.upcoming_spend),
                     amount = it,
                     color = colorResource(CommonR.color.red_500),
+                    modifier = Modifier.weight(1f),
                 )
             }
             upcoming.incomeDue?.let {
-                UpcomingTotal(
+                UpcomingTotalTile(
                     label = stringResource(R.string.upcoming_income),
                     amount = it,
                     color = colorResource(CommonR.color.green_500),
+                    modifier = Modifier.weight(1f),
                 )
             }
         }
     }
 }
 
+/** A soft tile tinted with the type's colour: the amount, and what it is underneath. */
 @Composable
-private fun UpcomingTotal(label: String, amount: String, color: Color) {
-    Column {
+private fun UpcomingTotalTile(label: String, amount: String, color: Color, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(color.copy(alpha = 0.08f))
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+    ) {
         Text(
             text = amount,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Bold,
             color = color,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
         Text(
             text = label,
@@ -127,11 +149,21 @@ private fun UpcomingRow(item: UpcomingItemUi, onClick: () -> Unit) {
     val categoryName = rule.category?.let { category ->
         category.titleResId?.let { stringResource(it) } ?: category.name
     }.orEmpty()
-    val amountColor = when (rule.type) {
-        TransactionType.EXPENSE -> colorResource(CommonR.color.red_500)
-        TransactionType.INCOME -> colorResource(CommonR.color.green_500)
-        TransactionType.TRANSFER -> MaterialTheme.colorScheme.onSurface
+    // The notes name the payment when there are any ("Rent"), with the category beside the
+    // frequency; otherwise the category is the name.
+    val title = rule.notes.ifBlank { categoryName }
+    val detail = listOfNotNull(
+        stringResource(rule.frequency.labelResId),
+        categoryName.takeIf { rule.notes.isNotBlank() && it.isNotBlank() },
+    ).joinToString(" · ")
+    val (prefix, amountColor) = when (rule.type) {
+        TransactionType.EXPENSE -> "−" to colorResource(CommonR.color.red_500)
+        TransactionType.INCOME -> "+" to colorResource(CommonR.color.green_500)
+        TransactionType.TRANSFER -> "" to MaterialTheme.colorScheme.onSurface
     }
+    val daysAway = remember(rule.nextDueDate) { daysUntil(rule.nextDueDate) }
+    val isSoon = daysAway <= 1
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -139,61 +171,123 @@ private fun UpcomingRow(item: UpcomingItemUi, onClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        rule.category?.let {
-            IconAndBackgroundView(
-                icon = it.storedIcon.name,
-                iconBackgroundColor = it.storedIcon.backgroundColor,
-                name = categoryName,
-                customImagePath = it.storedIcon.customImagePath,
-            )
-            Spacer(modifier = Modifier.width(14.dp))
-        }
+        DateTile(date = rule.nextDueDate, highlighted = isSoon)
+        Spacer(modifier = Modifier.width(16.dp))
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = rule.notes.ifBlank { categoryName },
+                text = title,
                 style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
-                text = stringResource(
-                    R.string.upcoming_schedule,
-                    stringResource(rule.frequency.labelResId),
-                    whenDue(rule.nextDueDate),
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Outlined.Repeat,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(12.dp),
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    text = detail,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
         }
         Spacer(modifier = Modifier.width(8.dp))
+        Column(horizontalAlignment = Alignment.End) {
+            Text(
+                text = prefix + item.amount,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = amountColor,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            DuePill(daysAway = daysAway, highlighted = isSoon)
+        }
+    }
+}
+
+/** Day of the month over a short month name, like a calendar page. */
+@Composable
+private fun DateTile(date: Date, highlighted: Boolean) {
+    val locale = LocalConfiguration.current.locales[0]
+    val local = remember(date) { date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() }
+    val month = remember(local, locale) { local.format(DateTimeFormatter.ofPattern("MMM", locale)) }
+    val container = if (highlighted) {
+        MaterialTheme.colorScheme.primaryContainer
+    } else {
+        MaterialTheme.colorScheme.surfaceContainerHigh
+    }
+    val content = if (highlighted) {
+        MaterialTheme.colorScheme.onPrimaryContainer
+    } else {
+        MaterialTheme.colorScheme.onSurface
+    }
+    Column(
+        modifier = Modifier
+            .size(44.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(container),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
         Text(
-            text = item.amount,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = amountColor,
+            text = local.dayOfMonth.toString(),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = content,
+            lineHeight = 18.sp,
+        )
+        Text(
+            text = month.uppercase(locale),
+            style = MaterialTheme.typography.labelSmall,
+            color = content.copy(alpha = 0.75f),
+            lineHeight = 12.sp,
         )
     }
 }
 
-/** "Today", "Tomorrow", "In 3 days · 6 Nov 2026" or just the date when it's a week or more away. */
+/** "Today", "Tomorrow" or "In 3 days", as a small pill; tinted when it's today or tomorrow. */
 @Composable
-private fun whenDue(date: Date): String {
-    val days = remember(date) {
-        val zone = ZoneId.systemDefault()
-        ChronoUnit.DAYS.between(LocalDate.now(zone), date.toInstant().atZone(zone).toLocalDate())
-    }
-    val formatted = remember(date) { date.toCompleteDateWithDate() }
-    return when {
+private fun DuePill(daysAway: Long, highlighted: Boolean) {
+    val text = when {
         // Due but not logged yet (the app was closed): it's added on the next start, so "Today".
-        days <= 0 -> stringResource(R.string.upcoming_today)
-        days == 1L -> stringResource(R.string.upcoming_tomorrow)
-        days < 7 -> pluralStringResource(R.plurals.upcoming_in_days, days.toInt(), days.toInt()) + " · " + formatted
-        else -> formatted
+        daysAway <= 0 -> stringResource(R.string.upcoming_today)
+        daysAway == 1L -> stringResource(R.string.upcoming_tomorrow)
+        else -> pluralStringResource(R.plurals.upcoming_in_days, daysAway.toInt(), daysAway.toInt())
     }
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Medium,
+        color = if (highlighted) {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        },
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(
+                if (highlighted) {
+                    MaterialTheme.colorScheme.primaryContainer
+                } else {
+                    MaterialTheme.colorScheme.surfaceContainerHigh
+                },
+            )
+            .padding(horizontal = 8.dp, vertical = 2.dp),
+    )
+}
+
+private fun daysUntil(date: Date): Long {
+    val zone = ZoneId.systemDefault()
+    return ChronoUnit.DAYS.between(LocalDate.now(zone), date.toInstant().atZone(zone).toLocalDate())
 }
 
 @Composable

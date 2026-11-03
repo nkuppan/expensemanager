@@ -45,8 +45,6 @@
     <string name="upcoming_empty_title">Nothing planned yet</string>
     <string name="upcoming_empty_description">Set rent, bills or salary to repeat. They\'re added on their day, and you\'ll see them here first.</string>
     <string name="upcoming_plan">Plan a payment</string>
-    <!-- Frequency · when it's next added, e.g. "Monthly · Tomorrow". -->
-    <string name="upcoming_schedule" translatable="false">%1$s · %2$s</string>
     <plurals name="upcoming_window">
         <item quantity="one">Next %d day</item>
         <item quantity="other">Next %d days</item>

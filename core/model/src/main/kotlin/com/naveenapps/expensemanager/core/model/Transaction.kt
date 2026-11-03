@@ -32,3 +32,12 @@ data class Transaction(
     var toAccount: Account? = null,
     var attachments: List<String> = emptyList(),
 )
+
+/**
+ * Id prefix of the transactions a recurring rule logged, followed by "<ruleId>-<occurrence>".
+ * See ProcessRecurringTransactionsUseCase, which creates them.
+ */
+const val RECURRING_OCCURRENCE_ID_PREFIX = "recurring-"
+
+/** True when a recurring rule added this transaction automatically. */
+val Transaction.isRecurringOccurrence: Boolean get() = id.startsWith(RECURRING_OCCURRENCE_ID_PREFIX)

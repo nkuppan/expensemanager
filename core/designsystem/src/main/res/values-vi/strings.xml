@@ -48,4 +48,6 @@
     <string name="no_search_results">Không có kết quả</string>
     <string name="selection_select_all">Chọn tất cả</string>
     <string name="selection_done">Xong</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">Định kỳ</string>
 </resources>

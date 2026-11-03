@@ -48,4 +48,6 @@
     <string name="no_search_results">일치하는 항목 없음</string>
     <string name="selection_select_all">모두 선택</string>
     <string name="selection_done">완료</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">반복</string>
 </resources>

@@ -48,4 +48,6 @@
     <string name="no_search_results">一致する項目はありません</string>
     <string name="selection_select_all">すべて選択</string>
     <string name="selection_done">完了</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">定期</string>
 </resources>

@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -84,6 +85,7 @@ fun TransactionItem(
     onEdit: (() -> Unit)? = null,
     onDelete: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
+    isRecurring: Boolean = false,
 ) {
     val isTransfer = toAccountName?.isNotBlank() == true
 
@@ -294,13 +296,25 @@ fun TransactionItem(
 
                 Spacer(Modifier.height(2.dp))
 
-                Text(
-                    text = date,
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                        fontSize = 11.sp,
-                    ),
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Added by a recurring rule: a small repeat mark before the date.
+                    if (isRecurring) {
+                        Icon(
+                            imageVector = Icons.Outlined.Repeat,
+                            contentDescription = stringResource(R.string.recurring_badge),
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(12.dp),
+                        )
+                        Spacer(Modifier.width(3.dp))
+                    }
+                    Text(
+                        text = date,
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                            fontSize = 11.sp,
+                        ),
+                    )
+                }
             }
         }
     }

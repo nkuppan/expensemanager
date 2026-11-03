@@ -48,4 +48,6 @@
     <string name="no_search_results">Brak wyników</string>
     <string name="selection_select_all">Zaznacz wszystko</string>
     <string name="selection_done">Gotowe</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">Cykliczna</string>
 </resources>

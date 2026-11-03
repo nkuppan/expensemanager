@@ -26,6 +26,8 @@ data class TransactionUiItem(
     val toAccountName: String? = null,
     val toAccountIcon: StoredIcon? = null,
     val categoryTitleResId: Int? = null,
+    /** Added automatically by a recurring rule; lists mark it with a small repeat badge. */
+    val isRecurring: Boolean = false,
 )
 
 fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = TransactionUiItem(
@@ -41,4 +43,5 @@ fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = Transa
     toAccountName = this.toAccount?.name,
     toAccountIcon = this.toAccount?.storedIcon,
     categoryTitleResId = this.category.titleResId,
+    isRecurring = this.isRecurringOccurrence,
 )

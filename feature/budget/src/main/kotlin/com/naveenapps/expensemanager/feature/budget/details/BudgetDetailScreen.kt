@@ -268,6 +268,7 @@ private fun BudgetDetailContent(
                         date = item.date,
                         notes = item.notes,
                         transactionType = item.transactionType,
+                        isRecurring = item.isRecurring,
                         fromAccountName = item.fromAccountName,
                         fromAccountIcon = item.fromAccountIcon.name,
                         fromAccountColor = item.fromAccountIcon.backgroundColor,

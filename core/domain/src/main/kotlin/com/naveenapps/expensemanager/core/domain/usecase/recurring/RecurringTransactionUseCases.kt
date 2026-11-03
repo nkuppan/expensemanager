@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.recurring
 
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.RECURRING_OCCURRENCE_ID_PREFIX
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.Resource
@@ -148,7 +149,7 @@ class ProcessRecurringTransactionsUseCase(
             return rest.substring(0, separator)
         }
 
-        private const val OCCURRENCE_PREFIX = "recurring-"
+        private const val OCCURRENCE_PREFIX = RECURRING_OCCURRENCE_ID_PREFIX
     }
 }
 
