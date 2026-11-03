@@ -63,8 +63,8 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.feature.category.transaction.getRandomCategoryTransactionData
 import java.text.NumberFormat
 
-/** Categories listed beside the donut; anything after them is grouped into one "other" slice. */
-private const val TOP_CATEGORIES = 4
+/** Categories listed beside the donut. The donut itself always shows every category. */
+private const val TOP_CATEGORIES = 3
 
 /**
  * Home's categories card, in the budget card's style but compact: a donut on the left with the
@@ -323,15 +323,12 @@ private fun NoCategorySpending(type: CategoryType, onAddTransaction: () -> Unit,
     }
 }
 
-/** Top categories as slices, plus one grey slice for the rest so the ring always adds up to the total. */
+/** Every category as its own slice, in its own colour; only the list beside it is capped. */
 @Composable
 private fun slicesOf(state: CategoryTransactionState): List<Pair<Color, Float>> {
     val fallback = MaterialTheme.colorScheme.primary
-    val otherColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
-    return remember(state.categoryTransactions, fallback, otherColor) {
-        val top = state.categoryTransactions.take(TOP_CATEGORIES).map { it.color(fallback) to it.percent / 100f }
-        val rest = 1f - top.sumOf { it.second.toDouble() }.toFloat()
-        if (state.categoryTransactions.size > TOP_CATEGORIES && rest > 0.005f) top + (otherColor to rest) else top
+    return remember(state.categoryTransactions, fallback) {
+        state.categoryTransactions.map { it.color(fallback) to it.percent / 100f }
     }
 }
 

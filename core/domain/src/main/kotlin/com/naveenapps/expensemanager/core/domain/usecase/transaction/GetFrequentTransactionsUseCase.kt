@@ -14,13 +14,12 @@ import kotlinx.coroutines.flow.Flow
 class GetFrequentTransactionsUseCase(
     private val repository: TransactionRepository,
 ) {
-    fun invoke(now: Long = System.currentTimeMillis()): Flow<List<FrequentTransaction>> =
-        repository.getFrequentTransactions(
-            transactionTypes = listOf(TransactionType.EXPENSE, TransactionType.INCOME),
-            since = now - TimeUnit.DAYS.toMillis(LOOKBACK_DAYS),
-            minCount = MIN_USES,
-            limit = MAX_PICKS,
-        )
+    fun invoke(now: Long = System.currentTimeMillis()): Flow<List<FrequentTransaction>> = repository.getFrequentTransactions(
+        transactionTypes = listOf(TransactionType.EXPENSE, TransactionType.INCOME),
+        since = now - TimeUnit.DAYS.toMillis(LOOKBACK_DAYS),
+        minCount = MIN_USES,
+        limit = MAX_PICKS,
+    )
 
     companion object {
         const val LOOKBACK_DAYS = 90L
