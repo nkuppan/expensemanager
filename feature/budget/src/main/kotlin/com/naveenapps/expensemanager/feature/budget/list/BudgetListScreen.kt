@@ -147,6 +147,7 @@ private fun BudgetListScreenContent(
                     amount = budget.amount,
                     transactionAmount = budget.transactionAmount,
                     percentage = budget.percent,
+                    otherCurrenciesExcluded = budget.otherCurrenciesExcluded,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 2.dp),
@@ -182,6 +183,7 @@ fun BudgetItemWithCard(
     shape: CornerBasedShape = MaterialTheme.shapes.large,
     border: BorderStroke = CardDefaults.outlinedCardBorder(),
     onItemClick: () -> Unit = {},
+    otherCurrenciesExcluded: Boolean = false,
 ) {
     AppCardView(
         shape = shape,
@@ -194,6 +196,7 @@ fun BudgetItemWithCard(
             amount = amount,
             transactionAmount = transactionAmount,
             percentage = percentage,
+            otherCurrenciesExcluded = otherCurrenciesExcluded,
             modifier = Modifier
                 .clickable {
                     onItemClick.invoke()
@@ -211,6 +214,7 @@ fun BudgetItem(
     transactionAmount: Amount?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
+    otherCurrenciesExcluded: Boolean = false,
 ) {
     val barColor = colorResource(id = progressBarColor)
     val isOverBudget = percentage > 100f
@@ -307,6 +311,15 @@ fun BudgetItem(
                         color = badgeText,
                     )
                 }
+            }
+
+            if (otherCurrenciesExcluded) {
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = stringResource(R.string.budget_other_currencies_excluded),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                )
             }
         }
     }

@@ -5,11 +5,13 @@ import app.cash.turbine.test
 import com.google.common.truth.Truth
 import com.naveenapps.expensemanager.core.common.R
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.ArchiveAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.CheckAccountValidationUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountDeleteImpactUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.UpdateAccountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.country.GetCountriesUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -21,7 +23,9 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.CountryRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
+import com.naveenapps.expensemanager.core.repository.ExchangeRateRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.settings.data.repository.NumberFormatRepositoryImpl
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
@@ -30,6 +34,7 @@ import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -44,11 +49,12 @@ import org.mockito.kotlin.whenever
 class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     private val accountRepository: AccountRepository = mock()
-
-    private val analyticsRepository: AnalyticsRepository = mock()
     private val currencyRepository: CurrencyRepository = mock()
+    private val countryRepository: CountryRepository = mock()
     private val appComposeNavigator: AppComposeNavigator = mock()
     private val imageStorageRepository: ImageStorageRepository = mock()
+    private val exchangeRateRepository: ExchangeRateRepository = mock()
+    private val analyticsRepository: AnalyticsRepository = mock()
 
     private val validate = CheckAccountValidationUseCase()
 
@@ -58,8 +64,9 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
     private val findAccountByIdUseCase = FindAccountByIdUseCase(accountRepository)
     private val addAccountUseCase = AddAccountUseCase(accountRepository, validate)
     private val deleteAccountUseCase = DeleteAccountUseCase(accountRepository, validate)
-    private val getAccountDeleteImpactUseCase = GetAccountDeleteImpactUseCase(accountRepository)
     private val updateAccountUseCase = UpdateAccountUseCase(accountRepository, validate)
+    private val getCountriesUseCase = GetCountriesUseCase(countryRepository)
+    private val getAccountDeleteImpactUseCase = GetAccountDeleteImpactUseCase(accountRepository)
     private val numberFormatRepository = NumberFormatRepositoryImpl(
         coroutineScope = CoroutineScope(testCoroutineDispatcher.dispatcher),
         numberFormatSettingRepository = mock {
@@ -69,8 +76,8 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
 
     private lateinit var accountCreateViewModel: AccountCreateViewModel
 
-    private val defaultCurrency = Currency("$", "US Dollars")
-    private val newCurrency = Currency("₹", "Indian Rupees")
+    private val defaultCurrency = Currency("$", "US Dollars", code = "USD")
+    private val newCurrency = Currency("₹", "Indian Rupees", code = "INR")
 
     private val currencyFlow = MutableStateFlow(newCurrency)
 
@@ -78,6 +85,14 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         super.onCreate()
         whenever(currencyRepository.getDefaultCurrency()).thenReturn(defaultCurrency)
         whenever(currencyRepository.getSelectedCurrency()).thenReturn(currencyFlow)
+        runBlocking {
+            whenever(countryRepository.readCountries()).thenReturn(emptyList())
+            whenever(accountRepository.hasTransactions(any())).thenReturn(false)
+            whenever(accountRepository.getAccountDeleteImpact(any())).thenReturn(
+                Resource.Success(AccountDeleteImpact(transactionCount = 0, isLastAccount = false)),
+            )
+            whenever(exchangeRateRepository.isMethodChosen()).thenReturn(true)
+        }
 
         whenever(currencyRepository.getFormattedCurrency(any())).thenAnswer {
             val amount = it.arguments[0] as Amount
@@ -101,10 +116,14 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             addAccountUseCase = addAccountUseCase,
             updateAccountUseCase = updateAccountUseCase,
             deleteAccountUseCase = deleteAccountUseCase,
-            getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
+            getCountriesUseCase = getCountriesUseCase,
+            archiveAccountUseCase = ArchiveAccountUseCase(accountRepository),
+            accountRepository = accountRepository,
             imageStorageRepository = imageStorageRepository,
             composeNavigator = appComposeNavigator,
             numberFormatRepository = numberFormatRepository,
+            exchangeRateRepository = exchangeRateRepository,
+            getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
             analyticsRepository = analyticsRepository,
         )
     }
@@ -294,9 +313,6 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         )
 
         whenever(accountRepository.deleteAccount(any())).thenReturn(Resource.Success(true))
-        whenever(accountRepository.getAccountDeleteImpact(any())).thenReturn(
-            Resource.Success(AccountDeleteImpact(transactionCount = 2, isLastAccount = false)),
-        )
 
         accountCreateViewModel = AccountCreateViewModel(
             savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
@@ -307,10 +323,14 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
             addAccountUseCase = addAccountUseCase,
             updateAccountUseCase = updateAccountUseCase,
             deleteAccountUseCase = deleteAccountUseCase,
-            getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
+            getCountriesUseCase = getCountriesUseCase,
+            archiveAccountUseCase = ArchiveAccountUseCase(accountRepository),
+            accountRepository = accountRepository,
             imageStorageRepository = imageStorageRepository,
             composeNavigator = appComposeNavigator,
             numberFormatRepository = numberFormatRepository,
+            exchangeRateRepository = exchangeRateRepository,
+            getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
             analyticsRepository = analyticsRepository,
         )
 
@@ -324,6 +344,51 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         verify(appComposeNavigator, times(1)).popBackStack()
     }
 
+    @Test
+    fun `new account defaults its currency to the selected app currency`() = runTest {
+        advanceUntilIdle()
+
+        Truth.assertThat(accountCreateViewModel.state.value.accountCurrency).isEqualTo(newCurrency)
+    }
+
+    @Test
+    fun `existing account without a currency shows it as not set and blocks save`() = runTest {
+        val accountId = "accountId"
+        whenever(accountRepository.findAccount(accountId)).thenReturn(
+            Resource.Success(FAKE_ACCOUNT.copy(currencyCode = "")),
+        )
+
+        accountCreateViewModel = AccountCreateViewModel(
+            savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
+            getCurrencyUseCase = getCurrencyUseCase,
+            getDefaultCurrencyUseCase = getDefaultCurrencyUseCase,
+            getFormattedAmountUseCase = getFormattedAmountUseCase,
+            findAccountByIdUseCase = findAccountByIdUseCase,
+            addAccountUseCase = addAccountUseCase,
+            updateAccountUseCase = updateAccountUseCase,
+            deleteAccountUseCase = deleteAccountUseCase,
+            getCountriesUseCase = getCountriesUseCase,
+            archiveAccountUseCase = ArchiveAccountUseCase(accountRepository),
+            accountRepository = accountRepository,
+            imageStorageRepository = imageStorageRepository,
+            composeNavigator = appComposeNavigator,
+            numberFormatRepository = numberFormatRepository,
+            exchangeRateRepository = exchangeRateRepository,
+            getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
+            analyticsRepository = analyticsRepository,
+        )
+        advanceUntilIdle()
+
+        Truth.assertThat(accountCreateViewModel.state.value.accountCurrency).isNull()
+
+        accountCreateViewModel.processAction(AccountCreateAction.Save)
+        advanceUntilIdle()
+
+        Truth.assertThat(accountCreateViewModel.state.value.accountCurrencyError).isTrue()
+        verify(accountRepository, never()).updateAccount(any())
+        verify(appComposeNavigator, never()).popBackStack()
+    }
+
     private fun editViewModel(accountId: String) = AccountCreateViewModel(
         savedStateHandle = SavedStateHandle(initialState = mapOf(ExpenseManagerArgsNames.ID to accountId)),
         getCurrencyUseCase = getCurrencyUseCase,
@@ -333,10 +398,14 @@ class AccountCreateViewModelTest : BaseCoroutineTest() {
         addAccountUseCase = addAccountUseCase,
         updateAccountUseCase = updateAccountUseCase,
         deleteAccountUseCase = deleteAccountUseCase,
-        getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
+        getCountriesUseCase = getCountriesUseCase,
+        archiveAccountUseCase = ArchiveAccountUseCase(accountRepository),
+        accountRepository = accountRepository,
         imageStorageRepository = imageStorageRepository,
         composeNavigator = appComposeNavigator,
         numberFormatRepository = numberFormatRepository,
+        exchangeRateRepository = exchangeRateRepository,
+        getAccountDeleteImpactUseCase = getAccountDeleteImpactUseCase,
         analyticsRepository = analyticsRepository,
     )
 

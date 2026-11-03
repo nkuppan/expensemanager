@@ -6,9 +6,12 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -51,6 +54,8 @@ class DashboardViewModel(
     getAllAccountsUseCase: GetAllAccountsUseCase,
     getTransactionGroupByCategoryUseCase: GetTransactionGroupByCategoryUseCase,
     getBudgetsUseCase: GetBudgetsUseCase,
+    private val convertAmountUseCase: ConvertAmountUseCase,
+    private val formatAmountInCurrencyUseCase: FormatAmountInCurrencyUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
     getDateRangeUseCase: GetDateRangeUseCase,
     settingsRepository: SettingsRepository,
@@ -106,27 +111,22 @@ class DashboardViewModel(
             getDateRangeUseCase.invoke(),
         ) { currency, transactions, accounts, dateRange ->
 
-            val filteredTransactions = (
-                transactions?.map {
+            // Rows and account cards show what is actually stored, in its own currency.
+            val filteredTransactions = transactions.orEmpty()
+                .take(MAX_TRANSACTIONS_IN_LIST)
+                .map {
                     it.toTransactionUIModel(
-                        getFormattedAmountUseCase.invoke(
-                            it.amount.amount,
-                            currency,
-                        ),
+                        formatAmountInCurrencyUseCase(it.amount.amount, it.fromCurrencyCode),
                     )
-                } ?: emptyList()
-                ).take(MAX_TRANSACTIONS_IN_LIST)
+                }
 
-            val accountsConverted = accounts.map {
-                it.toAccountUiModel(
-                    getFormattedAmountUseCase.invoke(
-                        it.amount,
-                        currency,
-                    ),
-                    if (it.type == AccountType.CREDIT) {
-                        getFormattedAmountUseCase.invoke(
-                            it.getAvailableCreditLimit(),
-                            currency,
+            val accountsConverted = accounts.map { account ->
+                account.toAccountUiModel(
+                    formatAmountInCurrencyUseCase(account.amount, account.currencyCode),
+                    if (account.type == AccountType.CREDIT) {
+                        formatAmountInCurrencyUseCase(
+                            account.getAvailableCreditLimit(),
+                            account.currencyCode,
                         )
                     } else {
                         null
@@ -134,30 +134,41 @@ class DashboardViewModel(
                 )
             }
 
-            val incomeValue = transactions?.filter { it.type == TransactionType.INCOME }?.sumOf {
-                it.amount.amount
-            } ?: 0.0
-
-            val expenseValue = transactions?.filter { it.type == TransactionType.EXPENSE }?.sumOf {
-                it.amount.amount
-            } ?: 0.0
+            // Summary totals are converted into the display currency at current rates.
+            val incomeTotal = convertAmountUseCase.total(
+                transactions.orEmpty().filter { it.type == TransactionType.INCOME }
+                    .map { it.amount.amount to it.fromCurrencyCode },
+                currency.code,
+            )
+            val expenseTotal = convertAmountUseCase.total(
+                transactions.orEmpty().filter { it.type == TransactionType.EXPENSE }
+                    .map { it.amount.amount to it.fromCurrencyCode },
+                currency.code,
+            )
+            val balanceTotal = incomeTotal - expenseTotal
 
             _state.update {
                 it.copy(
                     expenseFlowState = it.expenseFlowState.copy(
-                        income = getFormattedAmountUseCase.invoke(
-                            incomeValue,
-                            currency,
-                        ).amountString.orEmpty(),
-                        expense = getFormattedAmountUseCase.invoke(
-                            expenseValue,
-                            currency,
-                        ).amountString.orEmpty(),
-                        balance = getFormattedAmountUseCase.invoke(
-                            (incomeValue - expenseValue),
-                            currency,
-                        ).amountString.orEmpty(),
+                        income = getFormattedAmountUseCase(incomeTotal, currency)
+                            .amountString.orEmpty(),
+                        expense = getFormattedAmountUseCase(expenseTotal, currency)
+                            .amountString.orEmpty(),
+                        balance = getFormattedAmountUseCase(balanceTotal, currency)
+                            .amountString.orEmpty(),
                     ),
+                    conversionNote = when {
+                        balanceTotal.conversionDisabled && balanceTotal.value == null ->
+                            ConversionNote.NOT_CONVERTED
+
+                        incomeTotal.usedFixedRates || expenseTotal.usedFixedRates ->
+                            ConversionNote.FIXED_RATES
+
+                        incomeTotal.usedConversion || expenseTotal.usedConversion ->
+                            ConversionNote.CURRENT_RATES
+
+                        else -> null
+                    },
                     transactions = filteredTransactions,
                     accounts = accountsConverted,
                     transactionPeriod = if (dateRange.description.isNotEmpty()) {
@@ -196,12 +207,16 @@ class DashboardViewModel(
             // for this year, one card each.
             val (monthly, yearly) = pickHomeBudgets(allBudgets, activeMonth, currentYear)
             val today = LocalDate.now()
-            val format = { value: Double -> getFormattedAmountUseCase.invoke(value, currency).amountString.orEmpty() }
+
+            // Each budget is in its own currency: format what's left in that, not the app's.
+            fun formatFor(budget: BudgetUiModel) = { value: Double ->
+                getFormattedAmountUseCase.invoke(value, budget.amount.currency ?: currency).amountString.orEmpty()
+            }
             _state.update {
                 it.copy(
                     homeBudgets = HomeBudgets(
-                        monthly = monthly.mapNotNull { budget -> budget.toBudgetProgress(today, format) },
-                        yearly = yearly.mapNotNull { budget -> budget.toBudgetProgress(today, format) },
+                        monthly = monthly.mapNotNull { budget -> budget.toBudgetProgress(today, formatFor(budget)) },
+                        yearly = yearly.mapNotNull { budget -> budget.toBudgetProgress(today, formatFor(budget)) },
                         month = activeMonthDate,
                         year = currentYear,
                     ),

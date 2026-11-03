@@ -2,13 +2,16 @@ package com.naveenapps.expensemanager.core.domain.usecase.recurring
 
 import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.CheckTransactionValidationUseCase
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
+import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Date
@@ -17,6 +20,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doSuspendableAnswer
+import org.mockito.kotlin.mock
 
 class RecurringTransactionsTest {
 
@@ -47,6 +53,23 @@ class RecurringTransactionsTest {
 
     // region processing
 
+    // Every account exists, is active and is in USD, so occurrences pass the normal validation.
+    private val accounts: AccountRepository = mock {
+        onBlocking { findAccount(any()) } doSuspendableAnswer { invocation ->
+            Resource.Success(FAKE_ACCOUNT.copy(id = invocation.getArgument(0)))
+        }
+    }
+
+    private fun processUseCase(
+        rules: RecurringTransactionRepository,
+        transactions: TransactionRepository,
+    ) = ProcessRecurringTransactionsUseCase(
+        rules,
+        transactions,
+        accounts,
+        AddTransactionUseCase(transactions, CheckTransactionValidationUseCase(accounts)),
+    )
+
     private fun rule(start: Date, frequency: RecurringFrequency = RecurringFrequency.MONTHLY) = RecurringTransaction(
         id = "rule",
         notes = "Rent",
@@ -67,7 +90,7 @@ class RecurringTransactionsTest {
     fun `missed occurrences are caught up and the rule moves past now`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 7, 1)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
 
         val created = process(now = date(2026, 10, 3))
 
@@ -77,6 +100,8 @@ class RecurringTransactionsTest {
             .containsExactly("2026-08-01", "2026-09-01", "2026-10-01").inOrder()
         assertThat(transactions.added.map { it.id }.toSet()).hasSize(3)
         assertThat(transactions.added.all { it.amount.amount == 1000.0 && it.notes == "Rent" }).isTrue()
+        // Occurrences carry their account's currency, as every saved transaction must.
+        assertThat(transactions.added.all { it.fromCurrencyCode == "USD" && it.toCurrencyCode == "USD" }).isTrue()
         val updated = rules.rules.value.single()
         assertThat(updated.nextOccurrence).isEqualTo(4)
         assertThat(updated.nextDueDate.local().toLocalDate().toString()).isEqualTo("2026-11-01")
@@ -86,7 +111,7 @@ class RecurringTransactionsTest {
     fun `running again creates nothing new`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 9, 1)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
 
         process(now = date(2026, 10, 3))
         val second = process(now = date(2026, 10, 3))
@@ -100,7 +125,7 @@ class RecurringTransactionsTest {
         val original = rule(date(2026, 7, 1))
         val rules = FakeRecurringRepository(original)
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
 
         process(now = date(2026, 8, 15))
         // Simulate the process dying after the Aug 1 transaction was saved but before the
@@ -118,7 +143,7 @@ class RecurringTransactionsTest {
     fun `progress is saved after every occurrence`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 7, 1)))
         val transactions = FakeTransactionRepository(failAfter = 1)
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
 
         assertThat(process(now = date(2026, 10, 3))).isEqualTo(1)
         // Aug 1 was saved, Sep 1 failed: the rule now points at Sep 1, not back at Aug 1.
@@ -129,7 +154,7 @@ class RecurringTransactionsTest {
     fun `a failed save stops that rule without skipping the occurrence`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 8, 1)))
         val transactions = FakeTransactionRepository(fail = true)
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
 
         assertThat(process(now = date(2026, 10, 3))).isEqualTo(0)
         assertThat(rules.rules.value.single().nextOccurrence).isEqualTo(1)
@@ -140,7 +165,7 @@ class RecurringTransactionsTest {
         // Rent was first added on Sep 1 at 6 pm; on Oct 1 the user opens the app in the morning.
         val rules = FakeRecurringRepository(rule(date(2026, 9, 1, h = 18)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
 
         val created = process(now = date(2026, 10, 1, h = 9))
 
@@ -154,7 +179,7 @@ class RecurringTransactionsTest {
     fun `nothing is logged the day before it is due`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 9, 1, h = 6)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
 
         val created = process(now = date(2026, 9, 30, h = 23))
 
@@ -166,7 +191,7 @@ class RecurringTransactionsTest {
     fun `a template edit made while the processor runs is not overwritten`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 9, 1)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
         // The user saves a new amount after the processor has read the due rules.
         rules.afterGetDue = {
             rules.rules.value = rules.rules.value.map { it.copy(amount = 1500.0, notes = "New rent") }
@@ -185,7 +210,7 @@ class RecurringTransactionsTest {
 
     // region editing
 
-    private fun updateUseCase(rules: FakeRecurringRepository, transactions: FakeTransactionRepository = FakeTransactionRepository()) = UpdateRecurringTransactionUseCase(rules, ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions)))
+    private fun updateUseCase(rules: FakeRecurringRepository, transactions: FakeTransactionRepository = FakeTransactionRepository()) = UpdateRecurringTransactionUseCase(rules, processUseCase(rules, transactions))
 
     @Test
     fun `a new rule dated in the past fills in the missed months straight away`() = runTest {
@@ -193,7 +218,7 @@ class RecurringTransactionsTest {
         // was just saved by the create screen.
         val rules = FakeRecurringRepository()
         val transactions = FakeTransactionRepository()
-        val create = CreateRecurringTransactionUseCase(rules, ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions)))
+        val create = CreateRecurringTransactionUseCase(rules, processUseCase(rules, transactions))
         val first = Transaction(
             id = "first",
             notes = "Rent",
@@ -205,6 +230,8 @@ class RecurringTransactionsTest {
             imagePath = "",
             createdOn = date(2026, 7, 1),
             updatedOn = date(2026, 7, 1),
+            fromCurrencyCode = "USD",
+            toCurrencyCode = "USD",
         )
 
         create(first, RecurringFrequency.MONTHLY, now = date(2026, 10, 3))
@@ -265,7 +292,7 @@ class RecurringTransactionsTest {
     fun `edited template is used for the next occurrence but past ones are untouched`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 8, 1)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
         process(now = date(2026, 9, 15)) // logs Sep 1 at 1000
 
         updateUseCase(rules, transactions)(
@@ -282,7 +309,7 @@ class RecurringTransactionsTest {
     fun `schedule change starts a new series that never reuses an occurrence id`() = runTest {
         val rules = FakeRecurringRepository(rule(date(2026, 8, 1)))
         val transactions = FakeTransactionRepository()
-        val process = ProcessRecurringTransactionsUseCase(rules, transactions, AddTransactionUseCase(transactions))
+        val process = processUseCase(rules, transactions)
         process(now = date(2026, 9, 15)) // logs Sep 1 as occurrence 1
 
         val result = updateUseCase(rules, transactions)(

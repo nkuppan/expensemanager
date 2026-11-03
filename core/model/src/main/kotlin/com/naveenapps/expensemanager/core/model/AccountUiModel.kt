@@ -12,6 +12,7 @@ data class AccountUiModel(
     val amountTextColor: Int,
     val type: AccountType = AccountType.REGULAR,
     val availableCreditLimit: Amount? = null,
+    val currencyCode: String = "",
 )
 
 fun Account.toAccountUiModel(
@@ -25,4 +26,5 @@ fun Account.toAccountUiModel(
     type = this.type,
     amountTextColor = this.amount.getAmountTextColor(),
     availableCreditLimit = availableCreditLimit,
+    currencyCode = this.currencyCode,
 )

@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
@@ -34,7 +34,9 @@ fun PieChartView(
     hideValues: Boolean = false,
     chartWidth: Int = LinearLayout.LayoutParams.MATCH_PARENT,
 ) {
-    var isAnimated by remember { mutableStateOf(false) }
+    // Saveable, not remember: inside a lazy list the chart leaves composition whenever it
+    // scrolls off screen, and a plain remember would replay the 900 ms animation each time.
+    var isAnimated by rememberSaveable { mutableStateOf(false) }
 
     val onBackgroundColor = MaterialTheme.colorScheme.onBackground.toArgb()
     // Category names beside the donut; their percentages use the slice colour.
@@ -110,13 +112,27 @@ fun PieChartView(
                 }
             },
             update = { chart ->
-                // Re-apply theme colours on recomposition (e.g. dark mode toggle)
-                chart.setCenterTextColor(onBackgroundColor)
-                chart.setHoleColor(holeColor)
-                chart.setTransparentCircleColor(holeColor)
-                chart.centerText = totalAmountText
-                (chart.renderer as? NonOverlappingPieChartRenderer)?.labelTextColor = labelTextColor
-                updatePieChartWithData(chart, pieChartData, hideValues, surfaceVariantColor)
+                // `update` runs on every recomposition (e.g. while the dashboard scrolls).
+                // Rebuilding the data set and invalidating the chart each time is expensive,
+                // so only rebind when something it draws actually changed.
+                val binding = PieChartBinding(
+                    totalAmountText,
+                    pieChartData,
+                    hideValues,
+                    onBackgroundColor,
+                    holeColor,
+                    surfaceVariantColor,
+                    labelTextColor,
+                )
+                if (chart.tag != binding) {
+                    chart.tag = binding
+                    chart.setCenterTextColor(onBackgroundColor)
+                    chart.setHoleColor(holeColor)
+                    chart.setTransparentCircleColor(holeColor)
+                    chart.centerText = totalAmountText
+                    (chart.renderer as? NonOverlappingPieChartRenderer)?.labelTextColor = labelTextColor
+                    updatePieChartWithData(chart, pieChartData, hideValues, surfaceVariantColor)
+                }
             },
         )
     }
@@ -125,6 +141,17 @@ fun PieChartView(
 // ═══════════════════════════════════════════════════════════════════════
 //  Data binding
 // ═══════════════════════════════════════════════════════════════════════
+
+/** Everything the chart draws; equal bindings mean the chart is already up to date. */
+private data class PieChartBinding(
+    val totalAmountText: String,
+    val data: List<PieChartUiData>,
+    val hideValues: Boolean,
+    val onBackgroundColor: Int,
+    val holeColor: Int,
+    val labelColor: Int,
+    val labelTextColor: Int,
+)
 
 private fun updatePieChartWithData(
     chart: PieChart,

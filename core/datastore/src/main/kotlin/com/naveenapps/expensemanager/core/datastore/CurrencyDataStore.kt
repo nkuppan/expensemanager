@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class CurrencyDataStore(private val dataStore: DataStore<Preferences>) {
@@ -35,7 +36,18 @@ class CurrencyDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_CURRENCY_SYMBOL_POSITION] = position
     }
 
+    suspend fun setRestoreCurrencyCode(code: String?) = dataStore.edit { preferences ->
+        if (code == null) {
+            preferences.remove(KEY_RESTORE_CURRENCY_CODE)
+        } else {
+            preferences[KEY_RESTORE_CURRENCY_CODE] = code
+        }
+    }
+
+    suspend fun getRestoreCurrencyCode(): String? = dataStore.data.first()[KEY_RESTORE_CURRENCY_CODE]
+
     companion object {
+        private val KEY_RESTORE_CURRENCY_CODE = stringPreferencesKey("restore_currency_code")
         private val KEY_CURRENCY_CODE = stringPreferencesKey("currency_symbol_code_string")
         private val KEY_CURRENCY_SYMBOL = stringPreferencesKey("currency_symbol_string")
         private val KEY_CURRENCY_NAME = stringPreferencesKey("currency_name")

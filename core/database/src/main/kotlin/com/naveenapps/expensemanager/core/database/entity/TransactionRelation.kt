@@ -25,4 +25,9 @@ data class TransactionRelation(
         entityColumn = "transaction_id",
     )
     val attachmentEntities: List<TransactionAttachmentEntity>,
+    @Relation(
+        parentColumn = "rate_snapshot_id",
+        entityColumn = "id",
+    )
+    val rateSnapshotEntity: ExchangeRateSnapshotEntity?,
 )

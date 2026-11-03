@@ -15,4 +15,6 @@ data class AccountListState(
     // Net of every balance: assets - liabilities.
     val totalAmount: Amount? = null,
     val totalAmountTextColor: Int? = null,
+    /** Hidden from pickers and totals; listed here so they can be restored. */
+    val archivedAccounts: List<AccountUiModel> = emptyList(),
 )

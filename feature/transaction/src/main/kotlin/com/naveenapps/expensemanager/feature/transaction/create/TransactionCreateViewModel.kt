@@ -5,36 +5,38 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountUiModelUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.FindRecurringTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.ProcessRecurringTransactionsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.GetCurrentExchangeRateUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.SuggestedRate
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.ExchangeRateSnapshot
+import com.naveenapps.expensemanager.core.model.ExchangeRateSource
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
-import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.isTransfer
-import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -50,6 +52,7 @@ import com.naveenapps.expensemanager.feature.transaction.R
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -80,6 +83,9 @@ class TransactionCreateViewModel(
     private val analyticsRepository: AnalyticsRepository,
     private val budgetAlertTrigger: BudgetAlertTrigger,
     private val createRecurringTransactionUseCase: CreateRecurringTransactionUseCase,
+    private val getAccountUiModelUseCase: GetAccountUiModelUseCase,
+    private val formatAmountInCurrencyUseCase: FormatAmountInCurrencyUseCase,
+    private val getCurrentExchangeRateUseCase: GetCurrentExchangeRateUseCase,
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase,
 ) : ViewModel() {
 
@@ -180,7 +186,7 @@ class TransactionCreateViewModel(
             getCurrencyUseCase.invoke(),
             getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
-            val mappedAccounts = mapAccountsToUiModels(accounts, currency)
+            val mappedAccounts = accounts.map { getAccountUiModelUseCase(it) }
             val defaultAccountId = settingsRepository.getDefaultAccount().firstOrNull()
             val preferredAccount = mappedAccounts.find { it.id == defaultAccountId }
                 ?: mappedAccounts.firstOrNull()
@@ -227,6 +233,7 @@ class TransactionCreateViewModel(
                 )
             }
             syncState.update { it.copy(isAccountSyncCompleted = true) }
+            refreshExchangeRate()
         }.launchIn(viewModelScope)
     }
 
@@ -314,26 +321,17 @@ class TransactionCreateViewModel(
                         dateTime = transaction.createdOn,
                         notes = current.notes.copy(value = transaction.notes),
                         selectedCategory = transaction.category,
-                        selectedFromAccount = transaction.fromAccount.toAccountUiModel(
-                            getFormattedAmountUseCase.invoke(
-                                transaction.fromAccount.amount,
-                                current.currency,
-                            ),
-                        ),
-                        selectedToAccount = transaction.toAccount?.let { toAccount ->
-                            toAccount.toAccountUiModel(
-                                getFormattedAmountUseCase.invoke(
-                                    toAccount.amount,
-                                    current.currency,
-                                ),
-                            )
-                        } ?: defaultAccount,
+                        selectedFromAccount = getAccountUiModelUseCase(transaction.fromAccount),
+                        selectedToAccount = transaction.toAccount
+                            ?.let { getAccountUiModelUseCase(it) }
+                            ?: defaultAccount,
                         showDeleteButton = true,
                         canRepeat = false,
                         recurringRuleId = recurringRuleId,
                         attachments = transaction.attachments,
                     )
                 }
+                refreshExchangeRate()
             }
         }
     }
@@ -362,6 +360,13 @@ class TransactionCreateViewModel(
             return
         }
 
+        val rateInput = currentState.exchangeRate
+        if (rateInput != null && rateInput.isLoading) return
+        if (rateInput != null && parseRate(rateInput.rateText) == null) {
+            _state.update { it.copy(exchangeRate = rateInput.copy(rateError = true)) }
+            return
+        }
+
         // amountValue is smart-cast to Double after the null check above
         persistTransaction(buildTransactionFromState(currentState, amountValue))
     }
@@ -381,7 +386,41 @@ class TransactionCreateViewModel(
         createdOn = state.dateTime,
         updatedOn = Calendar.getInstance().time,
         attachments = state.attachments,
+        fromCurrencyCode = state.selectedFromAccount.currencyCode,
+        toCurrencyCode = if (state.transactionType.isTransfer()) {
+            state.selectedToAccount.currencyCode
+        } else {
+            state.selectedFromAccount.currencyCode
+        },
+        rateSnapshot = state.exchangeRate?.toSnapshot(),
     )
+
+    /**
+     * The snapshot to store: the transaction's existing one while untouched, a clone of the
+     * suggested rate (fetched, or their fixed rate) while the user kept it, otherwise the rate
+     * they typed. Same shape each time.
+     */
+    private fun ExchangeRateInputState.toSnapshot(): ExchangeRateSnapshot? {
+        val rate = parseRate(rateText) ?: return null
+        existingSnapshot?.let { if (it.rate == rate) return it }
+        val keptSuggested = source != ExchangeRateSource.USER && source == suggestedSource &&
+            fetchedRate == rate
+        return ExchangeRateSnapshot(
+            id = UUID.randomUUID().toString(),
+            source = if (keptSuggested) source else ExchangeRateSource.USER,
+            provider = if (keptSuggested) provider else null,
+            baseCode = baseCode,
+            quoteCode = quoteCode,
+            rate = rate,
+            capturedAt = if (keptSuggested) {
+                fetchedAt ?: System.currentTimeMillis()
+            } else {
+                System.currentTimeMillis()
+            },
+        )
+    }
+
+    private fun parseRate(text: String): Double? = numberFormatRepository.parseToDouble(text)?.takeIf { it.isFinite() && it > 0.0 }
 
     private fun persistTransaction(transaction: Transaction) {
         val isNewTransaction = editingTransaction == null
@@ -392,6 +431,11 @@ class TransactionCreateViewModel(
             } else {
                 addTransactionUseCase.invoke(transaction)
             }
+            if (response is Resource.Error) {
+                _state.update {
+                    it.copy(saveError = response.exception.message ?: "Couldn't save the transaction")
+                }
+            }
             if (response is Resource.Success) {
                 (previouslyPersistedAttachments - transaction.attachments.toSet()).forEach {
                     imageStorageRepository.deleteTransactionAttachment(it)
@@ -400,7 +444,7 @@ class TransactionCreateViewModel(
                 // New or edited spending may have pushed a budget past 80% / 100%.
                 budgetAlertTrigger.checkBudgetsSoon()
                 discardSessionAttachments()
-                if (isNewTransaction) {
+                if (isNewTransaction && transaction.rateSnapshot == null) {
                     _state.value.repeat?.let { frequency ->
                         createRecurringTransactionUseCase.invoke(transaction, frequency)
                         analyticsRepository.logEvent(
@@ -550,21 +594,166 @@ class TransactionCreateViewModel(
 
     // endregion
 
-    // region State helpers
+    // region Exchange rate (cross-currency transfers only)
 
-    private fun mapAccountsToUiModels(
-        accounts: List<Account>,
-        currency: Currency,
-    ): List<AccountUiModel> = accounts.map { account ->
-        account.toAccountUiModel(
-            getFormattedAmountUseCase.invoke(account.amount, currency),
-            if (account.type == AccountType.CREDIT) {
-                getFormattedAmountUseCase.invoke(account.getAvailableCreditLimit(), currency)
-            } else {
-                null
-            },
+    private var rateJob: Job? = null
+
+    /**
+     * Decides what the rate field shows after accounts, type or date change:
+     * - not a cross-currency transfer: no rate at all;
+     * - editing, same pair, same day: the transaction's stored snapshot, untouched;
+     * - the user already typed a rate for this pair and the date didn't change: keep it;
+     * - otherwise whatever the exchange method suggests (see [GetCurrentExchangeRateUseCase]):
+     *   today's fetched rate, the pair's fixed rate, or nothing — then the user enters it.
+     */
+    private fun refreshExchangeRate(dateChanged: Boolean = false) {
+        val current = _state.value
+        val fromCode = current.selectedFromAccount.currencyCode
+        val toCode = current.selectedToAccount.currencyCode
+
+        if (fromCode.isNotBlank()) {
+            viewModelScope.launch {
+                val currency = formatAmountInCurrencyUseCase.currencyFor(fromCode)
+                _state.update { it.copy(currency = currency) }
+            }
+        }
+
+        if (!current.transactionType.isTransfer() || fromCode.isBlank() || toCode.isBlank() ||
+            fromCode == toCode
+        ) {
+            rateJob?.cancel()
+            _state.update { it.copy(exchangeRate = null) }
+            return
+        }
+
+        val stored = editingTransaction?.rateSnapshot
+        if (stored != null && stored.baseCode == fromCode && stored.quoteCode == toCode &&
+            isSameDay(editingTransaction!!.createdOn, current.dateTime)
+        ) {
+            rateJob?.cancel()
+            setRateInput(
+                ExchangeRateInputState(
+                    baseCode = fromCode,
+                    quoteCode = toCode,
+                    rateText = numberFormatRepository.formatForEditing(stored.rate),
+                    source = stored.source,
+                    provider = stored.provider,
+                    fetchedAt = stored.capturedAt,
+                    fetchedRate = stored.rate.takeIf { stored.source != ExchangeRateSource.USER },
+                    suggestedSource = stored.source.takeIf { it != ExchangeRateSource.USER },
+                    existingSnapshot = stored,
+                ),
+            )
+            return
+        }
+
+        val typed = current.exchangeRate
+        if (!dateChanged && typed != null && typed.baseCode == fromCode &&
+            typed.quoteCode == toCode && typed.existingSnapshot == null
+        ) {
+            return
+        }
+
+        rateJob?.cancel()
+        setRateInput(
+            ExchangeRateInputState(
+                baseCode = fromCode,
+                quoteCode = toCode,
+                rateText = "",
+                source = ExchangeRateSource.USER,
+                isLoading = true,
+            ),
+        )
+        rateJob = viewModelScope.launch {
+            val suggestion = getCurrentExchangeRateUseCase(
+                fromCode = fromCode,
+                toCode = toCode,
+                isDatedToday = isSameDay(current.dateTime, Date()),
+            )
+            setRateInput(
+                when (suggestion) {
+                    is SuggestedRate.Suggested -> ExchangeRateInputState(
+                        baseCode = fromCode,
+                        quoteCode = toCode,
+                        rateText = numberFormatRepository.formatForEditing(suggestion.rate.rate),
+                        source = suggestion.rate.source,
+                        provider = suggestion.rate.provider,
+                        fetchedAt = suggestion.rate.capturedAt,
+                        fetchedRate = suggestion.rate.rate,
+                        suggestedSource = suggestion.rate.source,
+                    )
+
+                    is SuggestedRate.None -> ExchangeRateInputState(
+                        baseCode = fromCode,
+                        quoteCode = toCode,
+                        rateText = "",
+                        source = ExchangeRateSource.USER,
+                        hint = when (suggestion.reason) {
+                            SuggestedRate.Reason.BACKDATED -> BACKDATED_HINT
+                            SuggestedRate.Reason.UNAVAILABLE -> UNAVAILABLE_HINT
+                            SuggestedRate.Reason.NO_FIXED_RATE -> NO_FIXED_RATE_HINT
+                            SuggestedRate.Reason.DISABLED -> DISABLED_HINT
+                        },
+                    )
+                },
+            )
+        }
+    }
+
+    private fun changeExchangeRate(text: String) {
+        val input = _state.value.exchangeRate ?: return
+        val rate = parseRate(text)
+        setRateInput(
+            input.copy(
+                rateText = text,
+                // Any edit makes it the user's rate; typing the suggested value back restores it.
+                source = input.suggestedSource?.takeIf {
+                    rate != null && rate == input.fetchedRate && input.existingSnapshot == null
+                } ?: ExchangeRateSource.USER,
+                existingSnapshot = input.existingSnapshot?.takeIf { it.rate == rate },
+                rateError = false,
+            ),
         )
     }
+
+    private fun useFetchedExchangeRate() {
+        val input = _state.value.exchangeRate ?: return
+        val fetched = input.fetchedRate ?: return
+        changeExchangeRate(numberFormatRepository.formatForEditing(fetched))
+    }
+
+    private fun setRateInput(input: ExchangeRateInputState) {
+        _state.update { it.copy(exchangeRate = input, saveError = null) }
+        updateReceivedAmount()
+    }
+
+    private fun updateReceivedAmount() {
+        val current = _state.value
+        val input = current.exchangeRate ?: return
+        val rate = parseRate(input.rateText)
+        val amount = numberFormatRepository.parseToDouble(current.amount.value)
+        viewModelScope.launch {
+            val received = if (rate != null && amount != null && amount > 0.0) {
+                formatAmountInCurrencyUseCase(amount * rate, input.quoteCode).amountString
+            } else {
+                null
+            }
+            _state.update { state ->
+                state.copy(exchangeRate = state.exchangeRate?.copy(receivedAmount = received))
+            }
+        }
+    }
+
+    private fun isSameDay(first: Date, second: Date): Boolean {
+        val a = Calendar.getInstance().apply { time = first }
+        val b = Calendar.getInstance().apply { time = second }
+        return a.get(Calendar.YEAR) == b.get(Calendar.YEAR) &&
+            a.get(Calendar.DAY_OF_YEAR) == b.get(Calendar.DAY_OF_YEAR)
+    }
+
+    // endregion
+
+    // region State helpers
 
     private fun setAmountOnChange(amount: String) {
         val amountValue = numberFormatRepository.parseToDouble(amount)
@@ -577,6 +766,7 @@ class TransactionCreateViewModel(
                 showNumberPad = false,
             )
         }
+        updateReceivedAmount()
     }
 
     private fun setNotes(notes: String) {
@@ -596,8 +786,9 @@ class TransactionCreateViewModel(
             } else {
                 current.selectedToAccount
             }
-            current.copy(transactionType = type, selectedToAccount = toAccount)
+            current.copy(transactionType = type, selectedToAccount = toAccount, saveError = null)
         }
+        refreshExchangeRate()
     }
 
     private fun firstOtherAccount(
@@ -690,18 +881,23 @@ class TransactionCreateViewModel(
                 )
             }
 
-            is TransactionCreateAction.SelectAccount -> _state.update {
-                when (it.accountSelection) {
-                    AccountSelection.FROM_ACCOUNT -> it.copy(
-                        selectedFromAccount = action.account,
-                        showAccountSelection = false,
-                    )
+            is TransactionCreateAction.SelectAccount -> {
+                _state.update {
+                    when (it.accountSelection) {
+                        AccountSelection.FROM_ACCOUNT -> it.copy(
+                            selectedFromAccount = action.account,
+                            showAccountSelection = false,
+                            saveError = null,
+                        )
 
-                    AccountSelection.TO_ACCOUNT -> it.copy(
-                        selectedToAccount = action.account,
-                        showAccountSelection = false,
-                    )
+                        AccountSelection.TO_ACCOUNT -> it.copy(
+                            selectedToAccount = action.account,
+                            showAccountSelection = false,
+                            saveError = null,
+                        )
+                    }
                 }
+                refreshExchangeRate()
             }
 
             TransactionCreateAction.ShowNumberPad -> _state.update {
@@ -721,12 +917,18 @@ class TransactionCreateViewModel(
                 it.copy(showDateSelection = false, showTimeSelection = false)
             }
 
-            is TransactionCreateAction.SelectDate -> _state.update {
-                it.copy(
-                    dateTime = action.date,
-                    showDateSelection = false,
-                    showTimeSelection = false,
-                )
+            is TransactionCreateAction.SelectDate -> {
+                val dayChanged = !isSameDay(_state.value.dateTime, action.date)
+                _state.update {
+                    it.copy(
+                        dateTime = action.date,
+                        showDateSelection = false,
+                        showTimeSelection = false,
+                        saveError = null,
+                    )
+                }
+                // A rate belongs to a day: a new day always needs its rate entered again.
+                if (dayChanged) refreshExchangeRate(dateChanged = true)
             }
 
             TransactionCreateAction.ShowAttachmentPicker -> _state.update {
@@ -743,6 +945,10 @@ class TransactionCreateViewModel(
             }
 
             is TransactionCreateAction.RemoveAttachment -> removeAttachment(action.path)
+
+            is TransactionCreateAction.ChangeExchangeRate -> changeExchangeRate(action.rateText)
+
+            TransactionCreateAction.UseFetchedExchangeRate -> useFetchedExchangeRate()
         }
     }
 
@@ -752,6 +958,17 @@ class TransactionCreateViewModel(
     }
 
     companion object {
+        private const val BACKDATED_HINT =
+            "This transfer isn't dated today, so no rate is fetched. Enter the rate for that day."
+        private const val UNAVAILABLE_HINT =
+            "No rate is available right now (offline, or not offered by your provider). Enter it."
+        private const val NO_FIXED_RATE_HINT =
+            "You have no fixed rate for this pair. Enter the rate, or add the pair in " +
+                "Settings > Exchange method."
+        private const val DISABLED_HINT =
+            "Currency conversion is off. Enter the rate for this transfer; it is saved with " +
+                "this transfer only."
+
         private val defaultCategory = Category(
             id = "1",
             name = "Shopping",

@@ -79,6 +79,7 @@ class CreateRecurringTransactionUseCase(
 class ProcessRecurringTransactionsUseCase(
     private val repository: RecurringTransactionRepository,
     private val transactionRepository: TransactionRepository,
+    private val accountRepository: AccountRepository,
     private val addTransactionUseCase: AddTransactionUseCase,
 ) {
     /** Returns how many transactions were created. */
@@ -86,10 +87,19 @@ class ProcessRecurringTransactionsUseCase(
         val dueBy = endOfDay(now, zone)
         var created = 0
         repository.getDue(dueBy).forEach { rule ->
+            // Each occurrence is stamped with its accounts' currencies, read once per rule.
+            val fromCode = currencyCodeOf(rule.fromAccountId) ?: return@forEach
+            val toCode = rule.toAccountId?.let { currencyCodeOf(it) ?: return@forEach } ?: fromCode
             var current = rule
             var processedForRule = 0
             while (!current.nextDueDate.after(dueBy) && processedForRule < MAX_CATCH_UP_PER_RUN) {
-                val transaction = current.toTransaction(current.nextOccurrence, current.nextDueDate, now)
+                val transaction = current.toTransaction(
+                    current.nextOccurrence,
+                    current.nextDueDate,
+                    now,
+                    fromCode,
+                    toCode,
+                )
                 val alreadyCreated =
                     transactionRepository.findTransactionById(transaction.id) is Resource.Success
                 if (!alreadyCreated) {
@@ -110,7 +120,16 @@ class ProcessRecurringTransactionsUseCase(
         created
     }
 
-    private fun RecurringTransaction.toTransaction(index: Int, due: Date, now: Date) = Transaction(
+    private suspend fun currencyCodeOf(accountId: String): String? = (accountRepository.findAccount(accountId) as? Resource.Success)?.data?.currencyCode
+        ?.takeIf { it.isNotBlank() }
+
+    private fun RecurringTransaction.toTransaction(
+        index: Int,
+        due: Date,
+        now: Date,
+        fromCode: String,
+        toCode: String,
+    ) = Transaction(
         id = occurrenceTransactionId(id, index),
         notes = notes,
         categoryId = categoryId,
@@ -121,6 +140,8 @@ class ProcessRecurringTransactionsUseCase(
         imagePath = "",
         createdOn = due,
         updatedOn = now,
+        fromCurrencyCode = fromCode,
+        toCurrencyCode = toCode,
     )
 
     /** The last millisecond of [now]'s calendar day in [zone]. */

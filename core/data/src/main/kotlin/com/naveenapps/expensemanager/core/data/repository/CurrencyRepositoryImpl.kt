@@ -6,13 +6,13 @@ import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencyPosition
-import com.naveenapps.expensemanager.core.model.isPrefix
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 private const val MINUS_SYMBOL = "-"
+private const val LEFT_TO_RIGHT_MARK = "\u200E"
 private const val DEFAULT_CURRENCY_SYMBOL = "$"
 private const val DEFAULT_CURRENCY_CODE = "USD"
 private const val DEFAULT_CURRENCY_NAME = "US Dollars"
@@ -43,6 +43,15 @@ class CurrencyRepositoryImpl(
         true
     }
 
+    override suspend fun setRestoreCurrencyCode(code: String?) = withContext(dispatchers.io) {
+        dataStore.setRestoreCurrencyCode(code)
+        Unit
+    }
+
+    override suspend fun getRestoreCurrencyCode(): String? = withContext(dispatchers.io) {
+        dataStore.getRestoreCurrencyCode()
+    }
+
     override fun getSelectedCurrency(): Flow<Currency> = dataStore.getCurrency(defaultCurrency = getDefaultCurrency())
 
     override fun getFormattedCurrency(amount: Amount): Amount {
@@ -51,13 +60,7 @@ class CurrencyRepositoryImpl(
             amountString = getCurrency(
                 currency = currency,
                 amount = amount.amount,
-            ).let {
-                return@let if (currency.position.isPrefix() && it.contains(MINUS_SYMBOL)) {
-                    "${MINUS_SYMBOL}${it.replace(MINUS_SYMBOL, "")}"
-                } else {
-                    it
-                }
-            },
+            ),
         )
     }
 
@@ -65,15 +68,40 @@ class CurrencyRepositoryImpl(
         currency: Currency,
         amount: Double,
     ): String {
-        val currencyFormatted = numberFormatRepository.formatForDisplay(amount)
+        // The sign is placed explicitly below, so format the number without it.
+        val formatted = numberFormatRepository.formatForDisplay(amount)
+        val isNegative = formatted.contains(MINUS_SYMBOL)
+        val currencyFormatted = formatted.replace(MINUS_SYMBOL, "")
+        val sign = if (isNegative) MINUS_SYMBOL else ""
+
+        // Sign-like symbols ($, €, £) attach to the number; word symbols (ليرة, ALL, DA) need a
+        // space, otherwise they run into the digits ("10,585ليرة").
+        val separator = if (currency.symbol.any { it.isLetter() }) " " else ""
+
+        // A right-to-left symbol (ليرة) would otherwise make the whole string lay out RTL and pull
+        // the digits to its left in both positions. A left-to-right mark at the start keeps the
+        // line LTR, and one between symbol and number stops the digits joining the RTL run, so
+        // prefix really shows before the number and suffix after it.
+        val isRtlSymbol = currency.symbol.any {
+            val direction = Character.getDirectionality(it)
+            direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT ||
+                direction == Character.DIRECTIONALITY_RIGHT_TO_LEFT_ARABIC
+        }
+        val mark = if (isRtlSymbol) LEFT_TO_RIGHT_MARK else ""
 
         return when (currency.position) {
             CurrencyPosition.PREFIX -> {
-                "${currency.symbol}$currencyFormatted"
+                if (separator.isEmpty()) {
+                    // Sign-like symbol: the minus leads the whole amount (-$100).
+                    "$sign${currency.symbol}$currencyFormatted"
+                } else {
+                    // Word symbol: the minus belongs to the number (ليرة -208), not the word.
+                    "$mark${currency.symbol}$mark$separator$sign$currencyFormatted"
+                }
             }
 
             CurrencyPosition.SUFFIX -> {
-                "${currencyFormatted}${currency.symbol}"
+                "$mark$sign${currencyFormatted}$separator${currency.symbol}$mark"
             }
         }
     }

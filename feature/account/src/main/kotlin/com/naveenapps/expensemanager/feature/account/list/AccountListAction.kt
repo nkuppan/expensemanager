@@ -11,4 +11,6 @@ sealed class AccountListAction {
     data object CreateAccount : AccountListAction()
 
     data class EditAccount(val accountUiModel: AccountUiModel) : AccountListAction()
+
+    data class Unarchive(val accountUiModel: AccountUiModel) : AccountListAction()
 }

@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.designsystem.ui.components
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
@@ -190,8 +189,7 @@ fun TransactionItem(
                         Modifier
                     },
                 )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
-                .animateContentSize(),
+                .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             // ── Category / transfer icon ───────────────────────────
             CategoryIconBox(
@@ -283,7 +281,7 @@ fun TransactionItem(
                 }
 
                 Text(
-                    text = "$prefix${amount.amountString ?: ""}",
+                    text = signedAmountText(prefix, amount.amountString.orEmpty()),
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 15.sp,
@@ -506,5 +504,22 @@ fun TransactionUiStatePreview() {
                 notes = "Sample notes given as per transaction",
             )
         }
+    }
+}
+
+/**
+ * Puts the row's +/− [sign] where it reads naturally for the formatted [amountText]:
+ * - a sign-like symbol attached to the number keeps the sign in front of everything (−$100);
+ * - a word symbol separated by a space gets the sign on the number itself (ليرة −208), not
+ *   in front of the word.
+ */
+internal fun signedAmountText(sign: String, amountText: String): String {
+    if (sign.isEmpty()) return amountText
+    val firstDigit = amountText.indexOfFirst { it.isDigit() }
+    val symbolThenSpace = firstDigit > 0 && amountText[firstDigit - 1] == ' '
+    return if (symbolThenSpace) {
+        amountText.substring(0, firstDigit) + sign + amountText.substring(firstDigit)
+    } else {
+        sign + amountText
     }
 }

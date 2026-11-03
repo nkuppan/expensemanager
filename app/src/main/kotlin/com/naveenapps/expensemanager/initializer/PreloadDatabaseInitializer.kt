@@ -3,8 +3,11 @@ package com.naveenapps.expensemanager.initializer
 import android.content.Context
 import androidx.startup.Initializer
 import com.naveenapps.expensemanager.core.data.R as CategoryStringsR
+import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SetRestoreCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetPreloadStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetPreloadStatusUseCase
 import com.naveenapps.expensemanager.core.model.Account
@@ -17,7 +20,9 @@ import java.util.Date
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.context.GlobalContext
 
 val BASE_CATEGORY_LIST = listOf(
@@ -155,7 +160,7 @@ val BASE_CATEGORY_LIST = listOf(
     ),
 )
 
-val BASE_ACCOUNT_LIST = listOf(
+fun baseAccounts(currencyCode: String) = listOf(
     Account(
         "1",
         "Cash",
@@ -166,6 +171,7 @@ val BASE_ACCOUNT_LIST = listOf(
         ),
         Calendar.getInstance().time,
         Calendar.getInstance().time,
+        currencyCode = currencyCode,
     ),
     Account(
         "2",
@@ -177,6 +183,7 @@ val BASE_ACCOUNT_LIST = listOf(
         ),
         Calendar.getInstance().time,
         Calendar.getInstance().time,
+        currencyCode = currencyCode,
     ),
     Account(
         "3",
@@ -188,6 +195,7 @@ val BASE_ACCOUNT_LIST = listOf(
         ),
         Calendar.getInstance().time,
         Calendar.getInstance().time,
+        currencyCode = currencyCode,
     ),
 )
 
@@ -198,8 +206,17 @@ class PreloadDatabaseInitializer : Initializer<Unit> {
         val setPreloadStatusUseCase: SetPreloadStatusUseCase = GlobalContext.get().get()
         val addAccountUseCase: AddAccountUseCase = GlobalContext.get().get()
         val addCategoryUseCase: AddCategoryUseCase = GlobalContext.get().get()
+        val getCurrencyUseCase: GetCurrencyUseCase = GlobalContext.get().get()
+        val database: ExpenseManagerDatabase = GlobalContext.get().get()
+        val setRestoreCurrencyUseCase: SetRestoreCurrencyUseCase = GlobalContext.get().get()
 
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
+            // Open the database first, so a restored pre-multi-currency backup is migrated
+            // (stamped with the currency the user gave for it) before that choice is cleared.
+            withContext(Dispatchers.IO) { database.openHelper.writableDatabase }
+            // Any migration of a restored backup has run by now: the currency the user gave
+            // for that backup must not apply to anything later.
+            setRestoreCurrencyUseCase(null)
             val isPreloaded = getPreloadStatusUseCase.invoke()
 
             if (isPreloaded.not()) {
@@ -207,7 +224,10 @@ class PreloadDatabaseInitializer : Initializer<Unit> {
                     addCategoryUseCase.invoke(value)
                 }
 
-                BASE_ACCOUNT_LIST.forEach { value ->
+                // Stamp the currency the onboarding screen shows these accounts in; onboarding
+                // re-stamps them if the user picks a different main currency there.
+                val currencyCode = getCurrencyUseCase.invoke().first().code
+                baseAccounts(currencyCode).forEach { value ->
                     addAccountUseCase.invoke(value)
                 }
 

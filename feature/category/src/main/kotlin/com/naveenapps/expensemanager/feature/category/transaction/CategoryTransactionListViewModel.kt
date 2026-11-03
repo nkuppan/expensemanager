@@ -34,7 +34,9 @@ class CategoryTransactionListViewModel(
             getTransactionGroupByCategoryUseCase.invoke(it)
         }.onEach { model ->
             _state.value = UiState.Success(
-                if (model.hideValues) {
+                // Only the zero-amount placeholders are dropped. hideValues is also set when the
+                // totals can't be converted, and those categories still have spending to list.
+                if (model.categoryTransactions.all { it.transaction.isEmpty() }) {
                     model.copy(categoryTransactions = emptyList())
                 } else {
                     model

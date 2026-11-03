@@ -2,19 +2,28 @@ package com.naveenapps.expensemanager.feature.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.DeleteAccountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountUiModelUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.GetReminderStatusUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.GetReminderTimeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.UpdateReminderStatusUseCase
+import com.naveenapps.expensemanager.core.model.Account
+import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
+import java.util.UUID
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -28,8 +37,10 @@ class OnboardingViewModel(
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     getCurrencyUseCase: GetCurrencyUseCase,
     private val saveCurrencyUseCase: SaveCurrencyUseCase,
+    private val addAccountUseCase: AddAccountUseCase,
+    private val deleteAccountUseCase: DeleteAccountUseCase,
     private val setOnboardingStatusUseCase: SetOnboardingStatusUseCase,
-    private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    private val getAccountUiModelUseCase: GetAccountUiModelUseCase,
     private val composeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
@@ -42,6 +53,8 @@ class OnboardingViewModel(
         ),
     )
     val state = _state.asStateFlow()
+
+    private var accounts: List<Account> = emptyList()
 
     init {
         viewModelScope.launch {
@@ -56,14 +69,11 @@ class OnboardingViewModel(
                     getCurrencyUseCase.invoke(),
                     getAllAccountsUseCase.invoke(),
                 ) { currency, accounts ->
-                    _state.update { it ->
+                    this@OnboardingViewModel.accounts = accounts
+                    _state.update {
                         it.copy(
                             currency = currency,
-                            accounts = accounts.map {
-                                it.toAccountUiModel(
-                                    getFormattedAmountUseCase.invoke(it.amount, currency),
-                                )
-                            },
+                            accounts = accounts.map { account -> getAccountUiModelUseCase(account) },
                             showCurrencySelection = false,
                         )
                     }
@@ -111,8 +121,28 @@ class OnboardingViewModel(
 
             is OnboardingAction.SelectCurrency -> {
                 viewModelScope.launch {
+                    val previousCode = _state.value.currency.code
                     val currency = action.country.currency
-                    saveCurrencyUseCase.invoke(currency)
+                    if (saveCurrencyUseCase.invoke(currency) !is Resource.Success) return@launch
+                    // Accounts still in the previous main currency were only defaulted to it (the
+                    // preloaded ones, or ones created here without picking another currency).
+                    // An account's currency can never change, so they are recreated in the new
+                    // main currency instead; this is safe only because onboarding precedes any
+                    // transaction (delete refuses accounts that have one).
+                    accounts
+                        .filter { it.currencyCode == previousCode }
+                        .forEach { account ->
+                            // Add the re-stamped copy before deleting the original: the last
+                            // remaining account can never be deleted. These starter accounts
+                            // have no transactions yet, so the new id is safe.
+                            val restamped = account.copy(
+                                id = UUID.randomUUID().toString(),
+                                currencyCode = currency.code,
+                            )
+                            if (addAccountUseCase(restamped) is Resource.Success) {
+                                deleteAccountUseCase(account)
+                            }
+                        }
                 }
             }
         }

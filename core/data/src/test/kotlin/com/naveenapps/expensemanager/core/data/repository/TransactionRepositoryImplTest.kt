@@ -12,6 +12,8 @@ import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.ExchangeRateSnapshot
+import com.naveenapps.expensemanager.core.model.ExchangeRateSource
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -190,6 +192,50 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
         Truth.assertThat((result as Resource.Success).data).isFalse()
         Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(0.0)
     }
+
+    @Test
+    fun replacingATransfersRateRemovesTheOldSnapshot() = runTest {
+        setupBasicAppData()
+        val transfer = FAKE_TRANSFER_TRANSACTION.copy(rateSnapshot = snapshot("old", 139.0))
+        insertTransactionAndAssert(transfer)
+
+        updateTransactionAndAssert(transfer.copy(rateSnapshot = snapshot("new", 140.0)))
+
+        Truth.assertThat(transactionDao.findRateSnapshot("old")).isNull()
+        Truth.assertThat(transactionDao.findRateSnapshot("new")).isNotNull()
+    }
+
+    @Test
+    fun keepingATransfersRateKeepsItsSnapshot() = runTest {
+        setupBasicAppData()
+        val transfer = FAKE_TRANSFER_TRANSACTION.copy(rateSnapshot = snapshot("kept", 139.0))
+        insertTransactionAndAssert(transfer)
+
+        updateTransactionAndAssert(transfer.copy(notes = "edited"))
+
+        Truth.assertThat(transactionDao.findRateSnapshot("kept")).isNotNull()
+    }
+
+    @Test
+    fun deletingATransferRemovesItsSnapshot() = runTest {
+        setupBasicAppData()
+        val transfer = FAKE_TRANSFER_TRANSACTION.copy(rateSnapshot = snapshot("gone", 139.0))
+        insertTransactionAndAssert(transfer)
+
+        deleteTransactionAndAssert(transfer)
+
+        Truth.assertThat(transactionDao.findRateSnapshot("gone")).isNull()
+    }
+
+    private fun snapshot(id: String, rate: Double) = ExchangeRateSnapshot(
+        id = id,
+        source = ExchangeRateSource.USER,
+        provider = null,
+        baseCode = "USD",
+        quoteCode = "SYP",
+        rate = rate,
+        capturedAt = 0L,
+    )
 
     @Test
     fun findTransactionForUnknownId() = runTest {

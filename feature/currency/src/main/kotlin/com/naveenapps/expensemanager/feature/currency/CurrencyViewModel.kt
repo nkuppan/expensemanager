@@ -28,7 +28,7 @@ class CurrencyViewModel(
     private val _state = MutableStateFlow(
         CurrencyState(
             showCurrencySelection = false,
-            numberFormatType = NumberFormatType.WITHOUT_ANY_SEPARATOR,
+            numberFormatType = NumberFormatType.WITH_COMMA_SEPARATOR,
             currency = getDefaultCurrencyUseCase(),
         ),
     )

@@ -189,10 +189,87 @@ internal val MIGRATION_10_11 = object : Migration(10, 11) {
 }
 
 /**
+ * Supplies the currency every pre-multi-currency (v11) row was implicitly in: the app's single
+ * selected currency. Implemented outside this module (it lives in DataStore, not Room).
+ */
+fun interface LegacyCurrencyCodeProvider {
+    /** A non-blank ISO 4217 code. */
+    fun legacyCurrencyCode(): String
+}
+
+/**
+ * Multi-currency support.
+ *
+ * Every v11 row was in the app's one selected currency, so that code is stamped on all accounts,
+ * transactions (both sides) and budgets here, inside the migration: no row is ever left without
+ * a currency. v11 transfers were same-currency by definition, so they need no rate snapshot.
+ *
+ * `account`, `transaction` and `budget` are altered in place, not rebuilt: dropping them would
+ * fire their ON DELETE CASCADE children (attachments, budget links, recurring transactions). The
+ * added NOT NULL columns carry a DEFAULT only because SQLite requires one for ALTER TABLE ADD
+ * COLUMN; the entities declare none, and the use-case validation rejects blank codes.
+ */
+class Migration11To12(
+    private val legacyCurrencyCodeProvider: LegacyCurrencyCodeProvider,
+) : Migration(11, 12) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        val code = legacyCurrencyCodeProvider.legacyCurrencyCode()
+        require(code.isNotBlank()) { "Legacy currency code must not be blank" }
+
+        db.execSQL("ALTER TABLE `account` ADD COLUMN `currency_code` TEXT NOT NULL DEFAULT ''")
+        db.execSQL("ALTER TABLE `account` ADD COLUMN `is_archived` INTEGER NOT NULL DEFAULT 0")
+        db.execSQL("UPDATE `account` SET `currency_code` = ?", arrayOf(code))
+
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `exchange_rate_snapshot` (" +
+                "`id` TEXT NOT NULL, `source` INTEGER NOT NULL, `provider` TEXT, " +
+                "`base_code` TEXT NOT NULL, `quote_code` TEXT NOT NULL, `rate` REAL NOT NULL, " +
+                "`captured_at` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        )
+
+        db.execSQL(
+            "ALTER TABLE `transaction` ADD COLUMN `from_currency_code` TEXT NOT NULL DEFAULT ''",
+        )
+        db.execSQL(
+            "ALTER TABLE `transaction` ADD COLUMN `to_currency_code` TEXT NOT NULL DEFAULT ''",
+        )
+        db.execSQL(
+            "ALTER TABLE `transaction` ADD COLUMN `rate_snapshot_id` TEXT DEFAULT NULL " +
+                "REFERENCES `exchange_rate_snapshot`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION",
+        )
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS `index_transaction_rate_snapshot_id` " +
+                "ON `transaction` (`rate_snapshot_id`)",
+        )
+        db.execSQL(
+            "UPDATE `transaction` SET `from_currency_code` = ?, `to_currency_code` = ?",
+            arrayOf(code, code),
+        )
+
+        db.execSQL("ALTER TABLE `budget` ADD COLUMN `currency_code` TEXT NOT NULL DEFAULT ''")
+        db.execSQL("UPDATE `budget` SET `currency_code` = ?", arrayOf(code))
+
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `exchange_rates` (" +
+                "`provider` TEXT NOT NULL, `base_code` TEXT NOT NULL, `target_code` TEXT NOT NULL, " +
+                "`rate` REAL NOT NULL, `fetched_at` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`provider`, `base_code`, `target_code`))",
+        )
+
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `static_exchange_rate` (" +
+                "`base_code` TEXT NOT NULL, `quote_code` TEXT NOT NULL, " +
+                "`buy` REAL NOT NULL, `sell` REAL NOT NULL, `updated_on` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`base_code`, `quote_code`))",
+        )
+    }
+}
+
+/**
  * Every migration, oldest first. The database builder and the migration tests both use this list,
  * so a new migration can't be registered in one place and forgotten in the other.
  */
-internal val ALL_MIGRATIONS = arrayOf(
+internal fun allMigrations(legacyCurrencyCodeProvider: LegacyCurrencyCodeProvider) = arrayOf(
     MIGRATION_1_2,
     MIGRATION_2_3,
     MIGRATION_3_4,
@@ -203,4 +280,5 @@ internal val ALL_MIGRATIONS = arrayOf(
     MIGRATION_8_9,
     MIGRATION_9_10,
     MIGRATION_10_11,
+    Migration11To12(legacyCurrencyCodeProvider),
 )

@@ -23,7 +23,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Paid
 import androidx.compose.material.icons.rounded.AccountBalanceWallet
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -58,6 +60,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPrevi
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
@@ -65,7 +68,10 @@ import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
+import com.naveenapps.expensemanager.core.model.toDisplayValue
 import com.naveenapps.expensemanager.feature.account.R
+import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionBottomSheet
+import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -74,6 +80,7 @@ fun AccountCreateScreen(
     viewModel: AccountCreateViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+
     val snackbarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
@@ -89,9 +96,9 @@ fun AccountCreateScreen(
     AccountCreateScaffoldView(
         state = state,
         onAction = viewModel::processAction,
+        snackbarHostState = snackbarHostState,
         onCaptureRequested = imagePicker.onCaptureRequested,
         onGalleryRequested = imagePicker.onGalleryRequested,
-        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -99,9 +106,9 @@ fun AccountCreateScreen(
 private fun AccountCreateScaffoldView(
     state: AccountCreateState,
     onAction: (AccountCreateAction) -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     if (state.showDeleteDialog) {
         val impact = state.deleteImpact
@@ -135,6 +142,20 @@ private fun AccountCreateScaffoldView(
         }
     }
 
+    if (state.showCurrencySelection) {
+        CountryCurrencySelectionBottomSheet(
+            onEvent = { event ->
+                when (event) {
+                    CountrySelectionEvent.Dismiss ->
+                        onAction.invoke(AccountCreateAction.DismissCurrencySelection)
+
+                    is CountrySelectionEvent.CountrySelected ->
+                        onAction.invoke(AccountCreateAction.SelectCurrency(event.country))
+                }
+            },
+        )
+    }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
@@ -151,7 +172,15 @@ private fun AccountCreateScaffoldView(
                     stringResource(R.string.create_account)
                 },
                 actions = {
-                    if (state.showDeleteButton) {
+                    if (state.showDeleteButton && state.hasTransactions) {
+                        // An account with history can't be deleted, only archived (reversible).
+                        IconButton(onClick = { onAction.invoke(AccountCreateAction.Archive) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Archive,
+                                contentDescription = stringResource(R.string.archive_account),
+                            )
+                        }
+                    } else if (state.showDeleteButton) {
                         IconButton(onClick = { onAction.invoke(AccountCreateAction.ShowDeleteDialog) }) {
                             Icon(
                                 imageVector = Icons.Outlined.Delete,
@@ -165,10 +194,9 @@ private fun AccountCreateScaffoldView(
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
+                onClick = { onAction.invoke(AccountCreateAction.Save) },
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-
-                onClick = { onAction.invoke(AccountCreateAction.Save) },
                 icon = {
                     Icon(
                         imageVector = Icons.Default.Done,
@@ -195,9 +223,13 @@ private fun AccountCreateScaffoldView(
             totalAmount = state.totalAmount,
             totalAmountBackgroundColor = state.totalAmountBackgroundColor,
             customImagePath = state.customImagePath,
+            accountCurrency = state.accountCurrency,
+            accountCurrencyError = state.accountCurrencyError,
+            isEditMode = state.showDeleteButton,
             onCaptureRequested = onCaptureRequested,
             onGalleryRequested = onGalleryRequested,
             onRemoveImage = { onAction.invoke(AccountCreateAction.RemoveImage) },
+            onCurrencyClick = { onAction.invoke(AccountCreateAction.OpenCurrencySelection) },
         )
     }
 }
@@ -214,54 +246,83 @@ private fun AccountCreateScreen(
     totalAmount: String,
     totalAmountBackgroundColor: Int,
     customImagePath: String? = null,
+    accountCurrency: Currency?,
+    accountCurrencyError: Boolean = false,
+    isEditMode: Boolean = false,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
     onRemoveImage: () -> Unit = {},
+    onCurrencyClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        SettingsSection(
-            title = stringResource(R.string.account_type),
-            modifier = Modifier.padding(top = 8.dp),
-        ) {
-            AppCardView {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                ) {
-                    AccountTypeSelectionView(
-                        modifier = Modifier.fillMaxWidth(),
-                        selectedAccountType = type.value,
-                        onAccountTypeChange = type.onValueChange!!,
-                    )
+        if (isEditMode) {
+            LockedAccountDetails(
+                name = name.value,
+                type = type.value,
+                currency = accountCurrency,
+                totalAmount = totalAmount,
+                modifier = Modifier.padding(top = 8.dp),
+            )
+        } else {
+            SettingsSection(
+                title = stringResource(R.string.account_type),
+                modifier = Modifier.padding(top = 8.dp),
+            ) {
+                AppCardView {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                    ) {
+                        AccountTypeSelectionView(
+                            modifier = Modifier.fillMaxWidth(),
+                            selectedAccountType = type.value,
+                            onAccountTypeChange = type.onValueChange!!,
+                        )
+                    }
                 }
             }
-        }
 
-        // Details
-        SettingsSection(title = stringResource(R.string.details)) {
-            AppCardView {
-                Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    StringTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = name.value,
-                        isError = name.valueError,
-                        onValueChange = name.onValueChange,
-                        label = R.string.account_name,
-                        errorMessage = stringResource(id = R.string.account_name_error),
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                    )
-                    BalanceSectionContent(
-                        amount = amount,
-                        type = type,
-                        creditLimit = creditLimit,
-                        totalAmount = totalAmount,
-                        totalAmountBackgroundColor = totalAmountBackgroundColor,
-                    )
+            // Details
+            SettingsSection(title = stringResource(R.string.details)) {
+                AppCardView {
+                    Column(
+                        modifier = Modifier.padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        StringTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            value = name.value,
+                            isError = name.valueError,
+                            onValueChange = name.onValueChange,
+                            label = R.string.account_name,
+                            errorMessage = stringResource(id = R.string.account_name_error),
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        )
+                        SettingRow(
+                            onClick = onCurrencyClick,
+                            title = stringResource(id = R.string.currency),
+                            subtitle = accountCurrency?.toDisplayValue()
+                                ?: stringResource(id = R.string.currency_not_set),
+                            icon = Icons.Outlined.Paid,
+                        )
+                        if (accountCurrencyError) {
+                            Text(
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                                text = stringResource(id = R.string.currency_error),
+                                color = MaterialTheme.colorScheme.error,
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                        }
+                        BalanceSectionContent(
+                            amount = amount,
+                            type = type,
+                            creditLimit = creditLimit,
+                            totalAmount = totalAmount,
+                            totalAmountBackgroundColor = totalAmountBackgroundColor,
+                        )
+                    }
                 }
             }
         }
@@ -403,6 +464,7 @@ private fun AccountCreateStatePreview() {
                 icon = selectedIconField,
                 creditLimit = nameField,
                 currency = Currency("$", ""),
+                accountCurrency = Currency("$", ""),
                 totalAmount = "$ 0.0",
                 totalAmountBackgroundColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = nameField,
@@ -411,5 +473,60 @@ private fun AccountCreateStatePreview() {
             ),
             onAction = {},
         )
+    }
+}
+
+/**
+ * An existing account's identity is immutable: name, type, currency and balance are shown
+ * read-only (the balance only moves through transactions). Only the appearance is editable.
+ */
+@Composable
+private fun LockedAccountDetails(
+    name: String,
+    type: AccountType,
+    currency: Currency?,
+    totalAmount: String,
+    modifier: Modifier = Modifier,
+) {
+    SettingsSection(title = stringResource(R.string.fixed_details), modifier = modifier) {
+        AppCardView {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                LockedDetailRow(stringResource(R.string.account_name), name)
+                LockedDetailRow(
+                    stringResource(R.string.account_type),
+                    stringResource(
+                        if (type == AccountType.CREDIT) R.string.credit else R.string.bank_account,
+                    ),
+                )
+                LockedDetailRow(
+                    stringResource(R.string.currency),
+                    currency?.toDisplayValue() ?: stringResource(R.string.currency_not_set),
+                )
+                LockedDetailRow(stringResource(R.string.current_balance), totalAmount)
+                Text(
+                    text = stringResource(R.string.fixed_details_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LockedDetailRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(text = value, style = MaterialTheme.typography.bodyMedium)
     }
 }

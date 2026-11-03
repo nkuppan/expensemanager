@@ -61,6 +61,8 @@ import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
 import com.naveenapps.expensemanager.feature.settings.autobackup.AutoBackupScreen
+import com.naveenapps.expensemanager.feature.settings.currencyapi.CurrencyApiProfileScreen
+import com.naveenapps.expensemanager.feature.settings.exchangemethod.ExchangeMethodScreen
 import com.naveenapps.expensemanager.feature.settings.restore.RestoreScreen
 import com.naveenapps.expensemanager.feature.transaction.R as TransactionR
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateScreen
@@ -164,6 +166,12 @@ fun NavGraphBuilder.expenseManagerNavigation(
     }
     composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
         AdvancedSettingsScreen()
+    }
+    composable<ExpenseManagerScreens.ExchangeMethodScreen> {
+        ExchangeMethodScreen()
+    }
+    composable<ExpenseManagerScreens.CurrencyApiProfileScreen> {
+        CurrencyApiProfileScreen()
     }
     composable<ExpenseManagerScreens.AccountReOrderScreen> {
         AccountReOrderScreen()

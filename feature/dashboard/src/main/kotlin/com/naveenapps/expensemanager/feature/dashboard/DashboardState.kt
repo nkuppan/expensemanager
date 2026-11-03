@@ -36,6 +36,19 @@ data class DashboardState(
     val hasCurrentMonthBudget: Boolean = false,
     // Defaults to true so the checklist never flashes in before the stored value loads.
     val isGettingStartedDismissed: Boolean = true,
+    /** How the summary totals treated amounts in other currencies, or null if there were none. */
+    val conversionNote: ConversionNote? = null,
     /** Set while automatic backups are failing and the warning isn't snoozed. */
     val backupWarning: AutoBackupError? = null,
 )
+
+enum class ConversionNote {
+    /** Converted at today's fetched rate (not the rate at the time). */
+    CURRENT_RATES,
+
+    /** Converted at the user's own fixed rates. */
+    FIXED_RATES,
+
+    /** Conversion is disabled: each currency's total is shown on its own. */
+    NOT_CONVERTED,
+}

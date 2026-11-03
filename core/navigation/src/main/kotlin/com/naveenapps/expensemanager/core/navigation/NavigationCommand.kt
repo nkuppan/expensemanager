@@ -15,6 +15,9 @@ sealed class NavigationCommand {
      */
     data class ResetBackStack(val routes: List<Any>) : NavigationCommand()
 
+    /** Pops the current screen and pushes [route] as one command, for the same reason. */
+    data class ReplaceCurrent(val route: Any) : NavigationCommand()
+
     data class NavigateToRoute(
         val route: Any,
         val options: NavOptions? = null,

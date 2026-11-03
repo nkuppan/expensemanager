@@ -14,6 +14,7 @@ fun Budget.toEntityModel(): BudgetEntity = BudgetEntity(
     isAllAccountsSelected = isAllAccountsSelected,
     createdOn = createdOn,
     updatedOn = updatedOn,
+    currencyCode = currencyCode,
 )
 
 fun BudgetEntity.toDomainModel(categories: List<String>, accounts: List<String>): Budget = Budget(
@@ -30,4 +31,5 @@ fun BudgetEntity.toDomainModel(categories: List<String>, accounts: List<String>)
     isAllAccountsSelected = isAllAccountsSelected,
     createdOn = createdOn,
     updatedOn = updatedOn,
+    currencyCode = currencyCode,
 )

@@ -14,6 +14,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.budget.DeleteBudgetUseC
 import com.naveenapps.expensemanager.core.domain.usecase.budget.FindBudgetByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.UpdateBudgetUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.FindCategoryByIdUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -35,6 +36,7 @@ import java.util.UUID
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -54,6 +56,7 @@ class BudgetCreateViewModel(
     private val appComposeNavigator: AppComposeNavigator,
     private val numberFormatRepository: NumberFormatRepository,
     private val analyticsRepository: AnalyticsRepository,
+    private val formatAmountInCurrencyUseCase: FormatAmountInCurrencyUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -96,12 +99,16 @@ class BudgetCreateViewModel(
 
     private var budget: Budget? = null
 
+    private val isNewBudget = savedStateHandle.get<String>(ExpenseManagerArgsNames.ID) == null
+
     init {
-        getCurrencyUseCase.invoke().onEach { updatedCurrency ->
-            _state.update {
-                it.copy(currency = updatedCurrency)
+        if (isNewBudget) {
+            // A new budget starts in the app's currency; the user may pick another before saving.
+            viewModelScope.launch {
+                val appCurrency = getCurrencyUseCase.invoke().first()
+                _state.update { it.copy(currency = appCurrency) }
             }
-        }.launchIn(viewModelScope)
+        }
 
         // A new budget opened from Home's Annual tab starts as annual.
         savedStateHandle.get<String>(ExpenseManagerArgsNames.PERIOD)
@@ -139,9 +146,13 @@ class BudgetCreateViewModel(
             budget.selectedMonth.fromMonthAndYearKey()
         } ?: Date()
 
+        val budgetCurrency = formatAmountInCurrencyUseCase.currencyFor(budget.currencyCode)
+
         _state.update { state ->
             state.copy(
                 isLoading = false,
+                currency = budgetCurrency,
+                isCurrencyLocked = true,
                 name = state.name.copy(value = budget.name.orEmpty()),
                 amount = state.amount.copy(value = numberFormatRepository.formatForEditing(budget.amount)),
                 month = state.month.copy(value = loadedDate),
@@ -225,6 +236,7 @@ class BudgetCreateViewModel(
             // Editing keeps the original creation date.
             createdOn = this.budget?.createdOn ?: Calendar.getInstance().time,
             updatedOn = Calendar.getInstance().time,
+            currencyCode = _state.value.currency.code,
         )
 
         val isNewBudget = this@BudgetCreateViewModel.budget == null
@@ -351,6 +363,19 @@ class BudgetCreateViewModel(
     fun processAction(action: BudgetCreateAction) {
         when (action) {
             BudgetCreateAction.ClosePage -> closePage()
+
+            BudgetCreateAction.OpenCurrencySelection -> if (!_state.value.isCurrencyLocked) {
+                _state.update { it.copy(showCurrencySelection = true) }
+            }
+
+            BudgetCreateAction.DismissCurrencySelection ->
+                _state.update { it.copy(showCurrencySelection = false) }
+
+            is BudgetCreateAction.SelectCurrency -> if (!_state.value.isCurrencyLocked) {
+                _state.update {
+                    it.copy(currency = action.country.currency, showCurrencySelection = false)
+                }
+            }
 
             is BudgetCreateAction.SelectPeriodType -> setPeriodType(action.periodType)
 

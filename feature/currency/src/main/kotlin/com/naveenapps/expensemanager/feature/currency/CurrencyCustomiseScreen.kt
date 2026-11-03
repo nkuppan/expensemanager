@@ -284,7 +284,7 @@ private fun CurrencyFormatSelector(
             val isSelected = format == textFormat
             val preview = when (format) {
                 NumberFormatType.WITHOUT_ANY_SEPARATOR -> "123423.13"
-                NumberFormatType.WITH_COMMA_SEPARATOR -> "1,23,423.13"
+                NumberFormatType.WITH_COMMA_SEPARATOR -> "123,423.13"
             }
 
             Card(

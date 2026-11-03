@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -46,6 +47,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -54,6 +56,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -84,6 +87,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.ExchangeRateSource
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
@@ -486,7 +490,8 @@ private fun TransactionCreateContent(
             }
         }
 
-        if (state.canRepeat) {
+        // A cross-currency transfer needs each day's rate entered, so it can't repeat.
+        if (state.canRepeat && state.exchangeRate == null) {
             SettingsSection(title = stringResource(R.string.repeat)) {
                 RepeatSelector(
                     selected = state.repeat,
@@ -576,6 +581,19 @@ private fun TransactionCreateContent(
                     },
                 )
             }
+        }
+
+        state.exchangeRate?.let { rate ->
+            ExchangeRateSection(rate = rate, onAction = onAction)
+        }
+
+        state.saveError?.let { message ->
+            Text(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                text = message,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
 
         SettingsSection(title = stringResource(R.string.attachments)) {
@@ -757,3 +775,81 @@ private fun getTransactionState(
     showTimeSelection = false,
     showDateSelection = false,
 )
+
+/**
+ * The rate of a cross-currency transfer. Pre-filled from the provider (transfers dated today
+ * only) or from the user's fixed rate; they can always overwrite it with the rate they got.
+ */
+@Composable
+private fun ExchangeRateSection(
+    rate: ExchangeRateInputState,
+    onAction: (TransactionCreateAction) -> Unit,
+) {
+    SettingsSection(title = stringResource(R.string.exchange_rate)) {
+        Column(
+            modifier = Modifier.padding(horizontal = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = rate.rateText,
+                onValueChange = { onAction(TransactionCreateAction.ChangeExchangeRate(it)) },
+                label = { Text("1 ${rate.baseCode} = ? ${rate.quoteCode}") },
+                singleLine = true,
+                enabled = !rate.isLoading,
+                isError = rate.rateError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                supportingText = if (rate.rateError) {
+                    { Text(stringResource(R.string.exchange_rate_required)) }
+                } else {
+                    null
+                },
+            )
+            val sourceText = when {
+                rate.isLoading -> stringResource(R.string.exchange_rate_loading)
+
+                rate.source == ExchangeRateSource.FETCHED && rate.provider != null ->
+                    stringResource(
+                        R.string.exchange_rate_fetched_from,
+                        rate.provider,
+                        rate.fetchedAt?.let { formatRateTime(it) }.orEmpty(),
+                    )
+
+                rate.source == ExchangeRateSource.STATIC ->
+                    stringResource(R.string.exchange_rate_fixed)
+
+                rate.hint != null -> rate.hint
+
+                else -> stringResource(R.string.exchange_rate_entered_by_you)
+            }
+            Text(
+                text = sourceText,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            rate.receivedAmount?.let {
+                Text(
+                    text = stringResource(R.string.exchange_rate_received, it),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+            if (rate.source == ExchangeRateSource.USER && rate.fetchedRate != null &&
+                rate.existingSnapshot == null
+            ) {
+                TextButton(onClick = { onAction(TransactionCreateAction.UseFetchedExchangeRate) }) {
+                    Text(
+                        stringResource(
+                            if (rate.suggestedSource == ExchangeRateSource.STATIC) {
+                                R.string.exchange_rate_use_fixed
+                            } else {
+                                R.string.exchange_rate_use_fetched
+                            },
+                        ),
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun formatRateTime(epochMillis: Long): String = java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT).format(Date(epochMillis))

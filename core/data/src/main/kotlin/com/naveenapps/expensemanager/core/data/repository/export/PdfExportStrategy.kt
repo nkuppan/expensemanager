@@ -143,7 +143,11 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
                 transaction.fromAccount.name,
                 transaction.fromAccount.type.toCapitalize(),
                 transaction.toAccount?.name ?: "",
-                signedAmount.toTrimAmount(),
+                // Amounts carry their currency; a cross-currency transfer shows what arrived.
+                "${signedAmount.toTrimAmount()} ${transaction.fromCurrencyCode}" +
+                    transaction.receivedAmount()
+                        ?.let { " → ${it.toTrimAmount()} ${transaction.toCurrencyCode}" }
+                        .orEmpty(),
                 transaction.notes,
             )
             var x = margin + 4f
@@ -170,10 +174,6 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
             )
         }
 
-        val totalIncome =
-            transactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount.amount }
-        val totalExpense =
-            transactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount.amount }
         val now = Date()
 
         val document = PdfDocument()
@@ -201,12 +201,21 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
             "${now.toCompleteDate()} ${now.toTimeAndMinutes()}",
         )
         summaryRow(context.getString(R.string.total_transactions), transactions.size.toString())
-        summaryRow(context.getString(R.string.total_income), totalIncome.toTrimAmount())
-        summaryRow(context.getString(R.string.total_expense), totalExpense.toTrimAmount())
-        summaryRow(
-            context.getString(R.string.net_balance),
-            (totalIncome - totalExpense).toTrimAmount(),
-        )
+        transactions.totalsByCurrency().forEach { totals ->
+            val code = totals.currencyCode
+            summaryRow(
+                "${context.getString(R.string.total_income)} ($code)",
+                totals.income.toTrimAmount(),
+            )
+            summaryRow(
+                "${context.getString(R.string.total_expense)} ($code)",
+                totals.expense.toTrimAmount(),
+            )
+            summaryRow(
+                "${context.getString(R.string.net_balance)} ($code)",
+                totals.net.toTrimAmount(),
+            )
+        }
 
         y += 4f
         canvas.drawLine(margin, y, margin + contentWidth, y, dividerPaint)
