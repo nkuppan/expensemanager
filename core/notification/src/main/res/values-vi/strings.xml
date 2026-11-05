@@ -20,4 +20,13 @@
     <string name="auto_backup_failed_folder_body">Không truy cập được thư mục sao lưu. Chạm để chọn lại.</string>
     <string name="auto_backup_failed_write_body">Không thể sao lưu dữ liệu. Chạm để kiểm tra cài đặt sao lưu.</string>
     <string name="auto_backup_failed_action">Khắc phục</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Khoản thanh toán sắp tới</string>
+    <string name="upcoming_channel_description">Thông báo vào tối hôm trước khi khoản định kỳ hằng tháng hoặc hằng năm được thêm.</string>
+    <string name="upcoming_alert_title_one">Ngày mai: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s sẽ được thêm tự động.</string>
+    <string name="upcoming_alert_body_many">Chúng sẽ được thêm tự động.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="other">%d khoản định kỳ vào ngày mai</item>
+    </plurals>
 </resources>

@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.AppShareLink
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -15,6 +16,7 @@ import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.DemoDataRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
@@ -221,7 +223,10 @@ class SettingsViewModel(
 
             SettingAction.ShareApp -> {
                 viewModelScope.launch {
-                    analyticsRepository.logEvent(AnalyticsEvents.SHARE_APP, emptyMap())
+                    analyticsRepository.logEvent(
+                        AnalyticsEvents.SHARE_APP,
+                        mapOf(AnalyticsParams.SOURCE to AppShareLink.MEDIUM_SETTINGS),
+                    )
                     _event.send(SettingEvent.ShareApp)
                 }
             }

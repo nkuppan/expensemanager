@@ -11,6 +11,9 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.Updat
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.notification.NotificationScheduler
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,6 +32,8 @@ class ReminderViewModel(
     private val notificationScheduler: NotificationScheduler,
     private val appComposeNavigator: AppComposeNavigator,
     private val saveReminderTimeUseCase: SaveReminderTimeUseCase,
+    private val reminderTimeRepository: ReminderTimeRepository,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _event = Channel<ReminderEvent>()
@@ -44,6 +49,10 @@ class ReminderViewModel(
     init {
         getReminderStatusUseCase.invoke().onEach { status ->
             _state.update { it.copy(reminderStatus = status) }
+        }.launchIn(viewModelScope)
+
+        reminderTimeRepository.isUpcomingAlertOn().onEach { on ->
+            _state.update { it.copy(upcomingAlertsOn = on) }
         }.launchIn(viewModelScope)
 
         getReminderTimeUseCase.invoke().onEach { time ->
@@ -75,6 +84,22 @@ class ReminderViewModel(
         }
     }
 
+    // Independent of the daily reminder: either can be on without the other.
+    private fun saveUpcomingAlerts(on: Boolean) {
+        viewModelScope.launch {
+            reminderTimeRepository.setUpcomingAlertOn(on)
+            if (on) {
+                notificationScheduler.scheduleUpcomingAlert()
+            } else {
+                notificationScheduler.cancelUpcomingAlert()
+            }
+            analyticsRepository.logEvent(
+                if (on) AnalyticsEvents.UPCOMING_ALERTS_ON else AnalyticsEvents.UPCOMING_ALERTS_OFF,
+                emptyMap(),
+            )
+        }
+    }
+
     private fun closePage() {
         appComposeNavigator.popBackStack()
     }
@@ -100,6 +125,8 @@ class ReminderViewModel(
                     _state.update { it.copy(showTimePickerDialog = false) }
                     setReminderTimeState(action.reminderState)
                 }
+
+                is ReminderAction.ChangeUpcomingAlerts -> saveUpcomingAlerts(action.on)
 
                 is ReminderAction.ChangeReminderStatus -> {
                     saveReminderStatus(action.status)

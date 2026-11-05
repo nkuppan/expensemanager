@@ -51,4 +51,9 @@
     <plurals name="upcoming_in_days">
         <item quantity="other">Sau %d ngày</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Bạn biết ai đang quản lý chi tiêu không?</string>
+    <string name="home_share_description">Chia sẻ Expense Manager. Miễn phí, không quảng cáo và dữ liệu luôn ở trên điện thoại.</string>
+    <string name="home_share_button">Chia sẻ ứng dụng</string>
+    <string name="home_share_text">Mình dùng Expense Manager để theo dõi chi tiêu. Miễn phí và dữ liệu nằm trên điện thoại của mình: %1$s</string>
 </resources>

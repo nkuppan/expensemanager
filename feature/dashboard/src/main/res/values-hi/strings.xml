@@ -53,4 +53,9 @@
         <item quantity="one">%d दिन में</item>
         <item quantity="other">%d दिन में</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">क्या आपका कोई दोस्त अपने खर्च का हिसाब रखता है?</string>
+    <string name="home_share_description">Expense Manager शेयर करें। यह मुफ़्त है, कोई विज्ञापन नहीं, और उनका डेटा उनके फ़ोन में ही रहता है।</string>
+    <string name="home_share_button">ऐप शेयर करें</string>
+    <string name="home_share_text">मैं अपने खर्च ट्रैक करने के लिए Expense Manager इस्तेमाल करता हूँ। यह मुफ़्त है और मेरा डेटा मेरे फ़ोन पर रहता है: %1$s</string>
 </resources>

@@ -59,6 +59,18 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[sentBudgetAlertsKey].orEmpty()
     }
 
+    // Home's share banner stays hidden until this time (epoch millis): 30 days after "close",
+    // and for good (Long.MAX_VALUE) once the user has shared.
+    private val shareBannerHiddenUntilKey = longPreferencesKey("share_banner_hidden_until")
+
+    suspend fun hideShareBanner(until: Long) = dataStore.edit { preferences ->
+        preferences[shareBannerHiddenUntilKey] = until
+    }
+
+    fun getShareBannerHiddenUntil(): Flow<Long> = dataStore.data.map { preferences ->
+        preferences[shareBannerHiddenUntilKey] ?: 0L
+    }
+
     suspend fun setLastActiveDay(epochDay: Long) = dataStore.edit { preferences ->
         preferences[lastActiveDayKey] = epochDay
     }

@@ -20,4 +20,15 @@
     <string name="auto_backup_failed_folder_body">Dossier de sauvegarde inaccessible. Touchez pour le choisir à nouveau.</string>
     <string name="auto_backup_failed_write_body">Vos données n\'ont pas pu être sauvegardées. Touchez pour vérifier les paramètres.</string>
     <string name="auto_backup_failed_action">Corriger</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Paiements à venir</string>
+    <string name="upcoming_channel_description">Un rappel la veille au soir avant l’ajout d’une opération récurrente mensuelle ou annuelle.</string>
+    <string name="upcoming_alert_title_one">Demain : %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s sera ajouté automatiquement.</string>
+    <string name="upcoming_alert_body_many">Elles seront ajoutées automatiquement.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d opération récurrente demain</item>
+        <item quantity="many">%d opérations récurrentes demain</item>
+        <item quantity="other">%d opérations récurrentes demain</item>
+    </plurals>
 </resources>

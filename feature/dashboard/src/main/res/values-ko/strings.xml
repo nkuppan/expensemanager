@@ -51,4 +51,9 @@
     <plurals name="upcoming_in_days">
         <item quantity="other">%d일 후</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">지출을 관리하는 친구가 있나요?</string>
+    <string name="home_share_description">Expense Manager를 공유하세요. 무료에 광고가 없고, 데이터는 휴대폰에만 저장돼요.</string>
+    <string name="home_share_button">앱 공유</string>
+    <string name="home_share_text">Expense Manager로 지출을 기록하고 있어요. 무료이고 데이터는 내 폰에만 저장돼요: %1$s</string>
 </resources>

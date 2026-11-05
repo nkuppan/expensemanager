@@ -11,4 +11,7 @@
 
     <string name="permission_required_title">Bildirimler Devre Dışı</string>
     <string name="schedule">Zamanla</string>
+    <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
+    <string name="upcoming_alerts_title">Yaklaşan ödeme uyarıları</string>
+    <string name="upcoming_alerts_description">Aylık veya yıllık yinelenen bir kayıt eklenmeden önceki akşam bir hatırlatma.</string>
 </resources>

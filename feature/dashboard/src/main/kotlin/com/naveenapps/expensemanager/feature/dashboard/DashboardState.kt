@@ -41,7 +41,19 @@ data class DashboardState(
     val backupWarning: AutoBackupError? = null,
     /** The "Upcoming" card: planned recurring entries, below the transactions. */
     val upcoming: UpcomingUi = UpcomingUi(),
-)
+    /**
+     * Home's share banner is hidden until this time (epoch millis). Defaults to "never" so it
+     * can't flash up before the stored value loads.
+     */
+    val shareBannerHiddenUntil: Long = Long.MAX_VALUE,
+) {
+    /** The bottom share banner: for users who've logged a few expenses, unless closed or shared. */
+    fun showShareBanner(now: Long): Boolean =
+        transactionCount >= SHARE_BANNER_MIN_TRANSACTIONS && now >= shareBannerHiddenUntil
+}
+
+/** Recommendations land better from people who've actually used the app for a while. */
+internal const val SHARE_BANNER_MIN_TRANSACTIONS = 5
 
 /** The next few recurring rules, soonest first, and what all rules add up to over [windowDays]. */
 @Stable

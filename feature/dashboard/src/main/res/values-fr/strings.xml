@@ -55,4 +55,9 @@
         <item quantity="many">Dans %d jours</item>
         <item quantity="other">Dans %d jours</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Vous connaissez quelqu’un qui suit ses dépenses ?</string>
+    <string name="home_share_description">Partagez Expense Manager. Gratuit, sans pub, et leurs données restent sur leur téléphone.</string>
+    <string name="home_share_button">Partager l\'application</string>
+    <string name="home_share_text">J\'utilise Expense Manager pour suivre mes dépenses. C\'est gratuit et mes données restent sur mon téléphone : %1$s</string>
 </resources>

@@ -11,4 +11,7 @@
 
     <string name="permission_required_title">Notifikasi Dinonaktifkan</string>
     <string name="schedule">Jadwal</string>
+    <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
+    <string name="upcoming_alerts_title">Pengingat pembayaran mendatang</string>
+    <string name="upcoming_alerts_description">Pengingat malam sebelum entri berulang bulanan atau tahunan ditambahkan.</string>
 </resources>

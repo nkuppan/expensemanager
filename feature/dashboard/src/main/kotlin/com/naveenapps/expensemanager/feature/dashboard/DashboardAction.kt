@@ -40,4 +40,15 @@ sealed class DashboardAction {
 
     /** Upcoming card's empty state: the add screen with Repeat set to Monthly. */
     data object PlanRecurring : DashboardAction()
+
+    data object ShareBannerShown : DashboardAction()
+
+    /** "Share the app" on the banner; the screen has already opened the share sheet. */
+    data object ShareAppFromBanner : DashboardAction()
+
+    /** Close on the banner: hidden for [SHARE_BANNER_SNOOZE_DAYS] days. */
+    data object DismissShareBanner : DashboardAction()
 }
+
+/** How long "close" hides the share banner. */
+internal const val SHARE_BANNER_SNOOZE_DAYS = 30L

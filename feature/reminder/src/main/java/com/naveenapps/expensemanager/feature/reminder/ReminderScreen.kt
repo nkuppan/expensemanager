@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.EventRepeat
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.NotificationsOff
@@ -171,7 +172,7 @@ private fun ReminderScreenContent(
                             modifier = Modifier.padding(bottom = 8.dp, start = 4.dp),
                         )
 
-                        AppCardView {
+                        AppCardView(modifier = Modifier.padding(bottom = 16.dp)) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -219,6 +220,19 @@ private fun ReminderScreenContent(
                             }
                         }
                     }
+                }
+
+                // Heads-up before recurring payments: its own switch, independent of the reminder.
+                AppCardView {
+                    SwitchSettingsItem(
+                        icon = Icons.Rounded.EventRepeat,
+                        title = stringResource(id = R.string.upcoming_alerts_title),
+                        description = stringResource(id = R.string.upcoming_alerts_description),
+                        checked = state.upcomingAlertsOn,
+                        onCheckedChange = { on ->
+                            onAction.invoke(ReminderAction.ChangeUpcomingAlerts(on))
+                        },
+                    )
                 }
             } else {
                 // Permission required state

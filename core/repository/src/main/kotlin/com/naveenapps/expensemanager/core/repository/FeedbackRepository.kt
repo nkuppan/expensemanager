@@ -19,6 +19,11 @@ interface FeedbackRepository {
     /** "Nothing spent today" from the reminder: counts as logging for that day. */
     suspend fun recordNoSpendDay(epochDay: Long)
 
+    /** Home's share banner is hidden until this time (epoch millis); 0 when never hidden. */
+    fun getShareBannerHiddenUntil(): Flow<Long>
+
+    suspend fun hideShareBanner(until: Long)
+
     /** Keys of budget alerts already sent ("<budgetId>:<period>:<threshold>"). */
     fun getSentBudgetAlerts(): Flow<Set<String>>
 

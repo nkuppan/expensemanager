@@ -11,4 +11,7 @@
 
     <string name="permission_required_title">Powiadomienia wyłączone</string>
     <string name="schedule">Harmonogram</string>
+    <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
+    <string name="upcoming_alerts_title">Powiadomienia o nadchodzących płatnościach</string>
+    <string name="upcoming_alerts_description">Powiadomienie wieczorem dzień przed dodaniem miesięcznego lub rocznego wpisu cyklicznego.</string>
 </resources>

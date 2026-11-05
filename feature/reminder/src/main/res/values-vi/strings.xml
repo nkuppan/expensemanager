@@ -11,4 +11,7 @@
 
     <string name="permission_required_title">Thông báo đã bị tắt</string>
     <string name="schedule">Lịch trình</string>
+    <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
+    <string name="upcoming_alerts_title">Thông báo thanh toán sắp tới</string>
+    <string name="upcoming_alerts_description">Thông báo vào tối hôm trước khi khoản định kỳ hằng tháng hoặc hằng năm được thêm.</string>
 </resources>

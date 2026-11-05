@@ -20,4 +20,14 @@
     <string name="auto_backup_failed_folder_body">आपके बैकअप फ़ोल्डर तक नहीं पहुँच पा रहे। फिर से चुनने के लिए टैप करें।</string>
     <string name="auto_backup_failed_write_body">आपके डेटा का बैकअप नहीं हो सका। बैकअप सेटिंग जाँचने के लिए टैप करें।</string>
     <string name="auto_backup_failed_action">ठीक करें</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">आने वाले भुगतान</string>
+    <string name="upcoming_channel_description">मासिक या वार्षिक आवर्ती प्रविष्टि जुड़ने से एक शाम पहले सूचना।</string>
+    <string name="upcoming_alert_title_one">कल: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s अपने आप जुड़ जाएगा।</string>
+    <string name="upcoming_alert_body_many">ये अपने आप जुड़ जाएँगी।</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">कल %d आवर्ती प्रविष्टि</item>
+        <item quantity="other">कल %d आवर्ती प्रविष्टियाँ</item>
+    </plurals>
 </resources>

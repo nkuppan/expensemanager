@@ -51,4 +51,9 @@
     <plurals name="upcoming_in_days">
         <item quantity="other">Dalam %d hari</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Kenal seseorang yang mencatat keuangannya?</string>
+    <string name="home_share_description">Bagikan Expense Manager. Gratis, tanpa iklan, dan datanya tetap di ponsel mereka.</string>
+    <string name="home_share_button">Bagikan aplikasi</string>
+    <string name="home_share_text">Saya pakai Expense Manager untuk mencatat pengeluaran. Gratis dan data tetap di ponsel saya: %1$s</string>
 </resources>

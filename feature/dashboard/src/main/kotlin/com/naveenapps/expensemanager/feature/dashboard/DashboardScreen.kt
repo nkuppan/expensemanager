@@ -40,10 +40,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +53,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.common.utils.AppShareLink
+import com.naveenapps.expensemanager.core.common.utils.shareAppMessage
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
@@ -323,6 +327,25 @@ private fun DashboardScreenContent(
                     upcoming = state.upcoming,
                     onAction = onAction,
                     modifier = Modifier.padding(horizontal = 16.dp),
+                )
+            }
+        }
+
+        if (state.showShareBanner(System.currentTimeMillis())) {
+            item("share_banner") {
+                val context = LocalContext.current
+                LaunchedEffect(Unit) { onAction(DashboardAction.ShareBannerShown) }
+                HomeShareBanner(
+                    onShare = {
+                        val link = AppShareLink.playStore(AppShareLink.MEDIUM_HOME_BANNER)
+                        val shared = context.shareAppMessage(
+                            message = context.getString(R.string.home_share_text, link),
+                            chooserTitle = context.getString(R.string.home_share_button),
+                        )
+                        if (shared) onAction(DashboardAction.ShareAppFromBanner)
+                    },
+                    onDismiss = { onAction(DashboardAction.DismissShareBanner) },
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 )
             }
         }

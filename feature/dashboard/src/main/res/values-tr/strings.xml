@@ -53,4 +53,9 @@
         <item quantity="one">%d gün içinde</item>
         <item quantity="other">%d gün içinde</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Harcamalarını takip eden birini tanıyor musun?</string>
+    <string name="home_share_description">Expense Manager’ı paylaş. Ücretsiz, reklamsız ve veriler telefonda kalır.</string>
+    <string name="home_share_button">Uygulamayı paylaş</string>
+    <string name="home_share_text">Harcamalarımı Expense Manager ile takip ediyorum. Ücretsiz ve verilerim telefonumda kalıyor: %1$s</string>
 </resources>

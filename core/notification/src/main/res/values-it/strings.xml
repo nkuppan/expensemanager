@@ -20,4 +20,15 @@
     <string name="auto_backup_failed_folder_body">Impossibile raggiungere la cartella di backup. Tocca per sceglierla di nuovo.</string>
     <string name="auto_backup_failed_write_body">Non è stato possibile eseguire il backup dei dati. Tocca per controllare le impostazioni.</string>
     <string name="auto_backup_failed_action">Risolvi</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Pagamenti in arrivo</string>
+    <string name="upcoming_channel_description">Un avviso la sera prima che venga aggiunta una voce ricorrente mensile o annuale.</string>
+    <string name="upcoming_alert_title_one">Domani: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s verrà aggiunto automaticamente.</string>
+    <string name="upcoming_alert_body_many">Verranno aggiunte automaticamente.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d voce ricorrente domani</item>
+        <item quantity="many">%d voci ricorrenti domani</item>
+        <item quantity="other">%d voci ricorrenti domani</item>
+    </plurals>
 </resources>

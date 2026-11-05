@@ -61,4 +61,9 @@
         <item quantity="many">خلال %d يومًا</item>
         <item quantity="other">خلال %d يوم</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">هل تعرف من يتابع مصاريفه؟</string>
+    <string name="home_share_description">شارك Expense Manager. مجاني وبلا إعلانات، وتبقى بياناتهم على هواتفهم.</string>
+    <string name="home_share_button">شارك التطبيق</string>
+    <string name="home_share_text">أستخدم Expense Manager لتتبّع إنفاقي. إنه مجاني ويحفظ بياناتي على هاتفي: %1$s</string>
 </resources>

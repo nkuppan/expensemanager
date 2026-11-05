@@ -26,6 +26,12 @@ class FeedbackRepositoryImpl(
         feedbackDataStore.addNoSpendDay(epochDay)
     }
 
+    override fun getShareBannerHiddenUntil(): Flow<Long> = feedbackDataStore.getShareBannerHiddenUntil()
+
+    override suspend fun hideShareBanner(until: Long) {
+        feedbackDataStore.hideShareBanner(until)
+    }
+
     override fun getSentBudgetAlerts(): Flow<Set<String>> = feedbackDataStore.getSentBudgetAlerts()
 
     override suspend fun markBudgetAlertSent(key: String) {

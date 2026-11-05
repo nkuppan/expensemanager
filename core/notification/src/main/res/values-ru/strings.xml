@@ -20,4 +20,16 @@
     <string name="auto_backup_failed_folder_body">Нет доступа к папке для копий. Нажмите, чтобы выбрать её снова.</string>
     <string name="auto_backup_failed_write_body">Не удалось создать резервную копию. Нажмите, чтобы проверить настройки.</string>
     <string name="auto_backup_failed_action">Исправить</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Предстоящие платежи</string>
+    <string name="upcoming_channel_description">Напоминание вечером накануне добавления ежемесячной или ежегодной повторяющейся записи.</string>
+    <string name="upcoming_alert_title_one">Завтра: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s будет добавлено автоматически.</string>
+    <string name="upcoming_alert_body_many">Они будут добавлены автоматически.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d повторяющаяся запись завтра</item>
+        <item quantity="few">%d повторяющиеся записи завтра</item>
+        <item quantity="many">%d повторяющихся записей завтра</item>
+        <item quantity="other">%d повторяющейся записи завтра</item>
+    </plurals>
 </resources>

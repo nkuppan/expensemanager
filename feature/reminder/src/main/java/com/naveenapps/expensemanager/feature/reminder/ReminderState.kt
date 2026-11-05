@@ -11,4 +11,6 @@ data class ReminderState(
     val showTimePickerDialog: Boolean = false,
     val shouldShowRationale: Boolean = false,
     val showPermissionMessage: Boolean = false,
+    /** "Upcoming payment alerts": heads-up the evening before a monthly / yearly recurring entry. */
+    val upcomingAlertsOn: Boolean = true,
 )

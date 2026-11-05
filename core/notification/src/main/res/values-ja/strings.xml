@@ -20,4 +20,13 @@
     <string name="auto_backup_failed_folder_body">バックアップフォルダにアクセスできません。タップして選び直してください。</string>
     <string name="auto_backup_failed_write_body">データをバックアップできませんでした。タップして設定を確認してください。</string>
     <string name="auto_backup_failed_action">修正</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">今後の支払い</string>
+    <string name="upcoming_channel_description">毎月・毎年の定期項目が追加される前日の夕方にお知らせします。</string>
+    <string name="upcoming_alert_title_one">明日: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s が自動で追加されます。</string>
+    <string name="upcoming_alert_body_many">自動で追加されます。</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="other">明日の定期項目 %d 件</item>
+    </plurals>
 </resources>

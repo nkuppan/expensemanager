@@ -37,4 +37,18 @@ class ReminderTimeRepositoryImpl(
         deviceLocalDataStore.setNotificationPrimerShown()
         Unit
     }
+
+    override fun isUpcomingAlertOn(): Flow<Boolean> = dataStore.isUpcomingAlertOn()
+
+    override suspend fun setUpcomingAlertOn(on: Boolean) = withContext(dispatchers.io) {
+        dataStore.setUpcomingAlertOn(on)
+        Unit
+    }
+
+    override fun getLastUpcomingAlertDay(): Flow<Long?> = dataStore.getLastUpcomingAlertDay()
+
+    override suspend fun setLastUpcomingAlertDay(epochDay: Long) = withContext(dispatchers.io) {
+        dataStore.setLastUpcomingAlertDay(epochDay)
+        Unit
+    }
 }

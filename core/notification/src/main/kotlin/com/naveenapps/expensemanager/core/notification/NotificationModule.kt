@@ -56,6 +56,18 @@ val NotificationModule = module {
         )
     }
     worker {
+        UpcomingRecurringWorker(
+            context = androidContext(),
+            workerParams = get(),
+            getRecurringTransactionsUseCase = get(),
+            getCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            reminderTimeRepository = get(),
+            notificationScheduler = get(),
+            analyticsRepository = get(),
+        )
+    }
+    worker {
         NotificationWorker(
             context = androidContext(),
             workerParams = get(),

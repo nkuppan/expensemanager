@@ -1,8 +1,6 @@
 package com.naveenapps.expensemanager.feature.settings
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -68,6 +66,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.common.utils.AppShareLink
+import com.naveenapps.expensemanager.core.common.utils.shareAppMessage
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
@@ -519,19 +519,10 @@ fun SettingsScreenPreview() {
     }
 }
 
-/** Play Store listing of the release app (not the ".debug" package a debug build runs as). */
-private const val PLAY_STORE_URL =
-    "https://play.google.com/store/apps/details?id=com.naveenapps.expensemanager"
-
-/** Word-of-mouth: share a short pitch plus the store link through any app. */
+/** Word-of-mouth: share a short pitch plus the store link (tagged as a Settings share). */
 private fun Context.shareApp() {
-    val send = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, getString(R.string.share_app_text, PLAY_STORE_URL))
-    }
-    try {
-        startActivity(Intent.createChooser(send, getString(R.string.share_app)))
-    } catch (_: ActivityNotFoundException) {
-        // Nothing can receive a share; ignore.
-    }
+    shareAppMessage(
+        message = getString(R.string.share_app_text, AppShareLink.playStore(AppShareLink.MEDIUM_SETTINGS)),
+        chooserTitle = getString(R.string.share_app),
+    )
 }

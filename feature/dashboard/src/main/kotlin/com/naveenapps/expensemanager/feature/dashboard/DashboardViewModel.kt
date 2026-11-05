@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.dashboard
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.AppShareLink
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
@@ -37,6 +38,7 @@ import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
 import java.time.LocalDate
 import java.util.Date
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -95,6 +97,10 @@ class DashboardViewModel(
                 val warning = settings.lastError.takeIf { settings.needsAttention(System.currentTimeMillis()) }
                 _state.update { it.copy(backupWarning = warning) }
             }
+            .launchIn(viewModelScope)
+
+        feedbackRepository.getShareBannerHiddenUntil()
+            .onEach { until -> _state.update { it.copy(shareBannerHiddenUntil = until) } }
             .launchIn(viewModelScope)
 
         // Inputs for the "Get started" checklist.
@@ -273,6 +279,9 @@ class DashboardViewModel(
         appComposeNavigator.navigate(ExpenseManagerScreens.TransactionCreate(transactionId))
     }
 
+    // share_banner_shown is logged once per visit to Home, not on every recomposition.
+    private var shareBannerLogged = false
+
     fun processAction(action: DashboardAction) {
         when (action) {
             is DashboardAction.OpenAccountEdit -> openAccountCreate(action.account.id)
@@ -303,6 +312,27 @@ class DashboardViewModel(
                     mapOf(AnalyticsParams.SOURCE to "home_banner"),
                 )
                 appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
+            }
+
+            DashboardAction.ShareBannerShown -> if (!shareBannerLogged) {
+                shareBannerLogged = true
+                analyticsRepository.logEvent(AnalyticsEvents.SHARE_BANNER_SHOWN, emptyMap())
+            }
+
+            DashboardAction.ShareAppFromBanner -> viewModelScope.launch {
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.SHARE_APP,
+                    mapOf(AnalyticsParams.SOURCE to AppShareLink.MEDIUM_HOME_BANNER),
+                )
+                // Asked once and they shared: don't ask again.
+                feedbackRepository.hideShareBanner(Long.MAX_VALUE)
+            }
+
+            DashboardAction.DismissShareBanner -> viewModelScope.launch {
+                analyticsRepository.logEvent(AnalyticsEvents.SHARE_BANNER_DISMISSED, emptyMap())
+                feedbackRepository.hideShareBanner(
+                    System.currentTimeMillis() + TimeUnit.DAYS.toMillis(SHARE_BANNER_SNOOZE_DAYS),
+                )
             }
 
             DashboardAction.OpenRecurringList ->

@@ -20,4 +20,14 @@
     <string name="auto_backup_failed_folder_body">Sicherungsordner nicht erreichbar. Tippe, um ihn erneut auszuwählen.</string>
     <string name="auto_backup_failed_write_body">Deine Daten konnten nicht gesichert werden. Tippe, um die Einstellungen zu prüfen.</string>
     <string name="auto_backup_failed_action">Beheben</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Anstehende Zahlungen</string>
+    <string name="upcoming_channel_description">Ein Hinweis am Vorabend, bevor ein monatlicher oder jährlicher Dauerposten hinzugefügt wird.</string>
+    <string name="upcoming_alert_title_one">Morgen: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s wird automatisch hinzugefügt.</string>
+    <string name="upcoming_alert_body_many">Sie werden automatisch hinzugefügt.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d wiederkehrender Posten morgen</item>
+        <item quantity="other">%d wiederkehrende Posten morgen</item>
+    </plurals>
 </resources>

@@ -14,6 +14,8 @@ val ReminderViewModelModule = module {
             appComposeNavigator = get(),
             saveReminderTimeUseCase = get(),
             versionCheckerRepository = get(),
+            reminderTimeRepository = get(),
+            analyticsRepository = get(),
         )
     }
 }

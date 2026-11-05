@@ -11,4 +11,7 @@
 
     <string name="permission_required_title">Уведомления отключены</string>
     <string name="schedule">Расписание</string>
+    <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
+    <string name="upcoming_alerts_title">Уведомления о предстоящих платежах</string>
+    <string name="upcoming_alerts_description">Напоминание вечером накануне добавления ежемесячной или ежегодной повторяющейся записи.</string>
 </resources>

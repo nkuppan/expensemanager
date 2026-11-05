@@ -50,8 +50,16 @@ object AnalyticsEvents {
     const val RECURRING_STOPPED = "recurring_stopped"
     const val RECURRING_EDITED = "recurring_edited"
 
+    /** Evening heads-up before monthly / yearly recurring entries; `count` = how many tomorrow. */
+    const val UPCOMING_ALERT_SHOWN = "upcoming_alert_shown"
+    const val UPCOMING_ALERTS_ON = "upcoming_alerts_on"
+    const val UPCOMING_ALERTS_OFF = "upcoming_alerts_off"
+
     // Referral / store
+    /** `source` = where it started: "home_banner" or "settings" (same as the link's utm_medium). */
     const val SHARE_APP = "share_app"
+    const val SHARE_BANNER_SHOWN = "share_banner_shown"
+    const val SHARE_BANNER_DISMISSED = "share_banner_dismissed"
 
     const val REVIEW_REQUESTED = "review_requested"
     const val RATE_US_CLICKED = "rate_us_clicked"

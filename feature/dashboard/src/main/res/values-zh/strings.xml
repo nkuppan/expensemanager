@@ -51,4 +51,9 @@
     <plurals name="upcoming_in_days">
         <item quantity="other">%d 天后</item>
     </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">身边有人在记账吗？</string>
+    <string name="home_share_description">分享 Expense Manager。免费、无广告，数据只保存在手机上。</string>
+    <string name="home_share_button">分享应用</string>
+    <string name="home_share_text">我用 Expense Manager 记录支出。免费，而且数据只保存在我的手机上：%1$s</string>
 </resources>

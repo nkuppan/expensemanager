@@ -84,6 +84,84 @@ class NotificationScheduler(
         }
     }
 
+    /**
+     * Next run of the evening heads-up for tomorrow's monthly / yearly recurring entries, at
+     * [UPCOMING_ALERT_HOUR] local time (later today, or tomorrow once that's passed). The worker
+     * schedules the following run itself, like the daily reminder. REPLACE keeps exactly one.
+     */
+    fun scheduleUpcomingAlert(now: Calendar = Calendar.getInstance()) {
+        val next = (now.clone() as Calendar).apply {
+            set(Calendar.HOUR_OF_DAY, UPCOMING_ALERT_HOUR)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            if (!after(now)) add(Calendar.DATE, 1)
+        }
+        val request = OneTimeWorkRequestBuilder<UpcomingRecurringWorker>()
+            .setInitialDelay(next.timeInMillis - now.timeInMillis, TimeUnit.MILLISECONDS)
+            .build()
+        withWorkManager {
+            it.enqueueUniqueWork(UPCOMING_ALERT_WORK_NAME, ExistingWorkPolicy.REPLACE, request)
+        }
+    }
+
+    fun cancelUpcomingAlert() {
+        withWorkManager { it.cancelUniqueWork(UPCOMING_ALERT_WORK_NAME) }
+    }
+
+    /** On app start: (re)schedules the heads-up when the user has it on. */
+    suspend fun checkAndScheduleUpcomingAlert() {
+        if (reminderTimeRepository.isUpcomingAlertOn().firstOrNull() != false) {
+            scheduleUpcomingAlert()
+        } else {
+            cancelUpcomingAlert()
+        }
+    }
+
+    /**
+     * "Tomorrow: Rent" heads-up, on its own channel so it can be muted separately. One entry shows
+     * its amount in the text; several show as a list (InboxStyle). Needs only the OS permission:
+     * it has its own switch, independent of the daily reminder. Tapping opens the app.
+     */
+    @SuppressLint("MissingPermission")
+    fun showUpcomingRecurringNotification(title: String, lines: List<String>, summary: String) {
+        if (!hasNotificationPermission()) return
+        createNotificationChannel(
+            NotificationChannelId.CHANNEL_UPCOMING,
+            context.getString(R.string.upcoming_channel_name),
+            context.getString(R.string.upcoming_channel_description),
+        )
+
+        val openApp = Intent(context, Class.forName(DESTINATION_CLASS))
+            .setFlags(OPEN_APP_FLAGS)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            NotificationId.UPCOMING_RECURRING,
+            openApp,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        val text = lines.singleOrNull() ?: summary
+        val builder = NotificationCompat.Builder(context, NotificationChannelId.CHANNEL_UPCOMING)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setSmallIcon(R.drawable.account_balance_wallet)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+        if (lines.size > 1) {
+            builder.setStyle(
+                NotificationCompat.InboxStyle()
+                    .also { style -> lines.forEach(style::addLine) }
+                    .setSummaryText(summary),
+            )
+        } else {
+            builder.setStyle(NotificationCompat.BigTextStyle().bigText(text))
+        }
+
+        runCatching {
+            NotificationManagerCompat.from(context).notify(NotificationId.UPCOMING_RECURRING, builder.build())
+        }
+    }
+
     /** Called after a transaction is saved; a short delay batches quick successive saves. */
     override fun checkBudgetsSoon() {
         val request = OneTimeWorkRequestBuilder<BudgetAlertWorker>()
@@ -349,6 +427,7 @@ object NotificationId {
     const val NO_SPEND_REQUEST_CODE = 102
     const val WEEKLY_SUMMARY = 103
     const val AUTO_BACKUP_FAILED = 104
+    const val UPCOMING_RECURRING = 105
 
     /** Budget alerts use this base plus a per-budget offset, so each budget has its own. */
     const val BUDGET_ALERT_BASE = 10_000
@@ -361,9 +440,16 @@ private const val WEEKLY_SUMMARY_WORK_NAME = "weekly_summary"
 private const val BUDGET_ALERT_WORK_NAME = "budget_alert_check"
 private const val WEEKLY_SUMMARY_HOUR = 19
 private const val BUDGET_CHECK_DELAY_SECONDS = 5L
+private const val UPCOMING_ALERT_WORK_NAME = "upcoming_recurring_alert"
+
+/** Local hour of the evening heads-up before monthly / yearly recurring entries. */
+const val UPCOMING_ALERT_HOUR = 19
 
 object NotificationChannelId {
     const val CHANNEL_GENERAL = "General"
+
+    /** Heads-up before recurring payments; its own channel so it can be muted on its own. */
+    const val CHANNEL_UPCOMING = "upcoming_payments"
 }
 
 /**

@@ -21,4 +21,6 @@ sealed class ReminderAction {
     data class ChangeReminderStatus(val status: Boolean) : ReminderAction()
 
     data class SaveReminder(val reminderState: ReminderTimeState) : ReminderAction()
+
+    data class ChangeUpcomingAlerts(val on: Boolean) : ReminderAction()
 }

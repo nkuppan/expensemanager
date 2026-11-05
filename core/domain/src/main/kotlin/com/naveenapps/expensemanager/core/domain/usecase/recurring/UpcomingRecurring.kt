@@ -5,11 +5,12 @@ import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
 import java.util.UUID
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 /**
  * Plans a transaction (not saved) to repeat every frequency from its own date, which is on a later day
@@ -109,3 +110,20 @@ internal fun summarizeUpcoming(
 
 // A daily rule overdue for a long time can't make the loop run away.
 private const val MAX_OCCURRENCES_IN_WINDOW = 400
+
+/** Frequencies that get a heads-up the evening before; daily and weekly ones would be noise. */
+val HEADS_UP_FREQUENCIES = setOf(RecurringFrequency.WEEKLY, RecurringFrequency.MONTHLY, RecurringFrequency.YEARLY)
+
+/**
+ * Monthly and yearly rules whose next entry is added on [day], soonest first. The evening
+ * heads-up asks for tomorrow's. A rule that's already overdue isn't included: it's logged on the
+ * next app start or background run, not on [day].
+ */
+fun rulesAddedOn(
+    rules: List<RecurringTransaction>,
+    day: LocalDate,
+    zone: ZoneId = ZoneId.systemDefault(),
+): List<RecurringTransaction> = rules
+    .filter { it.frequency in HEADS_UP_FREQUENCIES }
+    .filter { it.nextDueDate.toInstant().atZone(zone).toLocalDate() == day }
+    .sortedBy { it.nextDueDate }

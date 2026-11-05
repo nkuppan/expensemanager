@@ -18,4 +18,13 @@ interface ReminderTimeRepository {
     fun isNotificationPrimerShown(): Flow<Boolean>
 
     suspend fun setNotificationPrimerShown()
+
+    /** "Upcoming payment alerts": heads-up the evening before a monthly / yearly recurring entry. */
+    fun isUpcomingAlertOn(): Flow<Boolean>
+
+    suspend fun setUpcomingAlertOn(on: Boolean)
+
+    fun getLastUpcomingAlertDay(): Flow<Long?>
+
+    suspend fun setLastUpcomingAlertDay(epochDay: Long)
 }

@@ -20,4 +20,13 @@
     <string name="auto_backup_failed_folder_body">Folder cadangan tidak dapat diakses. Ketuk untuk memilihnya lagi.</string>
     <string name="auto_backup_failed_write_body">Data Anda tidak dapat dicadangkan. Ketuk untuk memeriksa setelan cadangan.</string>
     <string name="auto_backup_failed_action">Perbaiki</string>
+    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Pembayaran mendatang</string>
+    <string name="upcoming_channel_description">Pengingat malam sebelum entri berulang bulanan atau tahunan ditambahkan.</string>
+    <string name="upcoming_alert_title_one">Besok: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s akan ditambahkan otomatis.</string>
+    <string name="upcoming_alert_body_many">Semuanya akan ditambahkan otomatis.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="other">%d entri berulang besok</item>
+    </plurals>
 </resources>
