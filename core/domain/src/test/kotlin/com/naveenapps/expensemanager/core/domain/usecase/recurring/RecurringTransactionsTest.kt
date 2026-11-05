@@ -298,7 +298,7 @@ class RecurringTransactionsTest {
     }
 
     @Test
-    fun `the evening heads-up covers monthly and yearly entries added tomorrow only`() {
+    fun `the evening heads-up covers weekly, monthly and yearly entries added tomorrow only`() {
         val tomorrow = java.time.LocalDate.of(2026, 11, 5)
         val rent = rule(date(2026, 10, 5)).copy(id = "rent", nextDueDate = date(2026, 11, 5, h = 9))
         val insurance = rule(date(2025, 11, 5), RecurringFrequency.YEARLY).copy(
@@ -307,14 +307,15 @@ class RecurringTransactionsTest {
         )
         val tea = rule(date(2026, 11, 5), RecurringFrequency.DAILY)
             .copy(id = "tea", nextDueDate = date(2026, 11, 5))
-        val gym = rule(date(2026, 10, 29), RecurringFrequency.WEEKLY)
-            .copy(id = "gym", nextDueDate = date(2026, 11, 5))
+        val gym = rule(date(2026, 10, 29, h = 18), RecurringFrequency.WEEKLY)
+            .copy(id = "gym", nextDueDate = date(2026, 11, 5, h = 18))
         val later = rule(date(2026, 10, 6)).copy(id = "later", nextDueDate = date(2026, 11, 6))
         val overdue = rule(date(2026, 10, 1)).copy(id = "overdue", nextDueDate = date(2026, 11, 1))
 
         val due = rulesAddedOn(listOf(rent, insurance, tea, gym, later, overdue), tomorrow, zone)
 
-        assertThat(due.map { it.id }).containsExactly("insurance", "rent").inOrder()
+        // Soonest first; daily, the day after and overdue ones are left out.
+        assertThat(due.map { it.id }).containsExactly("insurance", "rent", "gym").inOrder()
     }
 
     @Test

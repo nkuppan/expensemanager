@@ -34,7 +34,7 @@ class ReminderTimeDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_REMINDER] ?: true
     }
 
-    // "Upcoming payment alerts": a heads-up the evening before a monthly or yearly recurring
+    // "Upcoming payment alerts": a heads-up the evening before a weekly, monthly or yearly recurring
     // entry is added. On by default, separate from the daily logging reminder.
     suspend fun setUpcomingAlertOn(on: Boolean) = dataStore.edit { preferences ->
         preferences[KEY_UPCOMING_ALERT] = on

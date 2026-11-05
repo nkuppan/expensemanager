@@ -18,7 +18,7 @@ import java.time.ZoneId
 import kotlinx.coroutines.flow.first
 
 /**
- * Runs at [UPCOMING_ALERT_HOUR] each evening: if any monthly or yearly recurring entry is added
+ * Runs at [UPCOMING_ALERT_HOUR] each evening: if any weekly, monthly or yearly recurring entry is added
  * tomorrow, shows one heads-up ("Tomorrow: Rent", "₹15,000 will be added automatically"), or a
  * list when there are several. Then schedules tomorrow evening's run. Stays quiet when the user
  * switched "Upcoming payment alerts" off, and never notifies twice on the same evening.

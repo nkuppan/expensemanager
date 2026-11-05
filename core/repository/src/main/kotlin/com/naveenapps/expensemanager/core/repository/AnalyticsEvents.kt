@@ -50,7 +50,7 @@ object AnalyticsEvents {
     const val RECURRING_STOPPED = "recurring_stopped"
     const val RECURRING_EDITED = "recurring_edited"
 
-    /** Evening heads-up before monthly / yearly recurring entries; `count` = how many tomorrow. */
+    /** Evening heads-up before weekly / monthly / yearly recurring entries; `count` = how many tomorrow. */
     const val UPCOMING_ALERT_SHOWN = "upcoming_alert_shown"
     const val UPCOMING_ALERTS_ON = "upcoming_alerts_on"
     const val UPCOMING_ALERTS_OFF = "upcoming_alerts_off"

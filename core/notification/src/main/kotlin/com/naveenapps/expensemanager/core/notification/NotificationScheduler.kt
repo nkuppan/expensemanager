@@ -85,7 +85,7 @@ class NotificationScheduler(
     }
 
     /**
-     * Next run of the evening heads-up for tomorrow's monthly / yearly recurring entries, at
+     * Next run of the evening heads-up for tomorrow's weekly / monthly / yearly recurring entries, at
      * [UPCOMING_ALERT_HOUR] local time (later today, or tomorrow once that's passed). The worker
      * schedules the following run itself, like the daily reminder. REPLACE keeps exactly one.
      */
@@ -442,7 +442,7 @@ private const val WEEKLY_SUMMARY_HOUR = 19
 private const val BUDGET_CHECK_DELAY_SECONDS = 5L
 private const val UPCOMING_ALERT_WORK_NAME = "upcoming_recurring_alert"
 
-/** Local hour of the evening heads-up before monthly / yearly recurring entries. */
+/** Local hour of the evening heads-up before weekly / monthly / yearly recurring entries. */
 const val UPCOMING_ALERT_HOUR = 19
 
 object NotificationChannelId {

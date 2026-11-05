@@ -111,11 +111,11 @@ internal fun summarizeUpcoming(
 // A daily rule overdue for a long time can't make the loop run away.
 private const val MAX_OCCURRENCES_IN_WINDOW = 400
 
-/** Frequencies that get a heads-up the evening before; daily and weekly ones would be noise. */
+/** Frequencies that get a heads-up the evening before; daily ones would notify every evening. */
 val HEADS_UP_FREQUENCIES = setOf(RecurringFrequency.WEEKLY, RecurringFrequency.MONTHLY, RecurringFrequency.YEARLY)
 
 /**
- * Monthly and yearly rules whose next entry is added on [day], soonest first. The evening
+ * Weekly, monthly and yearly rules whose next entry is added on [day], soonest first. The evening
  * heads-up asks for tomorrow's. A rule that's already overdue isn't included: it's logged on the
  * next app start or background run, not on [day].
  */
