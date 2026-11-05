@@ -56,6 +56,7 @@ object AnalyticsEvents {
     const val UPCOMING_ALERTS_OFF = "upcoming_alerts_off"
 
     // Referral / store
+
     /** `source` = where it started: "home_banner" or "settings" (same as the link's utm_medium). */
     const val SHARE_APP = "share_app"
     const val SHARE_BANNER_SHOWN = "share_banner_shown"
