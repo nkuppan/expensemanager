@@ -58,4 +58,31 @@
     <string name="home_share_description">Teile Expense Manager. Kostenlos, ohne Werbung, und die Daten bleiben auf dem eigenen Handy.</string>
     <string name="home_share_button">App teilen</string>
     <string name="home_share_text">Ich erfasse meine Ausgaben mit Expense Manager. Kostenlos, und meine Daten bleiben auf dem Handy: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Startseite anpassen</string>
+    <string name="customise_hint">Gedrückt halten und ziehen, um die Bereiche der Startseite neu anzuordnen</string>
+    <string name="customise_save">Speichern</string>
+    <string name="customise_reset">Zurücksetzen</string>
+    <string name="section_summary">Einnahmen- und Ausgabenübersicht</string>
+    <string name="section_accounts">Konten</string>
+    <string name="section_categories">Kategorien</string>
+    <string name="section_budgets">Budgets</string>
+    <string name="section_transactions">Letzte Buchungen</string>
+    <string name="section_upcoming">Anstehende Zahlungen</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Benachrichtigungen</string>
+    <string name="whats_new_version">Version %1$s</string>
+    <string name="notification_new">Neu</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Mehr anzeigen (%1$d)</string>
+    <string name="notification_see_less">Weniger anzeigen</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Vorausplanen: Miete, Rechnungen oder Gehalt ab einem späteren Datum wiederholen und alles Anstehende in der neuen Karte „Demnächst“ sehen</item>
+        <item>Ein Hinweis am Vorabend, bevor eine wöchentliche, monatliche oder jährliche Zahlung hinzugefügt wird</item>
+        <item>Mit einem Tipp wiederholen: häufige Einträge erscheinen beim Hinzufügen als Chips</item>
+        <item>Alle Buchungen durchsuchen, mit Summen der Treffer</item>
+        <item>Startseite neu anordnen und Startreiter wählen</item>
+        <item>Viele kleine Verbesserungen</item>
+    </string-array>
 </resources>

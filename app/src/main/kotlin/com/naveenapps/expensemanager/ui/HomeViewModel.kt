@@ -11,11 +11,13 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
+import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -27,10 +29,26 @@ class HomeViewModel(
     private val reminderTimeRepository: ReminderTimeRepository,
     private val feedbackRepository: FeedbackRepository,
     private val appComposeNavigator: AppComposeNavigator,
+    settingsRepository: SettingsRepository,
 ) : ViewModel() {
 
     private val _homeScreenBottomBarItems = MutableStateFlow(HomeScreenBottomBarItems.Home)
     val homeScreenBottomBarItems = _homeScreenBottomBarItems.asStateFlow()
+
+    // The tab the app opens on (Settings → Defaults). Back from any other tab returns here.
+    private val _landingTab = MutableStateFlow<HomeScreenBottomBarItems?>(null)
+
+    /** Null until the setting has loaded; Home waits for it so the wrong tab never flashes. */
+    val landingTab: StateFlow<HomeScreenBottomBarItems?> = _landingTab.asStateFlow()
+
+    init {
+        // Applied once per Home: switching tabs afterwards (or rotating) keeps the user's choice.
+        viewModelScope.launch {
+            val landing = settingsRepository.getLandingPage().first().toBottomBarItem()
+            _homeScreenBottomBarItems.value = landing
+            _landingTab.value = landing
+        }
+    }
 
     // The situation the explainer was shown in, kept for its answer and the permission result
     // (answering clears the first-save flag, so it can't be worked out again afterwards).

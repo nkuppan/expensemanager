@@ -25,6 +25,7 @@ val NotificationModule = module {
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
             analyticsRepository = get(),
+            feedbackRepository = get(),
         )
     }
     worker {

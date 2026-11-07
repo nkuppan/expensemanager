@@ -106,4 +106,10 @@
     <string name="backups_on_device">Cadangan di perangkat ini</string>
     <string name="restore_confirm_backup_message">Data Anda saat ini akan diganti dengan cadangan dari %1$s, dan aplikasi akan dimulai ulang.</string>
     <string name="auto_backup_info">%1$d cadangan otomatis terbaru disimpan dan yang lebih lama dihapus; cadangan manual tidak pernah dihapus. Cadangan di dalam aplikasi terhapus jika aplikasi dicopot, jadi pilih folder agar tetap aman. Cadangan memakai kunci bawaan aplikasi; bagikan dengan frasa sandi untuk perlindungan tambahan.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Buka aplikasi di</string>
+    <string name="landing_home">Beranda</string>
+    <string name="landing_analysis">Analisis</string>
+    <string name="landing_transactions">Transaksi</string>
+    <string name="landing_categories">Kategori</string>
 </resources>

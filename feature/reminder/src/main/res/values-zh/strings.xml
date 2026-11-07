@@ -13,5 +13,5 @@
     <string name="schedule">计划</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">即将付款提醒</string>
-    <string name="upcoming_alerts_description">在每月或每年的周期性记录添加前一晚提醒你。</string>
+    <string name="upcoming_alerts_description">在每周、每月或每年的周期性记录添加前一晚提醒你。</string>
 </resources>

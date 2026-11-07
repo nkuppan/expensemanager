@@ -106,4 +106,10 @@
     <string name="backups_on_device">Copias en este dispositivo</string>
     <string name="restore_confirm_backup_message">Tus datos actuales se reemplazarán por la copia del %1$s y la app se reiniciará.</string>
     <string name="auto_backup_info">Se conservan las %1$d copias automáticas más recientes y se eliminan las anteriores; las copias manuales nunca se eliminan. Las copias dentro de la app se borran al desinstalarla, así que elige una carpeta para protegerlas. Las copias usan la clave integrada de la app; comparte una con contraseña para más protección.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Abrir la app en</string>
+    <string name="landing_home">Inicio</string>
+    <string name="landing_analysis">Análisis</string>
+    <string name="landing_transactions">Movimientos</string>
+    <string name="landing_categories">Categorías</string>
 </resources>

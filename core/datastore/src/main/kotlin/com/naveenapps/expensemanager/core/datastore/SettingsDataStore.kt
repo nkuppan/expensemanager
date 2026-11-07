@@ -86,6 +86,24 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[KEY_HOME_SUMMARY_COMPACT] ?: false
     }
 
+    // Bottom-bar tab the app opens on, as a LandingPage name.
+    suspend fun setLandingPage(name: String) = dataStore.edit { preferences ->
+        preferences[KEY_LANDING_PAGE] = name
+    }
+
+    fun getLandingPage(): Flow<String?> = dataStore.data.map { preferences ->
+        preferences[KEY_LANDING_PAGE]
+    }
+
+    // Home section order (Customise dashboard), as comma-separated DashboardSection names.
+    suspend fun setDashboardOrder(names: List<String>) = dataStore.edit { preferences ->
+        preferences[KEY_DASHBOARD_ORDER] = names.joinToString(",")
+    }
+
+    fun getDashboardOrder(): Flow<List<String>?> = dataStore.data.map { preferences ->
+        preferences[KEY_DASHBOARD_ORDER]?.split(",")?.filter { it.isNotBlank() }
+    }
+
     suspend fun setAppLockEnabled(enabled: Boolean) = dataStore.edit { preferences ->
         preferences[KEY_APP_LOCK_ENABLED] = enabled
     }
@@ -124,6 +142,8 @@ class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
         private val KEY_DEFAULT_EXPENSE_CATEGORY = stringPreferencesKey("default_expense_category")
         private val KEY_DEFAULT_INCOME_CATEGORY = stringPreferencesKey("default_income_category")
         private val KEY_HOME_SUMMARY_COMPACT = booleanPreferencesKey("home_summary_compact")
+        private val KEY_DASHBOARD_ORDER = stringPreferencesKey("dashboard_order")
+        private val KEY_LANDING_PAGE = stringPreferencesKey("landing_page")
         private val KEY_APP_LOCK_ENABLED = booleanPreferencesKey("app_lock_enabled")
         private val KEY_BLOCK_SCREENSHOTS = booleanPreferencesKey("block_screenshots")
         private val KEY_AUTO_OPEN_CALCULATOR = booleanPreferencesKey("auto_open_calculator")

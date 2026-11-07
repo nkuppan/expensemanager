@@ -13,5 +13,5 @@
     <string name="schedule">الجدولة</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">تنبيهات المدفوعات القادمة</string>
-    <string name="upcoming_alerts_description">تنبيه مساء اليوم السابق لإضافة قيد متكرر شهري أو سنوي.</string>
+    <string name="upcoming_alerts_description">تنبيه مساء اليوم السابق لإضافة قيد متكرر أسبوعي أو شهري أو سنوي.</string>
 </resources>

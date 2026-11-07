@@ -13,5 +13,5 @@
     <string name="schedule">예약</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">예정된 결제 알림</string>
-    <string name="upcoming_alerts_description">매월·매년 반복 항목이 추가되기 전날 저녁에 알려드려요.</string>
+    <string name="upcoming_alerts_description">매주·매월·매년 반복 항목이 추가되기 전날 저녁에 알려드려요.</string>
 </resources>

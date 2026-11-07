@@ -62,4 +62,31 @@
     <string name="home_share_description">Поделитесь Expense Manager. Бесплатно, без рекламы, а данные остаются на телефоне.</string>
     <string name="home_share_button">Поделиться приложением</string>
     <string name="home_share_text">Я веду учёт расходов в Expense Manager. Бесплатно, и данные остаются на телефоне: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Настроить главный экран</string>
+    <string name="customise_hint">Удерживайте и перетаскивайте, чтобы изменить порядок разделов</string>
+    <string name="customise_save">Сохранить</string>
+    <string name="customise_reset">Сбросить</string>
+    <string name="section_summary">Сводка доходов и расходов</string>
+    <string name="section_accounts">Счета</string>
+    <string name="section_categories">Категории</string>
+    <string name="section_budgets">Бюджеты</string>
+    <string name="section_transactions">Последние операции</string>
+    <string name="section_upcoming">Предстоящие платежи</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Уведомления</string>
+    <string name="whats_new_version">Версия %1$s</string>
+    <string name="notification_new">Новое</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Показать ещё (%1$d)</string>
+    <string name="notification_see_less">Свернуть</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Планируйте заранее: сделайте аренду, счета или зарплату повторяющимися с будущей даты и смотрите предстоящее в новой карточке на главной</item>
+        <item>Напоминание вечером накануне еженедельного, ежемесячного или ежегодного платежа</item>
+        <item>Повтор в одно касание: частые записи появляются при добавлении</item>
+        <item>Поиск по всем операциям с итогами</item>
+        <item>Порядок разделов главной и выбор стартовой вкладки</item>
+        <item>Множество мелких исправлений</item>
+    </string-array>
 </resources>

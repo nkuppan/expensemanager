@@ -20,9 +20,9 @@
     <string name="auto_backup_failed_folder_body">No se puede acceder a tu carpeta de copias. Toca para elegirla de nuevo.</string>
     <string name="auto_backup_failed_write_body">No se pudo hacer copia de tus datos. Toca para revisar los ajustes de copia.</string>
     <string name="auto_backup_failed_action">Arreglar</string>
-    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
     <string name="upcoming_channel_name">Pagos próximos</string>
-    <string name="upcoming_channel_description">Un aviso la tarde anterior a que se añada un movimiento recurrente mensual o anual.</string>
+    <string name="upcoming_channel_description">Un aviso la tarde anterior a que se añada un movimiento recurrente semanal, mensual o anual.</string>
     <string name="upcoming_alert_title_one">Mañana: %1$s</string>
     <string name="upcoming_alert_body_one">Se añadirán %1$s automáticamente.</string>
     <string name="upcoming_alert_body_many">Se añadirán automáticamente.</string>

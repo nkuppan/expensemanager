@@ -3,11 +3,14 @@ package com.naveenapps.expensemanager.core.data.repository
 import android.content.Context
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.naveenapps.expensemanager.core.datastore.FeedbackDataStore
+import com.naveenapps.expensemanager.core.model.Insight
+import com.naveenapps.expensemanager.core.model.InsightKind
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 class FeedbackRepositoryImpl(
     private val context: Context,
@@ -31,6 +34,32 @@ class FeedbackRepositoryImpl(
     override suspend fun hideShareBanner(until: Long) {
         feedbackDataStore.hideShareBanner(until)
     }
+
+    override fun getInsights(): Flow<List<Insight>> = feedbackDataStore.getInsights().map { stored ->
+        stored.map { Insight(InsightKind.fromStored(it.kind), it.title, it.message, it.postedAt) }
+    }
+
+    override suspend fun addInsight(kind: InsightKind, title: String, message: String, postedAt: Long) {
+        feedbackDataStore.addInsight(kind.name, title, message, postedAt)
+    }
+
+    override fun getNotificationCentreOpenedAt(): Flow<Long> = feedbackDataStore.getNotificationCentreOpenedAt()
+
+    override suspend fun setNotificationCentreOpenedAt(time: Long) {
+        feedbackDataStore.setNotificationCentreOpenedAt(time)
+    }
+
+    override fun getLastSeenWhatsNew(): Flow<String?> = feedbackDataStore.getLastSeenWhatsNew()
+
+    override suspend fun setLastSeenWhatsNew(version: String) {
+        feedbackDataStore.setLastSeenWhatsNew(version)
+    }
+
+    // An update moves lastUpdateTime past firstInstallTime; a fresh install leaves them equal.
+    override fun isFreshInstall(): Boolean = runCatching {
+        val info = context.packageManager.getPackageInfo(context.packageName, 0)
+        info.lastUpdateTime == info.firstInstallTime
+    }.getOrDefault(false)
 
     override fun getSentBudgetAlerts(): Flow<Set<String>> = feedbackDataStore.getSentBudgetAlerts()
 

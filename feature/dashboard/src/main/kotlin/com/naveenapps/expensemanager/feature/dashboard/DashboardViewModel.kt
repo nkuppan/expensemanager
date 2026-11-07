@@ -36,12 +36,14 @@ import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
+import com.naveenapps.expensemanager.feature.dashboard.notifications.LATEST_WHATS_NEW_VERSION
 import java.time.LocalDate
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -97,6 +99,28 @@ class DashboardViewModel(
                 val warning = settings.lastError.takeIf { settings.needsAttention(System.currentTimeMillis()) }
                 _state.update { it.copy(backupWarning = warning) }
             }
+            .launchIn(viewModelScope)
+
+        // "What's new" dot. A fresh install has nothing "new" to read, so its notes start as
+        // seen; anyone who updated sees the dot until they open the notes once.
+        viewModelScope.launch {
+            if (feedbackRepository.getLastSeenWhatsNew().first() == null && feedbackRepository.isFreshInstall()) {
+                feedbackRepository.setLastSeenWhatsNew(LATEST_WHATS_NEW_VERSION)
+            }
+            // Dot on the bell: unread release notes, or an insight posted since the last visit.
+            combine(
+                feedbackRepository.getLastSeenWhatsNew(),
+                feedbackRepository.getInsights(),
+                feedbackRepository.getNotificationCentreOpenedAt(),
+            ) { seenRelease, insights, openedAt ->
+                seenRelease != LATEST_WHATS_NEW_VERSION || insights.any { it.postedAt > openedAt }
+            }
+                .onEach { unread -> _state.update { it.copy(hasUnreadNotifications = unread) } }
+                .launchIn(viewModelScope)
+        }
+
+        settingsRepository.getDashboardOrder()
+            .onEach { order -> _state.update { it.copy(sectionOrder = order) } }
             .launchIn(viewModelScope)
 
         feedbackRepository.getShareBannerHiddenUntil()
@@ -313,6 +337,18 @@ class DashboardViewModel(
                 )
                 appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
             }
+
+            DashboardAction.OpenNotifications -> {
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.WHATS_NEW_OPENED,
+                    mapOf(AnalyticsParams.SOURCE to if (_state.value.hasUnreadNotifications) "unread" else "read"),
+                )
+                // The centre marks everything as read when it opens.
+                appComposeNavigator.navigate(ExpenseManagerScreens.NotificationCentre)
+            }
+
+            DashboardAction.OpenCustomiseDashboard ->
+                appComposeNavigator.navigate(ExpenseManagerScreens.DashboardReOrder)
 
             DashboardAction.ShareBannerShown -> if (!shareBannerLogged) {
                 shareBannerLogged = true

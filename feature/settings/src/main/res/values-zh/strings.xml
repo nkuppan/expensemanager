@@ -106,4 +106,10 @@
     <string name="backups_on_device">此设备上的备份</string>
     <string name="restore_confirm_backup_message">你当前的数据将被 %1$s 的备份替换，应用将重新启动。</string>
     <string name="auto_backup_info">保留最新的 %1$d 个自动备份，较旧的会被删除；手动备份永远不会被删除。应用内的备份会在卸载应用时删除，请选择一个文件夹来妥善保存。备份使用应用内置密钥；如需更多保护，请使用密码分享。</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">打开应用时显示</string>
+    <string name="landing_home">首页</string>
+    <string name="landing_analysis">分析</string>
+    <string name="landing_transactions">交易</string>
+    <string name="landing_categories">分类</string>
 </resources>

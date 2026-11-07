@@ -71,6 +71,10 @@ class SettingsViewModel(
         }.launchIn(viewModelScope)
 
         // Defaults + Security section (moved here from AdvancedSettingsViewModel)
+        settingsRepository.getLandingPage().onEach { page ->
+            _state.update { it.copy(landingPage = page) }
+        }.launchIn(viewModelScope)
+
         settingsRepository.getHomeSummaryCompact().onEach { compact ->
             _state.update { it.copy(isCompactSummary = compact) }
         }.launchIn(viewModelScope)
@@ -259,6 +263,11 @@ class SettingsViewModel(
             is SettingAction.SelectExpenseCategory -> changeSelectedExpenseCategory(action.category)
 
             is SettingAction.SelectIncomeCategory -> changeSelectedIncomeCategory(action.category)
+
+            // Takes effect the next time the app opens; the current tab doesn't jump.
+            is SettingAction.SelectLandingPage -> viewModelScope.launch {
+                settingsRepository.setLandingPage(action.page)
+            }
 
             SettingAction.ToggleCompactSummary -> {
                 viewModelScope.launch {

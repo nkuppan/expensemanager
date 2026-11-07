@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.DashboardCustomize
 import androidx.compose.material.icons.outlined.EditNotifications
 import androidx.compose.material.icons.outlined.EventRepeat
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lock
@@ -76,6 +77,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingTogg
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.LandingPage
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.language.LanguageDialogView
 import com.naveenapps.expensemanager.feature.theme.ThemeDialogView
@@ -286,6 +288,15 @@ private fun SettingsScreenContent(
                         },
                     )
                 }
+                DropdownSettingItem(
+                    label = stringResource(id = R.string.landing_page),
+                    selectedValue = stringResource(id = state.landingPage.labelResId),
+                    icon = Icons.Outlined.Home,
+                    items = LandingPage.entries.map { stringResource(id = it.labelResId) },
+                    onItemSelected = { index ->
+                        onAction.invoke(SettingAction.SelectLandingPage(LandingPage.entries[index]))
+                    },
+                )
                 SettingToggleRow(
                     title = stringResource(id = R.string.compact_summary),
                     subtitle = stringResource(id = R.string.compact_summary_message),
@@ -526,3 +537,11 @@ private fun Context.shareApp() {
         chooserTitle = getString(R.string.share_app),
     )
 }
+
+private val LandingPage.labelResId: Int
+    get() = when (this) {
+        LandingPage.HOME -> R.string.landing_home
+        LandingPage.ANALYSIS -> R.string.landing_analysis
+        LandingPage.TRANSACTIONS -> R.string.landing_transactions
+        LandingPage.CATEGORIES -> R.string.landing_categories
+    }

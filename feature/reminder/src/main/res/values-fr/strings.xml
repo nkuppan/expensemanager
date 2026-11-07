@@ -13,5 +13,5 @@
     <string name="schedule">Planifier</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Alertes de paiements à venir</string>
-    <string name="upcoming_alerts_description">Un rappel la veille au soir avant l’ajout d’une opération récurrente mensuelle ou annuelle.</string>
+    <string name="upcoming_alerts_description">Un rappel la veille au soir avant l’ajout d’une opération récurrente hebdomadaire, mensuelle ou annuelle.</string>
 </resources>

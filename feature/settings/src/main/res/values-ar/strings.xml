@@ -106,4 +106,10 @@
     <string name="backups_on_device">النسخ الاحتياطية على هذا الجهاز</string>
     <string name="restore_confirm_backup_message">سيتم استبدال بياناتك الحالية بالنسخة الاحتياطية من %1$s، وسيُعاد تشغيل التطبيق.</string>
     <string name="auto_backup_info">يتم الاحتفاظ بأحدث %1$d نسخ تلقائية وحذف الأقدم؛ ولا تُحذف النسخ اليدوية أبدًا. تُحذف النسخ الموجودة داخل التطبيق عند إلغاء تثبيته، لذا اختر مجلدًا لحمايتها. تستخدم النسخ المفتاح المدمج في التطبيق؛ شارك نسخة بعبارة مرور لحماية إضافية.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">فتح التطبيق على</string>
+    <string name="landing_home">الرئيسية</string>
+    <string name="landing_analysis">التحليل</string>
+    <string name="landing_transactions">المعاملات</string>
+    <string name="landing_categories">الفئات</string>
 </resources>

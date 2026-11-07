@@ -41,6 +41,12 @@ sealed class DashboardAction {
     /** Upcoming card's empty state: the add screen with Repeat set to Monthly. */
     data object PlanRecurring : DashboardAction()
 
+    /** The bell in Home's top bar: opens the notification centre. */
+    data object OpenNotifications : DashboardAction()
+
+    /** "Customise dashboard" at the bottom of Home: reorder the sections. */
+    data object OpenCustomiseDashboard : DashboardAction()
+
     data object ShareBannerShown : DashboardAction()
 
     /** "Share the app" on the banner; the screen has already opened the share sheet. */

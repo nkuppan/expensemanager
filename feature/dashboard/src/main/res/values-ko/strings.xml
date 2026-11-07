@@ -56,4 +56,31 @@
     <string name="home_share_description">Expense Manager를 공유하세요. 무료에 광고가 없고, 데이터는 휴대폰에만 저장돼요.</string>
     <string name="home_share_button">앱 공유</string>
     <string name="home_share_text">Expense Manager로 지출을 기록하고 있어요. 무료이고 데이터는 내 폰에만 저장돼요: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">홈 화면 편집</string>
+    <string name="customise_hint">길게 눌러 끌어서 홈 화면 섹션의 순서를 바꾸세요</string>
+    <string name="customise_save">저장</string>
+    <string name="customise_reset">초기화</string>
+    <string name="section_summary">수입 및 지출 요약</string>
+    <string name="section_accounts">계좌</string>
+    <string name="section_categories">카테고리</string>
+    <string name="section_budgets">예산</string>
+    <string name="section_transactions">최근 거래</string>
+    <string name="section_upcoming">예정된 결제</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">알림</string>
+    <string name="whats_new_version">버전 %1$s</string>
+    <string name="notification_new">새 알림</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">더 보기 (%1$d)</string>
+    <string name="notification_see_less">간단히 보기</string>
+    <string-array name="whats_new_1_4_26">
+        <item>미리 계획하기: 월세, 공과금, 월급을 미래 날짜부터 반복으로 설정하고 홈의 새 \'예정\' 카드에서 확인하세요</item>
+        <item>매주·매월·매년 결제가 추가되기 전날 저녁 알림</item>
+        <item>한 번에 반복: 자주 쓰는 항목이 추가 화면에 칩으로 표시돼요</item>
+        <item>모든 거래 검색과 합계 표시</item>
+        <item>홈 화면 순서 변경과 시작 탭 선택</item>
+        <item>여러 가지 작은 개선</item>
+    </string-array>
 </resources>

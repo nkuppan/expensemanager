@@ -1,5 +1,7 @@
 package com.naveenapps.expensemanager.core.repository
 
+import com.naveenapps.expensemanager.core.model.Insight
+import com.naveenapps.expensemanager.core.model.InsightKind
 import kotlinx.coroutines.flow.Flow
 
 interface FeedbackRepository {
@@ -23,6 +25,30 @@ interface FeedbackRepository {
     fun getShareBannerHiddenUntil(): Flow<Long>
 
     suspend fun hideShareBanner(until: Long)
+
+    /** Insights pushed as notifications, newest first (the notification centre's list). */
+    fun getInsights(): Flow<List<Insight>>
+
+    /** Saves a pushed insight for the notification centre, whether or not it could be shown. */
+    suspend fun addInsight(
+        kind: InsightKind,
+        title: String,
+        message: String,
+        postedAt: Long = System.currentTimeMillis(),
+    )
+
+    /** When the notification centre was last opened (epoch millis; 0 = never). */
+    fun getNotificationCentreOpenedAt(): Flow<Long>
+
+    suspend fun setNotificationCentreOpenedAt(time: Long)
+
+    /** Version of the "What's new" notes last opened from Home (null: never). */
+    fun getLastSeenWhatsNew(): Flow<String?>
+
+    suspend fun setLastSeenWhatsNew(version: String)
+
+    /** True when this install has never been updated: everything in it is new to the user. */
+    fun isFreshInstall(): Boolean
 
     /** Keys of budget alerts already sent ("<budgetId>:<period>:<threshold>"). */
     fun getSentBudgetAlerts(): Flow<Set<String>>

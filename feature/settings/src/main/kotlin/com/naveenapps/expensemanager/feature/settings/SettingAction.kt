@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.settings
 
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.LandingPage
 
 sealed class SettingAction {
 
@@ -37,6 +38,8 @@ sealed class SettingAction {
     data class SelectIncomeCategory(val category: Category) : SettingAction()
 
     data object ToggleCompactSummary : SettingAction()
+
+    data class SelectLandingPage(val page: LandingPage) : SettingAction()
 
     // Data & Backup section
     data object OpenRecurringTransactions : SettingAction()

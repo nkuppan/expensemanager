@@ -106,4 +106,10 @@
     <string name="backups_on_device">Bản sao lưu trên thiết bị này</string>
     <string name="restore_confirm_backup_message">Dữ liệu hiện tại sẽ được thay bằng bản sao lưu lúc %1$s và ứng dụng sẽ khởi động lại.</string>
     <string name="auto_backup_info">Giữ %1$d bản sao lưu tự động mới nhất và xóa các bản cũ hơn; bản sao lưu thủ công không bao giờ bị xóa. Bản sao lưu trong ứng dụng sẽ mất khi gỡ ứng dụng, vì vậy hãy chọn một thư mục để giữ an toàn. Bản sao lưu dùng khóa tích hợp của ứng dụng; hãy chia sẻ kèm cụm mật khẩu để bảo vệ tốt hơn.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Mở ứng dụng ở</string>
+    <string name="landing_home">Trang chủ</string>
+    <string name="landing_analysis">Phân tích</string>
+    <string name="landing_transactions">Giao dịch</string>
+    <string name="landing_categories">Danh mục</string>
 </resources>

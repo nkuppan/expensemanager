@@ -20,9 +20,9 @@
     <string name="auto_backup_failed_folder_body">无法访问备份文件夹，点按以重新选择。</string>
     <string name="auto_backup_failed_write_body">无法备份你的数据，点按以检查备份设置。</string>
     <string name="auto_backup_failed_action">修复</string>
-    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
     <string name="upcoming_channel_name">即将到来的付款</string>
-    <string name="upcoming_channel_description">在每月或每年的周期性记录添加前一晚提醒你。</string>
+    <string name="upcoming_channel_description">在每周、每月或每年的周期性记录添加前一晚提醒你。</string>
     <string name="upcoming_alert_title_one">明天：%1$s</string>
     <string name="upcoming_alert_body_one">%1$s 将自动添加。</string>
     <string name="upcoming_alert_body_many">它们将自动添加。</string>

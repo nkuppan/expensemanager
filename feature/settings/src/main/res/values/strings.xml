@@ -116,4 +116,10 @@
     <string name="backups_on_device">Backups on this device</string>
     <string name="restore_confirm_backup_message">Your current data will be replaced with the backup from %1$s, and the app will restart.</string>
     <string name="auto_backup_info">The newest %1$d auto backups are kept and older ones are deleted; manual backups are never deleted. Backups inside the app are removed if you uninstall it, so choose a folder to keep them safe. Backups use the app\'s built-in key; share one with a passphrase for extra protection.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Open the app on</string>
+    <string name="landing_home">Home</string>
+    <string name="landing_analysis">Analysis</string>
+    <string name="landing_transactions">Transactions</string>
+    <string name="landing_categories">Categories</string>
 </resources>

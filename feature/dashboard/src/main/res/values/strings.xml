@@ -13,7 +13,7 @@
     <string name="no_transactions_available">No transactions available for the selected period.\nTap + button to note your transactions</string>
     <string name="home">Home</string>
     <string name="transaction_create_message">"Add your expenses, incomes and transfers here. "</string>
-    <string name="help"><![CDATA[Help & info]]></string>
+    <string name="help"><![CDATA[Help &amp; info]]></string>
     <string name="ok">OK</string>
     <string name="tap_to_set_spending_limit">Tap to set a spending limit</string>
     <string name="first_expense_action">Add expense</string>
@@ -58,4 +58,31 @@
     <string name="home_share_description">Share Expense Manager. It\'s free, has no ads, and their data stays on their phone.</string>
     <string name="home_share_button">Share the app</string>
     <string name="home_share_text">I use Expense Manager to track my spending. It is free and keeps my data on my phone: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Customise dashboard</string>
+    <string name="customise_hint">Hold and drag to reorder the sections on Home</string>
+    <string name="customise_save">Save</string>
+    <string name="customise_reset">Reset</string>
+    <string name="section_summary">Income &amp; expense summary</string>
+    <string name="section_accounts">Accounts</string>
+    <string name="section_categories">Categories</string>
+    <string name="section_budgets">Budgets</string>
+    <string name="section_transactions">Recent transactions</string>
+    <string name="section_upcoming">Upcoming payments</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notifications</string>
+    <string name="whats_new_version">Version %1$s</string>
+    <string name="notification_new">New</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">See more (%1$d)</string>
+    <string name="notification_see_less">See less</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Plan ahead: set rent, bills or salary to repeat from a future date, and see what\'s coming in the new Upcoming card on Home</item>
+        <item>A heads-up the evening before a weekly, monthly or yearly payment is added</item>
+        <item>One-tap repeats: your frequent entries appear as chips when you add a transaction</item>
+        <item>Search all your transactions, with totals for what matches</item>
+        <item>Reorder the Home screen and choose which tab the app opens on</item>
+        <item>A simpler Get started card, and many small fixes</item>
+    </string-array>
 </resources>

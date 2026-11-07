@@ -20,9 +20,9 @@
     <string name="auto_backup_failed_folder_body">Can\'t reach your backup folder. Tap to choose it again.</string>
     <string name="auto_backup_failed_write_body">Your data couldn\'t be backed up. Tap to check your backup settings.</string>
     <string name="auto_backup_failed_action">Fix</string>
-    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
     <string name="upcoming_channel_name">Upcoming payments</string>
-    <string name="upcoming_channel_description">A heads-up the evening before a monthly or yearly recurring entry is added.</string>
+    <string name="upcoming_channel_description">A heads-up the evening before a weekly, monthly or yearly recurring entry is added.</string>
     <string name="upcoming_alert_title_one">Tomorrow: %1$s</string>
     <string name="upcoming_alert_body_one">%1$s will be added automatically.</string>
     <string name="upcoming_alert_body_many">They\'ll be added automatically.</string>

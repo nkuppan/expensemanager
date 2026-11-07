@@ -40,6 +40,7 @@ val MainViewModelModule = module {
             reminderTimeRepository = get(),
             feedbackRepository = get(),
             appComposeNavigator = get(),
+            settingsRepository = get(),
         )
     }
 }

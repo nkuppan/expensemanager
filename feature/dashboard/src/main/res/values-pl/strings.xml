@@ -62,4 +62,31 @@
     <string name="home_share_description">Poleć Expense Manager. Jest darmowy, bez reklam, a dane zostają na telefonie.</string>
     <string name="home_share_button">Udostępnij aplikację</string>
     <string name="home_share_text">Śledzę wydatki w Expense Manager. Jest darmowa, a moje dane zostają w telefonie: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Dostosuj ekran główny</string>
+    <string name="customise_hint">Przytrzymaj i przeciągnij, aby zmienić kolejność sekcji</string>
+    <string name="customise_save">Zapisz</string>
+    <string name="customise_reset">Przywróć</string>
+    <string name="section_summary">Podsumowanie przychodów i wydatków</string>
+    <string name="section_accounts">Konta</string>
+    <string name="section_categories">Kategorie</string>
+    <string name="section_budgets">Budżety</string>
+    <string name="section_transactions">Ostatnie transakcje</string>
+    <string name="section_upcoming">Nadchodzące płatności</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Powiadomienia</string>
+    <string name="whats_new_version">Wersja %1$s</string>
+    <string name="notification_new">Nowe</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Pokaż więcej (%1$d)</string>
+    <string name="notification_see_less">Pokaż mniej</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Planuj z wyprzedzeniem: ustaw czynsz, rachunki lub pensję jako cykliczne od przyszłej daty i sprawdzaj nadchodzące w nowej karcie</item>
+        <item>Powiadomienie wieczorem przed dodaniem płatności tygodniowej, miesięcznej lub rocznej</item>
+        <item>Powtórz jednym dotknięciem: częste wpisy pojawiają się przy dodawaniu</item>
+        <item>Wyszukiwanie we wszystkich transakcjach z sumami</item>
+        <item>Zmiana kolejności ekranu głównego i wybór karty startowej</item>
+        <item>Wiele drobnych poprawek</item>
+    </string-array>
 </resources>

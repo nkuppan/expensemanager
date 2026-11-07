@@ -20,9 +20,9 @@
     <string name="auto_backup_failed_folder_body">Não foi possível acessar a pasta de backup. Toque para escolhê-la novamente.</string>
     <string name="auto_backup_failed_write_body">Não foi possível fazer backup dos seus dados. Toque para verificar as configurações.</string>
     <string name="auto_backup_failed_action">Corrigir</string>
-    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
     <string name="upcoming_channel_name">Pagamentos próximos</string>
-    <string name="upcoming_channel_description">Um aviso na noite anterior à inclusão de um lançamento recorrente mensal ou anual.</string>
+    <string name="upcoming_channel_description">Um aviso na noite anterior à inclusão de um lançamento recorrente semanal, mensal ou anual.</string>
     <string name="upcoming_alert_title_one">Amanhã: %1$s</string>
     <string name="upcoming_alert_body_one">%1$s será adicionado automaticamente.</string>
     <string name="upcoming_alert_body_many">Serão adicionados automaticamente.</string>

@@ -13,5 +13,5 @@
     <string name="schedule">Schedule</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Upcoming payment alerts</string>
-    <string name="upcoming_alerts_description">A heads-up the evening before a monthly or yearly recurring entry is added.</string>
+    <string name="upcoming_alerts_description">A heads-up the evening before a weekly, monthly or yearly recurring entry is added.</string>
 </resources>

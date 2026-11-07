@@ -13,5 +13,5 @@
     <string name="schedule">Programar</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Avisos de pagos próximos</string>
-    <string name="upcoming_alerts_description">Un aviso la tarde anterior a que se añada un movimiento recurrente mensual o anual.</string>
+    <string name="upcoming_alerts_description">Un aviso la tarde anterior a que se añada un movimiento recurrente semanal, mensual o anual.</string>
 </resources>

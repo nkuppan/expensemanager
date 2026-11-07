@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.feature.dashboard.di
 
 import com.naveenapps.expensemanager.feature.dashboard.DashboardViewModel
+import com.naveenapps.expensemanager.feature.dashboard.customise.DashboardReOrderViewModel
+import com.naveenapps.expensemanager.feature.dashboard.notifications.NotificationCentreViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -21,6 +23,19 @@ val DashboardViewModelModule = module {
             analyticsRepository = get(),
             autoBackupRepository = get(),
             getUpcomingRecurringUseCase = get(),
+        )
+    }
+    viewModel {
+        NotificationCentreViewModel(
+            feedbackRepository = get(),
+            appComposeNavigator = get(),
+        )
+    }
+    viewModel {
+        DashboardReOrderViewModel(
+            settingsRepository = get(),
+            appComposeNavigator = get(),
+            analyticsRepository = get(),
         )
     }
 }

@@ -107,14 +107,16 @@ if (firebasePublisher.exists()) {
             debug {
                 firebaseAppDistribution {
                     serviceCredentialsFile = firebasePublisher.absolutePath
-                    releaseNotes = "Nothing for now"
+                    // Same "What's new" text as the Play release (English).
+                    releaseNotesFile = file("src/main/play/release-notes/en-US/default.txt").absolutePath
                     groups = firebaseDistGroups
                 }
             }
             release {
                 firebaseAppDistribution {
                     serviceCredentialsFile = firebasePublisher.absolutePath
-                    releaseNotes = "Nothing for now"
+                    // Same "What's new" text as the Play release (English).
+                    releaseNotesFile = file("src/main/play/release-notes/en-US/default.txt").absolutePath
                     groups = firebaseDistGroups
                 }
             }

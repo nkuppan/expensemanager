@@ -106,4 +106,10 @@
     <string name="backups_on_device">Kopie na tym urządzeniu</string>
     <string name="restore_confirm_backup_message">Obecne dane zostaną zastąpione kopią z %1$s, a aplikacja uruchomi się ponownie.</string>
     <string name="auto_backup_info">Zachowywanych jest %1$d najnowszych automatycznych kopii, starsze są usuwane; ręczne kopie nigdy nie są usuwane. Kopie w aplikacji znikają po jej odinstalowaniu, więc wybierz folder, aby je chronić. Kopie używają wbudowanego klucza aplikacji; udostępnij kopię z hasłem, aby lepiej ją chronić.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Otwieraj aplikację na</string>
+    <string name="landing_home">Ekran główny</string>
+    <string name="landing_analysis">Analiza</string>
+    <string name="landing_transactions">Transakcje</string>
+    <string name="landing_categories">Kategorie</string>
 </resources>

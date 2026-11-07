@@ -49,6 +49,14 @@ sealed class ExpenseManagerScreens {
     @Serializable
     data object AccountReOrderScreen : ExpenseManagerScreens()
 
+    /** Notification centre from Home's bell: release notes and pushed insights. */
+    @Serializable
+    data object NotificationCentre : ExpenseManagerScreens()
+
+    /** Customise dashboard: drag Home's sections into a new order. */
+    @Serializable
+    data object DashboardReOrder : ExpenseManagerScreens()
+
     @Serializable
     data object RecurringTransactions : ExpenseManagerScreens()
 

@@ -62,6 +62,12 @@ object AnalyticsEvents {
     const val SHARE_BANNER_SHOWN = "share_banner_shown"
     const val SHARE_BANNER_DISMISSED = "share_banner_dismissed"
 
+    /** Saved a new Home section order (Customise dashboard). */
+    const val DASHBOARD_CUSTOMISED = "dashboard_customised"
+
+    /** Home's bell opened the "What's new" sheet; `source` = whether it had an unread dot. */
+    const val WHATS_NEW_OPENED = "whats_new_opened"
+
     const val REVIEW_REQUESTED = "review_requested"
     const val RATE_US_CLICKED = "rate_us_clicked"
 }

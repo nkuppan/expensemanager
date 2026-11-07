@@ -6,9 +6,12 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.json.JSONArray
+import org.json.JSONObject
 
 class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
 
@@ -69,6 +72,63 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
 
     fun getShareBannerHiddenUntil(): Flow<Long> = dataStore.data.map { preferences ->
         preferences[shareBannerHiddenUntilKey] ?: 0L
+    }
+
+    // Insights pushed as notifications (weekly summary, budget alerts), newest first, kept for the
+    // notification centre: a JSON array of {kind, title, message, postedAt}, capped at
+    // MAX_INSIGHTS so the preferences file stays small.
+    private val insightsKey = stringPreferencesKey("insight_history")
+
+    // When the notification centre was last opened (epoch millis); newer insights light the dot.
+    private val notificationCentreOpenedAtKey = longPreferencesKey("notification_centre_opened_at")
+
+    suspend fun addInsight(kind: String, title: String, message: String, postedAt: Long) = dataStore.edit { preferences ->
+        val history = runCatching { JSONArray(preferences[insightsKey] ?: "[]") }.getOrDefault(JSONArray())
+        val updated = JSONArray().put(
+            JSONObject()
+                .put("kind", kind)
+                .put("title", title)
+                .put("message", message)
+                .put("postedAt", postedAt),
+        )
+        for (i in 0 until minOf(history.length(), MAX_INSIGHTS - 1)) updated.put(history.get(i))
+        preferences[insightsKey] = updated.toString()
+    }
+
+    /** Newest first; entries that can't be read are skipped. */
+    fun getInsights(): Flow<List<StoredInsight>> = dataStore.data.map { preferences ->
+        val history = runCatching { JSONArray(preferences[insightsKey] ?: "[]") }.getOrDefault(JSONArray())
+        (0 until history.length()).mapNotNull { i ->
+            runCatching {
+                val item = history.getJSONObject(i)
+                StoredInsight(
+                    kind = item.optString("kind"),
+                    title = item.getString("title"),
+                    message = item.getString("message"),
+                    postedAt = item.getLong("postedAt"),
+                )
+            }.getOrNull()
+        }
+    }
+
+    suspend fun setNotificationCentreOpenedAt(time: Long) = dataStore.edit { preferences ->
+        preferences[notificationCentreOpenedAtKey] = time
+    }
+
+    fun getNotificationCentreOpenedAt(): Flow<Long> = dataStore.data.map { preferences ->
+        preferences[notificationCentreOpenedAtKey] ?: 0L
+    }
+
+    // The "What's new" notes the user last opened from Home's bell, by their version (e.g.
+    // "1.4.26"); the bell shows a dot while a newer set is unread.
+    private val lastSeenWhatsNewKey = stringPreferencesKey("last_seen_whats_new")
+
+    suspend fun setLastSeenWhatsNew(version: String) = dataStore.edit { preferences ->
+        preferences[lastSeenWhatsNewKey] = version
+    }
+
+    fun getLastSeenWhatsNew(): Flow<String?> = dataStore.data.map { preferences ->
+        preferences[lastSeenWhatsNewKey]
     }
 
     suspend fun setLastActiveDay(epochDay: Long) = dataStore.edit { preferences ->
@@ -138,3 +198,14 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
         const val MAX_NO_SPEND_DAYS = 120
     }
 }
+
+/** One saved insight as stored; the repository maps it to the domain model. */
+data class StoredInsight(
+    val kind: String,
+    val title: String,
+    val message: String,
+    val postedAt: Long,
+)
+
+/** How many insights the notification centre keeps; older ones roll off. */
+const val MAX_INSIGHTS = 50

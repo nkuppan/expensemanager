@@ -106,4 +106,10 @@
     <string name="backups_on_device">Копии на этом устройстве</string>
     <string name="restore_confirm_backup_message">Текущие данные будут заменены копией от %1$s, и приложение перезапустится.</string>
     <string name="auto_backup_info">Хранятся %1$d последних автокопий, более старые удаляются; ручные копии не удаляются никогда. Копии в приложении удаляются вместе с ним, поэтому выберите папку, чтобы их сохранить. Копии используют встроенный ключ приложения; отправьте копию с паролем для дополнительной защиты.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Открывать приложение на</string>
+    <string name="landing_home">Главная</string>
+    <string name="landing_analysis">Анализ</string>
+    <string name="landing_transactions">Операции</string>
+    <string name="landing_categories">Категории</string>
 </resources>

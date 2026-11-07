@@ -66,4 +66,31 @@
     <string name="home_share_description">شارك Expense Manager. مجاني وبلا إعلانات، وتبقى بياناتهم على هواتفهم.</string>
     <string name="home_share_button">شارك التطبيق</string>
     <string name="home_share_text">أستخدم Expense Manager لتتبّع إنفاقي. إنه مجاني ويحفظ بياناتي على هاتفي: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">تخصيص الشاشة الرئيسية</string>
+    <string name="customise_hint">اضغط مطولًا واسحب لإعادة ترتيب أقسام الشاشة الرئيسية</string>
+    <string name="customise_save">حفظ</string>
+    <string name="customise_reset">إعادة تعيين</string>
+    <string name="section_summary">ملخص الدخل والمصروفات</string>
+    <string name="section_accounts">الحسابات</string>
+    <string name="section_categories">الفئات</string>
+    <string name="section_budgets">الميزانيات</string>
+    <string name="section_transactions">أحدث المعاملات</string>
+    <string name="section_upcoming">المدفوعات القادمة</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">الإشعارات</string>
+    <string name="whats_new_version">الإصدار %1$s</string>
+    <string name="notification_new">جديد</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">عرض المزيد (%1$d)</string>
+    <string name="notification_see_less">عرض أقل</string>
+    <string-array name="whats_new_1_4_26">
+        <item>خطط مسبقًا: اجعل الإيجار أو الفواتير أو الراتب متكررًا من تاريخ لاحق، وتابع القادم في بطاقة «القادمة» الجديدة</item>
+        <item>تنبيه مساء اليوم السابق لإضافة دفعة أسبوعية أو شهرية أو سنوية</item>
+        <item>تكرار بلمسة: تظهر إدخالاتك المتكررة كاختيارات سريعة عند الإضافة</item>
+        <item>بحث في كل معاملاتك مع إجماليات النتائج</item>
+        <item>أعد ترتيب الشاشة الرئيسية واختر التبويب الذي يفتح عليه التطبيق</item>
+        <item>إصلاحات صغيرة كثيرة</item>
+    </string-array>
 </resources>

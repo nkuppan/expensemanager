@@ -56,4 +56,31 @@
     <string name="home_share_description">分享 Expense Manager。免费、无广告，数据只保存在手机上。</string>
     <string name="home_share_button">分享应用</string>
     <string name="home_share_text">我用 Expense Manager 记录支出。免费，而且数据只保存在我的手机上：%1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">自定义首页</string>
+    <string name="customise_hint">长按并拖动以调整首页各部分的顺序</string>
+    <string name="customise_save">保存</string>
+    <string name="customise_reset">重置</string>
+    <string name="section_summary">收支概览</string>
+    <string name="section_accounts">账户</string>
+    <string name="section_categories">分类</string>
+    <string name="section_budgets">预算</string>
+    <string name="section_transactions">最近交易</string>
+    <string name="section_upcoming">即将到来的付款</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">通知</string>
+    <string name="whats_new_version">版本 %1$s</string>
+    <string name="notification_new">新</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">查看更多（%1$d）</string>
+    <string name="notification_see_less">收起</string>
+    <string-array name="whats_new_1_4_26">
+        <item>提前计划：可将房租、账单或工资设为从未来日期开始重复，并在首页新的\"即将到来\"卡片中查看</item>
+        <item>每周、每月或每年的付款添加前一晚提醒你</item>
+        <item>一键重复：常用记录在添加时以快捷选项显示</item>
+        <item>搜索全部交易并显示合计</item>
+        <item>调整首页顺序，并选择打开应用时的标签页</item>
+        <item>多项小改进</item>
+    </string-array>
 </resources>

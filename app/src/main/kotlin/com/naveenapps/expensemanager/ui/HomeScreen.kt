@@ -54,6 +54,8 @@ import com.naveenapps.expensemanager.feature.category.list.CategoryListScreen
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.feature.currency.CurrencyCustomiseScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
+import com.naveenapps.expensemanager.feature.dashboard.customise.DashboardReOrderScreen
+import com.naveenapps.expensemanager.feature.dashboard.notifications.NotificationCentreScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
@@ -164,6 +166,12 @@ fun NavGraphBuilder.expenseManagerNavigation(
     composable<ExpenseManagerScreens.AccountReOrderScreen> {
         AccountReOrderScreen()
     }
+    composable<ExpenseManagerScreens.DashboardReOrder> {
+        DashboardReOrderScreen()
+    }
+    composable<ExpenseManagerScreens.NotificationCentre> {
+        NotificationCentreScreen()
+    }
 }
 
 @Composable
@@ -173,6 +181,7 @@ fun HomeScreen(
     val context = LocalActivity.current
 
     val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsStateWithLifecycle()
+    val landingTab by viewModel.landingTab.collectAsStateWithLifecycle()
 
     val appContext = LocalContext.current
 
@@ -226,12 +235,18 @@ fun HomeScreen(
     }
 
     BackHandler {
-        if (homeScreenBottomBarItems != HomeScreenBottomBarItems.Home) {
-            viewModel.setUISystem(HomeScreenBottomBarItems.Home)
+        // Back goes to the tab the app opens on (Home unless changed in Settings), then exits.
+        val startTab = landingTab ?: HomeScreenBottomBarItems.Home
+        if (homeScreenBottomBarItems != startTab) {
+            viewModel.setUISystem(startTab)
         } else {
             context?.finish()
         }
     }
+
+    // Until the "Open the app on" setting has loaded (a few ms; DataStore is already warm from
+    // the splash screen), draw nothing rather than flash Home before switching tabs.
+    if (landingTab == null) return
 
     Scaffold(
         bottomBar = {

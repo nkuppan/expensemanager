@@ -106,4 +106,10 @@
     <string name="backups_on_device">इस डिवाइस पर बैकअप</string>
     <string name="restore_confirm_backup_message">आपका मौजूदा डेटा %1$s के बैकअप से बदल जाएगा और ऐप रीस्टार्ट होगा।</string>
     <string name="auto_backup_info">सबसे नए %1$d ऑटो बैकअप रखे जाते हैं और पुराने हटा दिए जाते हैं; मैन्युअल बैकअप कभी नहीं हटाए जाते। ऐप के अंदर के बैकअप ऐप हटाने पर मिट जाते हैं, इसलिए उन्हें सुरक्षित रखने के लिए एक फ़ोल्डर चुनें। बैकअप ऐप की अंतर्निहित कुंजी का उपयोग करते हैं; अतिरिक्त सुरक्षा के लिए पासफ़्रेज़ के साथ शेयर करें।</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">ऐप खोलने पर दिखाएँ</string>
+    <string name="landing_home">होम</string>
+    <string name="landing_analysis">विश्लेषण</string>
+    <string name="landing_transactions">लेन-देन</string>
+    <string name="landing_categories">श्रेणियाँ</string>
 </resources>

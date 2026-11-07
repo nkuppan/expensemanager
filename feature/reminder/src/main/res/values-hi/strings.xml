@@ -13,5 +13,5 @@
     <string name="schedule">शेड्यूल</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">आने वाले भुगतान की सूचना</string>
-    <string name="upcoming_alerts_description">मासिक या वार्षिक आवर्ती प्रविष्टि जुड़ने से एक शाम पहले सूचना।</string>
+    <string name="upcoming_alerts_description">साप्ताहिक, मासिक या वार्षिक आवर्ती प्रविष्टि जुड़ने से एक शाम पहले सूचना।</string>
 </resources>

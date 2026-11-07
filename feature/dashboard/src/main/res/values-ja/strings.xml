@@ -56,4 +56,31 @@
     <string name="home_share_description">Expense Manager をシェアしましょう。無料・広告なしで、データはスマホの中だけに保存されます。</string>
     <string name="home_share_button">アプリを共有</string>
     <string name="home_share_text">Expense Managerで支出を記録しています。無料で、データはスマホの中だけに保存されます: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">ホームをカスタマイズ</string>
+    <string name="customise_hint">長押ししてドラッグすると、ホームの項目を並べ替えられます</string>
+    <string name="customise_save">保存</string>
+    <string name="customise_reset">リセット</string>
+    <string name="section_summary">収入と支出の概要</string>
+    <string name="section_accounts">口座</string>
+    <string name="section_categories">カテゴリ</string>
+    <string name="section_budgets">予算</string>
+    <string name="section_transactions">最近の取引</string>
+    <string name="section_upcoming">今後の支払い</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">お知らせ</string>
+    <string name="whats_new_version">バージョン %1$s</string>
+    <string name="notification_new">新着</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">もっと見る (%1$d)</string>
+    <string name="notification_see_less">閉じる</string>
+    <string-array name="whats_new_1_4_26">
+        <item>先の予定を登録：家賃や請求書、給料を将来の日付から繰り返し設定し、ホームの新しい「今後の予定」カードで確認</item>
+        <item>毎週・毎月・毎年の支払いが追加される前日の夕方にお知らせ</item>
+        <item>ワンタップで繰り返し：よく使う入力が候補として表示されます</item>
+        <item>すべての取引を検索し、合計も表示</item>
+        <item>ホーム画面の並べ替えと、起動時に開くタブの選択</item>
+        <item>細かな改善多数</item>
+    </string-array>
 </resources>

@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
+import com.naveenapps.expensemanager.core.model.InsightKind
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
@@ -63,6 +64,8 @@ class BudgetAlertWorker(
                         context.getString(R.string.budget_alert_warning_body, spent, limit)
                 }
 
+                // Also kept for the notification centre, to read again later.
+                feedbackRepository.addInsight(InsightKind.BUDGET_ALERT, title, body)
                 notificationScheduler.showInsightNotification(
                     notificationId = NotificationId.BUDGET_ALERT_BASE + abs(budget.id.hashCode() % 10_000),
                     title = title,

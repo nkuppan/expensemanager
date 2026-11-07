@@ -13,5 +13,5 @@
     <string name="schedule">Zeitplan</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Hinweise zu anstehenden Zahlungen</string>
-    <string name="upcoming_alerts_description">Ein Hinweis am Vorabend, bevor ein monatlicher oder jährlicher Dauerposten hinzugefügt wird.</string>
+    <string name="upcoming_alerts_description">Ein Hinweis am Vorabend, bevor ein wöchentlicher, monatlicher oder jährlicher Dauerposten hinzugefügt wird.</string>
 </resources>

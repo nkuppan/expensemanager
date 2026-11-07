@@ -106,4 +106,10 @@
     <string name="backups_on_device">Sicherungen auf diesem Gerät</string>
     <string name="restore_confirm_backup_message">Deine aktuellen Daten werden durch die Sicherung vom %1$s ersetzt, und die App startet neu.</string>
     <string name="auto_backup_info">Die neuesten %1$d automatischen Sicherungen werden behalten, ältere gelöscht; manuelle Sicherungen werden nie gelöscht. Sicherungen in der App werden beim Deinstallieren entfernt, wähle also einen Ordner, um sie zu schützen. Sicherungen nutzen den integrierten Schlüssel der App; teile eine mit Passwort für zusätzlichen Schutz.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">App öffnen mit</string>
+    <string name="landing_home">Startseite</string>
+    <string name="landing_analysis">Analyse</string>
+    <string name="landing_transactions">Buchungen</string>
+    <string name="landing_categories">Kategorien</string>
 </resources>

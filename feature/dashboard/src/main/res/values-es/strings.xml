@@ -60,4 +60,31 @@
     <string name="home_share_description">Comparte Expense Manager. Es gratis, sin anuncios, y sus datos se quedan en su teléfono.</string>
     <string name="home_share_button">Compartir la app</string>
     <string name="home_share_text">Uso Expense Manager para controlar mis gastos. Es gratis y mis datos se quedan en mi teléfono: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Personalizar inicio</string>
+    <string name="customise_hint">Mantén pulsado y arrastra para reordenar las secciones de inicio</string>
+    <string name="customise_save">Guardar</string>
+    <string name="customise_reset">Restablecer</string>
+    <string name="section_summary">Resumen de ingresos y gastos</string>
+    <string name="section_accounts">Cuentas</string>
+    <string name="section_categories">Categorías</string>
+    <string name="section_budgets">Presupuestos</string>
+    <string name="section_transactions">Movimientos recientes</string>
+    <string name="section_upcoming">Pagos próximos</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notificaciones</string>
+    <string name="whats_new_version">Versión %1$s</string>
+    <string name="notification_new">Nuevo</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Ver más (%1$d)</string>
+    <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Planifica: haz que el alquiler, las facturas o el sueldo se repitan desde una fecha futura y mira lo que viene en la nueva tarjeta Próximos</item>
+        <item>Un aviso la tarde anterior a un pago semanal, mensual o anual</item>
+        <item>Repetir con un toque: tus movimientos frecuentes aparecen al añadir</item>
+        <item>Busca en todos tus movimientos, con totales</item>
+        <item>Reordena el inicio y elige la pestaña con la que se abre la app</item>
+        <item>Muchas pequeñas mejoras</item>
+    </string-array>
 </resources>

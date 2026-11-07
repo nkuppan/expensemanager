@@ -106,4 +106,10 @@
     <string name="backups_on_device">この端末のバックアップ</string>
     <string name="restore_confirm_backup_message">現在のデータは%1$sのバックアップに置き換わり、アプリが再起動します。</string>
     <string name="auto_backup_info">最新の%1$d件の自動バックアップを保持し、古いものは削除されます。手動バックアップは削除されません。アプリ内のバックアップはアンインストール時に削除されるため、フォルダを選んで保護してください。バックアップはアプリの組み込みキーを使用します。より安全にするにはパスフレーズ付きで共有してください。</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">起動時に表示する画面</string>
+    <string name="landing_home">ホーム</string>
+    <string name="landing_analysis">分析</string>
+    <string name="landing_transactions">取引</string>
+    <string name="landing_categories">カテゴリ</string>
 </resources>

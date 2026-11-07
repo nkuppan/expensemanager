@@ -106,4 +106,10 @@
     <string name="backups_on_device">Bu cihazdaki yedekler</string>
     <string name="restore_confirm_backup_message">Mevcut verileriniz %1$s tarihli yedekle değiştirilecek ve uygulama yeniden başlayacak.</string>
     <string name="auto_backup_info">En yeni %1$d otomatik yedek saklanır, eskiler silinir; manuel yedekler asla silinmez. Uygulama içindeki yedekler uygulamayı kaldırınca silinir, bu yüzden korumak için bir klasör seçin. Yedekler uygulamanın yerleşik anahtarını kullanır; ek koruma için birini parolayla paylaşın.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Uygulamayı şurada aç</string>
+    <string name="landing_home">Ana sayfa</string>
+    <string name="landing_analysis">Analiz</string>
+    <string name="landing_transactions">İşlemler</string>
+    <string name="landing_categories">Kategoriler</string>
 </resources>

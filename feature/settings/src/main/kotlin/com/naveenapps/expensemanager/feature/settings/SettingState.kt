@@ -5,6 +5,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AppLocale
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.LandingPage
 import com.naveenapps.expensemanager.core.model.Theme
 
 @Stable
@@ -23,6 +24,8 @@ data class SettingState(
     val incomeCategories: List<Category> = emptyList(),
     val selectedIncomeCategory: Category? = null,
     val isCompactSummary: Boolean = false,
+    /** Bottom-bar tab the app opens on. */
+    val landingPage: LandingPage = LandingPage.HOME,
     // Security section
     val isAppLockEnabled: Boolean = false,
     val isScreenshotBlocked: Boolean = false,

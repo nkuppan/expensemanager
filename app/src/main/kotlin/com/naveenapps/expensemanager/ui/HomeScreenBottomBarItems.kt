@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.ui
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.model.LandingPage
 
 enum class HomeScreenBottomBarItems(
     @StringRes val labelResourceID: Int,
@@ -12,4 +13,12 @@ enum class HomeScreenBottomBarItems(
     Analysis(R.string.analysis, R.drawable.ic_chart),
     Transaction(R.string.transaction, R.drawable.ic_transfer),
     Category(R.string.categories, R.drawable.ic_category),
+}
+
+/** The tab for Settings → Defaults → "Open the app on". */
+fun LandingPage.toBottomBarItem(): HomeScreenBottomBarItems = when (this) {
+    LandingPage.HOME -> HomeScreenBottomBarItems.Home
+    LandingPage.ANALYSIS -> HomeScreenBottomBarItems.Analysis
+    LandingPage.TRANSACTIONS -> HomeScreenBottomBarItems.Transaction
+    LandingPage.CATEGORIES -> HomeScreenBottomBarItems.Category
 }

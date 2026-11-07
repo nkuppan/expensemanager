@@ -106,4 +106,10 @@
     <string name="backups_on_device">Sauvegardes sur cet appareil</string>
     <string name="restore_confirm_backup_message">Vos données actuelles seront remplacées par la sauvegarde du %1$s, et l\'app redémarrera.</string>
     <string name="auto_backup_info">Les %1$d sauvegardes auto les plus récentes sont conservées et les plus anciennes supprimées ; les sauvegardes manuelles ne sont jamais supprimées. Les sauvegardes dans l\'app sont supprimées si vous la désinstallez : choisissez un dossier pour les protéger. Les sauvegardes utilisent la clé intégrée de l\'app ; partagez-en une avec une phrase secrète pour plus de protection.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">Ouvrir l’app sur</string>
+    <string name="landing_home">Accueil</string>
+    <string name="landing_analysis">Analyse</string>
+    <string name="landing_transactions">Transactions</string>
+    <string name="landing_categories">Catégories</string>
 </resources>

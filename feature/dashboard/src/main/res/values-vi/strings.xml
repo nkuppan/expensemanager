@@ -56,4 +56,31 @@
     <string name="home_share_description">Chia sẻ Expense Manager. Miễn phí, không quảng cáo và dữ liệu luôn ở trên điện thoại.</string>
     <string name="home_share_button">Chia sẻ ứng dụng</string>
     <string name="home_share_text">Mình dùng Expense Manager để theo dõi chi tiêu. Miễn phí và dữ liệu nằm trên điện thoại của mình: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Tùy chỉnh trang chủ</string>
+    <string name="customise_hint">Nhấn giữ và kéo để sắp xếp lại các mục trên trang chủ</string>
+    <string name="customise_save">Lưu</string>
+    <string name="customise_reset">Đặt lại</string>
+    <string name="section_summary">Tóm tắt thu chi</string>
+    <string name="section_accounts">Tài khoản</string>
+    <string name="section_categories">Danh mục</string>
+    <string name="section_budgets">Ngân sách</string>
+    <string name="section_transactions">Giao dịch gần đây</string>
+    <string name="section_upcoming">Khoản thanh toán sắp tới</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Thông báo</string>
+    <string name="whats_new_version">Phiên bản %1$s</string>
+    <string name="notification_new">Mới</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Xem thêm (%1$d)</string>
+    <string name="notification_see_less">Thu gọn</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Lên kế hoạch trước: đặt tiền thuê nhà, hóa đơn hoặc lương lặp lại từ một ngày trong tương lai và xem trong thẻ Sắp tới mới</item>
+        <item>Thông báo vào tối hôm trước khoản thanh toán hằng tuần, hằng tháng hoặc hằng năm</item>
+        <item>Lặp lại một chạm: các mục thường dùng hiện ra khi thêm giao dịch</item>
+        <item>Tìm kiếm mọi giao dịch kèm tổng cộng</item>
+        <item>Sắp xếp lại trang chủ và chọn thẻ mở ứng dụng</item>
+        <item>Nhiều cải tiến nhỏ</item>
+    </string-array>
 </resources>

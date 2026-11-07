@@ -60,4 +60,31 @@
     <string name="home_share_description">Condividi Expense Manager. È gratis, senza pubblicità, e i loro dati restano sul telefono.</string>
     <string name="home_share_button">Condividi l\'app</string>
     <string name="home_share_text">Uso Expense Manager per tenere traccia delle spese. È gratis e i miei dati restano sul telefono: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Personalizza la home</string>
+    <string name="customise_hint">Tieni premuto e trascina per riordinare le sezioni della home</string>
+    <string name="customise_save">Salva</string>
+    <string name="customise_reset">Ripristina</string>
+    <string name="section_summary">Riepilogo entrate e spese</string>
+    <string name="section_accounts">Conti</string>
+    <string name="section_categories">Categorie</string>
+    <string name="section_budgets">Budget</string>
+    <string name="section_transactions">Transazioni recenti</string>
+    <string name="section_upcoming">Pagamenti in arrivo</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notifiche</string>
+    <string name="whats_new_version">Versione %1$s</string>
+    <string name="notification_new">Nuovo</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Mostra altro (%1$d)</string>
+    <string name="notification_see_less">Mostra meno</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Pianifica: fai ripetere affitto, bollette o stipendio da una data futura e vedi cosa arriva nella nuova scheda In arrivo</item>
+        <item>Un avviso la sera prima di un pagamento settimanale, mensile o annuale</item>
+        <item>Ripeti con un tocco: le voci frequenti compaiono quando aggiungi</item>
+        <item>Cerca in tutte le transazioni, con i totali</item>
+        <item>Riordina la home e scegli la scheda di apertura</item>
+        <item>Tante piccole correzioni</item>
+    </string-array>
 </resources>

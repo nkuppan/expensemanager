@@ -20,9 +20,9 @@
     <string name="auto_backup_failed_folder_body">تعذّر الوصول إلى مجلد النسخ الاحتياطي. اضغط لاختياره مرة أخرى.</string>
     <string name="auto_backup_failed_write_body">تعذّر نسخ بياناتك احتياطيًا. اضغط للتحقق من إعدادات النسخ الاحتياطي.</string>
     <string name="auto_backup_failed_action">إصلاح</string>
-    <!-- Evening heads-up before monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
     <string name="upcoming_channel_name">المدفوعات القادمة</string>
-    <string name="upcoming_channel_description">تنبيه مساء اليوم السابق لإضافة قيد متكرر شهري أو سنوي.</string>
+    <string name="upcoming_channel_description">تنبيه مساء اليوم السابق لإضافة قيد متكرر أسبوعي أو شهري أو سنوي.</string>
     <string name="upcoming_alert_title_one">غدًا: %1$s</string>
     <string name="upcoming_alert_body_one">ستتم إضافة %1$s تلقائيًا.</string>
     <string name="upcoming_alert_body_many">ستتم إضافتها تلقائيًا.</string>

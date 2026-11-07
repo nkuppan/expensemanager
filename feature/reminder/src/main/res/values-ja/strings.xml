@@ -13,5 +13,5 @@
     <string name="schedule">スケジュール</string>
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">今後の支払いのお知らせ</string>
-    <string name="upcoming_alerts_description">毎月・毎年の定期項目が追加される前日の夕方にお知らせします。</string>
+    <string name="upcoming_alerts_description">毎週・毎月・毎年の定期項目が追加される前日の夕方にお知らせします。</string>
 </resources>

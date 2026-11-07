@@ -60,4 +60,31 @@
     <string name="home_share_description">Compartilhe o Expense Manager. É grátis, sem anúncios, e os dados ficam no celular.</string>
     <string name="home_share_button">Compartilhar o app</string>
     <string name="home_share_text">Uso o Expense Manager para controlar meus gastos. É grátis e meus dados ficam no meu celular: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Personalizar início</string>
+    <string name="customise_hint">Toque e arraste para reordenar as seções do início</string>
+    <string name="customise_save">Salvar</string>
+    <string name="customise_reset">Redefinir</string>
+    <string name="section_summary">Resumo de receitas e despesas</string>
+    <string name="section_accounts">Contas</string>
+    <string name="section_categories">Categorias</string>
+    <string name="section_budgets">Orçamentos</string>
+    <string name="section_transactions">Transações recentes</string>
+    <string name="section_upcoming">Pagamentos próximos</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notificações</string>
+    <string name="whats_new_version">Versão %1$s</string>
+    <string name="notification_new">Novo</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Ver mais (%1$d)</string>
+    <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Planeje: faça aluguel, contas ou salário se repetirem a partir de uma data futura e veja o que vem no novo cartão Próximos</item>
+        <item>Um aviso na noite anterior a um pagamento semanal, mensal ou anual</item>
+        <item>Repetir com um toque: seus lançamentos frequentes aparecem ao adicionar</item>
+        <item>Pesquise em todas as transações, com totais</item>
+        <item>Reorganize o início e escolha a aba de abertura do app</item>
+        <item>Muitas pequenas melhorias</item>
+    </string-array>
 </resources>

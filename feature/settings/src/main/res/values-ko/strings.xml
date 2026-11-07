@@ -106,4 +106,10 @@
     <string name="backups_on_device">이 기기의 백업</string>
     <string name="restore_confirm_backup_message">현재 데이터가 %1$s 백업으로 대체되고 앱이 다시 시작됩니다.</string>
     <string name="auto_backup_info">최신 자동 백업 %1$d개를 보관하고 오래된 백업은 삭제합니다. 수동 백업은 삭제되지 않습니다. 앱 내부 백업은 앱을 삭제하면 사라지므로 폴더를 선택해 안전하게 보관하세요. 백업은 앱 내장 키를 사용합니다. 더 안전하게 하려면 암호와 함께 공유하세요.</string>
+    <!-- Settings → Defaults: the bottom-bar tab the app opens on. -->
+    <string name="landing_page">앱 시작 화면</string>
+    <string name="landing_home">홈</string>
+    <string name="landing_analysis">분석</string>
+    <string name="landing_transactions">거래</string>
+    <string name="landing_categories">카테고리</string>
 </resources>

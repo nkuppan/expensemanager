@@ -13,7 +13,7 @@
     <string name="no_transactions_available">Tidak ada transaksi yang tersedia untuk periode yang dipilih.\nKetuk tombol + untuk mencatat transaksi Anda</string>
     <string name="home">Beranda</string>
     <string name="transaction_create_message">"Catat pengeluaran, pemasukan, dan transfer Anda di sini. "</string>
-    <string name="help"><![CDATA[Bantuan & info]]></string>
+    <string name="help"><![CDATA[Bantuan &amp; info]]></string>
     <string name="ok">OK</string>
     <string name="tap_to_set_spending_limit">Ketuk untuk menetapkan batas pengeluaran</string>
     <string name="first_expense_action">Tambah pengeluaran</string>
@@ -56,4 +56,31 @@
     <string name="home_share_description">Bagikan Expense Manager. Gratis, tanpa iklan, dan datanya tetap di ponsel mereka.</string>
     <string name="home_share_button">Bagikan aplikasi</string>
     <string name="home_share_text">Saya pakai Expense Manager untuk mencatat pengeluaran. Gratis dan data tetap di ponsel saya: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Sesuaikan dasbor</string>
+    <string name="customise_hint">Tahan dan seret untuk mengubah urutan bagian di beranda</string>
+    <string name="customise_save">Simpan</string>
+    <string name="customise_reset">Atur ulang</string>
+    <string name="section_summary">Ringkasan pemasukan &amp; pengeluaran</string>
+    <string name="section_accounts">Akun</string>
+    <string name="section_categories">Kategori</string>
+    <string name="section_budgets">Anggaran</string>
+    <string name="section_transactions">Transaksi terbaru</string>
+    <string name="section_upcoming">Pembayaran mendatang</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notifikasi</string>
+    <string name="whats_new_version">Versi %1$s</string>
+    <string name="notification_new">Baru</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Lihat lainnya (%1$d)</string>
+    <string name="notification_see_less">Lihat lebih sedikit</string>
+    <string-array name="whats_new_1_4_26">
+        <item>Rencanakan lebih awal: atur sewa, tagihan, atau gaji agar berulang mulai tanggal mendatang, dan lihat semuanya di kartu Mendatang yang baru</item>
+        <item>Pengingat malam sebelum pembayaran mingguan, bulanan, atau tahunan ditambahkan</item>
+        <item>Ulangi sekali ketuk: entri yang sering muncul sebagai pilihan saat menambah</item>
+        <item>Cari semua transaksi, lengkap dengan totalnya</item>
+        <item>Atur ulang beranda dan pilih tab pembuka aplikasi</item>
+        <item>Banyak perbaikan kecil</item>
+    </string-array>
 </resources>

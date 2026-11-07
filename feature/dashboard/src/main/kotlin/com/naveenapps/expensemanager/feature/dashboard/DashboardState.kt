@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.DashboardSection
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
@@ -46,6 +47,10 @@ data class DashboardState(
      * can't flash up before the stored value loads.
      */
     val shareBannerHiddenUntil: Long = Long.MAX_VALUE,
+    /** Order of the reorderable Home sections (Customise dashboard). */
+    val sectionOrder: List<DashboardSection> = DashboardSection.DEFAULT_ORDER,
+    /** A dot on Home's bell: unread release notes or an insight since the centre was last opened. */
+    val hasUnreadNotifications: Boolean = false,
 ) {
     /** The bottom share banner: for users who've logged a few expenses, unless closed or shared. */
     fun showShareBanner(now: Long): Boolean = transactionCount >= SHARE_BANNER_MIN_TRANSACTIONS && now >= shareBannerHiddenUntil
