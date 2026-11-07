@@ -9,6 +9,15 @@ object AnalyticsEvents {
     // Activation funnel
     const val INTRO_GET_STARTED = "intro_get_started"
     const val ONBOARDING_COMPLETED = "onboarding_completed"
+
+    /** Setup pre-selected the currency for the user's country (`country`, `currency`, `source`). */
+    const val ONBOARDING_CURRENCY_DETECTED = "onboarding_currency_detected"
+
+    /** The user picked a different currency during setup (`currency`, `country`). */
+    const val ONBOARDING_CURRENCY_CHANGED = "onboarding_currency_changed"
+
+    /** The user opened the account list from setup. */
+    const val ONBOARDING_ACCOUNTS_OPENED = "onboarding_accounts_opened"
     const val TRANSACTION_CREATED = "transaction_created"
     const val TRANSACTION_UPDATED = "transaction_updated"
     const val TRANSACTION_DELETED = "transaction_deleted"
@@ -79,6 +88,7 @@ object AnalyticsParams {
     const val HAS_NOTES = "has_notes"
     const val HAS_ATTACHMENT = "has_attachment"
     const val CURRENCY = "currency"
+    const val COUNTRY = "country"
     const val ACCOUNT_COUNT = "account_count"
     const val GRANTED = "granted"
     const val FILE_TYPE = "file_type"

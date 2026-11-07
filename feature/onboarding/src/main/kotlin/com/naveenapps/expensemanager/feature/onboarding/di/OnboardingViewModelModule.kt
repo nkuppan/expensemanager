@@ -10,6 +10,7 @@ val OnboardingViewModelModule = module {
             getOnboardingStatusUseCase = get(),
             getAllAccountsUseCase = get(),
             getDefaultCurrencyUseCase = get(),
+            preselectCountryCurrencyUseCase = get(),
             getCurrencyUseCase = get(),
             saveCurrencyUseCase = get(),
             setOnboardingStatusUseCase = get(),

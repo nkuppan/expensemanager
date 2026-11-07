@@ -4,7 +4,9 @@ import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import android.telephony.TelephonyManager
 import com.naveenapps.expensemanager.core.repository.DevicePropertyRepository
+import com.naveenapps.expensemanager.core.repository.RegionGuess
 import java.util.Locale
 
 class DevicePropertyRepositoryImpl(
@@ -33,6 +35,18 @@ class DevicePropertyRepositoryImpl(
     } catch (e: PackageManager.NameNotFoundException) {
         e.printStackTrace()
         ""
+    }
+
+    override fun getRegionCountryCodes(): List<RegionGuess> {
+        val telephony = context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager
+        return listOfNotNull(
+            runCatching { telephony?.simCountryIso }.getOrNull()?.let { RegionGuess(it, "sim") },
+            runCatching { telephony?.networkCountryIso }.getOrNull()?.let { RegionGuess(it, "network") },
+            RegionGuess(Locale.getDefault().country, "locale"),
+        )
+            .map { it.copy(countryCode = it.countryCode.uppercase(Locale.ROOT)) }
+            .filter { it.countryCode.length == 2 }
+            .distinctBy { it.countryCode }
     }
 
     private fun getOsVersionName(): String = when (val sdkInt = Build.VERSION.SDK_INT) {

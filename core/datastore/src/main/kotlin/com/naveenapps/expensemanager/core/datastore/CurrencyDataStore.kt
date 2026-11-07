@@ -23,6 +23,11 @@ class CurrencyDataStore(private val dataStore: DataStore<Preferences>) {
         )
     }
 
+    /** True once a currency has been saved (by the user, or pre-selected for their country). */
+    fun hasCurrency(): Flow<Boolean> = dataStore.data.map { preferences ->
+        preferences[KEY_CURRENCY_CODE] != null
+    }
+
     suspend fun setCurrency(
         name: String,
         symbol: String,

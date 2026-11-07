@@ -204,7 +204,7 @@ private fun DashboardScreenContent(
                         if (shared) onAction(DashboardAction.ShareAppFromBanner)
                     },
                     onDismiss = { onAction(DashboardAction.DismissShareBanner) },
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = SectionSpacing),
                 )
             }
         }
@@ -230,6 +230,22 @@ private fun DashboardScreenContent(
     }
 }
 
+/**
+ * Gap above every reorderable Home section. Each section owns exactly this space above itself
+ * and nothing below, so the spacing is the same whatever order the user picks.
+ */
+private val SectionSpacing = 24.dp
+
+/**
+ * A section's title row: [SectionSpacing] above, a fixed height (with or without "View all") and
+ * 8dp before the section's content, so titles and content line up in every section.
+ */
+private fun Modifier.sectionTitle(): Modifier = this
+    .fillMaxWidth()
+    .padding(top = SectionSpacing, bottom = 8.dp)
+    .height(40.dp)
+    .padding(start = 16.dp, end = 4.dp)
+
 /** Income, expense and balance for the selected period. */
 private fun LazyListScope.summarySection(state: DashboardState) {
     item("summary") {
@@ -239,7 +255,7 @@ private fun LazyListScope.summarySection(state: DashboardState) {
             isCompact = state.isCompactSummary,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+                .padding(start = 16.dp, end = 16.dp, top = SectionSpacing),
         )
     }
 }
@@ -252,9 +268,7 @@ private fun LazyListScope.accountsSection(
     item("account_item") {
         Column {
             DashboardWidgetTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp),
+                modifier = Modifier.sectionTitle(),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenAccountList)
@@ -306,9 +320,7 @@ private fun LazyListScope.categoriesSection(
     item("category_item") {
         Column {
             DashboardWidgetTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                modifier = Modifier.sectionTitle(),
                 title = stringResource(id = R.string.categories),
             )
             HomeCategoryCard(
@@ -329,9 +341,7 @@ private fun LazyListScope.budgetsSection(
     item("budget_item") {
         Column {
             DashboardWidgetTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp),
+                modifier = Modifier.sectionTitle(),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.active_budgets),
                 onViewAllClick = {
                     onAction.invoke(DashboardAction.OpenBudgetList)
@@ -353,9 +363,7 @@ private fun LazyListScope.transactionsSection(
 ) {
     item {
         DashboardWidgetTitle(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 16.dp),
+            modifier = Modifier.sectionTitle(),
             title = stringResource(id = R.string.transaction),
             onViewAllClick = {
                 onAction.invoke(DashboardAction.OpenTransactionList)
@@ -419,9 +427,7 @@ private fun LazyListScope.upcomingSection(
     item("upcoming_item") {
         Column {
             DashboardWidgetTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
+                modifier = Modifier.sectionTitle(),
                 title = stringResource(id = R.string.upcoming),
                 onViewAllClick = if (state.upcoming.items.isEmpty()) {
                     null

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.settings
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.PreselectCountryCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.export.ExportFileUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.ApplyLocaleUseCase
@@ -29,6 +30,14 @@ val SettingsUseCaseModule = module {
     single { GetDefaultCurrencyUseCase(get()) }
     single { GetFormattedAmountUseCase(get()) }
     single { SaveCurrencyUseCase(get()) }
+    single {
+        PreselectCountryCurrencyUseCase(
+            currencyRepository = get(),
+            countryRepository = get(),
+            devicePropertyRepository = get(),
+            saveCurrencyUseCase = get(),
+        )
+    }
 
     // Export
     single {

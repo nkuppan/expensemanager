@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsU
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.PreselectCountryCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
@@ -32,6 +33,7 @@ class OnboardingViewModel(
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val composeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
+    private val preselectCountryCurrencyUseCase: PreselectCountryCurrencyUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -68,8 +70,24 @@ class OnboardingViewModel(
                         )
                     }
                 }.launchIn(viewModelScope)
+                // After the screen is wired up, so reading the country list never delays it.
+                preselectCurrency()
             }
         }
+    }
+
+    // A fresh install starts on the user's own currency (from the SIM, network or region),
+    // shown straight away through the currency flow below. Never overrides a saved choice.
+    private suspend fun preselectCurrency() {
+        val detected = runCatching { preselectCountryCurrencyUseCase() }.getOrNull() ?: return
+        analyticsRepository.logEvent(
+            AnalyticsEvents.ONBOARDING_CURRENCY_DETECTED,
+            mapOf(
+                AnalyticsParams.COUNTRY to detected.country.countryCode,
+                AnalyticsParams.CURRENCY to detected.country.currency.code,
+                AnalyticsParams.SOURCE to detected.source,
+            ),
+        )
     }
 
     private fun openHome() {
@@ -96,6 +114,7 @@ class OnboardingViewModel(
             }
 
             OnboardingAction.OpenAccounts -> {
+                analyticsRepository.logEvent(AnalyticsEvents.ONBOARDING_ACCOUNTS_OPENED, emptyMap())
                 composeNavigator.navigate(ExpenseManagerScreens.AccountList)
             }
 
@@ -113,6 +132,14 @@ class OnboardingViewModel(
                 viewModelScope.launch {
                     val currency = action.country.currency
                     saveCurrencyUseCase.invoke(currency)
+                    // Tells whether people actually change the pre-selected currency.
+                    analyticsRepository.logEvent(
+                        AnalyticsEvents.ONBOARDING_CURRENCY_CHANGED,
+                        mapOf(
+                            AnalyticsParams.CURRENCY to currency.code,
+                            AnalyticsParams.COUNTRY to action.country.countryCode,
+                        ),
+                    )
                 }
             }
         }
