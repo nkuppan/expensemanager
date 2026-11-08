@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">もっと見る (%1$d)</string>
     <string name="notification_see_less">閉じる</string>
+    <string-array name="whats_new_1_4_28">
+        <item>UPIの支払いメッセージやスクリーンショットをExpense Managerに共有すると、金額・支払先・日付・カテゴリが自動入力されます</item>
+        <item>追加画面からカメラでお店のレシートをスキャン。口座とカテゴリはレシートと過去の記録から提案されます</item>
+        <item>スクリーンショットは端末内で読み取られ、何もアップロードされません。画像は取引に保存されます</item>
+        <item>毎日のリマインダーがオフのときはホームにお知らせを表示。ワンタップでオンに戻せます</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>先の予定を登録：家賃や請求書、給料を将来の日付から繰り返し設定し、ホームの新しい「今後の予定」カードで確認</item>
         <item>毎週・毎月・毎年の支払いが追加される前日の夕方にお知らせ</item>
@@ -83,4 +89,9 @@
         <item>ホーム画面の並べ替えと、起動時に開くタブの選択</item>
         <item>細かな改善多数</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">毎日のリマインダーはオフです</string>
+    <string name="reminder_banner_body">毎晩のちょっとしたお知らせで、支出の記録を最新に保てます。</string>
+    <string name="reminder_banner_turn_on">オンにする</string>
+    <string name="reminder_banner_not_now">今はしない</string>
 </resources>

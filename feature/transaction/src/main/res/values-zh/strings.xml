@@ -107,4 +107,9 @@
     <string name="quick_picks">常用</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">已计划：将于 %1$s 首次添加。在此之前不会记录。</string>
+    <string name="receipt_amount_not_found">无法从此收据中读取金额，请在下方输入。</string>
+    <string name="scan_receipt">扫描收据</string>
+    <string name="reading_receipt">正在读取收据…</string>
+    <string name="suggested_categories">推荐</string>
+    <string name="receipt_scanner_unavailable">此设备无法使用收据扫描</string>
 </resources>

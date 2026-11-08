@@ -1,6 +1,4 @@
-• Pianifica: fai ripetere affitto, bollette o stipendio da una data futura e vedi cosa arriva nella nuova scheda In arrivo
-• Un avviso la sera prima di un pagamento settimanale, mensile o annuale
-• Ripeti con un tocco: le voci frequenti compaiono quando aggiungi
-• Cerca in tutte le transazioni, con i totali
-• Riordina la home e scegli la scheda di apertura
-• Tante piccole correzioni
+• Condividi un messaggio di pagamento UPI o uno screenshot con Expense Manager e tutto viene compilato: importo, beneficiario, data e categoria
+• Scansiona uno scontrino con la fotocamera dalla schermata Aggiungi. Conto e categoria sono suggeriti dallo scontrino e dalle voci passate
+• Gli screenshot vengono letti sul telefono, nulla viene caricato e l'immagine viene salvata con la transazione
+• Un avviso nella Home quando i promemoria giornalieri sono disattivati, per riattivarli con un tocco

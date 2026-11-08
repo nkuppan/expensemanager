@@ -96,6 +96,30 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         limit: Int,
     ): Flow<List<FrequentTransactionRow>>
 
+    // Categories used for this type with matching notes (trimmed, case-insensitive), most used
+    // first, ties by most recent. Suggests categories for a receipt from the payee's name.
+    @Query(
+        """
+        SELECT category_id FROM `transaction`
+        WHERE type = :transactionType AND LOWER(TRIM(notes)) = :notes
+        GROUP BY category_id
+        ORDER BY COUNT(*) DESC, MAX(created_on) DESC
+        LIMIT :limit
+        """,
+    )
+    suspend fun findCategoryIdsByNotes(transactionType: Int, notes: String, limit: Int): List<String>
+
+    // Account of the latest entry of this type with matching notes.
+    @Query(
+        """
+        SELECT from_account_id FROM `transaction`
+        WHERE type = :transactionType AND LOWER(TRIM(notes)) = :notes
+        ORDER BY created_on DESC
+        LIMIT 1
+        """,
+    )
+    suspend fun findLatestAccountIdByNotes(transactionType: Int, notes: String): String?
+
     @Update
     suspend fun updateAccount(accountEntity: AccountEntity)
 

@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Xem thêm (%1$d)</string>
     <string name="notification_see_less">Thu gọn</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Chia sẻ tin nhắn thanh toán UPI hoặc ảnh chụp màn hình tới Expense Manager để tự điền số tiền, người nhận, ngày và danh mục</item>
+        <item>Quét hóa đơn cửa hàng bằng camera ngay từ màn hình Thêm. Tài khoản và danh mục được gợi ý từ hóa đơn và các mục trước đây</item>
+        <item>Ảnh chụp được đọc ngay trên điện thoại, không tải lên gì, và ảnh được lưu cùng giao dịch</item>
+        <item>Lời nhắc trên Trang chủ khi nhắc nhở hằng ngày đang tắt, để bật lại chỉ với một chạm</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Lên kế hoạch trước: đặt tiền thuê nhà, hóa đơn hoặc lương lặp lại từ một ngày trong tương lai và xem trong thẻ Sắp tới mới</item>
         <item>Thông báo vào tối hôm trước khoản thanh toán hằng tuần, hằng tháng hoặc hằng năm</item>
@@ -83,4 +89,9 @@
         <item>Sắp xếp lại trang chủ và chọn thẻ mở ứng dụng</item>
         <item>Nhiều cải tiến nhỏ</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Nhắc nhở hằng ngày đang tắt</string>
+    <string name="reminder_banner_body">Một lời nhắc nhẹ mỗi tối giúp bạn ghi chép chi tiêu đầy đủ.</string>
+    <string name="reminder_banner_turn_on">Bật</string>
+    <string name="reminder_banner_not_now">Để sau</string>
 </resources>

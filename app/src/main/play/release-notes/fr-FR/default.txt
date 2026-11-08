@@ -1,6 +1,4 @@
-• Anticipez : faites revenir loyer, factures ou salaire à partir d’une date future, et voyez ce qui arrive dans la nouvelle carte « À venir »
-• Un rappel la veille au soir d’un paiement hebdomadaire, mensuel ou annuel
-• Répéter d’un geste : vos saisies fréquentes s’affichent lors de l’ajout
-• Recherchez dans toutes vos transactions, avec les totaux
-• Réorganisez l’accueil et choisissez l’onglet d’ouverture
-• De nombreuses petites corrections
+• Partagez un message de paiement UPI ou une capture avec Expense Manager et tout est rempli : montant, bénéficiaire, date et catégorie
+• Scannez un ticket avec l'appareil photo depuis l'écran Ajouter, avec compte et catégorie suggérés
+• Les captures sont lues sur votre téléphone, rien n'est envoyé, et l'image est enregistrée avec la transaction
+• Un rappel sur l'accueil quand les rappels quotidiens sont désactivés, pour les réactiver en un geste

@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mostra altro (%1$d)</string>
     <string name="notification_see_less">Mostra meno</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Condividi un messaggio di pagamento UPI o uno screenshot con Expense Manager e tutto viene compilato: importo, beneficiario, data e categoria</item>
+        <item>Scansiona uno scontrino con la fotocamera dalla schermata Aggiungi. Conto e categoria sono suggeriti dallo scontrino e dalle voci passate</item>
+        <item>Gli screenshot vengono letti sul telefono, nulla viene caricato e l\'immagine viene salvata con la transazione</item>
+        <item>Un avviso nella Home quando i promemoria giornalieri sono disattivati, per riattivarli con un tocco</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Pianifica: fai ripetere affitto, bollette o stipendio da una data futura e vedi cosa arriva nella nuova scheda In arrivo</item>
         <item>Un avviso la sera prima di un pagamento settimanale, mensile o annuale</item>
@@ -87,4 +93,9 @@
         <item>Riordina la home e scegli la scheda di apertura</item>
         <item>Tante piccole correzioni</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">I promemoria giornalieri sono disattivati</string>
+    <string name="reminder_banner_body">Un piccolo promemoria ogni sera ti aiuta a tenere aggiornate le spese.</string>
+    <string name="reminder_banner_turn_on">Attiva</string>
+    <string name="reminder_banner_not_now">Non ora</string>
 </resources>

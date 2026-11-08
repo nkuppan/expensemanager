@@ -39,4 +39,10 @@ interface TransactionRepository {
         minCount: Int,
         limit: Int,
     ): Flow<List<FrequentTransaction>>
+
+    /** Categories of [type] entries whose notes equal [notes] (ignoring case), most used first. */
+    suspend fun findCategoryIdsByNotes(type: TransactionType, notes: String, limit: Int): List<String>
+
+    /** Account of the latest [type] entry whose notes equal [notes], ignoring case. */
+    suspend fun findLatestAccountIdByNotes(type: TransactionType, notes: String): String?
 }

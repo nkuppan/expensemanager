@@ -51,9 +51,25 @@ data class DashboardState(
     val sectionOrder: List<DashboardSection> = DashboardSection.DEFAULT_ORDER,
     /** A dot on Home's bell: unread release notes or an insight since the centre was last opened. */
     val hasUnreadNotifications: Boolean = false,
+    /**
+     * "Daily reminders are off" banner may show (from the install's second day, not snoozed,
+     * dismissed fewer than 3 times, no first-save reminder ask pending). The screen also needs
+     * notifications to be blocked; see [showReminderBanner].
+     */
+    val reminderBannerEligible: Boolean = false,
+    val isReminderOn: Boolean = true,
+    /** Times the system permission dialog was requested; decides dialog vs Settings. */
+    val notificationPermissionAsks: Int = 0,
 ) {
+    /**
+     * The reminders banner, given whether the app may post notifications right now. Only for
+     * blocked notifications: someone who switched the reminder off in Settings chose that.
+     */
+    fun showReminderBanner(canNotify: Boolean): Boolean = reminderBannerEligible && !canNotify
+
     /** The bottom share banner: for users who've logged a few expenses, unless closed or shared. */
-    fun showShareBanner(now: Long): Boolean = transactionCount >= SHARE_BANNER_MIN_TRANSACTIONS && now >= shareBannerHiddenUntil
+    fun showShareBanner(now: Long): Boolean =
+        transactionCount >= SHARE_BANNER_MIN_TRANSACTIONS && now >= shareBannerHiddenUntil
 }
 
 /** Recommendations land better from people who've actually used the app for a while. */

@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.feature.transaction.di
 
 import com.naveenapps.expensemanager.feature.transaction.create.TransactionCreateViewModel
+import com.naveenapps.expensemanager.feature.transaction.create.receipt.MlKitReceiptTextReader
+import com.naveenapps.expensemanager.feature.transaction.create.receipt.ReceiptTextReader
 import com.naveenapps.expensemanager.feature.transaction.list.TransactionListViewModel
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadViewModel
 import com.naveenapps.expensemanager.feature.transaction.recurring.RecurringTransactionsViewModel
@@ -14,6 +16,7 @@ import org.koin.dsl.module
 val TransactionViewModelModule = module {
     // Category names as shown in the app's language, so search matches translated names.
     factory<CategoryDisplayNames> { LocalizedCategoryDisplayNames(androidContext(), get()) }
+    factory<ReceiptTextReader> { MlKitReceiptTextReader(androidContext()) }
     viewModel {
         TransactionCreateViewModel(
             savedStateHandle = get(),
@@ -37,6 +40,9 @@ val TransactionViewModelModule = module {
             findRecurringTransactionByIdUseCase = get(),
             getFrequentTransactionsUseCase = get(),
             planRecurringTransactionUseCase = get(),
+            sharedReceiptRepository = get(),
+            receiptTextReader = get(),
+            getPayeeSuggestionsUseCase = get(),
         )
     }
     viewModel {

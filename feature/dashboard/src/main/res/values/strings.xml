@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">See more (%1$d)</string>
     <string name="notification_see_less">See less</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Share a UPI payment message or screenshot to Expense Manager and it\'s filled in for you: amount, payee, date and category</item>
+        <item>Scan a shop receipt with your camera from the Add screen. The account and category are suggested from the receipt and your past entries</item>
+        <item>Screenshots are read on your phone, nothing is uploaded, and the image is saved with the transaction</item>
+        <item>A reminder on Home when daily reminders are off, so you can turn them back on in one tap</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Plan ahead: set rent, bills or salary to repeat from a future date, and see what\'s coming in the new Upcoming card on Home</item>
         <item>A heads-up the evening before a weekly, monthly or yearly payment is added</item>
@@ -85,4 +91,9 @@
         <item>Reorder the Home screen and choose which tab the app opens on</item>
         <item>A simpler Get started card, and many small fixes</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Daily reminders are off</string>
+    <string name="reminder_banner_body">A gentle nudge each evening helps you keep your spending up to date.</string>
+    <string name="reminder_banner_turn_on">Turn on</string>
+    <string name="reminder_banner_not_now">Not now</string>
 </resources>

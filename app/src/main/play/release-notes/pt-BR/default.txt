@@ -1,6 +1,4 @@
-• Planeje: faça aluguel, contas ou salário se repetirem a partir de uma data futura e veja o que vem no novo cartão Próximos
-• Um aviso na noite anterior a um pagamento semanal, mensal ou anual
-• Repetir com um toque: seus lançamentos frequentes aparecem ao adicionar
-• Pesquise em todas as transações, com totais
-• Reorganize o início e escolha a aba de abertura do app
-• Muitas pequenas melhorias
+• Compartilhe uma mensagem de pagamento UPI ou uma captura com o Expense Manager e tudo é preenchido: valor, favorecido, data e categoria
+• Digitalize um recibo de loja com a câmera na tela Adicionar. A conta e a categoria são sugeridas pelo recibo e pelos seus lançamentos anteriores
+• As capturas são lidas no seu celular, nada é enviado, e a imagem fica salva com a transação
+• Um aviso na tela inicial quando os lembretes diários estão desativados, para reativá-los com um toque

@@ -107,4 +107,9 @@
     <string name="quick_picks">Sering</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Direncanakan: pertama ditambahkan pada %1$s. Belum ada yang dicatat sebelum itu.</string>
+    <string name="receipt_amount_not_found">Tidak dapat membaca jumlah dari struk ini. Masukkan di bawah.</string>
+    <string name="scan_receipt">Pindai struk</string>
+    <string name="reading_receipt">Membaca struk…</string>
+    <string name="suggested_categories">Disarankan</string>
+    <string name="receipt_scanner_unavailable">Pemindai struk tidak tersedia di perangkat ini</string>
 </resources>

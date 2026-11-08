@@ -185,4 +185,19 @@ class TransactionRepositoryImpl(
             )
         }
     }
+
+    override suspend fun findCategoryIdsByNotes(
+        type: TransactionType,
+        notes: String,
+        limit: Int,
+    ): List<String> = withContext(dispatchers.io) {
+        transactionDao.findCategoryIdsByNotes(type.ordinal, notes.trim().lowercase(), limit)
+    }
+
+    override suspend fun findLatestAccountIdByNotes(
+        type: TransactionType,
+        notes: String,
+    ): String? = withContext(dispatchers.io) {
+        transactionDao.findLatestAccountIdByNotes(type.ordinal, notes.trim().lowercase())
+    }
 }

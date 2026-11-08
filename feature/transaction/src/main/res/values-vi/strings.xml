@@ -107,4 +107,9 @@
     <string name="quick_picks">Thường dùng</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Đã lên kế hoạch: thêm lần đầu vào %1$s. Trước đó chưa ghi gì.</string>
+    <string name="receipt_amount_not_found">Không đọc được số tiền từ biên lai này. Hãy nhập bên dưới.</string>
+    <string name="scan_receipt">Quét hóa đơn</string>
+    <string name="reading_receipt">Đang đọc hóa đơn…</string>
+    <string name="suggested_categories">Gợi ý</string>
+    <string name="receipt_scanner_unavailable">Trình quét hóa đơn không khả dụng trên thiết bị này</string>
 </resources>

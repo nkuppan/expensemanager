@@ -81,6 +81,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Показать ещё (%1$d)</string>
     <string name="notification_see_less">Свернуть</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Поделитесь сообщением об оплате UPI или скриншотом с Expense Manager — сумма, получатель, дата и категория заполнятся сами</item>
+        <item>Сканируйте чек камерой прямо с экрана добавления. Счёт и категория подбираются по чеку и вашим прошлым записям</item>
+        <item>Скриншоты распознаются на телефоне, ничего не загружается, а изображение сохраняется вместе с операцией</item>
+        <item>Подсказка на главном экране, если ежедневные напоминания выключены, чтобы включить их одним касанием</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Планируйте заранее: сделайте аренду, счета или зарплату повторяющимися с будущей даты и смотрите предстоящее в новой карточке на главной</item>
         <item>Напоминание вечером накануне еженедельного, ежемесячного или ежегодного платежа</item>
@@ -89,4 +95,9 @@
         <item>Порядок разделов главной и выбор стартовой вкладки</item>
         <item>Множество мелких исправлений</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Ежедневные напоминания выключены</string>
+    <string name="reminder_banner_body">Короткое напоминание каждый вечер помогает вести расходы без пропусков.</string>
+    <string name="reminder_banner_turn_on">Включить</string>
+    <string name="reminder_banner_not_now">Не сейчас</string>
 </resources>

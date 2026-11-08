@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver más (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Comparte un mensaje de pago UPI o una captura con Expense Manager y se rellena solo: importe, beneficiario, fecha y categoría</item>
+        <item>Escanea un ticket con la cámara desde la pantalla Añadir. La cuenta y la categoría se sugieren a partir del ticket y tus entradas anteriores</item>
+        <item>Las capturas se leen en tu teléfono, no se sube nada y la imagen se guarda con la transacción</item>
+        <item>Un aviso en Inicio cuando los recordatorios diarios están desactivados, para activarlos con un toque</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Planifica: haz que el alquiler, las facturas o el sueldo se repitan desde una fecha futura y mira lo que viene en la nueva tarjeta Próximos</item>
         <item>Un aviso la tarde anterior a un pago semanal, mensual o anual</item>
@@ -87,4 +93,9 @@
         <item>Reordena el inicio y elige la pestaña con la que se abre la app</item>
         <item>Muchas pequeñas mejoras</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Los recordatorios diarios están desactivados</string>
+    <string name="reminder_banner_body">Un aviso cada tarde te ayuda a mantener tus gastos al día.</string>
+    <string name="reminder_banner_turn_on">Activar</string>
+    <string name="reminder_banner_not_now">Ahora no</string>
 </resources>

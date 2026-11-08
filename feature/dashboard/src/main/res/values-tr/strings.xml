@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Daha fazla göster (%1$d)</string>
     <string name="notification_see_less">Daha az göster</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Bir UPI ödeme mesajını veya ekran görüntüsünü Expense Manager ile paylaşın; tutar, alıcı, tarih ve kategori otomatik doldurulur</item>
+        <item>Ekle ekranından kamerayla mağaza fişini tarayın. Hesap ve kategori, fişe ve önceki kayıtlarınıza göre önerilir</item>
+        <item>Ekran görüntüleri telefonunuzda okunur, hiçbir şey yüklenmez ve görsel işlemle birlikte kaydedilir</item>
+        <item>Günlük hatırlatıcılar kapalıyken Ana sayfada bir uyarı; tek dokunuşla yeniden açabilirsiniz</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Önceden planlayın: kira, fatura veya maaşı ileri bir tarihten itibaren yinelenen yapın ve yeni Yaklaşan kartında görün</item>
         <item>Haftalık, aylık veya yıllık bir ödeme eklenmeden önceki akşam hatırlatma</item>
@@ -85,4 +91,9 @@
         <item>Ana ekranı yeniden sıralayın ve açılış sekmesini seçin</item>
         <item>Birçok küçük düzeltme</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Günlük hatırlatıcılar kapalı</string>
+    <string name="reminder_banner_body">Her akşam küçük bir hatırlatma, harcamalarınızı güncel tutmanıza yardımcı olur.</string>
+    <string name="reminder_banner_turn_on">Aç</string>
+    <string name="reminder_banner_not_now">Şimdi değil</string>
 </resources>

@@ -110,4 +110,9 @@
     <string name="quick_picks">Częste</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Zaplanowano: pierwszy wpis %1$s. Do tego czasu nic nie zostanie zapisane.</string>
+    <string name="receipt_amount_not_found">Nie udało się odczytać kwoty z tego potwierdzenia. Wpisz ją poniżej.</string>
+    <string name="scan_receipt">Skanuj paragon</string>
+    <string name="reading_receipt">Odczytywanie paragonu…</string>
+    <string name="suggested_categories">Sugerowane</string>
+    <string name="receipt_scanner_unavailable">Skaner paragonów nie jest dostępny na tym urządzeniu</string>
 </resources>

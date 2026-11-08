@@ -119,6 +119,8 @@ class HomeViewModel(
     fun onReminderPrimerAccepted() {
         analyticsRepository.logEvent(AnalyticsEvents.NOTIFICATION_PRIMER_ACCEPTED, primerSource())
         markPrimerAnswered()
+        // The screen shows the system dialog next; Home's reminders banner uses the count.
+        viewModelScope.launch { feedbackRepository.recordNotificationPermissionAsk() }
     }
 
     /** "Not now" or swiped away: respect it and never show the explainer again. */

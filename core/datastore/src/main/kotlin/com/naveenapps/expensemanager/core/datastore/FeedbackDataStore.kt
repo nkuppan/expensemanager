@@ -82,7 +82,12 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
     // When the notification centre was last opened (epoch millis); newer insights light the dot.
     private val notificationCentreOpenedAtKey = longPreferencesKey("notification_centre_opened_at")
 
-    suspend fun addInsight(kind: String, title: String, message: String, postedAt: Long) = dataStore.edit { preferences ->
+    suspend fun addInsight(
+        kind: String,
+        title: String,
+        message: String,
+        postedAt: Long,
+    ) = dataStore.edit { preferences ->
         val history = runCatching { JSONArray(preferences[insightsKey] ?: "[]") }.getOrDefault(JSONArray())
         val updated = JSONArray().put(
             JSONObject()
@@ -117,6 +122,38 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
 
     fun getNotificationCentreOpenedAt(): Flow<Long> = dataStore.data.map { preferences ->
         preferences[notificationCentreOpenedAtKey] ?: 0L
+    }
+
+    // Home's "Daily reminders are off" banner: hidden until this time after "Not now", and how
+    // many times it was dismissed (it stops asking after a few).
+    private val reminderBannerHiddenUntilKey = longPreferencesKey("reminder_banner_hidden_until")
+    private val reminderBannerDismissCountKey = intPreferencesKey("reminder_banner_dismiss_count")
+
+    // How many times the app has shown the system notification-permission dialog. After a denial
+    // Android may stop showing it; with a count above 0 and no rationale, the app opens Settings.
+    private val notificationPermissionAsksKey = intPreferencesKey("notification_permission_asks")
+
+    suspend fun dismissReminderBanner(hiddenUntil: Long) = dataStore.edit { preferences ->
+        preferences[reminderBannerHiddenUntilKey] = hiddenUntil
+        val dismissed = preferences[reminderBannerDismissCountKey] ?: 0
+        preferences[reminderBannerDismissCountKey] = dismissed + 1
+    }
+
+    fun getReminderBannerHiddenUntil(): Flow<Long> = dataStore.data.map { preferences ->
+        preferences[reminderBannerHiddenUntilKey] ?: 0L
+    }
+
+    fun getReminderBannerDismissCount(): Flow<Int> = dataStore.data.map { preferences ->
+        preferences[reminderBannerDismissCountKey] ?: 0
+    }
+
+    suspend fun recordNotificationPermissionAsk() = dataStore.edit { preferences ->
+        val asks = preferences[notificationPermissionAsksKey] ?: 0
+        preferences[notificationPermissionAsksKey] = asks + 1
+    }
+
+    fun getNotificationPermissionAsks(): Flow<Int> = dataStore.data.map { preferences ->
+        preferences[notificationPermissionAsksKey] ?: 0
     }
 
     // The "What's new" notes the user last opened from Home's bell, by their version (e.g.

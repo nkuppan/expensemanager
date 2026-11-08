@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.receipt.ReceiptAccountMatcher
+import com.naveenapps.expensemanager.core.domain.usecase.receipt.ReceiptParser
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.CreateRecurringTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.FindRecurringTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.PlanRecurringTransactionUseCase
@@ -19,6 +21,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransact
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetFrequentTransactionsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetPayeeSuggestionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -48,8 +51,10 @@ import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
+import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.feature.transaction.R
+import com.naveenapps.expensemanager.feature.transaction.create.receipt.ReceiptTextReader
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -71,7 +76,7 @@ class TransactionCreateViewModel(
     savedStateHandle: SavedStateHandle,
     getCurrencyUseCase: GetCurrencyUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,
-    getAllCategoryUseCase: GetAllCategoryUseCase,
+    private val getAllCategoryUseCase: GetAllCategoryUseCase,
     getDefaultCurrencyUseCase: GetDefaultCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val findTransactionByIdUseCase: FindTransactionByIdUseCase,
@@ -89,6 +94,9 @@ class TransactionCreateViewModel(
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase,
     private val getFrequentTransactionsUseCase: GetFrequentTransactionsUseCase,
     private val planRecurringTransactionUseCase: PlanRecurringTransactionUseCase,
+    private val sharedReceiptRepository: SharedReceiptRepository,
+    private val receiptTextReader: ReceiptTextReader,
+    private val getPayeeSuggestionsUseCase: GetPayeeSuggestionsUseCase,
 ) : ViewModel() {
 
     private val sessionCreatedAttachmentPaths = mutableListOf<String>()
@@ -102,6 +110,11 @@ class TransactionCreateViewModel(
         } else {
             null
         }
+
+    // Opened from the share sheet with a UPI / bank message or a payment screenshot.
+    private val fromShare: Boolean =
+        savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank() &&
+            savedStateHandle.get<Boolean>(ExpenseManagerArgsNames.FROM_SHARE) == true
 
     private val _event = Channel<TransactionCreateEvent>()
     val event = _event.receiveAsFlow()
@@ -158,6 +171,9 @@ class TransactionCreateViewModel(
     // Set when a frequent-entry chip filled the form, so the save is attributed to it.
     private var usedQuickPick = false
 
+    // Set when a shared or scanned receipt filled the form (a quick pick used afterwards wins).
+    private var receiptSource: ReceiptSource? = null
+
     // Ids seen in the previous accounts/categories emission; null until the first one.
     private var knownAccountIds: Set<String>? = null
     private var knownCategoryIds: Set<String>? = null
@@ -168,6 +184,88 @@ class TransactionCreateViewModel(
         loadTransactionWhenReady(savedStateHandle)
         openCalculatorIfEnabled(savedStateHandle)
         observeQuickPicks(savedStateHandle, getAllCategoryUseCase)
+        if (fromShare) applySharedReceipt()
+    }
+
+    private fun applySharedReceipt() {
+        val receipt = sharedReceiptRepository.take() ?: return
+        applyReceipt(text = receipt.text, imageUri = receipt.imageUri, source = ReceiptSource.SHARE)
+    }
+
+    // A receipt (shared in, or scanned with the camera) fills what it can: amount, payee as
+    // notes, date and income/expense. The account comes from the receipt's own clues (card
+    // digits, bank name), else the one used last for this payee; the payee's past categories
+    // become suggestion chips, the most used one selected. Nothing is saved until the user taps
+    // Save. The image is also kept as the transaction's attachment.
+    private fun applyReceipt(text: String?, imageUri: Uri?, source: ReceiptSource) {
+        _state.update { it.copy(isReadingReceipt = true, showNumberPad = false) }
+        viewModelScope.launch {
+            // Apps often send a screenshot with a caption ("Paid via ..."), so the image is read
+            // whenever the text alone has no amount. OCR reads the original image: the saved
+            // attachment copy is downsampled too far for text.
+            val fromText = text?.let { ReceiptParser.parse(it) }
+            val recognised = if (fromText?.amount == null && imageUri != null) {
+                receiptTextReader.read(imageUri)
+            } else {
+                null
+            }
+            val parsed = recognised?.let { ReceiptParser.parse(it) } ?: fromText
+            imageUri?.let(::onAttachmentPicked)
+            val amount = parsed?.amount
+            analyticsRepository.logEvent(
+                if (source == ReceiptSource.SHARE) AnalyticsEvents.RECEIPT_SHARED else AnalyticsEvents.RECEIPT_SCANNED,
+                mapOf(
+                    AnalyticsParams.TYPE to if (imageUri != null) RECEIPT_IMAGE else RECEIPT_TEXT,
+                    AnalyticsParams.FOUND_AMOUNT to (amount != null).toString(),
+                ),
+            )
+            if (amount == null) {
+                _state.update { it.copy(isReadingReceipt = false, showNumberPad = true) }
+                _event.send(TransactionCreateEvent.ShowMessage(R.string.receipt_amount_not_found))
+            }
+            if (parsed == null) return@launch
+            receiptSource = source
+            syncState.first { it.isAccountSyncCompleted && it.isCategorySyncCompleted }
+
+            val suggestions = getPayeeSuggestionsUseCase(parsed.type, parsed.payee)
+            val allCategories = getAllCategoryUseCase.invoke().first()
+            val suggestedCategories = suggestions.categoryIds.mapNotNull { id -> allCategories.find { it.id == id } }
+            val accounts = _state.value.accounts
+            val account = ReceiptAccountMatcher.match(
+                receiptText = listOfNotNull(text, recognised).joinToString("\n"),
+                payee = parsed.payee,
+                accountDigits = parsed.accountDigits,
+                accounts = accounts,
+                name = { it.name },
+            ) ?: accounts.find { it.id == suggestions.accountId }
+
+            transactionType.value = parsed.type
+            _state.update { current ->
+                current.copy(
+                    transactionType = parsed.type,
+                    amount = amount?.let {
+                        current.amount.copy(value = numberFormatRepository.formatForEditing(it), valueError = false)
+                    } ?: current.amount,
+                    notes = parsed.payee?.let { current.notes.copy(value = it) } ?: current.notes,
+                    dateTime = parsed.date ?: current.dateTime,
+                    selectedCategory = suggestedCategories.firstOrNull() ?: current.selectedCategory,
+                    suggestedCategories = suggestedCategories,
+                    selectedFromAccount = account ?: current.selectedFromAccount,
+                    isReadingReceipt = false,
+                )
+            }
+        }
+    }
+
+    private fun onReceiptScanRequested() {
+        _state.update { it.copy(showNumberPad = false) }
+        analyticsRepository.logEvent(AnalyticsEvents.RECEIPT_SCAN_OPENED, emptyMap())
+    }
+
+    private fun onReceiptScanFailed() {
+        viewModelScope.launch {
+            _event.send(TransactionCreateEvent.ShowMessage(R.string.receipt_scanner_unavailable))
+        }
     }
 
     // Frequent entries become chips on a new transaction. They're resolved against the live
@@ -228,6 +326,8 @@ class TransactionCreateViewModel(
     // it off in Advanced settings. Editing (an id was passed) always opens on the form.
     private fun openCalculatorIfEnabled(savedStateHandle: SavedStateHandle) {
         if (!savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank()) return
+        // A shared receipt opens on the filled form (the keypad only when no amount was found).
+        if (fromShare) return
         viewModelScope.launch {
             if (settingsRepository.isAutoOpenCalculator().first()) {
                 _state.update { it.copy(showNumberPad = true) }
@@ -395,6 +495,7 @@ class TransactionCreateViewModel(
                         } ?: defaultAccount,
                         showDeleteButton = true,
                         canRepeat = false,
+                        canScanReceipt = false,
                         recurringRuleId = recurringRuleId,
                         attachments = transaction.attachments,
                     )
@@ -552,7 +653,10 @@ class TransactionCreateViewModel(
                 AnalyticsParams.TRANSACTION_COUNT to count.toString(),
                 AnalyticsParams.HAS_NOTES to transaction.notes.isNotBlank().toString(),
                 AnalyticsParams.HAS_ATTACHMENT to transaction.attachments.isNotEmpty().toString(),
-                AnalyticsParams.SOURCE to if (usedQuickPick) SOURCE_QUICK_PICK else SOURCE_MANUAL,
+                AnalyticsParams.SOURCE to when {
+                    usedQuickPick -> SOURCE_QUICK_PICK
+                    else -> receiptSource?.analyticsSource ?: SOURCE_MANUAL
+                },
             ),
         )
     }
@@ -692,7 +796,8 @@ class TransactionCreateViewModel(
             } else {
                 current.selectedToAccount
             }
-            current.copy(transactionType = type, selectedToAccount = toAccount)
+            // A receipt's category suggestions belong to the type it was read as.
+            current.copy(transactionType = type, selectedToAccount = toAccount, suggestedCategories = emptyList())
         }
     }
 
@@ -841,6 +946,16 @@ class TransactionCreateViewModel(
             is TransactionCreateAction.RemoveAttachment -> removeAttachment(action.path)
 
             is TransactionCreateAction.ApplyQuickPick -> applyQuickPick(action.pick)
+
+            TransactionCreateAction.ReceiptScanRequested -> onReceiptScanRequested()
+
+            is TransactionCreateAction.ReceiptScanned -> applyReceipt(
+                text = null,
+                imageUri = action.uri,
+                source = ReceiptSource.SCAN,
+            )
+
+            TransactionCreateAction.ReceiptScanFailed -> onReceiptScanFailed()
         }
     }
 
@@ -849,10 +964,18 @@ class TransactionCreateViewModel(
         discardSessionAttachments()
     }
 
+    /** Where a receipt came from; also the transaction_created "source" when it's saved. */
+    private enum class ReceiptSource(val analyticsSource: String) {
+        SHARE("receipt_share"),
+        SCAN("receipt_scan"),
+    }
+
     companion object {
         private const val SOURCE_QUICK_PICK = "quick_pick"
         private const val SOURCE_MANUAL = "manual"
         private const val SOURCE_PLANNED = "planned"
+        private const val RECEIPT_TEXT = "text"
+        private const val RECEIPT_IMAGE = "image"
 
         private val defaultCategory = Category(
             id = "1",

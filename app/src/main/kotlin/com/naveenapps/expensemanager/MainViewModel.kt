@@ -76,6 +76,19 @@ class MainViewModel(
         _pendingQuickAdd.value = false
     }
 
+    // Set when a receipt was shared to the app; handled like quick add, but the add screen
+    // opens pre-filled from SharedReceiptRepository.
+    private val _pendingSharedReceipt = MutableStateFlow(false)
+    val pendingSharedReceipt = _pendingSharedReceipt.asStateFlow()
+
+    fun requestSharedReceipt() {
+        _pendingSharedReceipt.value = true
+    }
+
+    fun onSharedReceiptHandled() {
+        _pendingSharedReceipt.value = false
+    }
+
     // Set when opened from the "automatic backup failed" notification; handled like quick add.
     private val _pendingOpenAutoBackup = MutableStateFlow(false)
     val pendingOpenAutoBackup = _pendingOpenAutoBackup.asStateFlow()

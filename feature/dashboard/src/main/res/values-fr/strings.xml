@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Voir plus (%1$d)</string>
     <string name="notification_see_less">Voir moins</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Partagez un message de paiement UPI ou une capture avec Expense Manager et tout est rempli : montant, bénéficiaire, date et catégorie</item>
+        <item>Scannez un ticket de caisse avec l\'appareil photo depuis l\'écran Ajouter. Le compte et la catégorie sont suggérés d\'après le ticket et vos saisies passées</item>
+        <item>Les captures sont lues sur votre téléphone, rien n\'est envoyé, et l\'image est enregistrée avec la transaction</item>
+        <item>Un rappel sur l\'accueil quand les rappels quotidiens sont désactivés, pour les réactiver en un geste</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Anticipez : faites revenir loyer, factures ou salaire à partir d’une date future, et voyez ce qui arrive dans la nouvelle carte « À venir »</item>
         <item>Un rappel la veille au soir d’un paiement hebdomadaire, mensuel ou annuel</item>
@@ -87,4 +93,9 @@
         <item>Réorganisez l’accueil et choisissez l’onglet d’ouverture</item>
         <item>De nombreuses petites corrections</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Les rappels quotidiens sont désactivés</string>
+    <string name="reminder_banner_body">Un petit rappel chaque soir vous aide à garder vos dépenses à jour.</string>
+    <string name="reminder_banner_turn_on">Activer</string>
+    <string name="reminder_banner_not_now">Pas maintenant</string>
 </resources>

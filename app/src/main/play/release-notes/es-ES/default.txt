@@ -1,6 +1,4 @@
-• Planifica: haz que el alquiler, las facturas o el sueldo se repitan desde una fecha futura y mira lo que viene en la nueva tarjeta Próximos
-• Un aviso la tarde anterior a un pago semanal, mensual o anual
-• Repetir con un toque: tus movimientos frecuentes aparecen al añadir
-• Busca en todos tus movimientos, con totales
-• Reordena el inicio y elige la pestaña con la que se abre la app
-• Muchas pequeñas mejoras
+• Comparte un mensaje de pago UPI o una captura con Expense Manager y se rellena solo: importe, beneficiario, fecha y categoría
+• Escanea un ticket con la cámara desde la pantalla Añadir. La cuenta y la categoría se sugieren a partir del ticket y tus entradas anteriores
+• Las capturas se leen en tu teléfono, no se sube nada y la imagen se guarda con la transacción
+• Un aviso en Inicio cuando los recordatorios diarios están desactivados, para activarlos con un toque

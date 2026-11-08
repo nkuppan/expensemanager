@@ -110,4 +110,9 @@
     <string name="quick_picks">Частые</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Запланировано: впервые добавится %1$s. До этого ничего не записывается.</string>
+    <string name="receipt_amount_not_found">Не удалось распознать сумму в этом чеке. Введите её ниже.</string>
+    <string name="scan_receipt">Сканировать чек</string>
+    <string name="reading_receipt">Распознаём чек…</string>
+    <string name="suggested_categories">Предложения</string>
+    <string name="receipt_scanner_unavailable">Сканер чеков недоступен на этом устройстве</string>
 </resources>

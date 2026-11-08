@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Lihat lainnya (%1$d)</string>
     <string name="notification_see_less">Lihat lebih sedikit</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Bagikan pesan pembayaran UPI atau tangkapan layar ke Expense Manager dan semuanya terisi: jumlah, penerima, tanggal, dan kategori</item>
+        <item>Pindai struk belanja dengan kamera dari layar Tambah. Akun dan kategori disarankan dari struk dan catatan Anda sebelumnya</item>
+        <item>Tangkapan layar dibaca di ponsel Anda, tidak ada yang diunggah, dan gambar disimpan bersama transaksi</item>
+        <item>Pengingat di Beranda saat pengingat harian nonaktif, agar bisa diaktifkan lagi dengan satu ketukan</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Rencanakan lebih awal: atur sewa, tagihan, atau gaji agar berulang mulai tanggal mendatang, dan lihat semuanya di kartu Mendatang yang baru</item>
         <item>Pengingat malam sebelum pembayaran mingguan, bulanan, atau tahunan ditambahkan</item>
@@ -83,4 +89,9 @@
         <item>Atur ulang beranda dan pilih tab pembuka aplikasi</item>
         <item>Banyak perbaikan kecil</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Pengingat harian nonaktif</string>
+    <string name="reminder_banner_body">Pengingat ringan setiap malam membantu pengeluaranmu tetap tercatat.</string>
+    <string name="reminder_banner_turn_on">Aktifkan</string>
+    <string name="reminder_banner_not_now">Nanti saja</string>
 </resources>

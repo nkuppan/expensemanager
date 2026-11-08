@@ -49,6 +49,24 @@ class FeedbackRepositoryImpl(
         feedbackDataStore.setNotificationCentreOpenedAt(time)
     }
 
+    override fun getReminderBannerHiddenUntil(): Flow<Long> = feedbackDataStore.getReminderBannerHiddenUntil()
+
+    override fun getReminderBannerDismissCount(): Flow<Int> = feedbackDataStore.getReminderBannerDismissCount()
+
+    override suspend fun dismissReminderBanner(hiddenUntil: Long) {
+        feedbackDataStore.dismissReminderBanner(hiddenUntil)
+    }
+
+    override fun getNotificationPermissionAsks(): Flow<Int> = feedbackDataStore.getNotificationPermissionAsks()
+
+    override suspend fun recordNotificationPermissionAsk() {
+        feedbackDataStore.recordNotificationPermissionAsk()
+    }
+
+    override fun getFirstInstallTime(): Long = runCatching {
+        context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+    }.getOrDefault(0L)
+
     override fun getLastSeenWhatsNew(): Flow<String?> = feedbackDataStore.getLastSeenWhatsNew()
 
     override suspend fun setLastSeenWhatsNew(version: String) {

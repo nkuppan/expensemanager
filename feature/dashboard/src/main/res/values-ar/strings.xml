@@ -85,6 +85,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">عرض المزيد (%1$d)</string>
     <string name="notification_see_less">عرض أقل</string>
+    <string-array name="whats_new_1_4_28">
+        <item>شارك رسالة دفع UPI أو لقطة شاشة مع Expense Manager لتُملأ تلقائيًا: المبلغ والمستفيد والتاريخ والفئة</item>
+        <item>امسح إيصال المتجر بالكاميرا من شاشة الإضافة، مع اقتراح الحساب والفئة من الإيصال ومن معاملاتك السابقة</item>
+        <item>تُقرأ لقطات الشاشة على هاتفك دون رفع أي شيء، وتُحفظ الصورة مع المعاملة</item>
+        <item>تنبيه في الشاشة الرئيسية عندما تكون التذكيرات اليومية متوقفة، لتفعيلها بنقرة واحدة</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>خطط مسبقًا: اجعل الإيجار أو الفواتير أو الراتب متكررًا من تاريخ لاحق، وتابع القادم في بطاقة «القادمة» الجديدة</item>
         <item>تنبيه مساء اليوم السابق لإضافة دفعة أسبوعية أو شهرية أو سنوية</item>
@@ -93,4 +99,9 @@
         <item>أعد ترتيب الشاشة الرئيسية واختر التبويب الذي يفتح عليه التطبيق</item>
         <item>إصلاحات صغيرة كثيرة</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">التذكيرات اليومية متوقفة</string>
+    <string name="reminder_banner_body">تذكير لطيف كل مساء يساعدك على إبقاء مصاريفك محدثة.</string>
+    <string name="reminder_banner_turn_on">تشغيل</string>
+    <string name="reminder_banner_not_now">ليس الآن</string>
 </resources>

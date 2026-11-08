@@ -23,6 +23,9 @@ val DashboardViewModelModule = module {
             analyticsRepository = get(),
             autoBackupRepository = get(),
             getUpcomingRecurringUseCase = get(),
+            reminderTimeRepository = get(),
+            updateReminderStatusUseCase = get(),
+            notificationScheduler = get(),
         )
     }
     viewModel {

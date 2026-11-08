@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mehr anzeigen (%1$d)</string>
     <string name="notification_see_less">Weniger anzeigen</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Teile eine UPI-Zahlungsnachricht oder einen Screenshot mit Expense Manager und alles wird ausgefüllt: Betrag, Empfänger, Datum und Kategorie</item>
+        <item>Scanne einen Kassenbon mit der Kamera im Hinzufügen-Bildschirm. Konto und Kategorie werden aus dem Beleg und deinen bisherigen Einträgen vorgeschlagen</item>
+        <item>Screenshots werden auf deinem Handy gelesen, nichts wird hochgeladen, und das Bild wird mit der Buchung gespeichert</item>
+        <item>Ein Hinweis auf der Startseite, wenn tägliche Erinnerungen aus sind, damit du sie mit einem Tippen wieder einschaltest</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Vorausplanen: Miete, Rechnungen oder Gehalt ab einem späteren Datum wiederholen und alles Anstehende in der neuen Karte „Demnächst“ sehen</item>
         <item>Ein Hinweis am Vorabend, bevor eine wöchentliche, monatliche oder jährliche Zahlung hinzugefügt wird</item>
@@ -85,4 +91,9 @@
         <item>Startseite neu anordnen und Startreiter wählen</item>
         <item>Viele kleine Verbesserungen</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Tägliche Erinnerungen sind aus</string>
+    <string name="reminder_banner_body">Ein kurzer Hinweis am Abend hilft, deine Ausgaben aktuell zu halten.</string>
+    <string name="reminder_banner_turn_on">Einschalten</string>
+    <string name="reminder_banner_not_now">Nicht jetzt</string>
 </resources>

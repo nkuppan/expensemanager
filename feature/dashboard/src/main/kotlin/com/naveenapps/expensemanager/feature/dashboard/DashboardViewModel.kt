@@ -12,6 +12,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetUpcomingRe
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.UpdateReminderStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -29,15 +30,18 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.notification.NotificationScheduler
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
+import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
 import com.naveenapps.expensemanager.feature.dashboard.notifications.LATEST_WHATS_NEW_VERSION
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,6 +69,9 @@ class DashboardViewModel(
     private val analyticsRepository: AnalyticsRepository,
     private val autoBackupRepository: AutoBackupRepository,
     getUpcomingRecurringUseCase: GetUpcomingRecurringUseCase,
+    reminderTimeRepository: ReminderTimeRepository,
+    private val updateReminderStatusUseCase: UpdateReminderStatusUseCase,
+    private val notificationScheduler: NotificationScheduler,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -118,6 +125,30 @@ class DashboardViewModel(
                 .onEach { unread -> _state.update { it.copy(hasUnreadNotifications = unread) } }
                 .launchIn(viewModelScope)
         }
+
+        // "Daily reminders are off" banner: from the install's second day, so it never meets the
+        // first-save reminder ask; "Not now" snoozes it, and after a few it stops asking.
+        combine(
+            reminderTimeRepository.isReminderOn(),
+            feedbackRepository.getReminderBannerHiddenUntil(),
+            feedbackRepository.getReminderBannerDismissCount(),
+            feedbackRepository.isFirstSaveCelebrationPending(),
+            feedbackRepository.getNotificationPermissionAsks(),
+        ) { reminderOn, hiddenUntil, dismissCount, firstSavePending, asks ->
+            val now = System.currentTimeMillis()
+            val startOfToday = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            val installedBeforeToday = feedbackRepository.getFirstInstallTime().let { it in 1 until startOfToday }
+            _state.update {
+                it.copy(
+                    isReminderOn = reminderOn,
+                    notificationPermissionAsks = asks,
+                    reminderBannerEligible = installedBeforeToday &&
+                        !firstSavePending &&
+                        dismissCount < REMINDER_BANNER_MAX_DISMISSALS &&
+                        now >= hiddenUntil,
+                )
+            }
+        }.launchIn(viewModelScope)
 
         settingsRepository.getDashboardOrder()
             .onEach { order -> _state.update { it.copy(sectionOrder = order) } }
@@ -306,6 +337,15 @@ class DashboardViewModel(
     // share_banner_shown is logged once per visit to Home, not on every recomposition.
     private var shareBannerLogged = false
 
+    // Same for reminder_banner_shown.
+    private var reminderBannerLogged = false
+
+    // The user asked for it (banner's "Turn on"), so switching the reminder on is what they want.
+    private suspend fun turnOnReminder() {
+        updateReminderStatusUseCase.invoke(true)
+        notificationScheduler.checkAndRestartReminder()
+    }
+
     fun processAction(action: DashboardAction) {
         when (action) {
             is DashboardAction.OpenAccountEdit -> openAccountCreate(action.account.id)
@@ -336,6 +376,41 @@ class DashboardViewModel(
                     mapOf(AnalyticsParams.SOURCE to "home_banner"),
                 )
                 appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
+            }
+
+            DashboardAction.ReminderBannerShown -> if (!reminderBannerLogged) {
+                reminderBannerLogged = true
+                analyticsRepository.logEvent(AnalyticsEvents.REMINDER_BANNER_SHOWN, emptyMap())
+            }
+
+            is DashboardAction.ReminderBannerTurnOn -> viewModelScope.launch {
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.REMINDER_BANNER_TURN_ON,
+                    mapOf(AnalyticsParams.METHOD to action.method),
+                )
+                if (action.method == REMINDER_METHOD_DIALOG) feedbackRepository.recordNotificationPermissionAsk()
+            }
+
+            is DashboardAction.ReminderPermissionResult -> {
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.NOTIFICATION_PERMISSION_RESULT,
+                    mapOf(
+                        AnalyticsParams.GRANTED to action.granted.toString(),
+                        AnalyticsParams.SOURCE to REMINDER_BANNER_SOURCE,
+                    ),
+                )
+                if (action.granted) viewModelScope.launch { turnOnReminder() }
+            }
+
+            DashboardAction.NotificationsAllowed -> viewModelScope.launch {
+                if (_state.value.isReminderOn) notificationScheduler.checkAndRestartReminder()
+            }
+
+            DashboardAction.DismissReminderBanner -> viewModelScope.launch {
+                analyticsRepository.logEvent(AnalyticsEvents.REMINDER_BANNER_DISMISSED, emptyMap())
+                feedbackRepository.dismissReminderBanner(
+                    System.currentTimeMillis() + TimeUnit.DAYS.toMillis(REMINDER_BANNER_SNOOZE_DAYS),
+                )
             }
 
             DashboardAction.OpenNotifications -> {
@@ -392,5 +467,8 @@ class DashboardViewModel(
     companion object {
         private const val MAX_TRANSACTIONS_IN_LIST = 10
         private const val MAX_UPCOMING_IN_LIST = 3
+        private const val REMINDER_BANNER_SOURCE = "home_banner"
+        const val REMINDER_METHOD_DIALOG = "dialog"
+        const val REMINDER_METHOD_SETTINGS = "settings"
     }
 }

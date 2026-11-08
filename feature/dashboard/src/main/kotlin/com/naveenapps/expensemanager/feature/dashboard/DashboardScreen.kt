@@ -175,6 +175,14 @@ private fun DashboardScreenContent(
                 )
             }
         }
+        item("reminder_banner") {
+            // Draws nothing unless reminders are blocked or off (and the user hasn't snoozed it).
+            ReminderBannerItem(
+                state = state,
+                onAction = onAction,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            )
+        }
         item {
             GettingStartedSection(state = state, onAction = onAction)
         }

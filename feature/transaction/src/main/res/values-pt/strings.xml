@@ -109,4 +109,9 @@
     <string name="quick_picks">Frequentes</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Planejado: adicionado pela primeira vez em %1$s. Nada é registrado antes disso.</string>
+    <string name="receipt_amount_not_found">Não foi possível ler um valor deste recibo. Insira-o abaixo.</string>
+    <string name="scan_receipt">Digitalizar recibo</string>
+    <string name="reading_receipt">Lendo o recibo…</string>
+    <string name="suggested_categories">Sugeridas</string>
+    <string name="receipt_scanner_unavailable">O leitor de recibos não está disponível neste dispositivo</string>
 </resources>

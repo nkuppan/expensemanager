@@ -108,4 +108,9 @@
     <string name="quick_picks">Sık kullanılanlar</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Planlandı: ilk kez %1$s tarihinde eklenir. O zamana kadar hiçbir şey kaydedilmez.</string>
+    <string name="receipt_amount_not_found">Bu makbuzdan tutar okunamadı. Lütfen aşağıya girin.</string>
+    <string name="scan_receipt">Fişi tara</string>
+    <string name="reading_receipt">Fiş okunuyor…</string>
+    <string name="suggested_categories">Önerilen</string>
+    <string name="receipt_scanner_unavailable">Fiş tarayıcı bu cihazda kullanılamıyor</string>
 </resources>

@@ -43,6 +43,12 @@ data class TransactionCreateState(
     val showDiscardDialog: Boolean = false,
     /** Frequent entries offered as one-tap chips; only for a new transaction. */
     val quickPicks: List<QuickPick> = emptyList(),
+    /** Only a new transaction can be filled from a scanned receipt. */
+    val canScanReceipt: Boolean = true,
+    /** A shared or scanned receipt is being read (on-device text recognition). */
+    val isReadingReceipt: Boolean = false,
+    /** Categories used before for the receipt's payee, most used first; shown as chips. */
+    val suggestedCategories: List<Category> = emptyList(),
 )
 
 enum class AccountSelection {

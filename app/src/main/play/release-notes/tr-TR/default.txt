@@ -1,6 +1,4 @@
-• Önceden planlayın: kira, fatura veya maaşı ileri bir tarihten itibaren yinelenen yapın ve yeni Yaklaşan kartında görün
-• Haftalık, aylık veya yıllık bir ödeme eklenmeden önceki akşam hatırlatma
-• Tek dokunuşla tekrar: sık girdileriniz eklerken çip olarak görünür
-• Tüm işlemlerde arama ve toplamlar
-• Ana ekranı yeniden sıralayın ve açılış sekmesini seçin
-• Birçok küçük düzeltme
+• Bir UPI ödeme mesajını veya ekran görüntüsünü Expense Manager ile paylaşın; tutar, alıcı, tarih ve kategori otomatik doldurulur
+• Ekle ekranından kamerayla mağaza fişini tarayın. Hesap ve kategori, fişe ve önceki kayıtlarınıza göre önerilir
+• Ekran görüntüleri telefonunuzda okunur, hiçbir şey yüklenmez ve görsel işlemle birlikte kaydedilir
+• Günlük hatırlatıcılar kapalıyken Ana sayfada bir uyarı; tek dokunuşla yeniden açabilirsiniz

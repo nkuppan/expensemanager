@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver mais (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Compartilhe uma mensagem de pagamento UPI ou uma captura com o Expense Manager e tudo é preenchido: valor, favorecido, data e categoria</item>
+        <item>Digitalize um recibo de loja com a câmera na tela Adicionar. A conta e a categoria são sugeridas pelo recibo e pelos seus lançamentos anteriores</item>
+        <item>As capturas são lidas no seu celular, nada é enviado, e a imagem fica salva com a transação</item>
+        <item>Um aviso na tela inicial quando os lembretes diários estão desativados, para reativá-los com um toque</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Planeje: faça aluguel, contas ou salário se repetirem a partir de uma data futura e veja o que vem no novo cartão Próximos</item>
         <item>Um aviso na noite anterior a um pagamento semanal, mensal ou anual</item>
@@ -87,4 +93,9 @@
         <item>Reorganize o início e escolha a aba de abertura do app</item>
         <item>Muitas pequenas melhorias</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Os lembretes diários estão desativados</string>
+    <string name="reminder_banner_body">Um lembrete leve toda noite ajuda a manter seus gastos em dia.</string>
+    <string name="reminder_banner_turn_on">Ativar</string>
+    <string name="reminder_banner_not_now">Agora não</string>
 </resources>

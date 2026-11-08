@@ -1,6 +1,4 @@
-• Lên kế hoạch trước: đặt tiền thuê nhà, hóa đơn hoặc lương lặp lại từ một ngày trong tương lai và xem trong thẻ Sắp tới mới
-• Thông báo vào tối hôm trước khoản thanh toán hằng tuần, hằng tháng hoặc hằng năm
-• Lặp lại một chạm: các mục thường dùng hiện ra khi thêm giao dịch
-• Tìm kiếm mọi giao dịch kèm tổng cộng
-• Sắp xếp lại trang chủ và chọn thẻ mở ứng dụng
-• Nhiều cải tiến nhỏ
+• Chia sẻ tin nhắn thanh toán UPI hoặc ảnh chụp màn hình tới Expense Manager để tự điền số tiền, người nhận, ngày và danh mục
+• Quét hóa đơn cửa hàng bằng camera ngay từ màn hình Thêm. Tài khoản và danh mục được gợi ý từ hóa đơn và các mục trước đây
+• Ảnh chụp được đọc ngay trên điện thoại, không tải lên gì, và ảnh được lưu cùng giao dịch
+• Lời nhắc trên Trang chủ khi nhắc nhở hằng ngày đang tắt, để bật lại chỉ với một chạm

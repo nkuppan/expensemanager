@@ -42,6 +42,22 @@ interface FeedbackRepository {
 
     suspend fun setNotificationCentreOpenedAt(time: Long)
 
+    /** Home's "Daily reminders are off" banner: hidden until this time (epoch millis; 0 = not). */
+    fun getReminderBannerHiddenUntil(): Flow<Long>
+
+    fun getReminderBannerDismissCount(): Flow<Int>
+
+    /** "Not now" on the banner: hides it until [hiddenUntil] and counts the dismissal. */
+    suspend fun dismissReminderBanner(hiddenUntil: Long)
+
+    /** Times the system notification-permission dialog has been requested. */
+    fun getNotificationPermissionAsks(): Flow<Int>
+
+    suspend fun recordNotificationPermissionAsk()
+
+    /** When the app was first installed (epoch millis), or 0 if unknown. */
+    fun getFirstInstallTime(): Long
+
     /** Version of the "What's new" notes last opened from Home (null: never). */
     fun getLastSeenWhatsNew(): Flow<String?>
 

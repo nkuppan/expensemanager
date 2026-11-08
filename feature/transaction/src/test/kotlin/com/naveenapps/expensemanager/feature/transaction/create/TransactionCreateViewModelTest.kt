@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
+import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
@@ -15,6 +16,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransact
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.FindTransactionByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetFrequentTransactionsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetPayeeSuggestionsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.PayeeSuggestions
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.UpdateTransactionUseCase
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -33,23 +36,29 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
+import com.naveenapps.expensemanager.core.repository.SharedReceipt
+import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
 import com.naveenapps.expensemanager.feature.transaction.R
+import com.naveenapps.expensemanager.feature.transaction.create.receipt.ReceiptTextReader
 import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.anyOrNull
 import org.mockito.kotlin.clearInvocations
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -80,6 +89,9 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val findRecurringTransactionByIdUseCase: FindRecurringTransactionByIdUseCase = mock()
     private val getFrequentTransactionsUseCase: GetFrequentTransactionsUseCase = mock()
     private val planRecurringTransactionUseCase: PlanRecurringTransactionUseCase = mock()
+    private val sharedReceiptRepository: SharedReceiptRepository = mock()
+    private val receiptTextReader: ReceiptTextReader = mock()
+    private val getPayeeSuggestionsUseCase: GetPayeeSuggestionsUseCase = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
 
@@ -126,6 +138,9 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         whenever(feedbackRepository.shouldShowFeedbackDialog()).thenReturn(flowOf(false))
         whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0))
         whenever(getFrequentTransactionsUseCase.invoke(any())).thenReturn(flowOf(emptyList()))
+        runBlocking {
+            whenever(getPayeeSuggestionsUseCase.invoke(any(), anyOrNull())).thenReturn(PayeeSuggestions())
+        }
 
         viewModel = createViewModel()
     }
@@ -152,6 +167,9 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         findRecurringTransactionByIdUseCase = findRecurringTransactionByIdUseCase,
         getFrequentTransactionsUseCase = getFrequentTransactionsUseCase,
         planRecurringTransactionUseCase = planRecurringTransactionUseCase,
+        sharedReceiptRepository = sharedReceiptRepository,
+        receiptTextReader = receiptTextReader,
+        getPayeeSuggestionsUseCase = getPayeeSuggestionsUseCase,
     )
 
     // region helpers
@@ -669,6 +687,144 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
         verify(addTransactionUseCase).invoke(any())
         verify(planRecurringTransactionUseCase, never()).invoke(any(), any(), any())
+    }
+
+    // endregion
+
+    // region receipts (shared and scanned)
+
+    private fun sharedReceiptViewModel() = createViewModel(
+        SavedStateHandle(mapOf(ExpenseManagerArgsNames.FROM_SHARE to true)),
+    )
+
+    @Test
+    fun `a shared UPI message fills the form with the payee's categories and account`() = runTest {
+        val shopping = category("shopping-id")
+        val food = category("food-id")
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(flowOf(listOf(account("cash"), account("card"))))
+        whenever(getAllCategoryUseCase.invoke()).thenReturn(flowOf(listOf(shopping, food)))
+        whenever(sharedReceiptRepository.take()).thenReturn(
+            SharedReceipt(
+                text = "₹250\nPaid to\nSWIGGY\nswiggy.in@icici\n1 Nov 2026, 9:30 am",
+                imageUri = null,
+            ),
+        )
+        whenever(getPayeeSuggestionsUseCase.invoke(TransactionType.EXPENSE, "SWIGGY")).thenReturn(
+            PayeeSuggestions(categoryIds = listOf("food-id", "shopping-id"), accountId = "card"),
+        )
+        whenever(numberFormatRepository.formatForEditing(250.0)).thenReturn("250.00")
+
+        viewModel = sharedReceiptViewModel()
+        advanceUntilIdle()
+
+        val state = viewModel.state.value
+        assertThat(state.amount.value).isEqualTo("250.00")
+        assertThat(state.notes.value).isEqualTo("SWIGGY")
+        assertThat(state.transactionType).isEqualTo(TransactionType.EXPENSE)
+        assertThat(state.selectedCategory.id).isEqualTo("food-id")
+        assertThat(state.suggestedCategories.map { it.id }).containsExactly("food-id", "shopping-id").inOrder()
+        assertThat(state.selectedFromAccount.id).isEqualTo("card")
+        assertThat(state.showNumberPad).isFalse()
+        assertThat(state.isReadingReceipt).isFalse()
+        verify(receiptTextReader, never()).read(any())
+        verify(analyticsRepository).logEvent(
+            AnalyticsEvents.RECEIPT_SHARED,
+            mapOf(AnalyticsParams.TYPE to "text", AnalyticsParams.FOUND_AMOUNT to "true"),
+        )
+    }
+
+    @Test
+    fun `a scanned bill picks the account named on it over the payee's last account`() = runTest {
+        val uri: Uri = mock()
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(
+            flowOf(listOf(account("cash"), account("ICICI 4821"))),
+        )
+        whenever(receiptTextReader.read(uri)).thenReturn(
+            "FRESH MART\nDate: 05/11/2026 18:42\nGrand Total 106.05\nCard **** 4821",
+        )
+        whenever(getPayeeSuggestionsUseCase.invoke(TransactionType.EXPENSE, "FRESH MART")).thenReturn(
+            PayeeSuggestions(accountId = "cash"),
+        )
+        whenever(numberFormatRepository.formatForEditing(106.05)).thenReturn("106.05")
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.processAction(TransactionCreateAction.ReceiptScanRequested)
+        assertThat(viewModel.state.value.showNumberPad).isFalse()
+        viewModel.processAction(TransactionCreateAction.ReceiptScanned(uri))
+        advanceUntilIdle()
+
+        val state = viewModel.state.value
+        assertThat(state.amount.value).isEqualTo("106.05")
+        assertThat(state.notes.value).isEqualTo("FRESH MART")
+        assertThat(state.selectedFromAccount.id).isEqualTo("ICICI 4821")
+        assertThat(state.suggestedCategories).isEmpty()
+        verify(imageStorageRepository).saveTransactionAttachment(uri)
+        verify(analyticsRepository).logEvent(eq(AnalyticsEvents.RECEIPT_SCAN_OPENED), any())
+        verify(analyticsRepository).logEvent(
+            AnalyticsEvents.RECEIPT_SCANNED,
+            mapOf(AnalyticsParams.TYPE to "image", AnalyticsParams.FOUND_AMOUNT to "true"),
+        )
+    }
+
+    @Test
+    fun `a screenshot without a readable amount opens the keypad and says so`() = runTest {
+        val uri: Uri = mock()
+        whenever(sharedReceiptRepository.take()).thenReturn(SharedReceipt(text = null, imageUri = uri))
+        whenever(receiptTextReader.read(uri)).thenReturn("Thank you for shopping")
+
+        viewModel = sharedReceiptViewModel()
+
+        viewModel.event.test {
+            assertThat(awaitItem()).isEqualTo(
+                TransactionCreateEvent.ShowMessage(R.string.receipt_amount_not_found),
+            )
+        }
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.showNumberPad).isTrue()
+        assertThat(viewModel.state.value.isReadingReceipt).isFalse()
+        verify(imageStorageRepository).saveTransactionAttachment(uri)
+        verify(analyticsRepository).logEvent(
+            AnalyticsEvents.RECEIPT_SHARED,
+            mapOf(AnalyticsParams.TYPE to "image", AnalyticsParams.FOUND_AMOUNT to "false"),
+        )
+    }
+
+    @Test
+    fun `switching the type drops the receipt's category suggestions`() = runTest {
+        whenever(getAllCategoryUseCase.invoke()).thenReturn(flowOf(listOf(category("food-id"))))
+        whenever(sharedReceiptRepository.take()).thenReturn(
+            SharedReceipt(text = "Paid ₹40 to Chai Point", imageUri = null),
+        )
+        whenever(getPayeeSuggestionsUseCase.invoke(TransactionType.EXPENSE, "Chai Point")).thenReturn(
+            PayeeSuggestions(categoryIds = listOf("food-id")),
+        )
+        whenever(numberFormatRepository.formatForEditing(40.0)).thenReturn("40.00")
+        viewModel = sharedReceiptViewModel()
+        advanceUntilIdle()
+        assertThat(viewModel.state.value.suggestedCategories).isNotEmpty()
+
+        viewModel.processAction(TransactionCreateAction.ChangeTransactionType(TransactionType.INCOME))
+
+        assertThat(viewModel.state.value.suggestedCategories).isEmpty()
+    }
+
+    @Test
+    fun `the scanner failing to open says so`() = runTest {
+        viewModel.event.test {
+            viewModel.processAction(TransactionCreateAction.ReceiptScanFailed)
+
+            assertThat(awaitItem()).isEqualTo(
+                TransactionCreateEvent.ShowMessage(R.string.receipt_scanner_unavailable),
+            )
+        }
+    }
+
+    @Test
+    fun `a normal add screen never takes a shared receipt`() = runTest {
+        advanceUntilIdle()
+
+        verify(sharedReceiptRepository, never()).take()
     }
 
     // endregion

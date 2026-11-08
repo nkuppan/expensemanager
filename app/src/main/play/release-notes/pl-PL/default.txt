@@ -1,6 +1,4 @@
-• Planuj z wyprzedzeniem: ustaw czynsz, rachunki lub pensję jako cykliczne od przyszłej daty i sprawdzaj nadchodzące w nowej karcie
-• Powiadomienie wieczorem przed dodaniem płatności tygodniowej, miesięcznej lub rocznej
-• Powtórz jednym dotknięciem: częste wpisy pojawiają się przy dodawaniu
-• Wyszukiwanie we wszystkich transakcjach z sumami
-• Zmiana kolejności ekranu głównego i wybór karty startowej
-• Wiele drobnych poprawek
+• Udostępnij wiadomość o płatności UPI lub zrzut ekranu do Expense Manager, a wszystko się uzupełni: kwota, odbiorca, data i kategoria
+• Zeskanuj paragon aparatem z ekranu Dodaj. Konto i kategoria są sugerowane na podstawie paragonu i Twoich wcześniejszych wpisów
+• Zrzuty ekranu są odczytywane na telefonie, nic nie jest wysyłane, a obraz zapisuje się z transakcją
+• Przypomnienie na ekranie głównym, gdy codzienne przypomnienia są wyłączone, aby włączyć je jednym dotknięciem

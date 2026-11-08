@@ -112,4 +112,9 @@
     <string name="quick_picks">متكرر</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">مخطط: تُضاف أول مرة في %1$s. لا يُسجَّل شيء قبل ذلك.</string>
+    <string name="receipt_amount_not_found">تعذّرت قراءة مبلغ من هذا الإيصال. أدخله أدناه.</string>
+    <string name="scan_receipt">مسح الإيصال</string>
+    <string name="reading_receipt">جارٍ قراءة الإيصال…</string>
+    <string name="suggested_categories">مقترحة</string>
+    <string name="receipt_scanner_unavailable">ماسح الإيصالات غير متاح على هذا الجهاز</string>
 </resources>

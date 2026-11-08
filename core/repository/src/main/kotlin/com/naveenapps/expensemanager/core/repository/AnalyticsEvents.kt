@@ -25,6 +25,13 @@ object AnalyticsEvents {
     /** A frequent-entry chip filled the add form ("transaction_created" then carries source). */
     const val QUICK_PICK_USED = "quick_pick_used"
 
+    /** A UPI / bank message or screenshot was shared in (type: text or image, found_amount). */
+    const val RECEIPT_SHARED = "receipt_shared"
+
+    /** "Scan receipt" tapped on the add screen, then a page was scanned (type, found_amount). */
+    const val RECEIPT_SCAN_OPENED = "receipt_scan_opened"
+    const val RECEIPT_SCANNED = "receipt_scanned"
+
     // Re-engagement
     const val NOTIFICATION_PERMISSION_RESULT = "notification_permission_result"
     const val REMINDER_OPENED = "reminder_opened"
@@ -40,6 +47,11 @@ object AnalyticsEvents {
     const val NOTIFICATION_PRIMER_SHOWN = "notification_primer_shown"
     const val NOTIFICATION_PRIMER_ACCEPTED = "notification_primer_accepted"
     const val NOTIFICATION_PRIMER_DISMISSED = "notification_primer_dismissed"
+
+    /** Home's "Daily reminders are off" banner. `method` on turn-on: dialog / settings / switch. */
+    const val REMINDER_BANNER_SHOWN = "reminder_banner_shown"
+    const val REMINDER_BANNER_TURN_ON = "reminder_banner_turn_on"
+    const val REMINDER_BANNER_DISMISSED = "reminder_banner_dismissed"
 
     // Feature adoption
     const val ACCOUNT_CREATED = "account_created"
@@ -100,4 +112,5 @@ object AnalyticsParams {
     const val COUNT = "count"
     const val REASON = "reason"
     const val FREQUENCY = "frequency"
+    const val FOUND_AMOUNT = "found_amount"
 }

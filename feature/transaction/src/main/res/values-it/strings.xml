@@ -109,4 +109,9 @@
     <string name="quick_picks">Frequenti</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Pianificato: aggiunto per la prima volta il %1$s. Fino ad allora non viene registrato nulla.</string>
+    <string name="receipt_amount_not_found">Impossibile leggere un importo da questa ricevuta. Inseriscilo qui sotto.</string>
+    <string name="scan_receipt">Scansiona ricevuta</string>
+    <string name="reading_receipt">Lettura della ricevuta…</string>
+    <string name="suggested_categories">Suggerite</string>
+    <string name="receipt_scanner_unavailable">Lo scanner di ricevute non è disponibile su questo dispositivo</string>
 </resources>

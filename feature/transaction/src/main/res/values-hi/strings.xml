@@ -108,4 +108,9 @@
     <string name="quick_picks">अक्सर जोड़े गए</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">योजना: पहली बार %1$s को जुड़ेगा। तब तक कुछ दर्ज नहीं होगा।</string>
+    <string name="receipt_amount_not_found">इस रसीद से राशि नहीं पढ़ी जा सकी। कृपया नीचे दर्ज करें।</string>
+    <string name="scan_receipt">रसीद स्कैन करें</string>
+    <string name="reading_receipt">रसीद पढ़ी जा रही है…</string>
+    <string name="suggested_categories">सुझाई गई</string>
+    <string name="receipt_scanner_unavailable">इस डिवाइस पर रसीद स्कैनर उपलब्ध नहीं है</string>
 </resources>

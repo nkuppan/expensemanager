@@ -88,7 +88,12 @@ sealed class ExpenseManagerScreens {
      * e.g. when adding from the recurring transactions screen. Ignored when editing ([id] set).
      */
     @Serializable
-    data class TransactionCreate(val id: String?, val repeat: String? = null) : ExpenseManagerScreens()
+    data class TransactionCreate(
+        val id: String?,
+        val repeat: String? = null,
+        // Opened from the system share sheet: prefill from the shared receipt.
+        val fromShare: Boolean = false,
+    ) : ExpenseManagerScreens()
 
     /** Edits a repeating transaction rule (the parent of every future occurrence). */
     @Serializable
@@ -98,5 +103,6 @@ sealed class ExpenseManagerScreens {
 object ExpenseManagerArgsNames {
     const val ID: String = "id"
     const val REPEAT: String = "repeat"
+    const val FROM_SHARE: String = "fromShare"
     const val PERIOD: String = "period"
 }

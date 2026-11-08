@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">और देखें (%1$d)</string>
     <string name="notification_see_less">कम देखें</string>
+    <string-array name="whats_new_1_4_28">
+        <item>UPI भुगतान का संदेश या स्क्रीनशॉट Expense Manager पर शेयर करें, सब अपने-आप भर जाएगा: राशि, प्राप्तकर्ता, तारीख और श्रेणी</item>
+        <item>जोड़ें स्क्रीन से कैमरे से दुकान की रसीद स्कैन करें। खाता और श्रेणी रसीद और आपकी पिछली एंट्री से सुझाए जाते हैं</item>
+        <item>स्क्रीनशॉट आपके फ़ोन पर ही पढ़े जाते हैं, कुछ भी अपलोड नहीं होता, और तस्वीर लेन-देन के साथ सेव होती है</item>
+        <item>दैनिक रिमाइंडर बंद होने पर होम पर एक सूचना, ताकि आप एक टैप में उन्हें फिर चालू कर सकें</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>पहले से योजना: किराया, EMI, बिल या वेतन को आगे की तारीख से दोहराएँ और होम पर नए \"आने वाले\" कार्ड में देखें</item>
         <item>साप्ताहिक, मासिक या वार्षिक भुगतान जुड़ने से एक शाम पहले सूचना</item>
@@ -85,4 +91,9 @@
         <item>होम स्क्रीन का क्रम बदलें और चुनें कि ऐप किस टैब पर खुले</item>
         <item>कई छोटे सुधार</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">दैनिक रिमाइंडर बंद हैं</string>
+    <string name="reminder_banner_body">हर शाम एक हल्का रिमाइंडर आपके खर्च का हिसाब अपडेट रखने में मदद करता है।</string>
+    <string name="reminder_banner_turn_on">चालू करें</string>
+    <string name="reminder_banner_not_now">अभी नहीं</string>
 </resources>

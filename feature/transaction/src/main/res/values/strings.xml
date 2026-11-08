@@ -108,4 +108,11 @@
     <string name="quick_picks">Frequent</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Planned: first added on %1$s. Nothing is logged until then.</string>
+    <!-- A shared UPI / bank message or screenshot had no amount we could read. -->
+    <string name="receipt_amount_not_found">Couldn\'t read an amount from this receipt. Enter it below.</string>
+    <!-- Add screen: scan a receipt with the camera; the payee's past categories as chips. -->
+    <string name="scan_receipt">Scan receipt</string>
+    <string name="reading_receipt">Reading receipt…</string>
+    <string name="suggested_categories">Suggested</string>
+    <string name="receipt_scanner_unavailable">The receipt scanner isn\'t available on this device</string>
 </resources>

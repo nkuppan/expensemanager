@@ -35,6 +35,8 @@ firebasePerfPlugin = "2.0.2"
 firebaseDistribution = "5.3.0"
 googleOss = "17.5.2"
 review = "2.0.2"
+mlkitTextRecognition = "16.0.1"
+mlkitDocumentScanner = "16.0.0"
 googleOssPlugin = "0.13.0"
 spotless = "8.10.3"
 jacoco = "0.8.15"
@@ -131,6 +133,8 @@ firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-mes
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
 google-android-play-review = { group = "com.google.android.play", name = "review-ktx", version.ref = "review" }
+google-mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
+google-mlkit-document-scanner = { group = "com.google.android.gms", name = "play-services-mlkit-document-scanner", version.ref = "mlkitDocumentScanner" }
 google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }

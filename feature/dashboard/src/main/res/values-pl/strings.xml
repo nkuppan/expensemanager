@@ -81,6 +81,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Pokaż więcej (%1$d)</string>
     <string name="notification_see_less">Pokaż mniej</string>
+    <string-array name="whats_new_1_4_28">
+        <item>Udostępnij wiadomość o płatności UPI lub zrzut ekranu do Expense Manager, a wszystko się uzupełni: kwota, odbiorca, data i kategoria</item>
+        <item>Zeskanuj paragon aparatem z ekranu Dodaj. Konto i kategoria są sugerowane na podstawie paragonu i Twoich wcześniejszych wpisów</item>
+        <item>Zrzuty ekranu są odczytywane na telefonie, nic nie jest wysyłane, a obraz zapisuje się z transakcją</item>
+        <item>Przypomnienie na ekranie głównym, gdy codzienne przypomnienia są wyłączone, aby włączyć je jednym dotknięciem</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>Planuj z wyprzedzeniem: ustaw czynsz, rachunki lub pensję jako cykliczne od przyszłej daty i sprawdzaj nadchodzące w nowej karcie</item>
         <item>Powiadomienie wieczorem przed dodaniem płatności tygodniowej, miesięcznej lub rocznej</item>
@@ -89,4 +95,9 @@
         <item>Zmiana kolejności ekranu głównego i wybór karty startowej</item>
         <item>Wiele drobnych poprawek</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Codzienne przypomnienia są wyłączone</string>
+    <string name="reminder_banner_body">Krótkie przypomnienie każdego wieczoru pomaga na bieżąco zapisywać wydatki.</string>
+    <string name="reminder_banner_turn_on">Włącz</string>
+    <string name="reminder_banner_not_now">Nie teraz</string>
 </resources>

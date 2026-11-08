@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">查看更多（%1$d）</string>
     <string name="notification_see_less">收起</string>
+    <string-array name="whats_new_1_4_28">
+        <item>将 UPI 付款消息或截图分享到 Expense Manager，金额、收款方、日期和类别会自动填好</item>
+        <item>在添加页面用相机扫描购物小票，账户和类别会根据小票和你以往的记录推荐</item>
+        <item>截图在手机上本地识别，不会上传任何内容，图片会随交易一起保存</item>
+        <item>每日提醒关闭时，首页会显示提示，一键即可重新开启</item>
+    </string-array>
     <string-array name="whats_new_1_4_26">
         <item>提前计划：可将房租、账单或工资设为从未来日期开始重复，并在首页新的\"即将到来\"卡片中查看</item>
         <item>每周、每月或每年的付款添加前一晚提醒你</item>
@@ -83,4 +89,9 @@
         <item>调整首页顺序，并选择打开应用时的标签页</item>
         <item>多项小改进</item>
     </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">每日提醒已关闭</string>
+    <string name="reminder_banner_body">每晚一个小提醒，帮你及时记录支出。</string>
+    <string name="reminder_banner_turn_on">开启</string>
+    <string name="reminder_banner_not_now">以后再说</string>
 </resources>

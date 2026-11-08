@@ -51,6 +51,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Share a UPI / bank message or a payment screenshot to log it as a transaction. -->
+            <intent-filter android:label="@string/shortcut_add_expense_short">
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
         </activity>
         <!-- Register the Alarm Receiver -->
         <receiver

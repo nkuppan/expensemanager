@@ -109,4 +109,9 @@
     <string name="quick_picks">Fréquents</string>
     <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
     <string name="repeat_planned">Prévu : ajouté pour la première fois le %1$s. Rien n’est enregistré d’ici là.</string>
+    <string name="receipt_amount_not_found">Impossible de lire un montant sur ce reçu. Saisissez-le ci-dessous.</string>
+    <string name="scan_receipt">Scanner un reçu</string>
+    <string name="reading_receipt">Lecture du reçu…</string>
+    <string name="suggested_categories">Suggestions</string>
+    <string name="receipt_scanner_unavailable">Le scanner de reçus n\'est pas disponible sur cet appareil</string>
 </resources>
