@@ -10,10 +10,6 @@ const val TARGET_SDK = 37
 const val COMPILE_SDK: Int = 37
 const val MIN_SDK = 26
 
-const val VERSION_NAME = "1.4.27"
-val versions = VERSION_NAME.split(".")
-val VERSION_CODE = 1000000 * versions[0].toInt() + 1000 * versions[1].toInt() + versions[2].toInt()
-
 const val BENCHMARK_RUNNER = "androidx.test.runner.AndroidJUnitRunner"
 
 fun LibraryExtension.configureAndroid() {
@@ -67,11 +63,12 @@ fun ApplicationExtension.configureAndroid() {
     }
 }
 
-fun ApplicationExtension.configureAndroidAppVersion() {
+// The version comes from version.properties (see AppVersion.kt and the bumpVersion task).
+fun ApplicationExtension.configureAndroidAppVersion(version: AppVersion) {
     namespace = "com.naveenapps.expensemanager"
     defaultConfig {
-        versionCode = VERSION_CODE
-        versionName = VERSION_NAME
+        versionCode = version.code
+        versionName = version.name
     }
 }
 

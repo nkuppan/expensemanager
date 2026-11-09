@@ -23,6 +23,8 @@ plugins {
     alias(libs.plugins.firebase.distribution) apply false
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.dependency.analysis) apply false
+    // bumpVersion and checkReleaseNotes (build-logic: ReleaseConfigPlugin).
+    id("naveenapps.plugin.release")
 }
 
 // Spotless 7+ only drives ktlint 1.x; 0.48.x crashes with an InvocationTargetException.
