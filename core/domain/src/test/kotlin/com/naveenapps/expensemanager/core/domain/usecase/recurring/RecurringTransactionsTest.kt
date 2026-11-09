@@ -514,8 +514,7 @@ class RecurringTransactionsTest {
             minCount: Int,
             limit: Int,
         ): Flow<List<FrequentTransaction>> = flowOf(emptyList())
-        override suspend fun findCategoryIdsByNotes(type: TransactionType, notes: String, limit: Int): List<String> =
-            emptyList()
+        override suspend fun findCategoryIdsByNotes(type: TransactionType, notes: String, limit: Int): List<String> = emptyList()
         override suspend fun findLatestAccountIdByNotes(type: TransactionType, notes: String): String? = null
     }
 }

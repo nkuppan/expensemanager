@@ -101,8 +101,7 @@ object ReceiptParser {
     private const val LOOK_BEHIND = 15
 
     // The number is whichever group matched (CURRENCY_AMOUNT has one before and one after).
-    private fun MatchResult.toAmount(): Double? =
-        groupValues.drop(1).firstOrNull { it.isNotEmpty() }?.let(::parseNumber)?.takeIf { it > 0.0 }
+    private fun MatchResult.toAmount(): Double? = groupValues.drop(1).firstOrNull { it.isNotEmpty() }?.let(::parseNumber)?.takeIf { it > 0.0 }
 
     /**
      * Reads "1,00,000", "1,234.56", "1.234,56" or "19,96". The last separator is the decimal one
@@ -113,7 +112,7 @@ object ReceiptParser {
         val lastSeparator = raw.indexOfLast { it == ',' || it == '.' }
         if (lastSeparator < 0) return raw.toDoubleOrNull()
         val decimals = raw.length - lastSeparator - 1
-        val isDecimal = decimals in 1..2 || raw.startsWith("0") && lastSeparator == 1
+        val isDecimal = decimals in 1..2 || (raw.startsWith("0") && lastSeparator == 1)
         return if (isDecimal) {
             (raw.substring(0, lastSeparator).filter { it.isDigit() } + "." + raw.substring(lastSeparator + 1))
                 .toDoubleOrNull()
@@ -223,8 +222,7 @@ object ReceiptParser {
         RegexOption.IGNORE_CASE,
     )
 
-    internal fun findAccountDigits(text: String): List<String> =
-        ACCOUNT_DIGITS.findAll(text).map { it.groupValues[1] }.distinct().toList()
+    internal fun findAccountDigits(text: String): List<String> = ACCOUNT_DIGITS.findAll(text).map { it.groupValues[1] }.distinct().toList()
 
     // endregion
 

@@ -19,8 +19,8 @@ import com.naveenapps.expensemanager.core.data.repository.LocaleRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.RecurringTransactionRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.SettingsRepositoryImpl
-import com.naveenapps.expensemanager.core.data.repository.SharedReceiptRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ShareRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.SharedReceiptRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ThemeRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.TransactionRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.VersionCheckerRepositoryImpl
@@ -45,8 +45,8 @@ import com.naveenapps.expensemanager.core.repository.LocaleRepository
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
-import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
 import com.naveenapps.expensemanager.core.repository.ShareRepository
+import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
 import com.naveenapps.expensemanager.core.repository.ThemeRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository

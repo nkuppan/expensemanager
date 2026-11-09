@@ -6,8 +6,8 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import com.naveenapps.expensemanager.core.domain.usecase.receipt.RecognisedLine
 import com.naveenapps.expensemanager.core.domain.usecase.receipt.ReceiptRows
+import com.naveenapps.expensemanager.core.domain.usecase.receipt.RecognisedLine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 

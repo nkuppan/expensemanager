@@ -68,8 +68,7 @@ data class DashboardState(
     fun showReminderBanner(canNotify: Boolean): Boolean = reminderBannerEligible && !canNotify
 
     /** The bottom share banner: for users who've logged a few expenses, unless closed or shared. */
-    fun showShareBanner(now: Long): Boolean =
-        transactionCount >= SHARE_BANNER_MIN_TRANSACTIONS && now >= shareBannerHiddenUntil
+    fun showShareBanner(now: Long): Boolean = transactionCount >= SHARE_BANNER_MIN_TRANSACTIONS && now >= shareBannerHiddenUntil
 }
 
 /** Recommendations land better from people who've actually used the app for a while. */

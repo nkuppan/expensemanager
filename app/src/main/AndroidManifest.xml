@@ -108,6 +108,16 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
         </provider>
+
+        <!-- Glance's trampoline for widget taps runs as its own singleInstance task but, unlike
+             ActionTrampolineActivity, isn't excluded from Recents. Android can relaunch that task
+             from Recents (after a reboot the saved intent has no extras), so it starts without the
+             target intent and crashes: "List adapter activity trampoline invoked without
+             specifying target intent". Keeping it out of Recents removes that path. -->
+        <activity
+            android:name="androidx.glance.appwidget.action.InvisibleActionTrampolineActivity"
+            android:excludeFromRecents="true"
+            tools:node="merge" />
     </application>
 
 </manifest>
