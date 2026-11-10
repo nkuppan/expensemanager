@@ -7,4 +7,7 @@
     <string name="privacy_policy">प्राइवेसी पॉलिसी</string>
     <string name="terms_and_conditions">नियम और शर्तें</string>
     <string name="licenses">ओपन सोर्स लाइसेंस</string>
+    <string name="search_libraries">लाइब्रेरी खोजें</string>
+    <string name="open_license">लाइसेंस खोलें</string>
+    <string name="licenses_unavailable">इस बिल्ड में लाइसेंस शामिल नहीं हैं।</string>
 </resources>

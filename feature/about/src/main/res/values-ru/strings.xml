@@ -7,4 +7,7 @@
     <string name="privacy_policy">Политика конфиденциальности</string>
     <string name="terms_and_conditions">Условия использования</string>
     <string name="licenses">Лицензии с открытым исходным кодом</string>
+    <string name="search_libraries">Поиск библиотек</string>
+    <string name="open_license">Открыть лицензию</string>
+    <string name="licenses_unavailable">Лицензии не включены в эту сборку.</string>
 </resources>

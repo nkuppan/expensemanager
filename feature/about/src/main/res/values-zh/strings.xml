@@ -7,4 +7,7 @@
     <string name="privacy_policy">隐私政策</string>
     <string name="terms_and_conditions">条款和条件</string>
     <string name="licenses">开源许可</string>
+    <string name="search_libraries">搜索库</string>
+    <string name="open_license">打开许可证</string>
+    <string name="licenses_unavailable">此版本未包含许可证信息。</string>
 </resources>

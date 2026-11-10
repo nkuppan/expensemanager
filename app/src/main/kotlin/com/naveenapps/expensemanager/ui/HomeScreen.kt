@@ -41,6 +41,8 @@ import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 import com.naveenapps.expensemanager.feature.about.AboutScreen
+import com.naveenapps.expensemanager.feature.about.licenses.OpenSourceLicenseDetailScreen
+import com.naveenapps.expensemanager.feature.about.licenses.OpenSourceLicensesScreen
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
 import com.naveenapps.expensemanager.feature.account.reorder.AccountReOrderScreen
@@ -159,6 +161,12 @@ fun NavGraphBuilder.expenseManagerNavigation(
     }
     composable<ExpenseManagerScreens.AboutUsScreen> {
         AboutScreen(componentProvider.getShareRepository())
+    }
+    composable<ExpenseManagerScreens.OpenSourceLicenses> {
+        OpenSourceLicensesScreen()
+    }
+    composable<ExpenseManagerScreens.OpenSourceLicenseDetail> {
+        OpenSourceLicenseDetailScreen()
     }
     composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
         AdvancedSettingsScreen()

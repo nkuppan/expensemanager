@@ -43,6 +43,13 @@ sealed class ExpenseManagerScreens {
     @Serializable
     data object AboutUsScreen : ExpenseManagerScreens()
 
+    /** About → Open source licences: every bundled library (our own screen, not Google's). */
+    @Serializable
+    data object OpenSourceLicenses : ExpenseManagerScreens()
+
+    @Serializable
+    data class OpenSourceLicenseDetail(val name: String) : ExpenseManagerScreens()
+
     @Serializable
     data object AdvancedSettingsScreen : ExpenseManagerScreens()
 
@@ -104,5 +111,6 @@ object ExpenseManagerArgsNames {
     const val ID: String = "id"
     const val REPEAT: String = "repeat"
     const val FROM_SHARE: String = "fromShare"
+    const val LICENSE_NAME: String = "name"
     const val PERIOD: String = "period"
 }

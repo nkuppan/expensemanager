@@ -7,4 +7,7 @@
     <string name="privacy_policy">개인정보 처리방침</string>
     <string name="terms_and_conditions">이용약관</string>
     <string name="licenses">오픈소스 라이선스</string>
+    <string name="search_libraries">라이브러리 검색</string>
+    <string name="open_license">라이선스 열기</string>
+    <string name="licenses_unavailable">이 빌드에는 라이선스가 포함되어 있지 않습니다.</string>
 </resources>

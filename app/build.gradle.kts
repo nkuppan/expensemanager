@@ -239,7 +239,6 @@ dependencies {
 
     implementation(libs.kotlinx.coroutines.android)
 
-    implementation(libs.google.oss.licenses)
 
     implementation(libs.app.update.ktx)
     implementation(libs.androidx.biometric)

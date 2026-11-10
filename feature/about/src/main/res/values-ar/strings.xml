@@ -7,4 +7,7 @@
     <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="terms_and_conditions">الشروط والأحكام</string>
     <string name="licenses">تراخيص المصادر المفتوحة</string>
+    <string name="search_libraries">ابحث في المكتبات</string>
+    <string name="open_license">فتح الترخيص</string>
+    <string name="licenses_unavailable">التراخيص غير مضمّنة في هذا الإصدار.</string>
 </resources>

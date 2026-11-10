@@ -33,7 +33,6 @@ firebaseBom = "35.1.0"
 firebaseCrashlyticsPlugin = "3.0.8"
 firebasePerfPlugin = "2.0.2"
 firebaseDistribution = "5.3.1"
-googleOss = "17.5.3"
 review = "2.0.2"
 mlkitTextRecognition = "16.0.1"
 mlkitDocumentScanner = "16.0.0"
@@ -135,7 +134,6 @@ firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
 google-android-play-review = { group = "com.google.android.play", name = "review-ktx", version.ref = "review" }
 google-mlkit-text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "mlkitTextRecognition" }
 google-mlkit-document-scanner = { group = "com.google.android.gms", name = "play-services-mlkit-document-scanner", version.ref = "mlkitDocumentScanner" }
-google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
 google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 org-jacoco-core = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
