@@ -20,4 +20,6 @@ dependencies {
     implementation(libs.google.mlkit.text.recognition)
     // Receipt camera: Google's scanner UI (crop, clean-up); no CAMERA permission needed.
     implementation(libs.google.mlkit.document.scanner)
+    // Checks Play services and downloads the scanner module before opening it (ReceiptScanner.kt).
+    implementation(libs.google.play.services.base)
 }

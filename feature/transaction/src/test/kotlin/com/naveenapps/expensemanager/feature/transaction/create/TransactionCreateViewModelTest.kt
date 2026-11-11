@@ -821,6 +821,18 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     }
 
     @Test
+    fun `a scanner still downloading says it will open when ready`() = runTest {
+        viewModel.event.test {
+            viewModel.processAction(TransactionCreateAction.ReceiptScannerPreparing)
+
+            assertThat(awaitItem()).isEqualTo(
+                TransactionCreateEvent.ShowMessage(R.string.receipt_scanner_preparing),
+            )
+        }
+        verify(analyticsRepository).logEvent(AnalyticsEvents.RECEIPT_SCANNER_DOWNLOAD, emptyMap())
+    }
+
+    @Test
     fun `a normal add screen never takes a shared receipt`() = runTest {
         advanceUntilIdle()
 

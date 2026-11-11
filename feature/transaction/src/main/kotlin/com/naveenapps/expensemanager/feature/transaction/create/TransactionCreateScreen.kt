@@ -140,6 +140,7 @@ fun TransactionCreateScreen(
 
     val openReceiptScanner = rememberReceiptScanner(
         onScanned = { viewModel.processAction(TransactionCreateAction.ReceiptScanned(it)) },
+        onPreparing = { viewModel.processAction(TransactionCreateAction.ReceiptScannerPreparing) },
         onFailed = { viewModel.processAction(TransactionCreateAction.ReceiptScanFailed) },
     )
 

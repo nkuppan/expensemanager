@@ -112,4 +112,5 @@
     <string name="reading_receipt">正在读取收据…</string>
     <string name="suggested_categories">推荐</string>
     <string name="receipt_scanner_unavailable">此设备无法使用收据扫描</string>
+    <string name="receipt_scanner_preparing">Google Play 服务正在下载收据扫描功能，准备好后会自动打开。</string>
 </resources>

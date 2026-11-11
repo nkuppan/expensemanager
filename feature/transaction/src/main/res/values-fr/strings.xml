@@ -114,4 +114,5 @@
     <string name="reading_receipt">Lecture du reçu…</string>
     <string name="suggested_categories">Suggestions</string>
     <string name="receipt_scanner_unavailable">Le scanner de reçus n\'est pas disponible sur cet appareil</string>
+    <string name="receipt_scanner_preparing">Les services Google Play téléchargent le scanner de reçus. Il s\'ouvrira dès qu\'il sera prêt.</string>
 </resources>

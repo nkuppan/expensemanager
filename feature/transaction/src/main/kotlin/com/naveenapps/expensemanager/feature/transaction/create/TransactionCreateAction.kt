@@ -77,4 +77,7 @@ sealed class TransactionCreateAction {
 
     /** The scanner couldn't start, e.g. no Google Play services on the device. */
     data object ReceiptScanFailed : TransactionCreateAction()
+
+    /** Play services is downloading the scanner; it opens by itself when ready. */
+    data object ReceiptScannerPreparing : TransactionCreateAction()
 }

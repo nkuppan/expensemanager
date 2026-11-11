@@ -114,4 +114,5 @@
     <string name="reading_receipt">Lendo o recibo…</string>
     <string name="suggested_categories">Sugeridas</string>
     <string name="receipt_scanner_unavailable">O leitor de recibos não está disponível neste dispositivo</string>
+    <string name="receipt_scanner_preparing">O Google Play Services está baixando o leitor de recibos. Ele abrirá quando estiver pronto.</string>
 </resources>

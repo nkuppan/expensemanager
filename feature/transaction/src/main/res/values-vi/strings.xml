@@ -112,4 +112,5 @@
     <string name="reading_receipt">Đang đọc hóa đơn…</string>
     <string name="suggested_categories">Gợi ý</string>
     <string name="receipt_scanner_unavailable">Trình quét hóa đơn không khả dụng trên thiết bị này</string>
+    <string name="receipt_scanner_preparing">Dịch vụ Google Play đang tải trình quét hóa đơn. Trình quét sẽ mở khi sẵn sàng.</string>
 </resources>

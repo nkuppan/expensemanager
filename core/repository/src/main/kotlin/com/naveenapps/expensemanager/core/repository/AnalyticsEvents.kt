@@ -32,6 +32,9 @@ object AnalyticsEvents {
     const val RECEIPT_SCAN_OPENED = "receipt_scan_opened"
     const val RECEIPT_SCANNED = "receipt_scanned"
 
+    /** The scanner's Play services module wasn't on the phone, so a download was requested. */
+    const val RECEIPT_SCANNER_DOWNLOAD = "receipt_scanner_download"
+
     // Re-engagement
     const val NOTIFICATION_PERMISSION_RESULT = "notification_permission_result"
     const val REMINDER_OPENED = "reminder_opened"

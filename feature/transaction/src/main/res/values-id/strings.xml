@@ -112,4 +112,5 @@
     <string name="reading_receipt">Membaca struk…</string>
     <string name="suggested_categories">Disarankan</string>
     <string name="receipt_scanner_unavailable">Pemindai struk tidak tersedia di perangkat ini</string>
+    <string name="receipt_scanner_preparing">Layanan Google Play sedang mengunduh pemindai struk. Pemindai akan terbuka saat siap.</string>
 </resources>

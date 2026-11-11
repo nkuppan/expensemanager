@@ -115,4 +115,5 @@
     <string name="reading_receipt">Reading receipt…</string>
     <string name="suggested_categories">Suggested</string>
     <string name="receipt_scanner_unavailable">The receipt scanner isn\'t available on this device</string>
+    <string name="receipt_scanner_preparing">Google Play services is downloading the receipt scanner. It will open when it\'s ready.</string>
 </resources>

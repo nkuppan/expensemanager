@@ -113,4 +113,5 @@
     <string name="reading_receipt">रसीद पढ़ी जा रही है…</string>
     <string name="suggested_categories">सुझाई गई</string>
     <string name="receipt_scanner_unavailable">इस डिवाइस पर रसीद स्कैनर उपलब्ध नहीं है</string>
+    <string name="receipt_scanner_preparing">Google Play सेवाएँ रसीद स्कैनर डाउनलोड कर रही हैं। तैयार होते ही यह खुल जाएगा।</string>
 </resources>

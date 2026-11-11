@@ -112,4 +112,5 @@
     <string name="reading_receipt">영수증 읽는 중…</string>
     <string name="suggested_categories">추천</string>
     <string name="receipt_scanner_unavailable">이 기기에서는 영수증 스캐너를 사용할 수 없습니다</string>
+    <string name="receipt_scanner_preparing">Google Play 서비스에서 영수증 스캐너를 다운로드하고 있습니다. 준비되면 열립니다.</string>
 </resources>

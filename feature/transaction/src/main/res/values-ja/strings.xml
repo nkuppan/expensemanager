@@ -112,4 +112,5 @@
     <string name="reading_receipt">レシートを読み取り中…</string>
     <string name="suggested_categories">おすすめ</string>
     <string name="receipt_scanner_unavailable">このデバイスではレシートスキャナーを利用できません</string>
+    <string name="receipt_scanner_preparing">Google Play 開発者サービスがレシートスキャナーをダウンロードしています。準備ができると開きます。</string>
 </resources>

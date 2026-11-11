@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Lets the receipt scanner check that Play services can open its scan screen before
+         launching it (Android 11+ package visibility); see ReceiptScanner.kt. -->
+    <queries>
+        <intent>
+            <action android:name="com.google.android.gms.mlkit.ACTION_SCAN_DOCUMENT" />
+        </intent>
+    </queries>
 
 </manifest>

@@ -117,4 +117,5 @@
     <string name="reading_receipt">جارٍ قراءة الإيصال…</string>
     <string name="suggested_categories">مقترحة</string>
     <string name="receipt_scanner_unavailable">ماسح الإيصالات غير متاح على هذا الجهاز</string>
+    <string name="receipt_scanner_preparing">تقوم خدمات Google Play بتنزيل ماسح الإيصالات، وسيفتح عندما يصبح جاهزًا.</string>
 </resources>

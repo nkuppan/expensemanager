@@ -956,6 +956,11 @@ class TransactionCreateViewModel(
             )
 
             TransactionCreateAction.ReceiptScanFailed -> onReceiptScanFailed()
+
+            TransactionCreateAction.ReceiptScannerPreparing -> viewModelScope.launch {
+                analyticsRepository.logEvent(AnalyticsEvents.RECEIPT_SCANNER_DOWNLOAD, emptyMap())
+                _event.send(TransactionCreateEvent.ShowMessage(R.string.receipt_scanner_preparing))
+            }
         }
     }
 

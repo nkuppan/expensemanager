@@ -115,4 +115,5 @@
     <string name="reading_receipt">Распознаём чек…</string>
     <string name="suggested_categories">Предложения</string>
     <string name="receipt_scanner_unavailable">Сканер чеков недоступен на этом устройстве</string>
+    <string name="receipt_scanner_preparing">Сервисы Google Play загружают сканер чеков. Он откроется, когда будет готов.</string>
 </resources>

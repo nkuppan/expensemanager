@@ -113,4 +113,5 @@
     <string name="reading_receipt">Beleg wird gelesen…</string>
     <string name="suggested_categories">Vorschläge</string>
     <string name="receipt_scanner_unavailable">Der Belegscanner ist auf diesem Gerät nicht verfügbar</string>
+    <string name="receipt_scanner_preparing">Google Play-Dienste laden den Belegscanner herunter. Er öffnet sich, sobald er bereit ist.</string>
 </resources>
