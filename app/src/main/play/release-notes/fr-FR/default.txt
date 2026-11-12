@@ -1,4 +1,4 @@
-• Partagez un message de paiement UPI ou une capture avec Expense Manager et tout est rempli : montant, bénéficiaire, date et catégorie
-• Scannez un ticket avec l'appareil photo depuis l'écran Ajouter, avec compte et catégorie suggérés
-• Les captures sont lues sur votre téléphone, rien n'est envoyé, et l'image est enregistrée avec la transaction
-• Un rappel sur l'accueil quand les rappels quotidiens sont désactivés, pour les réactiver en un geste
+• Paramètres simplifiés : quatre groupes courts, les réglages ponctuels dans Préférences, sauvegarde et restauration au même endroit
+• Graphiques repensés et plus fluides dans Analyse et Catégories
+• Le scanner de reçus se prépare seul quand les services Google Play doivent le télécharger
+• Nouvel écran des licences open source avec recherche, et corrections de plantages

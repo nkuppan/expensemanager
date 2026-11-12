@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">查看更多（%1$d）</string>
     <string name="notification_see_less">收起</string>
+    <string-array name="whats_new_1_4_29">
+        <item>更简洁的设置：四个简短分组，一次性设置放在偏好设置中，备份与恢复合并在一处</item>
+        <item>分析和类别中的图表重新设计，更加流畅</item>
+        <item>当 Google Play 服务需要下载时，收据扫描会自动准备好</item>
+        <item>可搜索的全新开源许可证页面，以及崩溃修复</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>将 UPI 付款消息或截图分享到 Expense Manager，金额、收款方、日期和类别会自动填好</item>
         <item>在添加页面用相机扫描购物小票，账户和类别会根据小票和你以往的记录推荐</item>

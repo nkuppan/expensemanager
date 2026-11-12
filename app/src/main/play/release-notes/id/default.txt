@@ -1,4 +1,4 @@
-• Bagikan pesan pembayaran UPI atau tangkapan layar ke Expense Manager dan semuanya terisi: jumlah, penerima, tanggal, dan kategori
-• Pindai struk belanja dengan kamera dari layar Tambah. Akun dan kategori disarankan dari struk dan catatan Anda sebelumnya
-• Tangkapan layar dibaca di ponsel Anda, tidak ada yang diunggah, dan gambar disimpan bersama transaksi
-• Pengingat di Beranda saat pengingat harian nonaktif, agar bisa diaktifkan lagi dengan satu ketukan
+• Setelan lebih sederhana: empat grup singkat, pengaturan sekali di Preferensi, serta cadangkan dan pulihkan di satu tempat
+• Grafik baru yang lebih halus di Analisis dan Kategori
+• Pemindai struk kini menyiapkan diri saat Layanan Google Play perlu mengunduhnya
+• Layar lisensi sumber terbuka baru yang bisa dicari, dan perbaikan crash

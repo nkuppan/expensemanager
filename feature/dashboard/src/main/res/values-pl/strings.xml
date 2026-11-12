@@ -81,6 +81,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Pokaż więcej (%1$d)</string>
     <string name="notification_see_less">Pokaż mniej</string>
+    <string-array name="whats_new_1_4_29">
+        <item>Prostsze ustawienia: cztery krótkie grupy, jednorazowe opcje w Preferencjach, kopia i przywracanie w jednym miejscu</item>
+        <item>Płynniejsze, nowe wykresy w Analizie i Kategoriach</item>
+        <item>Skaner paragonów sam się przygotowuje, gdy Usługi Google Play muszą go pobrać</item>
+        <item>Nowy ekran licencji open source z wyszukiwaniem i poprawki awarii</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Udostępnij wiadomość o płatności UPI lub zrzut ekranu do Expense Manager, a wszystko się uzupełni: kwota, odbiorca, data i kategoria</item>
         <item>Zeskanuj paragon aparatem z ekranu Dodaj. Konto i kategoria są sugerowane na podstawie paragonu i Twoich wcześniejszych wpisów</item>

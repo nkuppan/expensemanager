@@ -25,4 +25,7 @@ sealed class AutoBackupAction {
     data class SubmitSharePassphrase(val passphrase: String) : AutoBackupAction()
 
     data object DismissShare : AutoBackupAction()
+
+    /** Settings has one "Backup & restore" row; restoring starts from here. */
+    data object OpenRestore : AutoBackupAction()
 }

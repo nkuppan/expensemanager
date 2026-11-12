@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Voir plus (%1$d)</string>
     <string name="notification_see_less">Voir moins</string>
+    <string-array name="whats_new_1_4_29">
+        <item>Paramètres simplifiés : quatre groupes courts, les réglages ponctuels dans Préférences, sauvegarde et restauration au même endroit</item>
+        <item>Graphiques repensés et plus fluides dans Analyse et Catégories</item>
+        <item>Le scanner de reçus se prépare seul quand les services Google Play doivent le télécharger</item>
+        <item>Nouvel écran des licences open source avec recherche, et corrections de plantages</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Partagez un message de paiement UPI ou une capture avec Expense Manager et tout est rempli : montant, bénéficiaire, date et catégorie</item>
         <item>Scannez un ticket de caisse avec l\'appareil photo depuis l\'écran Ajouter. Le compte et la catégorie sont suggérés d\'après le ticket et vos saisies passées</item>

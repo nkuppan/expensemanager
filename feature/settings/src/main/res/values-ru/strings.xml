@@ -112,4 +112,11 @@
     <string name="landing_analysis">Анализ</string>
     <string name="landing_transactions">Операции</string>
     <string name="landing_categories">Категории</string>
+    <string name="general">Общие</string>
+    <string name="reminders">Напоминания</string>
+    <string name="your_data">Ваши данные</string>
+    <string name="backup_and_restore">Резервное копирование и восстановление</string>
+    <string name="more">Ещё</string>
+    <string name="preferences">Предпочтения</string>
+    <string name="preferences_message">Значения по умолчанию, главный экран и другое</string>
 </resources>

@@ -1,4 +1,4 @@
-• Udostępnij wiadomość o płatności UPI lub zrzut ekranu do Expense Manager, a wszystko się uzupełni: kwota, odbiorca, data i kategoria
-• Zeskanuj paragon aparatem z ekranu Dodaj. Konto i kategoria są sugerowane na podstawie paragonu i Twoich wcześniejszych wpisów
-• Zrzuty ekranu są odczytywane na telefonie, nic nie jest wysyłane, a obraz zapisuje się z transakcją
-• Przypomnienie na ekranie głównym, gdy codzienne przypomnienia są wyłączone, aby włączyć je jednym dotknięciem
+• Prostsze ustawienia: cztery krótkie grupy, jednorazowe opcje w Preferencjach, kopia i przywracanie w jednym miejscu
+• Płynniejsze, nowe wykresy w Analizie i Kategoriach
+• Skaner paragonów sam się przygotowuje, gdy Usługi Google Play muszą go pobrać
+• Nowy ekran licencji open source z wyszukiwaniem i poprawki awarii

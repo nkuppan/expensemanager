@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver más (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_29">
+        <item>Ajustes más sencillos: cuatro grupos cortos, lo que configuras una vez en Preferencias y copia y restauración en un solo lugar</item>
+        <item>Gráficos rediseñados y más fluidos en Análisis y Categorías</item>
+        <item>El escáner de recibos se prepara solo cuando Google Play Services necesita descargarlo</item>
+        <item>Nueva pantalla de licencias de código abierto con búsqueda y correcciones de fallos</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Comparte un mensaje de pago UPI o una captura con Expense Manager y se rellena solo: importe, beneficiario, fecha y categoría</item>
         <item>Escanea un ticket con la cámara desde la pantalla Añadir. La cuenta y la categoría se sugieren a partir del ticket y tus entradas anteriores</item>

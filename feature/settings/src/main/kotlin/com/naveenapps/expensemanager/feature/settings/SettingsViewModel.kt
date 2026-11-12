@@ -3,16 +3,10 @@ package com.naveenapps.expensemanager.feature.settings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppShareLink
-import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.GetCurrentLocaleUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.GetCurrentThemeUseCase
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.Category
-import com.naveenapps.expensemanager.core.model.Resource
-import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
@@ -23,7 +17,6 @@ import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -35,8 +28,6 @@ class SettingsViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
     getCurrentLocaleUseCase: GetCurrentLocaleUseCase,
-    getAllAccountsUseCase: GetAllAccountsUseCase,
-    getAllCategoryUseCase: GetAllCategoryUseCase,
     private val settingsRepository: SettingsRepository,
     private val appComposeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
@@ -70,51 +61,13 @@ class SettingsViewModel(
             _state.update { it.copy(locale = locale) }
         }.launchIn(viewModelScope)
 
-        // Defaults + Security section (moved here from AdvancedSettingsViewModel)
-        settingsRepository.getLandingPage().onEach { page ->
-            _state.update { it.copy(landingPage = page) }
-        }.launchIn(viewModelScope)
-
-        settingsRepository.getHomeSummaryCompact().onEach { compact ->
-            _state.update { it.copy(isCompactSummary = compact) }
-        }.launchIn(viewModelScope)
-
+        // Security section
         settingsRepository.isAppLockEnabled().onEach { enabled ->
             _state.update { it.copy(isAppLockEnabled = enabled) }
         }.launchIn(viewModelScope)
 
         settingsRepository.isScreenshotBlocked().onEach { blocked ->
             _state.update { it.copy(isScreenshotBlocked = blocked) }
-        }.launchIn(viewModelScope)
-
-        getAllAccountsUseCase.invoke().onEach { accounts ->
-            val accountId = settingsRepository.getDefaultAccount().firstOrNull()
-            val account = accounts.find { it.id == accountId }
-            _state.update {
-                it.copy(
-                    accounts = accounts,
-                    selectedAccount = account ?: accounts.firstOrNull(),
-                )
-            }
-        }.launchIn(viewModelScope)
-
-        getAllCategoryUseCase.invoke().onEach { categories ->
-            val (expenses, incomes) = categories.partition { category -> category.type.isExpense() }
-
-            val expenseCategoryId = settingsRepository.getDefaultExpenseCategory().firstOrNull()
-            val expenseCategory = expenses.find { it.id == expenseCategoryId }
-
-            val incomeCategoryId = settingsRepository.getDefaultIncomeCategory().firstOrNull()
-            val incomeCategory = incomes.find { it.id == incomeCategoryId }
-
-            _state.update {
-                it.copy(
-                    expenseCategories = expenses,
-                    selectedExpenseCategory = expenseCategory ?: expenses.firstOrNull(),
-                    incomeCategories = incomes,
-                    selectedIncomeCategory = incomeCategory ?: incomes.firstOrNull(),
-                )
-            }
         }.launchIn(viewModelScope)
     }
 
@@ -140,48 +93,6 @@ class SettingsViewModel(
 
     private fun openAdvancedSettings() {
         appComposeNavigator.navigate(ExpenseManagerScreens.AdvancedSettingsScreen)
-    }
-
-    private fun changeDefaultAccount(account: Account) {
-        viewModelScope.launch {
-            when (val response = settingsRepository.setDefaultAccount(account.id)) {
-                is Resource.Error -> Unit
-
-                is Resource.Success -> {
-                    if (response.data) {
-                        _state.update { it.copy(selectedAccount = account) }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun changeSelectedExpenseCategory(category: Category) {
-        viewModelScope.launch {
-            when (val response = settingsRepository.setDefaultExpenseCategory(category.id)) {
-                is Resource.Error -> Unit
-
-                is Resource.Success -> {
-                    if (response.data) {
-                        _state.update { it.copy(selectedExpenseCategory = category) }
-                    }
-                }
-            }
-        }
-    }
-
-    private fun changeSelectedIncomeCategory(category: Category) {
-        viewModelScope.launch {
-            when (val response = settingsRepository.setDefaultIncomeCategory(category.id)) {
-                is Resource.Error -> Unit
-
-                is Resource.Success -> {
-                    if (response.data) {
-                        _state.update { it.copy(selectedIncomeCategory = category) }
-                    }
-                }
-            }
-        }
     }
 
     private fun loadDemoData() {
@@ -221,8 +132,6 @@ class SettingsViewModel(
 
             SettingAction.OpenBackup -> appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
 
-            SettingAction.OpenRestore -> appComposeNavigator.navigate(ExpenseManagerScreens.RestoreScreen)
-
             SettingAction.OpenNotification -> openNotificationScreen()
 
             SettingAction.ShareApp -> {
@@ -256,25 +165,6 @@ class SettingsViewModel(
 
             SettingAction.ShowLanguageSelection -> {
                 _state.update { it.copy(showLanguageSelection = true) }
-            }
-
-            is SettingAction.SelectAccount -> changeDefaultAccount(action.account)
-
-            is SettingAction.SelectExpenseCategory -> changeSelectedExpenseCategory(action.category)
-
-            is SettingAction.SelectIncomeCategory -> changeSelectedIncomeCategory(action.category)
-
-            // Takes effect the next time the app opens; the current tab doesn't jump.
-            is SettingAction.SelectLandingPage -> viewModelScope.launch {
-                settingsRepository.setLandingPage(action.page)
-            }
-
-            SettingAction.ToggleCompactSummary -> {
-                viewModelScope.launch {
-                    val newValue = !_state.value.isCompactSummary
-                    settingsRepository.setHomeSummaryCompact(newValue)
-                    _state.update { it.copy(isCompactSummary = newValue) }
-                }
             }
 
             SettingAction.ToggleAppLock -> {

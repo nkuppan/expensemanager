@@ -30,7 +30,7 @@
 
 ### At a glance
 
-- **Expense Manager by [Naveen Apps](https://expensemanager.naveenapps.com)**, available on [Google Play](https://play.google.com/store/apps/details?id=com.naveenapps.expensemanager)
+- **Expense Manager by [NVN Labs](https://expensemanager.naveenapps.com)**, available on [Google Play](https://play.google.com/store/apps/details?id=com.naveenapps.expensemanager)
 - **Free.** No ads, no in-app purchases, no subscription; every feature is available to everyone
 - **No account.** No sign-up and no cloud sync; works fully offline
 - **Private.** Transactions, notes and receipt photos stay on your phone. The app sends only anonymous usage statistics and crash reports (Firebase), and never reads your SMS or bank account

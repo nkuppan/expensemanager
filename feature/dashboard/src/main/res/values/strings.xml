@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">See more (%1$d)</string>
     <string name="notification_see_less">See less</string>
+    <string-array name="whats_new_1_4_29">
+        <item>A simpler Settings screen: four short groups, with everything you set once in Preferences and backup and restore in one place</item>
+        <item>Smoother, redesigned charts in Analysis and Categories</item>
+        <item>The receipt scanner now gets ready by itself when Google Play services needs to download it</item>
+        <item>A new searchable open source licences screen, and crash fixes</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Share a UPI payment message or screenshot to Expense Manager and it\'s filled in for you: amount, payee, date and category</item>
         <item>Scan a shop receipt with your camera from the Add screen. The account and category are suggested from the receipt and your past entries</item>

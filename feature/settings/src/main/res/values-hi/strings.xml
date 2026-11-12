@@ -112,4 +112,11 @@
     <string name="landing_analysis">विश्लेषण</string>
     <string name="landing_transactions">लेन-देन</string>
     <string name="landing_categories">श्रेणियाँ</string>
+    <string name="general">सामान्य</string>
+    <string name="reminders">रिमाइंडर</string>
+    <string name="your_data">आपका डेटा</string>
+    <string name="backup_and_restore">बैकअप और रीस्टोर</string>
+    <string name="more">और</string>
+    <string name="preferences">प्राथमिकताएँ</string>
+    <string name="preferences_message">नई एंट्री के डिफ़ॉल्ट, होम और अधिक</string>
 </resources>

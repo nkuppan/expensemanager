@@ -51,7 +51,6 @@ fun CategorySpendingChartCard(
                         it.color.toColorInt(),
                     )
                 },
-                chartHeight = 600,
                 hideValues = state.hideValues,
                 modifier = Modifier
                     .padding(vertical = 12.dp)

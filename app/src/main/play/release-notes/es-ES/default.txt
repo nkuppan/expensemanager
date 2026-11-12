@@ -1,4 +1,4 @@
-• Comparte un mensaje de pago UPI o una captura con Expense Manager y se rellena solo: importe, beneficiario, fecha y categoría
-• Escanea un ticket con la cámara desde la pantalla Añadir. La cuenta y la categoría se sugieren a partir del ticket y tus entradas anteriores
-• Las capturas se leen en tu teléfono, no se sube nada y la imagen se guarda con la transacción
-• Un aviso en Inicio cuando los recordatorios diarios están desactivados, para activarlos con un toque
+• Ajustes más sencillos: cuatro grupos cortos, lo que configuras una vez en Preferencias y copia y restauración en un solo lugar
+• Gráficos rediseñados y más fluidos en Análisis y Categorías
+• El escáner de recibos se prepara solo cuando Google Play Services necesita descargarlo
+• Nueva pantalla de licencias de código abierto con búsqueda y correcciones de fallos

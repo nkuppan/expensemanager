@@ -1,4 +1,4 @@
-• Compartilhe uma mensagem de pagamento UPI ou uma captura com o Expense Manager e tudo é preenchido: valor, favorecido, data e categoria
-• Digitalize um recibo de loja com a câmera na tela Adicionar. A conta e a categoria são sugeridas pelo recibo e pelos seus lançamentos anteriores
-• As capturas são lidas no seu celular, nada é enviado, e a imagem fica salva com a transação
-• Um aviso na tela inicial quando os lembretes diários estão desativados, para reativá-los com um toque
+• Configurações mais simples: quatro grupos curtos, o que você define uma vez em Preferências e backup e restauração juntos
+• Gráficos redesenhados e mais suaves em Análise e Categorias
+• O leitor de recibos se prepara sozinho quando o Google Play Services precisa baixá-lo
+• Nova tela de licenças de código aberto com busca, e correções de falhas

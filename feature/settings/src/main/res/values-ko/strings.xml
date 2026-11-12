@@ -112,4 +112,11 @@
     <string name="landing_analysis">분석</string>
     <string name="landing_transactions">거래</string>
     <string name="landing_categories">카테고리</string>
+    <string name="general">일반</string>
+    <string name="reminders">알림</string>
+    <string name="your_data">내 데이터</string>
+    <string name="backup_and_restore">백업 및 복원</string>
+    <string name="more">더보기</string>
+    <string name="preferences">환경설정</string>
+    <string name="preferences_message">새 항목 기본값, 홈 등</string>
 </resources>

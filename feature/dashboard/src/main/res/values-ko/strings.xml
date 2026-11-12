@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">더 보기 (%1$d)</string>
     <string name="notification_see_less">간단히 보기</string>
+    <string-array name="whats_new_1_4_29">
+        <item>더 간단해진 설정: 네 개의 짧은 그룹, 한 번 정하는 항목은 환경설정에, 백업과 복원은 한곳에</item>
+        <item>분석과 카테고리의 차트를 새롭게, 더 부드럽게</item>
+        <item>Google Play 서비스에서 다운로드가 필요하면 영수증 스캐너가 스스로 준비됩니다</item>
+        <item>검색 가능한 새 오픈소스 라이선스 화면과 비정상 종료 수정</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>UPI 결제 메시지나 스크린샷을 Expense Manager로 공유하면 금액, 받는 사람, 날짜, 카테고리가 자동으로 입력됩니다</item>
         <item>추가 화면에서 카메라로 매장 영수증을 스캔하세요. 계좌와 카테고리는 영수증과 이전 기록을 바탕으로 추천됩니다</item>

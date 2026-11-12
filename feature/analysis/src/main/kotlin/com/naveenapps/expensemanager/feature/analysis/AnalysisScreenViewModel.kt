@@ -21,9 +21,6 @@ import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
-import com.patrykandpatrick.vico.core.entry.ChartEntryModel
-import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
-import com.patrykandpatrick.vico.core.entry.entryOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -132,18 +129,10 @@ class AnalysisScreenViewModel(
                 transactions = response.transactions,
                 chartData = response.chartData?.let { chart ->
                     AnalysisUiChartData(
-                        chartData = ChartEntryModelProducer(
-                            chart.chartData.map {
-                                it.map { entry ->
-                                    entryOf(
-                                        entry.index,
-                                        entry.total,
-                                    )
-                                }
-                            },
-                        ).getModel(),
+                        expenses = chart.chartData.getOrNull(0).orEmpty().map { it.total },
+                        incomes = chart.chartData.getOrNull(1).orEmpty().map { it.total },
                         dates = chart.dates,
-                    )
+                    ).takeIf { it.expenses.isNotEmpty() }
                 },
             )
         }.launchIn(viewModelScope)
@@ -191,8 +180,10 @@ data class AnalysisUiData(
     val chartData: AnalysisUiChartData? = null,
 )
 
+/** One value per date bucket: index i of [expenses], [incomes] and [dates] is the same day. */
 data class AnalysisUiChartData(
-    val chartData: ChartEntryModel,
+    val expenses: List<Double>,
+    val incomes: List<Double>,
     val dates: List<String>,
     val title: String? = null,
 )

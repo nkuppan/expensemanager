@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mehr anzeigen (%1$d)</string>
     <string name="notification_see_less">Weniger anzeigen</string>
+    <string-array name="whats_new_1_4_29">
+        <item>Einfachere Einstellungen: vier kurze Gruppen, Einmal-Einstellungen unter Einstellungen und Sichern &amp; Wiederherstellen an einem Ort</item>
+        <item>Flüssigere, neu gestaltete Diagramme in Analyse und Kategorien</item>
+        <item>Der Belegscanner richtet sich selbst ein, wenn Google Play-Dienste ihn herunterladen müssen</item>
+        <item>Neue durchsuchbare Open-Source-Lizenzen und Absturzbehebungen</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Teile eine UPI-Zahlungsnachricht oder einen Screenshot mit Expense Manager und alles wird ausgefüllt: Betrag, Empfänger, Datum und Kategorie</item>
         <item>Scanne einen Kassenbon mit der Kamera im Hinzufügen-Bildschirm. Konto und Kategorie werden aus dem Beleg und deinen bisherigen Einträgen vorgeschlagen</item>

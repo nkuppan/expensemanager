@@ -112,4 +112,11 @@
     <string name="landing_analysis">Analiz</string>
     <string name="landing_transactions">İşlemler</string>
     <string name="landing_categories">Kategoriler</string>
+    <string name="general">Genel</string>
+    <string name="reminders">Hatırlatıcılar</string>
+    <string name="your_data">Verileriniz</string>
+    <string name="backup_and_restore">Yedekle ve geri yükle</string>
+    <string name="more">Daha fazla</string>
+    <string name="preferences">Tercihler</string>
+    <string name="preferences_message">Yeni kayıt varsayılanları, Ana sayfa ve daha fazlası</string>
 </resources>

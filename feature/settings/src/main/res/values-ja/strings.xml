@@ -112,4 +112,11 @@
     <string name="landing_analysis">分析</string>
     <string name="landing_transactions">取引</string>
     <string name="landing_categories">カテゴリ</string>
+    <string name="general">一般</string>
+    <string name="reminders">リマインダー</string>
+    <string name="your_data">データ</string>
+    <string name="backup_and_restore">バックアップと復元</string>
+    <string name="more">その他</string>
+    <string name="preferences">詳細設定</string>
+    <string name="preferences_message">新規入力の既定値、ホームなど</string>
 </resources>

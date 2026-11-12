@@ -85,6 +85,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">عرض المزيد (%1$d)</string>
     <string name="notification_see_less">عرض أقل</string>
+    <string-array name="whats_new_1_4_29">
+        <item>شاشة إعدادات أبسط: أربع مجموعات قصيرة، مع ما تضبطه مرة واحدة في التفضيلات والنسخ الاحتياطي والاستعادة في مكان واحد</item>
+        <item>مخططات أكثر سلاسة بتصميم جديد في التحليل والفئات</item>
+        <item>يجهز ماسح الإيصالات نفسه تلقائيًا عندما تحتاج خدمات Google Play إلى تنزيله</item>
+        <item>شاشة جديدة لتراخيص المصادر المفتوحة مع البحث، وإصلاحات للأعطال</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>شارك رسالة دفع UPI أو لقطة شاشة مع Expense Manager لتُملأ تلقائيًا: المبلغ والمستفيد والتاريخ والفئة</item>
         <item>امسح إيصال المتجر بالكاميرا من شاشة الإضافة، مع اقتراح الحساب والفئة من الإيصال ومن معاملاتك السابقة</item>

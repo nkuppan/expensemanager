@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver mais (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_29">
+        <item>Configurações mais simples: quatro grupos curtos, o que você define uma vez em Preferências e backup e restauração juntos</item>
+        <item>Gráficos redesenhados e mais suaves em Análise e Categorias</item>
+        <item>O leitor de recibos se prepara sozinho quando o Google Play Services precisa baixá-lo</item>
+        <item>Nova tela de licenças de código aberto com busca, e correções de falhas</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Compartilhe uma mensagem de pagamento UPI ou uma captura com o Expense Manager e tudo é preenchido: valor, favorecido, data e categoria</item>
         <item>Digitalize um recibo de loja com a câmera na tela Adicionar. A conta e a categoria são sugeridas pelo recibo e pelos seus lançamentos anteriores</item>

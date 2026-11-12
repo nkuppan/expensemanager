@@ -1,4 +1,4 @@
-• Chia sẻ tin nhắn thanh toán UPI hoặc ảnh chụp màn hình tới Expense Manager để tự điền số tiền, người nhận, ngày và danh mục
-• Quét hóa đơn cửa hàng bằng camera ngay từ màn hình Thêm. Tài khoản và danh mục được gợi ý từ hóa đơn và các mục trước đây
-• Ảnh chụp được đọc ngay trên điện thoại, không tải lên gì, và ảnh được lưu cùng giao dịch
-• Lời nhắc trên Trang chủ khi nhắc nhở hằng ngày đang tắt, để bật lại chỉ với một chạm
+• Cài đặt gọn hơn: bốn nhóm ngắn, mục thiết lập một lần nằm trong Tùy chọn, sao lưu và khôi phục ở một chỗ
+• Biểu đồ mới, mượt hơn trong Phân tích và Danh mục
+• Trình quét hóa đơn tự chuẩn bị khi Dịch vụ Google Play cần tải về
+• Màn hình giấy phép mã nguồn mở mới có tìm kiếm, và sửa lỗi ứng dụng bị dừng

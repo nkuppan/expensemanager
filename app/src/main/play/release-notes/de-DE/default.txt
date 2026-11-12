@@ -1,4 +1,4 @@
-• Teile eine UPI-Zahlungsnachricht oder einen Screenshot mit Expense Manager und alles wird ausgefüllt: Betrag, Empfänger, Datum und Kategorie
-• Kassenbon per Kamera scannen, mit Vorschlägen für Konto und Kategorie aus dem Beleg und früheren Einträgen
-• Screenshots werden auf deinem Handy gelesen, nichts wird hochgeladen, und das Bild wird mit der Buchung gespeichert
-• Ein Hinweis auf der Startseite, wenn tägliche Erinnerungen aus sind, damit du sie mit einem Tippen wieder einschaltest
+• Einfachere Einstellungen: vier kurze Gruppen, Einmal-Einstellungen unter Einstellungen und Sichern & Wiederherstellen an einem Ort
+• Flüssigere, neu gestaltete Diagramme in Analyse und Kategorien
+• Der Belegscanner richtet sich selbst ein, wenn Google Play-Dienste ihn herunterladen müssen
+• Neue durchsuchbare Open-Source-Lizenzen und Absturzbehebungen

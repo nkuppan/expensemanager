@@ -14,6 +14,8 @@ dependencies {
     implementation(project(":feature:category"))
     implementation(project(":feature:transaction"))
 
+    // Vico 3: the compose artifact now holds the whole chart API (there's no separate core);
+    // compose-m3 maps the app's Material 3 colours onto the chart (rememberM3VicoTheme).
     implementation(libs.vico.compose)
-    implementation(libs.vico.core)
+    implementation(libs.vico.compose.m3)
 }

@@ -112,4 +112,11 @@
     <string name="landing_analysis">Phân tích</string>
     <string name="landing_transactions">Giao dịch</string>
     <string name="landing_categories">Danh mục</string>
+    <string name="general">Chung</string>
+    <string name="reminders">Nhắc nhở</string>
+    <string name="your_data">Dữ liệu của bạn</string>
+    <string name="backup_and_restore">Sao lưu và khôi phục</string>
+    <string name="more">Thêm</string>
+    <string name="preferences">Tùy chọn</string>
+    <string name="preferences_message">Mặc định cho mục mới, Trang chủ và khác</string>
 </resources>

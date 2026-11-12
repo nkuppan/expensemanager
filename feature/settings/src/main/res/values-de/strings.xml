@@ -112,4 +112,11 @@
     <string name="landing_analysis">Analyse</string>
     <string name="landing_transactions">Buchungen</string>
     <string name="landing_categories">Kategorien</string>
+    <string name="general">Allgemein</string>
+    <string name="reminders">Erinnerungen</string>
+    <string name="your_data">Deine Daten</string>
+    <string name="backup_and_restore">Sichern &amp; wiederherstellen</string>
+    <string name="more">Mehr</string>
+    <string name="preferences">Einstellungen</string>
+    <string name="preferences_message">Standards für neue Einträge, Startseite und mehr</string>
 </resources>

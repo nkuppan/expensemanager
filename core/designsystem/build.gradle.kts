@@ -17,7 +17,8 @@ dependencies {
     api(libs.naveenapps.designsystem)
     api(libs.accompanist.permissions)
     debugApi(libs.androidx.compose.ui.tooling)
-    api(libs.mpcharts)
+    // Category donut (PieChartView); Vico replaced MPAndroidChart.
+    implementation(libs.vico.compose)
     implementation(libs.coil.compose)
     implementation(libs.androidx.compose.material.iconsExtended)
 }

@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.model.AutoBackupResult
 import com.naveenapps.expensemanager.core.model.BackupFile
 import com.naveenapps.expensemanager.core.model.BackupKind
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
@@ -65,6 +66,7 @@ class AutoBackupViewModel(
             is AutoBackupAction.Share -> _state.update { it.copy(shareCandidate = action.backup) }
             is AutoBackupAction.SubmitSharePassphrase -> share(action.passphrase)
             AutoBackupAction.DismissShare -> _state.update { it.copy(shareCandidate = null) }
+            AutoBackupAction.OpenRestore -> appComposeNavigator.navigate(ExpenseManagerScreens.RestoreScreen)
         }
     }
 

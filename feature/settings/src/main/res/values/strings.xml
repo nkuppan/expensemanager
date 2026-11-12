@@ -122,4 +122,12 @@
     <string name="landing_analysis">Analysis</string>
     <string name="landing_transactions">Transactions</string>
     <string name="landing_categories">Categories</string>
+    <!-- Settings main screen (General / Your data / Security / More) and Preferences. -->
+    <string name="general">General</string>
+    <string name="reminders">Reminders</string>
+    <string name="your_data">Your data</string>
+    <string name="backup_and_restore">Backup &amp; restore</string>
+    <string name="more">More</string>
+    <string name="preferences">Preferences</string>
+    <string name="preferences_message">Defaults for new entries, Home and more</string>
 </resources>

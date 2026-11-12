@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Daha fazla göster (%1$d)</string>
     <string name="notification_see_less">Daha az göster</string>
+    <string-array name="whats_new_1_4_29">
+        <item>Daha sade Ayarlar: dört kısa grup, bir kez ayarlananlar Tercihler\'de, yedekleme ve geri yükleme tek yerde</item>
+        <item>Analiz ve Kategoriler\'de yenilenen, daha akıcı grafikler</item>
+        <item>Google Play Hizmetleri indirmesi gerektiğinde fiş tarayıcı kendini hazırlar</item>
+        <item>Aranabilir yeni açık kaynak lisansları ekranı ve çökme düzeltmeleri</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Bir UPI ödeme mesajını veya ekran görüntüsünü Expense Manager ile paylaşın; tutar, alıcı, tarih ve kategori otomatik doldurulur</item>
         <item>Ekle ekranından kamerayla mağaza fişini tarayın. Hesap ve kategori, fişe ve önceki kayıtlarınıza göre önerilir</item>

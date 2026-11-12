@@ -112,4 +112,11 @@
     <string name="landing_analysis">Analisis</string>
     <string name="landing_transactions">Transaksi</string>
     <string name="landing_categories">Kategori</string>
+    <string name="general">Umum</string>
+    <string name="reminders">Pengingat</string>
+    <string name="your_data">Data Anda</string>
+    <string name="backup_and_restore">Cadangkan &amp; pulihkan</string>
+    <string name="more">Lainnya</string>
+    <string name="preferences">Preferensi</string>
+    <string name="preferences_message">Bawaan untuk catatan baru, Beranda, dan lainnya</string>
 </resources>

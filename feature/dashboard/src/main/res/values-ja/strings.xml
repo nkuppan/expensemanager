@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">もっと見る (%1$d)</string>
     <string name="notification_see_less">閉じる</string>
+    <string-array name="whats_new_1_4_29">
+        <item>設定がシンプルに：4つのグループに整理し、一度だけ設定する項目は詳細設定へ、バックアップと復元は1か所に</item>
+        <item>分析とカテゴリのグラフを新しく、よりなめらかに</item>
+        <item>Google Play 開発者サービスのダウンロードが必要なとき、レシートスキャナーが自動で準備されます</item>
+        <item>検索できるオープンソースライセンス画面と、クラッシュの修正</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>UPIの支払いメッセージやスクリーンショットをExpense Managerに共有すると、金額・支払先・日付・カテゴリが自動入力されます</item>
         <item>追加画面からカメラでお店のレシートをスキャン。口座とカテゴリはレシートと過去の記録から提案されます</item>

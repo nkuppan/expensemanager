@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">और देखें (%1$d)</string>
     <string name="notification_see_less">कम देखें</string>
+    <string-array name="whats_new_1_4_29">
+        <item>आसान सेटिंग्स: चार छोटे समूह, एक बार सेट होने वाली चीज़ें प्राथमिकताओं में और बैकअप व रीस्टोर एक जगह</item>
+        <item>विश्लेषण और श्रेणियों में नए, ज़्यादा स्मूद चार्ट</item>
+        <item>Google Play सेवाओं को डाउनलोड करना हो तो रसीद स्कैनर अपने-आप तैयार हो जाता है</item>
+        <item>खोज के साथ नई ओपन सोर्स लाइसेंस स्क्रीन, और क्रैश सुधार</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>UPI भुगतान का संदेश या स्क्रीनशॉट Expense Manager पर शेयर करें, सब अपने-आप भर जाएगा: राशि, प्राप्तकर्ता, तारीख और श्रेणी</item>
         <item>जोड़ें स्क्रीन से कैमरे से दुकान की रसीद स्कैन करें। खाता और श्रेणी रसीद और आपकी पिछली एंट्री से सुझाए जाते हैं</item>

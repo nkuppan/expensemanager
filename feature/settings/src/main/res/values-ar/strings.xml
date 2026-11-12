@@ -112,4 +112,11 @@
     <string name="landing_analysis">التحليل</string>
     <string name="landing_transactions">المعاملات</string>
     <string name="landing_categories">الفئات</string>
+    <string name="general">عام</string>
+    <string name="reminders">التذكيرات</string>
+    <string name="your_data">بياناتك</string>
+    <string name="backup_and_restore">النسخ الاحتياطي والاستعادة</string>
+    <string name="more">المزيد</string>
+    <string name="preferences">التفضيلات</string>
+    <string name="preferences_message">الإعدادات الافتراضية للإدخالات الجديدة والصفحة الرئيسية والمزيد</string>
 </resources>

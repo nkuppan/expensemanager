@@ -94,3 +94,13 @@ Room, with hand-written `Migration` objects in `core/database/.../DatabaseMigrat
 ### Locale-sensitive code — read before touching `DateUtils.kt` or anything persisted as text
 
 The app supports switching its display language at runtime (`AppCompatDelegate.setApplicationLocales`, wired in `feature:language` + `LocaleRepositoryImpl`), which means `Locale.getDefault()` is no longer stable across the app's lifetime. `core/common/.../utils/DateUtils.kt` distinguishes two kinds of formatters and documents this at the top of the file: formatters used only for one-way **display** text may follow `Locale.getDefault()`; formatters for values that get **persisted and later parsed back or used as matching keys** (e.g. `Budget.selectedMonth`) must be pinned to a fixed `Locale` (`Locale.ENGLISH`/`Locale.US`), or a locale switch can make previously-saved data unparseable. The same display-vs-storage-key split applies to category names: built-in categories carry a `titleResId` (resolved via `stringResource` for display) alongside the original English `name` (the immutable stored/matching value); only categories with a null `titleResId` are user-created/renamed and safe to treat as arbitrary free text.
+
+## Release notes ("What's new") — keep them current
+
+Every release that changes something users notice gets "What's new" notes, written as soon as the previous version ships:
+
+- The version in `version.properties` is the one live on Play. The **next** release is that version + 1 patch (the "Release to Beta" workflow bumps it). After a release goes out, add the notes for the next version while making the first user-visible change for it.
+- Add a `whats_new_<x_y_z>` string-array to `feature/dashboard/src/main/res/values*/strings.xml` in all 16 languages, newest array first, and put a `WhatsNewRelease(version = "x.y.z", releasedOn = …)` entry at the top of `feature/dashboard/.../notifications/WhatsNewReleases.kt`. The bell then shows a dot for everyone who updates.
+- Use the same lines, prefixed with "• ", in `app/src/main/play/release-notes/<locale>/default.txt` (17 folders, en-US and en-IN share English; Play's limit is 500 characters per language).
+- Keep it to 3–5 short, user-facing highlights (features and visible fixes, not refactors). Update the list as more big changes land before the release.
+- `./gradlew checkReleaseNotes` (also run by `bumpVersion` in CI) warns when the version has no notes or the Play notes don't match.

@@ -112,4 +112,11 @@
     <string name="landing_analysis">分析</string>
     <string name="landing_transactions">交易</string>
     <string name="landing_categories">分类</string>
+    <string name="general">常规</string>
+    <string name="reminders">提醒</string>
+    <string name="your_data">你的数据</string>
+    <string name="backup_and_restore">备份与恢复</string>
+    <string name="more">更多</string>
+    <string name="preferences">偏好设置</string>
+    <string name="preferences_message">新记录默认值、首页等</string>
 </resources>

@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.model.AutoBackupSettings
 import com.naveenapps.expensemanager.core.model.BackupFile
 import com.naveenapps.expensemanager.core.model.BackupKind
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.AutoBackupScheduler
@@ -81,6 +82,15 @@ class AutoBackupViewModelTest : BaseCoroutineTest() {
         appComposeNavigator = navigator,
         analyticsRepository = analytics,
     )
+
+    @Test
+    fun `restore opens from the backup screen`() = runTest {
+        val viewModel = viewModel(FakeAutoBackupRepository(AutoBackupSettings()))
+
+        viewModel.processAction(AutoBackupAction.OpenRestore)
+
+        verify(navigator).navigate(ExpenseManagerScreens.RestoreScreen)
+    }
 
     @Test
     fun `lists the backups on open`() = runTest {

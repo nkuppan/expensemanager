@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mostra altro (%1$d)</string>
     <string name="notification_see_less">Mostra meno</string>
+    <string-array name="whats_new_1_4_29">
+        <item>Impostazioni più semplici: quattro gruppi brevi, le opzioni da impostare una volta in Preferenze e backup e ripristino insieme</item>
+        <item>Grafici ridisegnati e più fluidi in Analisi e Categorie</item>
+        <item>Lo scanner di ricevute si prepara da solo quando Google Play Services deve scaricarlo</item>
+        <item>Nuova schermata delle licenze open source con ricerca e correzioni di arresti anomali</item>
+    </string-array>
     <string-array name="whats_new_1_4_28">
         <item>Condividi un messaggio di pagamento UPI o uno screenshot con Expense Manager e tutto viene compilato: importo, beneficiario, data e categoria</item>
         <item>Scansiona uno scontrino con la fotocamera dalla schermata Aggiungi. Conto e categoria sono suggeriti dallo scontrino e dalle voci passate</item>

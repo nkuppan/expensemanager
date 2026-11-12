@@ -1,4 +1,4 @@
-• Bir UPI ödeme mesajını veya ekran görüntüsünü Expense Manager ile paylaşın; tutar, alıcı, tarih ve kategori otomatik doldurulur
-• Ekle ekranından kamerayla mağaza fişini tarayın. Hesap ve kategori, fişe ve önceki kayıtlarınıza göre önerilir
-• Ekran görüntüleri telefonunuzda okunur, hiçbir şey yüklenmez ve görsel işlemle birlikte kaydedilir
-• Günlük hatırlatıcılar kapalıyken Ana sayfada bir uyarı; tek dokunuşla yeniden açabilirsiniz
+• Daha sade Ayarlar: dört kısa grup, bir kez ayarlananlar Tercihler'de, yedekleme ve geri yükleme tek yerde
+• Analiz ve Kategoriler'de yenilenen, daha akıcı grafikler
+• Google Play Hizmetleri indirmesi gerektiğinde fiş tarayıcı kendini hazırlar
+• Aranabilir yeni açık kaynak lisansları ekranı ve çökme düzeltmeleri

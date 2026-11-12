@@ -56,11 +56,10 @@ room = "2.8.5"
 secrets = "2.0.1"
 turbine = "1.2.1"
 ossLicense = "0.13.0"
-mpcharts = "v3.1.0"
 mockito = "6.4.0"
 jxl = "2.6.12"
 truth = "1.4.5"
-vico = "1.11.1"  # 2.x+ rewrote the API (ChartStyle, entryModelOf, lineSpec are gone); migrate feature:analysis first
+vico = "3.3.1"
 play-publish = "4.1.1"
 google-services = "4.5.0"
 gson = "2.15.0"
@@ -159,13 +158,11 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-mpcharts = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpcharts" }
 mockito = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockito" }
 jxl = { group = "net.sourceforge.jexcelapi", name = "jxl", version.ref = "jxl" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
 vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
-vico-core = { group = "com.patrykandpatrick.vico", name = "core", version.ref = "vico" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 

@@ -29,6 +29,7 @@ import androidx.compose.material.icons.outlined.CloudUpload
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.IosShare
+import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -60,6 +61,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.AutoBackupFrequency
@@ -153,7 +155,7 @@ private fun AutoBackupContent(
             ExpenseManagerTopAppBar(
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationBackClick = { onAction(AutoBackupAction.ClosePage) },
-                title = stringResource(R.string.backup),
+                title = stringResource(R.string.backup_and_restore),
             )
         },
     ) { innerPadding ->
@@ -204,6 +206,15 @@ private fun AutoBackupContent(
                         }
                     }
                 }
+            }
+
+            BackupCard {
+                SettingRow(
+                    title = stringResource(id = R.string.restore),
+                    subtitle = stringResource(id = R.string.restore_setting_message),
+                    icon = Icons.Outlined.Restore,
+                    onClick = { onAction(AutoBackupAction.OpenRestore) },
+                )
             }
 
             AboutBackups()
