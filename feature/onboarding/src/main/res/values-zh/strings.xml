@@ -16,6 +16,5 @@
     <string name="setup_currency">设置货币</string>
     <string name="not_set_up_yet">尚未设置</string>
 
-    <string name="onboarding_add_first_expense">添加第一笔支出</string>
-    <string name="onboarding_explore_first">先看看应用</string>
+    <string name="onboarding_get_started">开始使用</string>
 </resources>

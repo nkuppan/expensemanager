@@ -16,6 +16,5 @@
     <string name="setup_currency">Configurer la devise</string>
     <string name="not_set_up_yet">Pas encore configuré</string>
 
-    <string name="onboarding_add_first_expense">Ajouter ma première dépense</string>
-    <string name="onboarding_explore_first">Découvrir l\'application d\'abord</string>
+    <string name="onboarding_get_started">Commencer</string>
 </resources>

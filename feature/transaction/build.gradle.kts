@@ -16,7 +16,8 @@ dependencies {
     implementation(project(":feature:account"))
     implementation(project(":feature:filter"))
 
-    // On-device OCR for shared receipt screenshots (bundled model, works offline).
+    // On-device OCR for receipts. The model comes from Google Play services (shared, ~260 KB in
+    // the app instead of ~11 MB of bundled native code); it still runs on the phone, offline.
     implementation(libs.google.mlkit.text.recognition)
     // Receipt camera: Google's scanner UI (crop, clean-up); no CAMERA permission needed.
     implementation(libs.google.mlkit.document.scanner)

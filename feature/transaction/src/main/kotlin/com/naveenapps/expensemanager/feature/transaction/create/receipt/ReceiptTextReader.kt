@@ -17,7 +17,9 @@ fun interface ReceiptTextReader {
 }
 
 /**
- * On-device OCR with ML Kit's bundled Latin model: no network, nothing leaves the phone.
+ * On-device OCR with ML Kit's Latin model from Google Play services (downloaded at install via
+ * the manifest's com.google.mlkit.vision.DEPENDENCIES): nothing leaves the phone. Until the model
+ * is ready, or on phones without Play services, this returns null and the user enters the amount.
  * Reads the original image (attachments are downsampled too far for text), then puts the text
  * back into the receipt's printed rows (see [ReceiptRows]) so a total and its amount stay on one
  * line.

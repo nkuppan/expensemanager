@@ -9,4 +9,12 @@
         </intent>
     </queries>
 
+    <application>
+        <!-- Play services downloads the text-recognition model when the app is installed, so the
+             first receipt doesn't wait for it (ReceiptTextReader). -->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr" />
+    </application>
+
 </manifest>

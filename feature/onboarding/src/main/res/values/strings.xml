@@ -16,6 +16,5 @@
     <string name="setup_currency">Setup the currency</string>
     <string name="not_set_up_yet">Not set up yet</string>
 
-    <string name="onboarding_add_first_expense">Add your first expense</string>
-    <string name="onboarding_explore_first">Explore the app first</string>
+    <string name="onboarding_get_started">Get started</string>
 </resources>

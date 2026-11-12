@@ -16,6 +16,5 @@
     <string name="setup_currency">Thiết lập tiền tệ</string>
     <string name="not_set_up_yet">Chưa được thiết lập</string>
 
-    <string name="onboarding_add_first_expense">Thêm khoản chi đầu tiên</string>
-    <string name="onboarding_explore_first">Khám phá ứng dụng trước</string>
+    <string name="onboarding_get_started">Bắt đầu</string>
 </resources>

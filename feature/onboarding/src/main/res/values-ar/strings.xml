@@ -16,6 +16,5 @@
     <string name="setup_currency">إعداد العملة</string>
     <string name="not_set_up_yet">لم يتم الإعداد بعد</string>
 
-    <string name="onboarding_add_first_expense">أضف أول مصروف لك</string>
-    <string name="onboarding_explore_first">استكشف التطبيق أولًا</string>
+    <string name="onboarding_get_started">ابدأ</string>
 </resources>

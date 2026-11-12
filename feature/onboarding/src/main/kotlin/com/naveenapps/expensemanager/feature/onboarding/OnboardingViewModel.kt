@@ -103,13 +103,8 @@ class OnboardingViewModel(
 
     fun processAction(action: OnboardingAction) {
         when (action) {
-            OnboardingAction.Next -> {
-                logOnboardingCompleted(METHOD_EXPLORE)
-                openHome()
-            }
-
-            OnboardingAction.AddFirstExpense -> {
-                logOnboardingCompleted(METHOD_ADD_EXPENSE)
+            OnboardingAction.GetStarted -> {
+                logOnboardingCompleted(METHOD_GET_STARTED)
                 viewModelScope.launch { openFirstTransaction() }
             }
 
@@ -180,7 +175,7 @@ class OnboardingViewModel(
     }
 
     private companion object {
-        const val METHOD_EXPLORE = "explore"
-        const val METHOD_ADD_EXPENSE = "add_expense"
+        // Was "explore" or "add_expense" up to 1.4.29, when setup had two buttons.
+        const val METHOD_GET_STARTED = "get_started"
     }
 }

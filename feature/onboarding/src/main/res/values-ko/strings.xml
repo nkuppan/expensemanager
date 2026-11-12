@@ -16,6 +16,5 @@
     <string name="setup_currency">통화 설정</string>
     <string name="not_set_up_yet">아직 설정되지 않음</string>
 
-    <string name="onboarding_add_first_expense">첫 지출 추가하기</string>
-    <string name="onboarding_explore_first">먼저 앱 둘러보기</string>
+    <string name="onboarding_get_started">시작하기</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.onboarding
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,13 +20,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.Payments
-import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -111,8 +108,7 @@ private fun OnboardingContentView(
     Scaffold(
         bottomBar = {
             OnboardingBottomBar(
-                onAddFirstExpense = { onAction.invoke(OnboardingAction.AddFirstExpense) },
-                onExplore = { onAction.invoke(OnboardingAction.Next) },
+                onGetStarted = { onAction.invoke(OnboardingAction.GetStarted) },
                 shareRepository = shareRepository,
             )
         },
@@ -299,8 +295,7 @@ private fun SetupRowCard(
 
 @Composable
 private fun OnboardingBottomBar(
-    onAddFirstExpense: () -> Unit,
-    onExplore: () -> Unit,
+    onGetStarted: () -> Unit,
     shareRepository: ShareRepository?,
 ) {
     Surface(
@@ -314,7 +309,7 @@ private fun OnboardingBottomBar(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Button(
-                    onClick = onAddFirstExpense,
+                    onClick = onGetStarted,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(54.dp),
@@ -324,35 +319,10 @@ private fun OnboardingBottomBar(
                         contentColor = MaterialTheme.colorScheme.onPrimary,
                     ),
                 ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(id = R.string.onboarding_add_first_expense),
+                        text = stringResource(id = R.string.onboarding_get_started),
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.SemiBold,
-                    )
-                }
-                Spacer(modifier = Modifier.height(10.dp))
-                // Outlined (not a bare text button) so it reads as a real second choice.
-                OutlinedButton(
-                    onClick = onExplore,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurface,
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.onboarding_explore_first),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Medium,
                     )
                 }
                 Spacer(modifier = Modifier.height(4.dp))

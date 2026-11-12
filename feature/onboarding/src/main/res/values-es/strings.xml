@@ -16,6 +16,5 @@
     <string name="setup_currency">Configurar la moneda</string>
     <string name="not_set_up_yet">Aún no configurado</string>
 
-    <string name="onboarding_add_first_expense">Añade tu primer gasto</string>
-    <string name="onboarding_explore_first">Explorar la app primero</string>
+    <string name="onboarding_get_started">Empezar</string>
 </resources>
