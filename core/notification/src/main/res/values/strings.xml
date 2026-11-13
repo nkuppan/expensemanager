@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">It only takes a few seconds. Tap to add an expense.</string>
     <string name="reminder_action_add">Add expense</string>
     <string name="reminder_action_no_spend">Nothing spent today</string>
+    <string name="reminder_quick_logged">✓ Logged %1$s</string>
+    <string name="reminder_quick_logged_body">Added to today’s expenses.</string>
+    <string name="reminder_action_undo">Undo</string>
+    <string name="reminder_quick_log_failed">Couldn’t log that</string>
+    <string name="reminder_quick_log_failed_body">Tap to add it in the app.</string>
     <string name="weekly_summary_title">Your week in money</string>
     <string name="weekly_summary_less">You spent %1$s this week, %2$d%% less than last week. Nice work!</string>
     <string name="weekly_summary_more">You spent %1$s this week, %2$d%% more than last week.</string>

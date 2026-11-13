@@ -1,4 +1,4 @@
-• Ajustes más sencillos: cuatro grupos cortos, lo que configuras una vez en Preferencias y copia y restauración en un solo lugar
-• Gráficos rediseñados y más fluidos en Análisis y Categorías
-• El escáner de recibos se prepara solo cuando Google Play Services necesita descargarlo
-• Nueva pantalla de licencias de código abierto con búsqueda y correcciones de fallos
+• Registra tu gasto más frecuente desde el recordatorio diario con un toque, y deshazlo si te equivocas
+• Los recordatorios diarios llegan a tiempo con más fiabilidad, con ayuda si tu teléfono los bloquea
+• Al activar los recordatorios desde Inicio, ahora se sugiere una hora según cuándo sueles registrar
+• Filtros: el botón Aplicar sigue visible aunque tengas muchas categorías, y los tipos de transacción ya están traducidos

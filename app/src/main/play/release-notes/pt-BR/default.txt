@@ -1,4 +1,4 @@
-• Configurações mais simples: quatro grupos curtos, o que você define uma vez em Preferências e backup e restauração juntos
-• Gráficos redesenhados e mais suaves em Análise e Categorias
-• O leitor de recibos se prepara sozinho quando o Google Play Services precisa baixá-lo
-• Nova tela de licenças de código aberto com busca, e correções de falhas
+• Registre sua despesa mais frequente direto do lembrete diário com um toque, com Desfazer se errar
+• Os lembretes diários chegam na hora com mais confiabilidade, e a tela Lembrete mostra como resolver se o celular os bloquear
+• Ao ativar os lembretes na tela inicial, agora sugerimos um horário com base em quando você costuma registrar
+• Filtros: o botão Aplicar fica visível mesmo com muitas categorias, e os tipos de transação agora estão traduzidos

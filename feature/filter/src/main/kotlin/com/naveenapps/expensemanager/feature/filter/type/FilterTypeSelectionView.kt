@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -41,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.common.utils.toCapitalize
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
@@ -114,9 +113,13 @@ private fun FilterSelectionView(
             }
         }
 
+        // weight(fill = false): the list takes only the height it needs, but with many accounts
+        // or categories it stops at what's left and scrolls, so the Apply row below always stays
+        // on screen. (Measured first without it, the list used all the height and pushed Apply
+        // out of the sheet.)
         Column(
             modifier = Modifier
-                .wrapContentSize()
+                .weight(1f, fill = false)
                 .verticalScroll(rememberScrollState()),
         ) {
             // Transaction type
@@ -132,7 +135,7 @@ private fun FilterSelectionView(
                     val isSelected = state.selectedTransactionTypes.fastAny { it == type }
                     FilterChipView(
                         selected = isSelected,
-                        label = type.toCapitalize(),
+                        label = stringResource(type.labelRes()),
                         onSelection = { onAction.invoke(FilterTypeAction.SelectTransactionType(type)) },
                     )
                 }
@@ -226,6 +229,13 @@ private fun FilterSelectionView(
             }
         }
     }
+}
+
+/** Translated chip label; the enum name was shown before ("Income" in every language). */
+private fun TransactionType.labelRes(): Int = when (this) {
+    TransactionType.INCOME -> DesignSystemR.string.income
+    TransactionType.EXPENSE -> DesignSystemR.string.expense
+    TransactionType.TRANSFER -> R.string.filter_type_transfer
 }
 
 @Composable

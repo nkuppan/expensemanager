@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Alertes de paiements à venir</string>
     <string name="upcoming_alerts_description">Un rappel la veille au soir avant l’ajout d’une opération récurrente hebdomadaire, mensuelle ou annuelle.</string>
+    <string name="reminder_last_run">Dernière vérification du rappel : %1$s</string>
+    <string name="reminder_not_run_yet">Aucun rappel n\'a encore été exécuté</string>
+    <string name="reminder_blocked_title">Les notifications d\'Expense Manager sont désactivées</string>
+    <string name="reminder_blocked_body">Les rappels n\'apparaîtront pas tant que les notifications seront désactivées.</string>
+    <string name="reminder_turn_on">Activer</string>
+    <string name="reminder_battery_title">Votre téléphone peut bloquer les rappels pour économiser la batterie</string>
+    <string name="reminder_battery_body">Autorisez Expense Manager à fonctionner en arrière-plan pour recevoir les rappels à l\'heure.</string>
+    <string name="reminder_battery_brand">Sur les téléphones %1$s, activez aussi le démarrage automatique ou retirez les restrictions de batterie pour Expense Manager.</string>
+    <string name="reminder_battery_allow">Autoriser</string>
+    <string name="reminder_more_help">Étapes pour votre téléphone</string>
 </resources>

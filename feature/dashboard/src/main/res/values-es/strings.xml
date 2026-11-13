@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver más (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Registra tu gasto más frecuente desde el recordatorio diario con un toque, y deshazlo si te equivocas</item>
+        <item>Los recordatorios diarios llegan a tiempo con más fiabilidad, y la pantalla Recordatorio indica cómo solucionarlo si tu teléfono los bloquea</item>
+        <item>Al activar los recordatorios desde Inicio, ahora se sugiere una hora según cuándo sueles registrar</item>
+        <item>Filtros: el botón Aplicar sigue visible aunque tengas muchas categorías, y los tipos de transacción ya están traducidos</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Ajustes más sencillos: cuatro grupos cortos, lo que configuras una vez en Preferencias y copia y restauración en un solo lugar</item>
         <item>Gráficos rediseñados y más fluidos en Análisis y Categorías</item>
@@ -104,4 +110,7 @@
     <string name="reminder_banner_body">Un aviso cada tarde te ayuda a mantener tus gastos al día.</string>
     <string name="reminder_banner_turn_on">Activar</string>
     <string name="reminder_banner_not_now">Ahora no</string>
+    <string name="reminder_banner_title_with_time">Sueles registrar hacia las %1$s</string>
+    <string name="reminder_banner_body_with_time">Recibe un recordatorio diario a esa hora para que no se te escape nada.</string>
+    <string name="reminder_banner_turn_on_at">Recordarme a las %1$s</string>
 </resources>

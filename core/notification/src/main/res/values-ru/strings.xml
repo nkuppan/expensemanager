@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Это займёт пару секунд. Нажмите, чтобы добавить расход.</string>
     <string name="reminder_action_add">Добавить расход</string>
     <string name="reminder_action_no_spend">Сегодня без трат</string>
+    <string name="reminder_quick_logged">✓ Записано: %1$s</string>
+    <string name="reminder_quick_logged_body">Добавлено в сегодняшние расходы.</string>
+    <string name="reminder_action_undo">Отменить</string>
+    <string name="reminder_quick_log_failed">Не удалось записать</string>
+    <string name="reminder_quick_log_failed_body">Нажмите, чтобы добавить в приложении.</string>
     <string name="weekly_summary_title">Ваша неделя в цифрах</string>
     <string name="weekly_summary_less">На этой неделе вы потратили %1$s — на %2$d%% меньше, чем на прошлой. Отлично!</string>
     <string name="weekly_summary_more">На этой неделе вы потратили %1$s — на %2$d%% больше, чем на прошлой.</string>

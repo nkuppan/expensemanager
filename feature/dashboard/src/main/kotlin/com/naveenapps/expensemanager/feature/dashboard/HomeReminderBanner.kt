@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
+import android.text.format.DateFormat
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -46,6 +47,7 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import java.util.Calendar
 
 /**
  * "Daily reminders are off" on Home: a second, gentle chance for users who skipped or denied the
@@ -84,17 +86,24 @@ internal fun ReminderBannerItem(
     if (!state.showReminderBanner(canNotify)) return
 
     LaunchedEffect(Unit) { onAction(DashboardAction.ReminderBannerShown) }
+    val suggestedTime = state.suggestedReminderTime?.let { context.formatReminderTime(it.hour, it.minute) }
     HomeReminderBanner(
         modifier = modifier,
+        suggestedTime = suggestedTime,
         onTurnOn = {
+            val is24Hour = DateFormat.is24HourFormat(context)
             when {
                 activity.canAskForNotifications(state.notificationPermissionAsks) -> {
-                    onAction(DashboardAction.ReminderBannerTurnOn(DashboardViewModel.REMINDER_METHOD_DIALOG))
+                    onAction(
+                        DashboardAction.ReminderBannerTurnOn(DashboardViewModel.REMINDER_METHOD_DIALOG, is24Hour),
+                    )
                     permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
 
                 else -> {
-                    onAction(DashboardAction.ReminderBannerTurnOn(DashboardViewModel.REMINDER_METHOD_SETTINGS))
+                    onAction(
+                        DashboardAction.ReminderBannerTurnOn(DashboardViewModel.REMINDER_METHOD_SETTINGS, is24Hour),
+                    )
                     context.openAppNotificationSettings()
                 }
             }
@@ -108,6 +117,7 @@ private fun HomeReminderBanner(
     onTurnOn: () -> Unit,
     onNotNow: () -> Unit,
     modifier: Modifier = Modifier,
+    suggestedTime: String? = null,
 ) {
     AppCardView(
         modifier = modifier.fillMaxWidth(),
@@ -136,13 +146,21 @@ private fun HomeReminderBanner(
                         .padding(end = 8.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.reminder_banner_title),
+                        text = if (suggestedTime != null) {
+                            stringResource(R.string.reminder_banner_title_with_time, suggestedTime)
+                        } else {
+                            stringResource(R.string.reminder_banner_title)
+                        },
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
-                        text = stringResource(R.string.reminder_banner_body),
+                        text = if (suggestedTime != null) {
+                            stringResource(R.string.reminder_banner_body_with_time)
+                        } else {
+                            stringResource(R.string.reminder_banner_body)
+                        },
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -159,11 +177,27 @@ private fun HomeReminderBanner(
                     Text(text = stringResource(R.string.reminder_banner_not_now))
                 }
                 FilledTonalButton(onClick = onTurnOn) {
-                    Text(text = stringResource(R.string.reminder_banner_turn_on), fontWeight = FontWeight.SemiBold)
+                    Text(
+                        text = if (suggestedTime != null) {
+                            stringResource(R.string.reminder_banner_turn_on_at, suggestedTime)
+                        } else {
+                            stringResource(R.string.reminder_banner_turn_on)
+                        },
+                        fontWeight = FontWeight.SemiBold,
+                    )
                 }
             }
         }
     }
+}
+
+/** "9:00 PM" or "21:00", following the phone's 12/24-hour setting. */
+private fun Context.formatReminderTime(hour: Int, minute: Int): String {
+    val calendar = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, hour)
+        set(Calendar.MINUTE, minute)
+    }
+    return DateFormat.getTimeFormat(this).format(calendar.time)
 }
 
 /** True when the app may post notifications (always below Android 13). */
@@ -194,5 +228,13 @@ private fun Context.openAppNotificationSettings() {
 private fun HomeReminderBannerPreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {
         HomeReminderBanner(onTurnOn = {}, onNotNow = {})
+    }
+}
+
+@AppPreviewsLightAndDarkMode
+@Composable
+private fun HomeReminderBannerWithTimePreview() {
+    ExpenseManagerPreviewTheme(padding = 16.dp) {
+        HomeReminderBanner(onTurnOn = {}, onNotNow = {}, suggestedTime = "9:00 PM")
     }
 }

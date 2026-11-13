@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">बस कुछ सेकंड लगते हैं। खर्च जोड़ने के लिए टैप करें।</string>
     <string name="reminder_action_add">खर्च जोड़ें</string>
     <string name="reminder_action_no_spend">आज कुछ खर्च नहीं किया</string>
+    <string name="reminder_quick_logged">✓ %1$s जोड़ा गया</string>
+    <string name="reminder_quick_logged_body">आज के खर्चों में जोड़ दिया गया।</string>
+    <string name="reminder_action_undo">पूर्ववत करें</string>
+    <string name="reminder_quick_log_failed">जोड़ा नहीं जा सका</string>
+    <string name="reminder_quick_log_failed_body">ऐप में जोड़ने के लिए टैप करें।</string>
     <string name="weekly_summary_title">आपका हफ़्ता, पैसों में</string>
     <string name="weekly_summary_less">इस हफ़्ते आपने %1$s खर्च किए, पिछले हफ़्ते से %2$d%% कम। बहुत बढ़िया!</string>
     <string name="weekly_summary_more">इस हफ़्ते आपने %1$s खर्च किए, पिछले हफ़्ते से %2$d%% ज़्यादा।</string>

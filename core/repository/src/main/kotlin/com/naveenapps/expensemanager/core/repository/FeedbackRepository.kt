@@ -76,6 +76,12 @@ interface FeedbackRepository {
 
     suspend fun setFirstSaveCelebrationPending(pending: Boolean)
 
+    /** Records when (local minutes after midnight) a transaction was just saved. */
+    suspend fun recordSaveTime(minuteOfDay: Int)
+
+    /** Times of day (minutes after midnight) of the most recent saves, oldest first. */
+    fun getRecentSaveMinutes(): Flow<List<Int>>
+
     /** Home's "Get started" checklist was closed by the user. */
     fun isGettingStartedDismissed(): Flow<Boolean>
 

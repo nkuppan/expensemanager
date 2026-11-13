@@ -27,4 +27,14 @@ interface ReminderTimeRepository {
     fun getLastUpcomingAlertDay(): Flow<Long?>
 
     suspend fun setLastUpcomingAlertDay(epochDay: Long)
+
+    /** When the next daily reminder is due (epoch millis); null before one was ever scheduled. */
+    fun getReminderScheduledFor(): Flow<Long?>
+
+    suspend fun setReminderScheduledFor(millis: Long)
+
+    /** When the daily reminder's background job last ran (epoch millis), shown or skipped. */
+    fun getReminderLastRunAt(): Flow<Long?>
+
+    suspend fun setReminderLastRunAt(millis: Long)
 }

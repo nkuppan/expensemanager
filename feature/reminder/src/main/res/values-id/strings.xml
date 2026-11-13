@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Pengingat pembayaran mendatang</string>
     <string name="upcoming_alerts_description">Pengingat malam sebelum entri berulang mingguan, bulanan, atau tahunan ditambahkan.</string>
+    <string name="reminder_last_run">Pemeriksaan pengingat terakhir: %1$s</string>
+    <string name="reminder_not_run_yet">Belum ada pengingat yang berjalan</string>
+    <string name="reminder_blocked_title">Notifikasi Expense Manager nonaktif</string>
+    <string name="reminder_blocked_body">Pengingat tidak akan muncul sampai notifikasi diaktifkan.</string>
+    <string name="reminder_turn_on">Aktifkan</string>
+    <string name="reminder_battery_title">Ponsel Anda mungkin menghentikan pengingat untuk menghemat baterai</string>
+    <string name="reminder_battery_body">Izinkan Expense Manager berjalan di latar belakang agar pengingat tiba tepat waktu.</string>
+    <string name="reminder_battery_brand">Di ponsel %1$s, aktifkan juga Mulai otomatis atau hapus batasan baterai untuk Expense Manager.</string>
+    <string name="reminder_battery_allow">Izinkan</string>
+    <string name="reminder_more_help">Langkah untuk ponsel Anda</string>
 </resources>

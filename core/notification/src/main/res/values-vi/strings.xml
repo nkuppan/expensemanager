@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Chỉ mất vài giây. Chạm để thêm khoản chi.</string>
     <string name="reminder_action_add">Thêm khoản chi</string>
     <string name="reminder_action_no_spend">Hôm nay không chi gì</string>
+    <string name="reminder_quick_logged">✓ Đã ghi %1$s</string>
+    <string name="reminder_quick_logged_body">Đã thêm vào chi tiêu hôm nay.</string>
+    <string name="reminder_action_undo">Hoàn tác</string>
+    <string name="reminder_quick_log_failed">Không ghi được</string>
+    <string name="reminder_quick_log_failed_body">Chạm để thêm trong ứng dụng.</string>
     <string name="weekly_summary_title">Tuần của bạn qua con số</string>
     <string name="weekly_summary_less">Tuần này bạn đã chi %1$s, ít hơn tuần trước %2$d%%. Làm tốt lắm!</string>
     <string name="weekly_summary_more">Tuần này bạn đã chi %1$s, nhiều hơn tuần trước %2$d%%.</string>

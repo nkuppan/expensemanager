@@ -1,4 +1,4 @@
-• Paramètres simplifiés : quatre groupes courts, les réglages ponctuels dans Préférences, sauvegarde et restauration au même endroit
-• Graphiques repensés et plus fluides dans Analyse et Catégories
-• Le scanner de reçus se prépare seul quand les services Google Play doivent le télécharger
-• Nouvel écran des licences open source avec recherche, et corrections de plantages
+• Enregistrez votre dépense la plus fréquente d'un geste depuis le rappel quotidien, avec Annuler en cas d'erreur
+• Rappels quotidiens plus fiables, avec de l'aide si votre téléphone les bloque
+• Activer les rappels depuis l'accueil propose maintenant une heure selon le moment où vous notez d'habitude
+• Filtres : le bouton Appliquer reste visible même avec beaucoup de catégories, et les types d'opération sont traduits

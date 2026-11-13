@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Avvisi pagamenti in arrivo</string>
     <string name="upcoming_alerts_description">Un avviso la sera prima che venga aggiunta una voce ricorrente settimanale, mensile o annuale.</string>
+    <string name="reminder_last_run">Ultimo controllo promemoria: %1$s</string>
+    <string name="reminder_not_run_yet">Nessun promemoria eseguito finora</string>
+    <string name="reminder_blocked_title">Le notifiche di Expense Manager sono disattivate</string>
+    <string name="reminder_blocked_body">I promemoria non appariranno finché non attivi le notifiche.</string>
+    <string name="reminder_turn_on">Attiva</string>
+    <string name="reminder_battery_title">Il telefono potrebbe bloccare i promemoria per risparmiare batteria</string>
+    <string name="reminder_battery_body">Consenti a Expense Manager di funzionare in background per ricevere i promemoria in orario.</string>
+    <string name="reminder_battery_brand">Sui telefoni %1$s, attiva anche l\'avvio automatico o rimuovi le restrizioni della batteria per Expense Manager.</string>
+    <string name="reminder_battery_allow">Consenti</string>
+    <string name="reminder_more_help">Passaggi per il tuo telefono</string>
 </resources>

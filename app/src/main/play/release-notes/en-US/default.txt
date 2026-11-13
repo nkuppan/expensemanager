@@ -1,4 +1,4 @@
-• A simpler Settings screen: four short groups, with everything you set once in Preferences and backup and restore in one place
-• Smoother, redesigned charts in Analysis and Categories
-• The receipt scanner now gets ready by itself when Google Play services needs to download it
-• A new searchable open source licences screen, and crash fixes
+• Log your most frequent expense straight from the daily reminder with one tap, with Undo if you tap by mistake
+• Daily reminders arrive on time more reliably, and the Reminder screen shows how to fix it if your phone blocks them
+• Turning on reminders from Home now suggests a time based on when you usually log
+• Filters: the Apply button stays visible even with many categories, and transaction types are now translated

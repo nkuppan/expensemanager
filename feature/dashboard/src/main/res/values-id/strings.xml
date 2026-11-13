@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Lihat lainnya (%1$d)</string>
     <string name="notification_see_less">Lihat lebih sedikit</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Catat pengeluaran yang paling sering langsung dari pengingat harian dengan satu ketukan, bisa diurungkan</item>
+        <item>Pengingat harian kini lebih andal tiba tepat waktu, dan layar Pengingat menunjukkan cara memperbaikinya jika ponsel memblokirnya</item>
+        <item>Mengaktifkan pengingat dari Beranda kini menyarankan waktu sesuai kebiasaan Anda mencatat</item>
+        <item>Filter: tombol Terapkan tetap terlihat meski kategorinya banyak, dan jenis transaksi kini diterjemahkan</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Setelan lebih sederhana: empat grup singkat, pengaturan sekali di Preferensi, serta cadangkan dan pulihkan di satu tempat</item>
         <item>Grafik baru yang lebih halus di Analisis dan Kategori</item>
@@ -100,4 +106,7 @@
     <string name="reminder_banner_body">Pengingat ringan setiap malam membantu pengeluaranmu tetap tercatat.</string>
     <string name="reminder_banner_turn_on">Aktifkan</string>
     <string name="reminder_banner_not_now">Nanti saja</string>
+    <string name="reminder_banner_title_with_time">Anda biasanya mencatat sekitar %1$s</string>
+    <string name="reminder_banner_body_with_time">Dapatkan pengingat harian saat itu agar tidak ada yang terlewat.</string>
+    <string name="reminder_banner_turn_on_at">Ingatkan pukul %1$s</string>
 </resources>

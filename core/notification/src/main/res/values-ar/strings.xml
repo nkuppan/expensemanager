@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">يستغرق الأمر ثوانٍ فقط. اضغط لإضافة مصروف.</string>
     <string name="reminder_action_add">إضافة مصروف</string>
     <string name="reminder_action_no_spend">لم أنفق شيئًا اليوم</string>
+    <string name="reminder_quick_logged">✓ تم تسجيل %1$s</string>
+    <string name="reminder_quick_logged_body">أُضيف إلى مصاريف اليوم.</string>
+    <string name="reminder_action_undo">تراجع</string>
+    <string name="reminder_quick_log_failed">تعذّر التسجيل</string>
+    <string name="reminder_quick_log_failed_body">اضغط لإضافته في التطبيق.</string>
     <string name="weekly_summary_title">أسبوعك المالي</string>
     <string name="weekly_summary_less">أنفقت %1$s هذا الأسبوع، أقل بنسبة %2$d%% من الأسبوع الماضي. أحسنت!</string>
     <string name="weekly_summary_more">أنفقت %1$s هذا الأسبوع، أكثر بنسبة %2$d%% من الأسبوع الماضي.</string>

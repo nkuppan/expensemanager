@@ -12,6 +12,7 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.notification.NotificationScheduler
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
@@ -64,6 +65,17 @@ class ReminderViewModel(
                 )
             }
         }.launchIn(viewModelScope)
+    }
+
+    private suspend fun refreshDelivery() {
+        val health = notificationScheduler.reminderHealth()
+        _state.update {
+            it.copy(
+                lastReminderRunAt = health.lastRunAt,
+                deliveryBlock = health.block,
+                isBatteryOptimised = health.isBatteryOptimised,
+            )
+        }
     }
 
     private fun saveReminderStatus(status: Boolean) {
@@ -154,6 +166,13 @@ class ReminderViewModel(
                         _state.update { it.copy(showTimePickerDialog = true) }
                     }
                 }
+
+                ReminderAction.RefreshDelivery -> refreshDelivery()
+
+                is ReminderAction.DeliveryFixOpened -> analyticsRepository.logEvent(
+                    AnalyticsEvents.REMINDER_FIX_OPENED,
+                    mapOf(AnalyticsParams.REASON to action.reason),
+                )
 
                 ReminderAction.PermissionGranted -> {
                     _state.update {

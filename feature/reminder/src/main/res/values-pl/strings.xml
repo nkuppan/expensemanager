@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Powiadomienia o nadchodzących płatnościach</string>
     <string name="upcoming_alerts_description">Powiadomienie wieczorem dzień przed dodaniem tygodniowego, miesięcznego lub rocznego wpisu cyklicznego.</string>
+    <string name="reminder_last_run">Ostatnie sprawdzenie przypomnienia: %1$s</string>
+    <string name="reminder_not_run_yet">Żadne przypomnienie jeszcze nie zadziałało</string>
+    <string name="reminder_blocked_title">Powiadomienia Expense Manager są wyłączone</string>
+    <string name="reminder_blocked_body">Przypomnienia nie pojawią się, dopóki nie włączysz powiadomień.</string>
+    <string name="reminder_turn_on">Włącz</string>
+    <string name="reminder_battery_title">Telefon może blokować przypomnienia, by oszczędzać baterię</string>
+    <string name="reminder_battery_body">Pozwól Expense Manager działać w tle, aby przypomnienia przychodziły na czas.</string>
+    <string name="reminder_battery_brand">Na telefonach %1$s włącz też autostart lub usuń ograniczenia baterii dla Expense Manager.</string>
+    <string name="reminder_battery_allow">Zezwól</string>
+    <string name="reminder_more_help">Kroki dla Twojego telefonu</string>
 </resources>

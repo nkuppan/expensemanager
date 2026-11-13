@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Yaklaşan ödeme uyarıları</string>
     <string name="upcoming_alerts_description">Haftalık, aylık veya yıllık yinelenen bir kayıt eklenmeden önceki akşam bir hatırlatma.</string>
+    <string name="reminder_last_run">Son hatırlatıcı kontrolü: %1$s</string>
+    <string name="reminder_not_run_yet">Henüz hatırlatıcı çalışmadı</string>
+    <string name="reminder_blocked_title">Expense Manager bildirimleri kapalı</string>
+    <string name="reminder_blocked_body">Bildirimler açılana kadar hatırlatıcılar görünmez.</string>
+    <string name="reminder_turn_on">Aç</string>
+    <string name="reminder_battery_title">Telefonunuz pil tasarrufu için hatırlatıcıları durdurabilir</string>
+    <string name="reminder_battery_body">Hatırlatıcıların zamanında gelmesi için Expense Manager\'ın arka planda çalışmasına izin verin.</string>
+    <string name="reminder_battery_brand">%1$s telefonlarda Expense Manager için Otomatik başlatmayı da açın veya pil kısıtlamalarını kaldırın.</string>
+    <string name="reminder_battery_allow">İzin ver</string>
+    <string name="reminder_more_help">Telefonunuz için adımlar</string>
 </resources>

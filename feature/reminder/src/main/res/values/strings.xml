@@ -14,4 +14,15 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Upcoming payment alerts</string>
     <string name="upcoming_alerts_description">A heads-up the evening before a weekly, monthly or yearly recurring entry is added.</string>
+    <!-- Reminder delivery check (ReminderDelivery.kt); %1$s = "Yesterday, 9:02 PM" or a phone brand. -->
+    <string name="reminder_last_run">Last reminder check: %1$s</string>
+    <string name="reminder_not_run_yet">No reminder has run yet</string>
+    <string name="reminder_blocked_title">Notifications are off for Expense Manager</string>
+    <string name="reminder_blocked_body">Reminders can\'t appear until notifications are turned on.</string>
+    <string name="reminder_turn_on">Turn on</string>
+    <string name="reminder_battery_title">Your phone may stop reminders to save battery</string>
+    <string name="reminder_battery_body">Let Expense Manager run in the background so reminders arrive on time.</string>
+    <string name="reminder_battery_brand">On %1$s phones, also turn on Autostart or remove battery restrictions for Expense Manager.</string>
+    <string name="reminder_battery_allow">Allow</string>
+    <string name="reminder_more_help">Steps for your phone</string>
 </resources>

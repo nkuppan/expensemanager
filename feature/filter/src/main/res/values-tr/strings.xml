@@ -18,4 +18,5 @@
         <item quantity="one">%d filtre seçildi</item>
         <item quantity="other">%d filtre seçildi</item>
     </plurals>
+    <string name="filter_type_transfer">Transfer</string>
 </resources>

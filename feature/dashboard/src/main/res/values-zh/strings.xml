@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">查看更多（%1$d）</string>
     <string name="notification_see_less">收起</string>
+    <string-array name="whats_new_1_4_30">
+        <item>在每日提醒中一键记录你最常用的支出，点错了还能撤销</item>
+        <item>每日提醒更可靠地准时送达；如果手机拦截了提醒，提醒页面会告诉你如何解决</item>
+        <item>在首页开启提醒时，会根据你平时记账的时间推荐提醒时间</item>
+        <item>筛选：即使类别很多，“应用”按钮也始终可见，交易类型现已翻译</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>更简洁的设置：四个简短分组，一次性设置放在偏好设置中，备份与恢复合并在一处</item>
         <item>分析和类别中的图表重新设计，更加流畅</item>
@@ -100,4 +106,7 @@
     <string name="reminder_banner_body">每晚一个小提醒，帮你及时记录支出。</string>
     <string name="reminder_banner_turn_on">开启</string>
     <string name="reminder_banner_not_now">以后再说</string>
+    <string name="reminder_banner_title_with_time">你通常在 %1$s 左右记账</string>
+    <string name="reminder_banner_body_with_time">每天在那个时间提醒你，不再漏记。</string>
+    <string name="reminder_banner_turn_on_at">在 %1$s 提醒我</string>
 </resources>

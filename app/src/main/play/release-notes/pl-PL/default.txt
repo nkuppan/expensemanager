@@ -1,4 +1,4 @@
-• Prostsze ustawienia: cztery krótkie grupy, jednorazowe opcje w Preferencjach, kopia i przywracanie w jednym miejscu
-• Płynniejsze, nowe wykresy w Analizie i Kategoriach
-• Skaner paragonów sam się przygotowuje, gdy Usługi Google Play muszą go pobrać
-• Nowy ekran licencji open source z wyszukiwaniem i poprawki awarii
+• Zapisz najczęstszy wydatek jednym dotknięciem prosto z codziennego przypomnienia, z opcją Cofnij
+• Codzienne przypomnienia przychodzą punktualniej, a ekran Przypomnienie pokazuje, jak to naprawić, gdy telefon je blokuje
+• Włączając przypomnienia na ekranie głównym, otrzymasz propozycję godziny, o której zwykle zapisujesz
+• Filtry: przycisk Zastosuj jest widoczny nawet przy wielu kategoriach, a typy transakcji są przetłumaczone

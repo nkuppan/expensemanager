@@ -18,4 +18,5 @@
         <item quantity="one">%d फ़िल्टर चुना गया</item>
         <item quantity="other">%d फ़िल्टर चुने गए</item>
     </plurals>
+    <string name="filter_type_transfer">ट्रांसफर</string>
 </resources>

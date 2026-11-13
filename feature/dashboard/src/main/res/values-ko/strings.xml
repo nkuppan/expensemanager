@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">더 보기 (%1$d)</string>
     <string name="notification_see_less">간단히 보기</string>
+    <string-array name="whats_new_1_4_30">
+        <item>매일 알림에서 가장 자주 쓰는 지출을 한 번에 기록하고, 실수하면 실행취소하세요</item>
+        <item>일일 알림이 더 안정적으로 제시간에 도착하며, 휴대폰이 차단하면 알림 화면에서 해결 방법을 알려 드립니다</item>
+        <item>홈에서 알림을 켜면 평소 기록하는 시간을 기준으로 시간을 추천해 드립니다</item>
+        <item>필터: 카테고리가 많아도 적용 버튼이 계속 보이며, 거래 유형도 번역되었습니다</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>더 간단해진 설정: 네 개의 짧은 그룹, 한 번 정하는 항목은 환경설정에, 백업과 복원은 한곳에</item>
         <item>분석과 카테고리의 차트를 새롭게, 더 부드럽게</item>
@@ -100,4 +106,7 @@
     <string name="reminder_banner_body">매일 저녁 가벼운 알림으로 지출 기록을 최신으로 유지하세요.</string>
     <string name="reminder_banner_turn_on">켜기</string>
     <string name="reminder_banner_not_now">나중에</string>
+    <string name="reminder_banner_title_with_time">보통 %1$s쯤 기록하시네요</string>
+    <string name="reminder_banner_body_with_time">그 시간에 매일 알림을 받아 놓치는 일이 없게 하세요.</string>
+    <string name="reminder_banner_turn_on_at">%1$s에 알림 받기</string>
 </resources>

@@ -85,6 +85,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">عرض المزيد (%1$d)</string>
     <string name="notification_see_less">عرض أقل</string>
+    <string-array name="whats_new_1_4_30">
+        <item>سجّل أكثر مصروف تكرّره مباشرة من التذكير اليومي بنقرة واحدة، مع إمكانية التراجع</item>
+        <item>تصل التذكيرات اليومية في وقتها بشكل أكثر موثوقية، وتوضح شاشة التذكير كيفية الإصلاح إذا منعها هاتفك</item>
+        <item>تفعيل التذكيرات من الشاشة الرئيسية يقترح الآن وقتًا بناءً على الوقت الذي تسجّل فيه عادةً</item>
+        <item>عوامل التصفية: يبقى زر التطبيق ظاهرًا حتى مع فئات كثيرة، وأصبحت أنواع المعاملات مترجمة</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>شاشة إعدادات أبسط: أربع مجموعات قصيرة، مع ما تضبطه مرة واحدة في التفضيلات والنسخ الاحتياطي والاستعادة في مكان واحد</item>
         <item>مخططات أكثر سلاسة بتصميم جديد في التحليل والفئات</item>
@@ -110,4 +116,7 @@
     <string name="reminder_banner_body">تذكير لطيف كل مساء يساعدك على إبقاء مصاريفك محدثة.</string>
     <string name="reminder_banner_turn_on">تشغيل</string>
     <string name="reminder_banner_not_now">ليس الآن</string>
+    <string name="reminder_banner_title_with_time">عادةً تسجّل حوالي %1$s</string>
+    <string name="reminder_banner_body_with_time">احصل على تذكير يومي في هذا الوقت حتى لا يفوتك شيء.</string>
+    <string name="reminder_banner_turn_on_at">ذكّرني في %1$s</string>
 </resources>

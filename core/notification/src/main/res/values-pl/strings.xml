@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">To zajmie kilka sekund. Dotknij, aby dodać wydatek.</string>
     <string name="reminder_action_add">Dodaj wydatek</string>
     <string name="reminder_action_no_spend">Dziś nic nie wydałem</string>
+    <string name="reminder_quick_logged">✓ Zapisano: %1$s</string>
+    <string name="reminder_quick_logged_body">Dodano do dzisiejszych wydatków.</string>
+    <string name="reminder_action_undo">Cofnij</string>
+    <string name="reminder_quick_log_failed">Nie udało się zapisać</string>
+    <string name="reminder_quick_log_failed_body">Dotknij, aby dodać w aplikacji.</string>
     <string name="weekly_summary_title">Twój tydzień w liczbach</string>
     <string name="weekly_summary_less">W tym tygodniu wydałeś %1$s, o %2$d%% mniej niż w zeszłym. Świetnie!</string>
     <string name="weekly_summary_more">W tym tygodniu wydałeś %1$s, o %2$d%% więcej niż w zeszłym.</string>

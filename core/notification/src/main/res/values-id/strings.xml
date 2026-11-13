@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Hanya butuh beberapa detik. Ketuk untuk menambah pengeluaran.</string>
     <string name="reminder_action_add">Tambah pengeluaran</string>
     <string name="reminder_action_no_spend">Tidak ada pengeluaran hari ini</string>
+    <string name="reminder_quick_logged">✓ %1$s dicatat</string>
+    <string name="reminder_quick_logged_body">Ditambahkan ke pengeluaran hari ini.</string>
+    <string name="reminder_action_undo">Urungkan</string>
+    <string name="reminder_quick_log_failed">Tidak dapat mencatat</string>
+    <string name="reminder_quick_log_failed_body">Ketuk untuk menambahkannya di aplikasi.</string>
     <string name="weekly_summary_title">Minggu Anda dalam angka</string>
     <string name="weekly_summary_less">Anda menghabiskan %1$s minggu ini, %2$d%% lebih sedikit dari minggu lalu. Bagus!</string>
     <string name="weekly_summary_more">Anda menghabiskan %1$s minggu ini, %2$d%% lebih banyak dari minggu lalu.</string>

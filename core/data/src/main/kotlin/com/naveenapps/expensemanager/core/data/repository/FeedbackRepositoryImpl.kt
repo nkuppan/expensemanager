@@ -99,6 +99,12 @@ class FeedbackRepositoryImpl(
         feedbackDataStore.setFirstSaveCelebrationPending(pending)
     }
 
+    override suspend fun recordSaveTime(minuteOfDay: Int) {
+        feedbackDataStore.recordSaveTime(minuteOfDay)
+    }
+
+    override fun getRecentSaveMinutes(): Flow<List<Int>> = feedbackDataStore.getRecentSaveMinutes()
+
     override fun isGettingStartedDismissed(): Flow<Boolean> = feedbackDataStore.isGettingStartedDismissed()
 
     override suspend fun setGettingStartedDismissed() {

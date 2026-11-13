@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mostra altro (%1$d)</string>
     <string name="notification_see_less">Mostra meno</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Registra la spesa più frequente direttamente dal promemoria giornaliero con un tocco, con Annulla in caso di errore</item>
+        <item>I promemoria giornalieri arrivano in orario in modo più affidabile, e la schermata Promemoria spiega come risolvere se il telefono li blocca</item>
+        <item>Attivando i promemoria dalla Home ora viene suggerito un orario in base a quando registri di solito</item>
+        <item>Filtri: il pulsante Applica resta visibile anche con molte categorie e i tipi di transazione ora sono tradotti</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Impostazioni più semplici: quattro gruppi brevi, le opzioni da impostare una volta in Preferenze e backup e ripristino insieme</item>
         <item>Grafici ridisegnati e più fluidi in Analisi e Categorie</item>
@@ -104,4 +110,7 @@
     <string name="reminder_banner_body">Un piccolo promemoria ogni sera ti aiuta a tenere aggiornate le spese.</string>
     <string name="reminder_banner_turn_on">Attiva</string>
     <string name="reminder_banner_not_now">Non ora</string>
+    <string name="reminder_banner_title_with_time">Di solito registri verso le %1$s</string>
+    <string name="reminder_banner_body_with_time">Ricevi un promemoria quotidiano a quell’ora, così non ti sfugge nulla.</string>
+    <string name="reminder_banner_turn_on_at">Ricordamelo alle %1$s</string>
 </resources>

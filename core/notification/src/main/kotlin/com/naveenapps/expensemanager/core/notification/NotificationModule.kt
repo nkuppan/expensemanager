@@ -75,6 +75,23 @@ val NotificationModule = module {
             notificationScheduler = get(),
             feedbackRepository = get(),
             analyticsRepository = get(),
+            reminderQuickLog = get(),
+        )
+    }
+    single {
+        ReminderQuickLog(
+            context = androidContext(),
+            getFrequentTransactionsUseCase = get(),
+            findCategoryByIdUseCase = get(),
+            findAccountByIdUseCase = get(),
+            getCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            addTransactionUseCase = get(),
+            deleteTransactionUseCase = get(),
+            transactionRepository = get(),
+            feedbackRepository = get(),
+            budgetAlertTrigger = get(),
+            analyticsRepository = get(),
         )
     }
 }

@@ -55,6 +55,7 @@ import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.ReceiptTextReader
+import java.time.LocalTime
 import java.util.Calendar
 import java.util.Date
 import java.util.UUID
@@ -645,6 +646,9 @@ class TransactionCreateViewModel(
             // Very first transaction of this install: Home offers the daily reminder once.
             feedbackRepository.setFirstSaveCelebrationPending(true)
         }
+        // When the user logs (the save time, not the transaction's date): Home's reminders
+        // banner suggests a reminder time from it.
+        feedbackRepository.recordSaveTime(LocalTime.now().let { it.hour * 60 + it.minute })
         analyticsRepository.logEvent(
             AnalyticsEvents.TRANSACTION_CREATED,
             mapOf(

@@ -17,4 +17,5 @@
     <plurals name="filters_selected">
         <item quantity="other">필터 %d개 선택됨</item>
     </plurals>
+    <string name="filter_type_transfer">이체</string>
 </resources>

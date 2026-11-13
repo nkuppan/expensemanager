@@ -51,4 +51,18 @@ class ReminderTimeRepositoryImpl(
         dataStore.setLastUpcomingAlertDay(epochDay)
         Unit
     }
+
+    override fun getReminderScheduledFor(): Flow<Long?> = dataStore.getReminderScheduledFor()
+
+    override suspend fun setReminderScheduledFor(millis: Long) = withContext(dispatchers.io) {
+        dataStore.setReminderScheduledFor(millis)
+        Unit
+    }
+
+    override fun getReminderLastRunAt(): Flow<Long?> = dataStore.getReminderLastRunAt()
+
+    override suspend fun setReminderLastRunAt(millis: Long) = withContext(dispatchers.io) {
+        dataStore.setReminderLastRunAt(millis)
+        Unit
+    }
 }

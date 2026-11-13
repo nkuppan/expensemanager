@@ -43,6 +43,24 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
         preferences[firstSaveCelebrationPendingKey] ?: false
     }
 
+    // Local time of day (minutes after midnight) of the most recent saves, oldest first, comma
+    // separated and capped at MAX_SAVE_TIMES: what the reminder time is suggested from.
+    private val recentSaveMinutesKey = stringPreferencesKey("recent_save_minutes")
+
+    suspend fun recordSaveTime(minuteOfDay: Int) = dataStore.edit { preferences ->
+        val times = parseSaveMinutes(preferences[recentSaveMinutesKey]) + minuteOfDay
+        preferences[recentSaveMinutesKey] = times.takeLast(MAX_SAVE_TIMES).joinToString(",")
+    }
+
+    fun getRecentSaveMinutes(): Flow<List<Int>> = dataStore.data.map { preferences ->
+        parseSaveMinutes(preferences[recentSaveMinutesKey])
+    }
+
+    private fun parseSaveMinutes(value: String?): List<Int> = value.orEmpty()
+        .split(',')
+        .mapNotNull { it.trim().toIntOrNull() }
+        .filter { it in 0 until MINUTES_PER_DAY }
+
     // Epoch day (LocalDate.toEpochDay) of the last day the user logged something: a new
     // transaction or a "nothing spent today" confirmation. The reminder skips days already done.
     private val lastActiveDayKey = longPreferencesKey("last_active_day")
@@ -231,6 +249,9 @@ class FeedbackDataStore(private val dataStore: DataStore<Preferences>) {
     }
 
     private companion object {
+        private const val MAX_SAVE_TIMES = 20
+        private const val MINUTES_PER_DAY = 24 * 60
+
         // Enough history for any realistic streak display; keeps the stored set small.
         const val MAX_NO_SPEND_DAYS = 120
     }

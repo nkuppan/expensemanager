@@ -12,6 +12,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetUpcomingRe
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.SuggestReminderTime
 import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.UpdateReminderStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -69,7 +70,7 @@ class DashboardViewModel(
     private val analyticsRepository: AnalyticsRepository,
     private val autoBackupRepository: AutoBackupRepository,
     getUpcomingRecurringUseCase: GetUpcomingRecurringUseCase,
-    reminderTimeRepository: ReminderTimeRepository,
+    private val reminderTimeRepository: ReminderTimeRepository,
     private val updateReminderStatusUseCase: UpdateReminderStatusUseCase,
     private val notificationScheduler: NotificationScheduler,
 ) : ViewModel() {
@@ -127,7 +128,7 @@ class DashboardViewModel(
         }
 
         // "Daily reminders are off" banner: from the install's second day, so it never meets the
-        // first-save reminder ask; "Not now" snoozes it, and after a few it stops asking.
+        // first-save reminder ask; "Not now" snoozes it, and after a couple it stops asking.
         combine(
             reminderTimeRepository.isReminderOn(),
             feedbackRepository.getReminderBannerHiddenUntil(),
@@ -149,6 +150,14 @@ class DashboardViewModel(
                 )
             }
         }.launchIn(viewModelScope)
+
+        // When the user usually logs, for the banner's suggested reminder time.
+        feedbackRepository.getRecentSaveMinutes()
+            .onEach { minutes ->
+                val suggested = SuggestReminderTime.from(minutes, is24Hour = false)
+                _state.update { it.copy(suggestedReminderTime = suggested) }
+            }
+            .launchIn(viewModelScope)
 
         settingsRepository.getDashboardOrder()
             .onEach { order -> _state.update { it.copy(sectionOrder = order) } }
@@ -341,6 +350,12 @@ class DashboardViewModel(
     private var reminderBannerLogged = false
 
     // The user asked for it (banner's "Turn on"), so switching the reminder on is what they want.
+
+    /** Whether the banner offered a time based on when the user logs. */
+    private fun suggestedTimeParam(): Map<String, String> = mapOf(
+        AnalyticsParams.SUGGESTED_TIME to (_state.value.suggestedReminderTime != null).toString(),
+    )
+
     private suspend fun turnOnReminder() {
         updateReminderStatusUseCase.invoke(true)
         notificationScheduler.checkAndRestartReminder()
@@ -380,14 +395,18 @@ class DashboardViewModel(
 
             DashboardAction.ReminderBannerShown -> if (!reminderBannerLogged) {
                 reminderBannerLogged = true
-                analyticsRepository.logEvent(AnalyticsEvents.REMINDER_BANNER_SHOWN, emptyMap())
+                analyticsRepository.logEvent(AnalyticsEvents.REMINDER_BANNER_SHOWN, suggestedTimeParam())
             }
 
             is DashboardAction.ReminderBannerTurnOn -> viewModelScope.launch {
                 analyticsRepository.logEvent(
                     AnalyticsEvents.REMINDER_BANNER_TURN_ON,
-                    mapOf(AnalyticsParams.METHOD to action.method),
+                    mapOf(AnalyticsParams.METHOD to action.method) + suggestedTimeParam(),
                 )
+                // The button said "Remind me at 9:00 PM", so the reminder moves there.
+                _state.value.suggestedReminderTime?.let {
+                    reminderTimeRepository.saveReminderTime(it.copy(is24Hour = action.is24Hour))
+                }
                 if (action.method == REMINDER_METHOD_DIALOG) feedbackRepository.recordNotificationPermissionAsk()
             }
 
@@ -407,7 +426,7 @@ class DashboardViewModel(
             }
 
             DashboardAction.DismissReminderBanner -> viewModelScope.launch {
-                analyticsRepository.logEvent(AnalyticsEvents.REMINDER_BANNER_DISMISSED, emptyMap())
+                analyticsRepository.logEvent(AnalyticsEvents.REMINDER_BANNER_DISMISSED, suggestedTimeParam())
                 feedbackRepository.dismissReminderBanner(
                     System.currentTimeMillis() + TimeUnit.DAYS.toMillis(REMINDER_BANNER_SNOOZE_DAYS),
                 )

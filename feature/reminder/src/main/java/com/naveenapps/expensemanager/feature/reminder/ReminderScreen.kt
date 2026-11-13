@@ -48,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -90,6 +91,12 @@ fun ReminderScreen(
         }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    // Re-check delivery whenever the screen shows, e.g. back from notification or battery settings.
+    LifecycleResumeEffect(Unit) {
+        viewModel.processAction(ReminderAction.RefreshDelivery)
+        onPauseOrDispose { }
+    }
 
     ObserveAsEvents(viewModel.event) {
         when (it) {
@@ -219,6 +226,12 @@ private fun ReminderScreenContent(
                                 )
                             }
                         }
+
+                        ReminderDeliverySection(
+                            state = state,
+                            onAction = onAction,
+                            modifier = Modifier.padding(bottom = 16.dp),
+                        )
                     }
                 }
 

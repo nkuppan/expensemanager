@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">تنبيهات المدفوعات القادمة</string>
     <string name="upcoming_alerts_description">تنبيه مساء اليوم السابق لإضافة قيد متكرر أسبوعي أو شهري أو سنوي.</string>
+    <string name="reminder_last_run">آخر فحص للتذكير: %1$s</string>
+    <string name="reminder_not_run_yet">لم يُرسل أي تذكير بعد</string>
+    <string name="reminder_blocked_title">الإشعارات متوقفة لتطبيق Expense Manager</string>
+    <string name="reminder_blocked_body">لن تظهر التذكيرات حتى تُفعّل الإشعارات.</string>
+    <string name="reminder_turn_on">تفعيل</string>
+    <string name="reminder_battery_title">قد يوقف هاتفك التذكيرات لتوفير البطارية</string>
+    <string name="reminder_battery_body">اسمح لـ Expense Manager بالعمل في الخلفية لتصل التذكيرات في وقتها.</string>
+    <string name="reminder_battery_brand">على هواتف %1$s، فعّل أيضًا التشغيل التلقائي أو أزل قيود البطارية عن Expense Manager.</string>
+    <string name="reminder_battery_allow">سماح</string>
+    <string name="reminder_more_help">خطوات لهاتفك</string>
 </resources>

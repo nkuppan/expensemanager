@@ -21,6 +21,7 @@ data class WhatsNewRelease(
  * so nobody gets a dot for nothing.
  */
 val WHATS_NEW_RELEASES: List<WhatsNewRelease> = listOf(
+    WhatsNewRelease(version = "1.4.30", releasedOn = LocalDate.of(2026, 11, 13), items = R.array.whats_new_1_4_30),
     WhatsNewRelease(version = "1.4.29", releasedOn = LocalDate.of(2026, 11, 12), items = R.array.whats_new_1_4_29),
     WhatsNewRelease(version = "1.4.28", releasedOn = LocalDate.of(2026, 11, 8), items = R.array.whats_new_1_4_28),
     WhatsNewRelease(version = "1.4.26", releasedOn = LocalDate.of(2026, 11, 7), items = R.array.whats_new_1_4_26),

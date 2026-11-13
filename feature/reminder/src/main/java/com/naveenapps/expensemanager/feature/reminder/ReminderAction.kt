@@ -23,4 +23,10 @@ sealed class ReminderAction {
     data class SaveReminder(val reminderState: ReminderTimeState) : ReminderAction()
 
     data class ChangeUpcomingAlerts(val on: Boolean) : ReminderAction()
+
+    /** Screen resumed (maybe back from system settings): re-check reminder delivery. */
+    data object RefreshDelivery : ReminderAction()
+
+    /** A delivery fix button was tapped; [reason] is what it fixes (notifications or battery). */
+    data class DeliveryFixOpened(val reason: String) : ReminderAction()
 }

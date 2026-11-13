@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">See more (%1$d)</string>
     <string name="notification_see_less">See less</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Log your most frequent expense straight from the daily reminder with one tap, with Undo if you tap by mistake</item>
+        <item>Daily reminders arrive on time more reliably, and the Reminder screen shows how to fix it if your phone blocks them</item>
+        <item>Turning on reminders from Home now suggests a time based on when you usually log</item>
+        <item>Filters: the Apply button stays visible even with many categories, and transaction types are now translated</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>A simpler Settings screen: four short groups, with everything you set once in Preferences and backup and restore in one place</item>
         <item>Smoother, redesigned charts in Analysis and Categories</item>
@@ -102,4 +108,7 @@
     <string name="reminder_banner_body">A gentle nudge each evening helps you keep your spending up to date.</string>
     <string name="reminder_banner_turn_on">Turn on</string>
     <string name="reminder_banner_not_now">Not now</string>
+    <string name="reminder_banner_title_with_time">You usually log around %1$s</string>
+    <string name="reminder_banner_body_with_time">Get a daily reminder then, so nothing slips through.</string>
+    <string name="reminder_banner_turn_on_at">Remind me at %1$s</string>
 </resources>

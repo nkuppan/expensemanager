@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver mais (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Registre sua despesa mais frequente direto do lembrete diário com um toque, com Desfazer se errar</item>
+        <item>Os lembretes diários chegam na hora com mais confiabilidade, e a tela Lembrete mostra como resolver se o celular os bloquear</item>
+        <item>Ao ativar os lembretes na tela inicial, agora sugerimos um horário com base em quando você costuma registrar</item>
+        <item>Filtros: o botão Aplicar fica visível mesmo com muitas categorias, e os tipos de transação agora estão traduzidos</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Configurações mais simples: quatro grupos curtos, o que você define uma vez em Preferências e backup e restauração juntos</item>
         <item>Gráficos redesenhados e mais suaves em Análise e Categorias</item>
@@ -104,4 +110,7 @@
     <string name="reminder_banner_body">Um lembrete leve toda noite ajuda a manter seus gastos em dia.</string>
     <string name="reminder_banner_turn_on">Ativar</string>
     <string name="reminder_banner_not_now">Agora não</string>
+    <string name="reminder_banner_title_with_time">Você costuma registrar por volta das %1$s</string>
+    <string name="reminder_banner_body_with_time">Receba um lembrete diário nesse horário para não esquecer nada.</string>
+    <string name="reminder_banner_turn_on_at">Lembrar às %1$s</string>
 </resources>

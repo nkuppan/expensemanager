@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Voir plus (%1$d)</string>
     <string name="notification_see_less">Voir moins</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Enregistrez votre dépense la plus fréquente d\'un geste depuis le rappel quotidien, avec Annuler en cas d\'erreur</item>
+        <item>Les rappels quotidiens arrivent plus fiablement à l\'heure, et l\'écran Rappel explique quoi faire si votre téléphone les bloque</item>
+        <item>Activer les rappels depuis l\'accueil propose maintenant une heure selon le moment où vous notez d\'habitude</item>
+        <item>Filtres : le bouton Appliquer reste visible même avec beaucoup de catégories, et les types d\'opération sont traduits</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Paramètres simplifiés : quatre groupes courts, les réglages ponctuels dans Préférences, sauvegarde et restauration au même endroit</item>
         <item>Graphiques repensés et plus fluides dans Analyse et Catégories</item>
@@ -104,4 +110,7 @@
     <string name="reminder_banner_body">Un petit rappel chaque soir vous aide à garder vos dépenses à jour.</string>
     <string name="reminder_banner_turn_on">Activer</string>
     <string name="reminder_banner_not_now">Pas maintenant</string>
+    <string name="reminder_banner_title_with_time">Vous notez souvent vers %1$s</string>
+    <string name="reminder_banner_body_with_time">Recevez un rappel quotidien à cette heure-là pour ne rien oublier.</string>
+    <string name="reminder_banner_turn_on_at">Me le rappeler à %1$s</string>
 </resources>

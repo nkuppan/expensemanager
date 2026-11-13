@@ -17,4 +17,5 @@
     <plurals name="filters_selected">
         <item quantity="other">%d filter dipilih</item>
     </plurals>
+    <string name="filter_type_transfer">Transfer</string>
 </resources>

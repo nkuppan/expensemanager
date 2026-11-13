@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">もっと見る (%1$d)</string>
     <string name="notification_see_less">閉じる</string>
+    <string-array name="whats_new_1_4_30">
+        <item>毎日のリマインダーから、よく使う支出をワンタップで記録。間違えても元に戻せます</item>
+        <item>毎日のリマインダーがより確実に時間どおり届くようになり、端末にブロックされた場合の対処法もリマインダー画面に表示されます</item>
+        <item>ホームからリマインダーをオンにすると、いつも記録する時間帯をもとに時刻を提案します</item>
+        <item>フィルター：カテゴリが多くても「適用」ボタンが表示されたままになり、取引の種類も翻訳されました</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>設定がシンプルに：4つのグループに整理し、一度だけ設定する項目は詳細設定へ、バックアップと復元は1か所に</item>
         <item>分析とカテゴリのグラフを新しく、よりなめらかに</item>
@@ -100,4 +106,7 @@
     <string name="reminder_banner_body">毎晩のちょっとしたお知らせで、支出の記録を最新に保てます。</string>
     <string name="reminder_banner_turn_on">オンにする</string>
     <string name="reminder_banner_not_now">今はしない</string>
+    <string name="reminder_banner_title_with_time">いつも %1$s ごろに記録しています</string>
+    <string name="reminder_banner_body_with_time">その時間に毎日リマインダーを受け取って、記録漏れを防ぎましょう。</string>
+    <string name="reminder_banner_turn_on_at">%1$s に通知する</string>
 </resources>

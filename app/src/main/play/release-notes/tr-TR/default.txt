@@ -1,4 +1,4 @@
-• Daha sade Ayarlar: dört kısa grup, bir kez ayarlananlar Tercihler'de, yedekleme ve geri yükleme tek yerde
-• Analiz ve Kategoriler'de yenilenen, daha akıcı grafikler
-• Google Play Hizmetleri indirmesi gerektiğinde fiş tarayıcı kendini hazırlar
-• Aranabilir yeni açık kaynak lisansları ekranı ve çökme düzeltmeleri
+• En sık harcamanızı tek dokunuşla doğrudan günlük hatırlatıcıdan kaydedin, yanlışlıkla olursa geri alın
+• Günlük hatırlatıcılar artık daha güvenilir şekilde zamanında gelir; telefon engellerse Hatırlatıcı ekranı nasıl düzelteceğinizi gösterir
+• Ana ekrandan hatırlatıcıları açarken artık genellikle kayıt yaptığınız saate göre bir saat önerilir
+• Filtreler: çok sayıda kategoride bile Uygula düğmesi görünür kalır ve işlem türleri artık çevrildi

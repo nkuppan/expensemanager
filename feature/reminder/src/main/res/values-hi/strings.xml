@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">आने वाले भुगतान की सूचना</string>
     <string name="upcoming_alerts_description">साप्ताहिक, मासिक या वार्षिक आवर्ती प्रविष्टि जुड़ने से एक शाम पहले सूचना।</string>
+    <string name="reminder_last_run">पिछली रिमाइंडर जाँच: %1$s</string>
+    <string name="reminder_not_run_yet">अभी तक कोई रिमाइंडर नहीं चला</string>
+    <string name="reminder_blocked_title">Expense Manager की सूचनाएँ बंद हैं</string>
+    <string name="reminder_blocked_body">सूचनाएँ चालू होने तक रिमाइंडर नहीं दिखेंगे।</string>
+    <string name="reminder_turn_on">चालू करें</string>
+    <string name="reminder_battery_title">बैटरी बचाने के लिए आपका फ़ोन रिमाइंडर रोक सकता है</string>
+    <string name="reminder_battery_body">Expense Manager को बैकग्राउंड में चलने दें ताकि रिमाइंडर समय पर आएँ।</string>
+    <string name="reminder_battery_brand">%1$s फ़ोन पर Expense Manager के लिए ऑटोस्टार्ट भी चालू करें या बैटरी प्रतिबंध हटाएँ।</string>
+    <string name="reminder_battery_allow">अनुमति दें</string>
+    <string name="reminder_more_help">आपके फ़ोन के लिए चरण</string>
 </resources>

@@ -91,6 +91,7 @@ internal class MainActivity :
 
         // Only on a fresh launch: a recreated Activity re-delivers the same intent.
         if (savedInstanceState == null) {
+            viewModel.onOpenIntent(AppOpenSource.of(intent))
             handleQuickAdd(intent)
             handleOpenAutoBackup(intent)
             handleWidgetOpen(intent)
@@ -197,6 +198,7 @@ internal class MainActivity :
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        viewModel.onOpenIntent(AppOpenSource.of(intent))
         handleQuickAdd(intent)
         handleOpenAutoBackup(intent)
         handleWidgetOpen(intent)
@@ -252,10 +254,19 @@ internal class MainActivity :
         launchAppUpdateCheck()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // How the app was opened (launcher, reminder, widget, other notifications, share, …).
+        viewModel.takeOpenSource(SystemClock.elapsedRealtime())?.let { source ->
+            analyticsRepository.logEvent(AnalyticsEvents.APP_OPENED, mapOf(AnalyticsParams.SOURCE to source))
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         if (!isChangingConfigurations) {
             viewModel.onAppBackgrounded(SystemClock.elapsedRealtime())
+            viewModel.onStoppedForOpenTracking(SystemClock.elapsedRealtime())
         }
     }
 

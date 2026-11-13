@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mehr anzeigen (%1$d)</string>
     <string name="notification_see_less">Weniger anzeigen</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Trage deine häufigste Ausgabe mit einem Tipp direkt aus der täglichen Erinnerung ein, mit Rückgängig bei Versehen</item>
+        <item>Tägliche Erinnerungen kommen zuverlässiger pünktlich, und der Erinnerungsbildschirm zeigt, wie du Blockaden deines Handys behebst</item>
+        <item>Beim Einschalten der Erinnerungen auf der Startseite wird jetzt eine Uhrzeit vorgeschlagen, zu der du meist einträgst</item>
+        <item>Filter: Die Schaltfläche „Anwenden“ bleibt auch bei vielen Kategorien sichtbar, und Buchungsarten sind jetzt übersetzt</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Einfachere Einstellungen: vier kurze Gruppen, Einmal-Einstellungen unter Einstellungen und Sichern &amp; Wiederherstellen an einem Ort</item>
         <item>Flüssigere, neu gestaltete Diagramme in Analyse und Kategorien</item>
@@ -102,4 +108,7 @@
     <string name="reminder_banner_body">Ein kurzer Hinweis am Abend hilft, deine Ausgaben aktuell zu halten.</string>
     <string name="reminder_banner_turn_on">Einschalten</string>
     <string name="reminder_banner_not_now">Nicht jetzt</string>
+    <string name="reminder_banner_title_with_time">Du trägst meist gegen %1$s ein</string>
+    <string name="reminder_banner_body_with_time">Lass dich dann täglich erinnern, damit nichts verloren geht.</string>
+    <string name="reminder_banner_turn_on_at">Um %1$s erinnern</string>
 </resources>

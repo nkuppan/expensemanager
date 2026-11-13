@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">即将付款提醒</string>
     <string name="upcoming_alerts_description">在每周、每月或每年的周期性记录添加前一晚提醒你。</string>
+    <string name="reminder_last_run">上次提醒检查：%1$s</string>
+    <string name="reminder_not_run_yet">提醒尚未运行过</string>
+    <string name="reminder_blocked_title">Expense Manager 的通知已关闭</string>
+    <string name="reminder_blocked_body">开启通知后才会显示提醒。</string>
+    <string name="reminder_turn_on">开启</string>
+    <string name="reminder_battery_title">手机可能为省电而阻止提醒</string>
+    <string name="reminder_battery_body">允许 Expense Manager 在后台运行，提醒才能按时送达。</string>
+    <string name="reminder_battery_brand">在 %1$s 手机上，还需为 Expense Manager 开启自启动或取消电池限制。</string>
+    <string name="reminder_battery_allow">允许</string>
+    <string name="reminder_more_help">适用于你手机的步骤</string>
 </resources>

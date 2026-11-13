@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Solo toma unos segundos. Toca para añadir un gasto.</string>
     <string name="reminder_action_add">Añadir gasto</string>
     <string name="reminder_action_no_spend">Hoy no gasté nada</string>
+    <string name="reminder_quick_logged">✓ Registrado: %1$s</string>
+    <string name="reminder_quick_logged_body">Añadido a los gastos de hoy.</string>
+    <string name="reminder_action_undo">Deshacer</string>
+    <string name="reminder_quick_log_failed">No se pudo registrar</string>
+    <string name="reminder_quick_log_failed_body">Toca para añadirlo en la app.</string>
     <string name="weekly_summary_title">Tu semana en dinero</string>
     <string name="weekly_summary_less">Gastaste %1$s esta semana, un %2$d%% menos que la semana pasada. ¡Bien hecho!</string>
     <string name="weekly_summary_more">Gastaste %1$s esta semana, un %2$d%% más que la semana pasada.</string>

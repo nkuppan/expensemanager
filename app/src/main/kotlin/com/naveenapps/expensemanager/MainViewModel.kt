@@ -128,7 +128,50 @@ class MainViewModel(
         }
     }
 
+    // region app_opened analytics
+
+    // Source of the intent that brought the app up, waiting for the next onResume to report it.
+    private var pendingOpenSource: String? = null
+
+    // One report per visit; survives rotation and theme or language changes, which recreate the
+    // Activity but aren't new opens. Reset when the app really goes to the background.
+    private var isOpenReported = false
+    private var stoppedAt: Long? = null
+
+    /** A launch or new intent (notification, widget, shortcut, share, launcher icon). */
+    fun onOpenIntent(source: String) {
+        pendingOpenSource = source
+        isOpenReported = false
+    }
+
+    /** Activity.onStop when not just changing configuration. */
+    fun onStoppedForOpenTracking(now: Long) {
+        isOpenReported = false
+        stoppedAt = now
+    }
+
+    /**
+     * Activity.onResume: the source to report as app_opened, or null when this isn't a new open.
+     * Coming back without a new intent counts only after [OPEN_GRACE_MS] away, so returning from
+     * the camera, scanner, file picker or share sheet isn't counted as opening the app again.
+     */
+    fun takeOpenSource(now: Long): String? {
+        if (isOpenReported) return null
+        isOpenReported = true
+        pendingOpenSource?.let {
+            pendingOpenSource = null
+            stoppedAt = null
+            return it
+        }
+        val leftAt = stoppedAt ?: return AppOpenSource.RESTORED
+        stoppedAt = null
+        return if (now - leftAt >= OPEN_GRACE_MS) AppOpenSource.RESUME else null
+    }
+
+    // endregion
+
     companion object {
         const val RELOCK_TIMEOUT_MS = 30_000L
+        const val OPEN_GRACE_MS = 30_000L
     }
 }

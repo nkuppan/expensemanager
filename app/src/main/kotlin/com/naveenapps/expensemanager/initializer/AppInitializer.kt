@@ -34,6 +34,19 @@ class AppInitializer : Initializer<Unit> {
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
             applyThemeUseCase.invoke()
             applyLocaleUseCase.invoke()
+            // Before rescheduling (which moves the due time on): did the last reminder never run?
+            notificationScheduler.findMissedReminder()?.let { lateMinutes ->
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.REMINDER_MISSED,
+                    mapOf(
+                        AnalyticsParams.LATE_MINUTES to lateMinutes.toString(),
+                        // Blocked by a setting now, or the job just never ran (battery savers).
+                        AnalyticsParams.REASON to (
+                            notificationScheduler.reminderBlockReason()?.analyticsValue ?: REASON_NOT_RUN
+                            ),
+                    ),
+                )
+            }
             notificationScheduler.checkAndRestartReminder()
             notificationScheduler.scheduleWeeklySummary()
             notificationScheduler.scheduleRecurringTransactions()
@@ -71,3 +84,5 @@ class AppInitializer : Initializer<Unit> {
         KoinInitializer::class.java,
     )
 }
+
+private const val REASON_NOT_RUN = "not_run"

@@ -81,6 +81,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Pokaż więcej (%1$d)</string>
     <string name="notification_see_less">Pokaż mniej</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Zapisz najczęstszy wydatek jednym dotknięciem prosto z codziennego przypomnienia, z opcją Cofnij</item>
+        <item>Codzienne przypomnienia przychodzą punktualniej, a ekran Przypomnienie pokazuje, jak to naprawić, gdy telefon je blokuje</item>
+        <item>Włączając przypomnienia na ekranie głównym, otrzymasz propozycję godziny, o której zwykle zapisujesz</item>
+        <item>Filtry: przycisk Zastosuj jest widoczny nawet przy wielu kategoriach, a typy transakcji są przetłumaczone</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Prostsze ustawienia: cztery krótkie grupy, jednorazowe opcje w Preferencjach, kopia i przywracanie w jednym miejscu</item>
         <item>Płynniejsze, nowe wykresy w Analizie i Kategoriach</item>
@@ -106,4 +112,7 @@
     <string name="reminder_banner_body">Krótkie przypomnienie każdego wieczoru pomaga na bieżąco zapisywać wydatki.</string>
     <string name="reminder_banner_turn_on">Włącz</string>
     <string name="reminder_banner_not_now">Nie teraz</string>
+    <string name="reminder_banner_title_with_time">Zwykle zapisujesz około %1$s</string>
+    <string name="reminder_banner_body_with_time">Otrzymuj wtedy codzienne przypomnienie, aby nic nie umknęło.</string>
+    <string name="reminder_banner_turn_on_at">Przypomnij o %1$s</string>
 </resources>

@@ -47,8 +47,9 @@ sealed class DashboardAction {
     /**
      * "Turn on": [method] is what the screen did. "dialog" (system permission dialog shown) or
      * "settings" (the app's notification settings opened, once Android stops showing the dialog).
+     * [is24Hour] is the phone's clock style, for saving the suggested reminder time.
      */
-    data class ReminderBannerTurnOn(val method: String) : DashboardAction()
+    data class ReminderBannerTurnOn(val method: String, val is24Hour: Boolean = false) : DashboardAction()
 
     data class ReminderPermissionResult(val granted: Boolean) : DashboardAction()
 
@@ -78,4 +79,4 @@ internal const val SHARE_BANNER_SNOOZE_DAYS = 30L
 
 /** How long "Not now" hides the reminders banner, and after how many dismissals it stops. */
 internal const val REMINDER_BANNER_SNOOZE_DAYS = 14L
-internal const val REMINDER_BANNER_MAX_DISMISSALS = 3
+internal const val REMINDER_BANNER_MAX_DISMISSALS = 2

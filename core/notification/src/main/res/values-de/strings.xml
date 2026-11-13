@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Dauert nur Sekunden. Tippe, um eine Ausgabe hinzuzufügen.</string>
     <string name="reminder_action_add">Ausgabe hinzufügen</string>
     <string name="reminder_action_no_spend">Heute nichts ausgegeben</string>
+    <string name="reminder_quick_logged">✓ %1$s eingetragen</string>
+    <string name="reminder_quick_logged_body">Zu den heutigen Ausgaben hinzugefügt.</string>
+    <string name="reminder_action_undo">Rückgängig</string>
+    <string name="reminder_quick_log_failed">Konnte nicht eingetragen werden</string>
+    <string name="reminder_quick_log_failed_body">Tippe, um es in der App hinzuzufügen.</string>
     <string name="weekly_summary_title">Deine Woche in Zahlen</string>
     <string name="weekly_summary_less">Du hast diese Woche %1$s ausgegeben, %2$d%% weniger als letzte Woche. Gut gemacht!</string>
     <string name="weekly_summary_more">Du hast diese Woche %1$s ausgegeben, %2$d%% mehr als letzte Woche.</string>

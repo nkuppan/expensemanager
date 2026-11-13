@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Xem thêm (%1$d)</string>
     <string name="notification_see_less">Thu gọn</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Ghi khoản chi thường gặp nhất chỉ với một chạm ngay từ lời nhắc hằng ngày, có thể hoàn tác</item>
+        <item>Nhắc nhở hằng ngày đến đúng giờ ổn định hơn, và màn hình Nhắc nhở hướng dẫn cách khắc phục nếu điện thoại chặn chúng</item>
+        <item>Khi bật nhắc nhở từ Trang chủ, ứng dụng gợi ý giờ dựa trên thời điểm bạn thường ghi chép</item>
+        <item>Bộ lọc: nút Áp dụng luôn hiển thị dù có nhiều danh mục, và loại giao dịch nay đã được dịch</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>Cài đặt gọn hơn: bốn nhóm ngắn, mục thiết lập một lần nằm trong Tùy chọn, sao lưu và khôi phục ở một chỗ</item>
         <item>Biểu đồ mới, mượt hơn trong Phân tích và Danh mục</item>
@@ -100,4 +106,7 @@
     <string name="reminder_banner_body">Một lời nhắc nhẹ mỗi tối giúp bạn ghi chép chi tiêu đầy đủ.</string>
     <string name="reminder_banner_turn_on">Bật</string>
     <string name="reminder_banner_not_now">Để sau</string>
+    <string name="reminder_banner_title_with_time">Bạn thường ghi vào khoảng %1$s</string>
+    <string name="reminder_banner_body_with_time">Nhận lời nhắc hằng ngày lúc đó để không bỏ sót khoản nào.</string>
+    <string name="reminder_banner_turn_on_at">Nhắc tôi lúc %1$s</string>
 </resources>

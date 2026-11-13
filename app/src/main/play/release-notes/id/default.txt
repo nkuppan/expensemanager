@@ -1,4 +1,4 @@
-• Setelan lebih sederhana: empat grup singkat, pengaturan sekali di Preferensi, serta cadangkan dan pulihkan di satu tempat
-• Grafik baru yang lebih halus di Analisis dan Kategori
-• Pemindai struk kini menyiapkan diri saat Layanan Google Play perlu mengunduhnya
-• Layar lisensi sumber terbuka baru yang bisa dicari, dan perbaikan crash
+• Catat pengeluaran yang paling sering langsung dari pengingat harian dengan satu ketukan, bisa diurungkan
+• Pengingat harian kini lebih andal tiba tepat waktu, dan layar Pengingat menunjukkan cara memperbaikinya jika ponsel memblokirnya
+• Mengaktifkan pengingat dari Beranda kini menyarankan waktu sesuai kebiasaan Anda mencatat
+• Filter: tombol Terapkan tetap terlihat meski kategorinya banyak, dan jenis transaksi kini diterjemahkan

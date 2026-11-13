@@ -38,13 +38,36 @@ object AnalyticsEvents {
     // Re-engagement
     const val NOTIFICATION_PERMISSION_RESULT = "notification_permission_result"
     const val REMINDER_OPENED = "reminder_opened"
+
+    /**
+     * Every time the app comes to the front, with "source": launcher, reminder, widget,
+     * widget_add, shortcut, share, weekly_summary, budget_alert, upcoming_payment,
+     * backup_failed, resume (Recents or the launcher icon while still in memory), restored
+     * (reopened after Android closed it in the background) or other.
+     */
+    const val APP_OPENED = "app_opened"
     const val QUICK_ADD_OPENED = "quick_add_opened"
 
     /** The home-screen widget's body was tapped to open the app (its "+" logs QUICK_ADD_OPENED). */
     const val WIDGET_OPENED = "widget_opened"
     const val REMINDER_SHOWN = "reminder_shown"
     const val REMINDER_SKIPPED_ALREADY_LOGGED = "reminder_skipped_already_logged"
+
+    /** The reminder's job ran but Android wouldn't show it (reason: permission, blocked, …). */
+    const val REMINDER_NOT_SHOWN = "reminder_not_shown"
+
+    /** Found on app start: a reminder was due over 2 hours ago and its job never ran. */
+    const val REMINDER_MISSED = "reminder_missed"
+
+    /** Reminder screen: a delivery fix button (reason: notifications_off or battery). */
+    const val REMINDER_FIX_OPENED = "reminder_fix_opened"
     const val REMINDER_NO_SPEND = "reminder_no_spend"
+
+    /** A quick pick ("Tea ₹20") was logged straight from the daily reminder's button. */
+    const val REMINDER_QUICK_LOGGED = "reminder_quick_logged"
+
+    /** "Undo" on the reminder right after a quick pick was logged. */
+    const val REMINDER_QUICK_LOG_UNDONE = "reminder_quick_log_undone"
     const val WEEKLY_SUMMARY_SHOWN = "weekly_summary_shown"
     const val BUDGET_ALERT_SHOWN = "budget_alert_shown"
     const val NOTIFICATION_PRIMER_SHOWN = "notification_primer_shown"
@@ -106,6 +129,9 @@ object AnalyticsParams {
     const val COUNTRY = "country"
     const val ACCOUNT_COUNT = "account_count"
     const val GRANTED = "granted"
+
+    /** Reminders banner: "true" when it offered a time based on when the user logs. */
+    const val SUGGESTED_TIME = "suggested_time"
     const val FILE_TYPE = "file_type"
     const val METHOD = "method"
     const val SOURCE = "source"
@@ -116,4 +142,7 @@ object AnalyticsParams {
     const val REASON = "reason"
     const val FREQUENCY = "frequency"
     const val FOUND_AMOUNT = "found_amount"
+
+    /** Minutes between the reminder time the user picked and when it actually ran. */
+    const val LATE_MINUTES = "late_minutes"
 }

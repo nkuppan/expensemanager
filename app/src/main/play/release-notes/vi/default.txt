@@ -1,4 +1,4 @@
-• Cài đặt gọn hơn: bốn nhóm ngắn, mục thiết lập một lần nằm trong Tùy chọn, sao lưu và khôi phục ở một chỗ
-• Biểu đồ mới, mượt hơn trong Phân tích và Danh mục
-• Trình quét hóa đơn tự chuẩn bị khi Dịch vụ Google Play cần tải về
-• Màn hình giấy phép mã nguồn mở mới có tìm kiếm, và sửa lỗi ứng dụng bị dừng
+• Ghi khoản chi thường gặp nhất chỉ với một chạm ngay từ lời nhắc hằng ngày, có thể hoàn tác
+• Nhắc nhở hằng ngày đến đúng giờ ổn định hơn, và màn hình Nhắc nhở hướng dẫn cách khắc phục nếu điện thoại chặn chúng
+• Khi bật nhắc nhở từ Trang chủ, ứng dụng gợi ý giờ dựa trên thời điểm bạn thường ghi chép
+• Bộ lọc: nút Áp dụng luôn hiển thị dù có nhiều danh mục, và loại giao dịch nay đã được dịch

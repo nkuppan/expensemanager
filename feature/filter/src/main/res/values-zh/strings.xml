@@ -17,4 +17,5 @@
     <plurals name="filters_selected">
         <item quantity="other">已选择 %d 个筛选条件</item>
     </plurals>
+    <string name="filter_type_transfer">转账</string>
 </resources>

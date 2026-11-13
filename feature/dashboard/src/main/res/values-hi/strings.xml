@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">और देखें (%1$d)</string>
     <string name="notification_see_less">कम देखें</string>
+    <string-array name="whats_new_1_4_30">
+        <item>रोज़ के रिमाइंडर से ही एक टैप में अपना सबसे आम खर्च जोड़ें, गलती हो तो पूर्ववत करें</item>
+        <item>दैनिक रिमाइंडर अब ज़्यादा भरोसे से समय पर आते हैं, और फ़ोन रोके तो रिमाइंडर स्क्रीन ठीक करने का तरीका बताती है</item>
+        <item>होम से रिमाइंडर चालू करते समय अब उस समय का सुझाव मिलता है जब आप आमतौर पर खर्च लिखते हैं</item>
+        <item>फ़िल्टर: बहुत सारी श्रेणियों के साथ भी लागू करें बटन दिखता रहता है, और लेन-देन के प्रकार अब अनुवादित हैं</item>
+    </string-array>
     <string-array name="whats_new_1_4_29">
         <item>आसान सेटिंग्स: चार छोटे समूह, एक बार सेट होने वाली चीज़ें प्राथमिकताओं में और बैकअप व रीस्टोर एक जगह</item>
         <item>विश्लेषण और श्रेणियों में नए, ज़्यादा स्मूद चार्ट</item>
@@ -102,4 +108,7 @@
     <string name="reminder_banner_body">हर शाम एक हल्का रिमाइंडर आपके खर्च का हिसाब अपडेट रखने में मदद करता है।</string>
     <string name="reminder_banner_turn_on">चालू करें</string>
     <string name="reminder_banner_not_now">अभी नहीं</string>
+    <string name="reminder_banner_title_with_time">आप आमतौर पर लगभग %1$s पर लिखते हैं</string>
+    <string name="reminder_banner_body_with_time">उसी समय रोज़ एक रिमाइंडर पाएं ताकि कुछ न छूटे।</string>
+    <string name="reminder_banner_turn_on_at">%1$s पर याद दिलाएं</string>
 </resources>

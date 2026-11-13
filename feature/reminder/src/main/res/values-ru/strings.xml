@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Уведомления о предстоящих платежах</string>
     <string name="upcoming_alerts_description">Напоминание вечером накануне добавления еженедельной, ежемесячной или ежегодной повторяющейся записи.</string>
+    <string name="reminder_last_run">Последняя проверка напоминания: %1$s</string>
+    <string name="reminder_not_run_yet">Напоминания ещё не срабатывали</string>
+    <string name="reminder_blocked_title">Уведомления Expense Manager отключены</string>
+    <string name="reminder_blocked_body">Напоминания не появятся, пока уведомления выключены.</string>
+    <string name="reminder_turn_on">Включить</string>
+    <string name="reminder_battery_title">Телефон может блокировать напоминания для экономии батареи</string>
+    <string name="reminder_battery_body">Разрешите Expense Manager работать в фоне, чтобы напоминания приходили вовремя.</string>
+    <string name="reminder_battery_brand">На телефонах %1$s также включите автозапуск или снимите ограничения батареи для Expense Manager.</string>
+    <string name="reminder_battery_allow">Разрешить</string>
+    <string name="reminder_more_help">Инструкция для вашего телефона</string>
 </resources>

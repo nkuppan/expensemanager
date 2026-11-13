@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Avisos de pagamentos próximos</string>
     <string name="upcoming_alerts_description">Um aviso na noite anterior à inclusão de um lançamento recorrente semanal, mensal ou anual.</string>
+    <string name="reminder_last_run">Última verificação do lembrete: %1$s</string>
+    <string name="reminder_not_run_yet">Nenhum lembrete foi executado ainda</string>
+    <string name="reminder_blocked_title">As notificações do Expense Manager estão desativadas</string>
+    <string name="reminder_blocked_body">Os lembretes só aparecem com as notificações ativadas.</string>
+    <string name="reminder_turn_on">Ativar</string>
+    <string name="reminder_battery_title">Seu celular pode bloquear lembretes para economizar bateria</string>
+    <string name="reminder_battery_body">Permita que o Expense Manager funcione em segundo plano para os lembretes chegarem na hora.</string>
+    <string name="reminder_battery_brand">Em celulares %1$s, ative também a inicialização automática ou remova as restrições de bateria do Expense Manager.</string>
+    <string name="reminder_battery_allow">Permitir</string>
+    <string name="reminder_more_help">Passos para o seu celular</string>
 </resources>

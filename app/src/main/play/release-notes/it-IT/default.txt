@@ -1,4 +1,4 @@
-• Impostazioni più semplici: quattro gruppi brevi, le opzioni da impostare una volta in Preferenze e backup e ripristino insieme
-• Grafici ridisegnati e più fluidi in Analisi e Categorie
-• Lo scanner di ricevute si prepara da solo quando Google Play Services deve scaricarlo
-• Nuova schermata delle licenze open source con ricerca e correzioni di arresti anomali
+• Registra la spesa più frequente direttamente dal promemoria giornaliero con un tocco, con Annulla in caso di errore
+• Promemoria giornalieri più affidabili, con aiuto se il telefono li blocca
+• Attivando i promemoria dalla Home ora viene suggerito un orario in base a quando registri di solito
+• Filtri: il pulsante Applica resta visibile anche con molte categorie e i tipi di transazione ora sono tradotti

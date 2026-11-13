@@ -1,4 +1,4 @@
-• Einfachere Einstellungen: vier kurze Gruppen, Einmal-Einstellungen unter Einstellungen und Sichern & Wiederherstellen an einem Ort
-• Flüssigere, neu gestaltete Diagramme in Analyse und Kategorien
-• Der Belegscanner richtet sich selbst ein, wenn Google Play-Dienste ihn herunterladen müssen
-• Neue durchsuchbare Open-Source-Lizenzen und Absturzbehebungen
+• Trage deine häufigste Ausgabe mit einem Tipp direkt aus der täglichen Erinnerung ein, mit Rückgängig bei Versehen
+• Tägliche Erinnerungen kommen zuverlässiger pünktlich, und der Erinnerungsbildschirm zeigt, wie du Blockaden deines Handys behebst
+• Beim Einschalten der Erinnerungen auf der Startseite wird jetzt eine Uhrzeit vorgeschlagen, zu der du meist einträgst
+• Filter: Die Schaltfläche „Anwenden“ bleibt auch bei vielen Kategorien sichtbar, und Buchungsarten sind jetzt übersetzt

@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">Thông báo thanh toán sắp tới</string>
     <string name="upcoming_alerts_description">Thông báo vào tối hôm trước khi khoản định kỳ hằng tuần, hằng tháng hoặc hằng năm được thêm.</string>
+    <string name="reminder_last_run">Lần kiểm tra nhắc nhở gần nhất: %1$s</string>
+    <string name="reminder_not_run_yet">Chưa có nhắc nhở nào chạy</string>
+    <string name="reminder_blocked_title">Thông báo của Expense Manager đang tắt</string>
+    <string name="reminder_blocked_body">Nhắc nhở sẽ không hiện cho đến khi bật thông báo.</string>
+    <string name="reminder_turn_on">Bật</string>
+    <string name="reminder_battery_title">Điện thoại có thể chặn nhắc nhở để tiết kiệm pin</string>
+    <string name="reminder_battery_body">Cho phép Expense Manager chạy nền để nhắc nhở đến đúng giờ.</string>
+    <string name="reminder_battery_brand">Trên điện thoại %1$s, hãy bật Tự khởi động hoặc bỏ giới hạn pin cho Expense Manager.</string>
+    <string name="reminder_battery_allow">Cho phép</string>
+    <string name="reminder_more_help">Hướng dẫn cho điện thoại của bạn</string>
 </resources>

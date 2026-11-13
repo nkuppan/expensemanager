@@ -76,4 +76,58 @@ class MainViewModelTest : BaseCoroutineTest() {
 
         Truth.assertThat(viewModel.isAuthenticated.value).isTrue()
     }
+
+    // region app_opened source
+
+    @Test
+    fun launchReportsTheIntentSourceOnce() {
+        val viewModel = viewModel()
+        viewModel.onOpenIntent(AppOpenSource.REMINDER)
+
+        Truth.assertThat(viewModel.takeOpenSource(now = 0L)).isEqualTo(AppOpenSource.REMINDER)
+        // Rotation or a theme change resumes again without a new open.
+        Truth.assertThat(viewModel.takeOpenSource(now = 1_000L)).isNull()
+    }
+
+    @Test
+    fun comingBackAfterAWhileIsAResume() {
+        val viewModel = viewModel()
+        viewModel.onOpenIntent(AppOpenSource.LAUNCHER)
+        viewModel.takeOpenSource(now = 0L)
+
+        viewModel.onStoppedForOpenTracking(now = 10_000L)
+
+        Truth.assertThat(viewModel.takeOpenSource(now = 10_000L + MainViewModel.OPEN_GRACE_MS))
+            .isEqualTo(AppOpenSource.RESUME)
+    }
+
+    @Test
+    fun aQuickTripToTheCameraOrShareSheetIsNotAnOpen() {
+        val viewModel = viewModel()
+        viewModel.onOpenIntent(AppOpenSource.LAUNCHER)
+        viewModel.takeOpenSource(now = 0L)
+
+        viewModel.onStoppedForOpenTracking(now = 10_000L)
+
+        Truth.assertThat(viewModel.takeOpenSource(now = 15_000L)).isNull()
+    }
+
+    @Test
+    fun aNotificationTapWhileInTheBackgroundReportsTheNotification() {
+        val viewModel = viewModel()
+        viewModel.onOpenIntent(AppOpenSource.LAUNCHER)
+        viewModel.takeOpenSource(now = 0L)
+        viewModel.onStoppedForOpenTracking(now = 10_000L)
+
+        viewModel.onOpenIntent("weekly_summary")
+
+        Truth.assertThat(viewModel.takeOpenSource(now = 12_000L)).isEqualTo("weekly_summary")
+    }
+
+    @Test
+    fun aRestoredAppWithoutAnIntentIsReportedAsRestored() {
+        Truth.assertThat(viewModel().takeOpenSource(now = 0L)).isEqualTo(AppOpenSource.RESTORED)
+    }
+
+    // endregion
 }

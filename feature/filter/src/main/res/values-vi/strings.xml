@@ -17,4 +17,5 @@
     <plurals name="filters_selected">
         <item quantity="other">%d bộ lọc đã chọn</item>
     </plurals>
+    <string name="filter_type_transfer">Chuyển khoản</string>
 </resources>

@@ -14,4 +14,14 @@
     <!-- Switch on the Reminder screen for the upcoming-payment heads-up. -->
     <string name="upcoming_alerts_title">今後の支払いのお知らせ</string>
     <string name="upcoming_alerts_description">毎週・毎月・毎年の定期項目が追加される前日の夕方にお知らせします。</string>
+    <string name="reminder_last_run">前回のリマインダー確認: %1$s</string>
+    <string name="reminder_not_run_yet">まだリマインダーは実行されていません</string>
+    <string name="reminder_blocked_title">Expense Manager の通知がオフです</string>
+    <string name="reminder_blocked_body">通知をオンにするまでリマインダーは表示されません。</string>
+    <string name="reminder_turn_on">オンにする</string>
+    <string name="reminder_battery_title">電池節約のためにリマインダーが止められている可能性があります</string>
+    <string name="reminder_battery_body">リマインダーが時間どおりに届くよう、Expense Manager のバックグラウンド実行を許可してください。</string>
+    <string name="reminder_battery_brand">%1$s の端末では、Expense Manager の自動起動をオンにするか、電池の制限を解除してください。</string>
+    <string name="reminder_battery_allow">許可</string>
+    <string name="reminder_more_help">お使いの端末での手順</string>
 </resources>

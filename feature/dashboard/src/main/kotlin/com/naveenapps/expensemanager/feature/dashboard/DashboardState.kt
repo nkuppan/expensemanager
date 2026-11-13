@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DashboardSection
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 
 @Stable
@@ -53,13 +54,18 @@ data class DashboardState(
     val hasUnreadNotifications: Boolean = false,
     /**
      * "Daily reminders are off" banner may show (from the install's second day, not snoozed,
-     * dismissed fewer than 3 times, no first-save reminder ask pending). The screen also needs
+     * dismissed fewer than twice, no first-save reminder ask pending). The screen also needs
      * notifications to be blocked; see [showReminderBanner].
      */
     val reminderBannerEligible: Boolean = false,
     val isReminderOn: Boolean = true,
     /** Times the system permission dialog was requested; decides dialog vs Settings. */
     val notificationPermissionAsks: Int = 0,
+    /**
+     * Reminder time suggested from when the user usually logs (after a few saves), so the banner
+     * can say "You usually log around 9:00 PM" and set the reminder for then. Null: not known yet.
+     */
+    val suggestedReminderTime: ReminderTimeState? = null,
 ) {
     /**
      * The reminders banner, given whether the app may post notifications right now. Only for

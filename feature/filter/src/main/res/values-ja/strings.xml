@@ -17,4 +17,5 @@
     <plurals name="filters_selected">
         <item quantity="other">%d 件のフィルターを選択中</item>
     </plurals>
+    <string name="filter_type_transfer">振替</string>
 </resources>
