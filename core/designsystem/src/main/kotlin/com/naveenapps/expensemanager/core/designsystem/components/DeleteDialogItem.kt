@@ -24,7 +24,6 @@ import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeleteDialogItem(
     confirm: () -> Unit,

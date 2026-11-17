@@ -104,3 +104,15 @@ Every release that changes something users notice gets "What's new" notes, writt
 - Use the same lines, prefixed with "• ", in `app/src/main/play/release-notes/<locale>/default.txt` (17 folders, en-US and en-IN share English; Play's limit is 500 characters per language).
 - Keep it to 3–5 short, user-facing highlights (features and visible fixes, not refactors). Update the list as more big changes land before the release.
 - `./gradlew checkReleaseNotes` (also run by `bumpVersion` in CI) warns when the version has no notes or the Play notes don't match.
+
+## Analytics — never send money data
+
+Users' money is private. No analytics event parameter or user property may carry anything about money:
+
+- No amounts, totals, balances, prices, budget values, thresholds or percentages of a budget.
+- Not even whether an amount was entered or found (no `has_amount` / `found_amount` style flags, no "amount" in field lists).
+- No free text either: notes, payee names, account / category names, search text.
+
+Allowed: counts and buckets of things (transactions, accounts, categories), choices (type, period, setting values), timings, booleans about features (reminder on, has a budget), error class names.
+
+`AnalyticsPrivacy` (core:repository) drops any parameter or user property whose name looks like money, as a safety net. Don't work around it by renaming; if it blocks something, the data shouldn't be sent. Keep `claude/analytics-tracking-plan.md` in the Expense Manager project in step when events change.

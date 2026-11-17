@@ -109,30 +109,24 @@ class TransactionRepositoryImpl(
     }
 
     private fun convertTransactionCategoryRelation(relation: TransactionRelation): Transaction? {
-        return relation.transactionEntity.toDomainModel().apply {
-            category = relation.categoryEntity?.toDomainModel() ?: return null
-            fromAccount = relation.fromAccountEntity?.toDomainModel() ?: return null
-            toAccount = relation.toAccountEntity?.toDomainModel()
-            attachments = relation.attachmentEntities.map { it.imagePath }
-        }
+        val category = relation.categoryEntity?.toDomainModel() ?: return null
+        val fromAccount = relation.fromAccountEntity?.toDomainModel() ?: return null
+        return relation.transactionEntity.toDomainModel().copy(
+            category = category,
+            fromAccount = fromAccount,
+            toAccount = relation.toAccountEntity?.toDomainModel(),
+            attachments = relation.attachmentEntities.map { it.imagePath },
+        )
     }
 
     private suspend fun convertTransactionCategoryRelation(relation: TransactionEntity): Transaction {
         val transaction = relation.toDomainModel()
-        categoryDao.findById(transaction.categoryId)?.let {
-            transaction.category = it.toDomainModel()
-        }
-        accountDao.findById(transaction.fromAccountId)?.let {
-            transaction.fromAccount = it.toDomainModel()
-        }
-        transaction.toAccountId?.let {
-            accountDao.findById(it)?.let { accountEntity ->
-                transaction.toAccount = accountEntity.toDomainModel()
-            }
-        }
-        transaction.attachments = transactionDao.getTransactionAttachments(transaction.id)
-            .map { it.imagePath }
-        return transaction
+        return transaction.copy(
+            category = categoryDao.findById(transaction.categoryId)?.toDomainModel() ?: transaction.category,
+            fromAccount = accountDao.findById(transaction.fromAccountId)?.toDomainModel() ?: transaction.fromAccount,
+            toAccount = transaction.toAccountId?.let { accountDao.findById(it)?.toDomainModel() },
+            attachments = transactionDao.getTransactionAttachments(transaction.id).map { it.imagePath },
+        )
     }
 
     override fun getAllFilteredTransaction(

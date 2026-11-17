@@ -8,7 +8,9 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
+import com.naveenapps.expensemanager.core.repository.logSettingChanged
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -23,6 +25,7 @@ class AdvancedSettingsViewModel(
     getAllCategoryUseCase: GetAllCategoryUseCase,
     private val appComposeNavigator: AppComposeNavigator,
     private val settingsRepository: SettingsRepository,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AdvancedSettingState())
@@ -84,12 +87,14 @@ class AdvancedSettingsViewModel(
                     val newValue = !_state.value.isAutoOpenCalculator
                     settingsRepository.setAutoOpenCalculator(newValue)
                     _state.update { it.copy(isAutoOpenCalculator = newValue) }
+                    analyticsRepository.logSettingChanged("auto_open_keypad", newValue.toString())
                 }
 
                 is AdvancedSettingAction.SelectAccount -> {
                     val result = settingsRepository.setDefaultAccount(action.account.id)
                     if (result is Resource.Success && result.data) {
                         _state.update { it.copy(selectedAccount = action.account) }
+                        analyticsRepository.logSettingChanged("default_account", action.account.type.name.lowercase())
                     }
                 }
 
@@ -97,6 +102,7 @@ class AdvancedSettingsViewModel(
                     val result = settingsRepository.setDefaultExpenseCategory(action.category.id)
                     if (result is Resource.Success && result.data) {
                         _state.update { it.copy(selectedExpenseCategory = action.category) }
+                        analyticsRepository.logSettingChanged("default_expense_category", CHANGED)
                     }
                 }
 
@@ -104,18 +110,25 @@ class AdvancedSettingsViewModel(
                     val result = settingsRepository.setDefaultIncomeCategory(action.category.id)
                     if (result is Resource.Success && result.data) {
                         _state.update { it.copy(selectedIncomeCategory = action.category) }
+                        analyticsRepository.logSettingChanged("default_income_category", CHANGED)
                     }
                 }
 
                 // Takes effect the next time the app opens; the current tab doesn't jump.
-                is AdvancedSettingAction.SelectLandingPage -> settingsRepository.setLandingPage(action.page)
+                is AdvancedSettingAction.SelectLandingPage -> {
+                    settingsRepository.setLandingPage(action.page)
+                    analyticsRepository.logSettingChanged("landing_page", action.page.name.lowercase())
+                }
 
                 AdvancedSettingAction.ToggleCompactSummary -> {
                     val newValue = !_state.value.isCompactSummary
                     settingsRepository.setHomeSummaryCompact(newValue)
                     _state.update { it.copy(isCompactSummary = newValue) }
+                    analyticsRepository.logSettingChanged("compact_summary", newValue.toString())
                 }
             }
         }
     }
 }
+
+private const val CHANGED = "changed"

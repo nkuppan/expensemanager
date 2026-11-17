@@ -52,7 +52,6 @@ import com.naveenapps.expensemanager.feature.filter.type.FilterTypeSelectionView
 import com.naveenapps.expensemanager.feature.filter.type.InputChipView
 import org.koin.compose.viewmodel.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterView(
     modifier: Modifier = Modifier,

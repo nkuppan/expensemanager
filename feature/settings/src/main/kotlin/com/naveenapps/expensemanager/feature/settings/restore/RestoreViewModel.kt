@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.BackupException
 import com.naveenapps.expensemanager.core.repository.BackupRepository
+import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.feature.settings.R
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -105,6 +106,7 @@ class RestoreViewModel(
                     }
 
                     is Resource.Error -> {
+                        analyticsRepository.logFailure("restore", result.exception)
                         val reason = (result.exception as? BackupException)?.reason
                         failureMessage(uri, reason)?.let { _event.send(RestoreEvent.ShowMessage(it)) }
                     }

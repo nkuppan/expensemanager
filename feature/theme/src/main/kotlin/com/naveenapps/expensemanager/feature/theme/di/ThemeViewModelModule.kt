@@ -10,6 +10,7 @@ val ThemeViewModelModule = module {
             getSelectedTheme = get(),
             getThemesUseCase = get(),
             saveThemeUseCase = get(),
+            analyticsRepository = get(),
         )
     }
 }

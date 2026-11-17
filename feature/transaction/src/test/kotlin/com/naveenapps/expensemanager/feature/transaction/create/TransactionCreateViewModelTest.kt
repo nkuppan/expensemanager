@@ -729,7 +729,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         verify(receiptTextReader, never()).read(any())
         verify(analyticsRepository).logEvent(
             AnalyticsEvents.RECEIPT_SHARED,
-            mapOf(AnalyticsParams.TYPE to "text", AnalyticsParams.FOUND_AMOUNT to "true"),
+            mapOf(AnalyticsParams.TYPE to "text"),
         )
     }
 
@@ -763,7 +763,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         verify(analyticsRepository).logEvent(eq(AnalyticsEvents.RECEIPT_SCAN_OPENED), any())
         verify(analyticsRepository).logEvent(
             AnalyticsEvents.RECEIPT_SCANNED,
-            mapOf(AnalyticsParams.TYPE to "image", AnalyticsParams.FOUND_AMOUNT to "true"),
+            mapOf(AnalyticsParams.TYPE to "image"),
         )
     }
 
@@ -786,7 +786,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         verify(imageStorageRepository).saveTransactionAttachment(uri)
         verify(analyticsRepository).logEvent(
             AnalyticsEvents.RECEIPT_SHARED,
-            mapOf(AnalyticsParams.TYPE to "image", AnalyticsParams.FOUND_AMOUNT to "false"),
+            mapOf(AnalyticsParams.TYPE to "image"),
         )
     }
 

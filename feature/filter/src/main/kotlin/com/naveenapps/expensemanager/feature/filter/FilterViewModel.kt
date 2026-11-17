@@ -17,6 +17,9 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.feature.filter.type.addOrRemove
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +35,7 @@ class FilterViewModel(
     getDateRangeUseCase: GetDateRangeUseCase,
     private val moveDateRangeBackwardUseCase: MoveDateRangeBackwardUseCase,
     private val moveDateRangeForwardUseCase: MoveDateRangeForwardUseCase,
+    private val analyticsRepository: AnalyticsRepository,
     private val updateSelectedTransactionTypesUseCase: UpdateSelectedTransactionTypesUseCase,
     private val updateSelectedCategoryUseCase: UpdateSelectedCategoryUseCase,
     private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase,
@@ -153,11 +157,28 @@ class FilterViewModel(
         }
     }
 
+    /** The < / > arrows next to the period: which way, and in which kind of period. */
+    private fun logPeriodMoved(direction: String) {
+        analyticsRepository.logEvent(
+            AnalyticsEvents.DATE_RANGE_MOVED,
+            mapOf(
+                AnalyticsParams.METHOD to direction,
+                AnalyticsParams.TYPE to _filterState.value.dateRangeType.name.lowercase(),
+            ),
+        )
+    }
+
     fun processAction(action: FilterAction) {
         when (action) {
-            FilterAction.MoveDateBackward -> moveDateRangeBackward()
+            FilterAction.MoveDateBackward -> {
+                logPeriodMoved(MOVED_BACK)
+                moveDateRangeBackward()
+            }
 
-            FilterAction.MoveDateForward -> moveDateRangeForward()
+            FilterAction.MoveDateForward -> {
+                logPeriodMoved(MOVED_FORWARD)
+                moveDateRangeForward()
+            }
 
             is FilterAction.RemoveAccount -> removeAccount(action.account)
 
@@ -183,3 +204,6 @@ class FilterViewModel(
         }
     }
 }
+
+private const val MOVED_BACK = "back"
+private const val MOVED_FORWARD = "forward"

@@ -22,6 +22,27 @@ object AnalyticsEvents {
     const val TRANSACTION_UPDATED = "transaction_updated"
     const val TRANSACTION_DELETED = "transaction_deleted"
 
+    /** Left the Add screen for a new transaction without saving (with stage, fields, seconds). */
+    const val TRANSACTION_FORM_ABANDONED = "transaction_form_abandoned"
+
+    /** Save tapped but refused (reason: same_account; a missing amount isn't reported). */
+    const val TRANSACTION_SAVE_BLOCKED = "transaction_save_blocked"
+
+    /** Filters sheet applied (type list, account and category counts; never which ones). */
+    const val FILTER_APPLIED = "filter_applied"
+
+    /** Period picked in the date sheet (type: this_month, this_year, custom, ...). */
+    const val DATE_RANGE_CHANGED = "date_range_changed"
+
+    /** The < / > arrows beside the period (method: back / forward). */
+    const val DATE_RANGE_MOVED = "date_range_moved"
+
+    /** A search the user settled on (count: result bucket; type: all_time / period). */
+    const val SEARCH_USED = "search_used"
+
+    /** Opened from Analysis (type: category / category_list / transaction). */
+    const val ANALYSIS_DRILL_DOWN = "analysis_drill_down"
+
     /** A frequent-entry chip filled the add form ("transaction_created" then carries source). */
     const val QUICK_PICK_USED = "quick_pick_used"
 
@@ -81,7 +102,20 @@ object AnalyticsEvents {
 
     // Feature adoption
     const val ACCOUNT_CREATED = "account_created"
+    const val ACCOUNT_EDITED = "account_edited"
+    const val ACCOUNT_DELETED = "account_deleted"
+    const val CATEGORY_CREATED = "category_created"
+    const val CATEGORY_EDITED = "category_edited"
+    const val CATEGORY_DELETED = "category_deleted"
     const val BUDGET_CREATED = "budget_created"
+    const val BUDGET_EDITED = "budget_edited"
+    const val BUDGET_DELETED = "budget_deleted"
+
+    /** A setting changed (type: which setting; method: the new value, a choice not free text). */
+    const val SETTING_CHANGED = "setting_changed"
+
+    /** Something the user tried failed (type: what, e.g. "export"; reason: error class). */
+    const val ACTION_FAILED = "action_failed"
     const val EXPORT_DONE = "export_done"
     const val BACKUP_STARTED = "backup_started"
     const val RESTORE_STARTED = "restore_started"
@@ -128,6 +162,7 @@ object AnalyticsParams {
     const val CURRENCY = "currency"
     const val COUNTRY = "country"
     const val ACCOUNT_COUNT = "account_count"
+    const val CATEGORY_COUNT = "category_count"
     const val GRANTED = "granted"
 
     /** Reminders banner: "true" when it offered a time based on when the user logs. */
@@ -135,14 +170,21 @@ object AnalyticsParams {
     const val FILE_TYPE = "file_type"
     const val METHOD = "method"
     const val SOURCE = "source"
-    const val THRESHOLD = "threshold"
     const val DAYS = "days"
     const val REMINDER_ENABLED = "reminder_enabled"
     const val COUNT = "count"
     const val REASON = "reason"
     const val FREQUENCY = "frequency"
-    const val FOUND_AMOUNT = "found_amount"
 
     /** Minutes between the reminder time the user picked and when it actually ran. */
     const val LATE_MINUTES = "late_minutes"
+
+    /** How far a form got: untouched / details (whether an amount was typed is never sent). */
+    const val STAGE = "stage"
+
+    /** Comma-separated names of the fields the user changed, e.g. "category,notes" (never amount). */
+    const val FIELDS = "fields"
+
+    /** Seconds spent, e.g. on the Add screen before saving or leaving. */
+    const val SECONDS = "seconds"
 }

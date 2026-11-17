@@ -16,6 +16,9 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +37,7 @@ class FilterTypeSelectionViewModel(
     private val updateSelectedTransactionTypesUseCase: UpdateSelectedTransactionTypesUseCase,
     private val updateSelectedCategoryUseCase: UpdateSelectedCategoryUseCase,
     private val updateSelectedAccountUseCase: UpdateSelectedAccountUseCase,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _event = Channel<FilterTypeEvent>()
@@ -113,6 +117,17 @@ class FilterTypeSelectionViewModel(
             updateSelectedAccountUseCase(selectedAccount)
             updateSelectedCategoryUseCase(selectedCategories)
 
+            // How many of each were picked (0 = not filtered by it); never which ones.
+            analyticsRepository.logEvent(
+                AnalyticsEvents.FILTER_APPLIED,
+                mapOf(
+                    AnalyticsParams.TYPE to transactionTypes
+                        .joinToString(",") { it.name.lowercase() }
+                        .ifEmpty { "all" },
+                    AnalyticsParams.ACCOUNT_COUNT to selectedAccount.size.toString(),
+                    AnalyticsParams.CATEGORY_COUNT to selectedCategories.size.toString(),
+                ),
+            )
             _event.send(FilterTypeEvent.Saved)
         }
     }

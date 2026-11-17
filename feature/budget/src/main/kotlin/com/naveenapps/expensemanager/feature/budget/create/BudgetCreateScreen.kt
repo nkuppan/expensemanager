@@ -95,7 +95,6 @@ fun BudgetCreateScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BudgetCreateScreenContentView(
     state: BudgetCreateState,

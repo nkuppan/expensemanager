@@ -2,6 +2,11 @@ package com.naveenapps.expensemanager.core.model
 
 import java.util.Date
 
+/**
+ * A logged expense, income or transfer. Immutable: the data layer attaches [category], the
+ * accounts and [attachments] with copy(), so one instance can safely feed every screen from a
+ * shared stream (a screen changing it in place would have changed it for all of them).
+ */
 data class Transaction(
     val id: String,
     val notes: String,
@@ -13,7 +18,7 @@ data class Transaction(
     val type: TransactionType,
     val createdOn: Date,
     val updatedOn: Date,
-    var category: Category = Category(
+    val category: Category = Category(
         "",
         "",
         CategoryType.INCOME,
@@ -21,7 +26,7 @@ data class Transaction(
         Date(),
         Date(),
     ),
-    var fromAccount: Account = Account(
+    val fromAccount: Account = Account(
         "",
         "",
         AccountType.REGULAR,
@@ -29,8 +34,8 @@ data class Transaction(
         Date(),
         Date(),
     ),
-    var toAccount: Account? = null,
-    var attachments: List<String> = emptyList(),
+    val toAccount: Account? = null,
+    val attachments: List<String> = emptyList(),
 )
 
 /**

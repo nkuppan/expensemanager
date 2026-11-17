@@ -14,6 +14,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.DemoDataRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
+import com.naveenapps.expensemanager.core.repository.logSettingChanged
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -172,6 +173,7 @@ class SettingsViewModel(
                     val newValue = !_state.value.isAppLockEnabled
                     settingsRepository.setAppLockEnabled(newValue)
                     _state.update { it.copy(isAppLockEnabled = newValue) }
+                    analyticsRepository.logSettingChanged("app_lock", newValue.toString())
                 }
             }
 
@@ -180,6 +182,7 @@ class SettingsViewModel(
                     val newValue = !_state.value.isScreenshotBlocked
                     settingsRepository.setScreenshotBlocked(newValue)
                     _state.update { it.copy(isScreenshotBlocked = newValue) }
+                    analyticsRepository.logSettingChanged("block_screenshots", newValue.toString())
                 }
             }
         }

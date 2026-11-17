@@ -27,7 +27,9 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import java.util.Calendar
 import java.util.Date
@@ -174,13 +176,18 @@ class BudgetCreateViewModel(
     private fun deleteBudget() {
         viewModelScope.launch {
             budget?.let { budget ->
-                when (deleteBudgetUseCase.invoke(budget)) {
+                when (val result = deleteBudgetUseCase.invoke(budget)) {
                     is Resource.Error -> {
+                        analyticsRepository.logFailure(FAILED_DELETE, result.exception)
                         _state.update { it.copy(showDeleteDialog = false) }
                         _errorMessage.send(DesignSystemR.string.error_delete_failed)
                     }
 
                     is Resource.Success -> {
+                        analyticsRepository.logEvent(
+                            AnalyticsEvents.BUDGET_DELETED,
+                            mapOf(AnalyticsParams.TYPE to budget.periodType.name.lowercase()),
+                        )
                         closePage()
                     }
                 }
@@ -235,12 +242,23 @@ class BudgetCreateViewModel(
                 addBudgetUseCase(budget)
             }
             when (response) {
-                is Resource.Error -> _errorMessage.send(DesignSystemR.string.error_save_failed)
+                is Resource.Error -> {
+                    analyticsRepository.logFailure(FAILED_SAVE, response.exception)
+                    _errorMessage.send(DesignSystemR.string.error_save_failed)
+                }
 
                 is Resource.Success -> {
-                    if (isNewBudget) {
-                        analyticsRepository.logEvent(AnalyticsEvents.BUDGET_CREATED, emptyMap())
-                    }
+                    // Monthly / yearly, and how many categories and accounts (0 = all of them).
+                    analyticsRepository.logEvent(
+                        if (isNewBudget) AnalyticsEvents.BUDGET_CREATED else AnalyticsEvents.BUDGET_EDITED,
+                        mapOf(
+                            AnalyticsParams.TYPE to budget.periodType.name.lowercase(),
+                            AnalyticsParams.CATEGORY_COUNT to
+                                (if (budget.isAllCategoriesSelected) 0 else budget.categories.size).toString(),
+                            AnalyticsParams.ACCOUNT_COUNT to
+                                (if (budget.isAllAccountsSelected) 0 else budget.accounts.size).toString(),
+                        ),
+                    )
                     closePage()
                 }
             }
@@ -387,6 +405,9 @@ class BudgetCreateViewModel(
     }
 
     companion object {
+        private const val FAILED_SAVE = "budget_save"
+        private const val FAILED_DELETE = "budget_delete"
+
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "account_balance"
         private const val MAX_NAME_LENGTH = 40

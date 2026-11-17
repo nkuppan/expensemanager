@@ -45,14 +45,15 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
         id = "groceries",
         notes = "Weekly groceries",
         attachments = listOf("receipt.jpg"),
-    ).apply {
-        category = FAKE_CATEGORY
-        fromAccount = FAKE_ACCOUNT
-    }
-    private val rent = FAKE_EXPENSE_TRANSACTION.copy(id = "rent", notes = "Rent").apply {
-        category = FAKE_CATEGORY
-        fromAccount = FAKE_ACCOUNT
-    }
+        category = FAKE_CATEGORY,
+        fromAccount = FAKE_ACCOUNT,
+    )
+    private val rent = FAKE_EXPENSE_TRANSACTION.copy(
+        id = "rent",
+        notes = "Rent",
+        category = FAKE_CATEGORY,
+        fromAccount = FAKE_ACCOUNT,
+    )
 
     private fun viewModel(
         transactions: List<Transaction> = listOf(groceries, rent),
@@ -75,6 +76,7 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
             deleteTransactionUseCase = deleteTransactionUseCase,
             addTransactionUseCase = addTransactionUseCase,
             imageStorageRepository = imageStorageRepository,
+            analyticsRepository = mock(),
         )
     }
 
@@ -147,10 +149,12 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `search covers all time by default and the selected period on request`() = runTest {
-        val lastYearsRent = FAKE_EXPENSE_TRANSACTION.copy(id = "old-rent", notes = "Rent").apply {
-            category = FAKE_CATEGORY
-            fromAccount = FAKE_ACCOUNT
-        }
+        val lastYearsRent = FAKE_EXPENSE_TRANSACTION.copy(
+            id = "old-rent",
+            notes = "Rent",
+            category = FAKE_CATEGORY,
+            fromAccount = FAKE_ACCOUNT,
+        )
         val viewModel = viewModel()
         advanceUntilIdle()
         // Outside the selected period, so only the all-time source has it.

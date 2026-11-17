@@ -16,6 +16,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
+import com.naveenapps.expensemanager.core.repository.logSettingChanged
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -81,6 +82,7 @@ class ReminderViewModel(
     private fun saveReminderStatus(status: Boolean) {
         viewModelScope.launch {
             updateReminderStatusUseCase.invoke(status)
+            analyticsRepository.logSettingChanged("daily_reminder", status.toString())
 
             if (status) {
                 notificationScheduler.setReminder()
@@ -121,6 +123,8 @@ class ReminderViewModel(
         viewModelScope.launch {
             saveReminderTimeUseCase.invoke(reminderTimeState)
             notificationScheduler.setReminder()
+            // The hour only, e.g. "21".
+            analyticsRepository.logSettingChanged("reminder_time", reminderTimeState.hour.toString())
         }
     }
 

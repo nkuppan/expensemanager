@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.initializer
 import android.content.Context
 import android.util.Log
 import androidx.startup.Initializer
+import com.naveenapps.expensemanager.analytics.UserPropertiesTracker
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.ProcessRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.ApplyLocaleUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.ApplyThemeUseCase
@@ -53,6 +54,9 @@ class AppInitializer : Initializer<Unit> {
             notificationScheduler.checkAndScheduleUpcomingAlert()
         }
         observeDataForWidget(context, CoroutineScope(SupervisorJob() + Dispatchers.IO))
+
+        // Behaviour user properties (transactions logged, reminder on, budget, widget, ...).
+        GlobalContext.get().get<UserPropertiesTracker>().start(CoroutineScope(SupervisorJob() + Dispatchers.IO))
 
         // Re-creates the automatic backup schedule if it's on but WorkManager lost it. KEEP
         // leaves an existing schedule untouched, so app starts never delay the next backup.

@@ -6,6 +6,8 @@ sealed class DateFilterAction {
 
     data object Save : DateFilterAction()
 
+    data object Cancel : DateFilterAction()
+
     data object ShowFromDateSelection : DateFilterAction()
 
     data object ShowToDateSelection : DateFilterAction()

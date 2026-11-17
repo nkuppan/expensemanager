@@ -43,6 +43,7 @@ val SettingsViewModelModule = module {
             getAllCategoryUseCase = get(),
             appComposeNavigator = get(),
             settingsRepository = get(),
+            analyticsRepository = get(),
         )
     }
 }

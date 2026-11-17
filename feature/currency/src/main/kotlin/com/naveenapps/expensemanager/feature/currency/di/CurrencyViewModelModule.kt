@@ -12,6 +12,7 @@ val CurrencyViewModelModule = module {
             saveCurrencyUseCase = get(),
             appComposeNavigator = get(),
             numberFormatSettingRepository = get(),
+            analyticsRepository = get(),
         )
     }
 }

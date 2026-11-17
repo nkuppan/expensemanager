@@ -52,6 +52,7 @@ import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
+import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.ReceiptTextReader
@@ -175,6 +176,21 @@ class TransactionCreateViewModel(
     // Set when a shared or scanned receipt filled the form (a quick pick used afterwards wins).
     private var receiptSource: ReceiptSource? = null
 
+    // A new transaction's visit to this screen, for analytics (null when editing).
+    private val journey: AddFormJourney? =
+        if (savedStateHandle.get<String>(ExpenseManagerArgsNames.ID).isNullOrBlank()) {
+            AddFormJourney(startedAt = System.currentTimeMillis())
+        } else {
+            null
+        }
+
+    // Set once the new transaction is saved (or planned), so leaving isn't reported as dropped.
+    private var journeySaved = false
+
+    // Transactions saved before this visit; 0 means this is the user's first try. Read up front
+    // because leaving is reported from onCleared, when coroutines can no longer run.
+    private var savesBeforeVisit: Int? = null
+
     // Ids seen in the previous accounts/categories emission; null until the first one.
     private var knownAccountIds: Set<String>? = null
     private var knownCategoryIds: Set<String>? = null
@@ -186,6 +202,9 @@ class TransactionCreateViewModel(
         openCalculatorIfEnabled(savedStateHandle)
         observeQuickPicks(savedStateHandle, getAllCategoryUseCase)
         if (fromShare) applySharedReceipt()
+        if (journey != null) {
+            viewModelScope.launch { savesBeforeVisit = feedbackRepository.getTransactionCreatedCount().first() }
+        }
     }
 
     private fun applySharedReceipt() {
@@ -215,10 +234,7 @@ class TransactionCreateViewModel(
             val amount = parsed?.amount
             analyticsRepository.logEvent(
                 if (source == ReceiptSource.SHARE) AnalyticsEvents.RECEIPT_SHARED else AnalyticsEvents.RECEIPT_SCANNED,
-                mapOf(
-                    AnalyticsParams.TYPE to if (imageUri != null) RECEIPT_IMAGE else RECEIPT_TEXT,
-                    AnalyticsParams.FOUND_AMOUNT to (amount != null).toString(),
-                ),
+                mapOf(AnalyticsParams.TYPE to if (imageUri != null) RECEIPT_IMAGE else RECEIPT_TEXT),
             )
             if (amount == null) {
                 _state.update { it.copy(isReadingReceipt = false, showNumberPad = true) }
@@ -226,6 +242,7 @@ class TransactionCreateViewModel(
             }
             if (parsed == null) return@launch
             receiptSource = source
+            journey?.touch(AddFormJourney.FIELD_RECEIPT)
             syncState.first { it.isAccountSyncCompleted && it.isCategorySyncCompleted }
 
             val suggestions = getPayeeSuggestionsUseCase(parsed.type, parsed.payee)
@@ -302,6 +319,7 @@ class TransactionCreateViewModel(
     // nothing is logged by accident and every field can be tweaked first.
     private fun applyQuickPick(pick: QuickPick) {
         usedQuickPick = true
+        journey?.touch(AddFormJourney.FIELD_QUICK_PICK)
         transactionType.update { pick.type }
         _state.update {
             it.copy(
@@ -515,6 +533,7 @@ class TransactionCreateViewModel(
         val amountValue = numberFormatRepository.parseToDouble(amountText)
 
         if (amountText.isBlank() || amountValue == null || amountValue <= 0.0) {
+            // Not reported: analytics never says anything about the amount.
             _state.update { it.copy(amount = it.amount.copy(valueError = true)) }
             return
         }
@@ -523,6 +542,7 @@ class TransactionCreateViewModel(
             currentState.selectedFromAccount.id == currentState.selectedToAccount.id
         ) {
             // Previously returned silently, so tapping Save appeared to do nothing.
+            logSaveBlocked(BLOCKED_SAME_ACCOUNT)
             viewModelScope.launch {
                 _event.send(TransactionCreateEvent.ShowMessage(R.string.select_different_account))
             }
@@ -563,6 +583,7 @@ class TransactionCreateViewModel(
         viewModelScope.launch {
             runCatching { planRecurringTransactionUseCase.invoke(transaction, frequency) }
                 .onSuccess {
+                    journeySaved = true
                     discardSessionAttachments()
                     analyticsRepository.logEvent(
                         AnalyticsEvents.RECURRING_CREATED,
@@ -574,7 +595,8 @@ class TransactionCreateViewModel(
                     )
                     closePage()
                 }
-                .onFailure {
+                .onFailure { error ->
+                    analyticsRepository.logFailure(FAILED_PLAN, error)
                     _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_save_failed))
                 }
         }
@@ -617,6 +639,7 @@ class TransactionCreateViewModel(
                 }
                 closePage()
             } else {
+                analyticsRepository.logFailure(FAILED_SAVE, (response as? Resource.Error)?.exception)
                 _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_save_failed))
             }
         }
@@ -627,6 +650,7 @@ class TransactionCreateViewModel(
     // transactions and enough days have passed since install — requests Google Play's in-app
     // review popup exactly once for the life of the install.
     private suspend fun onNewTransactionCreated(transaction: Transaction) {
+        journeySaved = true
         feedbackRepository.setTransactionCreated(true)
         logTransactionCreated(transaction)
         if (feedbackRepository.shouldShowFeedbackDialog().first()) {
@@ -661,14 +685,58 @@ class TransactionCreateViewModel(
                     usedQuickPick -> SOURCE_QUICK_PICK
                     else -> receiptSource?.analyticsSource ?: SOURCE_MANUAL
                 },
+            ) + journeyParams(),
+        )
+    }
+
+    /** Time on the screen, fields changed and blocked save taps, for the save and drop events. */
+    private fun journeyParams(): Map<String, String> {
+        val journey = journey ?: return emptyMap()
+        return mapOf(
+            AnalyticsParams.SECONDS to journey.seconds(System.currentTimeMillis()).toString(),
+            AnalyticsParams.FIELDS to journey.fields,
+            AnalyticsParams.COUNT to journey.blockedSaves.toString(),
+        )
+    }
+
+    private fun logSaveBlocked(reason: String) {
+        journey?.onSaveBlocked()
+        analyticsRepository.logEvent(
+            AnalyticsEvents.TRANSACTION_SAVE_BLOCKED,
+            mapOf(
+                AnalyticsParams.REASON to reason,
+                AnalyticsParams.IS_FIRST to (savesBeforeVisit == 0).toString(),
             ),
+        )
+    }
+
+    /**
+     * Left the Add screen for a new transaction without saving: how far they got, which
+     * fields they changed, how long they stayed and how they had opened it.
+     */
+    private fun logFormAbandoned() {
+        val journey = journey ?: return
+        if (journeySaved) return
+        analyticsRepository.logEvent(
+            AnalyticsEvents.TRANSACTION_FORM_ABANDONED,
+            mapOf(
+                AnalyticsParams.STAGE to journey.stage,
+                AnalyticsParams.TYPE to _state.value.transactionType.name.lowercase(),
+                AnalyticsParams.IS_FIRST to (savesBeforeVisit == 0).toString(),
+                AnalyticsParams.SOURCE to when {
+                    fromShare -> OPENED_FROM_SHARE
+                    initialRepeat != null -> OPENED_FOR_PLANNING
+                    else -> OPENED_DEFAULT
+                },
+            ) + journeyParams(),
         )
     }
 
     private fun deleteTransaction() {
         val transaction = editingTransaction ?: return
         viewModelScope.launch {
-            if (deleteTransactionUseCase.invoke(transaction) is Resource.Success) {
+            val result = deleteTransactionUseCase.invoke(transaction)
+            if (result is Resource.Success) {
                 analyticsRepository.logEvent(
                     AnalyticsEvents.TRANSACTION_DELETED,
                     mapOf(AnalyticsParams.TYPE to transaction.type.name.lowercase()),
@@ -679,6 +747,7 @@ class TransactionCreateViewModel(
                 discardSessionAttachments()
                 closePage()
             } else {
+                analyticsRepository.logFailure(FAILED_DELETE, (result as? Resource.Error)?.exception)
                 _state.update { it.copy(showDeleteDialog = false) }
                 _event.send(TransactionCreateEvent.ShowMessage(DesignSystemR.string.error_delete_failed))
             }
@@ -784,10 +853,12 @@ class TransactionCreateViewModel(
     }
 
     private fun setNotes(notes: String) {
+        journey?.touch(AddFormJourney.FIELD_NOTES)
         _state.update { it.copy(notes = it.notes.copy(value = notes)) }
     }
 
     private fun changeTransactionType(type: TransactionType) {
+        journey?.touch(AddFormJourney.FIELD_TYPE)
         transactionType.update { type }
         _state.update { current ->
             // Switching to Transfer with both sides on the same account would only fail on
@@ -851,7 +922,10 @@ class TransactionCreateViewModel(
 
             TransactionCreateAction.Save -> save()
 
-            is TransactionCreateAction.SelectRepeat -> _state.update { it.copy(repeat = action.frequency) }
+            is TransactionCreateAction.SelectRepeat -> {
+                journey?.touch(AddFormJourney.FIELD_REPEAT)
+                _state.update { it.copy(repeat = action.frequency) }
+            }
 
             TransactionCreateAction.OpenRecurringSeries -> _state.value.recurringRuleId?.let {
                 appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactionEdit(it))
@@ -881,8 +955,9 @@ class TransactionCreateViewModel(
                 )
             }
 
-            is TransactionCreateAction.SelectCategory -> _state.update {
-                it.copy(selectedCategory = action.category, showCategorySelection = false)
+            is TransactionCreateAction.SelectCategory -> {
+                journey?.touch(AddFormJourney.FIELD_CATEGORY)
+                _state.update { it.copy(selectedCategory = action.category, showCategorySelection = false) }
             }
 
             is TransactionCreateAction.ShowAccountSelection -> _state.update {
@@ -896,6 +971,7 @@ class TransactionCreateViewModel(
             }
 
             is TransactionCreateAction.SelectAccount -> _state.update {
+                journey?.touch(AddFormJourney.FIELD_ACCOUNT)
                 when (it.accountSelection) {
                     AccountSelection.FROM_ACCOUNT -> it.copy(
                         selectedFromAccount = action.account,
@@ -927,6 +1003,7 @@ class TransactionCreateViewModel(
             }
 
             is TransactionCreateAction.SelectDate -> _state.update {
+                journey?.touch(AddFormJourney.FIELD_DATE)
                 it.copy(
                     dateTime = action.date,
                     showDateSelection = false,
@@ -944,6 +1021,7 @@ class TransactionCreateViewModel(
 
             is TransactionCreateAction.AttachmentPicked -> {
                 _state.update { it.copy(showAttachmentPicker = false) }
+                journey?.touch(AddFormJourney.FIELD_ATTACHMENT)
                 onAttachmentPicked(action.uri)
             }
 
@@ -970,6 +1048,7 @@ class TransactionCreateViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        logFormAbandoned()
         discardSessionAttachments()
     }
 
@@ -983,6 +1062,13 @@ class TransactionCreateViewModel(
         private const val SOURCE_QUICK_PICK = "quick_pick"
         private const val SOURCE_MANUAL = "manual"
         private const val SOURCE_PLANNED = "planned"
+        private const val FAILED_SAVE = "transaction_save"
+        private const val FAILED_PLAN = "transaction_plan"
+        private const val FAILED_DELETE = "transaction_delete"
+        private const val BLOCKED_SAME_ACCOUNT = "same_account"
+        private const val OPENED_FROM_SHARE = "share"
+        private const val OPENED_FOR_PLANNING = "planning"
+        private const val OPENED_DEFAULT = "default"
         private const val RECEIPT_TEXT = "text"
         private const val RECEIPT_IMAGE = "image"
 

@@ -66,7 +66,6 @@ fun CategoryTransactionTabScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoryTransactionTabScreenContent(
     state: UiState<CategoryTransactionState>,

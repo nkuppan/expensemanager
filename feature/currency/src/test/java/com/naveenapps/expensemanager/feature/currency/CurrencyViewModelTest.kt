@@ -50,6 +50,7 @@ class CurrencyViewModelTest : BaseCoroutineTest() {
             SaveCurrencyUseCase(currencyRepository),
             numberFormatSettingRepository,
             appComposeNavigator,
+            mock(),
         )
     }
 

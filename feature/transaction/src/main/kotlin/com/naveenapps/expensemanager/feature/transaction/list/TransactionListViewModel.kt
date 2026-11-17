@@ -20,23 +20,31 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class TransactionListViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
@@ -46,6 +54,7 @@ class TransactionListViewModel(
     private val deleteTransactionUseCase: DeleteTransactionUseCase,
     private val addTransactionUseCase: AddTransactionUseCase,
     private val imageStorageRepository: ImageStorageRepository,
+    private val analyticsRepository: AnalyticsRepository,
     categoryDisplayNames: CategoryDisplayNames = CategoryDisplayNames.Stored,
 ) : ViewModel() {
 
@@ -128,6 +137,24 @@ class TransactionListViewModel(
                 )
             }
         }.flowOn(appCoroutineDispatchers.computation).launchIn(viewModelScope)
+
+        // One search_used per search the user settled on (not per keystroke): how many results
+        // and whether it covered all time or the selected period. The text itself isn't sent.
+        searchQuery
+            .debounce(SEARCH_SETTLE_MS)
+            .map { it.trim() }
+            .distinctUntilChanged()
+            .filter { it.isNotEmpty() }
+            .onEach {
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.SEARCH_USED,
+                    mapOf(
+                        AnalyticsParams.COUNT to resultsBucket(_transactions.value.searchSummary?.count ?: 0),
+                        AnalyticsParams.TYPE to searchScope.value.name.lowercase(),
+                    ),
+                )
+            }
+            .launchIn(viewModelScope)
     }
 
     private fun openCreateScreen(transactionId: String? = null) {
@@ -211,6 +238,16 @@ class TransactionListViewModel(
  * account names. A built-in category matches both by the name shown ([displayName], e.g. its
  * Hindi label) and by its stored English name.
  */
+private const val SEARCH_SETTLE_MS = 1_500L
+
+/** Search results for analytics: 0, 1-5, 6-20, 21+. */
+internal fun resultsBucket(count: Int): String = when {
+    count <= 0 -> "0"
+    count <= 5 -> "1-5"
+    count <= 20 -> "6-20"
+    else -> "21+"
+}
+
 internal fun Transaction.matches(query: String, displayName: (Category) -> String = { it.name }): Boolean = matchesSearch(query, listOf(notes, category.name, displayName(category), fromAccount.name, toAccount?.name))
 
 fun List<Transaction>.toTransactionSum() = this.sumOf {

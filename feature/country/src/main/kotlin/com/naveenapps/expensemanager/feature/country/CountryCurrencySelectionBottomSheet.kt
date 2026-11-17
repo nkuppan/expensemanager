@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountryCurrencySelectionBottomSheet(
     modifier: Modifier = Modifier,

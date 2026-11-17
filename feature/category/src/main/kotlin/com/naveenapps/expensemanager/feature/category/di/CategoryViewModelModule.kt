@@ -23,6 +23,7 @@ val CategoryViewModelModule = module {
             deleteCategoryUseCase = get(),
             imageStorageRepository = get(),
             appComposeNavigator = get(),
+            analyticsRepository = get(),
         )
     }
     viewModel {

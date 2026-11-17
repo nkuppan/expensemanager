@@ -34,6 +34,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.naveenapps.expensemanager.analytics.UserPropertiesTracker
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -64,6 +65,8 @@ internal class MainActivity :
     private val appComposeNavigator: AppComposeNavigator by inject()
 
     private val analyticsRepository: AnalyticsRepository by inject()
+
+    private val userPropertiesTracker: UserPropertiesTracker by inject()
 
     private val sharedReceiptRepository: SharedReceiptRepository by inject()
 
@@ -256,6 +259,8 @@ internal class MainActivity :
 
     override fun onResume() {
         super.onResume()
+        // Re-read what can change outside the app: notification permission, widgets, language.
+        userPropertiesTracker.refresh()
         // How the app was opened (launcher, reminder, widget, other notifications, share, …).
         viewModel.takeOpenSource(SystemClock.elapsedRealtime())?.let { source ->
             analyticsRepository.logEvent(AnalyticsEvents.APP_OPENED, mapOf(AnalyticsParams.SOURCE to source))

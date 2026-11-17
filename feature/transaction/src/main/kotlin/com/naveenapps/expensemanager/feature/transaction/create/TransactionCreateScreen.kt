@@ -9,7 +9,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -34,7 +33,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -59,7 +57,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
-import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddTile
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
@@ -102,10 +99,11 @@ import com.naveenapps.expensemanager.feature.transaction.create.receipt.ScanRece
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.SuggestedCategoryRow
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.rememberReceiptScanner
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import java.util.Calendar
-import java.util.Date
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
+import java.util.Calendar
+import java.util.Date
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 
 @Composable
 fun TransactionCreateScreen(
@@ -280,7 +278,6 @@ private fun TransactionCreateScreenContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AttachmentPickerView(
     onAction: (TransactionCreateAction) -> Unit,
     onCaptureRequested: () -> Unit,
@@ -305,7 +302,6 @@ private fun AttachmentPickerView(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AccountSelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
@@ -332,7 +328,6 @@ private fun AccountSelectionView(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun CategorySelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
@@ -682,7 +677,6 @@ private fun TransactionCreateContent(
  * "Doesn't repeat" plus the four frequencies as chips, so the choice is one tap and always
  * visible. Once one is picked, the line below says when the next copy will be logged.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun RepeatSelector(
     selected: RecurringFrequency?,

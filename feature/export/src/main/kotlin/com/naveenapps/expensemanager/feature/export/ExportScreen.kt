@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.export
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -100,11 +101,22 @@ fun ExportScreen(
     )
 }
 
-private fun createFileEvent(
+/**
+ * Opens the system "save as" picker. Some phones have no app for it (e.g. Samsung with the
+ * system Files / DocumentsUI app disabled), which crashed with ActivityNotFoundException. Then
+ * the file is exported to the app's cache instead and [onNoPicker] shares it right away, so the
+ * user can still save it to Drive, email it or open it in another app.
+ */
+private fun launchFileCreator(
     fileCreatorIntent: ManagedActivityResultLauncher<Intent, ActivityResult>,
     fileType: ExportFileType,
+    onNoPicker: () -> Unit,
 ) {
-    fileCreatorIntent.launch(getFileCreateIntent(fileType))
+    try {
+        fileCreatorIntent.launch(getFileCreateIntent(fileType))
+    } catch (error: ActivityNotFoundException) {
+        onNoPicker()
+    }
 }
 
 private fun fileExportedProcess(
@@ -139,7 +151,6 @@ private fun fileExportedProcess(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenContent(
     state: ExportState,
@@ -159,20 +170,43 @@ private fun ExportScreenContent(
         }
     }
 
+    // Set when there was no "save as" picker and the export went to the cache: share it as
+    // soon as it's ready, since it isn't saved anywhere the user can see.
+    var shareWhenExported by remember { mutableStateOf(false) }
+    // The event collector keeps the first composition's lambdas, so read the file type fresh.
+    val currentFileType by rememberUpdatedState(state.fileType)
+    val startExport: () -> Unit = {
+        launchFileCreator(fileCreatorIntent, currentFileType) {
+            shareWhenExported = true
+            onAction(ExportAction.StartExport(null))
+        }
+    }
+
     ObserveAsEvents(eventFlow) { event ->
         when (event) {
-            ExportEvent.CreateFile -> createFileEvent(fileCreatorIntent, state.fileType)
+            ExportEvent.CreateFile -> startExport()
 
-            is ExportEvent.FileExported -> fileExportedProcess(
-                coroutineScope,
-                snackbarHostState,
-                event,
-                context,
-                shareWithUri,
-            )
+            is ExportEvent.FileExported -> {
+                val file = event.exportData.file
+                if (shareWhenExported && file != null) {
+                    shareWhenExported = false
+                    shareWithUri(FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file))
+                } else {
+                    fileExportedProcess(
+                        coroutineScope,
+                        snackbarHostState,
+                        event,
+                        context,
+                        shareWithUri,
+                    )
+                }
+            }
 
-            is ExportEvent.Error -> coroutineScope.launch {
-                snackbarHostState.showSnackbar(message = event.message.asString(context))
+            is ExportEvent.Error -> {
+                shareWhenExported = false
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(message = event.message.asString(context))
+                }
             }
         }
     }
@@ -217,9 +251,7 @@ private fun ExportScreenContent(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
 
-                onClick = {
-                    fileCreatorIntent.launch(getFileCreateIntent(fileType = state.fileType))
-                },
+                onClick = { startExport() },
             ) {
                 Row {
                     Icon(
@@ -249,7 +281,6 @@ private fun ExportScreenContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExportScreenContent(
     selectedDate: String,

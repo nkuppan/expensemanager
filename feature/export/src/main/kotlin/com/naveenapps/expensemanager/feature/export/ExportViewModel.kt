@@ -15,6 +15,7 @@ import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.logFailure
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -95,6 +96,10 @@ class ExportViewModel(
             )
             when (response) {
                 is Resource.Error -> {
+                    analyticsRepository.logFailure(
+                        "export_${_state.value.fileType.name.lowercase()}",
+                        response.exception,
+                    )
                     _event.send(
                         ExportEvent.Error(
                             UiText.StringResource(R.string.export_error_message),

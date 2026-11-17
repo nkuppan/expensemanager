@@ -55,6 +55,7 @@ val TransactionViewModelModule = module {
             deleteTransactionUseCase = get(),
             addTransactionUseCase = get(),
             imageStorageRepository = get(),
+            analyticsRepository = get(),
             categoryDisplayNames = get(),
         )
     }

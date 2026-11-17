@@ -41,7 +41,7 @@ class GetBudgetDetailUseCase(
                     }
                 }
             val transactionAmount = budgetTransactions?.sumOf { it.amount.amount } ?: 0.0
-            val percent = (transactionAmount / budget.amount).toFloat() * 100
+            val percent = budgetSpentPercent(transactionAmount, budget.amount)
             val (byCategory, total) = budgetTransactions.orEmpty()
                 .groupByCategory(CategoryType.EXPENSE) { getFormattedAmountUseCase(it, currency) }
             budget.toBudgetUiModel(

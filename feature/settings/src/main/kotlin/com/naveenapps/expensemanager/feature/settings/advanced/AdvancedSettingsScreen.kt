@@ -55,7 +55,6 @@ fun AdvancedSettingsScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AdvancedSettingsScaffoldView(
     state: AdvancedSettingState,

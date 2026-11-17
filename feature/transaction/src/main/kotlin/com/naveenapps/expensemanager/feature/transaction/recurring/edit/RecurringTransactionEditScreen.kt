@@ -158,7 +158,6 @@ private fun RecurringTransactionEditContent(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun RecurringEditDialogs(
     state: RecurringTransactionEditState,
     onAction: (RecurringTransactionEditAction) -> Unit,

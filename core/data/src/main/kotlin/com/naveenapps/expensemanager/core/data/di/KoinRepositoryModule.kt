@@ -91,7 +91,6 @@ val RepositoryModule = module {
     single<AnalyticsRepository> {
         AnalyticsRepositoryImpl(
             firebaseAnalytics = get(),
-            devicePropertyRepository = get(),
         )
     }
     single<JsonConverterRepository> {

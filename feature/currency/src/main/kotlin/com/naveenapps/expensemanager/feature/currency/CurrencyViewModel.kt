@@ -8,6 +8,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveC
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.logSettingChanged
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatSettingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +25,7 @@ class CurrencyViewModel(
     private val saveCurrencyUseCase: SaveCurrencyUseCase,
     private val numberFormatSettingRepository: NumberFormatSettingRepository,
     private val appComposeNavigator: AppComposeNavigator,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -58,17 +61,20 @@ class CurrencyViewModel(
                 )
             }
             saveSelectedCurrency()
+            analyticsRepository.logSettingChanged("currency", currency.code.ifBlank { currency.name }.lowercase())
         }
     }
 
     private fun setCurrencyPositionType(currencyPosition: CurrencyPosition) {
         _state.update { it.copy(currency = it.currency.copy(position = currencyPosition)) }
         saveSelectedCurrency()
+        analyticsRepository.logSettingChanged("currency_position", currencyPosition.name.lowercase())
     }
 
     private fun setTextFormatChange(textFormat: NumberFormatType) {
         _state.update { it.copy(numberFormatType = textFormat) }
         saveSelectedCurrency()
+        analyticsRepository.logSettingChanged("number_format", textFormat.name.lowercase())
     }
 
     private fun saveSelectedCurrency() {

@@ -20,6 +20,9 @@ import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,6 +42,7 @@ class AnalysisScreenViewModel(
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
     getPeriodComparisonUseCase: GetPeriodComparisonUseCase,
     private val appComposeNavigator: AppComposeNavigator,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _insights = MutableStateFlow<AnalysisInsightsUi?>(null)
@@ -163,15 +167,29 @@ class AnalysisScreenViewModel(
     }
 
     fun openCategory(categoryId: String) {
+        logDrillDown(DRILL_CATEGORY)
         appComposeNavigator.navigate(ExpenseManagerScreens.CategoryDetails(categoryId))
     }
 
     fun openCategoryList() {
+        logDrillDown(DRILL_CATEGORY_LIST)
         appComposeNavigator.navigate(ExpenseManagerScreens.CategoryTransaction)
     }
 
     fun openTransaction(transactionId: String) {
+        logDrillDown(DRILL_TRANSACTION)
         appComposeNavigator.navigate(ExpenseManagerScreens.TransactionCreate(transactionId))
+    }
+
+    /** What people open from Analysis: a category, all categories or a transaction. */
+    private fun logDrillDown(target: String) {
+        analyticsRepository.logEvent(AnalyticsEvents.ANALYSIS_DRILL_DOWN, mapOf(AnalyticsParams.TYPE to target))
+    }
+
+    private companion object {
+        const val DRILL_CATEGORY = "category"
+        const val DRILL_CATEGORY_LIST = "category_list"
+        const val DRILL_TRANSACTION = "transaction"
     }
 }
 

@@ -55,7 +55,8 @@ fun rememberImagePickerActions(
         if (granted) {
             val uri = createCaptureUri()
             pendingCaptureUri = uri
-            cameraLauncher.launch(uri)
+            // No camera app (e.g. camera disabled by a device policy): nothing to open.
+            runCatching { cameraLauncher.launch(uri) }
         }
     }
 
@@ -74,15 +75,17 @@ fun rememberImagePickerActions(
             if (hasPermission) {
                 val uri = createCaptureUri()
                 pendingCaptureUri = uri
-                cameraLauncher.launch(uri)
+                runCatching { cameraLauncher.launch(uri) }
             } else {
                 cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
             }
         },
         onGalleryRequested = {
-            galleryLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
-            )
+            runCatching {
+                galleryLauncher.launch(
+                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly),
+                )
+            }
         },
     )
 }
