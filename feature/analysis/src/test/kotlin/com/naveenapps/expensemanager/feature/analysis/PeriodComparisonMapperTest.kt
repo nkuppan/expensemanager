@@ -15,8 +15,7 @@ class PeriodComparisonMapperTest {
     private val zone = ZoneOffset.UTC
     private val format: (Double) -> String = { "₹" + it.toInt() }
 
-    private fun millis(year: Int, month: Int, day: Int): Long =
-        LocalDate.of(year, month, day).atStartOfDay(zone).toInstant().toEpochMilli()
+    private fun millis(year: Int, month: Int, day: Int): Long = LocalDate.of(year, month, day).atStartOfDay(zone).toInstant().toEpochMilli()
 
     private fun comparison(
         type: DateRangeType = DateRangeType.THIS_MONTH,

@@ -57,6 +57,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddTile
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
@@ -99,11 +100,10 @@ import com.naveenapps.expensemanager.feature.transaction.create.receipt.ScanRece
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.SuggestedCategoryRow
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.rememberReceiptScanner
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import kotlinx.coroutines.launch
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Calendar
 import java.util.Date
-import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import kotlinx.coroutines.launch
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun TransactionCreateScreen(
