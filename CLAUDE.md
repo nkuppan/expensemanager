@@ -39,6 +39,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Room schema changes are hand-written migrations (see "Database" below) validated by instrumented tests under `core/database/src/androidTest/.../database/Migration<N>To<N+1>Test.kt` — these require `connectedDebugAndroidTest`, not the plain `test` task.
 
+## Git hooks
+
+`.githooks/pre-push` runs `./gradlew spotlessApply` before every push. If it reformats files, it commits them as "Apply spotless formatting" and stops the push; run `git push` again. Files with uncommitted changes are formatted but not committed. Gradle sets `core.hooksPath` to `.githooks` on sync (not on CI). Skip once with `SKIP_SPOTLESS_HOOK=1 git push`.
+
 ## Architecture
 
 This is a multi-module Clean Architecture Android app (single-Activity, 100% Kotlin/Compose). The module graph enforces a strict one-way dependency direction; when adding code, respect these boundaries rather than reaching "up" a layer:
