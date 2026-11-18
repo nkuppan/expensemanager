@@ -25,6 +25,8 @@ fun MainScreen(
     onQuickAddHandled: () -> Unit = {},
     pendingOpenAutoBackup: Boolean = false,
     onOpenAutoBackupHandled: () -> Unit = {},
+    pendingSharedReceipt: Boolean = false,
+    onSharedReceiptHandled: () -> Unit = {},
 ) {
     ExpenseManagerTheme(isDarkTheme = isDarkTheme) {
         val navHostController = rememberNavController()
@@ -61,6 +63,15 @@ fun MainScreen(
                 launchSingleTop = true
             }
             onQuickAddHandled()
+        }
+
+        // Receipt shared from another app: open the add screen pre-filled. No launchSingleTop,
+        // so an add screen that's already open doesn't swallow the new receipt.
+        LaunchedEffect(pendingSharedReceipt) {
+            if (!pendingSharedReceipt) return@LaunchedEffect
+            snapshotFlow { navHostController.currentBackStackEntry }.filterNotNull().first()
+            navHostController.navigate(ExpenseManagerScreens.TransactionCreate(id = null, fromShare = true))
+            onSharedReceiptHandled()
         }
 
         // "Automatic backup failed" notification: same direct navigation as quick add.

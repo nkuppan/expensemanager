@@ -62,6 +62,7 @@ class CategoryCreateViewModelTest : BaseCoroutineTest() {
             ),
             imageStorageRepository = imageStorageRepository,
             appComposeNavigator = appComposeNavigator,
+            analyticsRepository = mock(),
         )
     }
 

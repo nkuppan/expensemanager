@@ -7,4 +7,7 @@
     <string name="privacy_policy">Kebijakan Privasi</string>
     <string name="terms_and_conditions">Syarat dan ketentuan</string>
     <string name="licenses">Lisensi sumber terbuka</string>
+    <string name="search_libraries">Cari pustaka</string>
+    <string name="open_license">Buka lisensi</string>
+    <string name="licenses_unavailable">Lisensi tidak disertakan dalam build ini.</string>
 </resources>

@@ -75,6 +75,13 @@
     <string name="recurring_empty_message">İşlem eklerken Tekrarla altında Günlük, Haftalık, Aylık veya Yıllık seçin; sizin için kaydedilir.</string>
     <string name="edit">Düzenle</string>
     <string name="search_transactions_hint">Notlarda, kategorilerde, hesaplarda ara</string>
+    <string name="search_spent">Harcanan %1$s</string>
+    <string name="search_earned">Kazanılan %1$s</string>
+    <string name="search_all_time">Tüm zamanlar</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d sonuç</item>
+        <item quantity="other">%d sonuç</item>
+    </plurals>
     <string name="clear_search">Aramayı temizle</string>
     <string name="no_matching_transactions">Aramanızla eşleşen işlem yok</string>
     <string name="transaction_deleted">İşlem silindi</string>
@@ -97,4 +104,14 @@
     <string name="recurring_part_of_series">Tekrarlanan serinin parçası</string>
     <string name="recurring_edit_series">Gelecek işlemleri değiştirmek için seriyi düzenleyin</string>
     <string name="add_recurring_transaction">Tekrarlanan işlem ekle</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Sık kullanılanlar</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">Planlandı: ilk kez %1$s tarihinde eklenir. O zamana kadar hiçbir şey kaydedilmez.</string>
+    <string name="receipt_amount_not_found">Bu makbuzdan tutar okunamadı. Lütfen aşağıya girin.</string>
+    <string name="scan_receipt">Fişi tara</string>
+    <string name="reading_receipt">Fiş okunuyor…</string>
+    <string name="suggested_categories">Önerilen</string>
+    <string name="receipt_scanner_unavailable">Fiş tarayıcı bu cihazda kullanılamıyor</string>
+    <string name="receipt_scanner_preparing">Google Play Hizmetleri fiş tarayıcıyı indiriyor. Hazır olduğunda açılacak.</string>
 </resources>

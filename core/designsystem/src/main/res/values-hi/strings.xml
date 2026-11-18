@@ -48,4 +48,6 @@
     <string name="no_search_results">कोई मिलान नहीं</string>
     <string name="selection_select_all">सभी चुनें</string>
     <string name="selection_done">हो गया</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">आवर्ती</string>
 </resources>

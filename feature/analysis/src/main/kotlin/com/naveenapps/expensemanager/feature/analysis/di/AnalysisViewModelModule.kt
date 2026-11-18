@@ -18,6 +18,7 @@ val AnalysisViewModelModule = module {
             getFormattedAmountUseCase = get(),
             getPeriodComparisonUseCase = get(),
             appComposeNavigator = get(),
+            analyticsRepository = get(),
         )
     }
 }

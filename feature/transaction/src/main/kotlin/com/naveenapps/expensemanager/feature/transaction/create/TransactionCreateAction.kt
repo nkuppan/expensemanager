@@ -73,4 +73,17 @@ sealed class TransactionCreateAction {
 
     /** Opens the rule ("series") this transaction was logged by. */
     data object OpenRecurringSeries : TransactionCreateAction()
+
+    data class ApplyQuickPick(val pick: QuickPick) : TransactionCreateAction()
+
+    /** The receipt scanner is about to open (the keypad closes first). */
+    data object ReceiptScanRequested : TransactionCreateAction()
+
+    data class ReceiptScanned(val uri: Uri) : TransactionCreateAction()
+
+    /** The scanner couldn't start, e.g. no Google Play services on the device. */
+    data object ReceiptScanFailed : TransactionCreateAction()
+
+    /** Play services is downloading the scanner; it opens by itself when ready. */
+    data object ReceiptScannerPreparing : TransactionCreateAction()
 }

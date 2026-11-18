@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,7 +24,6 @@ import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DeleteDialogItem(
     confirm: () -> Unit,
@@ -42,9 +43,11 @@ private fun DeleteDialogContent(
     dismiss: () -> Unit,
     message: String? = null,
 ) {
+    // Scrollable so both buttons stay reachable in landscape or with a very large font size.
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
             .padding(24.dp) // Increased padding for a more premium "Widget" feel
             .navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(16.dp),

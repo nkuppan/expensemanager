@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.initializer
 import android.content.Context
 import android.util.Log
 import androidx.startup.Initializer
+import com.naveenapps.expensemanager.analytics.UserPropertiesTracker
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.ProcessRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.ApplyLocaleUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.theme.ApplyThemeUseCase
@@ -34,11 +35,28 @@ class AppInitializer : Initializer<Unit> {
         CoroutineScope(SupervisorJob() + Dispatchers.Main).launch {
             applyThemeUseCase.invoke()
             applyLocaleUseCase.invoke()
+            // Before rescheduling (which moves the due time on): did the last reminder never run?
+            notificationScheduler.findMissedReminder()?.let { lateMinutes ->
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.REMINDER_MISSED,
+                    mapOf(
+                        AnalyticsParams.LATE_MINUTES to lateMinutes.toString(),
+                        // Blocked by a setting now, or the job just never ran (battery savers).
+                        AnalyticsParams.REASON to (
+                            notificationScheduler.reminderBlockReason()?.analyticsValue ?: REASON_NOT_RUN
+                            ),
+                    ),
+                )
+            }
             notificationScheduler.checkAndRestartReminder()
             notificationScheduler.scheduleWeeklySummary()
             notificationScheduler.scheduleRecurringTransactions()
+            notificationScheduler.checkAndScheduleUpcomingAlert()
         }
         observeDataForWidget(context, CoroutineScope(SupervisorJob() + Dispatchers.IO))
+
+        // Behaviour user properties (transactions logged, reminder on, budget, widget, ...).
+        GlobalContext.get().get<UserPropertiesTracker>().start(CoroutineScope(SupervisorJob() + Dispatchers.IO))
 
         // Re-creates the automatic backup schedule if it's on but WorkManager lost it. KEEP
         // leaves an existing schedule untouched, so app starts never delay the next backup.
@@ -70,3 +88,5 @@ class AppInitializer : Initializer<Unit> {
         KoinInitializer::class.java,
     )
 }
+
+private const val REASON_NOT_RUN = "not_run"

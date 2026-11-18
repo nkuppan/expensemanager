@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.about
 
 import androidx.lifecycle.ViewModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
+import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.DevicePropertyRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,6 +26,7 @@ class AboutUsViewModel(
     fun processAction(action: AboutAction) {
         when (action) {
             AboutAction.ClosePage -> closePage()
+            AboutAction.OpenLicense -> appComposeNavigator.navigate(ExpenseManagerScreens.OpenSourceLicenses)
             else -> Unit
         }
     }

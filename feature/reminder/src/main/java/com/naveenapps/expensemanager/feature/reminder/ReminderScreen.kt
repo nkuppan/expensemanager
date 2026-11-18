@@ -25,6 +25,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Edit
+import androidx.compose.material.icons.rounded.EventRepeat
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.NotificationsOff
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -89,6 +91,12 @@ fun ReminderScreen(
         }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    // Re-check delivery whenever the screen shows, e.g. back from notification or battery settings.
+    LifecycleResumeEffect(Unit) {
+        viewModel.processAction(ReminderAction.RefreshDelivery)
+        onPauseOrDispose { }
+    }
 
     ObserveAsEvents(viewModel.event) {
         when (it) {
@@ -171,7 +179,7 @@ private fun ReminderScreenContent(
                             modifier = Modifier.padding(bottom = 8.dp, start = 4.dp),
                         )
 
-                        AppCardView {
+                        AppCardView(modifier = Modifier.padding(bottom = 16.dp)) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -218,7 +226,26 @@ private fun ReminderScreenContent(
                                 )
                             }
                         }
+
+                        ReminderDeliverySection(
+                            state = state,
+                            onAction = onAction,
+                            modifier = Modifier.padding(bottom = 16.dp),
+                        )
                     }
+                }
+
+                // Heads-up before recurring payments: its own switch, independent of the reminder.
+                AppCardView {
+                    SwitchSettingsItem(
+                        icon = Icons.Rounded.EventRepeat,
+                        title = stringResource(id = R.string.upcoming_alerts_title),
+                        description = stringResource(id = R.string.upcoming_alerts_description),
+                        checked = state.upcomingAlertsOn,
+                        onCheckedChange = { on ->
+                            onAction.invoke(ReminderAction.ChangeUpcomingAlerts(on))
+                        },
+                    )
                 }
             } else {
                 // Permission required state

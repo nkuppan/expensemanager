@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Это займёт пару секунд. Нажмите, чтобы добавить расход.</string>
     <string name="reminder_action_add">Добавить расход</string>
     <string name="reminder_action_no_spend">Сегодня без трат</string>
+    <string name="reminder_quick_logged">✓ Записано: %1$s</string>
+    <string name="reminder_quick_logged_body">Добавлено в сегодняшние расходы.</string>
+    <string name="reminder_action_undo">Отменить</string>
+    <string name="reminder_quick_log_failed">Не удалось записать</string>
+    <string name="reminder_quick_log_failed_body">Нажмите, чтобы добавить в приложении.</string>
     <string name="weekly_summary_title">Ваша неделя в цифрах</string>
     <string name="weekly_summary_less">На этой неделе вы потратили %1$s — на %2$d%% меньше, чем на прошлой. Отлично!</string>
     <string name="weekly_summary_more">На этой неделе вы потратили %1$s — на %2$d%% больше, чем на прошлой.</string>
@@ -20,4 +25,16 @@
     <string name="auto_backup_failed_folder_body">Нет доступа к папке для копий. Нажмите, чтобы выбрать её снова.</string>
     <string name="auto_backup_failed_write_body">Не удалось создать резервную копию. Нажмите, чтобы проверить настройки.</string>
     <string name="auto_backup_failed_action">Исправить</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Предстоящие платежи</string>
+    <string name="upcoming_channel_description">Напоминание вечером накануне добавления еженедельной, ежемесячной или ежегодной повторяющейся записи.</string>
+    <string name="upcoming_alert_title_one">Завтра: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s будет добавлено автоматически.</string>
+    <string name="upcoming_alert_body_many">Они будут добавлены автоматически.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d повторяющаяся запись завтра</item>
+        <item quantity="few">%d повторяющиеся записи завтра</item>
+        <item quantity="many">%d повторяющихся записей завтра</item>
+        <item quantity="other">%d повторяющейся записи завтра</item>
+    </plurals>
 </resources>

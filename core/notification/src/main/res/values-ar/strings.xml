@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">يستغرق الأمر ثوانٍ فقط. اضغط لإضافة مصروف.</string>
     <string name="reminder_action_add">إضافة مصروف</string>
     <string name="reminder_action_no_spend">لم أنفق شيئًا اليوم</string>
+    <string name="reminder_quick_logged">✓ تم تسجيل %1$s</string>
+    <string name="reminder_quick_logged_body">أُضيف إلى مصاريف اليوم.</string>
+    <string name="reminder_action_undo">تراجع</string>
+    <string name="reminder_quick_log_failed">تعذّر التسجيل</string>
+    <string name="reminder_quick_log_failed_body">اضغط لإضافته في التطبيق.</string>
     <string name="weekly_summary_title">أسبوعك المالي</string>
     <string name="weekly_summary_less">أنفقت %1$s هذا الأسبوع، أقل بنسبة %2$d%% من الأسبوع الماضي. أحسنت!</string>
     <string name="weekly_summary_more">أنفقت %1$s هذا الأسبوع، أكثر بنسبة %2$d%% من الأسبوع الماضي.</string>
@@ -20,4 +25,18 @@
     <string name="auto_backup_failed_folder_body">تعذّر الوصول إلى مجلد النسخ الاحتياطي. اضغط لاختياره مرة أخرى.</string>
     <string name="auto_backup_failed_write_body">تعذّر نسخ بياناتك احتياطيًا. اضغط للتحقق من إعدادات النسخ الاحتياطي.</string>
     <string name="auto_backup_failed_action">إصلاح</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">المدفوعات القادمة</string>
+    <string name="upcoming_channel_description">تنبيه مساء اليوم السابق لإضافة قيد متكرر أسبوعي أو شهري أو سنوي.</string>
+    <string name="upcoming_alert_title_one">غدًا: %1$s</string>
+    <string name="upcoming_alert_body_one">ستتم إضافة %1$s تلقائيًا.</string>
+    <string name="upcoming_alert_body_many">ستتم إضافتها تلقائيًا.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="zero">%d قيود متكررة غدًا</item>
+        <item quantity="one">%d قيود متكررة غدًا</item>
+        <item quantity="two">%d قيود متكررة غدًا</item>
+        <item quantity="few">%d قيود متكررة غدًا</item>
+        <item quantity="many">%d قيود متكررة غدًا</item>
+        <item quantity="other">%d قيود متكررة غدًا</item>
+    </plurals>
 </resources>

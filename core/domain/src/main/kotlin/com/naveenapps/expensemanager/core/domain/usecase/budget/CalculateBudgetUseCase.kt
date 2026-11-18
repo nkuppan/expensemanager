@@ -42,11 +42,7 @@ class CalculateBudgetUseCase(
             converted
         }
         val spentValue = spent.value
-        val percent = if (spentValue != null && budget.amount > 0.0) {
-            (spentValue / budget.amount).toFloat() * 100
-        } else {
-            0f
-        }
+        val percent = if (spentValue != null) budgetSpentPercent(spentValue, budget.amount) else 0f
         return budget.toBudgetUiModel(
             title = budget.title(),
             budgetAmount = getFormattedAmountUseCase(budget.amount, budgetCurrency),

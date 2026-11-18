@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Solo toma unos segundos. Toca para añadir un gasto.</string>
     <string name="reminder_action_add">Añadir gasto</string>
     <string name="reminder_action_no_spend">Hoy no gasté nada</string>
+    <string name="reminder_quick_logged">✓ Registrado: %1$s</string>
+    <string name="reminder_quick_logged_body">Añadido a los gastos de hoy.</string>
+    <string name="reminder_action_undo">Deshacer</string>
+    <string name="reminder_quick_log_failed">No se pudo registrar</string>
+    <string name="reminder_quick_log_failed_body">Toca para añadirlo en la app.</string>
     <string name="weekly_summary_title">Tu semana en dinero</string>
     <string name="weekly_summary_less">Gastaste %1$s esta semana, un %2$d%% menos que la semana pasada. ¡Bien hecho!</string>
     <string name="weekly_summary_more">Gastaste %1$s esta semana, un %2$d%% más que la semana pasada.</string>
@@ -20,4 +25,15 @@
     <string name="auto_backup_failed_folder_body">No se puede acceder a tu carpeta de copias. Toca para elegirla de nuevo.</string>
     <string name="auto_backup_failed_write_body">No se pudo hacer copia de tus datos. Toca para revisar los ajustes de copia.</string>
     <string name="auto_backup_failed_action">Arreglar</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Pagos próximos</string>
+    <string name="upcoming_channel_description">Un aviso la tarde anterior a que se añada un movimiento recurrente semanal, mensual o anual.</string>
+    <string name="upcoming_alert_title_one">Mañana: %1$s</string>
+    <string name="upcoming_alert_body_one">Se añadirán %1$s automáticamente.</string>
+    <string name="upcoming_alert_body_many">Se añadirán automáticamente.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d movimiento recurrente mañana</item>
+        <item quantity="many">%d movimientos recurrentes mañana</item>
+        <item quantity="other">%d movimientos recurrentes mañana</item>
+    </plurals>
 </resources>

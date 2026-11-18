@@ -835,12 +835,15 @@ private fun AddExpenseButton(
 
 private val MIN_TOUCH_TARGET = 48.dp
 
+/** Action of the widget body's "open the app" intent, so MainActivity can count widget use. */
+const val ACTION_OPEN_FROM_WIDGET = "com.naveenapps.expensemanager.OPEN_FROM_WIDGET"
+
 /**
- * Tapping the widget body opens the app the way its launcher icon does: an app already running
- * comes to the front as it was (no second MainActivity on top), otherwise it starts on Home.
+ * Tapping the widget body opens the app: an app already running comes to the front where the user
+ * left it (SINGLE_TOP delivers this intent to the existing MainActivity instead of stacking or
+ * recreating one), otherwise it starts on Home. Its own action lets MainActivity log every tap,
+ * which a launcher-style intent wouldn't: Android brings that task forward without delivering it.
  */
-private fun openAppIntent(context: Context): Intent = context.packageManager.getLaunchIntentForPackage(context.packageName)
-    ?: Intent(context, com.naveenapps.expensemanager.MainActivity::class.java)
-        .setAction(Intent.ACTION_MAIN)
-        .addCategory(Intent.CATEGORY_LAUNCHER)
-        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+private fun openAppIntent(context: Context): Intent = Intent(context, com.naveenapps.expensemanager.MainActivity::class.java)
+    .setAction(ACTION_OPEN_FROM_WIDGET)
+    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)

@@ -48,4 +48,6 @@
     <string name="no_search_results">لا توجد نتائج</string>
     <string name="selection_select_all">تحديد الكل</string>
     <string name="selection_done">تم</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">متكررة</string>
 </resources>

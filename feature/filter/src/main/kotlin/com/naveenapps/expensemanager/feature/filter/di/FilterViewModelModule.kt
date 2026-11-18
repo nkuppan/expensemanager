@@ -15,6 +15,7 @@ val FilterViewModelModule = module {
             getDateRangeUseCase = get(),
             moveDateRangeBackwardUseCase = get(),
             moveDateRangeForwardUseCase = get(),
+            analyticsRepository = get(),
             updateSelectedTransactionTypesUseCase = get(),
             updateSelectedCategoryUseCase = get(),
             updateSelectedAccountUseCase = get(),
@@ -25,6 +26,7 @@ val FilterViewModelModule = module {
             getDateRangeUseCase = get(),
             getAllDateRangeUseCase = get(),
             saveDateRangeUseCase = get(),
+            analyticsRepository = get(),
         )
     }
     viewModel {
@@ -37,6 +39,7 @@ val FilterViewModelModule = module {
             updateSelectedTransactionTypesUseCase = get(),
             updateSelectedCategoryUseCase = get(),
             updateSelectedAccountUseCase = get(),
+            analyticsRepository = get(),
         )
     }
 }

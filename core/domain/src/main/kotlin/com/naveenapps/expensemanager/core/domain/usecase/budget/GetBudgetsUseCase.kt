@@ -40,18 +40,33 @@ fun Budget.toBudgetUiModel(
     title = title,
     selectedMonth = this.selectedMonth,
     periodType = this.periodType,
-    progressBarColor = when {
-        percent < 0f -> R.color.green_500
-        percent in 0f..35f -> R.color.green_500
-        percent in 36f..60f -> R.color.light_green_500
-        percent in 61f..85f -> R.color.orange_500
-        else -> R.color.red_500
-    },
+    progressBarColor = budgetProgressColor(percent),
     amount = budgetAmount,
     transactionAmount = transactionAmount,
     percent = percent,
     transactions = transactions,
 )
+
+/**
+ * Share of the budget spent, in percent. A budget of 0 can't be divided by: anything spent
+ * against it counts as 100% (over), nothing spent as 0%.
+ */
+fun budgetSpentPercent(spent: Double, budgetAmount: Double): Float = when {
+    budgetAmount > 0.0 -> (spent / budgetAmount).toFloat() * 100
+    spent > 0.0 -> 100f
+    else -> 0f
+}
+
+/**
+ * Progress bar colour by share spent: green up to 35%, light green up to 60%, orange up to 85%,
+ * red above. (The old integer ranges left gaps, so e.g. 35.5% or 60.4% showed red.)
+ */
+fun budgetProgressColor(percent: Float): Int = when {
+    percent <= 35f -> R.color.green_500
+    percent <= 60f -> R.color.light_green_500
+    percent <= 85f -> R.color.orange_500
+    else -> R.color.red_500
+}
 
 @Stable
 data class BudgetUiModel(

@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Sadece birkaç saniye sürer. Harcama eklemek için dokun.</string>
     <string name="reminder_action_add">Harcama ekle</string>
     <string name="reminder_action_no_spend">Bugün harcama yok</string>
+    <string name="reminder_quick_logged">✓ %1$s kaydedildi</string>
+    <string name="reminder_quick_logged_body">Bugünkü harcamalara eklendi.</string>
+    <string name="reminder_action_undo">Geri al</string>
+    <string name="reminder_quick_log_failed">Kaydedilemedi</string>
+    <string name="reminder_quick_log_failed_body">Uygulamada eklemek için dokunun.</string>
     <string name="weekly_summary_title">Haftan, para açısından</string>
     <string name="weekly_summary_less">Bu hafta %1$s harcadın, geçen haftadan %%%2$d daha az. Harika!</string>
     <string name="weekly_summary_more">Bu hafta %1$s harcadın, geçen haftadan %%%2$d daha fazla.</string>
@@ -20,4 +25,14 @@
     <string name="auto_backup_failed_folder_body">Yedek klasörüne erişilemiyor. Tekrar seçmek için dokunun.</string>
     <string name="auto_backup_failed_write_body">Verileriniz yedeklenemedi. Yedekleme ayarlarını kontrol etmek için dokunun.</string>
     <string name="auto_backup_failed_action">Düzelt</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Yaklaşan ödemeler</string>
+    <string name="upcoming_channel_description">Haftalık, aylık veya yıllık yinelenen bir kayıt eklenmeden önceki akşam bir hatırlatma.</string>
+    <string name="upcoming_alert_title_one">Yarın: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s otomatik olarak eklenecek.</string>
+    <string name="upcoming_alert_body_many">Otomatik olarak eklenecekler.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">Yarın %d yinelenen kayıt</item>
+        <item quantity="other">Yarın %d yinelenen kayıt</item>
+    </plurals>
 </resources>

@@ -7,4 +7,7 @@
     <string name="privacy_policy">Chính sách bảo mật</string>
     <string name="terms_and_conditions">Điều khoản và điều kiện</string>
     <string name="licenses">Giấy phép mã nguồn mở</string>
+    <string name="search_libraries">Tìm thư viện</string>
+    <string name="open_license">Mở giấy phép</string>
+    <string name="licenses_unavailable">Bản dựng này không có thông tin giấy phép.</string>
 </resources>

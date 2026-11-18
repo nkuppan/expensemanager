@@ -2,6 +2,11 @@ package com.naveenapps.expensemanager.core.model
 
 import java.util.Date
 
+/**
+ * A logged expense, income or transfer. Immutable: the data layer attaches [category], the
+ * accounts and [attachments] with copy(), so one instance can safely feed every screen from a
+ * shared stream (a screen changing it in place would have changed it for all of them).
+ */
 data class Transaction(
     val id: String,
     val notes: String,
@@ -19,7 +24,7 @@ data class Transaction(
     val toCurrencyCode: String,
     /** The rate used for a cross-currency transfer (to-account gets `amount * rate`); null = 1.0. */
     val rateSnapshot: ExchangeRateSnapshot? = null,
-    var category: Category = Category(
+    val category: Category = Category(
         "",
         "",
         CategoryType.INCOME,
@@ -27,7 +32,7 @@ data class Transaction(
         Date(),
         Date(),
     ),
-    var fromAccount: Account = Account(
+    val fromAccount: Account = Account(
         "",
         "",
         AccountType.REGULAR,
@@ -36,6 +41,15 @@ data class Transaction(
         Date(),
         currencyCode = "",
     ),
-    var toAccount: Account? = null,
-    var attachments: List<String> = emptyList(),
+    val toAccount: Account? = null,
+    val attachments: List<String> = emptyList(),
 )
+
+/**
+ * Id prefix of the transactions a recurring rule logged, followed by "<ruleId>-<occurrence>".
+ * See ProcessRecurringTransactionsUseCase, which creates them.
+ */
+const val RECURRING_OCCURRENCE_ID_PREFIX = "recurring-"
+
+/** True when a recurring rule added this transaction automatically. */
+val Transaction.isRecurringOccurrence: Boolean get() = id.startsWith(RECURRING_OCCURRENCE_ID_PREFIX)

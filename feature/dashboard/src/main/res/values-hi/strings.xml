@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">खर्च की सीमा तय करने के लिए टैप करें</string>
     <string name="first_expense_action">खर्च जोड़ें</string>
     <string name="getting_started_title">शुरू करें</string>
-    <string name="getting_started_subtitle">ऐप का पूरा फ़ायदा उठाने के लिए चार आसान कदम</string>
     <string name="getting_started_progress">%2$d में से %1$d</string>
     <string name="getting_started_hide">छिपाएँ</string>
     <string name="step_expense_title">अपना पहला खर्च दर्ज करें</string>
-    <string name="step_expense_description">इसमें कुछ ही सेकंड लगते हैं</string>
     <string name="step_budget_title">मासिक बजट बनाएँ</string>
-    <string name="step_budget_description">देखें कि खर्च करने के लिए कितना बचा है</string>
     <string name="step_budget_action">बजट बनाएँ</string>
-    <string name="step_accounts_title">अपने खाते जोड़ें</string>
-    <string name="step_accounts_description">नकद, बैंक और कार्ड जिनसे आप खर्च करते हैं</string>
-    <string name="step_accounts_action">खाता जोड़ें</string>
-    <string name="step_currency_title">अपनी मुद्रा चुनें</string>
-    <string name="step_currency_description">राशियाँ इसी मुद्रा में दिखती हैं</string>
-    <string name="step_currency_action">मुद्रा बदलें</string>
     <string name="auto_backup_warning_title">स्वचालित बैकअप काम नहीं कर रहा</string>
     <string name="auto_backup_warning_folder">बैकअप फ़ोल्डर तक नहीं पहुँच पा रहे। अपना डेटा सुरक्षित रखने के लिए इसे फिर से चुनें।</string>
     <string name="auto_backup_warning_write">हाल के बैकअप विफल रहे। अपना डेटा सुरक्षित रखने के लिए बैकअप सेटिंग जाँचें।</string>
@@ -45,4 +36,79 @@
     <string name="home_categories_add">लेन-देन जोड़ें</string>
     <string name="home_categories_show_income">आय दिखाएं</string>
     <string name="home_categories_show_expense">खर्च दिखाएं</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">आने वाले</string>
+    <string name="upcoming_spend">खर्च</string>
+    <string name="upcoming_income">आय</string>
+    <string name="upcoming_today">आज</string>
+    <string name="upcoming_tomorrow">कल</string>
+    <string name="upcoming_empty_title">अभी कुछ योजना में नहीं</string>
+    <string name="upcoming_empty_description">किराया, बिल या वेतन को दोहराने के लिए सेट करें। वे अपने दिन जुड़ जाते हैं, और आप उन्हें पहले यहाँ देखेंगे।</string>
+    <string name="upcoming_plan">भुगतान की योजना बनाएँ</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">अगले %d दिन</item>
+        <item quantity="other">अगले %d दिन</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">%d दिन में</item>
+        <item quantity="other">%d दिन में</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">क्या आपका कोई दोस्त अपने खर्च का हिसाब रखता है?</string>
+    <string name="home_share_description">Expense Manager शेयर करें। यह मुफ़्त है, कोई विज्ञापन नहीं, और उनका डेटा उनके फ़ोन में ही रहता है।</string>
+    <string name="home_share_button">ऐप शेयर करें</string>
+    <string name="home_share_text">मैं अपने खर्च ट्रैक करने के लिए Expense Manager इस्तेमाल करता हूँ। यह मुफ़्त है और मेरा डेटा मेरे फ़ोन पर रहता है: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">डैशबोर्ड बदलें</string>
+    <string name="customise_hint">होम के सेक्शन का क्रम बदलने के लिए दबाकर खींचें</string>
+    <string name="customise_save">सहेजें</string>
+    <string name="customise_reset">रीसेट करें</string>
+    <string name="section_summary">आय और खर्च का सारांश</string>
+    <string name="section_accounts">खाते</string>
+    <string name="section_categories">श्रेणियाँ</string>
+    <string name="section_budgets">बजट</string>
+    <string name="section_transactions">हाल के लेन-देन</string>
+    <string name="section_upcoming">आने वाले भुगतान</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">सूचनाएँ</string>
+    <string name="whats_new_version">संस्करण %1$s</string>
+    <string name="notification_new">नया</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">और देखें (%1$d)</string>
+    <string name="notification_see_less">कम देखें</string>
+    <string-array name="whats_new_1_4_30">
+        <item>रोज़ के रिमाइंडर से ही एक टैप में अपना सबसे आम खर्च जोड़ें, गलती हो तो पूर्ववत करें</item>
+        <item>दैनिक रिमाइंडर अब ज़्यादा भरोसे से समय पर आते हैं, और फ़ोन रोके तो रिमाइंडर स्क्रीन ठीक करने का तरीका बताती है</item>
+        <item>होम से रिमाइंडर चालू करते समय अब उस समय का सुझाव मिलता है जब आप आमतौर पर खर्च लिखते हैं</item>
+        <item>फ़िल्टर: बहुत सारी श्रेणियों के साथ भी लागू करें बटन दिखता रहता है, और लेन-देन के प्रकार अब अनुवादित हैं</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>आसान सेटिंग्स: चार छोटे समूह, एक बार सेट होने वाली चीज़ें प्राथमिकताओं में और बैकअप व रीस्टोर एक जगह</item>
+        <item>विश्लेषण और श्रेणियों में नए, ज़्यादा स्मूद चार्ट</item>
+        <item>Google Play सेवाओं को डाउनलोड करना हो तो रसीद स्कैनर अपने-आप तैयार हो जाता है</item>
+        <item>खोज के साथ नई ओपन सोर्स लाइसेंस स्क्रीन, और क्रैश सुधार</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>UPI भुगतान का संदेश या स्क्रीनशॉट Expense Manager पर शेयर करें, सब अपने-आप भर जाएगा: राशि, प्राप्तकर्ता, तारीख और श्रेणी</item>
+        <item>जोड़ें स्क्रीन से कैमरे से दुकान की रसीद स्कैन करें। खाता और श्रेणी रसीद और आपकी पिछली एंट्री से सुझाए जाते हैं</item>
+        <item>स्क्रीनशॉट आपके फ़ोन पर ही पढ़े जाते हैं, कुछ भी अपलोड नहीं होता, और तस्वीर लेन-देन के साथ सेव होती है</item>
+        <item>दैनिक रिमाइंडर बंद होने पर होम पर एक सूचना, ताकि आप एक टैप में उन्हें फिर चालू कर सकें</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>पहले से योजना: किराया, EMI, बिल या वेतन को आगे की तारीख से दोहराएँ और होम पर नए \"आने वाले\" कार्ड में देखें</item>
+        <item>साप्ताहिक, मासिक या वार्षिक भुगतान जुड़ने से एक शाम पहले सूचना</item>
+        <item>एक टैप में दोहराएँ: अक्सर की जाने वाली एंट्री जोड़ते समय चिप के रूप में दिखती हैं</item>
+        <item>सभी लेन-देन में खोजें, कुल राशि के साथ</item>
+        <item>होम स्क्रीन का क्रम बदलें और चुनें कि ऐप किस टैब पर खुले</item>
+        <item>कई छोटे सुधार</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">दैनिक रिमाइंडर बंद हैं</string>
+    <string name="reminder_banner_body">हर शाम एक हल्का रिमाइंडर आपके खर्च का हिसाब अपडेट रखने में मदद करता है।</string>
+    <string name="reminder_banner_turn_on">चालू करें</string>
+    <string name="reminder_banner_not_now">अभी नहीं</string>
+    <string name="reminder_banner_title_with_time">आप आमतौर पर लगभग %1$s पर लिखते हैं</string>
+    <string name="reminder_banner_body_with_time">उसी समय रोज़ एक रिमाइंडर पाएं ताकि कुछ न छूटे।</string>
+    <string name="reminder_banner_turn_on_at">%1$s पर याद दिलाएं</string>
 </resources>

@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">点击设置消费限额</string>
     <string name="first_expense_action">添加支出</string>
     <string name="getting_started_title">开始使用</string>
-    <string name="getting_started_subtitle">四个简单步骤，充分利用应用</string>
     <string name="getting_started_progress">%1$d / %2$d</string>
     <string name="getting_started_hide">隐藏</string>
     <string name="step_expense_title">记录第一笔支出</string>
-    <string name="step_expense_description">只需几秒钟</string>
     <string name="step_budget_title">创建月度预算</string>
-    <string name="step_budget_description">查看还剩多少可以花</string>
     <string name="step_budget_action">创建预算</string>
-    <string name="step_accounts_title">添加账户</string>
-    <string name="step_accounts_description">您用于支出的现金、银行和卡</string>
-    <string name="step_accounts_action">添加账户</string>
-    <string name="step_currency_title">选择货币</string>
-    <string name="step_currency_description">金额以此货币显示</string>
-    <string name="step_currency_action">更改货币</string>
     <string name="auto_backup_warning_title">自动备份未正常运行</string>
     <string name="auto_backup_warning_folder">无法访问备份文件夹。请重新选择，以确保数据安全。</string>
     <string name="auto_backup_warning_write">最近的备份失败了。请检查备份设置，以确保数据安全。</string>
@@ -45,4 +36,77 @@
     <string name="home_categories_add">添加交易</string>
     <string name="home_categories_show_income">显示收入</string>
     <string name="home_categories_show_expense">显示支出</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">即将到来</string>
+    <string name="upcoming_spend">支出</string>
+    <string name="upcoming_income">收入</string>
+    <string name="upcoming_today">今天</string>
+    <string name="upcoming_tomorrow">明天</string>
+    <string name="upcoming_empty_title">还没有计划</string>
+    <string name="upcoming_empty_description">将房租、账单或工资设为重复。到期当天会自动添加，你会提前在这里看到。</string>
+    <string name="upcoming_plan">计划一笔付款</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">未来 %d 天</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">%d 天后</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">身边有人在记账吗？</string>
+    <string name="home_share_description">分享 Expense Manager。免费、无广告，数据只保存在手机上。</string>
+    <string name="home_share_button">分享应用</string>
+    <string name="home_share_text">我用 Expense Manager 记录支出。免费，而且数据只保存在我的手机上：%1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">自定义首页</string>
+    <string name="customise_hint">长按并拖动以调整首页各部分的顺序</string>
+    <string name="customise_save">保存</string>
+    <string name="customise_reset">重置</string>
+    <string name="section_summary">收支概览</string>
+    <string name="section_accounts">账户</string>
+    <string name="section_categories">分类</string>
+    <string name="section_budgets">预算</string>
+    <string name="section_transactions">最近交易</string>
+    <string name="section_upcoming">即将到来的付款</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">通知</string>
+    <string name="whats_new_version">版本 %1$s</string>
+    <string name="notification_new">新</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">查看更多（%1$d）</string>
+    <string name="notification_see_less">收起</string>
+    <string-array name="whats_new_1_4_30">
+        <item>在每日提醒中一键记录你最常用的支出，点错了还能撤销</item>
+        <item>每日提醒更可靠地准时送达；如果手机拦截了提醒，提醒页面会告诉你如何解决</item>
+        <item>在首页开启提醒时，会根据你平时记账的时间推荐提醒时间</item>
+        <item>筛选：即使类别很多，“应用”按钮也始终可见，交易类型现已翻译</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>更简洁的设置：四个简短分组，一次性设置放在偏好设置中，备份与恢复合并在一处</item>
+        <item>分析和类别中的图表重新设计，更加流畅</item>
+        <item>当 Google Play 服务需要下载时，收据扫描会自动准备好</item>
+        <item>可搜索的全新开源许可证页面，以及崩溃修复</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>将 UPI 付款消息或截图分享到 Expense Manager，金额、收款方、日期和类别会自动填好</item>
+        <item>在添加页面用相机扫描购物小票，账户和类别会根据小票和你以往的记录推荐</item>
+        <item>截图在手机上本地识别，不会上传任何内容，图片会随交易一起保存</item>
+        <item>每日提醒关闭时，首页会显示提示，一键即可重新开启</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>提前计划：可将房租、账单或工资设为从未来日期开始重复，并在首页新的\"即将到来\"卡片中查看</item>
+        <item>每周、每月或每年的付款添加前一晚提醒你</item>
+        <item>一键重复：常用记录在添加时以快捷选项显示</item>
+        <item>搜索全部交易并显示合计</item>
+        <item>调整首页顺序，并选择打开应用时的标签页</item>
+        <item>多项小改进</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">每日提醒已关闭</string>
+    <string name="reminder_banner_body">每晚一个小提醒，帮你及时记录支出。</string>
+    <string name="reminder_banner_turn_on">开启</string>
+    <string name="reminder_banner_not_now">以后再说</string>
+    <string name="reminder_banner_title_with_time">你通常在 %1$s 左右记账</string>
+    <string name="reminder_banner_body_with_time">每天在那个时间提醒你，不再漏记。</string>
+    <string name="reminder_banner_turn_on_at">在 %1$s 提醒我</string>
 </resources>

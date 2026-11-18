@@ -51,6 +51,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun NumberPadDialogView(
     onConfirm: ((String?) -> Unit),
     initialAmount: Double? = null,
+    header: (@Composable () -> Unit)? = null,
     viewModel: NumberPadViewModel = koinViewModel(),
 ) {
     // The keypad's ViewModel outlives the dialog, so seed it on every open: editing starts
@@ -66,6 +67,7 @@ fun NumberPadDialogView(
         calculatedAmount = calculatedAmount,
         calculatedAmountString = calculatedAmountString,
         clear = viewModel::clearAmount,
+        header = header,
     )
 }
 
@@ -76,6 +78,7 @@ private fun NumberPadDialog(
     clear: () -> Unit,
     calculatedAmount: String,
     calculatedAmountString: String,
+    header: (@Composable () -> Unit)? = null,
 ) {
     Dialog(
         onDismissRequest = {
@@ -91,25 +94,29 @@ private fun NumberPadDialog(
                 .wrapContentSize(),
             shape = RoundedCornerShape(8.dp),
         ) {
-            NumberPadScreenView(
-                modifier = Modifier.wrapContentHeight(),
-                value = calculatedAmount,
-                amountString = calculatedAmountString,
-                onChange = {
-                    onChange.invoke(it)
-                },
-                confirm = {
-                    onConfirm.invoke(calculatedAmount)
-                },
-                cancel = {
-                    // Cancel must keep the existing amount: null dismisses the pad without
-                    // changing the value (same as tapping outside the dialog).
-                    onConfirm.invoke(null)
-                },
-                clear = {
-                    clear.invoke()
-                },
-            )
+            Column {
+                // Optional content above the keypad, e.g. the add screen's frequent-entry chips.
+                header?.invoke()
+                NumberPadScreenView(
+                    modifier = Modifier.wrapContentHeight(),
+                    value = calculatedAmount,
+                    amountString = calculatedAmountString,
+                    onChange = {
+                        onChange.invoke(it)
+                    },
+                    confirm = {
+                        onConfirm.invoke(calculatedAmount)
+                    },
+                    cancel = {
+                        // Cancel must keep the existing amount: null dismisses the pad without
+                        // changing the value (same as tapping outside the dialog).
+                        onConfirm.invoke(null)
+                    },
+                    clear = {
+                        clear.invoke()
+                    },
+                )
+            }
         }
     }
 }

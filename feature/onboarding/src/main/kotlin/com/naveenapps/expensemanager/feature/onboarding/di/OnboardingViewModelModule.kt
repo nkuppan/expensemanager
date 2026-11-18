@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.feature.onboarding.di
 
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingViewModel
-import com.naveenapps.expensemanager.feature.onboarding.into.IntroViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -11,6 +10,7 @@ val OnboardingViewModelModule = module {
             getOnboardingStatusUseCase = get(),
             getAllAccountsUseCase = get(),
             getDefaultCurrencyUseCase = get(),
+            preselectCountryCurrencyUseCase = get(),
             getCurrencyUseCase = get(),
             saveCurrencyUseCase = get(),
             addAccountUseCase = get(),
@@ -18,12 +18,6 @@ val OnboardingViewModelModule = module {
             setOnboardingStatusUseCase = get(),
             getAccountUiModelUseCase = get(),
             composeNavigator = get(),
-            analyticsRepository = get(),
-        )
-    }
-    viewModel {
-        IntroViewModel(
-            appComposeNavigator = get(),
             analyticsRepository = get(),
         )
     }

@@ -48,4 +48,6 @@
     <string name="no_search_results">No matches</string>
     <string name="selection_select_all">Select all</string>
     <string name="selection_done">Done</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">Recurring</string>
 </resources>

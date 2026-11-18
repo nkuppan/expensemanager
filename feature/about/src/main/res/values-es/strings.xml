@@ -7,4 +7,7 @@
     <string name="privacy_policy">Política de privacidad</string>
     <string name="terms_and_conditions">Términos y condiciones</string>
     <string name="licenses">Licencias de código abierto</string>
+    <string name="search_libraries">Buscar bibliotecas</string>
+    <string name="open_license">Abrir licencia</string>
+    <string name="licenses_unavailable">Las licencias no están incluidas en esta versión.</string>
 </resources>

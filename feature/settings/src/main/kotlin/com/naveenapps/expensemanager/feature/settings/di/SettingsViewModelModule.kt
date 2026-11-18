@@ -16,8 +16,6 @@ val SettingsViewModelModule = module {
             getCurrencyUseCase = get(),
             getCurrentThemeUseCase = get(),
             getCurrentLocaleUseCase = get(),
-            getAllAccountsUseCase = get(),
-            getAllCategoryUseCase = get(),
             settingsRepository = get(),
             appComposeNavigator = get(),
             analyticsRepository = get(),
@@ -44,8 +42,11 @@ val SettingsViewModelModule = module {
     }
     viewModel {
         AdvancedSettingsViewModel(
+            getAllAccountsUseCase = get(),
+            getAllCategoryUseCase = get(),
             appComposeNavigator = get(),
             settingsRepository = get(),
+            analyticsRepository = get(),
         )
     }
     viewModel {

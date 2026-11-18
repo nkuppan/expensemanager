@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">몇 초면 돼요. 탭해서 지출을 추가하세요.</string>
     <string name="reminder_action_add">지출 추가</string>
     <string name="reminder_action_no_spend">오늘은 지출 없음</string>
+    <string name="reminder_quick_logged">✓ %1$s 기록됨</string>
+    <string name="reminder_quick_logged_body">오늘 지출에 추가했어요.</string>
+    <string name="reminder_action_undo">실행취소</string>
+    <string name="reminder_quick_log_failed">기록하지 못했어요</string>
+    <string name="reminder_quick_log_failed_body">탭하여 앱에서 추가하세요.</string>
     <string name="weekly_summary_title">이번 주 지출 요약</string>
     <string name="weekly_summary_less">이번 주에 %1$s를 썼어요. 지난주보다 %2$d%% 적어요. 잘하고 있어요!</string>
     <string name="weekly_summary_more">이번 주에 %1$s를 썼어요. 지난주보다 %2$d%% 많아요.</string>
@@ -20,4 +25,13 @@
     <string name="auto_backup_failed_folder_body">백업 폴더에 접근할 수 없습니다. 탭하여 다시 선택하세요.</string>
     <string name="auto_backup_failed_write_body">데이터를 백업하지 못했습니다. 탭하여 백업 설정을 확인하세요.</string>
     <string name="auto_backup_failed_action">해결</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">예정된 결제</string>
+    <string name="upcoming_channel_description">매주·매월·매년 반복 항목이 추가되기 전날 저녁에 알려드려요.</string>
+    <string name="upcoming_alert_title_one">내일: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s이(가) 자동으로 추가돼요.</string>
+    <string name="upcoming_alert_body_many">자동으로 추가돼요.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="other">내일 반복 항목 %d개</item>
+    </plurals>
 </resources>

@@ -7,8 +7,8 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
+import com.naveenapps.expensemanager.core.model.InsightKind
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
-import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import java.util.Date
@@ -63,6 +63,8 @@ class BudgetAlertWorker(
                         context.getString(R.string.budget_alert_warning_body, spent, limit)
                 }
 
+                // Also kept for the notification centre, to read again later.
+                feedbackRepository.addInsight(InsightKind.BUDGET_ALERT, title, body)
                 notificationScheduler.showInsightNotification(
                     notificationId = NotificationId.BUDGET_ALERT_BASE + abs(budget.id.hashCode() % 10_000),
                     title = title,
@@ -73,10 +75,8 @@ class BudgetAlertWorker(
                 if (threshold == OVER_PERCENT) {
                     feedbackRepository.markBudgetAlertSent("${budget.id}:${budget.selectedMonth}:$WARNING_PERCENT")
                 }
-                analyticsRepository.logEvent(
-                    AnalyticsEvents.BUDGET_ALERT_SHOWN,
-                    mapOf(AnalyticsParams.THRESHOLD to threshold.toString()),
-                )
+                // Only that an alert was shown: how much of the budget is spent is the user's own.
+                analyticsRepository.logEvent(AnalyticsEvents.BUDGET_ALERT_SHOWN, emptyMap())
             }
         return Result.success()
     }

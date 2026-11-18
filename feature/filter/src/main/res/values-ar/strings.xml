@@ -22,4 +22,5 @@
         <item quantity="many">تم تحديد %d عامل تصفية</item>
         <item quantity="other">تم تحديد %d عامل تصفية</item>
     </plurals>
+    <string name="filter_type_transfer">تحويل</string>
 </resources>

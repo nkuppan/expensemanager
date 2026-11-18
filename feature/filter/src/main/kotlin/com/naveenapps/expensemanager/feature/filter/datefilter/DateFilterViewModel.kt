@@ -9,6 +9,9 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.isCustom
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import java.util.Date
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +26,7 @@ class DateFilterViewModel(
     getDateRangeUseCase: GetDateRangeUseCase,
     private val getAllDateRangeUseCase: GetAllDateRangeUseCase,
     private val saveDateRangeUseCase: SaveDateRangeUseCase,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _event = Channel<DateFilterEvent>()
@@ -117,6 +121,10 @@ class DateFilterViewModel(
                     selectedFilter,
                     customRanges,
                 )
+                analyticsRepository.logEvent(
+                    AnalyticsEvents.DATE_RANGE_CHANGED,
+                    mapOf(AnalyticsParams.TYPE to selectedFilter.name.lowercase()),
+                )
             }
 
             _event.send(DateFilterEvent.Saved)
@@ -144,6 +152,9 @@ class DateFilterViewModel(
     fun processAction(action: DateFilterAction) {
         when (action) {
             DateFilterAction.Save -> save()
+
+            // Close without saving (Cancel used to save the selection too).
+            DateFilterAction.Cancel -> viewModelScope.launch { _event.send(DateFilterEvent.Saved) }
 
             DateFilterAction.DismissDateSelection -> {
                 _state.update { it.copy(showDateFilter = false) }

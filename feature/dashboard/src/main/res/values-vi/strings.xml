@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Nhấn để đặt hạn mức chi tiêu</string>
     <string name="first_expense_action">Thêm khoản chi</string>
     <string name="getting_started_title">Bắt đầu</string>
-    <string name="getting_started_subtitle">Bốn bước nhanh để tận dụng tối đa ứng dụng</string>
     <string name="getting_started_progress">%1$d / %2$d</string>
     <string name="getting_started_hide">Ẩn</string>
     <string name="step_expense_title">Ghi khoản chi đầu tiên</string>
-    <string name="step_expense_description">Chỉ mất vài giây</string>
     <string name="step_budget_title">Tạo ngân sách tháng</string>
-    <string name="step_budget_description">Xem bạn còn bao nhiêu để chi tiêu</string>
     <string name="step_budget_action">Tạo ngân sách</string>
-    <string name="step_accounts_title">Thêm tài khoản</string>
-    <string name="step_accounts_description">Tiền mặt, ngân hàng và thẻ bạn dùng để chi tiêu</string>
-    <string name="step_accounts_action">Thêm tài khoản</string>
-    <string name="step_currency_title">Chọn tiền tệ</string>
-    <string name="step_currency_description">Số tiền được hiển thị bằng tiền tệ này</string>
-    <string name="step_currency_action">Đổi tiền tệ</string>
     <string name="auto_backup_warning_title">Sao lưu tự động không hoạt động</string>
     <string name="auto_backup_warning_folder">Không truy cập được thư mục sao lưu. Hãy chọn lại để giữ dữ liệu an toàn.</string>
     <string name="auto_backup_warning_write">Các lần sao lưu gần đây thất bại. Hãy kiểm tra cài đặt để giữ dữ liệu an toàn.</string>
@@ -45,4 +36,77 @@
     <string name="home_categories_add">Thêm giao dịch</string>
     <string name="home_categories_show_income">Hiện khoản thu</string>
     <string name="home_categories_show_expense">Hiện khoản chi</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Sắp tới</string>
+    <string name="upcoming_spend">Chi tiêu</string>
+    <string name="upcoming_income">Thu nhập</string>
+    <string name="upcoming_today">Hôm nay</string>
+    <string name="upcoming_tomorrow">Ngày mai</string>
+    <string name="upcoming_empty_title">Chưa có kế hoạch nào</string>
+    <string name="upcoming_empty_description">Đặt tiền thuê nhà, hóa đơn hoặc lương lặp lại. Chúng được thêm vào đúng ngày và bạn sẽ thấy trước ở đây.</string>
+    <string name="upcoming_plan">Lên kế hoạch thanh toán</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">%d ngày tới</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">Sau %d ngày</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Bạn biết ai đang quản lý chi tiêu không?</string>
+    <string name="home_share_description">Chia sẻ Expense Manager. Miễn phí, không quảng cáo và dữ liệu luôn ở trên điện thoại.</string>
+    <string name="home_share_button">Chia sẻ ứng dụng</string>
+    <string name="home_share_text">Mình dùng Expense Manager để theo dõi chi tiêu. Miễn phí và dữ liệu nằm trên điện thoại của mình: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Tùy chỉnh trang chủ</string>
+    <string name="customise_hint">Nhấn giữ và kéo để sắp xếp lại các mục trên trang chủ</string>
+    <string name="customise_save">Lưu</string>
+    <string name="customise_reset">Đặt lại</string>
+    <string name="section_summary">Tóm tắt thu chi</string>
+    <string name="section_accounts">Tài khoản</string>
+    <string name="section_categories">Danh mục</string>
+    <string name="section_budgets">Ngân sách</string>
+    <string name="section_transactions">Giao dịch gần đây</string>
+    <string name="section_upcoming">Khoản thanh toán sắp tới</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Thông báo</string>
+    <string name="whats_new_version">Phiên bản %1$s</string>
+    <string name="notification_new">Mới</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Xem thêm (%1$d)</string>
+    <string name="notification_see_less">Thu gọn</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Ghi khoản chi thường gặp nhất chỉ với một chạm ngay từ lời nhắc hằng ngày, có thể hoàn tác</item>
+        <item>Nhắc nhở hằng ngày đến đúng giờ ổn định hơn, và màn hình Nhắc nhở hướng dẫn cách khắc phục nếu điện thoại chặn chúng</item>
+        <item>Khi bật nhắc nhở từ Trang chủ, ứng dụng gợi ý giờ dựa trên thời điểm bạn thường ghi chép</item>
+        <item>Bộ lọc: nút Áp dụng luôn hiển thị dù có nhiều danh mục, và loại giao dịch nay đã được dịch</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>Cài đặt gọn hơn: bốn nhóm ngắn, mục thiết lập một lần nằm trong Tùy chọn, sao lưu và khôi phục ở một chỗ</item>
+        <item>Biểu đồ mới, mượt hơn trong Phân tích và Danh mục</item>
+        <item>Trình quét hóa đơn tự chuẩn bị khi Dịch vụ Google Play cần tải về</item>
+        <item>Màn hình giấy phép mã nguồn mở mới có tìm kiếm, và sửa lỗi ứng dụng bị dừng</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>Chia sẻ tin nhắn thanh toán UPI hoặc ảnh chụp màn hình tới Expense Manager để tự điền số tiền, người nhận, ngày và danh mục</item>
+        <item>Quét hóa đơn cửa hàng bằng camera ngay từ màn hình Thêm. Tài khoản và danh mục được gợi ý từ hóa đơn và các mục trước đây</item>
+        <item>Ảnh chụp được đọc ngay trên điện thoại, không tải lên gì, và ảnh được lưu cùng giao dịch</item>
+        <item>Lời nhắc trên Trang chủ khi nhắc nhở hằng ngày đang tắt, để bật lại chỉ với một chạm</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>Lên kế hoạch trước: đặt tiền thuê nhà, hóa đơn hoặc lương lặp lại từ một ngày trong tương lai và xem trong thẻ Sắp tới mới</item>
+        <item>Thông báo vào tối hôm trước khoản thanh toán hằng tuần, hằng tháng hoặc hằng năm</item>
+        <item>Lặp lại một chạm: các mục thường dùng hiện ra khi thêm giao dịch</item>
+        <item>Tìm kiếm mọi giao dịch kèm tổng cộng</item>
+        <item>Sắp xếp lại trang chủ và chọn thẻ mở ứng dụng</item>
+        <item>Nhiều cải tiến nhỏ</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Nhắc nhở hằng ngày đang tắt</string>
+    <string name="reminder_banner_body">Một lời nhắc nhẹ mỗi tối giúp bạn ghi chép chi tiêu đầy đủ.</string>
+    <string name="reminder_banner_turn_on">Bật</string>
+    <string name="reminder_banner_not_now">Để sau</string>
+    <string name="reminder_banner_title_with_time">Bạn thường ghi vào khoảng %1$s</string>
+    <string name="reminder_banner_body_with_time">Nhận lời nhắc hằng ngày lúc đó để không bỏ sót khoản nào.</string>
+    <string name="reminder_banner_turn_on_at">Nhắc tôi lúc %1$s</string>
 </resources>

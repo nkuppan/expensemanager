@@ -75,6 +75,13 @@
     <string name="recurring_empty_message">Wähle beim Hinzufügen einer Buchung unter Wiederholen Täglich, Wöchentlich, Monatlich oder Jährlich – sie wird dann für dich erfasst.</string>
     <string name="edit">Bearbeiten</string>
     <string name="search_transactions_hint">Notizen, Kategorien, Konten suchen</string>
+    <string name="search_spent">Ausgegeben %1$s</string>
+    <string name="search_earned">Eingenommen %1$s</string>
+    <string name="search_all_time">Gesamter Zeitraum</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d Ergebnis</item>
+        <item quantity="other">%d Ergebnisse</item>
+    </plurals>
     <string name="clear_search">Suche löschen</string>
     <string name="no_matching_transactions">Keine Transaktionen passen zu deiner Suche</string>
     <string name="transaction_deleted">Transaktion gelöscht</string>
@@ -97,4 +104,14 @@
     <string name="recurring_part_of_series">Teil einer wiederkehrenden Serie</string>
     <string name="recurring_edit_series">Serie bearbeiten, um kommende Transaktionen zu ändern</string>
     <string name="add_recurring_transaction">Wiederkehrende Transaktion hinzufügen</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Häufig</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">Geplant: zuerst am %1$s hinzugefügt. Bis dahin wird nichts erfasst.</string>
+    <string name="receipt_amount_not_found">Aus diesem Beleg konnte kein Betrag gelesen werden. Gib ihn unten ein.</string>
+    <string name="scan_receipt">Beleg scannen</string>
+    <string name="reading_receipt">Beleg wird gelesen…</string>
+    <string name="suggested_categories">Vorschläge</string>
+    <string name="receipt_scanner_unavailable">Der Belegscanner ist auf diesem Gerät nicht verfügbar</string>
+    <string name="receipt_scanner_preparing">Google Play-Dienste laden den Belegscanner herunter. Er öffnet sich, sobald er bereit ist.</string>
 </resources>

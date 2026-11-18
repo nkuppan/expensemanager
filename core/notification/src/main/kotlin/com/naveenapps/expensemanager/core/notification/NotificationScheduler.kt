@@ -2,6 +2,8 @@ package com.naveenapps.expensemanager.core.notification
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -11,16 +13,17 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.TaskStackBuilder
 import androidx.core.content.ContextCompat
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
@@ -36,6 +39,19 @@ import kotlinx.coroutines.flow.firstOrNull
 
 /** Activity opened when a reminder notification is tapped. */
 const val DESTINATION_CLASS = "com.naveenapps.expensemanager.MainActivity"
+
+/**
+ * Extra on every notification's tap intent naming which notification opened the app; MainActivity
+ * reports it as app_opened's "source". The daily reminder is told apart by its action instead.
+ */
+const val EXTRA_OPEN_SOURCE = "open_source"
+
+object NotificationOpenSource {
+    const val WEEKLY_SUMMARY = "weekly_summary"
+    const val BUDGET_ALERT = "budget_alert"
+    const val UPCOMING = "upcoming_payment"
+    const val BACKUP_FAILED = "backup_failed"
+}
 
 /** Launch action that opens Settings → Automatic backup (from the backup-failed notification). */
 const val ACTION_OPEN_AUTO_BACKUP = "com.naveenapps.expensemanager.OPEN_AUTO_BACKUP"
@@ -85,6 +101,85 @@ class NotificationScheduler(
         }
     }
 
+    /**
+     * Next run of the evening heads-up for tomorrow's weekly / monthly / yearly recurring entries, at
+     * [UPCOMING_ALERT_HOUR] local time (later today, or tomorrow once that's passed). The worker
+     * schedules the following run itself, like the daily reminder. REPLACE keeps exactly one.
+     */
+    fun scheduleUpcomingAlert(now: Calendar = Calendar.getInstance()) {
+        val next = (now.clone() as Calendar).apply {
+            set(Calendar.HOUR_OF_DAY, UPCOMING_ALERT_HOUR)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            if (!after(now)) add(Calendar.DATE, 1)
+        }
+        val request = OneTimeWorkRequestBuilder<UpcomingRecurringWorker>()
+            .setInitialDelay(next.timeInMillis - now.timeInMillis, TimeUnit.MILLISECONDS)
+            .build()
+        withWorkManager {
+            it.enqueueUniqueWork(UPCOMING_ALERT_WORK_NAME, ExistingWorkPolicy.REPLACE, request)
+        }
+    }
+
+    fun cancelUpcomingAlert() {
+        withWorkManager { it.cancelUniqueWork(UPCOMING_ALERT_WORK_NAME) }
+    }
+
+    /** On app start: (re)schedules the heads-up when the user has it on. */
+    suspend fun checkAndScheduleUpcomingAlert() {
+        if (reminderTimeRepository.isUpcomingAlertOn().firstOrNull() != false) {
+            scheduleUpcomingAlert()
+        } else {
+            cancelUpcomingAlert()
+        }
+    }
+
+    /**
+     * "Tomorrow: Rent" heads-up, on its own channel so it can be muted separately. One entry shows
+     * its amount in the text; several show as a list (InboxStyle). Needs only the OS permission:
+     * it has its own switch, independent of the daily reminder. Tapping opens the app.
+     */
+    @SuppressLint("MissingPermission")
+    fun showUpcomingRecurringNotification(title: String, lines: List<String>, summary: String) {
+        if (!hasNotificationPermission()) return
+        createNotificationChannel(
+            NotificationChannelId.CHANNEL_UPCOMING,
+            context.getString(R.string.upcoming_channel_name),
+            context.getString(R.string.upcoming_channel_description),
+        )
+
+        val openApp = Intent(context, Class.forName(DESTINATION_CLASS))
+            .setFlags(OPEN_APP_FLAGS)
+            .putExtra(EXTRA_OPEN_SOURCE, NotificationOpenSource.UPCOMING)
+        val pendingIntent = PendingIntent.getActivity(
+            context,
+            NotificationId.UPCOMING_RECURRING,
+            openApp,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        val text = lines.singleOrNull() ?: summary
+        val builder = NotificationCompat.Builder(context, NotificationChannelId.CHANNEL_UPCOMING)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setSmallIcon(R.drawable.account_balance_wallet)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+        if (lines.size > 1) {
+            builder.setStyle(
+                NotificationCompat.InboxStyle()
+                    .also { style -> lines.forEach(style::addLine) }
+                    .setSummaryText(summary),
+            )
+        } else {
+            builder.setStyle(NotificationCompat.BigTextStyle().bigText(text))
+        }
+
+        runCatching {
+            NotificationManagerCompat.from(context).notify(NotificationId.UPCOMING_RECURRING, builder.build())
+        }
+    }
+
     /** Called after a transaction is saved; a short delay batches quick successive saves. */
     override fun checkBudgetsSoon() {
         val request = OneTimeWorkRequestBuilder<BudgetAlertWorker>()
@@ -115,8 +210,14 @@ class NotificationScheduler(
         if (!hasNotificationPermission()) return
         createChannelIfRequired()
 
+        val openSource = if (notificationId == NotificationId.WEEKLY_SUMMARY) {
+            NotificationOpenSource.WEEKLY_SUMMARY
+        } else {
+            NotificationOpenSource.BUDGET_ALERT
+        }
         val openApp = Intent(context, Class.forName(DESTINATION_CLASS))
-            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            .setFlags(OPEN_APP_FLAGS)
+            .putExtra(EXTRA_OPEN_SOURCE, openSource)
         val pendingIntent = PendingIntent.getActivity(
             context,
             notificationId,
@@ -148,7 +249,8 @@ class NotificationScheduler(
 
         val openAutoBackup = Intent(context, Class.forName(DESTINATION_CLASS))
             .setAction(ACTION_OPEN_AUTO_BACKUP)
-            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            .putExtra(EXTRA_OPEN_SOURCE, NotificationOpenSource.BACKUP_FAILED)
+            .setFlags(OPEN_APP_FLAGS)
         val pendingIntent = PendingIntent.getActivity(
             context,
             NotificationId.AUTO_BACKUP_FAILED,
@@ -190,18 +292,101 @@ class NotificationScheduler(
 
     suspend fun setReminder() {
         val calendar = getTimeInMillis()
-        val timeDelay = calendar.timeInMillis - Date().time
+        val dueAt = calendar.timeInMillis
+        val timeDelay = dueAt - Date().time
 
-        val request = OneTimeWorkRequestBuilder<NotificationWorker>()
-            .setInitialDelay(timeDelay, TimeUnit.MILLISECONDS)
-            .build()
+        // A system alarm ("allow while idle"): it goes off within minutes of the chosen time even
+        // when the phone is idle, where delayed background work could wait hours or never run on
+        // phones with aggressive battery savers. No special permission needed (it's not exact).
+        // The due time travels with it (to measure lateness) and is saved, so an app start can
+        // tell when a reminder was due but never ran (findMissedReminder).
+        val alarmSet = runCatching {
+            val alarmManager = context.getSystemService(AlarmManager::class.java)
+            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, dueAt, reminderAlarmIntent(dueAt))
+        }.onFailure { Log.w(TAG, "Reminder alarm not set; falling back to delayed work", it) }.isSuccess
 
         withWorkManager {
-            it.enqueueUniqueWork(REMINDER_WORK_NAME, ExistingWorkPolicy.REPLACE, request)
+            if (alarmSet) {
+                // Versions before the alarm scheduled delayed work under this name; drop it so
+                // the reminder doesn't arrive twice.
+                it.cancelUniqueWork(REMINDER_WORK_NAME)
+            } else {
+                val request = OneTimeWorkRequestBuilder<NotificationWorker>()
+                    .setInitialDelay(timeDelay, TimeUnit.MILLISECONDS)
+                    .setInputData(workDataOf(NotificationWorker.KEY_DUE_AT to dueAt))
+                    .build()
+                it.enqueueUniqueWork(REMINDER_WORK_NAME, ExistingWorkPolicy.REPLACE, request)
+            }
         }
+        reminderTimeRepository.setReminderScheduledFor(dueAt)
+    }
+
+    // One PendingIntent (same request code, UPDATE_CURRENT): setting it again replaces the alarm.
+    private fun reminderAlarmIntent(dueAt: Long): PendingIntent = PendingIntent.getBroadcast(
+        context,
+        NotificationId.DAILY_REMINDER_ALARM,
+        Intent(context, ReminderAlarmReceiver::class.java)
+            .setAction(ReminderAlarmReceiver.ACTION_REMINDER_ALARM)
+            .putExtra(ReminderAlarmReceiver.EXTRA_DUE_AT, dueAt),
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+    )
+
+    /**
+     * What the Reminder screen shows: when the reminder last ran, whether a setting blocks it,
+     * and whether Android's battery optimisation applies to the app (the usual reason it doesn't
+     * run on some phones).
+     */
+    suspend fun reminderHealth(): ReminderHealth = ReminderHealth(
+        lastRunAt = reminderTimeRepository.getReminderLastRunAt().firstOrNull(),
+        block = reminderBlockReason(),
+        isBatteryOptimised = runCatching {
+            !context.getSystemService(PowerManager::class.java).isIgnoringBatteryOptimizations(context.packageName)
+        }.getOrDefault(false),
+    )
+
+    /** Called by the reminder's job every time it runs, whether it shows anything or not. */
+    suspend fun markReminderRun(at: Long) {
+        reminderTimeRepository.setReminderLastRunAt(at)
+    }
+
+    /**
+     * On app start, before the reminder is rescheduled: if one was due more than
+     * [MISSED_GRACE_MILLIS] ago and its job never ran, how many minutes late it is now; otherwise
+     * null. That's the case people describe as "I never got the reminder": Android (often a
+     * phone maker's battery saver) didn't run the job at all.
+     */
+    suspend fun findMissedReminder(now: Long = System.currentTimeMillis()): Long? {
+        if (reminderTimeRepository.isReminderOn().firstOrNull() != true) return null
+        val dueAt = reminderTimeRepository.getReminderScheduledFor().firstOrNull() ?: return null
+        val lastRun = reminderTimeRepository.getReminderLastRunAt().firstOrNull() ?: 0L
+        if (now - dueAt < MISSED_GRACE_MILLIS || lastRun >= dueAt) return null
+        return (now - dueAt) / MILLIS_PER_MINUTE
+    }
+
+    /**
+     * Why a notification can't be shown right now, or null when it can. Beyond the app's own
+     * switch and the Android 13+ permission, people can turn notifications off for the app or
+     * just this channel in system settings, which the permission check alone doesn't see.
+     */
+    suspend fun reminderBlockReason(): ReminderBlock? {
+        if (reminderTimeRepository.isReminderOn().firstOrNull() != true) return ReminderBlock.REMINDER_OFF
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            return ReminderBlock.PERMISSION_DENIED
+        }
+        val manager = NotificationManagerCompat.from(context)
+        if (!manager.areNotificationsEnabled()) return ReminderBlock.APP_NOTIFICATIONS_OFF
+        val channel = manager.getNotificationChannel(NotificationChannelId.CHANNEL_GENERAL)
+        if (channel?.importance == NotificationManager.IMPORTANCE_NONE) return ReminderBlock.CHANNEL_OFF
+        return null
     }
 
     fun cancelReminder() {
+        runCatching {
+            context.getSystemService(AlarmManager::class.java).cancel(reminderAlarmIntent(dueAt = 0L))
+        }
         withWorkManager { it.cancelUniqueWork(REMINDER_WORK_NAME) }
     }
 
@@ -239,31 +424,22 @@ class NotificationScheduler(
         return setCalendar
     }
 
+    /**
+     * Posts the daily reminder. Returns null when it was shown, otherwise why it wasn't.
+     * [quickPick], when the user has a repeated expense, becomes the first button: one tap logs
+     * it without opening the app.
+     */
     suspend fun showNotification(
         destinationClass: String,
         title: String,
         content: String,
-    ) {
-        if (canWeShowNotification().not()) {
-            return
-        }
-
+        quickPick: ReminderQuickPick? = null,
+    ): ReminderBlock? {
         createChannelIfRequired()
+        reminderBlockReason()?.let { return it }
 
         val alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
-        val notificationIntent = Intent(context, Class.forName(destinationClass))
-        notificationIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        notificationIntent.action = "add_transaction"
-
-        val stackBuilder = TaskStackBuilder.create(context)
-        stackBuilder.addParentStack(Class.forName(destinationClass))
-        stackBuilder.addNextIntent(notificationIntent)
-
-        val pendingIntent = stackBuilder.getPendingIntent(
-            NotificationId.DAILY_REMINDER_REQUEST_CODE,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-        )
+        val pendingIntent = reminderOpenIntent(destinationClass)
 
         // "Nothing spent today": handled in the background, the app doesn't open.
         val noSpendIntent = PendingIntent.getBroadcast(
@@ -275,12 +451,27 @@ class NotificationScheduler(
         )
 
         val builder = NotificationCompat.Builder(context, NotificationChannelId.CHANNEL_GENERAL)
-
-        val notification = builder.setContentTitle(title)
+            .setContentTitle(title)
             .setContentText(content).setAutoCancel(true)
             .setSound(alarmSound)
             .setSmallIcon(R.drawable.account_balance_wallet)
             .setContentIntent(pendingIntent)
+
+        // Android shows at most three buttons: [Tea ₹20] [Add expense] [Nothing spent today].
+        quickPick?.let { pick ->
+            val quickLogIntent = PendingIntent.getBroadcast(
+                context,
+                NotificationId.QUICK_LOG_REQUEST_CODE,
+                pick.putInto(
+                    Intent(context, ReminderActionReceiver::class.java)
+                        .setAction(ReminderActionReceiver.ACTION_QUICK_LOG),
+                ),
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+            )
+            builder.addAction(0, pick.label, quickLogIntent)
+        }
+
+        val notification = builder
             // "Add expense" = same as tapping: the app opens straight on the keypad.
             .addAction(0, context.getString(R.string.reminder_action_add), pendingIntent)
             .addAction(0, context.getString(R.string.reminder_action_no_spend), noSpendIntent)
@@ -290,11 +481,78 @@ class NotificationScheduler(
             context.getSystemService(Context.NOTIFICATION_SERVICE)
                 as NotificationManager
 
-        notificationManager.notify(
-            NotificationId.DAILY_REMINDER_REQUEST_CODE,
-            notification,
-        )
+        return try {
+            notificationManager.notify(
+                NotificationId.DAILY_REMINDER_REQUEST_CODE,
+                notification,
+            )
+            null
+        } catch (error: SecurityException) {
+            Log.w(TAG, "Reminder not posted", error)
+            ReminderBlock.ERROR
+        }
     }
+
+    /**
+     * After a quick pick was saved from the reminder: the same notification, silently replaced
+     * by "Logged Tea ₹20" with an Undo button, gone by itself after a minute.
+     */
+    fun showQuickLogged(label: String, transactionId: String) {
+        val undoIntent = PendingIntent.getBroadcast(
+            context,
+            NotificationId.QUICK_LOG_UNDO_REQUEST_CODE,
+            Intent(context, ReminderActionReceiver::class.java)
+                .setAction(ReminderActionReceiver.ACTION_UNDO_QUICK_LOG)
+                .putExtra(ReminderActionReceiver.EXTRA_TRANSACTION_ID, transactionId),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+        val notification = NotificationCompat.Builder(context, NotificationChannelId.CHANNEL_GENERAL)
+            .setContentTitle(context.getString(R.string.reminder_quick_logged, label))
+            .setContentText(context.getString(R.string.reminder_quick_logged_body))
+            .setSmallIcon(R.drawable.account_balance_wallet)
+            .setContentIntent(reminderOpenIntent(DESTINATION_CLASS))
+            .setAutoCancel(true)
+            .setSilent(true)
+            .setTimeoutAfter(QUICK_LOGGED_TIMEOUT_MILLIS)
+            .addAction(0, context.getString(R.string.reminder_action_undo), undoIntent)
+            .build()
+        notifyReminderSlot(notification)
+    }
+
+    /** A quick pick couldn't be saved (its category or account was deleted): offer the app. */
+    fun showQuickLogFailed() {
+        val notification = NotificationCompat.Builder(context, NotificationChannelId.CHANNEL_GENERAL)
+            .setContentTitle(context.getString(R.string.reminder_quick_log_failed))
+            .setContentText(context.getString(R.string.reminder_quick_log_failed_body))
+            .setSmallIcon(R.drawable.account_balance_wallet)
+            .setContentIntent(reminderOpenIntent(DESTINATION_CLASS))
+            .setAutoCancel(true)
+            .setSilent(true)
+            .build()
+        notifyReminderSlot(notification)
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun notifyReminderSlot(notification: Notification) {
+        if (!hasNotificationPermission()) return
+        try {
+            NotificationManagerCompat.from(context).notify(NotificationId.DAILY_REMINDER_REQUEST_CODE, notification)
+        } catch (error: SecurityException) {
+            Log.w(TAG, "Reminder update not posted", error)
+        }
+    }
+
+    // A plain activity PendingIntent, not TaskStackBuilder: the builder always clears the task,
+    // so tapping the reminder restarted an open app (and asked to unlock again). The app has a
+    // single activity, so there is no parent stack to build anyway.
+    private fun reminderOpenIntent(destinationClass: String): PendingIntent = PendingIntent.getActivity(
+        context,
+        NotificationId.DAILY_REMINDER_REQUEST_CODE,
+        Intent(context, Class.forName(destinationClass))
+            .setAction("add_transaction")
+            .setFlags(OPEN_APP_FLAGS),
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+    )
 
     private suspend fun canWeShowNotification(): Boolean {
         val isReminderOn = reminderTimeRepository.isReminderOn().firstOrNull() ?: false
@@ -346,22 +604,63 @@ class NotificationScheduler(
 
 object NotificationId {
     const val DAILY_REMINDER_REQUEST_CODE = 101
+    const val DAILY_REMINDER_ALARM = 106
     const val NO_SPEND_REQUEST_CODE = 102
     const val WEEKLY_SUMMARY = 103
     const val AUTO_BACKUP_FAILED = 104
+    const val UPCOMING_RECURRING = 105
+    const val QUICK_LOG_REQUEST_CODE = 107
+    const val QUICK_LOG_UNDO_REQUEST_CODE = 108
 
     /** Budget alerts use this base plus a per-budget offset, so each budget has its own. */
     const val BUDGET_ALERT_BASE = 10_000
 }
 
 private const val REMINDER_WORK_NAME = "daily_reminder"
+private const val MISSED_GRACE_MILLIS = 2 * 60 * 60 * 1000L
+private const val MILLIS_PER_MINUTE = 60_000L
+private const val QUICK_LOGGED_TIMEOUT_MILLIS = 60_000L
 private const val RECURRING_WORK_NAME = "recurring_transactions"
 private const val RECURRING_INTERVAL_HOURS = 12L
 private const val WEEKLY_SUMMARY_WORK_NAME = "weekly_summary"
 private const val BUDGET_ALERT_WORK_NAME = "budget_alert_check"
 private const val WEEKLY_SUMMARY_HOUR = 19
 private const val BUDGET_CHECK_DELAY_SECONDS = 5L
+private const val UPCOMING_ALERT_WORK_NAME = "upcoming_recurring_alert"
+
+/** Local hour of the evening heads-up before weekly / monthly / yearly recurring entries. */
+const val UPCOMING_ALERT_HOUR = 19
 
 object NotificationChannelId {
     const val CHANNEL_GENERAL = "General"
+
+    /** Heads-up before recurring payments; its own channel so it can be muted on its own. */
+    const val CHANNEL_UPCOMING = "upcoming_payments"
 }
+
+/**
+ * How notification taps open the app. SINGLE_TOP with CLEAR_TOP reuses a running MainActivity (the
+ * intent arrives in onNewIntent, which handles quick add and the backup screen) instead of finishing
+ * and recreating it, so the user keeps their place and isn't asked to unlock again.
+ */
+private const val OPEN_APP_FLAGS =
+    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+/** Why the daily reminder wasn't shown; logged as the "reason" of reminder_not_shown / _missed. */
+enum class ReminderBlock(val analyticsValue: String) {
+    REMINDER_OFF("reminder_off"),
+    PERMISSION_DENIED("permission_denied"),
+    APP_NOTIFICATIONS_OFF("app_notifications_off"),
+    CHANNEL_OFF("channel_off"),
+    ERROR("error"),
+}
+
+/** The daily reminder's delivery state, for the Reminder screen. */
+data class ReminderHealth(
+    /** When the reminder last ran (shown, or skipped because the day was already logged). */
+    val lastRunAt: Long?,
+    /** A setting that stops it from showing, or null. */
+    val block: ReminderBlock?,
+    /** Battery optimisation applies to the app, so some phones may not run it on time. */
+    val isBatteryOptimised: Boolean,
+)

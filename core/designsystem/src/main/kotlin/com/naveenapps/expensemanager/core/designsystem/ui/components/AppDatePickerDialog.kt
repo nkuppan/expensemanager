@@ -33,7 +33,6 @@ import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDatePickerDialog(
     selectedDate: Date,

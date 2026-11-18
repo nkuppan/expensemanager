@@ -75,6 +75,12 @@
     <string name="recurring_empty_message">取引を追加するときに「繰り返し」で毎日・毎週・毎月・毎年を選ぶと自動で記録されます。</string>
     <string name="edit">編集</string>
     <string name="search_transactions_hint">メモ、カテゴリ、アカウントを検索</string>
+    <string name="search_spent">支出 %1$s</string>
+    <string name="search_earned">収入 %1$s</string>
+    <string name="search_all_time">全期間</string>
+    <plurals name="search_result_count">
+        <item quantity="other">%d 件</item>
+    </plurals>
     <string name="clear_search">検索をクリア</string>
     <string name="no_matching_transactions">検索に一致する取引はありません</string>
     <string name="transaction_deleted">取引を削除しました</string>
@@ -97,4 +103,14 @@
     <string name="recurring_part_of_series">定期取引の一部</string>
     <string name="recurring_edit_series">シリーズを編集して今後の取引を変更</string>
     <string name="add_recurring_transaction">定期取引を追加</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">よく使う</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">予定: 初回は%1$sに追加されます。それまでは記録されません。</string>
+    <string name="receipt_amount_not_found">このレシートから金額を読み取れませんでした。下に入力してください。</string>
+    <string name="scan_receipt">レシートをスキャン</string>
+    <string name="reading_receipt">レシートを読み取り中…</string>
+    <string name="suggested_categories">おすすめ</string>
+    <string name="receipt_scanner_unavailable">このデバイスではレシートスキャナーを利用できません</string>
+    <string name="receipt_scanner_preparing">Google Play 開発者サービスがレシートスキャナーをダウンロードしています。準備ができると開きます。</string>
 </resources>

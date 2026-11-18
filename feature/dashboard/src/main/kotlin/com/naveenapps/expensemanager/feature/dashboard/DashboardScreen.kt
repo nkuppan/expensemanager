@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -24,35 +26,40 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.CloudOff
+import androidx.compose.material.icons.outlined.DashboardCustomize
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.common.utils.AppShareLink
+import com.naveenapps.expensemanager.core.common.utils.shareAppMessage
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
 import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
@@ -67,6 +74,7 @@ import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.DashboardSection
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
@@ -90,7 +98,6 @@ fun DashboardScreen(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun DashboardScaffoldContent(
     state: DashboardState,
     onAction: (DashboardAction) -> Unit,
@@ -100,6 +107,21 @@ private fun DashboardScaffoldContent(
             ExpenseManagerTopAppBar(
                 title = stringResource(id = R.string.home),
                 actions = {
+                    // Notification centre (release notes, insights), with a dot while anything is unread.
+                    IconButton(onClick = { onAction.invoke(DashboardAction.OpenNotifications) }) {
+                        BadgedBox(
+                            badge = {
+                                if (state.hasUnreadNotifications) {
+                                    Badge(containerColor = MaterialTheme.colorScheme.error)
+                                }
+                            },
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Notifications,
+                                contentDescription = stringResource(id = R.string.notification_centre_title),
+                            )
+                        }
+                    }
                     IconButton(
                         onClick = {
                             onAction.invoke(DashboardAction.OpenSettings)
@@ -153,18 +175,27 @@ private fun DashboardScreenContent(
                 )
             }
         }
+        item("reminder_banner") {
+            // Draws nothing unless reminders are blocked or off (and the user hasn't snoozed it).
+            ReminderBannerItem(
+                state = state,
+                onAction = onAction,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+            )
+        }
         item {
             GettingStartedSection(state = state, onAction = onAction)
         }
-        item("summary") {
-            IncomeExpenseBalanceView(
-                transactionPeriod = state.transactionPeriod,
-                expenseFlowState = state.expenseFlowState,
-                isCompact = state.isCompactSummary,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
-            )
+        // The user's order from Customise dashboard (DashboardSection.DEFAULT_ORDER until changed).
+        state.sectionOrder.forEach { section ->
+            when (section) {
+                DashboardSection.SUMMARY -> summarySection(state)
+                DashboardSection.ACCOUNTS -> accountsSection(state, onAction)
+                DashboardSection.CATEGORIES -> categoriesSection(state, onAction)
+                DashboardSection.BUDGETS -> budgetsSection(state, onAction)
+                DashboardSection.TRANSACTIONS -> transactionsSection(state, onAction)
+                DashboardSection.UPCOMING -> upcomingSection(state, onAction)
+            }
         }
         state.conversionNote?.let { note ->
             item("conversion_note") {
@@ -183,145 +214,256 @@ private fun DashboardScreenContent(
             }
         }
 
-        item("account_item") {
-            Column {
-                DashboardWidgetTitle(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp),
-                    title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
-                    onViewAllClick = {
-                        onAction.invoke(DashboardAction.OpenAccountList)
+        if (state.showShareBanner(System.currentTimeMillis())) {
+            item("share_banner") {
+                val context = LocalContext.current
+                LaunchedEffect(Unit) { onAction(DashboardAction.ShareBannerShown) }
+                HomeShareBanner(
+                    onShare = {
+                        val link = AppShareLink.playStore(AppShareLink.MEDIUM_HOME_BANNER)
+                        val shared = context.shareAppMessage(
+                            message = context.getString(R.string.home_share_text, link),
+                            chooserTitle = context.getString(R.string.home_share_button),
+                        )
+                        if (shared) onAction(DashboardAction.ShareAppFromBanner)
                     },
-                )
-                if (state.accounts.isNotEmpty()) {
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight(),
-                        contentPadding = PaddingValues(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    ) {
-                        items(state.accounts, key = { it.id }) {
-                            DashBoardAccountItem(
-                                modifier = Modifier
-                                    .wrapContentWidth(),
-                                name = it.name,
-                                icon = it.storedIcon.name,
-                                customImagePath = it.storedIcon.customImagePath,
-                                amount = it.amount.amountString ?: "",
-                                availableCreditLimit = it.availableCreditLimit?.amountString
-                                    ?: "",
-                                amountTextColor = colorResource(id = it.amountTextColor),
-                                onItemClick = {
-                                    onAction.invoke(DashboardAction.OpenAccountEdit(it))
-                                },
-                            )
-                        }
-                    }
-                } else {
-                    EmptyItem(
-                        emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
-                        icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.CenterHorizontally),
-                    )
-                }
-            }
-        }
-
-        item("category_item") {
-            Column {
-                DashboardWidgetTitle(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 16.dp),
-                    title = stringResource(id = R.string.categories),
-                )
-                HomeCategoryCard(
-                    expense = state.categoryTransactionState,
-                    income = state.incomeCategoryTransactionState,
-                    onAddTransaction = { onAction.invoke(DashboardAction.OpenTransactionEdit(null)) },
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            }
-        }
-        item("budget_item") {
-            Column {
-                DashboardWidgetTitle(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 16.dp),
-                    title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.active_budgets),
-                    onViewAllClick = {
-                        onAction.invoke(DashboardAction.OpenBudgetList)
-                    },
-                )
-                HomeBudgetCard(
-                    budgets = state.homeBudgets,
-                    onAction = onAction,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onDismiss = { onAction(DashboardAction.DismissShareBanner) },
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = SectionSpacing),
                 )
             }
         }
 
-        item {
-            DashboardWidgetTitle(
+        item("customise_dashboard") {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, top = 16.dp),
-                title = stringResource(id = R.string.transaction),
-                onViewAllClick = {
-                    onAction.invoke(DashboardAction.OpenTransactionList)
-                },
-            )
-        }
-        if (state.transactions.isNotEmpty()) {
-            itemsIndexed(
-                items = state.transactions,
-                key = { _, item -> item.id },
-            ) { index, transaction ->
-                AppCardView(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 2.dp),
-                    shape = AppCardViewDefaults.cardShape(index, state.transactions),
-                ) {
-                    TransactionItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
-                            },
-                        categoryName = transaction.categoryTitleResId?.let { stringResource(it) }
-                            ?: transaction.categoryName,
-                        categoryColor = transaction.categoryIcon.backgroundColor,
-                        categoryIcon = transaction.categoryIcon.name,
-                        amount = transaction.amount,
-                        date = transaction.date,
-                        notes = transaction.notes,
-                        transactionType = transaction.transactionType,
-                        fromAccountName = transaction.fromAccountName,
-                        fromAccountIcon = transaction.fromAccountIcon.name,
-                        fromAccountColor = transaction.fromAccountIcon.backgroundColor,
-                        toAccountName = transaction.toAccountName,
-                        toAccountIcon = transaction.toAccountIcon?.name,
-                        toAccountColor = transaction.toAccountIcon?.backgroundColor,
+                    .padding(top = 16.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                TextButton(onClick = { onAction(DashboardAction.OpenCustomiseDashboard) }) {
+                    Icon(
+                        imageVector = Icons.Outlined.DashboardCustomize,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
                     )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = stringResource(id = R.string.customise_dashboard))
                 }
             }
-        } else {
-            item {
+        }
+    }
+}
+
+/**
+ * Gap above every reorderable Home section. Each section owns exactly this space above itself
+ * and nothing below, so the spacing is the same whatever order the user picks.
+ */
+private val SectionSpacing = 24.dp
+
+/**
+ * A section's title row: [SectionSpacing] above, a fixed height (with or without "View all") and
+ * 8dp before the section's content, so titles and content line up in every section.
+ */
+private fun Modifier.sectionTitle(): Modifier = this
+    .fillMaxWidth()
+    .padding(top = SectionSpacing, bottom = 8.dp)
+    .height(40.dp)
+    .padding(start = 16.dp, end = 4.dp)
+
+/** Income, expense and balance for the selected period. */
+private fun LazyListScope.summarySection(state: DashboardState) {
+    item("summary") {
+        IncomeExpenseBalanceView(
+            transactionPeriod = state.transactionPeriod,
+            expenseFlowState = state.expenseFlowState,
+            isCompact = state.isCompactSummary,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = SectionSpacing),
+        )
+    }
+}
+
+/** Accounts with their balances, in a horizontal row. */
+private fun LazyListScope.accountsSection(
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
+) {
+    item("account_item") {
+        Column {
+            DashboardWidgetTitle(
+                modifier = Modifier.sectionTitle(),
+                title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
+                onViewAllClick = {
+                    onAction.invoke(DashboardAction.OpenAccountList)
+                },
+            )
+            if (state.accounts.isNotEmpty()) {
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                ) {
+                    items(state.accounts, key = { it.id }) {
+                        DashBoardAccountItem(
+                            modifier = Modifier
+                                .wrapContentWidth(),
+                            name = it.name,
+                            icon = it.storedIcon.name,
+                            customImagePath = it.storedIcon.customImagePath,
+                            amount = it.amount.amountString ?: "",
+                            availableCreditLimit = it.availableCreditLimit?.amountString
+                                ?: "",
+                            amountTextColor = colorResource(id = it.amountTextColor),
+                            onItemClick = {
+                                onAction.invoke(DashboardAction.OpenAccountEdit(it))
+                            },
+                        )
+                    }
+                }
+            } else {
                 EmptyItem(
-                    emptyItemText = stringResource(id = R.string.no_transactions_available),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
+                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
+                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
                     modifier = Modifier
                         .fillMaxSize()
-                        .height(320.dp)
-                        .padding(horizontal = 16.dp),
+                        .align(Alignment.CenterHorizontally),
                 )
             }
+        }
+    }
+}
+
+/** Spending or income by category (the donut card). */
+private fun LazyListScope.categoriesSection(
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
+) {
+    item("category_item") {
+        Column {
+            DashboardWidgetTitle(
+                modifier = Modifier.sectionTitle(),
+                title = stringResource(id = R.string.categories),
+            )
+            HomeCategoryCard(
+                expense = state.categoryTransactionState,
+                income = state.incomeCategoryTransactionState,
+                onAddTransaction = { onAction.invoke(DashboardAction.OpenTransactionEdit(null)) },
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
+    }
+}
+
+/** Budgets for the current period. */
+private fun LazyListScope.budgetsSection(
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
+) {
+    item("budget_item") {
+        Column {
+            DashboardWidgetTitle(
+                modifier = Modifier.sectionTitle(),
+                title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.active_budgets),
+                onViewAllClick = {
+                    onAction.invoke(DashboardAction.OpenBudgetList)
+                },
+            )
+            HomeBudgetCard(
+                budgets = state.homeBudgets,
+                onAction = onAction,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
+        }
+    }
+}
+
+/** The latest transactions in the selected period. */
+private fun LazyListScope.transactionsSection(
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
+) {
+    item {
+        DashboardWidgetTitle(
+            modifier = Modifier.sectionTitle(),
+            title = stringResource(id = R.string.transaction),
+            onViewAllClick = {
+                onAction.invoke(DashboardAction.OpenTransactionList)
+            },
+        )
+    }
+    if (state.transactions.isNotEmpty()) {
+        itemsIndexed(
+            items = state.transactions,
+            key = { _, item -> item.id },
+        ) { index, transaction ->
+            AppCardView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 2.dp),
+                shape = AppCardViewDefaults.cardShape(index, state.transactions),
+            ) {
+                TransactionItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
+                        },
+                    categoryName = transaction.categoryTitleResId?.let { stringResource(it) }
+                        ?: transaction.categoryName,
+                    categoryColor = transaction.categoryIcon.backgroundColor,
+                    categoryIcon = transaction.categoryIcon.name,
+                    amount = transaction.amount,
+                    date = transaction.date,
+                    notes = transaction.notes,
+                    transactionType = transaction.transactionType,
+                    isRecurring = transaction.isRecurring,
+                    fromAccountName = transaction.fromAccountName,
+                    fromAccountIcon = transaction.fromAccountIcon.name,
+                    fromAccountColor = transaction.fromAccountIcon.backgroundColor,
+                    toAccountName = transaction.toAccountName,
+                    toAccountIcon = transaction.toAccountIcon?.name,
+                    toAccountColor = transaction.toAccountIcon?.backgroundColor,
+                )
+            }
+        }
+    } else {
+        item {
+            EmptyItem(
+                emptyItemText = stringResource(id = R.string.no_transactions_available),
+                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(320.dp)
+                    .padding(horizontal = 16.dp),
+            )
+        }
+    }
+}
+
+/** Planned recurring entries (the Upcoming card). */
+private fun LazyListScope.upcomingSection(
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
+) {
+    item("upcoming_item") {
+        Column {
+            DashboardWidgetTitle(
+                modifier = Modifier.sectionTitle(),
+                title = stringResource(id = R.string.upcoming),
+                onViewAllClick = if (state.upcoming.items.isEmpty()) {
+                    null
+                } else {
+                    { onAction.invoke(DashboardAction.OpenRecurringList) }
+                },
+            )
+            HomeUpcomingCard(
+                upcoming = state.upcoming,
+                onAction = onAction,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            )
         }
     }
 }
@@ -469,8 +611,9 @@ private fun AutoBackupWarningCard(
     }
 }
 
-// Display order of the "Get started" checklist.
-private enum class SetupStep { FirstExpense, Accounts, Budget, Currency }
+// Display order of the "Get started" checklist. Currency and accounts aren't steps: both are
+// set during onboarding (accounts come preloaded), so they'd always show as done.
+private enum class SetupStep { FirstExpense, Budget }
 
 @Composable
 private fun GettingStartedSection(
@@ -479,10 +622,7 @@ private fun GettingStartedSection(
 ) {
     val done = mapOf(
         SetupStep.FirstExpense to state.hasCreatedTransaction,
-        SetupStep.Accounts to state.accounts.isNotEmpty(),
         SetupStep.Budget to state.hasCurrentMonthBudget,
-        // A currency is always chosen during setup; the row stays as a reminder it can be changed.
-        SetupStep.Currency to true,
     )
     val visible = !state.isGettingStartedDismissed &&
         state.transactionCount < GETTING_STARTED_MAX_TRANSACTIONS &&
@@ -490,16 +630,12 @@ private fun GettingStartedSection(
     if (!visible) return
 
     GettingStartedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth(),
         done = done,
         onStepClick = { step ->
             when (step) {
                 SetupStep.FirstExpense -> onAction(DashboardAction.OpenTransactionEdit(null))
-                SetupStep.Accounts -> onAction(DashboardAction.OpenAccountList)
                 SetupStep.Budget -> onAction(DashboardAction.OpenBudgetCreate())
-                SetupStep.Currency -> onAction(DashboardAction.OpenCurrency)
             }
         },
         onDismiss = { onAction(DashboardAction.DismissGettingStarted) },
@@ -507,9 +643,11 @@ private fun GettingStartedSection(
 }
 
 /**
- * "Get started" checklist on Home for new users: a progress bar plus the setup steps, each
- * ticked off automatically. The next unfinished step is expanded with its own button, so
- * there's always one obvious thing to do. Closable; disappears once every step is done.
+ * Minimal "Get started" checklist on Home for new users: one card, like the other Home cards,
+ * with a one-line header (title, progress, close) and one row per step still to do. Finished
+ * steps just count towards "1 of 2". The next step has a small button, so there's always one
+ * obvious thing to do. Everything inside uses the same 16dp inset as the other cards' rows, so
+ * the title and the step names line up. Disappears once every step is done.
  */
 @Composable
 private fun GettingStartedCard(
@@ -520,181 +658,111 @@ private fun GettingStartedCard(
 ) {
     val steps = SetupStep.entries
     val completed = steps.count { done[it] == true }
-    val nextStep = steps.firstOrNull { done[it] != true }
+    val remaining = steps.filter { done[it] != true }
+    val nextStep = remaining.firstOrNull()
 
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.surfaceContainerLowest,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    AppCardView(
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        cornerSize = 16.dp,
     ) {
-        Column(modifier = Modifier.padding(start = 20.dp, end = 8.dp, top = 12.dp, bottom = 16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(top = 8.dp),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.getting_started_title),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = stringResource(id = R.string.getting_started_subtitle),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                IconButton(onClick = onDismiss) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(id = R.string.getting_started_hide),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            Row(
-                modifier = Modifier.padding(end = 12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                LinearProgressIndicator(
-                    progress = { completed / steps.size.toFloat() },
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(8.dp),
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.primaryContainer,
-                    strokeCap = StrokeCap.Round,
-                    gapSize = 0.dp,
-                    drawStopIndicator = {},
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = stringResource(id = R.string.getting_started_progress, completed, steps.size),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.primary,
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(id = R.string.getting_started_title),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(id = R.string.getting_started_progress, completed, steps.size),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f),
+            )
+            IconButton(onClick = onDismiss) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(id = R.string.getting_started_hide),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(18.dp),
                 )
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            steps.forEachIndexed { index, step ->
-                SetupStepRow(
-                    number = index + 1,
-                    step = step,
-                    isDone = done[step] == true,
-                    isNext = step == nextStep,
-                    onClick = { onStepClick(step) },
-                )
-            }
+        }
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        remaining.forEach { step ->
+            SetupStepRow(
+                number = steps.indexOf(step) + 1,
+                step = step,
+                isNext = step == nextStep,
+                onClick = { onStepClick(step) },
+            )
         }
     }
 }
 
+/** One step still to do, on a single line: number, title, and a small button on the next one. */
 @Composable
 private fun SetupStepRow(
     number: Int,
     step: SetupStep,
-    isDone: Boolean,
     isNext: Boolean,
     onClick: () -> Unit,
 ) {
-    val (title, description, action) = when (step) {
-        SetupStep.FirstExpense -> Triple(
-            R.string.step_expense_title,
-            R.string.step_expense_description,
-            R.string.first_expense_action,
-        )
-
-        SetupStep.Accounts -> Triple(
-            R.string.step_accounts_title,
-            R.string.step_accounts_description,
-            R.string.step_accounts_action,
-        )
-
-        SetupStep.Budget -> Triple(
-            R.string.step_budget_title,
-            R.string.step_budget_description,
-            R.string.step_budget_action,
-        )
-
-        SetupStep.Currency -> Triple(
-            R.string.step_currency_title,
-            R.string.step_currency_description,
-            R.string.step_currency_action,
-        )
+    val (title, action) = when (step) {
+        SetupStep.FirstExpense -> R.string.step_expense_title to R.string.first_expense_action
+        SetupStep.Budget -> R.string.step_budget_title to R.string.step_budget_action
     }
 
-    Surface(
-        // Done rows stay tappable, e.g. to change the currency or edit accounts later.
-        onClick = onClick,
-        shape = RoundedCornerShape(14.dp),
-        color = if (isNext) MaterialTheme.colorScheme.primaryContainer else Color.Transparent,
+    // Same insets and text style as the rows of the other Home cards (e.g. Upcoming).
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(end = 12.dp, top = 6.dp),
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .heightIn(min = 32.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.Top,
-        ) {
-            StepBadge(number = number, isDone = isDone, isNext = isNext)
-            Spacer(modifier = Modifier.width(14.dp))
-            Column(modifier = Modifier.weight(1f)) {
+        StepBadge(number = number, isDone = false, isNext = isNext)
+        Spacer(modifier = Modifier.width(14.dp))
+        Text(
+            text = stringResource(id = title),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f),
+        )
+        if (isNext) {
+            Button(
+                onClick = onClick,
+                shape = RoundedCornerShape(10.dp),
+                contentPadding = PaddingValues(horizontal = 12.dp),
+                modifier = Modifier.height(30.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            ) {
                 Text(
-                    text = stringResource(id = title),
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = if (isNext) FontWeight.SemiBold else FontWeight.Medium,
-                    color = if (isDone) {
-                        MaterialTheme.colorScheme.onSurfaceVariant
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
-                    },
-                    textDecoration = if (isDone) TextDecoration.LineThrough else null,
-                )
-                if (!isDone) {
-                    Text(
-                        text = stringResource(id = description),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-                if (isNext && action != null) {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Button(
-                        onClick = onClick,
-                        shape = RoundedCornerShape(12.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                    ) {
-                        if (step == SetupStep.FirstExpense) {
-                            Icon(
-                                imageVector = Icons.Default.Add,
-                                contentDescription = null,
-                                modifier = Modifier.size(18.dp),
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
-                        }
-                        Text(text = stringResource(id = action), fontWeight = FontWeight.SemiBold)
-                    }
-                }
-            }
-            if (!isDone && !isNext) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.align(Alignment.CenterVertically),
+                    text = stringResource(id = action),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
                 )
             }
+        } else {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(20.dp),
+            )
         }
     }
 }
@@ -704,7 +772,7 @@ private fun SetupStepRow(
 private fun StepBadge(number: Int, isDone: Boolean, isNext: Boolean) {
     val primary = MaterialTheme.colorScheme.primary
     Surface(
-        modifier = Modifier.size(28.dp),
+        modifier = Modifier.size(22.dp),
         shape = CircleShape,
         color = if (isDone || isNext) primary else Color.Transparent,
         contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -715,12 +783,12 @@ private fun StepBadge(number: Int, isDone: Boolean, isNext: Boolean) {
                 Icon(
                     imageVector = Icons.Default.Check,
                     contentDescription = null,
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(14.dp),
                 )
             } else {
                 Text(
                     text = number.toString(),
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.Bold,
                     color = if (isNext) {
                         MaterialTheme.colorScheme.onPrimary
@@ -740,9 +808,7 @@ private fun GettingStartedCardPreview() {
         GettingStartedCard(
             done = mapOf(
                 SetupStep.FirstExpense to false,
-                SetupStep.Accounts to true,
                 SetupStep.Budget to false,
-                SetupStep.Currency to true,
             ),
             onStepClick = {},
             onDismiss = {},

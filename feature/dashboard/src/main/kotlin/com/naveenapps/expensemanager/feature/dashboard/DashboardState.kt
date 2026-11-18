@@ -6,7 +6,10 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
+import com.naveenapps.expensemanager.core.model.DashboardSection
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
+import com.naveenapps.expensemanager.core.model.RecurringTransaction
+import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 
 @Stable
@@ -40,6 +43,59 @@ data class DashboardState(
     val conversionNote: ConversionNote? = null,
     /** Set while automatic backups are failing and the warning isn't snoozed. */
     val backupWarning: AutoBackupError? = null,
+    /** The "Upcoming" card: planned recurring entries, below the transactions. */
+    val upcoming: UpcomingUi = UpcomingUi(),
+    /**
+     * Home's share banner is hidden until this time (epoch millis). Defaults to "never" so it
+     * can't flash up before the stored value loads.
+     */
+    val shareBannerHiddenUntil: Long = Long.MAX_VALUE,
+    /** Order of the reorderable Home sections (Customise dashboard). */
+    val sectionOrder: List<DashboardSection> = DashboardSection.DEFAULT_ORDER,
+    /** A dot on Home's bell: unread release notes or an insight since the centre was last opened. */
+    val hasUnreadNotifications: Boolean = false,
+    /**
+     * "Daily reminders are off" banner may show (from the install's second day, not snoozed,
+     * dismissed fewer than twice, no first-save reminder ask pending). The screen also needs
+     * notifications to be blocked; see [showReminderBanner].
+     */
+    val reminderBannerEligible: Boolean = false,
+    val isReminderOn: Boolean = true,
+    /** Times the system permission dialog was requested; decides dialog vs Settings. */
+    val notificationPermissionAsks: Int = 0,
+    /**
+     * Reminder time suggested from when the user usually logs (after a few saves), so the banner
+     * can say "You usually log around 9:00 PM" and set the reminder for then. Null: not known yet.
+     */
+    val suggestedReminderTime: ReminderTimeState? = null,
+) {
+    /**
+     * The reminders banner, given whether the app may post notifications right now. Only for
+     * blocked notifications: someone who switched the reminder off in Settings chose that.
+     */
+    fun showReminderBanner(canNotify: Boolean): Boolean = reminderBannerEligible && !canNotify
+
+    /** The bottom share banner: for users who've logged a few expenses, unless closed or shared. */
+    fun showShareBanner(now: Long): Boolean = transactionCount >= SHARE_BANNER_MIN_TRANSACTIONS && now >= shareBannerHiddenUntil
+}
+
+/** Recommendations land better from people who've actually used the app for a while. */
+internal const val SHARE_BANNER_MIN_TRANSACTIONS = 5
+
+/** The next few recurring rules, soonest first, and what all rules add up to over [windowDays]. */
+@Stable
+data class UpcomingUi(
+    val items: List<UpcomingItemUi> = emptyList(),
+    /** Formatted totals over the window; null when nothing of that type is due. */
+    val expenseDue: String? = null,
+    val incomeDue: String? = null,
+    val windowDays: Int = 30,
+)
+
+@Stable
+data class UpcomingItemUi(
+    val rule: RecurringTransaction,
+    val amount: String,
 )
 
 enum class ConversionNote {

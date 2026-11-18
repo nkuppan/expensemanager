@@ -75,6 +75,14 @@
     <string name="recurring_empty_message">Al añadir una transacción, elige Diario, Semanal, Mensual o Anual en Repetir y se registrará por ti.</string>
     <string name="edit">Editar</string>
     <string name="search_transactions_hint">Buscar notas, categorías, cuentas</string>
+    <string name="search_spent">Gastado %1$s</string>
+    <string name="search_earned">Ingresado %1$s</string>
+    <string name="search_all_time">Todo el tiempo</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d resultado</item>
+        <item quantity="many">%d resultados</item>
+        <item quantity="other">%d resultados</item>
+    </plurals>
     <string name="clear_search">Borrar búsqueda</string>
     <string name="no_matching_transactions">Ninguna transacción coincide con tu búsqueda</string>
     <string name="transaction_deleted">Transacción eliminada</string>
@@ -97,4 +105,14 @@
     <string name="recurring_part_of_series">Parte de una serie recurrente</string>
     <string name="recurring_edit_series">Edita la serie para cambiar las próximas transacciones</string>
     <string name="add_recurring_transaction">Añadir transacción recurrente</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Frecuentes</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">Planificado: se añade por primera vez el %1$s. No se registra nada antes.</string>
+    <string name="receipt_amount_not_found">No se pudo leer un importe de este recibo. Introdúcelo abajo.</string>
+    <string name="scan_receipt">Escanear recibo</string>
+    <string name="reading_receipt">Leyendo el recibo…</string>
+    <string name="suggested_categories">Sugeridas</string>
+    <string name="receipt_scanner_unavailable">El escáner de recibos no está disponible en este dispositivo</string>
+    <string name="receipt_scanner_preparing">Los servicios de Google Play están descargando el escáner de recibos. Se abrirá cuando esté listo.</string>
 </resources>

@@ -7,4 +7,7 @@
     <string name="privacy_policy">Datenschutzerklärung</string>
     <string name="terms_and_conditions">Allgemeine Geschäftsbedingungen</string>
     <string name="licenses">Open-Source-Lizenzen</string>
+    <string name="search_libraries">Bibliotheken suchen</string>
+    <string name="open_license">Lizenz öffnen</string>
+    <string name="licenses_unavailable">Lizenzen sind in diesem Build nicht enthalten.</string>
 </resources>

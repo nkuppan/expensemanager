@@ -13,25 +13,16 @@
     <string name="no_transactions_available">No transactions available for the selected period.\nTap + button to note your transactions</string>
     <string name="home">Home</string>
     <string name="transaction_create_message">"Add your expenses, incomes and transfers here. "</string>
-    <string name="help"><![CDATA[Help & info]]></string>
+    <string name="help"><![CDATA[Help &amp; info]]></string>
     <string name="ok">OK</string>
     <string name="tap_to_set_spending_limit">Tap to set a spending limit</string>
     <string name="first_expense_action">Add expense</string>
     <string name="getting_started_title">Get started</string>
-    <string name="getting_started_subtitle">Four quick steps to get the most out of Expense Manager</string>
     <string name="getting_started_progress">%1$d of %2$d</string>
     <string name="getting_started_hide">Hide</string>
     <string name="step_expense_title">Log your first expense</string>
-    <string name="step_expense_description">It takes a few seconds</string>
     <string name="step_budget_title">Create a monthly budget</string>
-    <string name="step_budget_description">See how much you have left to spend</string>
     <string name="step_budget_action">Create budget</string>
-    <string name="step_accounts_title">Add your accounts</string>
-    <string name="step_accounts_description">Cash, bank and cards you spend from</string>
-    <string name="step_accounts_action">Add account</string>
-    <string name="step_currency_title">Choose your currency</string>
-    <string name="step_currency_description">Amounts are shown in this currency</string>
-    <string name="step_currency_action">Change currency</string>
     <string name="converted_at_fixed_rates">Amounts in other currencies are converted at your fixed rates.</string>
     <string name="currencies_not_converted">Currency conversion is off: each currency is totalled on its own.</string>
     <string name="converted_at_current_rates">Amounts in other currencies are converted at today\'s rates, not the rates on the day they happened.</string>
@@ -48,4 +39,79 @@
     <string name="home_categories_add">Add a transaction</string>
     <string name="home_categories_show_income">Show income</string>
     <string name="home_categories_show_expense">Show expenses</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Upcoming</string>
+    <string name="upcoming_spend">Expenses</string>
+    <string name="upcoming_income">Income</string>
+    <string name="upcoming_today">Today</string>
+    <string name="upcoming_tomorrow">Tomorrow</string>
+    <string name="upcoming_empty_title">Nothing planned yet</string>
+    <string name="upcoming_empty_description">Set rent, bills or salary to repeat. They\'re added on their day, and you\'ll see them here first.</string>
+    <string name="upcoming_plan">Plan a payment</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Next %d day</item>
+        <item quantity="other">Next %d days</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">In %d day</item>
+        <item quantity="other">In %d days</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Know someone who tracks money?</string>
+    <string name="home_share_description">Share Expense Manager. It\'s free, has no ads, and their data stays on their phone.</string>
+    <string name="home_share_button">Share the app</string>
+    <string name="home_share_text">I use Expense Manager to track my spending. It is free and keeps my data on my phone: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Customise dashboard</string>
+    <string name="customise_hint">Hold and drag to reorder the sections on Home</string>
+    <string name="customise_save">Save</string>
+    <string name="customise_reset">Reset</string>
+    <string name="section_summary">Income &amp; expense summary</string>
+    <string name="section_accounts">Accounts</string>
+    <string name="section_categories">Categories</string>
+    <string name="section_budgets">Budgets</string>
+    <string name="section_transactions">Recent transactions</string>
+    <string name="section_upcoming">Upcoming payments</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notifications</string>
+    <string name="whats_new_version">Version %1$s</string>
+    <string name="notification_new">New</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">See more (%1$d)</string>
+    <string name="notification_see_less">See less</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Log your most frequent expense straight from the daily reminder with one tap, with Undo if you tap by mistake</item>
+        <item>Daily reminders arrive on time more reliably, and the Reminder screen shows how to fix it if your phone blocks them</item>
+        <item>Turning on reminders from Home now suggests a time based on when you usually log</item>
+        <item>Filters: the Apply button stays visible even with many categories, and transaction types are now translated</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>A simpler Settings screen: four short groups, with everything you set once in Preferences and backup and restore in one place</item>
+        <item>Smoother, redesigned charts in Analysis and Categories</item>
+        <item>The receipt scanner now gets ready by itself when Google Play services needs to download it</item>
+        <item>A new searchable open source licences screen, and crash fixes</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>Share a UPI payment message or screenshot to Expense Manager and it\'s filled in for you: amount, payee, date and category</item>
+        <item>Scan a shop receipt with your camera from the Add screen. The account and category are suggested from the receipt and your past entries</item>
+        <item>Screenshots are read on your phone, nothing is uploaded, and the image is saved with the transaction</item>
+        <item>A reminder on Home when daily reminders are off, so you can turn them back on in one tap</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>Plan ahead: set rent, bills or salary to repeat from a future date, and see what\'s coming in the new Upcoming card on Home</item>
+        <item>A heads-up the evening before a weekly, monthly or yearly payment is added</item>
+        <item>One-tap repeats: your frequent entries appear as chips when you add a transaction</item>
+        <item>Search all your transactions, with totals for what matches</item>
+        <item>Reorder the Home screen and choose which tab the app opens on</item>
+        <item>A simpler Get started card, and many small fixes</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Daily reminders are off</string>
+    <string name="reminder_banner_body">A gentle nudge each evening helps you keep your spending up to date.</string>
+    <string name="reminder_banner_turn_on">Turn on</string>
+    <string name="reminder_banner_not_now">Not now</string>
+    <string name="reminder_banner_title_with_time">You usually log around %1$s</string>
+    <string name="reminder_banner_body_with_time">Get a daily reminder then, so nothing slips through.</string>
+    <string name="reminder_banner_turn_on_at">Remind me at %1$s</string>
 </resources>

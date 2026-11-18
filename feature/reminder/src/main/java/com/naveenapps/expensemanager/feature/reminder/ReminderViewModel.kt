@@ -11,7 +11,12 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.Updat
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.notification.NotificationScheduler
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
+import com.naveenapps.expensemanager.core.repository.logSettingChanged
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,6 +34,8 @@ class ReminderViewModel(
     private val notificationScheduler: NotificationScheduler,
     private val appComposeNavigator: AppComposeNavigator,
     private val saveReminderTimeUseCase: SaveReminderTimeUseCase,
+    private val reminderTimeRepository: ReminderTimeRepository,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _event = Channel<ReminderEvent>()
@@ -46,6 +53,10 @@ class ReminderViewModel(
             _state.update { it.copy(reminderStatus = status) }
         }.launchIn(viewModelScope)
 
+        reminderTimeRepository.isUpcomingAlertOn().onEach { on ->
+            _state.update { it.copy(upcomingAlertsOn = on) }
+        }.launchIn(viewModelScope)
+
         getReminderTimeUseCase.invoke().onEach { time ->
             _state.update {
                 it.copy(
@@ -57,9 +68,21 @@ class ReminderViewModel(
         }.launchIn(viewModelScope)
     }
 
+    private suspend fun refreshDelivery() {
+        val health = notificationScheduler.reminderHealth()
+        _state.update {
+            it.copy(
+                lastReminderRunAt = health.lastRunAt,
+                deliveryBlock = health.block,
+                isBatteryOptimised = health.isBatteryOptimised,
+            )
+        }
+    }
+
     private fun saveReminderStatus(status: Boolean) {
         viewModelScope.launch {
             updateReminderStatusUseCase.invoke(status)
+            analyticsRepository.logSettingChanged("daily_reminder", status.toString())
 
             if (status) {
                 notificationScheduler.setReminder()
@@ -75,6 +98,22 @@ class ReminderViewModel(
         }
     }
 
+    // Independent of the daily reminder: either can be on without the other.
+    private fun saveUpcomingAlerts(on: Boolean) {
+        viewModelScope.launch {
+            reminderTimeRepository.setUpcomingAlertOn(on)
+            if (on) {
+                notificationScheduler.scheduleUpcomingAlert()
+            } else {
+                notificationScheduler.cancelUpcomingAlert()
+            }
+            analyticsRepository.logEvent(
+                if (on) AnalyticsEvents.UPCOMING_ALERTS_ON else AnalyticsEvents.UPCOMING_ALERTS_OFF,
+                emptyMap(),
+            )
+        }
+    }
+
     private fun closePage() {
         appComposeNavigator.popBackStack()
     }
@@ -84,6 +123,8 @@ class ReminderViewModel(
         viewModelScope.launch {
             saveReminderTimeUseCase.invoke(reminderTimeState)
             notificationScheduler.setReminder()
+            // The hour only, e.g. "21".
+            analyticsRepository.logSettingChanged("reminder_time", reminderTimeState.hour.toString())
         }
     }
 
@@ -100,6 +141,8 @@ class ReminderViewModel(
                     _state.update { it.copy(showTimePickerDialog = false) }
                     setReminderTimeState(action.reminderState)
                 }
+
+                is ReminderAction.ChangeUpcomingAlerts -> saveUpcomingAlerts(action.on)
 
                 is ReminderAction.ChangeReminderStatus -> {
                     saveReminderStatus(action.status)
@@ -127,6 +170,13 @@ class ReminderViewModel(
                         _state.update { it.copy(showTimePickerDialog = true) }
                     }
                 }
+
+                ReminderAction.RefreshDelivery -> refreshDelivery()
+
+                is ReminderAction.DeliveryFixOpened -> analyticsRepository.logEvent(
+                    AnalyticsEvents.REMINDER_FIX_OPENED,
+                    mapOf(AnalyticsParams.REASON to action.reason),
+                )
 
                 ReminderAction.PermissionGranted -> {
                     _state.update {

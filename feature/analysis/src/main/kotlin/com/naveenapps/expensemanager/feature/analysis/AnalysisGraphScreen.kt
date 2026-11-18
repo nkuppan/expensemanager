@@ -4,9 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
@@ -18,17 +24,23 @@ import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.WholeAverageData
-import com.patrykandpatrick.vico.compose.axis.axisLabelComponent
-import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
-import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
-import com.patrykandpatrick.vico.compose.chart.Chart
-import com.patrykandpatrick.vico.compose.chart.line.lineChart
-import com.patrykandpatrick.vico.compose.chart.line.lineSpec
-import com.patrykandpatrick.vico.compose.component.shape.shader.verticalGradient
-import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
-import com.patrykandpatrick.vico.core.axis.AxisItemPlacer
-import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.patrykandpatrick.vico.core.entry.entryOf
+import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.compose.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberAxisGuidelineComponent
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.compose.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.compose.cartesian.data.lineModel
+import com.patrykandpatrick.vico.compose.cartesian.layer.LineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.marker.rememberDefaultCartesianMarker
+import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.compose.common.Fill
+import com.patrykandpatrick.vico.compose.common.ProvideVicoTheme
+import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
+import com.patrykandpatrick.vico.compose.common.data.ExtraStore
+import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -108,67 +120,89 @@ private fun ChartScreenContent(
     }
 }
 
+// The x-axis labels (one date per point) travel with the chart's data.
+private val DatesKey = ExtraStore.Key<List<String>>()
+
+private const val START_AXIS_LABEL_COUNT = 6
+private const val BOTTOM_AXIS_LABEL_SPACING = 5
+private const val AREA_FILL_TOP_ALPHA = 0.4f
+
+/** Expense and income per day of the selected period, as two lines (Vico 3). */
 @Composable
 fun ChartScreen(
     chart: AnalysisUiChartData?,
     isDarkTheme: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    chart ?: return
+    if (chart == null || chart.expenses.isEmpty()) return
 
     val expenseColor = getExpenseColor()
     val incomeColor = getIncomeColor()
 
-    val marker = rememberMarker()
+    val modelProducer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(chart) {
+        modelProducer.runTransaction {
+            lineModel {
+                series(x = chart.expenses.indices.toList(), y = chart.expenses)
+                series(x = chart.incomes.indices.toList(), y = chart.incomes)
+            }
+            extras { it[DatesKey] = chart.dates }
+        }
+    }
 
-    ProvideChartStyle(rememberChartStyle(chartColors, isDarkTheme)) {
-        Chart(
-            modifier = modifier,
-            chart = lineChart(
-                lines = listOf(
-                    lineSpec(
-                        lineColor = expenseColor,
-                        lineBackgroundShader = verticalGradient(
-                            arrayOf(
-                                expenseColor.copy(0.5f),
-                                expenseColor.copy(alpha = 0f),
-                            ),
+    // Axis labels, guidelines and the marker follow the app's Material theme (light or dark,
+    // whichever the user picked in Settings, not only the system setting).
+    key(isDarkTheme) {
+        ProvideVicoTheme(rememberM3VicoTheme()) {
+            CartesianChartHost(
+                modifier = modifier,
+                chart = rememberCartesianChart(
+                    rememberLineCartesianLayer(
+                        lineProvider = LineCartesianLayer.LineProvider.series(
+                            rememberChartLine(expenseColor),
+                            rememberChartLine(incomeColor),
                         ),
                     ),
-                    lineSpec(
-                        lineColor = incomeColor,
-                        lineBackgroundShader = verticalGradient(
-                            arrayOf(
-                                incomeColor.copy(0.5f),
-                                incomeColor.copy(alpha = 0f),
+                    startAxis = VerticalAxis.rememberStart(
+                        valueFormatter = remember {
+                            CartesianValueFormatter { _, value, _ -> getCompactNumber(value) }
+                        },
+                        itemPlacer = remember { VerticalAxis.ItemPlacer.count({ START_AXIS_LABEL_COUNT }) },
+                    ),
+                    bottomAxis = HorizontalAxis.rememberBottom(
+                        valueFormatter = remember {
+                            CartesianValueFormatter { context, x, _ ->
+                                context.model.extraStore.getOrNull(DatesKey)?.getOrNull(x.toInt()).orEmpty()
+                            }
+                        },
+                        itemPlacer = remember { HorizontalAxis.ItemPlacer.aligned({ BOTTOM_AXIS_LABEL_SPACING }) },
+                    ),
+                    marker = rememberDefaultCartesianMarker(
+                        label = rememberTextComponent(
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                color = MaterialTheme.colorScheme.onSurface,
                             ),
                         ),
+                        guideline = rememberAxisGuidelineComponent(),
                     ),
                 ),
-            ),
-            startAxis = rememberStartAxis(
-                itemPlacer = AxisItemPlacer.Vertical.default(6),
-                label = axisLabelComponent(),
-                valueFormatter = { value, _ ->
-                    getCompactNumber(value)
-                },
-            ),
-            bottomAxis = rememberBottomAxis(
-                itemPlacer = AxisItemPlacer.Horizontal.default(5),
-                label = axisLabelComponent(),
-                valueFormatter = { value, _ ->
-                    if (chart.dates.isNotEmpty()) {
-                        chart.dates[value.toInt()]
-                    } else {
-                        ""
-                    }
-                },
-            ),
-            model = chart.chartData,
-            marker = marker,
-        )
+                modelProducer = modelProducer,
+            )
+        }
     }
 }
+
+/** A smooth line in [color] with a fading area under it. */
+@Composable
+private fun rememberChartLine(color: Color): LineCartesianLayer.Line = LineCartesianLayer.rememberLine(
+    fill = remember(color) { LineCartesianLayer.LineFill.single(Fill(color)) },
+    areaFill = remember(color) {
+        LineCartesianLayer.AreaFill.single(
+            Fill(Brush.verticalGradient(listOf(color.copy(alpha = AREA_FILL_TOP_ALPHA), Color.Transparent))),
+        )
+    },
+    interpolator = remember { LineCartesianLayer.Interpolator.cubic() },
+)
 
 @AppPreviewsLightAndDarkMode
 @Composable
@@ -202,46 +236,8 @@ fun AmountSummaryPreview() {
     }
 }
 
-@Composable
 private fun getChartData(): AnalysisUiChartData = AnalysisUiChartData(
-    chartData = entryModelOf(
-        listOf(
-            entryOf(0, 1),
-            entryOf(1, 2),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-        ),
-        listOf(
-            entryOf(0, 4),
-            entryOf(1, 3),
-            entryOf(2, 2),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-            entryOf(2, 3),
-        ),
-    ),
-    dates = listOf(
-        "08/09",
-        "18/09",
-        "21/09",
-        "24/09",
-        "28/09",
-        "18/09",
-        "21/09",
-        "24/09",
-        "28/09",
-        "28/09",
-    ),
+    expenses = listOf(1.0, 2.0, 3.0, 3.0, 2.5, 4.0, 3.0, 2.0, 3.5, 3.0),
+    incomes = listOf(4.0, 3.0, 2.0, 3.0, 3.0, 3.0, 5.0, 3.0, 3.0, 3.0),
+    dates = listOf("08/09", "18/09", "21/09", "24/09", "28/09", "01/10", "04/10", "08/10", "12/10", "16/10"),
 )

@@ -41,6 +41,8 @@ import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 import com.naveenapps.expensemanager.feature.about.AboutScreen
+import com.naveenapps.expensemanager.feature.about.licenses.OpenSourceLicenseDetailScreen
+import com.naveenapps.expensemanager.feature.about.licenses.OpenSourceLicensesScreen
 import com.naveenapps.expensemanager.feature.account.create.AccountCreateScreen
 import com.naveenapps.expensemanager.feature.account.list.AccountListScreen
 import com.naveenapps.expensemanager.feature.account.reorder.AccountReOrderScreen
@@ -54,9 +56,10 @@ import com.naveenapps.expensemanager.feature.category.list.CategoryListScreen
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionTabScreen
 import com.naveenapps.expensemanager.feature.currency.CurrencyCustomiseScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
+import com.naveenapps.expensemanager.feature.dashboard.customise.DashboardReOrderScreen
+import com.naveenapps.expensemanager.feature.dashboard.notifications.NotificationCentreScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
-import com.naveenapps.expensemanager.feature.onboarding.into.IntroScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
 import com.naveenapps.expensemanager.feature.settings.SettingsScreen
 import com.naveenapps.expensemanager.feature.settings.advanced.AdvancedSettingsScreen
@@ -88,9 +91,6 @@ fun HomePageNavHostContainer(
 fun NavGraphBuilder.expenseManagerNavigation(
     componentProvider: ActivityComponentProvider,
 ) {
-    composable<ExpenseManagerScreens.IntroScreen> {
-        IntroScreen(componentProvider.getShareRepository())
-    }
     composable<ExpenseManagerScreens.Onboarding> {
         OnboardingScreen(componentProvider.getShareRepository())
     }
@@ -164,6 +164,12 @@ fun NavGraphBuilder.expenseManagerNavigation(
     composable<ExpenseManagerScreens.AboutUsScreen> {
         AboutScreen(componentProvider.getShareRepository())
     }
+    composable<ExpenseManagerScreens.OpenSourceLicenses> {
+        OpenSourceLicensesScreen()
+    }
+    composable<ExpenseManagerScreens.OpenSourceLicenseDetail> {
+        OpenSourceLicenseDetailScreen()
+    }
     composable<ExpenseManagerScreens.AdvancedSettingsScreen> {
         AdvancedSettingsScreen()
     }
@@ -176,6 +182,12 @@ fun NavGraphBuilder.expenseManagerNavigation(
     composable<ExpenseManagerScreens.AccountReOrderScreen> {
         AccountReOrderScreen()
     }
+    composable<ExpenseManagerScreens.DashboardReOrder> {
+        DashboardReOrderScreen()
+    }
+    composable<ExpenseManagerScreens.NotificationCentre> {
+        NotificationCentreScreen()
+    }
 }
 
 @Composable
@@ -185,6 +197,7 @@ fun HomeScreen(
     val context = LocalActivity.current
 
     val homeScreenBottomBarItems by viewModel.homeScreenBottomBarItems.collectAsStateWithLifecycle()
+    val landingTab by viewModel.landingTab.collectAsStateWithLifecycle()
 
     val appContext = LocalContext.current
 
@@ -213,23 +226,20 @@ fun HomeScreen(
     LaunchedEffect(Unit) {
         // Never force the reminder on and never show the system dialog cold. If we can already
         // notify, only reschedule (which respects a reminder the user switched off). Otherwise
-        // the explainer below asks once: after the first saved transaction, or on arriving here
-        // with nothing logged yet.
+        // the explainer below asks once, right after the first saved transaction.
         if (canNotify) {
             viewModel.restartReminderIfEnabled()
         }
     }
 
-    val showFirstSaveCelebration by viewModel.showFirstSaveCelebration.collectAsStateWithLifecycle()
+    val firstSavePending by viewModel.firstSavePending.collectAsStateWithLifecycle()
 
-    if (showFirstSaveCelebration) {
-        LaunchedEffect(Unit) { viewModel.onFirstSaveCelebrationShown() }
-        FirstSaveCelebrationSheet(
-            onAddAnother = viewModel::onFirstSaveAddAnother,
-            onDone = viewModel::onFirstSaveDone,
-        )
-    } else if (shouldOfferReminderPrimer && !canNotify) {
-        // Never stacked on the celebration; the reminder sheet waits until it's dismissed.
+    // After the first expense there's nothing to ask when notifications are already allowed.
+    LaunchedEffect(firstSavePending, canNotify) {
+        if (firstSavePending && canNotify) viewModel.onFirstSaveNothingToAsk()
+    }
+
+    if (shouldOfferReminderPrimer && !canNotify) {
         LaunchedEffect(Unit) { viewModel.onReminderPrimerShown() }
         ReminderPrimerSheet(
             onTurnOn = {
@@ -241,12 +251,18 @@ fun HomeScreen(
     }
 
     BackHandler {
-        if (homeScreenBottomBarItems != HomeScreenBottomBarItems.Home) {
-            viewModel.setUISystem(HomeScreenBottomBarItems.Home)
+        // Back goes to the tab the app opens on (Home unless changed in Settings), then exits.
+        val startTab = landingTab ?: HomeScreenBottomBarItems.Home
+        if (homeScreenBottomBarItems != startTab) {
+            viewModel.setUISystem(startTab)
         } else {
             context?.finish()
         }
     }
+
+    // Until the "Open the app on" setting has loaded (a few ms; DataStore is already warm from
+    // the splash screen), draw nothing rather than flash Home before switching tabs.
+    if (landingTab == null) return
 
     Scaffold(
         bottomBar = {

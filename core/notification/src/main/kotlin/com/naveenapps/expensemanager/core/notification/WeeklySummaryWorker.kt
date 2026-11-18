@@ -5,9 +5,11 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.model.InsightKind
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -31,6 +33,7 @@ class WeeklySummaryWorker(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val analyticsRepository: AnalyticsRepository,
+    private val feedbackRepository: FeedbackRepository,
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -71,9 +74,12 @@ class WeeklySummaryWorker(
             }
         }
 
+        val title = context.getString(R.string.weekly_summary_title)
+        // Also kept for the notification centre (even without notification permission).
+        feedbackRepository.addInsight(InsightKind.WEEKLY_SUMMARY, title, message)
         notificationScheduler.showInsightNotification(
             notificationId = NotificationId.WEEKLY_SUMMARY,
-            title = context.getString(R.string.weekly_summary_title),
+            title = title,
             content = message,
         )
         analyticsRepository.logEvent(AnalyticsEvents.WEEKLY_SUMMARY_SHOWN, emptyMap())

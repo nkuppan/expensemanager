@@ -427,6 +427,7 @@ internal fun BiggestExpensesSection(
                     date = transaction.date,
                     notes = transaction.notes,
                     transactionType = transaction.transactionType,
+                    isRecurring = transaction.isRecurring,
                     fromAccountName = transaction.fromAccountName,
                     fromAccountIcon = transaction.fromAccountIcon.name,
                     fromAccountColor = transaction.fromAccountIcon.backgroundColor,

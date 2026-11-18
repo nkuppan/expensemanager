@@ -3,11 +3,14 @@ package com.naveenapps.expensemanager.core.data.repository
 import android.content.Context
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.naveenapps.expensemanager.core.datastore.FeedbackDataStore
+import com.naveenapps.expensemanager.core.model.Insight
+import com.naveenapps.expensemanager.core.model.InsightKind
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 
 class FeedbackRepositoryImpl(
     private val context: Context,
@@ -26,18 +29,60 @@ class FeedbackRepositoryImpl(
         feedbackDataStore.addNoSpendDay(epochDay)
     }
 
-    override fun getNoSpendDays(): Flow<Set<Long>> = feedbackDataStore.getNoSpendDays()
+    override fun getShareBannerHiddenUntil(): Flow<Long> = feedbackDataStore.getShareBannerHiddenUntil()
+
+    override suspend fun hideShareBanner(until: Long) {
+        feedbackDataStore.hideShareBanner(until)
+    }
+
+    override fun getInsights(): Flow<List<Insight>> = feedbackDataStore.getInsights().map { stored ->
+        stored.map { Insight(InsightKind.fromStored(it.kind), it.title, it.message, it.postedAt) }
+    }
+
+    override suspend fun addInsight(kind: InsightKind, title: String, message: String, postedAt: Long) {
+        feedbackDataStore.addInsight(kind.name, title, message, postedAt)
+    }
+
+    override fun getNotificationCentreOpenedAt(): Flow<Long> = feedbackDataStore.getNotificationCentreOpenedAt()
+
+    override suspend fun setNotificationCentreOpenedAt(time: Long) {
+        feedbackDataStore.setNotificationCentreOpenedAt(time)
+    }
+
+    override fun getReminderBannerHiddenUntil(): Flow<Long> = feedbackDataStore.getReminderBannerHiddenUntil()
+
+    override fun getReminderBannerDismissCount(): Flow<Int> = feedbackDataStore.getReminderBannerDismissCount()
+
+    override suspend fun dismissReminderBanner(hiddenUntil: Long) {
+        feedbackDataStore.dismissReminderBanner(hiddenUntil)
+    }
+
+    override fun getNotificationPermissionAsks(): Flow<Int> = feedbackDataStore.getNotificationPermissionAsks()
+
+    override suspend fun recordNotificationPermissionAsk() {
+        feedbackDataStore.recordNotificationPermissionAsk()
+    }
+
+    override fun getFirstInstallTime(): Long = runCatching {
+        context.packageManager.getPackageInfo(context.packageName, 0).firstInstallTime
+    }.getOrDefault(0L)
+
+    override fun getLastSeenWhatsNew(): Flow<String?> = feedbackDataStore.getLastSeenWhatsNew()
+
+    override suspend fun setLastSeenWhatsNew(version: String) {
+        feedbackDataStore.setLastSeenWhatsNew(version)
+    }
+
+    // An update moves lastUpdateTime past firstInstallTime; a fresh install leaves them equal.
+    override fun isFreshInstall(): Boolean = runCatching {
+        val info = context.packageManager.getPackageInfo(context.packageName, 0)
+        info.lastUpdateTime == info.firstInstallTime
+    }.getOrDefault(false)
 
     override fun getSentBudgetAlerts(): Flow<Set<String>> = feedbackDataStore.getSentBudgetAlerts()
 
     override suspend fun markBudgetAlertSent(key: String) {
         feedbackDataStore.addSentBudgetAlert(key)
-    }
-
-    override fun getDismissedRecapMonth(): Flow<String?> = feedbackDataStore.getDismissedRecapMonth()
-
-    override suspend fun setDismissedRecapMonth(monthKey: String) {
-        feedbackDataStore.setDismissedRecapMonth(monthKey)
     }
 
     override suspend fun setFeedbackDialogShown(shown: Boolean) {
@@ -53,6 +98,12 @@ class FeedbackRepositoryImpl(
     override suspend fun setFirstSaveCelebrationPending(pending: Boolean) {
         feedbackDataStore.setFirstSaveCelebrationPending(pending)
     }
+
+    override suspend fun recordSaveTime(minuteOfDay: Int) {
+        feedbackDataStore.recordSaveTime(minuteOfDay)
+    }
+
+    override fun getRecentSaveMinutes(): Flow<List<Int>> = feedbackDataStore.getRecentSaveMinutes()
 
     override fun isGettingStartedDismissed(): Flow<Boolean> = feedbackDataStore.isGettingStartedDismissed()
 

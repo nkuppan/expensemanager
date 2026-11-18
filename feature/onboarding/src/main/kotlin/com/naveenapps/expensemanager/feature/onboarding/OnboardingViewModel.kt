@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountUiMod
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetDefaultCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.PreselectCountryCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
@@ -43,6 +44,7 @@ class OnboardingViewModel(
     private val getAccountUiModelUseCase: GetAccountUiModelUseCase,
     private val composeNavigator: AppComposeNavigator,
     private val analyticsRepository: AnalyticsRepository,
+    private val preselectCountryCurrencyUseCase: PreselectCountryCurrencyUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -78,8 +80,24 @@ class OnboardingViewModel(
                         )
                     }
                 }.launchIn(viewModelScope)
+                // After the screen is wired up, so reading the country list never delays it.
+                preselectCurrency()
             }
         }
+    }
+
+    // A fresh install starts on the user's own currency (from the SIM, network or region),
+    // shown straight away through the currency flow below. Never overrides a saved choice.
+    private suspend fun preselectCurrency() {
+        val detected = runCatching { preselectCountryCurrencyUseCase() }.getOrNull() ?: return
+        analyticsRepository.logEvent(
+            AnalyticsEvents.ONBOARDING_CURRENCY_DETECTED,
+            mapOf(
+                AnalyticsParams.COUNTRY to detected.country.countryCode,
+                AnalyticsParams.CURRENCY to detected.country.currency.code,
+                AnalyticsParams.SOURCE to detected.source,
+            ),
+        )
     }
 
     private fun openHome() {
@@ -95,17 +113,13 @@ class OnboardingViewModel(
 
     fun processAction(action: OnboardingAction) {
         when (action) {
-            OnboardingAction.Next -> {
-                logOnboardingCompleted(METHOD_EXPLORE)
-                openHome()
-            }
-
-            OnboardingAction.AddFirstExpense -> {
-                logOnboardingCompleted(METHOD_ADD_EXPENSE)
+            OnboardingAction.GetStarted -> {
+                logOnboardingCompleted(METHOD_GET_STARTED)
                 viewModelScope.launch { openFirstTransaction() }
             }
 
             OnboardingAction.OpenAccounts -> {
+                analyticsRepository.logEvent(AnalyticsEvents.ONBOARDING_ACCOUNTS_OPENED, emptyMap())
                 composeNavigator.navigate(ExpenseManagerScreens.AccountList)
             }
 
@@ -124,6 +138,14 @@ class OnboardingViewModel(
                     val previousCode = _state.value.currency.code
                     val currency = action.country.currency
                     if (saveCurrencyUseCase.invoke(currency) !is Resource.Success) return@launch
+                    // Tells whether people actually change the pre-selected currency.
+                    analyticsRepository.logEvent(
+                        AnalyticsEvents.ONBOARDING_CURRENCY_CHANGED,
+                        mapOf(
+                            AnalyticsParams.CURRENCY to currency.code,
+                            AnalyticsParams.COUNTRY to action.country.countryCode,
+                        ),
+                    )
                     // Accounts still in the previous main currency were only defaulted to it (the
                     // preloaded ones, or ones created here without picking another currency).
                     // An account's currency can never change, so they are recreated in the new
@@ -183,7 +205,7 @@ class OnboardingViewModel(
     }
 
     private companion object {
-        const val METHOD_EXPLORE = "explore"
-        const val METHOD_ADD_EXPENSE = "add_expense"
+        // Was "explore" or "add_expense" up to 1.4.29, when setup had two buttons.
+        const val METHOD_GET_STARTED = "get_started"
     }
 }

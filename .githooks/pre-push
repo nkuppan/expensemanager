@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+#
+# Formats the code with Spotless before every push.
+#
+#  - Nothing to format: the push goes ahead.
+#  - Files reformatted: they're committed as "Apply spotless formatting" and the push is
+#    stopped, because git can't add a commit to a push that has already started. Run
+#    `git push` again and the formatting commit goes along.
+#  - Files you're still working on (uncommitted before the push) are formatted but left
+#    uncommitted; only files that were clean get the formatting commit.
+#
+# Installed automatically: Gradle sets `core.hooksPath` to .githooks on sync.
+# Skip once with:  SKIP_SPOTLESS_HOOK=1 git push   (or git push --no-verify)
+
+set -eu
+
+ZERO_SHA="0000000000000000000000000000000000000000"
+
+[ "${SKIP_SPOTLESS_HOOK:-}" = "1" ] && exit 0
+[ -n "${CI:-}" ] && exit 0
+
+cd "$(git rev-parse --show-toplevel)"
+
+# Which refs are being pushed (from stdin). Deleting a remote branch needs no formatting.
+head_sha="$(git rev-parse -q --verify HEAD || true)"
+pushes_current=0
+pushes_anything=0
+while read -r _local_ref local_sha _remote_ref _remote_sha; do
+    [ "$local_sha" = "$ZERO_SHA" ] && continue
+    pushes_anything=1
+    # Pushing what's checked out (a branch, or HEAD:main): the formatting commit can follow it.
+    [ "$local_sha" = "$head_sha" ] && pushes_current=1
+done
+[ "$pushes_anything" -eq 0 ] && exit 0
+
+if [ "$pushes_current" -eq 0 ]; then
+    # The formatting commit would land on the checked-out branch, not the one being pushed.
+    echo "pre-push: not pushing the checked-out branch; skipping Spotless."
+    exit 0
+fi
+
+# Pushing from Android Studio often has no JAVA_HOME: fall back to its bundled JDK on macOS.
+if [ -z "${JAVA_HOME:-}" ] && ! command -v java >/dev/null 2>&1; then
+    for jbr in "/Applications/Android Studio.app/Contents/jbr/Contents/Home" \
+        "$HOME/Applications/Android Studio.app/Contents/jbr/Contents/Home"; do
+        if [ -x "$jbr/bin/java" ]; then
+            export JAVA_HOME="$jbr"
+            break
+        fi
+    done
+fi
+
+# Paths with changes (staged, unstaged or untracked), one per line. Renames list the new path.
+changed_paths() {
+    git status --porcelain=v1 -z --untracked-files=all | while IFS= read -r -d '' entry; do
+        status="${entry:0:2}"
+        printf '%s\n' "${entry:3}"
+        case "$status" in
+            R* | C*) IFS= read -r -d '' _ || true ;; # skip the original path of a rename
+        esac
+    done | sort
+}
+
+tmp_dir="$(mktemp -d)"
+trap 'rm -rf "$tmp_dir"' EXIT
+
+changed_paths > "$tmp_dir/before"
+
+echo "pre-push: running spotlessApply..."
+if ! ./gradlew spotlessApply --quiet; then
+    echo "pre-push: spotlessApply failed. Fix the errors above (or push with SKIP_SPOTLESS_HOOK=1)."
+    exit 1
+fi
+
+changed_paths > "$tmp_dir/after"
+
+# Files that only changed because of formatting (they were clean before) ...
+comm -13 "$tmp_dir/before" "$tmp_dir/after" > "$tmp_dir/formatted"
+# ... and files you were already editing that may have been reformatted too.
+comm -12 "$tmp_dir/before" "$tmp_dir/after" > "$tmp_dir/in_progress"
+
+if [ ! -s "$tmp_dir/formatted" ]; then
+    echo "pre-push: formatting is clean."
+    exit 0
+fi
+
+files=()
+while IFS= read -r path; do
+    files+=("$path")
+done < "$tmp_dir/formatted"
+
+# Commits only these paths; anything else you had staged stays staged and uncommitted.
+git commit --no-verify --quiet -m "Apply spotless formatting" -- "${files[@]}"
+
+echo ""
+echo "pre-push: Spotless reformatted ${#files[@]} file(s) and committed them:"
+sed 's/^/    /' "$tmp_dir/formatted"
+if [ -s "$tmp_dir/in_progress" ]; then
+    echo "  Files you were already editing stay uncommitted (Spotless may have reformatted them):"
+    sed 's/^/    /' "$tmp_dir/in_progress"
+fi
+echo ""
+echo "pre-push: push stopped so the formatting commit is included. Run 'git push' again."
+exit 1

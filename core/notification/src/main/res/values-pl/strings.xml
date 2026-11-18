@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">To zajmie kilka sekund. Dotknij, aby dodać wydatek.</string>
     <string name="reminder_action_add">Dodaj wydatek</string>
     <string name="reminder_action_no_spend">Dziś nic nie wydałem</string>
+    <string name="reminder_quick_logged">✓ Zapisano: %1$s</string>
+    <string name="reminder_quick_logged_body">Dodano do dzisiejszych wydatków.</string>
+    <string name="reminder_action_undo">Cofnij</string>
+    <string name="reminder_quick_log_failed">Nie udało się zapisać</string>
+    <string name="reminder_quick_log_failed_body">Dotknij, aby dodać w aplikacji.</string>
     <string name="weekly_summary_title">Twój tydzień w liczbach</string>
     <string name="weekly_summary_less">W tym tygodniu wydałeś %1$s, o %2$d%% mniej niż w zeszłym. Świetnie!</string>
     <string name="weekly_summary_more">W tym tygodniu wydałeś %1$s, o %2$d%% więcej niż w zeszłym.</string>
@@ -20,4 +25,16 @@
     <string name="auto_backup_failed_folder_body">Brak dostępu do folderu kopii. Dotknij, aby wybrać go ponownie.</string>
     <string name="auto_backup_failed_write_body">Nie udało się utworzyć kopii danych. Dotknij, aby sprawdzić ustawienia.</string>
     <string name="auto_backup_failed_action">Napraw</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Nadchodzące płatności</string>
+    <string name="upcoming_channel_description">Powiadomienie wieczorem dzień przed dodaniem tygodniowego, miesięcznego lub rocznego wpisu cyklicznego.</string>
+    <string name="upcoming_alert_title_one">Jutro: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s zostanie dodane automatycznie.</string>
+    <string name="upcoming_alert_body_many">Zostaną dodane automatycznie.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d wpis cykliczny jutro</item>
+        <item quantity="few">%d wpisy cykliczne jutro</item>
+        <item quantity="many">%d wpisów cyklicznych jutro</item>
+        <item quantity="other">%d wpisu cyklicznego jutro</item>
+    </plurals>
 </resources>

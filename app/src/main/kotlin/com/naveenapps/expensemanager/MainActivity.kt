@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -23,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.core.content.ContextCompat
+import androidx.core.content.IntentCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,6 +34,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.naveenapps.expensemanager.analytics.UserPropertiesTracker
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.shouldUseDarkTheme
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -41,8 +44,11 @@ import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.SharedReceipt
+import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
 import com.naveenapps.expensemanager.ui.AppLockScreen
 import com.naveenapps.expensemanager.ui.MainScreen
+import com.naveenapps.expensemanager.widget.ACTION_OPEN_FROM_WIDGET
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -59,6 +65,10 @@ internal class MainActivity :
     private val appComposeNavigator: AppComposeNavigator by inject()
 
     private val analyticsRepository: AnalyticsRepository by inject()
+
+    private val userPropertiesTracker: UserPropertiesTracker by inject()
+
+    private val sharedReceiptRepository: SharedReceiptRepository by inject()
 
     override val scope: Scope by activityScope()
 
@@ -84,8 +94,11 @@ internal class MainActivity :
 
         // Only on a fresh launch: a recreated Activity re-delivers the same intent.
         if (savedInstanceState == null) {
+            viewModel.onOpenIntent(AppOpenSource.of(intent))
             handleQuickAdd(intent)
             handleOpenAutoBackup(intent)
+            handleWidgetOpen(intent)
+            handleSharedReceipt(intent)
         }
 
         lifecycleScope.launch {
@@ -131,6 +144,7 @@ internal class MainActivity :
                 val isAuthenticated by viewModel.isAuthenticated.collectAsStateWithLifecycle()
                 val pendingQuickAdd by viewModel.pendingQuickAdd.collectAsStateWithLifecycle()
                 val pendingOpenAutoBackup by viewModel.pendingOpenAutoBackup.collectAsStateWithLifecycle()
+                val pendingSharedReceipt by viewModel.pendingSharedReceipt.collectAsStateWithLifecycle()
                 val isDarkTheme = shouldUseDarkTheme(theme = currentTheme.mode)
 
                 if (onBoardingStatus != null) {
@@ -164,6 +178,9 @@ internal class MainActivity :
                                 // Same gating as quick add: after onboarding, and once unlocked.
                                 pendingOpenAutoBackup = pendingOpenAutoBackup && onBoardingStatus == true && !showLock,
                                 onOpenAutoBackupHandled = viewModel::onOpenAutoBackupHandled,
+                                // Same gating again: the receipt waits in its repository.
+                                pendingSharedReceipt = pendingSharedReceipt && onBoardingStatus == true && !showLock,
+                                onSharedReceiptHandled = viewModel::onSharedReceiptHandled,
                             )
                         }
 
@@ -184,8 +201,31 @@ internal class MainActivity :
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        viewModel.onOpenIntent(AppOpenSource.of(intent))
         handleQuickAdd(intent)
         handleOpenAutoBackup(intent)
+        handleWidgetOpen(intent)
+        handleSharedReceipt(intent)
+    }
+
+    /** A UPI / bank message or a payment screenshot shared from another app. */
+    private fun handleSharedReceipt(intent: Intent?) {
+        if (intent?.action != Intent.ACTION_SEND) return
+        val text = intent.getStringExtra(Intent.EXTRA_TEXT)?.takeIf { it.isNotBlank() }
+        val imageUri = if (intent.type?.startsWith("image/") == true) {
+            IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+        } else {
+            null
+        }
+        if (text == null && imageUri == null) return
+        sharedReceiptRepository.put(SharedReceipt(text = text, imageUri = imageUri))
+        viewModel.requestSharedReceipt()
+    }
+
+    /** Home-screen widget body tapped: just count it; the app opens wherever it was. */
+    private fun handleWidgetOpen(intent: Intent?) {
+        if (intent?.action != ACTION_OPEN_FROM_WIDGET) return
+        analyticsRepository.logEvent(AnalyticsEvents.WIDGET_OPENED, emptyMap())
     }
 
     /** "Automatic backup failed" notification: open the screen where it can be fixed. */
@@ -217,10 +257,21 @@ internal class MainActivity :
         launchAppUpdateCheck()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Re-read what can change outside the app: notification permission, widgets, language.
+        userPropertiesTracker.refresh()
+        // How the app was opened (launcher, reminder, widget, other notifications, share, …).
+        viewModel.takeOpenSource(SystemClock.elapsedRealtime())?.let { source ->
+            analyticsRepository.logEvent(AnalyticsEvents.APP_OPENED, mapOf(AnalyticsParams.SOURCE to source))
+        }
+    }
+
     override fun onStop() {
         super.onStop()
         if (!isChangingConfigurations) {
             viewModel.onAppBackgrounded(SystemClock.elapsedRealtime())
+            viewModel.onStoppedForOpenTracking(SystemClock.elapsedRealtime())
         }
     }
 

@@ -20,7 +20,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -38,7 +37,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,9 +52,9 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearchField
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.R
-import com.naveenapps.expensemanager.feature.transaction.list.TransactionSearchBar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -95,18 +93,15 @@ private fun RecurringTransactionsContent(
         )
     }
 
-    // Same top-bar search pattern as the transaction list.
-    var isSearchActive by rememberSaveable { mutableStateOf(state.searchQuery.isNotEmpty()) }
-    val closeSearch = {
-        isSearchActive = false
+    // Same always-visible search box as the transaction list. Back clears an active search first.
+    BackHandler(enabled = state.searchQuery.isNotEmpty()) {
         onAction(RecurringTransactionsAction.Search(""))
     }
-    BackHandler(enabled = isSearchActive, onBack = closeSearch)
 
     Scaffold(
         floatingActionButton = {
             // The empty state has its own add button; avoid showing two.
-            if (state.hasAnyRules && !isSearchActive) {
+            if (state.hasAnyRules) {
                 FloatingActionButton(
                     onClick = { onAction(RecurringTransactionsAction.OpenCreate) },
                     shape = RoundedCornerShape(16.dp),
@@ -121,29 +116,21 @@ private fun RecurringTransactionsContent(
             }
         },
         topBar = {
-            if (isSearchActive) {
-                TransactionSearchBar(
-                    query = state.searchQuery,
-                    onQueryChange = { onAction(RecurringTransactionsAction.Search(it)) },
-                    onClose = closeSearch,
-                    placeholder = stringResource(R.string.search_recurring_hint),
-                )
-            } else {
+            Column {
                 ExpenseManagerTopAppBar(
                     navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                     navigationBackClick = { onAction(RecurringTransactionsAction.ClosePage) },
                     title = stringResource(R.string.recurring_transactions),
-                    actions = {
-                        if (state.hasAnyRules) {
-                            IconButton(onClick = { isSearchActive = true }) {
-                                Icon(
-                                    imageVector = Icons.Default.Search,
-                                    contentDescription = stringResource(R.string.search_recurring),
-                                )
-                            }
-                        }
-                    },
                 )
+                // Nothing to search until there's at least one rule.
+                if (state.hasAnyRules) {
+                    SheetSearchField(
+                        query = state.searchQuery,
+                        onQueryChange = { onAction(RecurringTransactionsAction.Search(it)) },
+                        placeholder = stringResource(R.string.search_recurring_hint),
+                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                    )
+                }
             }
         },
     ) { innerPadding ->

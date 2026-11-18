@@ -12,6 +12,7 @@ import com.naveenapps.expensemanager.core.database.di.DatabaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.di.UseCaseModule
 import com.naveenapps.expensemanager.core.navigation.NavigationModule
 import com.naveenapps.expensemanager.core.notification.NotificationModule
+import com.naveenapps.expensemanager.di.AnalyticsModule
 import com.naveenapps.expensemanager.di.ViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -34,6 +35,7 @@ class KoinInitializer : Initializer<KoinApplication> {
             NavigationModule,
             ViewModelModule,
             NotificationModule,
+            AnalyticsModule,
         )
     }
 

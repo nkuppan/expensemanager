@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.about
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getAppVersionName
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
@@ -40,8 +38,6 @@ fun AboutScreen(
     shareRepository: ShareRepository,
     viewModel: AboutUsViewModel = org.koin.androidx.compose.koinViewModel(),
 ) {
-    val context = LocalContext.current
-
     AboutUsScreenScaffoldView {
         when (it) {
             AboutUsOption.ABOUT_US -> {
@@ -73,7 +69,7 @@ fun AboutScreen(
             }
 
             AboutUsOption.LICENSES -> {
-                context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                viewModel.processAction(AboutAction.OpenLicense)
             }
 
             AboutUsOption.BACK -> {

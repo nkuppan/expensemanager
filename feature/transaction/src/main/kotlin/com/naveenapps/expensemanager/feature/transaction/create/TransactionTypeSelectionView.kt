@@ -41,7 +41,7 @@ fun TransactionTypeSelectionView(
             TransactionTypeUi(
                 type = TransactionType.INCOME,
                 labelRes = R.string.income,
-                icon = Icons.AutoMirrored.Rounded.TrendingDown,
+                icon = Icons.AutoMirrored.Rounded.TrendingUp,
                 activeContainerColor = { MaterialTheme.colorScheme.primaryContainer },
                 activeContentColor = { MaterialTheme.colorScheme.onPrimaryContainer },
                 activeBorderColor = { MaterialTheme.colorScheme.primary },
@@ -49,7 +49,7 @@ fun TransactionTypeSelectionView(
             TransactionTypeUi(
                 type = TransactionType.EXPENSE,
                 labelRes = R.string.expense,
-                icon = Icons.AutoMirrored.Rounded.TrendingUp,
+                icon = Icons.AutoMirrored.Rounded.TrendingDown,
                 activeContainerColor = { MaterialTheme.colorScheme.errorContainer },
                 activeContentColor = { MaterialTheme.colorScheme.onErrorContainer },
                 activeBorderColor = { MaterialTheme.colorScheme.error },

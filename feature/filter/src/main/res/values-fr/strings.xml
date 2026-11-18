@@ -18,4 +18,5 @@
         <item quantity="one">%d filtre sélectionné</item>
         <item quantity="other">%d filtres sélectionnés</item>
     </plurals>
+    <string name="filter_type_transfer">Virement</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.naveenapps.buildsrc.plugins
 
 import com.android.build.api.dsl.ApplicationExtension
+import com.naveenapps.buildsrc.extensions.appVersion
 import com.naveenapps.buildsrc.extensions.configureAndroid
 import com.naveenapps.buildsrc.extensions.configureAndroidAppVersion
 import com.naveenapps.buildsrc.extensions.configureJacoco
@@ -20,10 +21,11 @@ class AndroidAppBasicConfigPlugin : Plugin<Project> {
                 apply(plugin = "jacoco")
             }
 
+            val version = appVersion()
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 configureAndroid()
-                configureAndroidAppVersion()
+                configureAndroidAppVersion(version)
                 configureTestOptions(this)
                 configureJacoco()
             }

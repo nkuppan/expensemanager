@@ -6,6 +6,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.GetCurr
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.GetLocalesUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.locale.SaveLocaleUseCase
 import com.naveenapps.expensemanager.core.model.AppLocale
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
+import com.naveenapps.expensemanager.core.repository.logSettingChanged
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
@@ -16,6 +18,7 @@ class LanguageViewModel(
     getCurrentLocaleUseCase: GetCurrentLocaleUseCase,
     getLocalesUseCase: GetLocalesUseCase,
     private val saveLocaleUseCase: SaveLocaleUseCase,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _currentLocale = MutableStateFlow(
@@ -38,6 +41,7 @@ class LanguageViewModel(
         locale ?: return
         viewModelScope.launch {
             saveLocaleUseCase.invoke(locale)
+            analyticsRepository.logSettingChanged("language", locale.tag.ifBlank { "system" })
         }
     }
 }

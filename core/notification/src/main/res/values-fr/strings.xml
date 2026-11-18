@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Cela ne prend que quelques secondes. Touchez pour ajouter une dépense.</string>
     <string name="reminder_action_add">Ajouter une dépense</string>
     <string name="reminder_action_no_spend">Rien dépensé aujourd\'hui</string>
+    <string name="reminder_quick_logged">✓ %1$s enregistré</string>
+    <string name="reminder_quick_logged_body">Ajouté aux dépenses du jour.</string>
+    <string name="reminder_action_undo">Annuler</string>
+    <string name="reminder_quick_log_failed">Impossible d’enregistrer</string>
+    <string name="reminder_quick_log_failed_body">Touchez pour l’ajouter dans l’app.</string>
     <string name="weekly_summary_title">Votre semaine en chiffres</string>
     <string name="weekly_summary_less">Vous avez dépensé %1$s cette semaine, %2$d%% de moins que la semaine dernière. Bravo !</string>
     <string name="weekly_summary_more">Vous avez dépensé %1$s cette semaine, %2$d%% de plus que la semaine dernière.</string>
@@ -20,4 +25,15 @@
     <string name="auto_backup_failed_folder_body">Dossier de sauvegarde inaccessible. Touchez pour le choisir à nouveau.</string>
     <string name="auto_backup_failed_write_body">Vos données n\'ont pas pu être sauvegardées. Touchez pour vérifier les paramètres.</string>
     <string name="auto_backup_failed_action">Corriger</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Paiements à venir</string>
+    <string name="upcoming_channel_description">Un rappel la veille au soir avant l’ajout d’une opération récurrente hebdomadaire, mensuelle ou annuelle.</string>
+    <string name="upcoming_alert_title_one">Demain : %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s sera ajouté automatiquement.</string>
+    <string name="upcoming_alert_body_many">Elles seront ajoutées automatiquement.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d opération récurrente demain</item>
+        <item quantity="many">%d opérations récurrentes demain</item>
+        <item quantity="other">%d opérations récurrentes demain</item>
+    </plurals>
 </resources>

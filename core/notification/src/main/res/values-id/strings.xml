@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">Hanya butuh beberapa detik. Ketuk untuk menambah pengeluaran.</string>
     <string name="reminder_action_add">Tambah pengeluaran</string>
     <string name="reminder_action_no_spend">Tidak ada pengeluaran hari ini</string>
+    <string name="reminder_quick_logged">✓ %1$s dicatat</string>
+    <string name="reminder_quick_logged_body">Ditambahkan ke pengeluaran hari ini.</string>
+    <string name="reminder_action_undo">Urungkan</string>
+    <string name="reminder_quick_log_failed">Tidak dapat mencatat</string>
+    <string name="reminder_quick_log_failed_body">Ketuk untuk menambahkannya di aplikasi.</string>
     <string name="weekly_summary_title">Minggu Anda dalam angka</string>
     <string name="weekly_summary_less">Anda menghabiskan %1$s minggu ini, %2$d%% lebih sedikit dari minggu lalu. Bagus!</string>
     <string name="weekly_summary_more">Anda menghabiskan %1$s minggu ini, %2$d%% lebih banyak dari minggu lalu.</string>
@@ -20,4 +25,13 @@
     <string name="auto_backup_failed_folder_body">Folder cadangan tidak dapat diakses. Ketuk untuk memilihnya lagi.</string>
     <string name="auto_backup_failed_write_body">Data Anda tidak dapat dicadangkan. Ketuk untuk memeriksa setelan cadangan.</string>
     <string name="auto_backup_failed_action">Perbaiki</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Pembayaran mendatang</string>
+    <string name="upcoming_channel_description">Pengingat malam sebelum entri berulang mingguan, bulanan, atau tahunan ditambahkan.</string>
+    <string name="upcoming_alert_title_one">Besok: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s akan ditambahkan otomatis.</string>
+    <string name="upcoming_alert_body_many">Semuanya akan ditambahkan otomatis.</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="other">%d entri berulang besok</item>
+    </plurals>
 </resources>

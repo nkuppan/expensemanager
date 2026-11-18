@@ -10,6 +10,9 @@ sealed class TransactionListAction {
 
     data class Search(val query: String) : TransactionListAction()
 
+    /** Search all time, or only the selected period. */
+    data class SetSearchScope(val scope: SearchScope) : TransactionListAction()
+
     data object OpenRecurringTransactions : TransactionListAction()
 
     data class DeleteTransaction(val transactionId: String) : TransactionListAction()

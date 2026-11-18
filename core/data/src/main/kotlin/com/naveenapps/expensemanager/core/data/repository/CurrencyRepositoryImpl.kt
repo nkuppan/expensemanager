@@ -33,6 +33,8 @@ class CurrencyRepositoryImpl(
 
     override fun getDefaultCurrency(): Currency = defaultCurrency
 
+    override fun isCurrencyChosen(): Flow<Boolean> = dataStore.hasCurrency()
+
     override suspend fun saveCurrency(currency: Currency): Boolean = withContext(dispatchers.io) {
         dataStore.setCurrency(
             name = currency.name,

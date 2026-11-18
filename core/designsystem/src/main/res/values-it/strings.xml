@@ -48,4 +48,6 @@
     <string name="no_search_results">Nessun risultato</string>
     <string name="selection_select_all">Seleziona tutto</string>
     <string name="selection_done">Fine</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">Ricorrente</string>
 </resources>

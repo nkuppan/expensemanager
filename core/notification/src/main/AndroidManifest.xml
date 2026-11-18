@@ -1,10 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Re-set the daily reminder's alarm after a restart (alarms don't survive reboots). -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application>
-        <!-- Daily reminder's "Nothing spent today" action button. -->
+        <!-- Daily reminder's background buttons: "Nothing spent today", quick pick and Undo. -->
         <receiver
             android:name="com.naveenapps.expensemanager.core.notification.ReminderActionReceiver"
             android:exported="false" />
+
+        <!-- The daily reminder's alarm (our own PendingIntent only). -->
+        <receiver
+            android:name="com.naveenapps.expensemanager.core.notification.ReminderAlarmReceiver"
+            android:exported="false" />
+
+        <!-- Re-sets the reminder alarm after boot, app update and clock / time-zone changes.
+             Only the system can send these (protected broadcasts). -->
+        <receiver
+            android:name="com.naveenapps.expensemanager.core.notification.ReminderRescheduleReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

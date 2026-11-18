@@ -48,4 +48,6 @@
     <string name="no_search_results">没有匹配项</string>
     <string name="selection_select_all">全选</string>
     <string name="selection_done">完成</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">周期性</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.naveenapps.expensemanager.core.repository
 
+import com.naveenapps.expensemanager.core.model.DashboardSection
+import com.naveenapps.expensemanager.core.model.LandingPage
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
@@ -41,6 +43,16 @@ interface SettingsRepository {
     fun getHomeSummaryCompact(): Flow<Boolean>
 
     suspend fun setHomeSummaryCompact(compact: Boolean): Resource<Boolean>
+
+    /** The bottom-bar tab the app opens on; Home until the user picks another. */
+    fun getLandingPage(): Flow<LandingPage>
+
+    suspend fun setLandingPage(page: LandingPage): Resource<Boolean>
+
+    /** Home's section order (Customise dashboard); the default order until the user changes it. */
+    fun getDashboardOrder(): Flow<List<DashboardSection>>
+
+    suspend fun setDashboardOrder(order: List<DashboardSection>): Resource<Boolean>
 
     fun isAppLockEnabled(): Flow<Boolean>
 

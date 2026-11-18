@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Dotknij, aby ustawić limit wydatków</string>
     <string name="first_expense_action">Dodaj wydatek</string>
     <string name="getting_started_title">Pierwsze kroki</string>
-    <string name="getting_started_subtitle">Cztery szybkie kroki, by w pełni wykorzystać aplikację</string>
     <string name="getting_started_progress">%1$d z %2$d</string>
     <string name="getting_started_hide">Ukryj</string>
     <string name="step_expense_title">Zapisz pierwszy wydatek</string>
-    <string name="step_expense_description">To zajmie kilka sekund</string>
     <string name="step_budget_title">Utwórz budżet miesięczny</string>
-    <string name="step_budget_description">Zobacz, ile jeszcze możesz wydać</string>
     <string name="step_budget_action">Utwórz budżet</string>
-    <string name="step_accounts_title">Dodaj swoje konta</string>
-    <string name="step_accounts_description">Gotówka, bank i karty, z których płacisz</string>
-    <string name="step_accounts_action">Dodaj konto</string>
-    <string name="step_currency_title">Wybierz walutę</string>
-    <string name="step_currency_description">Kwoty są wyświetlane w tej walucie</string>
-    <string name="step_currency_action">Zmień walutę</string>
     <string name="auto_backup_warning_title">Automatyczna kopia nie działa</string>
     <string name="auto_backup_warning_folder">Brak dostępu do folderu kopii. Wybierz go ponownie, aby chronić swoje dane.</string>
     <string name="auto_backup_warning_write">Ostatnie kopie nie powiodły się. Sprawdź ustawienia, aby chronić swoje dane.</string>
@@ -45,4 +36,83 @@
     <string name="home_categories_add">Dodaj transakcję</string>
     <string name="home_categories_show_income">Pokaż przychody</string>
     <string name="home_categories_show_expense">Pokaż wydatki</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Nadchodzące</string>
+    <string name="upcoming_spend">Wydatki</string>
+    <string name="upcoming_income">Przychody</string>
+    <string name="upcoming_today">Dzisiaj</string>
+    <string name="upcoming_tomorrow">Jutro</string>
+    <string name="upcoming_empty_title">Nic jeszcze nie zaplanowano</string>
+    <string name="upcoming_empty_description">Ustaw czynsz, rachunki lub pensję jako cykliczne. Zostaną dodane w swoim dniu, a wcześniej zobaczysz je tutaj.</string>
+    <string name="upcoming_plan">Zaplanuj płatność</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Najbliższy %d dzień</item>
+        <item quantity="few">Najbliższe %d dni</item>
+        <item quantity="many">Najbliższe %d dni</item>
+        <item quantity="other">Najbliższe %d dnia</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">Za %d dzień</item>
+        <item quantity="few">Za %d dni</item>
+        <item quantity="many">Za %d dni</item>
+        <item quantity="other">Za %d dnia</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Znasz kogoś, kto liczy swoje wydatki?</string>
+    <string name="home_share_description">Poleć Expense Manager. Jest darmowy, bez reklam, a dane zostają na telefonie.</string>
+    <string name="home_share_button">Udostępnij aplikację</string>
+    <string name="home_share_text">Śledzę wydatki w Expense Manager. Jest darmowa, a moje dane zostają w telefonie: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Dostosuj ekran główny</string>
+    <string name="customise_hint">Przytrzymaj i przeciągnij, aby zmienić kolejność sekcji</string>
+    <string name="customise_save">Zapisz</string>
+    <string name="customise_reset">Przywróć</string>
+    <string name="section_summary">Podsumowanie przychodów i wydatków</string>
+    <string name="section_accounts">Konta</string>
+    <string name="section_categories">Kategorie</string>
+    <string name="section_budgets">Budżety</string>
+    <string name="section_transactions">Ostatnie transakcje</string>
+    <string name="section_upcoming">Nadchodzące płatności</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Powiadomienia</string>
+    <string name="whats_new_version">Wersja %1$s</string>
+    <string name="notification_new">Nowe</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Pokaż więcej (%1$d)</string>
+    <string name="notification_see_less">Pokaż mniej</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Zapisz najczęstszy wydatek jednym dotknięciem prosto z codziennego przypomnienia, z opcją Cofnij</item>
+        <item>Codzienne przypomnienia przychodzą punktualniej, a ekran Przypomnienie pokazuje, jak to naprawić, gdy telefon je blokuje</item>
+        <item>Włączając przypomnienia na ekranie głównym, otrzymasz propozycję godziny, o której zwykle zapisujesz</item>
+        <item>Filtry: przycisk Zastosuj jest widoczny nawet przy wielu kategoriach, a typy transakcji są przetłumaczone</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>Prostsze ustawienia: cztery krótkie grupy, jednorazowe opcje w Preferencjach, kopia i przywracanie w jednym miejscu</item>
+        <item>Płynniejsze, nowe wykresy w Analizie i Kategoriach</item>
+        <item>Skaner paragonów sam się przygotowuje, gdy Usługi Google Play muszą go pobrać</item>
+        <item>Nowy ekran licencji open source z wyszukiwaniem i poprawki awarii</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>Udostępnij wiadomość o płatności UPI lub zrzut ekranu do Expense Manager, a wszystko się uzupełni: kwota, odbiorca, data i kategoria</item>
+        <item>Zeskanuj paragon aparatem z ekranu Dodaj. Konto i kategoria są sugerowane na podstawie paragonu i Twoich wcześniejszych wpisów</item>
+        <item>Zrzuty ekranu są odczytywane na telefonie, nic nie jest wysyłane, a obraz zapisuje się z transakcją</item>
+        <item>Przypomnienie na ekranie głównym, gdy codzienne przypomnienia są wyłączone, aby włączyć je jednym dotknięciem</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>Planuj z wyprzedzeniem: ustaw czynsz, rachunki lub pensję jako cykliczne od przyszłej daty i sprawdzaj nadchodzące w nowej karcie</item>
+        <item>Powiadomienie wieczorem przed dodaniem płatności tygodniowej, miesięcznej lub rocznej</item>
+        <item>Powtórz jednym dotknięciem: częste wpisy pojawiają się przy dodawaniu</item>
+        <item>Wyszukiwanie we wszystkich transakcjach z sumami</item>
+        <item>Zmiana kolejności ekranu głównego i wybór karty startowej</item>
+        <item>Wiele drobnych poprawek</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Codzienne przypomnienia są wyłączone</string>
+    <string name="reminder_banner_body">Krótkie przypomnienie każdego wieczoru pomaga na bieżąco zapisywać wydatki.</string>
+    <string name="reminder_banner_turn_on">Włącz</string>
+    <string name="reminder_banner_not_now">Nie teraz</string>
+    <string name="reminder_banner_title_with_time">Zwykle zapisujesz około %1$s</string>
+    <string name="reminder_banner_body_with_time">Otrzymuj wtedy codzienne przypomnienie, aby nic nie umknęło.</string>
+    <string name="reminder_banner_turn_on_at">Przypomnij o %1$s</string>
 </resources>

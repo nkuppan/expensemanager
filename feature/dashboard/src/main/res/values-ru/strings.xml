@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Нажмите, чтобы установить лимит расходов</string>
     <string name="first_expense_action">Добавить расход</string>
     <string name="getting_started_title">Начало работы</string>
-    <string name="getting_started_subtitle">Четыре быстрых шага, чтобы получить максимум от приложения</string>
     <string name="getting_started_progress">%1$d из %2$d</string>
     <string name="getting_started_hide">Скрыть</string>
     <string name="step_expense_title">Запишите первый расход</string>
-    <string name="step_expense_description">Это займёт пару секунд</string>
     <string name="step_budget_title">Создайте месячный бюджет</string>
-    <string name="step_budget_description">Узнайте, сколько ещё можно потратить</string>
     <string name="step_budget_action">Создать бюджет</string>
-    <string name="step_accounts_title">Добавьте счета</string>
-    <string name="step_accounts_description">Наличные, банк и карты, с которых вы тратите</string>
-    <string name="step_accounts_action">Добавить счёт</string>
-    <string name="step_currency_title">Выберите валюту</string>
-    <string name="step_currency_description">Суммы показываются в этой валюте</string>
-    <string name="step_currency_action">Изменить валюту</string>
     <string name="auto_backup_warning_title">Автоматическое копирование не работает</string>
     <string name="auto_backup_warning_folder">Нет доступа к папке для копий. Выберите её снова, чтобы данные были в безопасности.</string>
     <string name="auto_backup_warning_write">Последние копии не удались. Проверьте настройки, чтобы данные были в безопасности.</string>
@@ -45,4 +36,83 @@
     <string name="home_categories_add">Добавить операцию</string>
     <string name="home_categories_show_income">Показать доходы</string>
     <string name="home_categories_show_expense">Показать расходы</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Предстоящие</string>
+    <string name="upcoming_spend">Расходы</string>
+    <string name="upcoming_income">Доходы</string>
+    <string name="upcoming_today">Сегодня</string>
+    <string name="upcoming_tomorrow">Завтра</string>
+    <string name="upcoming_empty_title">Пока ничего не запланировано</string>
+    <string name="upcoming_empty_description">Сделайте аренду, счета или зарплату повторяющимися. Они добавятся в свой день, а заранее вы увидите их здесь.</string>
+    <string name="upcoming_plan">Запланировать платёж</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Ближайший %d день</item>
+        <item quantity="few">Ближайшие %d дня</item>
+        <item quantity="many">Ближайшие %d дней</item>
+        <item quantity="other">Ближайшие %d дня</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">Через %d день</item>
+        <item quantity="few">Через %d дня</item>
+        <item quantity="many">Через %d дней</item>
+        <item quantity="other">Через %d дня</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Знаете, кто следит за своими расходами?</string>
+    <string name="home_share_description">Поделитесь Expense Manager. Бесплатно, без рекламы, а данные остаются на телефоне.</string>
+    <string name="home_share_button">Поделиться приложением</string>
+    <string name="home_share_text">Я веду учёт расходов в Expense Manager. Бесплатно, и данные остаются на телефоне: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Настроить главный экран</string>
+    <string name="customise_hint">Удерживайте и перетаскивайте, чтобы изменить порядок разделов</string>
+    <string name="customise_save">Сохранить</string>
+    <string name="customise_reset">Сбросить</string>
+    <string name="section_summary">Сводка доходов и расходов</string>
+    <string name="section_accounts">Счета</string>
+    <string name="section_categories">Категории</string>
+    <string name="section_budgets">Бюджеты</string>
+    <string name="section_transactions">Последние операции</string>
+    <string name="section_upcoming">Предстоящие платежи</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Уведомления</string>
+    <string name="whats_new_version">Версия %1$s</string>
+    <string name="notification_new">Новое</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Показать ещё (%1$d)</string>
+    <string name="notification_see_less">Свернуть</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Записывайте самый частый расход одним нажатием прямо из ежедневного напоминания, с возможностью отмены</item>
+        <item>Ежедневные напоминания приходят вовремя надёжнее, а экран «Напоминание» подскажет, что делать, если телефон их блокирует</item>
+        <item>При включении напоминаний на главном экране теперь предлагается время, когда вы обычно записываете расходы</item>
+        <item>Фильтры: кнопка «Применить» видна даже при большом числе категорий, а типы операций переведены</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>Проще настройки: четыре коротких группы, разовые параметры в «Предпочтениях», резервное копирование и восстановление в одном месте</item>
+        <item>Новые, более плавные графики в «Анализе» и «Категориях»</item>
+        <item>Сканер чеков сам готовится, если сервисам Google Play нужно его загрузить</item>
+        <item>Новый экран лицензий открытого ПО с поиском и исправления сбоев</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>Поделитесь сообщением об оплате UPI или скриншотом с Expense Manager — сумма, получатель, дата и категория заполнятся сами</item>
+        <item>Сканируйте чек камерой прямо с экрана добавления. Счёт и категория подбираются по чеку и вашим прошлым записям</item>
+        <item>Скриншоты распознаются на телефоне, ничего не загружается, а изображение сохраняется вместе с операцией</item>
+        <item>Подсказка на главном экране, если ежедневные напоминания выключены, чтобы включить их одним касанием</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>Планируйте заранее: сделайте аренду, счета или зарплату повторяющимися с будущей даты и смотрите предстоящее в новой карточке на главной</item>
+        <item>Напоминание вечером накануне еженедельного, ежемесячного или ежегодного платежа</item>
+        <item>Повтор в одно касание: частые записи появляются при добавлении</item>
+        <item>Поиск по всем операциям с итогами</item>
+        <item>Порядок разделов главной и выбор стартовой вкладки</item>
+        <item>Множество мелких исправлений</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Ежедневные напоминания выключены</string>
+    <string name="reminder_banner_body">Короткое напоминание каждый вечер помогает вести расходы без пропусков.</string>
+    <string name="reminder_banner_turn_on">Включить</string>
+    <string name="reminder_banner_not_now">Не сейчас</string>
+    <string name="reminder_banner_title_with_time">Обычно вы записываете около %1$s</string>
+    <string name="reminder_banner_body_with_time">Получайте ежедневное напоминание в это время, чтобы ничего не упустить.</string>
+    <string name="reminder_banner_turn_on_at">Напоминать в %1$s</string>
 </resources>

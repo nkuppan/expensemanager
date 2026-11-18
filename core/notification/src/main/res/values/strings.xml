@@ -7,6 +7,11 @@
     <string name="reminder_notification_body">It only takes a few seconds. Tap to add an expense.</string>
     <string name="reminder_action_add">Add expense</string>
     <string name="reminder_action_no_spend">Nothing spent today</string>
+    <string name="reminder_quick_logged">✓ Logged %1$s</string>
+    <string name="reminder_quick_logged_body">Added to today’s expenses.</string>
+    <string name="reminder_action_undo">Undo</string>
+    <string name="reminder_quick_log_failed">Couldn’t log that</string>
+    <string name="reminder_quick_log_failed_body">Tap to add it in the app.</string>
     <string name="weekly_summary_title">Your week in money</string>
     <string name="weekly_summary_less">You spent %1$s this week, %2$d%% less than last week. Nice work!</string>
     <string name="weekly_summary_more">You spent %1$s this week, %2$d%% more than last week.</string>
@@ -20,4 +25,16 @@
     <string name="auto_backup_failed_folder_body">Can\'t reach your backup folder. Tap to choose it again.</string>
     <string name="auto_backup_failed_write_body">Your data couldn\'t be backed up. Tap to check your backup settings.</string>
     <string name="auto_backup_failed_action">Fix</string>
+    <!-- Evening heads-up before weekly / monthly / yearly recurring entries (UpcomingRecurringWorker). -->
+    <string name="upcoming_channel_name">Upcoming payments</string>
+    <string name="upcoming_channel_description">A heads-up the evening before a weekly, monthly or yearly recurring entry is added.</string>
+    <string name="upcoming_alert_title_one">Tomorrow: %1$s</string>
+    <string name="upcoming_alert_body_one">%1$s will be added automatically.</string>
+    <string name="upcoming_alert_body_many">They\'ll be added automatically.</string>
+    <!-- One entry in the list: name · amount. -->
+    <string name="upcoming_alert_line" translatable="false">%1$s · %2$s</string>
+    <plurals name="upcoming_alert_title_many">
+        <item quantity="one">%d recurring entry tomorrow</item>
+        <item quantity="other">%d recurring entries tomorrow</item>
+    </plurals>
 </resources>

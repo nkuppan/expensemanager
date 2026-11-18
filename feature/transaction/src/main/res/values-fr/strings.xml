@@ -75,6 +75,14 @@
     <string name="recurring_empty_message">En ajoutant une transaction, choisissez Quotidien, Hebdomadaire, Mensuel ou Annuel sous Répéter et elle sera enregistrée pour vous.</string>
     <string name="edit">Modifier</string>
     <string name="search_transactions_hint">Rechercher notes, catégories, comptes</string>
+    <string name="search_spent">Dépensé %1$s</string>
+    <string name="search_earned">Reçu %1$s</string>
+    <string name="search_all_time">Toute la période</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d résultat</item>
+        <item quantity="many">%d résultats</item>
+        <item quantity="other">%d résultats</item>
+    </plurals>
     <string name="clear_search">Effacer la recherche</string>
     <string name="no_matching_transactions">Aucune transaction ne correspond à votre recherche</string>
     <string name="transaction_deleted">Transaction supprimée</string>
@@ -97,4 +105,14 @@
     <string name="recurring_part_of_series">Fait partie d\'une série récurrente</string>
     <string name="recurring_edit_series">Modifiez la série pour changer les transactions à venir</string>
     <string name="add_recurring_transaction">Ajouter une transaction récurrente</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Fréquents</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">Prévu : ajouté pour la première fois le %1$s. Rien n’est enregistré d’ici là.</string>
+    <string name="receipt_amount_not_found">Impossible de lire un montant sur ce reçu. Saisissez-le ci-dessous.</string>
+    <string name="scan_receipt">Scanner un reçu</string>
+    <string name="reading_receipt">Lecture du reçu…</string>
+    <string name="suggested_categories">Suggestions</string>
+    <string name="receipt_scanner_unavailable">Le scanner de reçus n\'est pas disponible sur cet appareil</string>
+    <string name="receipt_scanner_preparing">Les services Google Play téléchargent le scanner de reçus. Il s\'ouvrira dès qu\'il sera prêt.</string>
 </resources>

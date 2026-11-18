@@ -5,11 +5,12 @@ import com.naveenapps.expensemanager.core.model.Country
 
 sealed class OnboardingAction {
 
-    /** "Explore the app first": finish setup and land on Home. */
-    data object Next : OnboardingAction()
-
-    /** Primary CTA: finish setup and open the new-transaction screen straight away. */
-    data object AddFirstExpense : OnboardingAction()
+    /**
+     * The one "Get started" button: finish setup and open the new-transaction keypad on top of
+     * Home. Closing it shows Home, so exploring is still one tap away. (A separate "Explore the
+     * app first" button sent users to an empty Home, where many never logged anything.)
+     */
+    data object GetStarted : OnboardingAction()
 
     /** Accounts come preloaded; this opens the full list to rename, add or remove. */
     data object OpenAccounts : OnboardingAction()

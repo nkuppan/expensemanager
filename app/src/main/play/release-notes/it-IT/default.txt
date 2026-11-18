@@ -1,0 +1,4 @@
+• Registra la spesa più frequente direttamente dal promemoria giornaliero con un tocco, con Annulla in caso di errore
+• Promemoria giornalieri più affidabili, con aiuto se il telefono li blocca
+• Attivando i promemoria dalla Home ora viene suggerito un orario in base a quando registri di solito
+• Filtri: il pulsante Applica resta visibile anche con molte categorie e i tipi di transazione ora sono tradotti

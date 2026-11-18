@@ -9,7 +9,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -35,7 +34,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -80,6 +78,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
+import com.naveenapps.expensemanager.core.domain.usecase.recurring.isOnLaterDay
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.occurrenceDate
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
@@ -101,6 +100,9 @@ import com.naveenapps.expensemanager.feature.category.selection.CategoryItem
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefaults
 import com.naveenapps.expensemanager.feature.category.selection.CategorySelectionScreen
 import com.naveenapps.expensemanager.feature.transaction.R
+import com.naveenapps.expensemanager.feature.transaction.create.receipt.ScanReceiptChip
+import com.naveenapps.expensemanager.feature.transaction.create.receipt.SuggestedCategoryRow
+import com.naveenapps.expensemanager.feature.transaction.create.receipt.rememberReceiptScanner
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
 import java.util.Calendar
 import java.util.Date
@@ -138,11 +140,21 @@ fun TransactionCreateScreen(
         onImagePicked = { viewModel.processAction(TransactionCreateAction.AttachmentPicked(it)) },
     )
 
+    val openReceiptScanner = rememberReceiptScanner(
+        onScanned = { viewModel.processAction(TransactionCreateAction.ReceiptScanned(it)) },
+        onPreparing = { viewModel.processAction(TransactionCreateAction.ReceiptScannerPreparing) },
+        onFailed = { viewModel.processAction(TransactionCreateAction.ReceiptScanFailed) },
+    )
+
     TransactionCreateScreenContent(
         state = state,
         onAction = viewModel::processAction,
         onCaptureRequested = attachmentPicker.onCaptureRequested,
         onGalleryRequested = attachmentPicker.onGalleryRequested,
+        onScanReceipt = {
+            viewModel.processAction(TransactionCreateAction.ReceiptScanRequested)
+            openReceiptScanner()
+        },
         snackbarHostState = snackbarHostState,
     )
 }
@@ -153,6 +165,7 @@ private fun TransactionCreateScreenContent(
     onAction: (TransactionCreateAction) -> Unit,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
+    onScanReceipt: () -> Unit = {},
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     // System back goes through the same path as the top-bar back arrow, so unsaved edits get a
@@ -178,6 +191,28 @@ private fun TransactionCreateScreenContent(
             initialAmount = state.numberPadInitialAmount,
             onConfirm = { amount ->
                 onAction.invoke(TransactionCreateAction.SetNumberPadValue(amount))
+            },
+            header = if (state.quickPicks.isEmpty() && !state.canScanReceipt) {
+                null
+            } else {
+                {
+                    Column(modifier = Modifier.padding(top = 16.dp)) {
+                        if (state.canScanReceipt) {
+                            ScanReceiptChip(
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                                isReading = state.isReadingReceipt,
+                                onClick = onScanReceipt,
+                            )
+                        }
+                        if (state.quickPicks.isNotEmpty()) {
+                            QuickPickRow(
+                                picks = state.quickPicks,
+                                onPick = { onAction.invoke(TransactionCreateAction.ApplyQuickPick(it)) },
+                                contentPadding = PaddingValues(horizontal = 16.dp),
+                            )
+                        }
+                    }
+                }
             },
         )
     } else if (state.showCategorySelection) {
@@ -241,12 +276,12 @@ private fun TransactionCreateScreenContent(
                 .verticalScroll(rememberScrollState()),
             state = state,
             onAction = onAction,
+            onScanReceipt = onScanReceipt,
         )
     }
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AttachmentPickerView(
     onAction: (TransactionCreateAction) -> Unit,
     onCaptureRequested: () -> Unit,
@@ -271,7 +306,6 @@ private fun AttachmentPickerView(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun AccountSelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
@@ -298,7 +332,6 @@ private fun AccountSelectionView(
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
 private fun CategorySelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
@@ -326,6 +359,7 @@ private fun TransactionCreateScreen(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
     modifier: Modifier = Modifier,
+    onScanReceipt: () -> Unit = {},
 ) {
     if (state.showDateSelection) {
         AppDatePickerDialog(
@@ -361,6 +395,7 @@ private fun TransactionCreateScreen(
         modifier = modifier,
         state = state,
         onAction = onAction,
+        onScanReceipt = onScanReceipt,
     )
 }
 
@@ -369,6 +404,7 @@ private fun TransactionCreateContent(
     modifier: Modifier,
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
+    onScanReceipt: () -> Unit,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -421,6 +457,27 @@ private fun TransactionCreateContent(
                             }
                         },
                     )
+
+                    if (state.canScanReceipt) {
+                        ScanReceiptChip(
+                            isReading = state.isReadingReceipt,
+                            onClick = {
+                                focusManager.clearFocus(force = true)
+                                onScanReceipt()
+                            },
+                        )
+                    }
+
+                    if (state.quickPicks.isNotEmpty()) {
+                        QuickPickRow(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            picks = state.quickPicks,
+                            onPick = {
+                                focusManager.clearFocus(force = true)
+                                onAction.invoke(TransactionCreateAction.ApplyQuickPick(it))
+                            },
+                        )
+                    }
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -508,21 +565,30 @@ private fun TransactionCreateContent(
             exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
         ) {
             SettingsSection(title = stringResource(R.string.select_category)) {
-                CategoryItem(
-                    name = state.selectedCategory.titleResId?.let { stringResource(it) }
-                        ?: state.selectedCategory.name,
-                    icon = state.selectedCategory.storedIcon.name,
-                    iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
-                    customImagePath = state.selectedCategory.storedIcon.customImagePath,
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        focusManager.clearFocus(force = true)
-                        onAction.invoke(TransactionCreateAction.ShowCategorySelection)
-                    },
-                    trailingContent = {
-                        CategoryItemDefaults.ChevronTrailing()
-                    },
-                )
+                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    CategoryItem(
+                        name = state.selectedCategory.titleResId?.let { stringResource(it) }
+                            ?: state.selectedCategory.name,
+                        icon = state.selectedCategory.storedIcon.name,
+                        iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
+                        customImagePath = state.selectedCategory.storedIcon.customImagePath,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            focusManager.clearFocus(force = true)
+                            onAction.invoke(TransactionCreateAction.ShowCategorySelection)
+                        },
+                        trailingContent = {
+                            CategoryItemDefaults.ChevronTrailing()
+                        },
+                    )
+                    if (state.suggestedCategories.isNotEmpty()) {
+                        SuggestedCategoryRow(
+                            categories = state.suggestedCategories,
+                            selected = state.selectedCategory,
+                            onSelect = { onAction.invoke(TransactionCreateAction.SelectCategory(it)) },
+                        )
+                    }
+                }
             }
         }
 
@@ -629,7 +695,6 @@ private fun TransactionCreateContent(
  * "Doesn't repeat" plus the four frequencies as chips, so the choice is one tap and always
  * visible. Once one is picked, the line below says when the next copy will be logged.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun RepeatSelector(
     selected: RecurringFrequency?,
@@ -666,9 +731,15 @@ private fun RepeatSelector(
                 }
             }
             if (selected != null) {
+                // Dated on a later day: only the plan is saved, and the first entry is added then.
+                val planned = remember(startDate) { isOnLaterDay(startDate) }
                 val next = remember(selected, startDate) { occurrenceDate(startDate, selected, 1) }
                 Text(
-                    text = stringResource(id = R.string.repeat_next, next.toCompleteDateWithDate()),
+                    text = if (planned) {
+                        stringResource(id = R.string.repeat_planned, startDate.toCompleteDateWithDate())
+                    } else {
+                        stringResource(id = R.string.repeat_next, next.toCompleteDateWithDate())
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(top = 4.dp),

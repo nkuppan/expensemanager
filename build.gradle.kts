@@ -23,6 +23,23 @@ plugins {
     alias(libs.plugins.firebase.distribution) apply false
     alias(libs.plugins.spotless) apply false
     alias(libs.plugins.dependency.analysis) apply false
+    // bumpVersion and checkReleaseNotes (build-logic: ReleaseConfigPlugin).
+    id("naveenapps.plugin.release")
+}
+
+// Git hooks live in .githooks (pre-push runs spotlessApply, see the file). Point git at that
+// folder on every sync so a fresh clone gets them without a manual step. Not on CI, where
+// release workflows push their own commits. Runs `git config` only when the value differs.
+if (System.getenv("CI") == null && rootProject.file(".git").exists()) {
+    runCatching {
+        val current = providers.exec {
+            commandLine("git", "config", "--get", "core.hooksPath")
+            isIgnoreExitValue = true
+        }.standardOutput.asText.get().trim()
+        if (current != ".githooks") {
+            providers.exec { commandLine("git", "config", "core.hooksPath", ".githooks") }.result.get()
+        }
+    }.onFailure { logger.warn("Couldn't install the git hooks in .githooks: ${it.message}") }
 }
 
 // Spotless 7+ only drives ktlint 1.x; 0.48.x crashes with an InvocationTargetException.

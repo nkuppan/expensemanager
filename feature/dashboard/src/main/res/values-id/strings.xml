@@ -13,25 +13,16 @@
     <string name="no_transactions_available">Tidak ada transaksi yang tersedia untuk periode yang dipilih.\nKetuk tombol + untuk mencatat transaksi Anda</string>
     <string name="home">Beranda</string>
     <string name="transaction_create_message">"Catat pengeluaran, pemasukan, dan transfer Anda di sini. "</string>
-    <string name="help"><![CDATA[Bantuan & info]]></string>
+    <string name="help"><![CDATA[Bantuan &amp; info]]></string>
     <string name="ok">OK</string>
     <string name="tap_to_set_spending_limit">Ketuk untuk menetapkan batas pengeluaran</string>
     <string name="first_expense_action">Tambah pengeluaran</string>
     <string name="getting_started_title">Mulai</string>
-    <string name="getting_started_subtitle">Empat langkah cepat untuk memaksimalkan aplikasi</string>
     <string name="getting_started_progress">%1$d dari %2$d</string>
     <string name="getting_started_hide">Sembunyikan</string>
     <string name="step_expense_title">Catat pengeluaran pertama</string>
-    <string name="step_expense_description">Hanya butuh beberapa detik</string>
     <string name="step_budget_title">Buat anggaran bulanan</string>
-    <string name="step_budget_description">Lihat berapa sisa yang bisa dibelanjakan</string>
     <string name="step_budget_action">Buat anggaran</string>
-    <string name="step_accounts_title">Tambahkan akun Anda</string>
-    <string name="step_accounts_description">Tunai, bank, dan kartu yang Anda gunakan</string>
-    <string name="step_accounts_action">Tambah akun</string>
-    <string name="step_currency_title">Pilih mata uang</string>
-    <string name="step_currency_description">Jumlah ditampilkan dalam mata uang ini</string>
-    <string name="step_currency_action">Ubah mata uang</string>
     <string name="auto_backup_warning_title">Cadangan otomatis tidak berjalan</string>
     <string name="auto_backup_warning_folder">Folder cadangan tidak dapat diakses. Pilih lagi agar data Anda tetap aman.</string>
     <string name="auto_backup_warning_write">Pencadangan terakhir gagal. Periksa setelan cadangan agar data Anda tetap aman.</string>
@@ -45,4 +36,77 @@
     <string name="home_categories_add">Tambah transaksi</string>
     <string name="home_categories_show_income">Tampilkan pemasukan</string>
     <string name="home_categories_show_expense">Tampilkan pengeluaran</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Mendatang</string>
+    <string name="upcoming_spend">Pengeluaran</string>
+    <string name="upcoming_income">Pemasukan</string>
+    <string name="upcoming_today">Hari ini</string>
+    <string name="upcoming_tomorrow">Besok</string>
+    <string name="upcoming_empty_title">Belum ada rencana</string>
+    <string name="upcoming_empty_description">Atur sewa, tagihan, atau gaji agar berulang. Semuanya ditambahkan pada harinya, dan kamu melihatnya di sini lebih dulu.</string>
+    <string name="upcoming_plan">Rencanakan pembayaran</string>
+    <plurals name="upcoming_window">
+        <item quantity="other">%d hari ke depan</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="other">Dalam %d hari</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">Kenal seseorang yang mencatat keuangannya?</string>
+    <string name="home_share_description">Bagikan Expense Manager. Gratis, tanpa iklan, dan datanya tetap di ponsel mereka.</string>
+    <string name="home_share_button">Bagikan aplikasi</string>
+    <string name="home_share_text">Saya pakai Expense Manager untuk mencatat pengeluaran. Gratis dan data tetap di ponsel saya: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Sesuaikan dasbor</string>
+    <string name="customise_hint">Tahan dan seret untuk mengubah urutan bagian di beranda</string>
+    <string name="customise_save">Simpan</string>
+    <string name="customise_reset">Atur ulang</string>
+    <string name="section_summary">Ringkasan pemasukan &amp; pengeluaran</string>
+    <string name="section_accounts">Akun</string>
+    <string name="section_categories">Kategori</string>
+    <string name="section_budgets">Anggaran</string>
+    <string name="section_transactions">Transaksi terbaru</string>
+    <string name="section_upcoming">Pembayaran mendatang</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notifikasi</string>
+    <string name="whats_new_version">Versi %1$s</string>
+    <string name="notification_new">Baru</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Lihat lainnya (%1$d)</string>
+    <string name="notification_see_less">Lihat lebih sedikit</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Catat pengeluaran yang paling sering langsung dari pengingat harian dengan satu ketukan, bisa diurungkan</item>
+        <item>Pengingat harian kini lebih andal tiba tepat waktu, dan layar Pengingat menunjukkan cara memperbaikinya jika ponsel memblokirnya</item>
+        <item>Mengaktifkan pengingat dari Beranda kini menyarankan waktu sesuai kebiasaan Anda mencatat</item>
+        <item>Filter: tombol Terapkan tetap terlihat meski kategorinya banyak, dan jenis transaksi kini diterjemahkan</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>Setelan lebih sederhana: empat grup singkat, pengaturan sekali di Preferensi, serta cadangkan dan pulihkan di satu tempat</item>
+        <item>Grafik baru yang lebih halus di Analisis dan Kategori</item>
+        <item>Pemindai struk kini menyiapkan diri saat Layanan Google Play perlu mengunduhnya</item>
+        <item>Layar lisensi sumber terbuka baru yang bisa dicari, dan perbaikan crash</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>Bagikan pesan pembayaran UPI atau tangkapan layar ke Expense Manager dan semuanya terisi: jumlah, penerima, tanggal, dan kategori</item>
+        <item>Pindai struk belanja dengan kamera dari layar Tambah. Akun dan kategori disarankan dari struk dan catatan Anda sebelumnya</item>
+        <item>Tangkapan layar dibaca di ponsel Anda, tidak ada yang diunggah, dan gambar disimpan bersama transaksi</item>
+        <item>Pengingat di Beranda saat pengingat harian nonaktif, agar bisa diaktifkan lagi dengan satu ketukan</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>Rencanakan lebih awal: atur sewa, tagihan, atau gaji agar berulang mulai tanggal mendatang, dan lihat semuanya di kartu Mendatang yang baru</item>
+        <item>Pengingat malam sebelum pembayaran mingguan, bulanan, atau tahunan ditambahkan</item>
+        <item>Ulangi sekali ketuk: entri yang sering muncul sebagai pilihan saat menambah</item>
+        <item>Cari semua transaksi, lengkap dengan totalnya</item>
+        <item>Atur ulang beranda dan pilih tab pembuka aplikasi</item>
+        <item>Banyak perbaikan kecil</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Pengingat harian nonaktif</string>
+    <string name="reminder_banner_body">Pengingat ringan setiap malam membantu pengeluaranmu tetap tercatat.</string>
+    <string name="reminder_banner_turn_on">Aktifkan</string>
+    <string name="reminder_banner_not_now">Nanti saja</string>
+    <string name="reminder_banner_title_with_time">Anda biasanya mencatat sekitar %1$s</string>
+    <string name="reminder_banner_body_with_time">Dapatkan pengingat harian saat itu agar tidak ada yang terlewat.</string>
+    <string name="reminder_banner_turn_on_at">Ingatkan pukul %1$s</string>
 </resources>

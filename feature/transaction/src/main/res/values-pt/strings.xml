@@ -75,6 +75,14 @@
     <string name="recurring_empty_message">Ao adicionar uma transação, escolha Diário, Semanal, Mensal ou Anual em Repetir e ela será registrada para você.</string>
     <string name="edit">Editar</string>
     <string name="search_transactions_hint">Pesquisar notas, categorias, contas</string>
+    <string name="search_spent">Gasto %1$s</string>
+    <string name="search_earned">Recebido %1$s</string>
+    <string name="search_all_time">Todo o período</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%d resultado</item>
+        <item quantity="many">%d resultados</item>
+        <item quantity="other">%d resultados</item>
+    </plurals>
     <string name="clear_search">Limpar pesquisa</string>
     <string name="no_matching_transactions">Nenhuma transação corresponde à pesquisa</string>
     <string name="transaction_deleted">Transação eliminada</string>
@@ -97,4 +105,14 @@
     <string name="recurring_part_of_series">Parte de uma série recorrente</string>
     <string name="recurring_edit_series">Edite a série para mudar as próximas transações</string>
     <string name="add_recurring_transaction">Adicionar transação recorrente</string>
+    <!-- Label above the one-tap chips of frequent entries on the add screen. -->
+    <string name="quick_picks">Frequentes</string>
+    <!-- Repeat on a later date: only the plan is saved; the first entry is added on that day. -->
+    <string name="repeat_planned">Planejado: adicionado pela primeira vez em %1$s. Nada é registrado antes disso.</string>
+    <string name="receipt_amount_not_found">Não foi possível ler um valor deste recibo. Insira-o abaixo.</string>
+    <string name="scan_receipt">Digitalizar recibo</string>
+    <string name="reading_receipt">Lendo o recibo…</string>
+    <string name="suggested_categories">Sugeridas</string>
+    <string name="receipt_scanner_unavailable">O leitor de recibos não está disponível neste dispositivo</string>
+    <string name="receipt_scanner_preparing">O Google Play Services está baixando o leitor de recibos. Ele abrirá quando estiver pronto.</string>
 </resources>

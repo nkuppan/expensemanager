@@ -9,6 +9,7 @@ import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
 import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionRelation
+import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -116,35 +117,27 @@ class TransactionRepositoryImpl(
     }
 
     private fun convertTransactionCategoryRelation(relation: TransactionRelation): Transaction? {
+        val category = relation.categoryEntity?.toDomainModel() ?: return null
+        val fromAccount = relation.fromAccountEntity?.toDomainModel() ?: return null
         return relation.transactionEntity.toDomainModel().copy(
             rateSnapshot = relation.rateSnapshotEntity?.toDomainModel(),
-        ).apply {
-            category = relation.categoryEntity?.toDomainModel() ?: return null
-            fromAccount = relation.fromAccountEntity?.toDomainModel() ?: return null
-            toAccount = relation.toAccountEntity?.toDomainModel()
-            attachments = relation.attachmentEntities.map { it.imagePath }
-        }
+            category = category,
+            fromAccount = fromAccount,
+            toAccount = relation.toAccountEntity?.toDomainModel(),
+            attachments = relation.attachmentEntities.map { it.imagePath },
+        )
     }
 
     private suspend fun convertTransactionCategoryRelation(relation: TransactionEntity): Transaction {
-        val transaction = relation.toDomainModel().copy(
+        val transaction = relation.toDomainModel()
+        return transaction.copy(
             rateSnapshot = relation.rateSnapshotId?.let { transactionDao.findRateSnapshot(it) }
                 ?.toDomainModel(),
+            category = categoryDao.findById(transaction.categoryId)?.toDomainModel() ?: transaction.category,
+            fromAccount = accountDao.findById(transaction.fromAccountId)?.toDomainModel() ?: transaction.fromAccount,
+            toAccount = transaction.toAccountId?.let { accountDao.findById(it)?.toDomainModel() },
+            attachments = transactionDao.getTransactionAttachments(transaction.id).map { it.imagePath },
         )
-        categoryDao.findById(transaction.categoryId)?.let {
-            transaction.category = it.toDomainModel()
-        }
-        accountDao.findById(transaction.fromAccountId)?.let {
-            transaction.fromAccount = it.toDomainModel()
-        }
-        transaction.toAccountId?.let {
-            accountDao.findById(it)?.let { accountEntity ->
-                transaction.toAccount = accountEntity.toDomainModel()
-            }
-        }
-        transaction.attachments = transactionDao.getTransactionAttachments(transaction.id)
-            .map { it.imagePath }
-        return transaction
     }
 
     override fun getAllFilteredTransaction(
@@ -173,5 +166,43 @@ class TransactionRepositoryImpl(
         endDate.fromLocalToUTCTimeStamp(),
     ).map {
         convertTransactionAndCategory(it)
+    }
+
+    override fun getFrequentTransactions(
+        transactionTypes: List<TransactionType>,
+        since: Long,
+        minCount: Int,
+        limit: Int,
+    ): Flow<List<FrequentTransaction>> = transactionDao.getFrequentTransactions(
+        transactionTypes.map { it.ordinal },
+        since.fromLocalToUTCTimeStamp(),
+        minCount,
+        limit,
+    ).map { rows ->
+        rows.map {
+            FrequentTransaction(
+                type = it.type,
+                categoryId = it.categoryId,
+                fromAccountId = it.fromAccountId,
+                amount = it.amount,
+                notes = it.notes,
+                useCount = it.useCount,
+            )
+        }
+    }
+
+    override suspend fun findCategoryIdsByNotes(
+        type: TransactionType,
+        notes: String,
+        limit: Int,
+    ): List<String> = withContext(dispatchers.io) {
+        transactionDao.findCategoryIdsByNotes(type.ordinal, notes.trim().lowercase(), limit)
+    }
+
+    override suspend fun findLatestAccountIdByNotes(
+        type: TransactionType,
+        notes: String,
+    ): String? = withContext(dispatchers.io) {
+        transactionDao.findLatestAccountIdByNotes(type.ordinal, notes.trim().lowercase())
     }
 }

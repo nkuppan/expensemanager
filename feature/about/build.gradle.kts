@@ -10,6 +10,6 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.appcompat)
-    implementation(libs.google.oss.licenses)
+    // Licences are shown by our own screens (licenses/), reading the files the oss-licenses
+    // Gradle plugin generates; Google's play-services-oss-licenses UI isn't used any more.
 }

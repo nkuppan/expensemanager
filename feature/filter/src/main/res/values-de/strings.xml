@@ -18,4 +18,5 @@
         <item quantity="one">%d Filter ausgewählt</item>
         <item quantity="other">%d Filter ausgewählt</item>
     </plurals>
+    <string name="filter_type_transfer">Überweisung</string>
 </resources>

@@ -15,6 +15,8 @@ dependencies {
     implementation(project(":feature:category"))
     implementation(project(":feature:filter"))
     implementation(project(":feature:transaction"))
+    // Home's "Daily reminders are off" banner turns the reminder on and schedules it.
+    implementation(project(":core:notification"))
     // Streak card flame icon (R8 strips the unused icons from release builds).
     implementation(libs.androidx.compose.material.iconsExtended)
 }

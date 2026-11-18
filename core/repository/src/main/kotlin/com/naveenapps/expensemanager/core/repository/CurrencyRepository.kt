@@ -10,6 +10,9 @@ interface CurrencyRepository {
 
     fun getDefaultCurrency(): Currency
 
+    /** False until a currency is saved; until then the app falls back to [getDefaultCurrency]. */
+    fun isCurrencyChosen(): Flow<Boolean>
+
     fun getSelectedCurrency(): Flow<Currency>
 
     fun getFormattedCurrency(amount: Amount): Amount

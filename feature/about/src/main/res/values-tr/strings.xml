@@ -7,4 +7,7 @@
     <string name="privacy_policy">Gizlilik Politikası</string>
     <string name="terms_and_conditions">Kullanım Şartları</string>
     <string name="licenses">Açık kaynak lisansları</string>
+    <string name="search_libraries">Kütüphane ara</string>
+    <string name="open_license">Lisansı aç</string>
+    <string name="licenses_unavailable">Lisanslar bu sürüme dahil değil.</string>
 </resources>

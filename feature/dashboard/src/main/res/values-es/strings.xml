@@ -18,20 +18,11 @@
     <string name="tap_to_set_spending_limit">Toca para establecer un límite de gasto</string>
     <string name="first_expense_action">Añadir gasto</string>
     <string name="getting_started_title">Primeros pasos</string>
-    <string name="getting_started_subtitle">Cuatro pasos rápidos para aprovechar al máximo la app</string>
     <string name="getting_started_progress">%1$d de %2$d</string>
     <string name="getting_started_hide">Ocultar</string>
     <string name="step_expense_title">Registra tu primer gasto</string>
-    <string name="step_expense_description">Solo toma unos segundos</string>
     <string name="step_budget_title">Crea un presupuesto mensual</string>
-    <string name="step_budget_description">Mira cuánto te queda por gastar</string>
     <string name="step_budget_action">Crear presupuesto</string>
-    <string name="step_accounts_title">Añade tus cuentas</string>
-    <string name="step_accounts_description">Efectivo, banco y tarjetas con los que pagas</string>
-    <string name="step_accounts_action">Añadir cuenta</string>
-    <string name="step_currency_title">Elige tu moneda</string>
-    <string name="step_currency_description">Los importes se muestran en esta moneda</string>
-    <string name="step_currency_action">Cambiar moneda</string>
     <string name="auto_backup_warning_title">La copia automática no funciona</string>
     <string name="auto_backup_warning_folder">No se puede acceder a la carpeta de copias. Vuelve a elegirla para mantener tus datos seguros.</string>
     <string name="auto_backup_warning_write">Las últimas copias fallaron. Revisa los ajustes de copia para mantener tus datos seguros.</string>
@@ -45,4 +36,81 @@
     <string name="home_categories_add">Añadir transacción</string>
     <string name="home_categories_show_income">Mostrar ingresos</string>
     <string name="home_categories_show_expense">Mostrar gastos</string>
+    <!-- Home's "Upcoming" card: planned recurring entries (HomeUpcomingCard.kt). -->
+    <string name="upcoming">Próximos</string>
+    <string name="upcoming_spend">Gastos</string>
+    <string name="upcoming_income">Ingresos</string>
+    <string name="upcoming_today">Hoy</string>
+    <string name="upcoming_tomorrow">Mañana</string>
+    <string name="upcoming_empty_title">Nada planificado aún</string>
+    <string name="upcoming_empty_description">Configura el alquiler, las facturas o el sueldo para que se repitan. Se añaden en su día y antes los verás aquí.</string>
+    <string name="upcoming_plan">Planificar un pago</string>
+    <plurals name="upcoming_window">
+        <item quantity="one">Próximo %d día</item>
+        <item quantity="many">Próximos %d días</item>
+        <item quantity="other">Próximos %d días</item>
+    </plurals>
+    <plurals name="upcoming_in_days">
+        <item quantity="one">En %d día</item>
+        <item quantity="many">En %d días</item>
+        <item quantity="other">En %d días</item>
+    </plurals>
+    <!-- Home's share banner (HomeShareBanner.kt); the message mirrors Settings' "Share the app". -->
+    <string name="home_share_title">¿Conoces a alguien que controla sus gastos?</string>
+    <string name="home_share_description">Comparte Expense Manager. Es gratis, sin anuncios, y sus datos se quedan en su teléfono.</string>
+    <string name="home_share_button">Compartir la app</string>
+    <string name="home_share_text">Uso Expense Manager para controlar mis gastos. Es gratis y mis datos se quedan en mi teléfono: %1$s</string>
+    <!-- Customise dashboard: reorder Home's sections (customise/DashboardReOrderScreen.kt). -->
+    <string name="customise_dashboard">Personalizar inicio</string>
+    <string name="customise_hint">Mantén pulsado y arrastra para reordenar las secciones de inicio</string>
+    <string name="customise_save">Guardar</string>
+    <string name="customise_reset">Restablecer</string>
+    <string name="section_summary">Resumen de ingresos y gastos</string>
+    <string name="section_accounts">Cuentas</string>
+    <string name="section_categories">Categorías</string>
+    <string name="section_budgets">Presupuestos</string>
+    <string name="section_transactions">Movimientos recientes</string>
+    <string name="section_upcoming">Pagos próximos</string>
+    <!-- Home's bell → notification centre (notifications/). One whats_new_<version> array per
+         release, listed in WhatsNewReleases.kt; usually the same lines as the Play release notes. -->
+    <string name="notification_centre_title">Notificaciones</string>
+    <string name="whats_new_version">Versión %1$s</string>
+    <string name="notification_new">Nuevo</string>
+    <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
+    <string name="notification_see_more">Ver más (%1$d)</string>
+    <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_30">
+        <item>Registra tu gasto más frecuente desde el recordatorio diario con un toque, y deshazlo si te equivocas</item>
+        <item>Los recordatorios diarios llegan a tiempo con más fiabilidad, y la pantalla Recordatorio indica cómo solucionarlo si tu teléfono los bloquea</item>
+        <item>Al activar los recordatorios desde Inicio, ahora se sugiere una hora según cuándo sueles registrar</item>
+        <item>Filtros: el botón Aplicar sigue visible aunque tengas muchas categorías, y los tipos de transacción ya están traducidos</item>
+    </string-array>
+    <string-array name="whats_new_1_4_29">
+        <item>Ajustes más sencillos: cuatro grupos cortos, lo que configuras una vez en Preferencias y copia y restauración en un solo lugar</item>
+        <item>Gráficos rediseñados y más fluidos en Análisis y Categorías</item>
+        <item>El escáner de recibos se prepara solo cuando Google Play Services necesita descargarlo</item>
+        <item>Nueva pantalla de licencias de código abierto con búsqueda y correcciones de fallos</item>
+    </string-array>
+    <string-array name="whats_new_1_4_28">
+        <item>Comparte un mensaje de pago UPI o una captura con Expense Manager y se rellena solo: importe, beneficiario, fecha y categoría</item>
+        <item>Escanea un ticket con la cámara desde la pantalla Añadir. La cuenta y la categoría se sugieren a partir del ticket y tus entradas anteriores</item>
+        <item>Las capturas se leen en tu teléfono, no se sube nada y la imagen se guarda con la transacción</item>
+        <item>Un aviso en Inicio cuando los recordatorios diarios están desactivados, para activarlos con un toque</item>
+    </string-array>
+    <string-array name="whats_new_1_4_26">
+        <item>Planifica: haz que el alquiler, las facturas o el sueldo se repitan desde una fecha futura y mira lo que viene en la nueva tarjeta Próximos</item>
+        <item>Un aviso la tarde anterior a un pago semanal, mensual o anual</item>
+        <item>Repetir con un toque: tus movimientos frecuentes aparecen al añadir</item>
+        <item>Busca en todos tus movimientos, con totales</item>
+        <item>Reordena el inicio y elige la pestaña con la que se abre la app</item>
+        <item>Muchas pequeñas mejoras</item>
+    </string-array>
+    <!-- Home's "Daily reminders are off" banner (HomeReminderBanner.kt). -->
+    <string name="reminder_banner_title">Los recordatorios diarios están desactivados</string>
+    <string name="reminder_banner_body">Un aviso cada tarde te ayuda a mantener tus gastos al día.</string>
+    <string name="reminder_banner_turn_on">Activar</string>
+    <string name="reminder_banner_not_now">Ahora no</string>
+    <string name="reminder_banner_title_with_time">Sueles registrar hacia las %1$s</string>
+    <string name="reminder_banner_body_with_time">Recibe un recordatorio diario a esa hora para que no se te escape nada.</string>
+    <string name="reminder_banner_turn_on_at">Recordarme a las %1$s</string>
 </resources>

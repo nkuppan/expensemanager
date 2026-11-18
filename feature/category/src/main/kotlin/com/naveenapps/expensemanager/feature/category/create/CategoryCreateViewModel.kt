@@ -16,7 +16,11 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
+import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
+import com.naveenapps.expensemanager.core.repository.AnalyticsParams
+import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
+import com.naveenapps.expensemanager.core.repository.logFailure
 import java.util.Calendar
 import java.util.UUID
 import kotlinx.coroutines.channels.Channel
@@ -34,6 +38,7 @@ class CategoryCreateViewModel(
     private val deleteCategoryUseCase: DeleteCategoryUseCase,
     private val imageStorageRepository: ImageStorageRepository,
     private val appComposeNavigator: AppComposeNavigator,
+    private val analyticsRepository: AnalyticsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -119,13 +124,18 @@ class CategoryCreateViewModel(
     private fun deleteCategory() {
         viewModelScope.launch {
             category?.let { category ->
-                when (deleteCategoryUseCase.invoke(category)) {
+                when (val result = deleteCategoryUseCase.invoke(category)) {
                     is Resource.Error -> {
+                        analyticsRepository.logFailure(FAILED_DELETE, result.exception)
                         _state.update { it.copy(showDeleteDialog = false) }
                         _errorMessage.send(DesignSystemR.string.error_delete_failed)
                     }
 
                     is Resource.Success -> {
+                        analyticsRepository.logEvent(
+                            AnalyticsEvents.CATEGORY_DELETED,
+                            mapOf(AnalyticsParams.TYPE to category.type.name.lowercase()),
+                        )
                         category.storedIcon.customImagePath?.let {
                             imageStorageRepository.deleteCategoryImage(it)
                         }
@@ -168,15 +178,27 @@ class CategoryCreateViewModel(
 
         viewModelScope.launch {
             val previouslyPersistedImagePath = this@CategoryCreateViewModel.category?.storedIcon?.customImagePath
+            val isNew = this@CategoryCreateViewModel.category == null
             val response = if (this@CategoryCreateViewModel.category != null) {
                 updateCategoryUseCase(category)
             } else {
                 addCategoryUseCase(category)
             }
             when (response) {
-                is Resource.Error -> _errorMessage.send(DesignSystemR.string.error_save_failed)
+                is Resource.Error -> {
+                    analyticsRepository.logFailure(FAILED_SAVE, response.exception)
+                    _errorMessage.send(DesignSystemR.string.error_save_failed)
+                }
 
                 is Resource.Success -> {
+                    analyticsRepository.logEvent(
+                        if (isNew) AnalyticsEvents.CATEGORY_CREATED else AnalyticsEvents.CATEGORY_EDITED,
+                        mapOf(
+                            AnalyticsParams.TYPE to type.name.lowercase(),
+                            // Own photo or one of the app's icons.
+                            AnalyticsParams.METHOD to if (customImagePath != null) "photo" else "icon",
+                        ),
+                    )
                     // The old persisted image is only safe to delete now that the new value has
                     // actually been written — deleting it earlier (e.g. the moment a replacement
                     // photo was picked) would leave a dangling reference if the user backed out
@@ -271,6 +293,9 @@ class CategoryCreateViewModel(
     }
 
     companion object {
+        private const val FAILED_SAVE = "category_save"
+        private const val FAILED_DELETE = "category_delete"
+
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "ic_calendar"
     }

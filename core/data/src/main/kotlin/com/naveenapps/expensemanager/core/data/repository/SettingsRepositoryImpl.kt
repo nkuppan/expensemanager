@@ -2,10 +2,13 @@ package com.naveenapps.expensemanager.core.data.repository
 
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.SettingsDataStore
+import com.naveenapps.expensemanager.core.model.DashboardSection
+import com.naveenapps.expensemanager.core.model.LandingPage
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class SettingsRepositoryImpl(
@@ -72,6 +75,20 @@ class SettingsRepositoryImpl(
 
     override suspend fun setHomeSummaryCompact(compact: Boolean): Resource<Boolean> = withContext(dispatchers.io) {
         dataStore.setHomeSummaryCompact(compact)
+        return@withContext Resource.Success(true)
+    }
+
+    override fun getLandingPage(): Flow<LandingPage> = dataStore.getLandingPage().map { LandingPage.fromStored(it) }
+
+    override suspend fun setLandingPage(page: LandingPage): Resource<Boolean> = withContext(dispatchers.io) {
+        dataStore.setLandingPage(page.name)
+        return@withContext Resource.Success(true)
+    }
+
+    override fun getDashboardOrder(): Flow<List<DashboardSection>> = dataStore.getDashboardOrder().map { DashboardSection.fromStored(it) }
+
+    override suspend fun setDashboardOrder(order: List<DashboardSection>): Resource<Boolean> = withContext(dispatchers.io) {
+        dataStore.setDashboardOrder(order.map { it.name })
         return@withContext Resource.Success(true)
     }
 

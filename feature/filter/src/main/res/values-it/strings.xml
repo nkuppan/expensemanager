@@ -18,4 +18,5 @@
         <item quantity="one">%d filtro selezionato</item>
         <item quantity="other">%d filtri selezionati</item>
     </plurals>
+    <string name="filter_type_transfer">Trasferimento</string>
 </resources>

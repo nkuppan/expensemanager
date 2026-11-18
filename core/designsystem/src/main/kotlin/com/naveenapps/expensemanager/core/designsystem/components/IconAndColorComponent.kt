@@ -51,7 +51,6 @@ enum class SelectionType {
     ICON_SELECTION,
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IconAndColorComponent(
     selectedColor: String,

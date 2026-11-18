@@ -66,5 +66,10 @@ gradlePlugin {
             implementationClass =
                 "com.naveenapps.buildsrc.plugins.AndroidRoomPlugin"
         }
+        create("ReleaseConfigPlugin") {
+            id = "naveenapps.plugin.release"
+            implementationClass =
+                "com.naveenapps.buildsrc.plugins.ReleaseConfigPlugin"
+        }
     }
 }

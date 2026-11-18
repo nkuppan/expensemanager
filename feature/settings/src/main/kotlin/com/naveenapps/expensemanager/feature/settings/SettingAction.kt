@@ -1,8 +1,5 @@
 package com.naveenapps.expensemanager.feature.settings
 
-import com.naveenapps.expensemanager.core.model.Account
-import com.naveenapps.expensemanager.core.model.Category
-
 sealed class SettingAction {
 
     data object ClosePage : SettingAction()
@@ -31,21 +28,11 @@ sealed class SettingAction {
 
     data object DismissLanguageSelection : SettingAction()
 
-    // Defaults section (moved here from AdvancedSettingAction)
-    data class SelectAccount(val account: Account) : SettingAction()
-
-    data class SelectExpenseCategory(val category: Category) : SettingAction()
-
-    data class SelectIncomeCategory(val category: Category) : SettingAction()
-
-    data object ToggleCompactSummary : SettingAction()
-
     // Data & Backup section
     data object OpenRecurringTransactions : SettingAction()
 
+    /** Backup & restore: the backup screen, which also links to restoring. */
     data object OpenBackup : SettingAction()
-
-    data object OpenRestore : SettingAction()
 
     // Security section
     data object ToggleAppLock : SettingAction()

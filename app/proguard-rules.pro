@@ -24,10 +24,6 @@
 # Glance stores widget click callbacks by class name and instantiates them reflectively.
 -keep class * implements androidx.glance.appwidget.action.ActionCallback { <init>(); }
 
-# OSS Licenses: R8 obfuscates the internal data classes that OssLicensesActivity reads
-# at runtime, making the license metadata object null and causing a NullPointerException.
--keep class com.google.android.gms.oss.licenses.** { *; }
-
 # Play In-App Review (review-ktx, used by ShareRepositoryImpl.requestInAppReview): its
 # generated SAM adapter references a play-services-basement annotation class that isn't on
 # the compile/runtime classpath here. It's a source-retention nullness annotation with no

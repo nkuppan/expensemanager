@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Lets the receipt scanner check that Play services can open its scan screen before
+         launching it (Android 11+ package visibility); see ReceiptScanner.kt. -->
+    <queries>
+        <intent>
+            <action android:name="com.google.android.gms.mlkit.ACTION_SCAN_DOCUMENT" />
+        </intent>
+    </queries>
+
+    <application>
+        <!-- Play services downloads the text-recognition model when the app is installed, so the
+             first receipt doesn't wait for it (ReceiptTextReader). -->
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr" />
+    </application>
 
 </manifest>

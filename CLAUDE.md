@@ -39,6 +39,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Room schema changes are hand-written migrations (see "Database" below) validated by instrumented tests under `core/database/src/androidTest/.../database/Migration<N>To<N+1>Test.kt` — these require `connectedDebugAndroidTest`, not the plain `test` task.
 
+## Git hooks
+
+`.githooks/pre-push` runs `./gradlew spotlessApply` before every push. If it reformats files, it commits them as "Apply spotless formatting" and stops the push; run `git push` again. Files with uncommitted changes are formatted but not committed. Gradle sets `core.hooksPath` to `.githooks` on sync (not on CI). Skip once with `SKIP_SPOTLESS_HOOK=1 git push`.
+
 ## Architecture
 
 This is a multi-module Clean Architecture Android app (single-Activity, 100% Kotlin/Compose). The module graph enforces a strict one-way dependency direction; when adding code, respect these boundaries rather than reaching "up" a layer:
@@ -94,3 +98,25 @@ Room, with hand-written `Migration` objects in `core/database/.../DatabaseMigrat
 ### Locale-sensitive code — read before touching `DateUtils.kt` or anything persisted as text
 
 The app supports switching its display language at runtime (`AppCompatDelegate.setApplicationLocales`, wired in `feature:language` + `LocaleRepositoryImpl`), which means `Locale.getDefault()` is no longer stable across the app's lifetime. `core/common/.../utils/DateUtils.kt` distinguishes two kinds of formatters and documents this at the top of the file: formatters used only for one-way **display** text may follow `Locale.getDefault()`; formatters for values that get **persisted and later parsed back or used as matching keys** (e.g. `Budget.selectedMonth`) must be pinned to a fixed `Locale` (`Locale.ENGLISH`/`Locale.US`), or a locale switch can make previously-saved data unparseable. The same display-vs-storage-key split applies to category names: built-in categories carry a `titleResId` (resolved via `stringResource` for display) alongside the original English `name` (the immutable stored/matching value); only categories with a null `titleResId` are user-created/renamed and safe to treat as arbitrary free text.
+
+## Release notes ("What's new") — keep them current
+
+Every release that changes something users notice gets "What's new" notes, written as soon as the previous version ships:
+
+- The version in `version.properties` is the one live on Play. The **next** release is that version + 1 patch (the "Release to Beta" workflow bumps it). After a release goes out, add the notes for the next version while making the first user-visible change for it.
+- Add a `whats_new_<x_y_z>` string-array to `feature/dashboard/src/main/res/values*/strings.xml` in all 16 languages, newest array first, and put a `WhatsNewRelease(version = "x.y.z", releasedOn = …)` entry at the top of `feature/dashboard/.../notifications/WhatsNewReleases.kt`. The bell then shows a dot for everyone who updates.
+- Use the same lines, prefixed with "• ", in `app/src/main/play/release-notes/<locale>/default.txt` (17 folders, en-US and en-IN share English; Play's limit is 500 characters per language).
+- Keep it to 3–5 short, user-facing highlights (features and visible fixes, not refactors). Update the list as more big changes land before the release.
+- `./gradlew checkReleaseNotes` (also run by `bumpVersion` in CI) warns when the version has no notes or the Play notes don't match.
+
+## Analytics — never send money data
+
+Users' money is private. No analytics event parameter or user property may carry anything about money:
+
+- No amounts, totals, balances, prices, budget values, thresholds or percentages of a budget.
+- Not even whether an amount was entered or found (no `has_amount` / `found_amount` style flags, no "amount" in field lists).
+- No free text either: notes, payee names, account / category names, search text.
+
+Allowed: counts and buckets of things (transactions, accounts, categories), choices (type, period, setting values), timings, booleans about features (reminder on, has a budget), error class names.
+
+`AnalyticsPrivacy` (core:repository) drops any parameter or user property whose name looks like money, as a safety net. Don't work around it by renaming; if it blocks something, the data shouldn't be sent. Keep `claude/analytics-tracking-plan.md` in the Expense Manager project in step when events change.

@@ -20,4 +20,5 @@
         <item quantity="many">%d filtrów wybranych</item>
         <item quantity="other">%d filtra wybranego</item>
     </plurals>
+    <string name="filter_type_transfer">Przelew</string>
 </resources>

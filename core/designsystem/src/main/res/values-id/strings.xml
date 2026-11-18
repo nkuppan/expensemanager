@@ -48,4 +48,6 @@
     <string name="no_search_results">Tidak ada yang cocok</string>
     <string name="selection_select_all">Pilih semua</string>
     <string name="selection_done">Selesai</string>
+    <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
+    <string name="recurring_badge">Berulang</string>
 </resources>

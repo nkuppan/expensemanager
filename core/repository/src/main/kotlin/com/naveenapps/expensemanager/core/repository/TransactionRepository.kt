@@ -1,7 +1,9 @@
 package com.naveenapps.expensemanager.core.repository
 
+import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlinx.coroutines.flow.Flow
 
 interface TransactionRepository {
@@ -29,4 +31,18 @@ interface TransactionRepository {
         startDate: Long,
         endDate: Long,
     ): Flow<List<Transaction>?>
+
+    /** Transactions logged at least [minCount] times with identical details since [since]. */
+    fun getFrequentTransactions(
+        transactionTypes: List<TransactionType>,
+        since: Long,
+        minCount: Int,
+        limit: Int,
+    ): Flow<List<FrequentTransaction>>
+
+    /** Categories of [type] entries whose notes equal [notes] (ignoring case), most used first. */
+    suspend fun findCategoryIdsByNotes(type: TransactionType, notes: String, limit: Int): List<String>
+
+    /** Account of the latest [type] entry whose notes equal [notes], ignoring case. */
+    suspend fun findLatestAccountIdByNotes(type: TransactionType, notes: String): String?
 }

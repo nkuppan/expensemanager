@@ -20,4 +20,5 @@
         <item quantity="many">%d фильтров выбрано</item>
         <item quantity="other">%d фильтра выбрано</item>
     </plurals>
+    <string name="filter_type_transfer">Перевод</string>
 </resources>

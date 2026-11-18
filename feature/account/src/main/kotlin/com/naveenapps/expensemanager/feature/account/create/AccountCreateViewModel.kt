@@ -33,6 +33,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ExchangeRateRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
+import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import java.util.Calendar
 import java.util.UUID
@@ -222,13 +223,18 @@ class AccountCreateViewModel(
     private fun deleteAccount() {
         viewModelScope.launch {
             account?.let { account ->
-                when (deleteAccountUseCase.invoke(account)) {
+                when (val result = deleteAccountUseCase.invoke(account)) {
                     is Resource.Error -> {
+                        analyticsRepository.logFailure(FAILED_DELETE, result.exception)
                         dismissDeleteDialog()
                         _errorMessage.send(DesignSystemR.string.error_delete_failed)
                     }
 
                     is Resource.Success -> {
+                        analyticsRepository.logEvent(
+                            AnalyticsEvents.ACCOUNT_DELETED,
+                            mapOf(AnalyticsParams.TYPE to account.type.name.lowercase()),
+                        )
                         account.storedIcon.customImagePath?.let {
                             imageStorageRepository.deleteAccountImage(it)
                         }
@@ -312,15 +318,16 @@ class AccountCreateViewModel(
                 updateAccountUseCase(account)
             }
             when (response) {
-                is Resource.Error -> _errorMessage.send(DesignSystemR.string.error_save_failed)
+                is Resource.Error -> {
+                    analyticsRepository.logFailure(FAILED_SAVE, response.exception)
+                    _errorMessage.send(DesignSystemR.string.error_save_failed)
+                }
 
                 is Resource.Success -> {
-                    if (isNewAccount) {
-                        analyticsRepository.logEvent(
-                            AnalyticsEvents.ACCOUNT_CREATED,
-                            mapOf(AnalyticsParams.TYPE to account.type.name.lowercase()),
-                        )
-                    }
+                    analyticsRepository.logEvent(
+                        if (isNewAccount) AnalyticsEvents.ACCOUNT_CREATED else AnalyticsEvents.ACCOUNT_EDITED,
+                        mapOf(AnalyticsParams.TYPE to account.type.name.lowercase()),
+                    )
                     if (previouslyPersistedImagePath != null &&
                         previouslyPersistedImagePath != customImagePath
                     ) {
@@ -499,6 +506,9 @@ class AccountCreateViewModel(
     }
 
     companion object {
+        private const val FAILED_SAVE = "account_save"
+        private const val FAILED_DELETE = "account_delete"
+
         private const val DEFAULT_COLOR = "#43A546"
         private const val DEFAULT_ICON = "account_balance"
     }

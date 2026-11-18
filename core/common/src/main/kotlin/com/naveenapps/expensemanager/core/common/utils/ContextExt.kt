@@ -173,12 +173,15 @@ fun Context.openRateUs() {
             ),
         )
     } catch (e: ActivityNotFoundException) {
-        this.startActivity(
-            Intent(
-                Intent.ACTION_VIEW,
-                "https://play.google.com/store/apps/details?id=$packageName".toUri(),
-            ),
-        )
+        // No Play Store: try a browser, and do nothing if there's none either.
+        runCatching {
+            this.startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    "https://play.google.com/store/apps/details?id=$packageName".toUri(),
+                ),
+            )
+        }
     }
 }
 

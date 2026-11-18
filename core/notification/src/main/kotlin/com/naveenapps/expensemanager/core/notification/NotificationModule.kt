@@ -25,6 +25,7 @@ val NotificationModule = module {
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
             analyticsRepository = get(),
+            feedbackRepository = get(),
         )
     }
     worker {
@@ -56,11 +57,40 @@ val NotificationModule = module {
         )
     }
     worker {
+        UpcomingRecurringWorker(
+            context = androidContext(),
+            workerParams = get(),
+            getRecurringTransactionsUseCase = get(),
+            getCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            reminderTimeRepository = get(),
+            notificationScheduler = get(),
+            analyticsRepository = get(),
+        )
+    }
+    worker {
         NotificationWorker(
             context = androidContext(),
             workerParams = get(),
             notificationScheduler = get(),
             feedbackRepository = get(),
+            analyticsRepository = get(),
+            reminderQuickLog = get(),
+        )
+    }
+    single {
+        ReminderQuickLog(
+            context = androidContext(),
+            getFrequentTransactionsUseCase = get(),
+            findCategoryByIdUseCase = get(),
+            findAccountByIdUseCase = get(),
+            getCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            addTransactionUseCase = get(),
+            deleteTransactionUseCase = get(),
+            transactionRepository = get(),
+            feedbackRepository = get(),
+            budgetAlertTrigger = get(),
             analyticsRepository = get(),
         )
     }

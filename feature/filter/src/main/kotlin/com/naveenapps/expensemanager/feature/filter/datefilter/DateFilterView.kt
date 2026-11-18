@@ -286,7 +286,7 @@ private fun FilterTypesAndViewContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             TextButton(
-                onClick = { onAction.invoke(DateFilterAction.Save) },
+                onClick = { onAction.invoke(DateFilterAction.Cancel) },
             ) {
                 Text(
                     text = stringResource(id = R.string.cancel),

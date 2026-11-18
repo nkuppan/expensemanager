@@ -279,12 +279,16 @@ private fun BudgetDetailContent(
                         date = item.date,
                         notes = item.notes,
                         transactionType = item.transactionType,
+                        isRecurring = item.isRecurring,
                         fromAccountName = item.fromAccountName,
                         fromAccountIcon = item.fromAccountIcon.name,
                         fromAccountColor = item.fromAccountIcon.backgroundColor,
                         toAccountName = item.toAccountName,
                         toAccountIcon = item.toAccountIcon?.name,
                         toAccountColor = item.toAccountIcon?.backgroundColor,
+                        // Tap opens the transaction for editing, like everywhere else; swiping still
+                        // reveals the same Edit action.
+                        onClick = { onTransactionClick.invoke(item.id) },
                         onEdit = { onTransactionClick.invoke(item.id) },
                     )
                 }
