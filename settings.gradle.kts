@@ -52,3 +52,5 @@ include(":feature:theme")
 include(":feature:transaction")
 include(":feature:about")
 include(":core:settings")
+
+include(":lint-rules")

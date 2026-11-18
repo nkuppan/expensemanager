@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.3.3" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.3)" variant="all" version="9.3.3">
+
+    <issue
+        id="EmptySuperCall"
+        message="No need to call `super.onCleared`; the super method is defined to be empty"
+        errorLine1="        super.onCleared()"
+        errorLine2="              ~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateViewModel.kt"
+            line="412"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageRes)) }"
+        errorLine2="                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="81"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;es&quot; (Spanish) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantity should also be defined: `many` (e.g. &quot;1000000 de jours&quot;)"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;it&quot; (Italian) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pt&quot; (Portuguese) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;es&quot; (Spanish) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantity should also be defined: `many` (e.g. &quot;1000000 de jours&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;it&quot; (Italian) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pt&quot; (Portuguese) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;de&quot; (German) the following quantity should also be defined: `one` (e.g. &quot;1 Tag&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-de/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;es&quot; (Spanish) the following quantities should also be defined: `many`, `one` (e.g. &quot;1&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many` (e.g. &quot;1000000 de jours&quot;), `one` (e.g. &quot;1 jour&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;hi&quot; (Hindi) the following quantity should also be defined: `one` (e.g. &quot;1 घंटा&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hi/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;it&quot; (Italian) the following quantities should also be defined: `many`, `one` (e.g. &quot;1 giorno&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pt&quot; (Portuguese) the following quantities should also be defined: `many`, `one` (e.g. &quot;1&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;tr&quot; (Turkish) the following quantity should also be defined: `one` (e.g. &quot;Sepetinizde 1 X var. Bunu almak istiyor musunuz?&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tr/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pl&quot; (Polish) the following quantities should also be defined: `few` (e.g. &quot;2 miesiące&quot;), `many` (e.g. &quot;5 miesięcy&quot;), `one` (e.g. &quot;1 miesiąc&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pl/strings.xml"
+            line="57"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;ru&quot; (Russian) the following quantities should also be defined: `few` (e.g. &quot;из 2 книг за 2 дня&quot;), `many` (e.g. &quot;из 5 книг за 5 дней&quot;), `one` (e.g. &quot;из 1 книги за 1 день&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ru/strings.xml"
+            line="57"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;ar&quot; (Arabic) the following quantities should also be defined: `few` (e.g. &quot;3&quot;), `many` (e.g. &quot;11&quot;), `one` (e.g. &quot;1&quot;), `two` (e.g. &quot;2&quot;), `zero` (e.g. &quot;0&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ar/strings.xml"
+            line="61"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Colour resource in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="import androidx.compose.ui.res.colorResource"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="46"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Colour resource in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="import androidx.compose.ui.res.colorResource"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItem.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Colour resource in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="import androidx.compose.ui.res.colorResource"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="47"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.CircleShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="24"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="49"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItem.kt"
+            line="20"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="50"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.unit.sp"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="54"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="41"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountTypeSelectionView.kt"
+            line="20"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AlertDialog` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AlertDialog"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="28"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ExtendedFloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ExtendedFloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="30"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="33"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="35"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Surface` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Surface"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="36"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="37"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="38"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="53"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`CardDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.CardDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItem.kt"
+            line="12"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItem.kt"
+            line="13"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItem.kt"
+            line="14"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItem.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`CardDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.CardDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItemDefaults.kt"
+            line="8"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItemDefaults.kt"
+            line="9"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/selection/AccountItemDefaults.kt"
+            line="10"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ExtendedFloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ExtendedFloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="33"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="35"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="36"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="37"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/list/AccountListScreen.kt"
+            line="38"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ExtendedFloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ExtendedFloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="25"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="26"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="27"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="28"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="30"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/reorder/AccountReOrderScreen.kt"
+            line="45"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountTypeSelectionView.kt"
+            line="10"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SegmentedButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SegmentedButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountTypeSelectionView.kt"
+            line="11"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SegmentedButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SegmentedButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountTypeSelectionView.kt"
+            line="12"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SingleChoiceSegmentedButtonRow` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SingleChoiceSegmentedButtonRow"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountTypeSelectionView.kt"
+            line="13"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountTypeSelectionView.kt"
+            line="14"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountTypeSelectionView.kt"
+            line="22"
+            column="1"/>
+    </issue>
+
+</issues>

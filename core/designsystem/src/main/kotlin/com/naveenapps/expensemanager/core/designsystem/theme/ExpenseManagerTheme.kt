@@ -11,6 +11,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -158,8 +159,9 @@ val DarkExtendedColors = ExpenseManagerExtendedColors(
 val LocalExpenseManagerColors = staticCompositionLocalOf { LightExtendedColors }
 
 /**
- * App theme. Keeps the typography and shapes from [NaveenAppsTheme] and swaps in
- * the website colour scheme.
+ * App theme. Takes the font family from [NaveenAppsTheme], and owns the colour scheme, the type
+ * scale ([emMaterialTypography]) and the shapes ([EmMaterialShapes]). Also provides the design
+ * tokens read through [EmTheme].
  */
 @Composable
 fun ExpenseManagerTheme(
@@ -167,13 +169,25 @@ fun ExpenseManagerTheme(
     content: @Composable () -> Unit,
 ) {
     NaveenAppsTheme(isDarkTheme = isDarkTheme) {
+        val baseTypography = MaterialTheme.typography
+        val materialTypography = remember(baseTypography) { emMaterialTypography(baseTypography) }
+        val typeRoles = remember(materialTypography) { emTypography(materialTypography) }
+        val colors = remember(isDarkTheme) { emColors(isDarkTheme) }
         CompositionLocalProvider(
             LocalExpenseManagerColors provides if (isDarkTheme) DarkExtendedColors else LightExtendedColors,
+            LocalEmColors provides colors,
+            LocalEmTypography provides typeRoles,
+            LocalEmSpacing provides EmSpacing(),
+            LocalEmShapes provides EmShapes(),
+            LocalEmIconSize provides EmIconSize(),
+            LocalEmElevation provides EmElevation(),
+            LocalEmMotion provides EmMotion(),
+            LocalEmAlpha provides EmAlpha(),
         ) {
             MaterialTheme(
                 colorScheme = if (isDarkTheme) ExpenseManagerDarkColorScheme else ExpenseManagerLightColorScheme,
-                typography = MaterialTheme.typography,
-                shapes = MaterialTheme.shapes,
+                typography = materialTypography,
+                shapes = EmMaterialShapes,
                 content = content,
             )
         }

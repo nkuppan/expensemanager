@@ -1,50 +1,1122 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues name="AGP (7.3.0-rc01)" by="lint 7.3.0-rc01" client="gradle" dependencies="false" format="6"
-    type="baseline" variant="fatal" version="7.3.0-rc01">
+<issues format="6" by="lint 9.3.3" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.3)" variant="all" version="9.3.3">
 
-    <issue errorLine1="        path=&quot;.&quot; />" errorLine2="              ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="15" file="src/main/res/xml/backup_rules.xml" line="8" />
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 33 (current min is 26): `android.Manifest.permission#POST_NOTIFICATIONS`"
+        errorLine1="                notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="251"
+            column="55"/>
     </issue>
 
-    <issue errorLine1="        path=&quot;.&quot; />" errorLine2="              ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="15" file="src/main/res/xml/backup_rules.xml" line="11" />
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
     </issue>
 
-    <issue errorLine1="        path=&quot;.&quot; />" errorLine2="              ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="15" file="src/main/res/xml/backup_rules.xml" line="14" />
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `targetCellWidth` is only used in API level 31 and higher (current min is 26)"
+        errorLine1="    android:targetCellWidth=&quot;4&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/xml/balance_widget_info.xml"
+            line="5"
+            column="5"/>
     </issue>
 
-    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="9" />
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `targetCellHeight` is only used in API level 31 and higher (current min is 26)"
+        errorLine1="    android:targetCellHeight=&quot;2&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/xml/balance_widget_info.xml"
+            line="6"
+            column="5"/>
     </issue>
 
-    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="12" />
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of Gradle than 9.5.0 is available: 9.9.1"
+        errorLine1="distributionUrl=https\://services.gradle.org/distributions/gradle-9.5.0-bin.zip"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/wrapper/gradle-wrapper.properties"
+            line="4"
+            column="17"/>
     </issue>
 
-    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="15" />
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.application than 9.3.3 is available: 9.5.1"
+        errorLine1="androidGradlePlugin = &quot;9.3.3&quot;  # 9.5.x needs Gradle 9.6+; upgrade both together"
+        errorLine2="                      ~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="3"
+            column="23"/>
     </issue>
 
-    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="23" />
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.library than 9.3.3 is available: 9.5.1"
+        errorLine1="androidGradlePlugin = &quot;9.3.3&quot;  # 9.5.x needs Gradle 9.6+; upgrade both together"
+        errorLine2="                      ~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="3"
+            column="23"/>
     </issue>
 
-    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="26" />
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.test than 9.3.3 is available: 9.5.1"
+        errorLine1="androidGradlePlugin = &quot;9.3.3&quot;  # 9.5.x needs Gradle 9.6+; upgrade both together"
+        errorLine2="                      ~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="3"
+            column="23"/>
     </issue>
 
-    <issue errorLine1="            path=&quot;.&quot; />" errorLine2="                  ~"
-        id="FullBackupContent" message="`.` is not in an included path">
-        <location column="19" file="src/main/res/xml/data_extraction_rules.xml" line="29" />
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.tools.build:gradle than 9.3.3 is available: 9.5.1"
+        errorLine1="androidGradlePlugin = &quot;9.3.3&quot;  # 9.5.x needs Gradle 9.6+; upgrade both together"
+        errorLine2="                      ~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="3"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.android.tools.lint:lint-api than 32.3.3 is available: 32.5.1"
+        errorLine1="lint = &quot;32.3.3&quot;  # always AGP + 23.0.0 (AGP 9.3.3)"
+        errorLine2="       ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="50"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.android.tools.lint:lint-tests than 32.3.3 is available: 32.5.1"
+        errorLine1="lint = &quot;32.3.3&quot;  # always AGP + 23.0.0 (AGP 9.3.3)"
+        errorLine2="       ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="50"
+            column="8"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlinx:kotlinx-serialization-json than 1.12.0 is available: 1.13.0"
+        errorLine1="kotlinxSerializationJson = &quot;1.12.0&quot;"
+        errorLine2="                           ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="47"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.robolectric:robolectric than 4.17 is available: 4.18.1"
+        errorLine1="robolectric = &quot;4.17&quot;"
+        errorLine2="              ~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="54"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.robolectric:shadows-framework than 4.17 is available: 4.18.1"
+        errorLine1="robolectric = &quot;4.17&quot;"
+        errorLine2="              ~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="54"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.github.takahirom.roborazzi:roborazzi than 1.46.1 is available: 1.79.0"
+        errorLine1="roborazzi = &quot;1.46.1&quot;  # screenshot tests (core:designsystem); bump to the latest release"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="55"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.github.takahirom.roborazzi:roborazzi-compose than 1.46.1 is available: 1.79.0"
+        errorLine1="roborazzi = &quot;1.46.1&quot;  # screenshot tests (core:designsystem); bump to the latest release"
+        errorLine2="            ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="55"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.github.triplet.play than 4.1.1 is available: 4.1.2"
+        errorLine1="play-publish = &quot;4.1.1&quot;"
+        errorLine2="               ~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="64"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.autonomousapps.dependency-analysis than 3.20.1 is available: 3.20.4"
+        errorLine1="dependency-analysis = &quot;3.20.1&quot;"
+        errorLine2="                      ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Naveen Apps/Expense Manager/expensemanager/gradle/libs.versions.toml"
+            line="67"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 23"
+        errorLine1="        &lt;item name=&quot;android:windowLightStatusBar&quot; tools:targetApi=&quot;23&quot;>false&lt;/item>"
+        errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-night/themes.xml"
+            line="5"
+            column="51"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; `SDK_INT` is always >= 23"
+        errorLine1="        &lt;item name=&quot;android:windowLightStatusBar&quot; tools:targetApi=&quot;23&quot;>true&lt;/item>"
+        errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="10"
+            column="51"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.white` appears to be unused"
+        errorLine1="    &lt;color name=&quot;white&quot;>@android:color/white&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/color.xml"
+            line="3"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.red_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;red_500&quot;>#F44336&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/color.xml"
+            line="4"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.green_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;green_500&quot;>#43A546&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/color.xml"
+            line="6"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.light_green_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;light_green_500&quot;>#CDDC39&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/color.xml"
+            line="7"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.orange_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;orange_500&quot;>#FF9800&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/color.xml"
+            line="8"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.blue_500` appears to be unused"
+        errorLine1="    &lt;color name=&quot;blue_500&quot;>#166EF7&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/color.xml"
+            line="10"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.black_100` appears to be unused"
+        errorLine1="    &lt;color name=&quot;black_100&quot;>#10000000&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/color.xml"
+            line="11"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_add` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_add.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_graph` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_graph.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.select` appears to be unused"
+        errorLine1="    &lt;string name=&quot;select&quot;>Select&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="8"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.view_all` appears to be unused"
+        errorLine1="    &lt;string name=&quot;view_all&quot;>View all&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="11"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.accounts` appears to be unused"
+        errorLine1="    &lt;string name=&quot;accounts&quot;>Account&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="12"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.category_name` appears to be unused"
+        errorLine1="    &lt;string name=&quot;category_name&quot;>Category Name&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="14"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.title_graph` appears to be unused"
+        errorLine1="    &lt;string name=&quot;title_graph&quot;>Graph&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="17"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.currency` appears to be unused"
+        errorLine1="    &lt;string name=&quot;currency&quot;>Currency&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="20"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.choose_color` appears to be unused"
+        errorLine1="    &lt;string name=&quot;choose_color&quot;>Choose color&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="22"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.choose_icon` appears to be unused"
+        errorLine1="    &lt;string name=&quot;choose_icon&quot;>Choose Icon&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.total` appears to be unused"
+        errorLine1="    &lt;string name=&quot;total&quot;>Total&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="27"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.transaction_summary` appears to be unused"
+        errorLine1="    &lt;string name=&quot;transaction_summary&quot;>Summary&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.clear_all` appears to be unused"
+        errorLine1="    &lt;string name=&quot;clear_all&quot;>Clear All&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="29"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.category_selection_message` appears to be unused"
+        errorLine1="    &lt;string name=&quot;category_selection_message&quot;>Should select at least one category to proceed&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="30"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.share` appears to be unused"
+        errorLine1="    &lt;string name=&quot;share&quot;>Share&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="31"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.hello` appears to be unused"
+        errorLine1="    &lt;string name=&quot;hello&quot;>Hello!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="32"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.guest` appears to be unused"
+        errorLine1="    &lt;string name=&quot;guest&quot;>Guest&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.balance` appears to be unused"
+        errorLine1="    &lt;string name=&quot;balance&quot;>Balance&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="34"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.cancel` appears to be unused"
+        errorLine1="    &lt;string name=&quot;cancel&quot;>Cancel&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="37"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ok` appears to be unused"
+        errorLine1="    &lt;string name=&quot;ok&quot;>OK&lt;/string>"
+        errorLine2="            ~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="38"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.settings` appears to be unused"
+        errorLine1="    &lt;string name=&quot;settings&quot;>Settings&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Background = dayNight(Color(0xFFF5F6FB), Color(0xFF1A1F3C))"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="97"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Background = dayNight(Color(0xFFF5F6FB), Color(0xFF1A1F3C))"
+        errorLine2="                                                 ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="97"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Surface = dayNight(Color(0xFFE8EAF3), Color(0xFF252B50))"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="98"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Surface = dayNight(Color(0xFFE8EAF3), Color(0xFF252B50))"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="98"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Track = dayNight(Color(0xFFDDE0EC), Color(0xFF2A2F50))"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="99"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Track = dayNight(Color(0xFFDDE0EC), Color(0xFF2A2F50))"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="99"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Divider = dayNight(Color(0x331A1F3C), Color(0x33FFFFFF))"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="100"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Divider = dayNight(Color(0x331A1F3C), Color(0x33FFFFFF))"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="100"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Text = dayNight(Color(0xFF1A1F3C), Color.White)"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="101"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="`Color.White` ignores light/dark theme. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Text = dayNight(Color(0xFF1A1F3C), Color.White)"
+        errorLine2="                                           ~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="101"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val TextDim = dayNight(Color(0x991A1F3C), Color(0x99FFFFFF))"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="102"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val TextDim = dayNight(Color(0x991A1F3C), Color(0x99FFFFFF))"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="102"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Green = dayNight(Color(0xFF1B7F5C), Color(0xFF5DCAA5))"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="103"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Green = dayNight(Color(0xFF1B7F5C), Color(0xFF5DCAA5))"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="103"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Red = dayNight(Color(0xFFB8492A), Color(0xFFF0997B))"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="104"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Red = dayNight(Color(0xFFB8492A), Color(0xFFF0997B))"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="104"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Purple = dayNight(Color(0xFF544BC2), Color(0xFF7F77DD))"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="105"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Purple = dayNight(Color(0xFF544BC2), Color(0xFF7F77DD))"
+        errorLine2="                                             ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="105"
+            column="46"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val GreenBg = dayNight(Color(0x261B7F5C), Color(0x265DCAA5))"
+        errorLine2="                           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="106"
+            column="28"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val GreenBg = dayNight(Color(0x261B7F5C), Color(0x265DCAA5))"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="106"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val RedBg = dayNight(Color(0x26B8492A), Color(0x26F0997B))"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="107"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val RedBg = dayNight(Color(0x26B8492A), Color(0x26F0997B))"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="107"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val PurpleBg = dayNight(Color(0x26544BC2), Color(0x267F77DD))"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="108"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val PurpleBg = dayNight(Color(0x26544BC2), Color(0x267F77DD))"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="108"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val Accent = fixedColor(Color(0xFF22C97A))"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="111"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="    val OnAccent = fixedColor(Color(0xFF062014))"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="112"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="`Color.White` ignores light/dark theme. Use a colour from `EmTheme.colors`."
+        errorLine1="    val OnIcon = fixedColor(Color.White)"
+        errorLine2="                            ~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="115"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Hex colour in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="        Color(0xFF252B50)"
+        errorLine2="        ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="764"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="12"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.CircleShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="13"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="14"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/AppLockScreen.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.unit.sp"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/widget/ExpenseWidget.kt"
+            line="11"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Button` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Button"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/AppLockScreen.kt"
+            line="14"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/AppLockScreen.kt"
+            line="15"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/AppLockScreen.kt"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Surface` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Surface"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/AppLockScreen.kt"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/AppLockScreen.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FabPosition` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FabPosition"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="15"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`NavigationBar` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.NavigationBar"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="19"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`NavigationBarItem` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.NavigationBarItem"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="20"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/HomeScreen.kt"
+            line="21"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Button` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Button"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="19"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="20"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="21"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Surface` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Surface"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="22"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="24"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/ui/ReminderPrimerSheet.kt"
+            line="32"
+            column="1"/>
     </issue>
 
 </issues>

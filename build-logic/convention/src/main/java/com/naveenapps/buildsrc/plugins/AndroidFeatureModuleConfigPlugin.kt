@@ -28,6 +28,9 @@ class AndroidFeatureModuleConfigPlugin : Plugin<Project> {
                 configureAndroid()
                 configureJacoco()
                 configureTestOptions(this)
+                // Existing design system violations are recorded here (./gradlew updateLintBaseline)
+                // so only new ones are reported. The baseline shrinks as screens move to Em* components.
+                lint.baseline = file("lint-baseline.xml")
             }
 
             dependencies {
@@ -41,6 +44,9 @@ class AndroidFeatureModuleConfigPlugin : Plugin<Project> {
                 libs.findLibrary("kotlinx.coroutines.android").getOrNull()?.let {
                     add("implementation", it)
                 }
+
+                // Design system checks: RawMaterialUsage, HardcodedTextStyle, HardcodedColor, HardcodedShape.
+                add("lintChecks", project(":lint-rules"))
 
                 add("testImplementation", project(":core:testing"))
                 add("androidTestImplementation", project(":core:testing"))

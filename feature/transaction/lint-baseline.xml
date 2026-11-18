@@ -1,0 +1,1100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.3.3" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.3)" variant="all" version="9.3.3">
+
+    <issue
+        id="EmptySuperCall"
+        message="No need to call `super.onCleared`; the super method is defined to be empty"
+        errorLine1="        super.onCleared()"
+        errorLine2="              ~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateViewModel.kt"
+            line="1050"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="EmptySuperCall"
+        message="No need to call `super.onCleared`; the super method is defined to be empty"
+        errorLine1="        super.onCleared()"
+        errorLine2="              ~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListViewModel.kt"
+            line="248"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `String.format(Locale, ...)` instead"
+        errorLine1="            _calculatedAmount.value = String.format(&quot;%.2f&quot;, it)"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadViewModel.kt"
+            line="157"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
+    </issue>
+
+    <issue
+        id="AppBundleLocaleChanges"
+        message="Found dynamic locale changes, but did not find corresponding Play Core library calls for downloading languages and splitting by language is not disabled in the `bundle` configuration"
+        errorLine1="            configuration.setLocales(LocaleList.forLanguageTags(locale.tag))"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/search/CategoryDisplayNames.kt"
+            line="42"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="                    message = context.getString(R.string.transaction_deleted),"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="93"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="                    actionLabel = context.getString(R.string.undo),"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="94"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="                snackbarHostState.showSnackbar(context.getString(event.messageRes))"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="107"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="LocalContextResourcesRead"
+        message="Reading Resources using LocalContext.current.resources is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="    val resources = LocalContext.current.resources"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="91"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="LocalContextResourcesRead"
+        message="Reading Resources using LocalContext.current.resources is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="    val resources = LocalContext.current.resources"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="116"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Colour resource in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="import androidx.compose.ui.res.colorResource"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="43"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedColor"
+        message="Colour resource in a feature. Use a colour from `EmTheme.colors`."
+        errorLine1="import androidx.compose.ui.res.colorResource"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="42"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="37"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="45"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="45"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.unit.sp"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="48"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionTypeSelectionView.kt"
+            line="26"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Button` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Button"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="21"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="22"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="24"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="25"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`OutlinedButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.OutlinedButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="26"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Surface` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Surface"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="27"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="28"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/numberpad/NumberPadScreenView.kt"
+            line="44"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AssistChip` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AssistChip"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/QuickPickRow.kt"
+            line="12"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/QuickPickRow.kt"
+            line="13"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/QuickPickRow.kt"
+            line="14"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/QuickPickRow.kt"
+            line="15"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AssistChip` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AssistChip"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="11"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AssistChipDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AssistChipDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="12"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`CircularProgressIndicator` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.CircularProgressIndicator"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="13"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FilterChip` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FilterChip"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="14"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FilterChipDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FilterChipDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="15"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/receipt/ReceiptChips.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AlertDialog` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AlertDialog"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ExtendedFloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ExtendedFloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FilterChip` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FilterChip"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FilterChipDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FilterChipDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="33"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="35"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="36"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`OutlinedTextField` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.OutlinedTextField"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="37"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="38"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="39"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="40"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="41"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/edit/RecurringTransactionEditScreen.kt"
+            line="42"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AlertDialog` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AlertDialog"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="24"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Button` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Button"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="25"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="26"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`DropdownMenu` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.DropdownMenu"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="27"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`DropdownMenuItem` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.DropdownMenuItem"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="28"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="30"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="33"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/recurring/RecurringTransactionsScreen.kt"
+            line="35"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ExtendedFloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ExtendedFloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="36"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FilterChip` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FilterChip"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="37"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FilterChipDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FilterChipDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="38"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="39"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="40"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="41"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`OutlinedTextField` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.OutlinedTextField"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="42"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="43"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="44"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="45"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="46"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionCreateScreen.kt"
+            line="57"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`CircularProgressIndicator` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.CircularProgressIndicator"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="21"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FilterChip` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FilterChip"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="22"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FloatingActionButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FloatingActionButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`FloatingActionButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.FloatingActionButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="24"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`HorizontalDivider` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.HorizontalDivider"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="25"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="26"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="27"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="28"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarDuration` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarDuration"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="30"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarResult` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarResult"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="33"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/list/TransactionListScreen.kt"
+            line="50"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionTypeSelectionView.kt"
+            line="13"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionTypeSelectionView.kt"
+            line="14"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SegmentedButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SegmentedButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionTypeSelectionView.kt"
+            line="15"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SegmentedButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SegmentedButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionTypeSelectionView.kt"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SingleChoiceSegmentedButtonRow` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SingleChoiceSegmentedButtonRow"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionTypeSelectionView.kt"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/transaction/create/TransactionTypeSelectionView.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+</issues>

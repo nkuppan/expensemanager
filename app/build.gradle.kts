@@ -196,6 +196,9 @@ android {
 }
 
 dependencies {
+    // Design system lint checks (see CLAUDE.md "Design system").
+    lintChecks(project(":lint-rules"))
+
     implementation(project(":core:common"))
     implementation(project(":core:model"))
     implementation(project(":core:designsystem"))

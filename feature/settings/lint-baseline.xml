@@ -1,0 +1,693 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.3.3" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.3)" variant="all" version="9.3.3">
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }"
+        errorLine2="                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="92"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }"
+        errorLine2="                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="77"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        scope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="73"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;auto&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;auto_backup_info&quot;>The newest %1$d auto backups are kept and older ones are deleted; manual backups are never deleted. Backups inside the app are removed if you uninstall it, so choose a folder to keep them safe. Backups use the app\&apos;s built-in key; share one with a passphrase for extra protection.&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="118"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="21"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.CircleShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/BackupComponents.kt"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedShape"
+        message="Shape created by hand. Use a shape from `EmTheme.shapes`."
+        errorLine1="import androidx.compose.foundation.shape.RoundedCornerShape"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="60"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="44"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="HardcodedTextStyle"
+        message="Text style set by hand. Use a role from `EmTheme.type`."
+        errorLine1="import androidx.compose.ui.text.font.FontWeight"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/advanced/AdvancedSettingsScreen.kt"
+            line="22"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Button` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Button"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="35"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`CircularProgressIndicator` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.CircularProgressIndicator"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="36"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`HorizontalDivider` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.HorizontalDivider"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="37"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="38"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`IconButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.IconButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="39"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`LinearProgressIndicator` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.LinearProgressIndicator"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="40"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="41"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="42"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SegmentedButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SegmentedButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="43"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SegmentedButtonDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SegmentedButtonDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="44"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SingleChoiceSegmentedButtonRow` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SingleChoiceSegmentedButtonRow"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="45"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="46"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="47"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Surface` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Surface"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="48"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Switch` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Switch"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="49"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="50"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="51"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AlertDialog` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AlertDialog"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/BackupComponents.kt"
+            line="21"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/BackupComponents.kt"
+            line="22"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/BackupComponents.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`OutlinedTextField` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.OutlinedTextField"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/BackupComponents.kt"
+            line="24"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/BackupComponents.kt"
+            line="25"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/BackupComponents.kt"
+            line="26"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AlertDialog` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AlertDialog"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="25"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`HorizontalDivider` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.HorizontalDivider"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="26"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="27"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`LinearProgressIndicator` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.LinearProgressIndicator"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="28"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="30"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Surface` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Surface"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="33"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="35"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`DropdownMenuItem` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.DropdownMenuItem"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="15"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ExposedDropdownMenuBox` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ExposedDropdownMenuBox"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`ExposedDropdownMenuDefaults` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.ExposedDropdownMenuDefaults"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Icon` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Icon"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="19"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MaterialTheme` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MaterialTheme"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="20"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`MenuAnchorType` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.MenuAnchorType"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="21"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Surface` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Surface"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="22"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsComponents.kt"
+            line="23"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AlertDialog` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.AlertDialog"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="29"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Scaffold` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Scaffold"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="30"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHost` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHost"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="31"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`SnackbarHostState` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.SnackbarHostState"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="32"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`Text` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.Text"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="33"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`TextButton` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import androidx.compose.material3.TextButton"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="34"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="RawMaterialUsage"
+        message="`AppPreviewsLightAndDarkMode` used directly. Use the `Em*` component from `core:designsystem`."
+        errorLine1="import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode"
+        errorLine2="~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="44"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="            is AutoBackupEvent.ShareFile -> context.shareBackup(Uri.parse(it.uri))"
+        errorLine2="                                                                ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="103"
+            column="65"/>
+    </issue>
+
+</issues>

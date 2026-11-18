@@ -109,6 +109,17 @@ Every release that changes something users notice gets "What's new" notes, writt
 - Keep it to 3–5 short, user-facing highlights (features and visible fixes, not refactors). Update the list as more big changes land before the release.
 - `./gradlew checkReleaseNotes` (also run by `bumpVersion` in CI) warns when the version has no notes or the Play notes don't match.
 
+## Design system — features never use Material directly
+
+Plan and rationale: the "Expense Manager — Design System Plan" doc (Claude project). Migration runs in 5 phases; Phase 1 (tokens + lint + screenshots) is in.
+
+1. **Tokens come from `EmTheme`** (`core/designsystem/.../theme`): `EmTheme.colors` (Material scheme + income/expense/transfer/debt/warning/budget*), `EmTheme.type` (roles: display, screenTitle, sectionTitle, itemTitle, body, supporting, label, overline, amountLarge/Medium/Small), `EmTheme.spacing` (xxs 2, xs 4, sm 8, md 12, lg 16, xl 24, xxl 32, xxxl 48), `EmTheme.shapes` (xs 4, sm 8, md 12, lg 16, xl 28, pill, sheet), `EmTheme.icons` (sm 16, md 20, lg 24, tile 40, hero 72), `EmTheme.elevation`, `EmTheme.motion`, `EmTheme.alpha`.
+2. **Features and `:app` use `Em*` components from `core:designsystem` only.** No `androidx.compose.material3.*` or `com.naveenapps.designsystem.*` imports outside `core:designsystem` (allowed: `foundation.layout`, `Modifier`, state APIs, `Icons`, `ExperimentalMaterial3Api`). If a component is missing, add it to `core:designsystem` with light+dark previews; never a local copy in the feature.
+3. **No raw style values in features:** no `.sp`, `FontWeight`, `Color(0x…)`, `Color.White/Black`, `colorResource`, `RoundedCornerShape`/`CircleShape`, ad-hoc `.copy(alpha = …)`; spacing through `EmTheme.spacing`. Exception: the Glance widget (`app/.../widget`), which can't read Compose themes.
+4. **One pattern per job:** destructive confirm = bottom sheet; form save = sticky bottom action bar (FAB only for "Add"); one section header; one empty state.
+5. Enforced by `:lint-rules` (`RawMaterialUsage`, `HardcodedTextStyle`, `HardcodedColor`, `HardcodedShape`; warnings for now, errors after Phase 5). Existing violations live in each module's `lint-baseline.xml`. After migrating a screen, run `./gradlew updateLintBaseline` so the baseline shrinks — never add new entries to it.
+6. Screenshot tests (Roborazzi, `core:designsystem`): `./gradlew :core:designsystem:testDebugUnitTest -Proborazzi.test.record=true` to record, `-Proborazzi.test.verify=true` to check. Re-record and commit the images when a token or component changes on purpose.
+
 ## Analytics — never send money data
 
 Users' money is private. No analytics event parameter or user property may carry anything about money:
