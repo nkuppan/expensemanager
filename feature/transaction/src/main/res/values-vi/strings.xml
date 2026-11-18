@@ -113,4 +113,8 @@
     <string name="suggested_categories">Gợi ý</string>
     <string name="receipt_scanner_unavailable">Trình quét hóa đơn không khả dụng trên thiết bị này</string>
     <string name="receipt_scanner_preparing">Dịch vụ Google Play đang tải trình quét hóa đơn. Trình quét sẽ mở khi sẵn sàng.</string>
+    <string name="debt_row_lent">Cho %1$s vay</string>
+    <string name="debt_row_borrowed">Vay của %1$s</string>
+    <string name="debt_row_received">%1$s đã trả lại</string>
+    <string name="debt_row_paid">Đã trả lại %1$s</string>
 </resources>

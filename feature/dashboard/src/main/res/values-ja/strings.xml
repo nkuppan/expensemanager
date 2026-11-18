@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">もっと見る (%1$d)</string>
     <string name="notification_see_less">閉じる</string>
+    <string-array name="whats_new_1_4_31">
+        <item>新機能：貸し借り。貸したお金・借りたお金、一部返済、返済期限を記録し、リマインダーも送れます（設定 → 貸し借り）</item>
+        <item>予算内のときに予算が赤く表示されなくなりました</item>
+        <item>エクスポートはどの端末でも動作：ファイル選択がない場合は共有メニューで開きます</item>
+        <item>日付フィルターのキャンセルで選択した期間が変わらなくなりました</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>毎日のリマインダーから、よく使う支出をワンタップで記録。間違えても元に戻せます</item>
         <item>毎日のリマインダーがより確実に時間どおり届くようになり、端末にブロックされた場合の対処法もリマインダー画面に表示されます</item>
@@ -109,4 +115,5 @@
     <string name="reminder_banner_title_with_time">いつも %1$s ごろに記録しています</string>
     <string name="reminder_banner_body_with_time">その時間に毎日リマインダーを受け取って、記録漏れを防ぎましょう。</string>
     <string name="reminder_banner_turn_on_at">%1$s に通知する</string>
+    <string name="home_debts_title">貸し借り</string>
 </resources>

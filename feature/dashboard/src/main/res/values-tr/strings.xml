@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Daha fazla göster (%1$d)</string>
     <string name="notification_see_less">Daha az göster</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Yeni: Kişiler ve borçlar. Verdiğin ve aldığın borçları, kısmi ödemeleri ve son tarihleri kaydet, hatırlatma gönder (Ayarlar → Kişiler ve borçlar)</item>
+        <item>Bütçe sınırının altındayken bütçeler artık kırmızı görünmüyor</item>
+        <item>Dışa aktarma her telefonda çalışır: dosya seçici yoksa dosya paylaşım menüsünde açılır</item>
+        <item>Tarih filtresinde İptal artık seçili dönemi değiştirmiyor</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>En sık harcamanızı tek dokunuşla doğrudan günlük hatırlatıcıdan kaydedin, yanlışlıkla olursa geri alın</item>
         <item>Günlük hatırlatıcılar artık daha güvenilir şekilde zamanında gelir; telefon engellerse Hatırlatıcı ekranı nasıl düzelteceğinizi gösterir</item>
@@ -111,4 +117,5 @@
     <string name="reminder_banner_title_with_time">Genellikle %1$s civarında kaydediyorsunuz</string>
     <string name="reminder_banner_body_with_time">O saatte günlük bir hatırlatma alın, hiçbir şey kaçmasın.</string>
     <string name="reminder_banner_turn_on_at">%1$s saatinde hatırlat</string>
+    <string name="home_debts_title">Kişiler ve borçlar</string>
 </resources>

@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">더 보기 (%1$d)</string>
     <string name="notification_see_less">간단히 보기</string>
+    <string-array name="whats_new_1_4_31">
+        <item>새 기능: 사람과 빚. 빌려주거나 빌린 돈, 부분 상환, 마감일을 기록하고 알림을 보낼 수 있어요 (설정 → 사람과 빚)</item>
+        <item>예산 범위 안에 있을 때 더 이상 빨간색으로 표시되지 않아요</item>
+        <item>모든 휴대폰에서 내보내기가 작동해요: 파일 선택기가 없으면 공유 메뉴로 열려요</item>
+        <item>날짜 필터에서 취소를 눌러도 선택한 기간이 바뀌지 않아요</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>매일 알림에서 가장 자주 쓰는 지출을 한 번에 기록하고, 실수하면 실행취소하세요</item>
         <item>일일 알림이 더 안정적으로 제시간에 도착하며, 휴대폰이 차단하면 알림 화면에서 해결 방법을 알려 드립니다</item>
@@ -109,4 +115,5 @@
     <string name="reminder_banner_title_with_time">보통 %1$s쯤 기록하시네요</string>
     <string name="reminder_banner_body_with_time">그 시간에 매일 알림을 받아 놓치는 일이 없게 하세요.</string>
     <string name="reminder_banner_turn_on_at">%1$s에 알림 받기</string>
+    <string name="home_debts_title">사람과 빚</string>
 </resources>

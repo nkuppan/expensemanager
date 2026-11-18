@@ -114,4 +114,8 @@
     <string name="suggested_categories">Vorschläge</string>
     <string name="receipt_scanner_unavailable">Der Belegscanner ist auf diesem Gerät nicht verfügbar</string>
     <string name="receipt_scanner_preparing">Google Play-Dienste laden den Belegscanner herunter. Er öffnet sich, sobald er bereit ist.</string>
+    <string name="debt_row_lent">Verliehen an %1$s</string>
+    <string name="debt_row_borrowed">Geliehen von %1$s</string>
+    <string name="debt_row_received">Zurück von %1$s</string>
+    <string name="debt_row_paid">Zurückgezahlt an %1$s</string>
 </resources>

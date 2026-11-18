@@ -131,6 +131,8 @@ class SettingsViewModel(
             SettingAction.OpenRecurringTransactions ->
                 appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactions)
 
+            SettingAction.OpenDebts -> appComposeNavigator.navigate(ExpenseManagerScreens.DebtList)
+
             SettingAction.OpenBackup -> appComposeNavigator.navigate(ExpenseManagerScreens.AutoBackupScreen)
 
             SettingAction.OpenNotification -> openNotificationScreen()

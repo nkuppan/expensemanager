@@ -105,6 +105,27 @@ sealed class ExpenseManagerScreens {
     /** Edits a repeating transaction rule (the parent of every future occurrence). */
     @Serializable
     data class RecurringTransactionEdit(val id: String) : ExpenseManagerScreens()
+
+    /** People & debts: everyone the user lent to or borrowed from, with open balances. */
+    @Serializable
+    data object DebtList : ExpenseManagerScreens()
+
+    /** One person's debts and repayments. */
+    @Serializable
+    data class DebtPerson(val id: String) : ExpenseManagerScreens()
+
+    /**
+     * Adds or edits a debt entry. [id] edits an existing one. Otherwise [personId] (optional)
+     * picks the person, [kind] (a DebtEntryKind name) the starting kind, and [settle] fills in
+     * the person's whole open balance as a repayment.
+     */
+    @Serializable
+    data class DebtEntry(
+        val id: String? = null,
+        val personId: String? = null,
+        val kind: String? = null,
+        val settle: Boolean = false,
+    ) : ExpenseManagerScreens()
 }
 
 object ExpenseManagerArgsNames {
@@ -113,4 +134,7 @@ object ExpenseManagerArgsNames {
     const val FROM_SHARE: String = "fromShare"
     const val LICENSE_NAME: String = "name"
     const val PERIOD: String = "period"
+    const val PERSON_ID: String = "personId"
+    const val KIND: String = "kind"
+    const val SETTLE: String = "settle"
 }

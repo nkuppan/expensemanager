@@ -116,4 +116,8 @@
     <string name="suggested_categories">Предложения</string>
     <string name="receipt_scanner_unavailable">Сканер чеков недоступен на этом устройстве</string>
     <string name="receipt_scanner_preparing">Сервисы Google Play загружают сканер чеков. Он откроется, когда будет готов.</string>
+    <string name="debt_row_lent">Дал в долг: %1$s</string>
+    <string name="debt_row_borrowed">Взял в долг: %1$s</string>
+    <string name="debt_row_received">Вернул(а) мне: %1$s</string>
+    <string name="debt_row_paid">Вернул: %1$s</string>
 </resources>

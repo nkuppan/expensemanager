@@ -35,4 +35,8 @@
         <item quantity="one">Yarın %d yinelenen kayıt</item>
         <item quantity="other">Yarın %d yinelenen kayıt</item>
     </plurals>
+    <string name="debt_due_title_one">Bugün son gün: %1$s</string>
+    <string name="debt_due_title_many">Bugün son günü olan %1$d borç</string>
+    <string name="debt_due_owes_you">%1$s sana %2$s borçlu</string>
+    <string name="debt_due_you_owe">%1$s kişisine %2$s borçlusun</string>
 </resources>

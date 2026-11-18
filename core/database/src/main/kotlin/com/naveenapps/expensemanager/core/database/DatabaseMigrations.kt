@@ -189,6 +189,43 @@ internal val MIGRATION_10_11 = object : Migration(10, 11) {
 }
 
 /**
+ * Adds the debt ledger: `debt_person` and `debt_entry` (lent / borrowed / repaid, optionally
+ * linked to an account). New tables only, so existing rows are untouched. Must match
+ * DebtPersonEntity and DebtEntryEntity exactly, indices included.
+ */
+internal val MIGRATION_11_12 = object : Migration(11, 12) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `debt_person` (" +
+                "`id` TEXT NOT NULL, " +
+                "`name` TEXT NOT NULL, " +
+                "`created_on` INTEGER NOT NULL, " +
+                "`updated_on` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`id`))",
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `debt_entry` (" +
+                "`id` TEXT NOT NULL, " +
+                "`person_id` TEXT NOT NULL, " +
+                "`kind` TEXT NOT NULL, " +
+                "`amount_milli` INTEGER NOT NULL, " +
+                "`account_id` TEXT, " +
+                "`date` INTEGER NOT NULL, " +
+                "`due_date` INTEGER, " +
+                "`note` TEXT NOT NULL, " +
+                "`created_on` INTEGER NOT NULL, " +
+                "`updated_on` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`id`), " +
+                "FOREIGN KEY(`person_id`) REFERENCES `debt_person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, " +
+                "FOREIGN KEY(`account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL)",
+        )
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_person_id` ON `debt_entry` (`person_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_account_id` ON `debt_entry` (`account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_due_date` ON `debt_entry` (`due_date`)")
+    }
+}
+
+/**
  * Every migration, oldest first. The database builder and the migration tests both use this list,
  * so a new migration can't be registered in one place and forgotten in the other.
  */
@@ -203,4 +240,5 @@ internal val ALL_MIGRATIONS = arrayOf(
     MIGRATION_8_9,
     MIGRATION_9_10,
     MIGRATION_10_11,
+    MIGRATION_11_12,
 )

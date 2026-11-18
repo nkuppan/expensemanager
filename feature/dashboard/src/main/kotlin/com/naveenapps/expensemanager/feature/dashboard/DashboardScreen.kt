@@ -80,6 +80,7 @@ import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
+import com.naveenapps.expensemanager.feature.debt.list.DebtTotalsCard
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import kotlin.random.Random
@@ -195,6 +196,24 @@ private fun DashboardScreenContent(
                 DashboardSection.BUDGETS -> budgetsSection(state, onAction)
                 DashboardSection.TRANSACTIONS -> transactionsSection(state, onAction)
                 DashboardSection.UPCOMING -> upcomingSection(state, onAction)
+            }
+        }
+
+        state.debtTotals?.let { debts ->
+            item("debts_item") {
+                Column {
+                    DashboardWidgetTitle(
+                        modifier = Modifier.sectionTitle(),
+                        title = stringResource(id = R.string.home_debts_title),
+                        onViewAllClick = { onAction.invoke(DashboardAction.OpenDebts) },
+                    )
+                    DebtTotalsCard(
+                        toGet = debts.toGet,
+                        toGive = debts.toGive,
+                        onClick = { onAction.invoke(DashboardAction.OpenDebts) },
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                }
             }
         }
 

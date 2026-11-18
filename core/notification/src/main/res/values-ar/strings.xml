@@ -39,4 +39,8 @@
         <item quantity="many">%d قيود متكررة غدًا</item>
         <item quantity="other">%d قيود متكررة غدًا</item>
     </plurals>
+    <string name="debt_due_title_one">مستحق اليوم: %1$s</string>
+    <string name="debt_due_title_many">%1$d ديون مستحقة اليوم</string>
+    <string name="debt_due_owes_you">%1$s مدين لك بـ %2$s</string>
+    <string name="debt_due_you_owe">أنت مدين لـ %1$s بـ %2$s</string>
 </resources>

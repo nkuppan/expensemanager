@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mehr anzeigen (%1$d)</string>
     <string name="notification_see_less">Weniger anzeigen</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Neu: Personen &amp; Schulden. Verliehenes und geliehenes Geld, Teilrückzahlungen und Fälligkeiten erfassen und freundlich erinnern (Einstellungen → Personen &amp; Schulden)</item>
+        <item>Budgets werden nicht mehr rot angezeigt, solange du noch im Rahmen bist</item>
+        <item>Export funktioniert auf jedem Handy: Ohne Dateiauswahl öffnet sich die Datei im Teilen-Menü</item>
+        <item>Abbrechen im Datumsfilter ändert den gewählten Zeitraum nicht mehr</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Trage deine häufigste Ausgabe mit einem Tipp direkt aus der täglichen Erinnerung ein, mit Rückgängig bei Versehen</item>
         <item>Tägliche Erinnerungen kommen zuverlässiger pünktlich, und der Erinnerungsbildschirm zeigt, wie du Blockaden deines Handys behebst</item>
@@ -111,4 +117,5 @@
     <string name="reminder_banner_title_with_time">Du trägst meist gegen %1$s ein</string>
     <string name="reminder_banner_body_with_time">Lass dich dann täglich erinnern, damit nichts verloren geht.</string>
     <string name="reminder_banner_turn_on_at">Um %1$s erinnern</string>
+    <string name="home_debts_title">Personen &amp; Schulden</string>
 </resources>

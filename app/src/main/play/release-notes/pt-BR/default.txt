@@ -1,4 +1,4 @@
-• Registre sua despesa mais frequente direto do lembrete diário com um toque, com Desfazer se errar
-• Os lembretes diários chegam na hora com mais confiabilidade, e a tela Lembrete mostra como resolver se o celular os bloquear
-• Ao ativar os lembretes na tela inicial, agora sugerimos um horário com base em quando você costuma registrar
-• Filtros: o botão Aplicar fica visível mesmo com muitas categorias, e os tipos de transação agora estão traduzidos
+• Novo: Pessoas e dívidas. Registre dinheiro emprestado, pagamentos parciais e vencimentos, e envie um lembrete gentil (Configurações → Pessoas e dívidas)
+• Os orçamentos não aparecem mais em vermelho enquanto você está dentro do limite
+• Exportar funciona em todos os celulares: sem seletor de arquivos, o arquivo abre para compartilhar
+• Cancelar no filtro de datas não altera mais o período selecionado

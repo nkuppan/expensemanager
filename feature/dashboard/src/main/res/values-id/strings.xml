@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Lihat lainnya (%1$d)</string>
     <string name="notification_see_less">Lihat lebih sedikit</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Baru: Orang &amp; utang. Catat uang yang dipinjamkan atau dipinjam, cicilan, dan jatuh tempo, lalu kirim pengingat (Pengaturan → Orang &amp; utang)</item>
+        <item>Anggaran tidak lagi tampil merah selama Anda masih di bawah batas</item>
+        <item>Ekspor berfungsi di semua ponsel: jika tidak ada pemilih file, file dibuka di menu bagikan</item>
+        <item>Batal di filter tanggal tidak lagi mengubah periode yang dipilih</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Catat pengeluaran yang paling sering langsung dari pengingat harian dengan satu ketukan, bisa diurungkan</item>
         <item>Pengingat harian kini lebih andal tiba tepat waktu, dan layar Pengingat menunjukkan cara memperbaikinya jika ponsel memblokirnya</item>
@@ -109,4 +115,5 @@
     <string name="reminder_banner_title_with_time">Anda biasanya mencatat sekitar %1$s</string>
     <string name="reminder_banner_body_with_time">Dapatkan pengingat harian saat itu agar tidak ada yang terlewat.</string>
     <string name="reminder_banner_turn_on_at">Ingatkan pukul %1$s</string>
+    <string name="home_debts_title">Orang &amp; utang</string>
 </resources>

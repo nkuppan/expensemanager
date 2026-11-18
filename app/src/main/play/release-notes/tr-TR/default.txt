@@ -1,4 +1,4 @@
-• En sık harcamanızı tek dokunuşla doğrudan günlük hatırlatıcıdan kaydedin, yanlışlıkla olursa geri alın
-• Günlük hatırlatıcılar artık daha güvenilir şekilde zamanında gelir; telefon engellerse Hatırlatıcı ekranı nasıl düzelteceğinizi gösterir
-• Ana ekrandan hatırlatıcıları açarken artık genellikle kayıt yaptığınız saate göre bir saat önerilir
-• Filtreler: çok sayıda kategoride bile Uygula düğmesi görünür kalır ve işlem türleri artık çevrildi
+• Yeni: Kişiler ve borçlar. Verdiğin ve aldığın borçları, kısmi ödemeleri ve son tarihleri kaydet, hatırlatma gönder (Ayarlar → Kişiler ve borçlar)
+• Bütçe sınırının altındayken bütçeler artık kırmızı görünmüyor
+• Dışa aktarma her telefonda çalışır: dosya seçici yoksa dosya paylaşım menüsünde açılır
+• Tarih filtresinde İptal artık seçili dönemi değiştirmiyor

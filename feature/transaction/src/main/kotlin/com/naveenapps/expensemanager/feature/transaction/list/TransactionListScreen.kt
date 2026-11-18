@@ -61,6 +61,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearch
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -344,11 +345,16 @@ private fun TransactionGroupCard(
     ) {
         AppCardView {
             transactions.forEachIndexed { index, item ->
+                val debtKind = item.debtKind
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    categoryName = item.categoryTitleResId?.let { stringResource(it) }
-                        ?: item.categoryName,
+                    // A debt entry reads "Lent to Ravi"; categoryName holds the person's name.
+                    categoryName = if (debtKind != null) {
+                        stringResource(debtKind.rowTitleRes(), item.categoryName)
+                    } else {
+                        item.categoryTitleResId?.let { stringResource(it) } ?: item.categoryName
+                    },
                     categoryColor = item.categoryIcon.backgroundColor,
                     categoryIcon = item.categoryIcon.name,
                     amount = item.amount,
@@ -365,9 +371,10 @@ private fun TransactionGroupCard(
                     onClick = {
                         onItemClick?.invoke(item)
                     },
-                    // Swipe to reveal edit/delete (also offered to TalkBack as actions).
+                    // Swipe to reveal edit/delete (also offered to TalkBack as actions). Debt entries
+                    // are deleted from their own screen, where the account effect is explained.
                     onEdit = onItemClick?.let { click -> { click(item) } },
-                    onDelete = onDelete?.let { delete -> { delete(item) } },
+                    onDelete = if (debtKind != null) null else onDelete?.let { delete -> { delete(item) } },
                 )
 
                 // Thin inset divider between rows — not after the last one
@@ -547,4 +554,12 @@ fun TransactionListItemSuccessStatePreview() {
             onAction = {},
         )
     }
+}
+
+/** Row title of a debt entry listed among transactions, e.g. "Lent to %1$s". */
+private fun DebtEntryKind.rowTitleRes(): Int = when (this) {
+    DebtEntryKind.LENT -> R.string.debt_row_lent
+    DebtEntryKind.BORROWED -> R.string.debt_row_borrowed
+    DebtEntryKind.RECEIVED -> R.string.debt_row_received
+    DebtEntryKind.PAID -> R.string.debt_row_paid
 }

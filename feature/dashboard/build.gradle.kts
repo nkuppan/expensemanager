@@ -12,6 +12,7 @@ android {
 dependencies {
     implementation(project(":feature:account"))
     implementation(project(":feature:budget"))
+    implementation(project(":feature:debt"))
     implementation(project(":feature:category"))
     implementation(project(":feature:filter"))
     implementation(project(":feature:transaction"))

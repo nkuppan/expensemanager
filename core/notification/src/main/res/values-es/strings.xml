@@ -36,4 +36,8 @@
         <item quantity="many">%d movimientos recurrentes mañana</item>
         <item quantity="other">%d movimientos recurrentes mañana</item>
     </plurals>
+    <string name="debt_due_title_one">Vence hoy: %1$s</string>
+    <string name="debt_due_title_many">%1$d deudas vencen hoy</string>
+    <string name="debt_due_owes_you">%1$s te debe %2$s</string>
+    <string name="debt_due_you_owe">Debes %2$s a %1$s</string>
 </resources>

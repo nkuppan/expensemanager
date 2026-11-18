@@ -115,4 +115,8 @@
     <string name="suggested_categories">Sugeridas</string>
     <string name="receipt_scanner_unavailable">O leitor de recibos não está disponível neste dispositivo</string>
     <string name="receipt_scanner_preparing">O Google Play Services está baixando o leitor de recibos. Ele abrirá quando estiver pronto.</string>
+    <string name="debt_row_lent">Emprestado a %1$s</string>
+    <string name="debt_row_borrowed">Pego emprestado de %1$s</string>
+    <string name="debt_row_received">Recebido de volta de %1$s</string>
+    <string name="debt_row_paid">Devolvido a %1$s</string>
 </resources>

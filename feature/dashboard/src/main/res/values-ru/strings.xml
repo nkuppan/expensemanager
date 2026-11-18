@@ -81,6 +81,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Показать ещё (%1$d)</string>
     <string name="notification_see_less">Свернуть</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Новое: Люди и долги. Записывайте долги, частичные возвраты и сроки и отправляйте напоминания (Настройки → Люди и долги)</item>
+        <item>Бюджеты больше не краснеют, пока вы укладываетесь в лимит</item>
+        <item>Экспорт работает на любом телефоне: без выбора файлов файл откроется в меню «Поделиться»</item>
+        <item>Отмена в фильтре дат больше не меняет выбранный период</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Записывайте самый частый расход одним нажатием прямо из ежедневного напоминания, с возможностью отмены</item>
         <item>Ежедневные напоминания приходят вовремя надёжнее, а экран «Напоминание» подскажет, что делать, если телефон их блокирует</item>
@@ -115,4 +121,5 @@
     <string name="reminder_banner_title_with_time">Обычно вы записываете около %1$s</string>
     <string name="reminder_banner_body_with_time">Получайте ежедневное напоминание в это время, чтобы ничего не упустить.</string>
     <string name="reminder_banner_turn_on_at">Напоминать в %1$s</string>
+    <string name="home_debts_title">Люди и долги</string>
 </resources>

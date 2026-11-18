@@ -211,6 +211,7 @@ dependencies {
     implementation(project(":feature:account"))
     implementation(project(":feature:analysis"))
     implementation(project(":feature:budget"))
+    implementation(project(":feature:debt"))
     implementation(project(":feature:category"))
     implementation(project(":feature:dashboard"))
     implementation(project(":feature:transaction"))

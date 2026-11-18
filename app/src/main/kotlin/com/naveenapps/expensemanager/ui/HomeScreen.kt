@@ -58,6 +58,9 @@ import com.naveenapps.expensemanager.feature.currency.CurrencyCustomiseScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.dashboard.customise.DashboardReOrderScreen
 import com.naveenapps.expensemanager.feature.dashboard.notifications.NotificationCentreScreen
+import com.naveenapps.expensemanager.feature.debt.entry.DebtEntryScreen
+import com.naveenapps.expensemanager.feature.debt.list.DebtListScreen
+import com.naveenapps.expensemanager.feature.debt.person.DebtPersonScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
@@ -115,6 +118,15 @@ fun NavGraphBuilder.expenseManagerNavigation(
     }
     composable<ExpenseManagerScreens.RecurringTransactionEdit> {
         RecurringTransactionEditScreen()
+    }
+    composable<ExpenseManagerScreens.DebtList> {
+        DebtListScreen()
+    }
+    composable<ExpenseManagerScreens.DebtPerson> {
+        DebtPersonScreen()
+    }
+    composable<ExpenseManagerScreens.DebtEntry> {
+        DebtEntryScreen()
     }
     composable<ExpenseManagerScreens.TransactionList> {
         TransactionListScreen(showBackNavigationIcon = true)

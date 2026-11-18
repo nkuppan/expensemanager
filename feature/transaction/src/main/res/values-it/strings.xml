@@ -115,4 +115,8 @@
     <string name="suggested_categories">Suggerite</string>
     <string name="receipt_scanner_unavailable">Lo scanner di ricevute non è disponibile su questo dispositivo</string>
     <string name="receipt_scanner_preparing">Google Play Services sta scaricando lo scanner di ricevute. Si aprirà quando sarà pronto.</string>
+    <string name="debt_row_lent">Prestato a %1$s</string>
+    <string name="debt_row_borrowed">Preso in prestito da %1$s</string>
+    <string name="debt_row_received">Restituito da %1$s</string>
+    <string name="debt_row_paid">Restituito a %1$s</string>
 </resources>

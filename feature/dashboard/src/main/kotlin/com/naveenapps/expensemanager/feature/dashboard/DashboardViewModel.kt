@@ -8,6 +8,7 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtTotalsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetUpcomingRecurringUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -26,6 +27,7 @@ import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
+import com.naveenapps.expensemanager.core.model.milliToDouble
 import com.naveenapps.expensemanager.core.model.needsAttention
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
@@ -73,6 +75,7 @@ class DashboardViewModel(
     private val reminderTimeRepository: ReminderTimeRepository,
     private val updateReminderStatusUseCase: UpdateReminderStatusUseCase,
     private val notificationScheduler: NotificationScheduler,
+    getDebtTotalsUseCase: GetDebtTotalsUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -157,6 +160,17 @@ class DashboardViewModel(
                 val suggested = SuggestReminderTime.from(minutes, is24Hour = false)
                 _state.update { it.copy(suggestedReminderTime = suggested) }
             }
+            .launchIn(viewModelScope)
+
+        // People & debts card: only while someone owes the user or the user owes someone.
+        combine(getDebtTotalsUseCase(), getCurrencyUseCase.invoke()) { totals, currency ->
+            totals.takeIf { it.hasOpenDebts }?.let {
+                DebtTotalsUi(
+                    toGet = getFormattedAmountUseCase(it.toGetMilli.milliToDouble(), currency).amountString.orEmpty(),
+                    toGive = getFormattedAmountUseCase(it.toGiveMilli.milliToDouble(), currency).amountString.orEmpty(),
+                )
+            }
+        }.onEach { debts -> _state.update { it.copy(debtTotals = debts) } }
             .launchIn(viewModelScope)
 
         settingsRepository.getDashboardOrder()
@@ -467,6 +481,8 @@ class DashboardViewModel(
 
             DashboardAction.OpenRecurringList ->
                 appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactions)
+
+            DashboardAction.OpenDebts -> appComposeNavigator.navigate(ExpenseManagerScreens.DebtList)
 
             is DashboardAction.OpenRecurringEdit ->
                 appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactionEdit(action.id))

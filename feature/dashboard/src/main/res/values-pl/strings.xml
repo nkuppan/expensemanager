@@ -81,6 +81,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Pokaż więcej (%1$d)</string>
     <string name="notification_see_less">Pokaż mniej</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Nowość: Osoby i długi. Zapisuj pożyczki, częściowe spłaty i terminy oraz wysyłaj przypomnienia (Ustawienia → Osoby i długi)</item>
+        <item>Budżety nie są już czerwone, gdy wciąż mieścisz się w limicie</item>
+        <item>Eksport działa na każdym telefonie: bez wyboru plików plik otwiera się w menu udostępniania</item>
+        <item>Anuluj w filtrze dat nie zmienia już wybranego okresu</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Zapisz najczęstszy wydatek jednym dotknięciem prosto z codziennego przypomnienia, z opcją Cofnij</item>
         <item>Codzienne przypomnienia przychodzą punktualniej, a ekran Przypomnienie pokazuje, jak to naprawić, gdy telefon je blokuje</item>
@@ -115,4 +121,5 @@
     <string name="reminder_banner_title_with_time">Zwykle zapisujesz około %1$s</string>
     <string name="reminder_banner_body_with_time">Otrzymuj wtedy codzienne przypomnienie, aby nic nie umknęło.</string>
     <string name="reminder_banner_turn_on_at">Przypomnij o %1$s</string>
+    <string name="home_debts_title">Osoby i długi</string>
 </resources>

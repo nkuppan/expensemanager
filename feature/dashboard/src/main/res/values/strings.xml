@@ -77,6 +77,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">See more (%1$d)</string>
     <string name="notification_see_less">See less</string>
+    <string-array name="whats_new_1_4_31">
+        <item>New: People &amp; debts. Record money you lent or borrowed, partial repayments and due dates, and send a friendly reminder (Settings → People &amp; debts)</item>
+        <item>Budgets no longer show red while you\'re still under budget</item>
+        <item>Export works on every phone: if yours has no file picker, the file opens in the share sheet</item>
+        <item>Cancel in the date filter no longer changes the selected period</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Log your most frequent expense straight from the daily reminder with one tap, with Undo if you tap by mistake</item>
         <item>Daily reminders arrive on time more reliably, and the Reminder screen shows how to fix it if your phone blocks them</item>
@@ -111,4 +117,5 @@
     <string name="reminder_banner_title_with_time">You usually log around %1$s</string>
     <string name="reminder_banner_body_with_time">Get a daily reminder then, so nothing slips through.</string>
     <string name="reminder_banner_turn_on_at">Remind me at %1$s</string>
+    <string name="home_debts_title">People &amp; debts</string>
 </resources>

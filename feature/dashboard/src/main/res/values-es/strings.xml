@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver más (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Nuevo: Personas y deudas. Registra dinero prestado o pedido, pagos parciales y vencimientos, y envía un recordatorio amable (Ajustes → Personas y deudas)</item>
+        <item>Los presupuestos ya no se muestran en rojo mientras sigues dentro del límite</item>
+        <item>Exportar funciona en todos los teléfonos: si el tuyo no tiene selector de archivos, el archivo se abre para compartir</item>
+        <item>Cancelar en el filtro de fechas ya no cambia el periodo seleccionado</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Registra tu gasto más frecuente desde el recordatorio diario con un toque, y deshazlo si te equivocas</item>
         <item>Los recordatorios diarios llegan a tiempo con más fiabilidad, y la pantalla Recordatorio indica cómo solucionarlo si tu teléfono los bloquea</item>
@@ -113,4 +119,5 @@
     <string name="reminder_banner_title_with_time">Sueles registrar hacia las %1$s</string>
     <string name="reminder_banner_body_with_time">Recibe un recordatorio diario a esa hora para que no se te escape nada.</string>
     <string name="reminder_banner_turn_on_at">Recordarme a las %1$s</string>
+    <string name="home_debts_title">Personas y deudas</string>
 </resources>

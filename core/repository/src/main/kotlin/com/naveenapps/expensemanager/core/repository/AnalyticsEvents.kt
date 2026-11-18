@@ -111,6 +111,13 @@ object AnalyticsEvents {
     const val BUDGET_EDITED = "budget_edited"
     const val BUDGET_DELETED = "budget_deleted"
 
+    // Debt ledger (never amounts or names). type: lent / borrowed / received / paid.
+    const val DEBT_ENTRY_SAVED = "debt_entry_saved"
+    const val DEBT_ENTRY_DELETED = "debt_entry_deleted"
+    const val DEBT_PERSON_DELETED = "debt_person_deleted"
+    const val DEBT_REMINDER_SHARED = "debt_reminder_shared"
+    const val DEBT_DUE_REMINDER_SHOWN = "debt_due_reminder_shown"
+
     /** A setting changed (type: which setting; method: the new value, a choice not free text). */
     const val SETTING_CHANGED = "setting_changed"
 
@@ -163,6 +170,9 @@ object AnalyticsParams {
     const val COUNTRY = "country"
     const val ACCOUNT_COUNT = "account_count"
     const val CATEGORY_COUNT = "category_count"
+
+    /** Debt entry: "true" when it moved money in one of the user's accounts. */
+    const val LINKED_ACCOUNT = "linked_account"
     const val GRANTED = "granted"
 
     /** Reminders banner: "true" when it offered a time based on when the user logs. */

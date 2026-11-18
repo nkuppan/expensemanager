@@ -113,4 +113,8 @@
     <string name="suggested_categories">おすすめ</string>
     <string name="receipt_scanner_unavailable">このデバイスではレシートスキャナーを利用できません</string>
     <string name="receipt_scanner_preparing">Google Play 開発者サービスがレシートスキャナーをダウンロードしています。準備ができると開きます。</string>
+    <string name="debt_row_lent">%1$sさんに貸した</string>
+    <string name="debt_row_borrowed">%1$sさんから借りた</string>
+    <string name="debt_row_received">%1$sさんから返してもらった</string>
+    <string name="debt_row_paid">%1$sさんに返した</string>
 </resources>

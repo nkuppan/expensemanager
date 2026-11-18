@@ -119,4 +119,6 @@
     <string name="more">Lainnya</string>
     <string name="preferences">Preferensi</string>
     <string name="preferences_message">Bawaan untuk catatan baru, Beranda, dan lainnya</string>
+    <string name="debts_setting">Orang &amp; utang</string>
+    <string name="debts_setting_message">Uang yang Anda pinjamkan atau pinjam</string>
 </resources>

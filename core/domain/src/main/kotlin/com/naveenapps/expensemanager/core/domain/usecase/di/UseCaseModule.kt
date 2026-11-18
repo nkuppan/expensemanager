@@ -4,6 +4,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.account.AccountUseCaseM
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.category.CategoryUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.country.CountryUseCaseModule
+import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.RecurringUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.settings.SettingsUseCaseModule
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.FilterUseCaseModule
@@ -20,5 +21,6 @@ val UseCaseModule = module {
         TransactionUseCaseModule,
         RecurringUseCaseModule,
         FilterUseCaseModule,
+        DebtUseCaseModule,
     )
 }

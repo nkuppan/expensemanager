@@ -79,6 +79,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Mostra altro (%1$d)</string>
     <string name="notification_see_less">Mostra meno</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Novità: Persone e debiti. Registra denaro prestato o preso in prestito, rimborsi parziali e scadenze, e invia un promemoria (Impostazioni → Persone e debiti)</item>
+        <item>I budget non appaiono più in rosso finché sei entro il limite</item>
+        <item>L\'esportazione funziona su ogni telefono: senza selettore di file, il file si apre nel menu di condivisione</item>
+        <item>Annulla nel filtro date non cambia più il periodo selezionato</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Registra la spesa più frequente direttamente dal promemoria giornaliero con un tocco, con Annulla in caso di errore</item>
         <item>I promemoria giornalieri arrivano in orario in modo più affidabile, e la schermata Promemoria spiega come risolvere se il telefono li blocca</item>
@@ -113,4 +119,5 @@
     <string name="reminder_banner_title_with_time">Di solito registri verso le %1$s</string>
     <string name="reminder_banner_body_with_time">Ricevi un promemoria quotidiano a quell’ora, così non ti sfugge nulla.</string>
     <string name="reminder_banner_turn_on_at">Ricordamelo alle %1$s</string>
+    <string name="home_debts_title">Persone e debiti</string>
 </resources>

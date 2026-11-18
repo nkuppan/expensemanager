@@ -119,4 +119,6 @@
     <string name="more">Thêm</string>
     <string name="preferences">Tùy chọn</string>
     <string name="preferences_message">Mặc định cho mục mới, Trang chủ và khác</string>
+    <string name="debts_setting">Người và khoản nợ</string>
+    <string name="debts_setting_message">Tiền bạn cho vay hoặc đi vay</string>
 </resources>

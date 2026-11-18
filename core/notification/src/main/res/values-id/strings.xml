@@ -34,4 +34,8 @@
     <plurals name="upcoming_alert_title_many">
         <item quantity="other">%d entri berulang besok</item>
     </plurals>
+    <string name="debt_due_title_one">Jatuh tempo hari ini: %1$s</string>
+    <string name="debt_due_title_many">%1$d utang jatuh tempo hari ini</string>
+    <string name="debt_due_owes_you">%1$s berutang %2$s kepada Anda</string>
+    <string name="debt_due_you_owe">Anda berutang %2$s kepada %1$s</string>
 </resources>

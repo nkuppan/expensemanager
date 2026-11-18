@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Payments
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.ScreenshotMonitor
 import androidx.compose.material.icons.outlined.Share
@@ -228,6 +229,13 @@ private fun SettingsScreenContent(
                     onClick = { onAction.invoke(SettingAction.OpenRecurringTransactions) },
                     title = stringResource(id = R.string.recurring_transactions_setting),
                     icon = Icons.Outlined.EventRepeat,
+                    showDivider = true,
+                )
+                SettingRow(
+                    onClick = { onAction.invoke(SettingAction.OpenDebts) },
+                    title = stringResource(id = R.string.debts_setting),
+                    subtitle = stringResource(id = R.string.debts_setting_message),
+                    icon = Icons.Outlined.People,
                 )
             }
         }

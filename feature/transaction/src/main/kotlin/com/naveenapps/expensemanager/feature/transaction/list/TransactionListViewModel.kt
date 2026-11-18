@@ -6,17 +6,22 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtActivity
+import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.milliToDouble
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -26,6 +31,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
+import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -55,6 +61,7 @@ class TransactionListViewModel(
     private val addTransactionUseCase: AddTransactionUseCase,
     private val imageStorageRepository: ImageStorageRepository,
     private val analyticsRepository: AnalyticsRepository,
+    getDebtActivityUseCase: GetDebtActivityUseCase,
     categoryDisplayNames: CategoryDisplayNames = CategoryDisplayNames.Stored,
 ) : ViewModel() {
 
@@ -70,6 +77,9 @@ class TransactionListViewModel(
     // The transactions currently listed, by id, so a swipe-delete can act on the full model.
     private var visibleTransactions: Map<String, Transaction> = emptyMap()
 
+    // Debt entries listed among the transactions; tapping one opens the debt entry instead.
+    private var visibleDebtIds: Set<String> = emptySet()
+
     // Deleted but still undoable. Its attachment files are only removed once the undo window
     // has passed; otherwise "Undo" would bring back a transaction pointing at missing photos.
     private var pendingUndo: Transaction? = null
@@ -77,21 +87,30 @@ class TransactionListViewModel(
     init {
         // While searching all time, read every date; otherwise the selected period. The other
         // filters (accounts, categories, types) apply either way.
-        val source = combine(searchQuery, searchScope) { query, scope ->
+        val allTime = combine(searchQuery, searchScope) { query, scope ->
             query.isNotBlank() && scope == SearchScope.ALL_TIME
-        }.distinctUntilChanged().flatMapLatest { allTime ->
-            if (allTime) getTransactionWithFilterUseCase.allTime() else getTransactionWithFilterUseCase.invoke()
+        }.distinctUntilChanged()
+        val source = allTime.flatMapLatest { all ->
+            if (all) getTransactionWithFilterUseCase.allTime() else getTransactionWithFilterUseCase.invoke()
         }
+        // Lent / borrowed / repaid entries that moved money in an account, so a balance change
+        // always has a row explaining it. Never counted in the day totals or search totals.
+        val debts = allTime.flatMapLatest { all -> getDebtActivityUseCase(allTime = all) }
 
         combine(
             getCurrencyUseCase.invoke(),
             source,
             searchQuery,
             categoryDisplayNames.lookup(),
-        ) { currency, transactions, query, displayName ->
+            debts,
+        ) { currency, transactions, query, displayName, debtActivity ->
 
             val matching = transactions.orEmpty().filter { it.matches(query, displayName) }
             visibleTransactions = matching.associateBy { it.id }
+            val matchingDebts = debtActivity.filter { activity ->
+                matchesSearch(query, listOf(activity.personName, activity.entry.note, activity.account.name))
+            }
+            visibleDebtIds = matchingDebts.map { it.entry.id }.toSet()
 
             val summary = if (query.isBlank()) {
                 null
@@ -110,22 +129,33 @@ class TransactionListViewModel(
             }
 
             // Only what has actually happened: a recurring rule logs each occurrence on its day.
-            val groupedItem = matching.sortedByDescending { it.createdOn }.groupBy {
-                it.createdOn.toCompleteDateWithDate()
+            val rows = matching.map { transaction ->
+                ListRow(
+                    date = transaction.createdOn,
+                    transaction = transaction,
+                    item = transaction.toTransactionUIModel(
+                        getFormattedAmountUseCase.invoke(transaction.amount.amount, currency),
+                    ),
+                )
+            } + matchingDebts.map { activity ->
+                ListRow(
+                    date = activity.entry.date,
+                    transaction = null,
+                    item = activity.toTransactionUiItem(
+                        getFormattedAmountUseCase.invoke(activity.entry.amountMilli.milliToDouble(), currency),
+                    ),
+                )
+            }
+            val groupedItem = rows.sortedByDescending { it.date }.groupBy {
+                it.date.toCompleteDateWithDate()
             }.map {
-                val totalAmount = it.value.toTransactionSum()
+                // The day's total counts real transactions only, not debt entries.
+                val totalAmount = it.value.mapNotNull { row -> row.transaction }.toTransactionSum()
                 TransactionGroup(
                     date = it.key,
                     amountTextColor = totalAmount.getAmountTextColor(),
                     totalAmount = getFormattedAmountUseCase.invoke(totalAmount, currency),
-                    transactions = it.value.map { transaction ->
-                        transaction.toTransactionUIModel(
-                            getFormattedAmountUseCase.invoke(
-                                transaction.amount.amount,
-                                currency,
-                            ),
-                        )
-                    },
+                    transactions = it.value.map { row -> row.item },
                 )
             }
 
@@ -222,7 +252,11 @@ class TransactionListViewModel(
         when (action) {
             TransactionListAction.ClosePage -> closePage()
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
-            is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
+            is TransactionListAction.OpenEdiTransaction -> if (action.transactionId in visibleDebtIds) {
+                appComposeNavigator.navigate(ExpenseManagerScreens.DebtEntry(id = action.transactionId))
+            } else {
+                openCreateScreen(action.transactionId)
+            }
             is TransactionListAction.Search -> search(action.query)
             is TransactionListAction.SetSearchScope -> setSearchScope(action.scope)
             TransactionListAction.OpenRecurringTransactions -> openRecurringTransactions()
@@ -238,6 +272,29 @@ class TransactionListViewModel(
  * account names. A built-in category matches both by the name shown ([displayName], e.g. its
  * Hindi label) and by its stored English name.
  */
+/** One row of the list: a transaction, or a debt entry shown beside them (transaction = null). */
+private data class ListRow(val date: Date, val transaction: Transaction?, val item: TransactionUiItem)
+
+/**
+ * A debt entry as a list row. Money leaving the account (lent, paid back) shows like an expense,
+ * money coming in (borrowed, got back) like income; the screen titles it "Lent to Ravi" etc.
+ */
+private fun DebtActivity.toTransactionUiItem(amount: Amount): TransactionUiItem = TransactionUiItem(
+    id = entry.id,
+    amount = amount,
+    notes = entry.note.ifBlank { null },
+    categoryName = personName,
+    transactionType = if (entry.kind.accountSign < 0) TransactionType.EXPENSE else TransactionType.INCOME,
+    categoryIcon = StoredIcon(name = DEBT_ROW_ICON, backgroundColor = DEBT_ROW_COLOR),
+    date = entry.date.toCompleteDateWithDate(),
+    fromAccountName = account.name,
+    fromAccountIcon = account.storedIcon,
+    debtKind = entry.kind,
+)
+
+private const val DEBT_ROW_ICON = "diversity"
+private const val DEBT_ROW_COLOR = "#FF7E57C2"
+
 private const val SEARCH_SETTLE_MS = 1_500L
 
 /** Search results for analytics: 0, 1-5, 6-20, 21+. */

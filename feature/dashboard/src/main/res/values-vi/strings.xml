@@ -75,6 +75,12 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Xem thêm (%1$d)</string>
     <string name="notification_see_less">Thu gọn</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Mới: Người và khoản nợ. Ghi lại tiền cho vay hoặc đi vay, trả một phần và hạn trả, rồi gửi lời nhắc (Cài đặt → Người và khoản nợ)</item>
+        <item>Ngân sách không còn hiển thị màu đỏ khi bạn vẫn trong hạn mức</item>
+        <item>Xuất dữ liệu hoạt động trên mọi điện thoại: nếu không có trình chọn tệp, tệp sẽ mở trong menu chia sẻ</item>
+        <item>Nút Hủy trong bộ lọc ngày không còn thay đổi khoảng thời gian đã chọn</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Ghi khoản chi thường gặp nhất chỉ với một chạm ngay từ lời nhắc hằng ngày, có thể hoàn tác</item>
         <item>Nhắc nhở hằng ngày đến đúng giờ ổn định hơn, và màn hình Nhắc nhở hướng dẫn cách khắc phục nếu điện thoại chặn chúng</item>
@@ -109,4 +115,5 @@
     <string name="reminder_banner_title_with_time">Bạn thường ghi vào khoảng %1$s</string>
     <string name="reminder_banner_body_with_time">Nhận lời nhắc hằng ngày lúc đó để không bỏ sót khoản nào.</string>
     <string name="reminder_banner_turn_on_at">Nhắc tôi lúc %1$s</string>
+    <string name="home_debts_title">Người và khoản nợ</string>
 </resources>

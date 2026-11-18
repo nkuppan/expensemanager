@@ -43,4 +43,5 @@ val DatabaseModule = module {
     single { get<ExpenseManagerDatabase>().transactionDao() }
     single { get<ExpenseManagerDatabase>().budgetDao() }
     single { get<ExpenseManagerDatabase>().recurringTransactionDao() }
+    single { get<ExpenseManagerDatabase>().debtDao() }
 }

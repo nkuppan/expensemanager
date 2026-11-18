@@ -122,6 +122,23 @@ class NotificationScheduler(
         }
     }
 
+    /** Lines up the next morning check for debts due that day (see DebtDueWorker). */
+    fun scheduleDebtDueCheck(now: Calendar = Calendar.getInstance()) {
+        val next = (now.clone() as Calendar).apply {
+            set(Calendar.HOUR_OF_DAY, DEBT_DUE_HOUR)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            if (!after(now)) add(Calendar.DATE, 1)
+        }
+        val request = OneTimeWorkRequestBuilder<DebtDueWorker>()
+            .setInitialDelay(next.timeInMillis - now.timeInMillis, TimeUnit.MILLISECONDS)
+            .build()
+        withWorkManager {
+            it.enqueueUniqueWork(DEBT_DUE_WORK_NAME, ExistingWorkPolicy.REPLACE, request)
+        }
+    }
+
     fun cancelUpcomingAlert() {
         withWorkManager { it.cancelUniqueWork(UPCOMING_ALERT_WORK_NAME) }
     }
@@ -627,6 +644,10 @@ private const val BUDGET_ALERT_WORK_NAME = "budget_alert_check"
 private const val WEEKLY_SUMMARY_HOUR = 19
 private const val BUDGET_CHECK_DELAY_SECONDS = 5L
 private const val UPCOMING_ALERT_WORK_NAME = "upcoming_recurring_alert"
+private const val DEBT_DUE_WORK_NAME = "debt_due_check"
+
+/** Local hour of the morning notification for debts due that day. */
+const val DEBT_DUE_HOUR = 10
 
 /** Local hour of the evening heads-up before weekly / monthly / yearly recurring entries. */
 const val UPCOMING_ALERT_HOUR = 19
