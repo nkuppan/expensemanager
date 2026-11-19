@@ -1,29 +1,19 @@
 package com.naveenapps.expensemanager.feature.settings.autobackup
 
 import android.text.format.Formatter
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,8 +28,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.model.BackupFile
 import com.naveenapps.expensemanager.core.model.BackupKind
 import com.naveenapps.expensemanager.feature.settings.R
@@ -61,10 +60,9 @@ internal fun BackupCard(
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    AppCardView(
+    EmCard(
         modifier = modifier.fillMaxWidth(),
-        cornerSize = 20.dp,
-        border = BorderStroke(0.dp, Color.Transparent),
+        variant = EmCardVariant.Filled,
         onClick = onClick,
         content = content,
     )
@@ -72,11 +70,11 @@ internal fun BackupCard(
 
 @Composable
 internal fun BackupSectionHeader(text: String) {
-    Text(
+    EmText(
         text = text,
-        style = MaterialTheme.typography.titleSmall,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(start = 4.dp, top = 8.dp),
+        modifier = Modifier.padding(start = EmTheme.spacing.xs, top = EmTheme.spacing.sm),
+        role = EmTextRole.SectionTitle,
+        color = EmTextColor.Primary,
     )
 }
 
@@ -85,16 +83,16 @@ internal fun BackupSectionHeader(text: String) {
 internal fun CircleIcon(
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    background: Color = MaterialTheme.colorScheme.secondaryContainer,
-    tint: Color = MaterialTheme.colorScheme.onSecondaryContainer,
+    background: Color = EmTheme.colors.scheme.secondaryContainer,
+    tint: Color = EmTheme.colors.scheme.onSecondaryContainer,
 ) {
     Box(
         modifier = modifier
-            .size(44.dp)
-            .background(background, CircleShape),
+            .size(EmTheme.icons.tile)
+            .background(background, EmTheme.shapes.pill),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(imageVector = icon, contentDescription = null, tint = tint, modifier = Modifier.size(22.dp))
+        EmIcon(icon = icon, contentDescription = null, tint = tint)
     }
 }
 
@@ -115,21 +113,23 @@ internal fun BackupFileRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
+            .padding(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.sm,
+                top = EmTheme.spacing.md,
+                bottom = EmTheme.spacing.md,
+            ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
     ) {
         CircleIcon(icon = if (backup.kind == BackupKind.AUTO) Icons.Outlined.Schedule else Icons.Outlined.Save)
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            EmText(
                 text = formatTime(backup.createdAt),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
             )
-            Text(
+            EmText(
                 text = details,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = EmTextColor.Supporting,
             )
         }
         trailing()
@@ -138,13 +138,12 @@ internal fun BackupFileRow(
 
 @Composable
 internal fun EmptyBackupsText(modifier: Modifier = Modifier) {
-    Text(
+    EmText(
         text = stringResource(R.string.no_backups_yet),
-        style = MaterialTheme.typography.bodyMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(EmTheme.spacing.xl),
+        color = EmTextColor.Supporting,
     )
 }
 
@@ -159,39 +158,35 @@ internal fun PassphraseDialog(
     onDismiss: () -> Unit,
 ) {
     var passphrase by remember { mutableStateOf("") }
-    AlertDialog(
+    EmBottomSheet(
         onDismissRequest = onDismiss,
-        title = { Text(text = title) },
-        text = {
-            Column {
-                Text(text = message)
-                Spacer(modifier = Modifier.height(16.dp))
-                OutlinedTextField(
-                    value = passphrase,
-                    onValueChange = { passphrase = it },
-                    label = { Text(text = stringResource(id = R.string.passphrase_label)) },
-                    singleLine = true,
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password,
-                        autoCorrectEnabled = false,
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-        },
-        confirmButton = {
-            TextButton(
+        title = title,
+        actions = {
+            EmButton(
+                text = stringResource(id = android.R.string.cancel),
+                onClick = onDismiss,
+                variant = EmButtonVariant.Secondary,
+                modifier = Modifier.weight(1f),
+            )
+            EmButton(
+                text = confirmLabel,
                 onClick = { onSubmit(passphrase) },
                 enabled = !isRequired || passphrase.isNotEmpty(),
-            ) {
-                Text(text = confirmLabel)
-            }
+                modifier = Modifier.weight(1f),
+            )
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(id = android.R.string.cancel))
-            }
-        },
-    )
+    ) {
+        EmText(text = message, color = EmTextColor.Supporting)
+        EmTextField(
+            value = passphrase,
+            onValueChange = { passphrase = it },
+            label = stringResource(id = R.string.passphrase_label),
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password,
+                autoCorrectEnabled = false,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }

@@ -2,3 +2,4 @@
 • Anggaran tidak lagi tampil merah selama Anda masih di bawah batas
 • Ekspor berfungsi di semua ponsel: jika tidak ada pemilih file, file dibuka di menu bagikan
 • Batal di filter tanggal tidak lagi mengubah periode yang dipilih
+• Tampilan yang lebih rapi dan konsisten

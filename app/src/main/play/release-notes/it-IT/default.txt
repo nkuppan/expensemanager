@@ -2,3 +2,4 @@
 • I budget non appaiono più in rosso finché sei entro il limite
 • L'esportazione funziona su ogni telefono: senza selettore di file, il file si apre nel menu di condivisione
 • Annulla nel filtro date non cambia più il periodo selezionato
+• Un aspetto più pulito e coerente

@@ -86,6 +86,7 @@
         <item>Budżety nie są już czerwone, gdy wciąż mieścisz się w limicie</item>
         <item>Eksport działa na każdym telefonie: bez wyboru plików plik otwiera się w menu udostępniania</item>
         <item>Anuluj w filtrze dat nie zmienia już wybranego okresu</item>
+        <item>Czystszy, spójniejszy wygląd</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Zapisz najczęstszy wydatek jednym dotknięciem prosto z codziennego przypomnienia, z opcją Cofnij</item>

@@ -84,6 +84,7 @@
         <item>I budget non appaiono più in rosso finché sei entro il limite</item>
         <item>L\'esportazione funziona su ogni telefono: senza selettore di file, il file si apre nel menu di condivisione</item>
         <item>Annulla nel filtro date non cambia più il periodo selezionato</item>
+        <item>Un aspetto più pulito e coerente</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Registra la spesa più frequente direttamente dal promemoria giornaliero con un tocco, con Annulla in caso di errore</item>

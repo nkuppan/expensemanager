@@ -2,3 +2,4 @@
 • Os orçamentos não aparecem mais em vermelho enquanto você está dentro do limite
 • Exportar funciona em todos os celulares: sem seletor de arquivos, o arquivo abre para compartilhar
 • Cancelar no filtro de datas não altera mais o período selecionado
+• Um visual mais limpo e consistente

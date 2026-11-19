@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.about.licenses
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,31 +13,28 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.ListItemDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.NoSearchResults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearchField
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmListItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmLoading
+import com.naveenapps.expensemanager.core.designsystem.em.EmNoSearchResults
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.feature.about.R
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -48,12 +44,12 @@ fun OpenSourceLicensesScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(R.string.licenses),
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { viewModel.processAction(OpenSourceLicensesAction.ClosePage) },
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { viewModel.processAction(OpenSourceLicensesAction.ClosePage) },
             )
         },
     ) { innerPadding ->
@@ -63,36 +59,35 @@ fun OpenSourceLicensesScreen(
                 .padding(innerPadding),
         ) {
             when {
-                state.isLoading -> CenteredBox { CircularProgressIndicator() }
+                state.isLoading -> CenteredBox { EmLoading() }
 
                 state.totalCount == 0 -> CenteredBox {
-                    Text(
+                    EmText(
                         text = stringResource(R.string.licenses_unavailable),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = EmTextColor.Supporting,
                     )
                 }
 
                 else -> {
-                    SheetSearchField(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    EmSearchField(
+                        modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
                         query = state.query,
                         onQueryChange = { viewModel.processAction(OpenSourceLicensesAction.Search(it)) },
                         placeholder = stringResource(R.string.search_libraries),
                     )
                     if (state.licenses.isEmpty()) {
-                        NoSearchResults(modifier = Modifier.padding(16.dp))
+                        EmNoSearchResults(modifier = Modifier.padding(EmTheme.spacing.lg))
                     }
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(bottom = 24.dp),
+                        contentPadding = PaddingValues(bottom = EmTheme.spacing.xl),
                     ) {
                         items(state.licenses, key = { it.name }) { license ->
                             LicenseRow(
                                 license = license,
                                 onClick = { viewModel.processAction(OpenSourceLicensesAction.Open(license)) },
                             )
-                            HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
+                            EmDivider(modifier = Modifier.padding(horizontal = EmTheme.spacing.lg))
                         }
                     }
                 }
@@ -107,17 +102,10 @@ private fun LicenseRow(
     onClick: () -> Unit,
 ) {
     val label = license.kind.label
-    ListItem(
-        modifier = Modifier.clickable(onClick = onClick),
-        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-        headlineContent = {
-            Text(text = license.name, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        },
-        supportingContent = if (label != null) {
-            { Text(text = label) }
-        } else {
-            null
-        },
+    EmListItem(
+        title = license.name,
+        supporting = label,
+        onClick = onClick,
     )
 }
 
@@ -127,24 +115,23 @@ fun OpenSourceLicenseDetailScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = state.name,
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = viewModel::closePage,
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = viewModel::closePage,
             )
         },
     ) { innerPadding ->
         val license = state.license
         when {
-            state.isLoading -> CenteredBox(Modifier.padding(innerPadding)) { CircularProgressIndicator() }
+            state.isLoading -> CenteredBox(Modifier.padding(innerPadding)) { EmLoading() }
 
             license == null -> CenteredBox(Modifier.padding(innerPadding)) {
-                Text(
+                EmText(
                     text = stringResource(R.string.licenses_unavailable),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = EmTextColor.Supporting,
                 )
             }
 
@@ -163,41 +150,34 @@ private fun LicenseContent(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+            .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
         license.kind.label?.let { label ->
-            Text(
+            EmText(
                 text = label,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.primary,
+                role = EmTextRole.ItemTitle,
+                color = EmTextColor.Primary,
             )
         }
         val url = license.url
         if (url != null) {
             // The library only ships a link to its licence.
             SelectionContainer {
-                Text(
+                EmText(
                     text = url,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = EmTextColor.Supporting,
                 )
             }
-            FilledTonalButton(onClick = { runCatching { uriHandler.openUri(url) } }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Outlined.OpenInNew,
-                    contentDescription = null,
-                    modifier = Modifier.padding(end = 8.dp),
-                )
-                Text(text = stringResource(R.string.open_license))
-            }
+            EmButton(
+                text = stringResource(R.string.open_license),
+                onClick = { runCatching { uriHandler.openUri(url) } },
+                variant = EmButtonVariant.Secondary,
+                leadingIcon = Icons.AutoMirrored.Outlined.OpenInNew,
+            )
         } else {
             SelectionContainer {
-                Text(
-                    text = license.text,
-                    style = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace),
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                EmText(text = license.text, role = EmTextRole.Code, modifier = Modifier.fillMaxWidth())
             }
         }
     }
@@ -211,7 +191,7 @@ private fun CenteredBox(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(EmTheme.spacing.xl),
         contentAlignment = Alignment.Center,
     ) {
         content()

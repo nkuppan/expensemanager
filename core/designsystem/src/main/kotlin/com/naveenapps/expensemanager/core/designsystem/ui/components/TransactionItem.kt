@@ -21,14 +21,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -44,21 +40,26 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
@@ -108,7 +109,7 @@ fun TransactionItem(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(4.dp)), // clip overflow from swipe
+            .clip(EmTheme.shapes.xs), // clip overflow from swipe
     ) {
         // ── Revealed actions (behind the row) ──────────────────────
         if (onEdit != null || onDelete != null) {
@@ -122,7 +123,7 @@ fun TransactionItem(
                     SwipeAction(
                         icon = Icons.Outlined.Edit,
                         label = editLabel,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = EmTheme.colors.scheme.primary,
                         onClick = {
                             rawOffset = 0f
                             onEdit()
@@ -133,9 +134,7 @@ fun TransactionItem(
                     SwipeAction(
                         icon = Icons.Outlined.Delete,
                         label = deleteLabel,
-                        color = colorResource(
-                            id = com.naveenapps.expensemanager.core.common.R.color.red_500,
-                        ),
+                        color = EmTheme.colors.expense,
                         onClick = {
                             rawOffset = 0f
                             onDelete()
@@ -150,7 +149,7 @@ fun TransactionItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .offset { IntOffset(animatedOffset.roundToInt(), 0) }
-                .background(MaterialTheme.colorScheme.surfaceContainerLowest)
+                .background(EmTheme.colors.scheme.surfaceContainerLowest)
                 .then(
                     if (onEdit != null || onDelete != null) {
                         Modifier.pointerInput(Unit) {
@@ -192,14 +191,14 @@ fun TransactionItem(
                         Modifier
                     },
                 )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md)
                 .animateContentSize(),
         ) {
             // ── Category / transfer icon ───────────────────────────
             CategoryIconBox(
                 icon = if (isTransfer) "ic_transfer_account" else categoryIcon,
                 iconColor = if (isTransfer) {
-                    String.format("#%08X", MaterialTheme.colorScheme.tertiary.toArgb())
+                    String.format("#%08X", EmTheme.colors.scheme.tertiary.toArgb())
                 } else {
                     categoryColor
                 },
@@ -207,7 +206,7 @@ fun TransactionItem(
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
 
-            Spacer(Modifier.width(14.dp))
+            Spacer(Modifier.width(EmTheme.spacing.md))
 
             // ── Centre text block ──────────────────────────────────
             Column(
@@ -226,18 +225,15 @@ fun TransactionItem(
                     )
                 } else {
                     // ── Title ──
-                    Text(
+                    EmText(
                         text = categoryName,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Medium,
-                            fontSize = 15.sp,
-                        ),
+                        modifier = Modifier.fillMaxWidth(),
+                        role = EmTextRole.ItemTitle,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.fillMaxWidth(),
                     )
 
-                    Spacer(Modifier.height(3.dp))
+                    Spacer(Modifier.height(EmTheme.spacing.xs))
 
                     // ── Subtitle: account with dot separator ──
                     AccountSubtitle(
@@ -248,22 +244,20 @@ fun TransactionItem(
 
                     // ── Notes (if any) ──
                     if (!notes.isNullOrBlank()) {
-                        Spacer(Modifier.height(2.dp))
-                        Text(
+                        Spacer(Modifier.height(EmTheme.spacing.xxs))
+                        EmText(
                             text = notes,
+                            modifier = Modifier.fillMaxWidth(),
+                            role = EmTextRole.Supporting,
+                            color = EmTextColor.Supporting,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                            style = MaterialTheme.typography.bodySmall.copy(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f),
-                                fontSize = 12.sp,
-                            ),
-                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
             }
 
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(EmTheme.spacing.md))
 
             // ── Amount + date ──────────────────────────────────────
             Column(
@@ -273,46 +267,35 @@ fun TransactionItem(
                 horizontalAlignment = Alignment.End,
             ) {
                 val (prefix, amountColor) = when (transactionType) {
-                    TransactionType.EXPENSE -> "−" to colorResource(
-                        id = com.naveenapps.expensemanager.core.common.R.color.red_500,
-                    )
+                    TransactionType.EXPENSE -> "−" to EmTheme.colors.expense
 
-                    TransactionType.INCOME -> "+" to colorResource(
-                        id = com.naveenapps.expensemanager.core.common.R.color.green_500,
-                    )
+                    TransactionType.INCOME -> "+" to EmTheme.colors.income
 
                     else -> "" to Color.Unspecified
                 }
 
-                Text(
-                    text = "$prefix${amount.amountString ?: ""}",
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 15.sp,
-                        letterSpacing = (-0.3).sp,
-                    ),
+                EmAmountText(
+                    amount = "$prefix${amount.amountString ?: ""}",
                     color = amountColor,
                 )
 
-                Spacer(Modifier.height(2.dp))
+                Spacer(Modifier.height(EmTheme.spacing.xxs))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     // Added by a recurring rule: a small repeat mark before the date.
                     if (isRecurring) {
-                        Icon(
-                            imageVector = Icons.Outlined.Repeat,
+                        EmIcon(
+                            icon = Icons.Outlined.Repeat,
                             contentDescription = stringResource(R.string.recurring_badge),
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(12.dp),
+                            size = EmTheme.icons.sm,
+                            tint = EmTheme.colors.scheme.primary,
                         )
-                        Spacer(Modifier.width(3.dp))
+                        Spacer(Modifier.width(EmTheme.spacing.xs))
                     }
-                    Text(
+                    EmText(
                         text = date,
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                            fontSize = 11.sp,
-                        ),
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
                     )
                 }
             }
@@ -341,20 +324,19 @@ private fun CategoryIconBox(
     Box(
         modifier = modifier
             .size(44.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(tint.copy(alpha = 0.10f))
+            .clip(EmTheme.shapes.md)
+            .background(tint.tint())
             .border(
                 width = 1.dp,
-                color = tint.copy(alpha = 0.14f),
-                shape = RoundedCornerShape(14.dp),
+                color = tint.tint(),
+                shape = EmTheme.shapes.md,
             ),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(
+        EmIcon(
             painter = painterResource(id = context.getDrawable(icon)),
             contentDescription = contentDescription,
             tint = tint,
-            modifier = Modifier.size(22.dp),
         )
     }
 }
@@ -377,19 +359,17 @@ private fun AccountSubtitle(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        Icon(
+        EmIcon(
             painter = painterResource(id = context.getDrawable(accountIcon)),
             contentDescription = null,
+            size = EmTheme.icons.sm,
             tint = tint,
-            modifier = Modifier.size(12.dp),
         )
-        Spacer(Modifier.width(4.dp))
-        Text(
+        Spacer(Modifier.width(EmTheme.spacing.xs))
+        EmText(
             text = accountName,
-            style = MaterialTheme.typography.labelMedium.copy(
-                color = tint.copy(alpha = 0.85f),
-                fontSize = 12.sp,
-            ),
+            role = EmTextRole.Supporting,
+            color = tint,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -410,52 +390,46 @@ private fun TransferAccountsRow(
 ) {
     val context = LocalContext.current
 
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs)) {
         // From account
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
+            EmIcon(
                 painter = painterResource(id = context.getDrawable(fromIcon)),
                 contentDescription = null,
+                size = EmTheme.icons.sm,
                 tint = Color(getColorValue(fromColor)),
-                modifier = Modifier.size(12.dp),
             )
-            Spacer(Modifier.width(4.dp))
-            Text(
+            Spacer(Modifier.width(EmTheme.spacing.xs))
+            EmText(
                 text = fromName,
-                style = MaterialTheme.typography.labelMedium.copy(
-                    color = Color(getColorValue(fromColor)).copy(alpha = 0.85f),
-                    fontSize = 12.sp,
-                ),
+                role = EmTextRole.Supporting,
+                color = Color(getColorValue(fromColor)).copy(alpha = 0.85f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
 
         // Arrow
-        Text(
+        EmText(
             text = "↓",
-            style = MaterialTheme.typography.labelSmall.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
-                fontSize = 10.sp,
-            ),
-            modifier = Modifier.padding(start = 4.dp),
+            modifier = Modifier.padding(start = EmTheme.spacing.xs),
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
 
         // To account
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
+            EmIcon(
                 painter = painterResource(id = context.getDrawable(toIcon)),
                 contentDescription = null,
+                size = EmTheme.icons.sm,
                 tint = Color(getColorValue(toColor)),
-                modifier = Modifier.size(12.dp),
             )
-            Spacer(Modifier.width(4.dp))
-            Text(
+            Spacer(Modifier.width(EmTheme.spacing.xs))
+            EmText(
                 text = toName,
-                style = MaterialTheme.typography.labelMedium.copy(
-                    color = Color(getColorValue(toColor)).copy(alpha = 0.85f),
-                    fontSize = 12.sp,
-                ),
+                role = EmTextRole.Supporting,
+                color = Color(getColorValue(toColor)).copy(alpha = 0.85f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -482,31 +456,30 @@ private fun SwipeAction(
         contentAlignment = Alignment.Center,
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = icon,
+            EmIcon(
+                icon = icon,
                 contentDescription = label,
+                size = EmTheme.icons.md,
                 tint = Color.White,
-                modifier = Modifier.size(20.dp),
             )
-            Spacer(Modifier.height(4.dp))
-            Text(
+            Spacer(Modifier.height(EmTheme.spacing.xs))
+            EmText(
                 text = label,
+                role = EmTextRole.Label,
                 color = Color.White,
-                fontSize = 11.sp,
-                fontWeight = FontWeight.SemiBold,
             )
         }
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun TransactionUiStatePreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
-        AppCardView(
+        EmCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(EmTheme.spacing.lg),
         ) {
             TransactionItem(
                 categoryName = "Utilities",

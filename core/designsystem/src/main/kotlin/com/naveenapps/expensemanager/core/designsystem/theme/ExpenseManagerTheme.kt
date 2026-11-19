@@ -52,7 +52,8 @@ private val LightInk2 = Color(0xFF565A6E)
 private val LightInk3 = Color(0xFF868AA0)
 private val LightInk4 = Color(0xFFC7CADA)
 private val LightRed = Color(0xFFD93A46)
-private val LightAmber = Color(0xFFB9790A)
+// Darkened from the website's #B9790A for 4.5:1 text contrast on white (WCAG AA).
+private val LightAmber = Color(0xFF9A6400)
 private val LightBlue = Color(0xFF3E63D6)
 
 val ExpenseManagerDarkColorScheme: ColorScheme = darkColorScheme(
@@ -95,7 +96,8 @@ val ExpenseManagerDarkColorScheme: ColorScheme = darkColorScheme(
 )
 
 val ExpenseManagerLightColorScheme: ColorScheme = lightColorScheme(
-    primary = LightAccent,
+    // Text, buttons and income use the darker accent: #0F9D5B is only 3.5:1 on white, #0B7A46 is 5.4:1.
+    primary = LightAccent2,
     onPrimary = Color(0xFFFFFFFF),
     primaryContainer = Color(0xFFDDF2E7),
     onPrimaryContainer = Color(0xFF053D22),
@@ -118,7 +120,7 @@ val ExpenseManagerLightColorScheme: ColorScheme = lightColorScheme(
     onSurface = LightInk,
     surfaceVariant = LightBg3,
     onSurfaceVariant = LightInk2,
-    surfaceTint = LightAccent,
+    surfaceTint = LightAccent2,
     inverseSurface = LightInk,
     inverseOnSurface = DarkInk,
     outline = LightInk3,
@@ -143,7 +145,7 @@ data class ExpenseManagerExtendedColors(
 )
 
 val LightExtendedColors = ExpenseManagerExtendedColors(
-    income = LightAccent,
+    income = LightAccent2,
     expense = LightRed,
     warning = LightAmber,
     info = LightBlue,

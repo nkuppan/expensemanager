@@ -10,4 +10,5 @@
     <string name="search_libraries">Tìm thư viện</string>
     <string name="open_license">Mở giấy phép</string>
     <string name="licenses_unavailable">Bản dựng này không có thông tin giấy phép.</string>
+    <string name="about_email">Email</string>
 </resources>

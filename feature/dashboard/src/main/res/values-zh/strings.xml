@@ -80,6 +80,7 @@
         <item>预算未超支时不再显示为红色</item>
         <item>导出在所有手机上都可用：没有文件选择器时，文件会在分享菜单中打开</item>
         <item>日期筛选中的“取消”不再更改所选时间段</item>
+        <item>更简洁、统一的界面</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>在每日提醒中一键记录你最常用的支出，点错了还能撤销</item>

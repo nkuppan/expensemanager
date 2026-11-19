@@ -122,7 +122,7 @@ fun MultipleAccountSelectionScreen(
                 amount = account.amount.amountString,
                 amountTextColor = account.amountTextColor,
                 customImagePath = account.storedIcon.customImagePath,
-                border = AccountItemDefaults.border(isSelected),
+                selected = isSelected,
                 onClick = {
                     onItemSelection?.invoke(account, isSelected.not())
                 },

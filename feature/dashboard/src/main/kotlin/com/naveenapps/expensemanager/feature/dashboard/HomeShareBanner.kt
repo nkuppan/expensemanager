@@ -4,7 +4,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,19 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.VolunteerActivism
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
@@ -33,12 +23,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmColors
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 
 /**
  * The share banner at the bottom of Home: a gradient card in the brand colours with a short
@@ -52,12 +49,12 @@ internal fun HomeShareBanner(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val colors = shareBannerColors(MaterialTheme.colorScheme)
+    val colors = shareBannerColors(EmTheme.colors)
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(EmTheme.shapes.lg)
             .background(Brush.linearGradient(colors.gradient)),
     ) {
         // Two soft circles in the corners for depth.
@@ -75,77 +72,63 @@ internal fun HomeShareBanner(
         }
 
         Row(
-            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 18.dp),
+            modifier = Modifier.padding(
+                start = EmTheme.spacing.xl,
+                end = EmTheme.spacing.xl,
+                top = EmTheme.spacing.xl,
+                bottom = EmTheme.spacing.lg,
+            ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(end = 12.dp),
+                    .padding(end = EmTheme.spacing.md),
             ) {
-                Text(
+                EmText(
                     text = stringResource(R.string.home_share_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
+                    role = EmTextRole.SectionTitle,
                     color = colors.content,
                 )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
+                Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
+                EmText(
                     text = stringResource(R.string.home_share_description),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = colors.content.copy(alpha = 0.88f),
+                    role = EmTextRole.Supporting,
+                    color = colors.content,
                 )
-                Spacer(modifier = Modifier.height(14.dp))
-                Button(
+                Spacer(modifier = Modifier.height(EmTheme.spacing.md))
+                EmButton(
+                    text = stringResource(R.string.home_share_button),
                     onClick = onShare,
-                    shape = RoundedCornerShape(12.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colors.buttonContainer,
-                        contentColor = colors.buttonContent,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Share,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(R.string.home_share_button),
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
+                    leadingIcon = Icons.Outlined.Share,
+                    variant = if (colors.invertButton) EmButtonVariant.Inverse else EmButtonVariant.Primary,
+                )
             }
             Box(
                 modifier = Modifier
                     .size(64.dp)
-                    .clip(CircleShape)
+                    .clip(EmTheme.shapes.pill)
                     .background(colors.decoration.copy(alpha = colors.decoration.alpha * 1.8f)),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.VolunteerActivism,
+                EmIcon(
+                    icon = Icons.Outlined.VolunteerActivism,
                     contentDescription = null,
+                    size = EmTheme.icons.tile,
                     tint = colors.content,
-                    modifier = Modifier.size(34.dp),
                 )
             }
         }
 
-        IconButton(
+        EmIconButton(
+            icon = Icons.Outlined.Close,
+            contentDescription = stringResource(R.string.getting_started_hide),
             onClick = onDismiss,
+            tint = colors.content,
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(8.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Close,
-                contentDescription = stringResource(R.string.getting_started_hide),
-                tint = colors.content.copy(alpha = 0.8f),
-                modifier = Modifier.size(18.dp),
-            )
-        }
+                .padding(EmTheme.spacing.sm),
+        )
     }
 }
 
@@ -153,8 +136,7 @@ internal fun HomeShareBanner(
 private data class ShareBannerColors(
     val gradient: List<Color>,
     val content: Color,
-    val buttonContainer: Color,
-    val buttonContent: Color,
+    val invertButton: Boolean,
     val decoration: Color,
 )
 
@@ -162,31 +144,30 @@ private data class ShareBannerColors(
  * Light theme: a vivid primary → tertiary gradient with light text and a surface-coloured button.
  * Dark theme: the deeper primary → tertiary *container* colours with their matching text and a
  * primary button, so the card stays rich without glaring and every pair keeps its contrast.
- * Decided from the theme's own surface, so it follows the app's theme setting, not just the
+ * Decided from EmTheme.colors.isDark, so it follows the app's theme setting, not just the
  * system one.
  */
-private fun shareBannerColors(scheme: ColorScheme): ShareBannerColors {
-    val isDark = scheme.surface.luminance() < 0.5f
+private fun shareBannerColors(colors: EmColors): ShareBannerColors {
+    val scheme = colors.scheme
+    val isDark = colors.isDark
     return if (isDark) {
         ShareBannerColors(
             gradient = listOf(scheme.primaryContainer, scheme.tertiaryContainer),
             content = scheme.onPrimaryContainer,
-            buttonContainer = scheme.primary,
-            buttonContent = scheme.onPrimary,
-            decoration = scheme.onPrimaryContainer.copy(alpha = 0.06f),
+            invertButton = false,
+            decoration = scheme.onPrimaryContainer.tint(),
         )
     } else {
         ShareBannerColors(
             gradient = listOf(scheme.primary, scheme.tertiary),
             content = scheme.onPrimary,
-            buttonContainer = scheme.surface,
-            buttonContent = scheme.primary,
-            decoration = scheme.onPrimary.copy(alpha = 0.10f),
+            invertButton = true,
+            decoration = scheme.onPrimary.tint(),
         )
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun HomeShareBannerPreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {

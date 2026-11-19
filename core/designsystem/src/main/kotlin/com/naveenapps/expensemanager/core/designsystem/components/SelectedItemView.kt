@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 
 @Composable
 fun SelectedItemView(
@@ -22,28 +22,28 @@ fun SelectedItemView(
     Row(
         modifier = modifier,
     ) {
-        Icon(
-            imageVector = icon,
+        EmIcon(
+            icon = icon,
             contentDescription = null,
         )
 
-        Text(
+        EmText(
+            text = title,
             modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
+                .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.lg)
                 .weight(1f)
                 .align(Alignment.CenterVertically),
-            text = title,
         )
 
-        Text(
-            modifier = Modifier
-                .padding(start = 16.dp, end = 16.dp)
-                .align(Alignment.CenterVertically),
+        EmText(
             text = selectedCount,
+            modifier = Modifier
+                .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.lg)
+                .align(Alignment.CenterVertically),
         )
 
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+        EmIcon(
+            icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = null,
         )
     }

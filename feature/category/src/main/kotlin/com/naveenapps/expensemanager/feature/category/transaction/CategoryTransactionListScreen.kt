@@ -9,36 +9,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.UiState
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmLoading
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
@@ -72,39 +68,30 @@ fun CategoryTransactionTabScreenContent(
     onAction: (CategoryTransactionAction) -> Unit,
     showAddButton: Boolean = true,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(R.string.categories),
                 actions = {
-                    IconButton(onClick = {
+                    EmIconButton(
+                        icon = Icons.Outlined.Edit,
+                        contentDescription = stringResource(id = R.string.edit),
+                        onClick = {
                         onAction.invoke(CategoryTransactionAction.OpenCategoryList)
-                    }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Edit,
-                            contentDescription = stringResource(id = R.string.edit),
-                        )
-                    }
+                    },
+                    )
                 },
             )
         },
         floatingActionButton = {
             if (showAddButton) {
-                FloatingActionButton(
+                EmFab(
+                    icon = Icons.Default.Add,
+                    contentDescription = "",
                     onClick = {
                         onAction.invoke(CategoryTransactionAction.OpenTransactionCreate)
                     },
-                    shape = RoundedCornerShape(16.dp),
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 10.dp,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "",
-                    )
-                }
+                )
             }
         },
     ) { innerPadding ->
@@ -138,14 +125,12 @@ private fun CategoryTransactionListScreenContent(
             ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(horizontal = 48.dp),
+                    modifier = Modifier.padding(horizontal = EmTheme.spacing.xxxl),
                 ) {
-                    Text(
+                    EmText(
                         text = stringResource(id = R.string.no_transactions_available),
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Medium,
-                        ),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.ItemTitle,
+                        color = EmTextColor.Supporting,
                         textAlign = TextAlign.Center,
                     )
                 }
@@ -157,11 +142,7 @@ private fun CategoryTransactionListScreenContent(
                 modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(48.dp),
-                    strokeWidth = 3.dp,
-                    strokeCap = StrokeCap.Round,
-                )
+                EmLoading()
             }
         }
 
@@ -179,7 +160,7 @@ private fun CategoryTransactionListScreenContent(
                     FilterView(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(end = 6.dp),
+                            .padding(end = EmTheme.spacing.sm),
                     )
                 }
                 // ── Pie chart card ─────────────────────────────────
@@ -192,15 +173,15 @@ private fun CategoryTransactionListScreenContent(
                             stringResource(id = R.string.income)
                         },
                         onChartClick = changeChart,
-                        modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp),
+                        modifier = Modifier.padding(vertical = EmTheme.spacing.md, horizontal = EmTheme.spacing.lg),
                         footer = {
                             // Tap hint
-                            Text(
+                            EmText(
                                 text = stringResource(R.string.tap_chart_to_switch_to) +
                                     getCategoryGroupTitleInverted(isExpense),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
-                                modifier = Modifier.padding(bottom = 14.dp),
+                                modifier = Modifier.padding(bottom = EmTheme.spacing.md),
+                                role = EmTextRole.Supporting,
+                                color = EmTextColor.Supporting,
                             )
                         },
                     )
@@ -210,26 +191,28 @@ private fun CategoryTransactionListScreenContent(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 6.dp, bottom = 10.dp, start = 16.dp, end = 16.dp),
+                            .padding(
+                                top = EmTheme.spacing.sm,
+                                bottom = EmTheme.spacing.sm,
+                                start = EmTheme.spacing.lg,
+                                end = EmTheme.spacing.lg,
+                            ),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(
-                            text = getCategoryGroupTitle(isExpense).uppercase(),
-                            style = MaterialTheme.typography.labelSmall.copy(
-                                fontWeight = FontWeight.SemiBold,
-                                letterSpacing = 0.8.sp,
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f),
+                        EmText(
+                            text = getCategoryGroupTitle(isExpense),
                             modifier = Modifier.weight(1f),
+                            role = EmTextRole.Overline,
+                            color = EmTextColor.Supporting,
                         )
-                        Text(
+                        EmText(
                             text = pluralStringResource(
                                 R.plurals.category_count,
                                 categoryTransactions.size,
                                 categoryTransactions.size,
                             ),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                            role = EmTextRole.Supporting,
+                            color = EmTextColor.Supporting,
                         )
                     }
                 }
@@ -237,14 +220,18 @@ private fun CategoryTransactionListScreenContent(
                 // ── Empty state ────────────────────────────────────
                 if (categoryTransactions.isEmpty()) {
                     item(key = "empty") {
-                        EmptyItem(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(top = 32.dp, start = 16.dp, end = 16.dp),
-                            emptyItemText = stringResource(
+                        EmEmptyState(
+                            illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_grouping_available),
+                            title = stringResource(
                                 id = R.string.no_transactions_available,
                             ),
-                            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_grouping_available,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    top = EmTheme.spacing.xxl,
+                                    start = EmTheme.spacing.lg,
+                                    end = EmTheme.spacing.lg,
+                                ),
                         )
                     }
                 } else {
@@ -300,7 +287,7 @@ fun getRandomCategoryTransactionData(): CategoryTransactionState = CategoryTrans
 
 fun getUiState(): UiState<CategoryTransactionState> = UiState.Success(data = getRandomCategoryTransactionData())
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun CategoryTransactionTabScreenPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

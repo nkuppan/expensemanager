@@ -10,4 +10,5 @@
     <string name="search_libraries">ابحث في المكتبات</string>
     <string name="open_license">فتح الترخيص</string>
     <string name="licenses_unavailable">التراخيص غير مضمّنة في هذا الإصدار.</string>
+    <string name="about_email">البريد الإلكتروني</string>
 </resources>

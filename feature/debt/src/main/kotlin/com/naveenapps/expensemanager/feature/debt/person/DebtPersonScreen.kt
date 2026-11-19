@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,39 +16,40 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmMenuItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmOverflowMenu
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.feature.debt.DebtStatus
 import com.naveenapps.expensemanager.feature.debt.PersonAvatar
@@ -67,78 +67,69 @@ fun DebtPersonScreen(viewModel: DebtPersonViewModel = koinViewModel()) {
 @Composable
 private fun DebtPersonContent(state: DebtPersonState, onAction: (DebtPersonAction) -> Unit) {
     val context = LocalContext.current
-    var showMenu by remember { mutableStateOf(false) }
 
     PersonDialogs(state = state, onAction = onAction)
 
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction(DebtPersonAction.ClosePage) },
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { onAction(DebtPersonAction.ClosePage) },
                 title = state.name,
                 actions = {
                     if (state.status == DebtStatus.OWES_YOU) {
-                        IconButton(onClick = {
+                        EmIconButton(
+                            icon = Icons.Outlined.Share,
+                            contentDescription = stringResource(R.string.debt_share_reminder),
+                            onClick = {
                             context.shareReminder(state)
                             onAction(DebtPersonAction.ReminderShared)
-                        }) {
-                            Icon(
-                                Icons.Outlined.Share,
-                                contentDescription = stringResource(R.string.debt_share_reminder),
-                            )
-                        }
+                        },
+                        )
                     }
-                    Box {
-                        IconButton(onClick = { showMenu = true }) {
-                            Icon(
-                                Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.debt_more_options),
-                            )
-                        }
-                        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.debt_rename)) },
-                                onClick = {
-                                    showMenu = false
-                                    onAction(DebtPersonAction.ShowRename)
-                                },
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.debt_delete)) },
-                                onClick = {
-                                    showMenu = false
-                                    onAction(DebtPersonAction.ShowDelete)
-                                },
-                            )
-                        }
-                    }
+                    EmOverflowMenu(
+                        contentDescription = stringResource(R.string.debt_more_options),
+                        items = listOf(
+                            EmMenuItem(
+                                label = stringResource(R.string.debt_rename),
+                                onClick = { onAction(DebtPersonAction.ShowRename) },
+                            ),
+                            EmMenuItem(
+                                label = stringResource(R.string.debt_delete),
+                                onClick = { onAction(DebtPersonAction.ShowDelete) },
+                                destructive = true,
+                            ),
+                        ),
+                    )
                 },
             )
         },
     ) { innerPadding ->
-        if (!state.isLoaded) return@Scaffold
+        if (!state.isLoaded) return@EmScaffold
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
+            contentPadding = PaddingValues(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.lg,
+                top = EmTheme.spacing.sm,
+                bottom = EmTheme.spacing.xl,
+            ),
         ) {
             item { BalanceHeader(state = state, onAction = onAction) }
             item {
-                Text(
-                    text = stringResource(R.string.debt_history),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
+                EmSectionHeader(
+                    title = stringResource(R.string.debt_history),
+                    modifier = Modifier.padding(top = EmTheme.spacing.xl, bottom = EmTheme.spacing.xs),
                 )
             }
             itemsIndexed(state.entries, key = { _, row -> row.id }) { index, row ->
-                AppCardView(
+                EmCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 2.dp),
-                    shape = AppCardViewDefaults.cardShape(index, state.entries),
+                        .padding(bottom = EmTheme.spacing.xxs),
+                    position = EmCardPosition.of(index, state.entries),
                 ) {
                     EntryRow(row = row, onClick = { onAction(DebtPersonAction.OpenEntry(row.id)) })
                 }
@@ -149,66 +140,66 @@ private fun DebtPersonContent(state: DebtPersonState, onAction: (DebtPersonActio
 
 @Composable
 private fun BalanceHeader(state: DebtPersonState, onAction: (DebtPersonAction) -> Unit) {
-    AppCardView(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(16.dp)) {
+    EmCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(EmTheme.spacing.lg)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 PersonAvatar(name = state.name, size = 48.dp)
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(EmTheme.spacing.md))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
+                    EmText(
                         text = when (state.status) {
                             DebtStatus.OWES_YOU -> stringResource(R.string.debt_owes_you_title, state.name)
                             DebtStatus.YOU_OWE -> stringResource(R.string.debt_you_owe_title, state.name)
                             DebtStatus.SETTLED -> stringResource(R.string.debt_all_settled)
                         },
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = EmTextColor.Supporting,
                     )
                     if (state.status != DebtStatus.SETTLED) {
-                        Text(
-                            text = state.balance,
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
+                        EmAmountText(
+                            amount = state.balance,
                             color = state.status.color(),
+                            size = EmAmountSize.Large,
                         )
                     }
                     state.dueDate?.let { due ->
-                        Text(
+                        EmText(
                             text = if (state.isOverdue) {
                                 stringResource(R.string.debt_overdue_since, due.toCompleteDateWithDate())
                             } else {
                                 stringResource(R.string.debt_due_on, due.toCompleteDateWithDate())
                             },
-                            style = MaterialTheme.typography.bodySmall,
+                            role = EmTextRole.Supporting,
                             color = if (state.isOverdue) {
-                                MaterialTheme.colorScheme.error
+                                EmTheme.colors.scheme.error
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
+                                EmTheme.colors.scheme.onSurfaceVariant
                             },
                         )
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
             if (state.status != DebtStatus.SETTLED) {
-                Button(onClick = { onAction(DebtPersonAction.SettleUp) }, modifier = Modifier.fillMaxWidth()) {
-                    Text(text = stringResource(R.string.debt_settle_up))
-                }
-                Spacer(modifier = Modifier.height(8.dp))
+                EmButton(
+                    text = stringResource(R.string.debt_settle_up),
+                    onClick = { onAction(DebtPersonAction.SettleUp) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(
+            Row(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm)) {
+                EmButton(
+                    text = stringResource(R.string.debt_add_lent),
                     onClick = { onAction(DebtPersonAction.AddEntry(DebtEntryKind.LENT)) },
                     modifier = Modifier.weight(1f),
-                ) {
-                    Text(text = stringResource(R.string.debt_add_lent), maxLines = 1)
-                }
-                OutlinedButton(
+                    variant = EmButtonVariant.Secondary,
+                )
+                EmButton(
+                    text = stringResource(R.string.debt_add_borrowed),
                     onClick = { onAction(DebtPersonAction.AddEntry(DebtEntryKind.BORROWED)) },
                     modifier = Modifier.weight(1f),
-                ) {
-                    Text(text = stringResource(R.string.debt_add_borrowed), maxLines = 1)
-                }
+                    variant = EmButtonVariant.Secondary,
+                )
             }
         }
     }
@@ -225,39 +216,36 @@ private fun EntryRow(row: DebtEntryRow, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            EmText(
                 text = stringResource(row.kind.labelRes()),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+                role = EmTextRole.ItemTitle,
             )
-            Text(
+            EmText(
                 text = details,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
             if (row.note.isNotBlank()) {
-                Text(
+                EmText(
                     text = row.note,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
         }
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
         // Lent / paid back add to what they owe; borrowed / got back reduce it.
         val status = if (row.kind.balanceSign > 0) DebtStatus.OWES_YOU else DebtStatus.YOU_OWE
-        Text(
-            text = row.amount,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
+        EmAmountText(
+            amount = row.amount,
             color = status.color(),
         )
     }
@@ -267,44 +255,40 @@ private fun EntryRow(row: DebtEntryRow, onClick: () -> Unit) {
 private fun PersonDialogs(state: DebtPersonState, onAction: (DebtPersonAction) -> Unit) {
     if (state.showRenameDialog) {
         var name by rememberSaveable { mutableStateOf(state.name) }
-        AlertDialog(
+        EmBottomSheet(
             onDismissRequest = { onAction(DebtPersonAction.DismissRename) },
-            title = { Text(stringResource(R.string.debt_rename_title)) },
-            text = {
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    singleLine = true,
-                    label = { Text(stringResource(R.string.debt_person_hint)) },
+            title = stringResource(R.string.debt_rename_title),
+            actions = {
+                EmButton(
+                    text = stringResource(R.string.debt_cancel),
+                    onClick = { onAction(DebtPersonAction.DismissRename) },
+                    variant = EmButtonVariant.Secondary,
+                    modifier = Modifier.weight(1f),
+                )
+                EmButton(
+                    text = stringResource(R.string.debt_save),
+                    onClick = { onAction(DebtPersonAction.Rename(name)) },
+                    enabled = name.isNotBlank(),
+                    modifier = Modifier.weight(1f),
                 )
             },
-            confirmButton = {
-                TextButton(onClick = { onAction(DebtPersonAction.Rename(name)) }, enabled = name.isNotBlank()) {
-                    Text(stringResource(R.string.debt_save))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction(DebtPersonAction.DismissRename) }) {
-                    Text(stringResource(R.string.debt_cancel))
-                }
-            },
-        )
+        ) {
+            EmTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = stringResource(R.string.debt_person_hint),
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
     if (state.showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = { onAction(DebtPersonAction.DismissDelete) },
-            title = { Text(stringResource(R.string.debt_delete_person_title, state.name)) },
-            text = { Text(stringResource(R.string.debt_delete_person_message)) },
-            confirmButton = {
-                TextButton(onClick = { onAction(DebtPersonAction.ConfirmDelete) }) {
-                    Text(stringResource(R.string.debt_delete), color = MaterialTheme.colorScheme.error)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction(DebtPersonAction.DismissDelete) }) {
-                    Text(stringResource(R.string.debt_cancel))
-                }
-            },
+        EmConfirm(
+            title = stringResource(R.string.debt_delete_person_title, state.name),
+            message = stringResource(R.string.debt_delete_person_message),
+            confirmText = stringResource(R.string.debt_delete),
+            onConfirm = { onAction(DebtPersonAction.ConfirmDelete) },
+            onDismiss = { onAction(DebtPersonAction.DismissDelete) },
+            destructive = true,
         )
     }
 }

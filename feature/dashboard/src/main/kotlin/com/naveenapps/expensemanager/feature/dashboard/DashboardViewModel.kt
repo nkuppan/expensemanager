@@ -500,7 +500,7 @@ class DashboardViewModel(
     }
 
     companion object {
-        private const val MAX_TRANSACTIONS_IN_LIST = 10
+        private const val MAX_TRANSACTIONS_IN_LIST = 5
         private const val MAX_UPCOMING_IN_LIST = 3
         private const val REMINDER_BANNER_SOURCE = "home_banner"
         const val REMINDER_METHOD_DIALOG = "dialog"

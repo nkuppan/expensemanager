@@ -2,3 +2,4 @@
 • Budżety nie są już czerwone, gdy wciąż mieścisz się w limicie
 • Eksport działa na każdym telefonie: bez wyboru plików plik otwiera się w menu udostępniania
 • Anuluj w filtrze dat nie zmienia już wybranego okresu
+• Czystszy, spójniejszy wygląd

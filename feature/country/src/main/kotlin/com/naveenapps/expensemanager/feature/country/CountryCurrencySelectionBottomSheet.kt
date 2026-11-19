@@ -1,9 +1,8 @@
 package com.naveenapps.expensemanager.feature.country
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -12,7 +11,7 @@ fun CountryCurrencySelectionBottomSheet(
     onEvent: (CountrySelectionEvent) -> Unit,
     countryListViewModel: CountryListViewModel = koinViewModel(),
 ) {
-    SafeModalBottomSheet(
+    EmModalSheet(
         onDismissRequest = {
             onEvent.invoke(CountrySelectionEvent.Dismiss)
         },

@@ -77,7 +77,7 @@ class DesignSystemDetector :
                 """,
             category = Category.USABILITY,
             priority = 6,
-            severity = Severity.WARNING,
+            severity = Severity.ERROR,
             implementation = IMPLEMENTATION,
         )
 
@@ -91,7 +91,7 @@ class DesignSystemDetector :
                 """,
             category = Category.USABILITY,
             priority = 6,
-            severity = Severity.WARNING,
+            severity = Severity.ERROR,
             implementation = IMPLEMENTATION,
         )
 
@@ -105,7 +105,7 @@ class DesignSystemDetector :
                 """,
             category = Category.USABILITY,
             priority = 6,
-            severity = Severity.WARNING,
+            severity = Severity.ERROR,
             implementation = IMPLEMENTATION,
         )
 
@@ -118,7 +118,7 @@ class DesignSystemDetector :
                 """,
             category = Category.USABILITY,
             priority = 6,
-            severity = Severity.WARNING,
+            severity = Severity.ERROR,
             implementation = IMPLEMENTATION,
         )
 

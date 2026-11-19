@@ -84,6 +84,7 @@
         <item>Os orçamentos não aparecem mais em vermelho enquanto você está dentro do limite</item>
         <item>Exportar funciona em todos os celulares: sem seletor de arquivos, o arquivo abre para compartilhar</item>
         <item>Cancelar no filtro de datas não altera mais o período selecionado</item>
+        <item>Um visual mais limpo e consistente</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Registre sua despesa mais frequente direto do lembrete diário com um toque, com Desfazer se errar</item>

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.designsystem.theme
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
@@ -30,6 +31,8 @@ data class EmTypography(
     val amountLarge: TextStyle,
     val amountMedium: TextStyle,
     val amountSmall: TextStyle,
+    /** Monospace small text (licences, codes). */
+    val code: TextStyle,
 )
 
 private const val TABULAR_FIGURES = "tnum"
@@ -81,4 +84,5 @@ internal fun emTypography(material: Typography): EmTypography = EmTypography(
         fontWeight = FontWeight.Medium,
         fontFeatureSettings = TABULAR_FIGURES,
     ),
+    code = material.bodySmall.copy(fontFamily = FontFamily.Monospace),
 )

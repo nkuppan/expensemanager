@@ -25,7 +25,7 @@ class DesignSystemDetectorTest : LintDetectorTest() {
             import androidx.compose.material3.Text
             import androidx.compose.material3.*
             """,
-        ).expectWarningCount(2).expectContains("RawMaterialUsage")
+        ).expectErrorCount(2).expectContains("RawMaterialUsage")
     }
 
     fun testLibraryImportIsFlagged() {
@@ -35,7 +35,7 @@ class DesignSystemDetectorTest : LintDetectorTest() {
 
             import com.naveenapps.designsystem.theme.PrimaryButton
             """,
-        ).expectWarningCount(1).expectContains("RawMaterialUsage")
+        ).expectErrorCount(1).expectContains("RawMaterialUsage")
     }
 
     fun testAllowedImportsAreClean() {
@@ -60,7 +60,7 @@ class DesignSystemDetectorTest : LintDetectorTest() {
             import androidx.compose.ui.text.font.FontWeight
             import androidx.compose.ui.unit.sp
             """,
-        ).expectWarningCount(2).expectContains("HardcodedTextStyle")
+        ).expectErrorCount(2).expectContains("HardcodedTextStyle")
     }
 
     fun testColorsAreFlagged() {
@@ -73,7 +73,7 @@ class DesignSystemDetectorTest : LintDetectorTest() {
             val brand = Color(0xFF7E57C2)
             val text = Color.White
             """,
-        ).expectWarningCount(3).expectContains("HardcodedColor")
+        ).expectErrorCount(3).expectContains("HardcodedColor")
     }
 
     fun testColorFromVariableIsClean() {
@@ -93,6 +93,6 @@ class DesignSystemDetectorTest : LintDetectorTest() {
 
             import androidx.compose.foundation.shape.RoundedCornerShape
             """,
-        ).expectWarningCount(1).expectContains("HardcodedShape")
+        ).expectErrorCount(1).expectContains("HardcodedShape")
     }
 }

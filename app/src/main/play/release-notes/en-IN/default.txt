@@ -2,3 +2,4 @@
 • Budgets no longer show red while you're still under budget
 • Export works on every phone: if yours has no file picker, the file opens in the share sheet
 • Cancel in the date filter no longer changes the selected period
+• A cleaner, more consistent look

@@ -16,15 +16,10 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.MoneyOff
 import androidx.compose.material.icons.outlined.Savings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,15 +35,21 @@ import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
@@ -97,7 +98,7 @@ fun AnalysisInsightsSection(
     if (!insights.hasExpenses) return
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
         HighlightsCard(insights)
         CategoryBreakdownSection(insights.categories, onCategoryClick, onViewAllCategories)
@@ -109,14 +110,6 @@ fun AnalysisInsightsSection(
 }
 
 /** Same title as the other Analysis / Home cards (e.g. "Average and projected"). */
-@Composable
-private fun SectionTitle(
-    text: String,
-    modifier: Modifier = Modifier,
-    onViewAllClick: (() -> Unit)? = null,
-) {
-    DashboardWidgetTitle(title = text, modifier = modifier, onViewAllClick = onViewAllClick)
-}
 
 @Composable
 private fun Category.displayName(): String = titleResId?.let { stringResource(it) } ?: name
@@ -139,15 +132,15 @@ internal fun HighlightsCard(insights: AnalysisInsightsUi) {
 
     val incomeColor = getIncomeColor()
     val expenseColor = getExpenseColor()
-    val accent = MaterialTheme.colorScheme.primary
+    val accent = EmTheme.colors.scheme.primary
 
     Column {
-        SectionTitle(stringResource(R.string.insights_title), modifier = ListTitleModifier)
+        EmSectionHeader(stringResource(R.string.insights_title), modifier = ListTitleModifier)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(IntrinsicSize.Min),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             if (top != null) {
                 HighlightTile(
@@ -205,33 +198,29 @@ private fun HighlightTile(
     value: String,
     modifier: Modifier = Modifier,
 ) {
-    AppCardView(modifier = modifier.fillMaxHeight(), cornerSize = AnalysisCardCorner) {
+    EmCard(modifier = modifier.fillMaxHeight()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(12.dp)
+                .padding(EmTheme.spacing.md)
                 .semantics(mergeDescendants = true) {},
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             icon()
-            Text(
-                text = "$percent%",
-                style = MaterialTheme.typography.titleLarge.copy(letterSpacing = (-0.3).sp),
-                fontWeight = FontWeight.Bold,
+            EmAmountText(
+                amount = "$percent%",
                 color = color,
             )
-            Text(
+            EmText(
                 text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
+            EmText(
                 text = value,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                role = EmTextRole.Supporting,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -244,14 +233,14 @@ private fun HighlightTile(
 private fun HighlightIconTile(icon: ImageVector, tint: Color) {
     Box(
         modifier = IconSpecModifier
-            .background(tint.copy(alpha = 0.14f), CircleShape),
+            .background(tint.tint(), EmTheme.shapes.pill),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(
-            imageVector = icon,
+        EmIcon(
+            icon = icon,
             contentDescription = null,
+            size = EmTheme.icons.md,
             tint = tint,
-            modifier = Modifier.size(20.dp),
         )
     }
 }
@@ -273,16 +262,15 @@ internal fun CategoryBreakdownSection(
     if (categories.isEmpty()) return
     val shown = categories.take(MAX_CATEGORY_ROWS)
 
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        SectionTitle(
-            text = stringResource(R.string.where_money_goes),
+    Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs)) {
+        EmSectionHeader(title = stringResource(R.string.where_money_goes),
             modifier = ListTitleModifier,
             onViewAllClick = if (categories.size > MAX_CATEGORY_ROWS) onViewAllCategories else null,
         )
         shown.forEachIndexed { index, row ->
-            AppCardView(
+            EmCard(
                 modifier = Modifier.fillMaxWidth(),
-                shape = AppCardViewDefaults.cardShape(index, shown),
+                position = EmCardPosition.of(index, shown),
             ) {
                 CategoryTransactionItem(
                     modifier = Modifier
@@ -310,35 +298,32 @@ internal fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
     // Selected column (tap to inspect); defaults to the busiest day.
     var selected by remember(busiest) { mutableStateOf(busiest) }
     val selectedBar = weekdays.firstOrNull { it.dayOfWeek == selected }
-    val accent = MaterialTheme.colorScheme.primary
+    val accent = EmTheme.colors.scheme.primary
 
-    AppCardView(modifier = Modifier.fillMaxWidth(), cornerSize = AnalysisCardCorner) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            SectionTitle(stringResource(R.string.spending_by_weekday))
+    EmCard(modifier = Modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(EmTheme.spacing.lg)) {
+            EmSectionHeader(stringResource(R.string.spending_by_weekday))
             if (selectedBar != null) {
-                Spacer(modifier = Modifier.height(2.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xxs))
                 Row(verticalAlignment = Alignment.Bottom) {
-                    Text(
-                        text = selectedBar.amount,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                    EmAmountText(
+                        amount = selectedBar.amount,
+                        size = EmAmountSize.Large,
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
+                    Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+                    EmText(
                         text = selectedBar.dayOfWeek.fullName(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 2.dp),
+                        modifier = Modifier.padding(bottom = EmTheme.spacing.xxs),
+                        color = EmTextColor.Supporting,
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(132.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
                 verticalAlignment = Alignment.Bottom,
             ) {
                 weekdays.forEach { bar ->
@@ -349,7 +334,7 @@ internal fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()
-                            .clip(RoundedCornerShape(10.dp))
+                            .clip(EmTheme.shapes.sm)
                             // Whole column is the touch target, much larger than the bar.
                             .clickable { selected = bar.dayOfWeek }
                             .semantics { contentDescription = "${bar.dayOfWeek.fullName()}, ${bar.amount}" },
@@ -373,16 +358,15 @@ internal fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
                                                 accent.copy(alpha = if (isSelected || isBusiest) 0.6f else 0.18f),
                                             ),
                                         ),
-                                        shape = RoundedCornerShape(8.dp),
+                                        shape = EmTheme.shapes.sm,
                                     ),
                             )
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
+                        Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
+                        EmText(
                             text = dayName,
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                            color = if (isSelected) accent else MaterialTheme.colorScheme.onSurfaceVariant,
+                            role = EmTextRole.Supporting,
+                            color = if (isSelected) accent else EmTheme.colors.scheme.onSurfaceVariant,
                             maxLines = 1,
                         )
                     }
@@ -405,15 +389,14 @@ internal fun BiggestExpensesSection(
     expenses: List<TransactionUiItem>,
     onTransactionClick: (String) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
-        SectionTitle(
-            text = stringResource(R.string.biggest_expenses),
+    Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs)) {
+        EmSectionHeader(title = stringResource(R.string.biggest_expenses),
             modifier = ListTitleModifier,
         )
         expenses.forEachIndexed { index, transaction ->
-            AppCardView(
+            EmCard(
                 modifier = Modifier.fillMaxWidth(),
-                shape = AppCardViewDefaults.cardShape(index, expenses),
+                position = EmCardPosition.of(index, expenses),
             ) {
                 TransactionItem(
                     modifier = Modifier
@@ -442,7 +425,7 @@ internal fun BiggestExpensesSection(
 
 // endregion
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun AnalysisInsightsSectionPreview() {
     fun category(id: String, name: String, color: String) = Category(

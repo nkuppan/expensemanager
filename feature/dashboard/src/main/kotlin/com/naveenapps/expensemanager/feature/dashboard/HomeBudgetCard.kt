@@ -7,26 +7,17 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Savings
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,15 +27,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyAction
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmSegmented
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PagerIndicator
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SegmentedSwitch
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.feature.budget.components.BudgetGauge
 import com.naveenapps.expensemanager.feature.budget.components.BudgetProgress
@@ -82,18 +73,17 @@ internal fun HomeBudgetCard(
     val periodBudgets = if (period == BudgetPeriod.MONTHLY) budgets.monthly else budgets.yearly
     val shownBudget = periodBudgets.getOrNull(pagerFor(period).currentPage.coerceAtMost(periodBudgets.lastIndex))
 
-    AppCardView(
+    EmCard(
         modifier = modifier.fillMaxWidth(),
-        cornerSize = 16.dp,
         onClick = shownBudget?.let { budget -> { onAction(DashboardAction.OpenBudgetDetails(budget.id)) } },
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 18.dp),
+                .padding(vertical = EmTheme.spacing.lg),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            SegmentedSwitch(
+            EmSegmented(
                 options = BudgetPeriod.entries,
                 selected = period,
                 onSelect = { period = it },
@@ -101,7 +91,7 @@ internal fun HomeBudgetCard(
                 modifier = Modifier.fillMaxWidth(0.72f),
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
 
             AnimatedContent(
                 targetState = period to periodBudgets,
@@ -120,7 +110,7 @@ internal fun HomeBudgetCard(
                                 budgets.year
                             },
                             onCreate = { onAction(DashboardAction.OpenBudgetCreate(shownPeriod)) },
-                            modifier = Modifier.padding(horizontal = 16.dp),
+                            modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
                         )
 
                         1 -> HomeBudgetGauge(budget = shownBudgets.single(), onAction = onAction)
@@ -158,7 +148,7 @@ private fun HomeBudgetPages(
         HomeBudgetGauge(budget = budgets[page], onAction = onAction)
     }
 
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
 
     val currentPage = pagerState.currentPage.coerceIn(0, budgets.lastIndex)
     PagerIndicator(
@@ -173,54 +163,20 @@ private fun HomeBudgetGauge(budget: BudgetProgress, onAction: (DashboardAction) 
     BudgetGauge(
         budget = budget,
         onEdit = { onAction(DashboardAction.EditBudget(budget.id)) },
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
     )
 }
 
 @Composable
 private fun NoBudget(periodName: String, onCreate: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Savings,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(30.dp),
-            )
-        }
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = stringResource(id = R.string.home_budget_none, periodName),
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(
-            text = stringResource(id = R.string.tap_to_set_spending_limit),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        FilledTonalButton(onClick = onCreate) {
-            Icon(imageVector = Icons.Outlined.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(text = stringResource(id = R.string.home_budget_create))
-        }
-    }
+    EmEmptyState(
+        icon = Icons.Outlined.Savings,
+        title = stringResource(id = R.string.home_budget_none, periodName),
+        body = stringResource(id = R.string.tap_to_set_spending_limit),
+        action = EmEmptyAction(stringResource(id = R.string.home_budget_create), onCreate),
+        compact = true,
+        modifier = modifier,
+    )
 }
 
 /** "October 2026" for the month being viewed, in the user's language. */

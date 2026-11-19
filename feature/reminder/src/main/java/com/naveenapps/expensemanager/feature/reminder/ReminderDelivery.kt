@@ -17,21 +17,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.BatteryAlert
 import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.NotificationsOff
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import java.util.Locale
 
 /**
@@ -45,26 +45,25 @@ internal fun ReminderDeliverySection(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        AppCardView {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md)) {
+        EmCard {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(EmTheme.spacing.lg),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.History,
+                EmIcon(
+                    icon = Icons.Rounded.History,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
-                Text(
+                EmText(
                     text = state.lastReminderRunAt?.let { at ->
                         stringResource(R.string.reminder_last_run, context.relativeTime(at))
                     } ?: stringResource(R.string.reminder_not_run_yet),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
@@ -113,28 +112,27 @@ private fun DeliveryWarning(
     secondaryAction: String? = null,
     onSecondaryAction: () -> Unit = {},
 ) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = MaterialTheme.shapes.large,
-        color = MaterialTheme.colorScheme.errorContainer,
-        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-    ) {
+    EmCard(modifier = Modifier.fillMaxWidth(), variant = EmCardVariant.Error) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(EmTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
-                Icon(imageVector = icon, contentDescription = null, modifier = Modifier.size(20.dp))
-                Text(text = title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.SemiBold)
+                EmIcon(icon = icon, contentDescription = null, size = EmTheme.icons.md)
+                EmText(text = title, role = EmTextRole.SectionTitle)
             }
-            Text(text = body, style = MaterialTheme.typography.bodySmall)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilledTonalButton(onClick = onAction) { Text(text = action) }
+            EmText(text = body, role = EmTextRole.Supporting)
+            Row(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm)) {
+                EmButton(text = action, onClick = onAction, variant = EmButtonVariant.Secondary)
                 if (secondaryAction != null) {
-                    TextButton(onClick = onSecondaryAction) { Text(text = secondaryAction) }
+                    EmButton(
+                        text = secondaryAction,
+                        onClick = onSecondaryAction,
+                        variant = EmButtonVariant.Tertiary,
+                    )
                 }
             }
         }

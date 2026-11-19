@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Calculate
@@ -22,20 +21,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material.icons.outlined.Event
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SuggestionChip
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -45,17 +30,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.em.EmChipVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmPickerField
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmSwitch
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.feature.account.selection.AccountItem
@@ -72,7 +71,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun DebtEntryScreen(viewModel: DebtEntryViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val resources = LocalContext.current.resources
 
@@ -91,43 +90,40 @@ fun DebtEntryScreen(viewModel: DebtEntryViewModel = koinViewModel()) {
 private fun DebtEntryContent(
     state: DebtEntryState,
     onAction: (DebtEntryAction) -> Unit,
-    snackbarHostState: SnackbarHostState,
+    snackbarHostState: EmSnackbarHostState,
 ) {
     EntryDialogs(state = state, onAction = onAction)
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction(DebtEntryAction.ClosePage) },
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { onAction(DebtEntryAction.ClosePage) },
                 title = stringResource(if (state.isEditing) R.string.debt_edit_entry else R.string.debt_new_entry),
                 actions = {
                     if (state.isEditing) {
-                        IconButton(onClick = { onAction(DebtEntryAction.ShowDelete) }) {
-                            Icon(
-                                Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.debt_delete),
-                                tint = MaterialTheme.colorScheme.error,
-                            )
-                        }
+                        EmIconButton(
+                            icon = Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.debt_delete),
+                            onClick = { onAction(DebtEntryAction.ShowDelete) },
+                            tint = EmTheme.colors.scheme.error,
+                        )
                     }
                 },
             )
         },
-        floatingActionButton = {
+        bottomBar = {
             if (state.isLoaded) {
-                ExtendedFloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    onClick = { onAction(DebtEntryAction.Save) },
-                    icon = { Icon(imageVector = Icons.Default.Done, contentDescription = null) },
-                    text = { Text(text = stringResource(R.string.debt_save)) },
+                EmBottomActionBar(
+                    primaryText = stringResource(R.string.debt_save),
+                    onPrimaryClick = { onAction(DebtEntryAction.Save) },
+                    primaryIcon = Icons.Default.Done,
                 )
             }
         },
     ) { innerPadding ->
-        if (!state.isLoaded) return@Scaffold
+        if (!state.isLoaded) return@EmScaffold
         EntryForm(
             state = state,
             onAction = onAction,
@@ -144,82 +140,86 @@ private fun DebtEntryContent(
 private fun EntryForm(state: DebtEntryState, onAction: (DebtEntryAction) -> Unit, modifier: Modifier = Modifier) {
     val focusManager = LocalFocusManager.current
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.padding(horizontal = EmTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
         FlowRow(
-            modifier = Modifier.padding(top = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(top = EmTheme.spacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             DebtEntryKind.entries.forEach { kind ->
-                FilterChip(
+                EmChip(
+                    label = stringResource(kind.labelRes()),
                     selected = state.kind == kind,
                     onClick = { onAction(DebtEntryAction.SelectKind(kind)) },
-                    label = { Text(stringResource(kind.labelRes())) },
                 )
             }
         }
 
         PersonField(state = state, onAction = onAction)
 
-        DecimalTextField(
-            modifier = Modifier.fillMaxWidth(),
+        EmAmountField(
             value = state.amount.value,
+            onValueChange = { state.amount.onValueChange?.invoke(it) },
+            label = stringResource(id = R.string.debt_amount),
+            modifier = Modifier.fillMaxWidth(),
             isError = state.amount.valueError,
-            onValueChange = state.amount.onValueChange,
-            label = R.string.debt_amount,
             errorMessage = stringResource(R.string.debt_amount_error),
-            trailingIcon = {
-                IconButton(onClick = {
-                    focusManager.clearFocus(force = true)
-                    onAction(DebtEntryAction.ShowNumberPad)
-                }) {
-                    Icon(Icons.Outlined.Calculate, contentDescription = null)
-                }
+            trailing = {
+                EmIconButton(
+                    icon = Icons.Outlined.Calculate,
+                    contentDescription = stringResource(DesignSystemR.string.a11y_open_calculator),
+                    onClick = {
+                        focusManager.clearFocus(force = true)
+                        onAction(DebtEntryAction.ShowNumberPad)
+                    },
+                )
             },
         )
 
         AccountSection(state = state, onAction = onAction)
 
-        ClickableTextField(
-            modifier = Modifier.fillMaxWidth(),
-            label = R.string.debt_date,
+        EmPickerField(
+            label = stringResource(id = R.string.debt_date),
             value = state.date.toCompleteDateWithDate(),
-            leadingIcon = Icons.Outlined.EditCalendar,
             onClick = {
                 focusManager.clearFocus(force = true)
                 onAction(DebtEntryAction.ShowDateSelection)
             },
+            modifier = Modifier.fillMaxWidth(),
+            leadingIcon = Icons.Outlined.EditCalendar,
         )
 
         if (state.kind.isNewDebt) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                ClickableTextField(
-                    modifier = Modifier.weight(1f),
-                    label = R.string.debt_due_date,
+                EmPickerField(
+                    label = stringResource(id = R.string.debt_due_date),
                     value = state.dueDate?.toCompleteDateWithDate().orEmpty(),
-                    leadingIcon = Icons.Outlined.Event,
                     onClick = {
                         focusManager.clearFocus(force = true)
                         onAction(DebtEntryAction.ShowDueDateSelection)
                     },
+                    modifier = Modifier.weight(1f),
+                    leadingIcon = Icons.Outlined.Event,
                 )
                 if (state.dueDate != null) {
-                    IconButton(onClick = { onAction(DebtEntryAction.ClearDueDate) }) {
-                        Icon(Icons.Outlined.Close, contentDescription = stringResource(R.string.debt_clear_due))
-                    }
+                    EmIconButton(
+                        icon = Icons.Outlined.Close,
+                        contentDescription = stringResource(R.string.debt_clear_due),
+                        onClick = { onAction(DebtEntryAction.ClearDueDate) },
+                    )
                 }
             }
         }
 
-        OutlinedTextField(
+        EmTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.note.value,
             onValueChange = { state.note.onValueChange?.invoke(it) },
             maxLines = 3,
-            leadingIcon = { Icon(Icons.AutoMirrored.Filled.Notes, contentDescription = null) },
-            label = { Text(stringResource(R.string.debt_note)) },
-            placeholder = { Text(stringResource(R.string.debt_note_hint)) },
+            leadingIcon = Icons.AutoMirrored.Filled.Notes,
+            label = stringResource(R.string.debt_note),
+            placeholder = stringResource(R.string.debt_note_hint),
         )
 
         Spacer(modifier = Modifier.height(80.dp))
@@ -231,32 +231,28 @@ private fun EntryForm(state: DebtEntryState, onAction: (DebtEntryAction) -> Unit
 private fun PersonField(state: DebtEntryState, onAction: (DebtEntryAction) -> Unit) {
     val fixed = state.fixedPersonName
     if (fixed != null) {
-        OutlinedTextField(
+        EmTextField(
             modifier = Modifier.fillMaxWidth(),
             value = fixed,
             onValueChange = {},
             readOnly = true,
             enabled = false,
-            leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null) },
-            label = { Text(stringResource(R.string.debt_person)) },
+            leadingIcon = Icons.Outlined.Person,
+            label = stringResource(R.string.debt_person),
         )
         return
     }
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        OutlinedTextField(
+    Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm)) {
+        EmTextField(
             modifier = Modifier.fillMaxWidth(),
             value = state.personName.value,
             onValueChange = { state.personName.onValueChange?.invoke(it) },
             singleLine = true,
             isError = state.personName.valueError,
-            leadingIcon = { Icon(Icons.Outlined.Person, contentDescription = null) },
-            label = { Text(stringResource(R.string.debt_person)) },
-            placeholder = { Text(stringResource(R.string.debt_person_hint)) },
-            supportingText = if (state.personName.valueError) {
-                { Text(stringResource(R.string.debt_person_error)) }
-            } else {
-                null
-            },
+            leadingIcon = Icons.Outlined.Person,
+            label = stringResource(R.string.debt_person),
+            placeholder = stringResource(R.string.debt_person_hint),
+            supportingText = if (state.personName.valueError) stringResource(R.string.debt_person_error) else null,
         )
         // Someone already in the ledger: tap instead of typing (and avoid duplicates).
         val typed = state.personName.value.trim()
@@ -265,11 +261,12 @@ private fun PersonField(state: DebtEntryState, onAction: (DebtEntryAction) -> Un
             .filterNot { it.name.equals(typed, ignoreCase = true) }
             .take(MAX_SUGGESTIONS)
         if (suggestions.isNotEmpty()) {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm)) {
                 suggestions.forEach { person ->
-                    SuggestionChip(
+                    EmChip(
+                        label = person.name,
                         onClick = { onAction(DebtEntryAction.PickPerson(person)) },
-                        label = { Text(person.name) },
+                        variant = EmChipVariant.Suggestion,
                     )
                 }
             }
@@ -279,25 +276,28 @@ private fun PersonField(state: DebtEntryState, onAction: (DebtEntryAction) -> Un
 
 @Composable
 private fun AccountSection(state: DebtEntryState, onAction: (DebtEntryAction) -> Unit) {
-    SettingsSection(title = stringResource(state.kind.accountLabelRes())) {
-        AppCardView(modifier = Modifier.fillMaxWidth()) {
+    EmSection(title = stringResource(state.kind.accountLabelRes())) {
+        EmCard(modifier = Modifier.fillMaxWidth()) {
             Row(
-                modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 12.dp, bottom = 12.dp),
+                modifier = Modifier.padding(
+                    start = EmTheme.spacing.lg,
+                    end = EmTheme.spacing.sm,
+                    top = EmTheme.spacing.md,
+                    bottom = EmTheme.spacing.md,
+                ),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
+                    EmText(
                         text = stringResource(R.string.debt_move_money),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.Medium,
                     )
-                    Text(
+                    EmText(
                         text = stringResource(R.string.debt_move_money_message),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
                     )
                 }
-                Switch(
+                EmSwitch(
                     checked = state.linkAccount,
                     onCheckedChange = { onAction(DebtEntryAction.SetLinkAccount(it)) },
                 )
@@ -305,7 +305,7 @@ private fun AccountSection(state: DebtEntryState, onAction: (DebtEntryAction) ->
         }
         val account = state.selectedAccount
         if (state.linkAccount && account != null) {
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
             AccountItem(
                 name = account.name,
                 icon = account.storedIcon.name,
@@ -329,7 +329,7 @@ private fun EntryDialogs(state: DebtEntryState, onAction: (DebtEntryAction) -> U
             onConfirm = { onAction(DebtEntryAction.SetNumberPadValue(it)) },
         )
 
-        state.showAccountSelection -> SafeModalBottomSheet(
+        state.showAccountSelection -> EmModalSheet(
             onDismissRequest = { onAction(DebtEntryAction.DismissAccountSelection) },
         ) {
             AccountSelectionScreen(
@@ -352,21 +352,14 @@ private fun EntryDialogs(state: DebtEntryState, onAction: (DebtEntryAction) -> U
             onDismiss = { onAction(DebtEntryAction.DismissDateSelection) },
         )
 
-        state.showDeleteDialog -> AlertDialog(
-            onDismissRequest = { onAction(DebtEntryAction.DismissDelete) },
-            title = { Text(stringResource(R.string.debt_delete_entry_title)) },
-            text = { Text(stringResource(R.string.debt_delete_entry_message)) },
-            confirmButton = {
-                TextButton(onClick = { onAction(DebtEntryAction.ConfirmDelete) }) {
-                    Text(stringResource(R.string.debt_delete), color = MaterialTheme.colorScheme.error)
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction(DebtEntryAction.DismissDelete) }) {
-                    Text(stringResource(R.string.debt_cancel))
-                }
-            },
-        )
+        state.showDeleteDialog -> EmConfirm(
+     title = stringResource(R.string.debt_delete_entry_title),
+     message = stringResource(R.string.debt_delete_entry_message),
+     confirmText = stringResource(R.string.debt_delete),
+     onConfirm = { onAction(DebtEntryAction.ConfirmDelete) },
+     onDismiss = { onAction(DebtEntryAction.DismissDelete) },
+     destructive = true,
+ )
     }
 }
 

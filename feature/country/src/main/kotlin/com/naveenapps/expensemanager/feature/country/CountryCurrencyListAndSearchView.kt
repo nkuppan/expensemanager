@@ -1,6 +1,8 @@
 package com.naveenapps.expensemanager.feature.country
 
 import android.content.Context
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,34 +14,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.SearchOff
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Country
@@ -71,7 +69,7 @@ internal fun CountryCurrencyListAndSearchView(
     onAction: ((CountrySelectionAction) -> Unit),
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
             CountrySearchView(
                 state = countryState,
@@ -86,11 +84,11 @@ internal fun CountryCurrencyListAndSearchView(
         ) {
             // Results count
             if (countryState.searchText.value.isNotBlank()) {
-                Text(
+                EmText(
                     text = "${countryState.countries.size} results found",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
 
@@ -105,70 +103,38 @@ internal fun CountryCurrencyListAndSearchView(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun CountrySearchView(
     state: CountryState,
     onAction: (CountrySelectionAction) -> Unit,
 ) {
-    TopAppBar(
-        title = {
-            OutlinedTextField(
+    EmTopBar(
+        title = null,
+        navigation = EmTopBarNavigation.Back,
+        onNavigationClick = { onAction.invoke(CountrySelectionAction.ClosePage) },
+        titleContent = {
+            EmTextField(
                 value = state.searchText.value,
                 onValueChange = {
                     state.searchText.onValueChange?.invoke(it)
                 },
                 modifier = Modifier.fillMaxWidth(),
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.search_country),
-                        style = MaterialTheme.typography.bodyLarge,
-                    )
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                    )
-                },
-                trailingIcon = {
+                placeholder = stringResource(id = R.string.search_country),
+                leadingIcon = Icons.Outlined.Search,
+                trailing = {
                     if (state.showClearButton) {
-                        IconButton(
+                        EmIconButton(
+                            icon = Icons.Default.Close,
+                            contentDescription = stringResource(id = R.string.clear_search_text),
                             onClick = {
                                 onAction.invoke(CountrySelectionAction.ClearText)
                             },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(id = R.string.clear_search_text),
-                            )
-                        }
+                        )
                     }
                 },
                 singleLine = true,
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                ),
             )
         },
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    onAction.invoke(CountrySelectionAction.ClosePage)
-                },
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(id = R.string.back),
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        ),
     )
 }
 
@@ -186,25 +152,24 @@ internal fun CountryCurrencyListView(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.SearchOff,
+                EmIcon(
+                    icon = Icons.Outlined.SearchOff,
                     contentDescription = null,
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    size = EmTheme.icons.hero,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
-                Text(
+                EmText(
                     text = stringResource(id = R.string.no_countries_found),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
     } else {
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(vertical = 8.dp),
+            contentPadding = PaddingValues(vertical = EmTheme.spacing.sm),
         ) {
             items(countries, key = { it.name }) { country ->
                 CountryWithCurrencyItemView(
@@ -222,84 +187,73 @@ internal fun CountryWithCurrencyItemView(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        onClick = onClick,
-        modifier = modifier.fillMaxWidth(),
-        color = Color.Transparent,
-    ) {
+    Box(modifier = modifier.fillMaxWidth().clickable(onClick = onClick)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Flag/Country icon container
-            Surface(
-                modifier = Modifier.size(48.dp),
-                shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
+            Box(
+                modifier = Modifier
+                    .size(EmTheme.icons.tile)
+                    .clip(EmTheme.shapes.md)
+                    .background(EmTheme.colors.scheme.primaryContainer),
+                contentAlignment = Alignment.Center,
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    // If you have flag emojis or images, use them here
-                    // Otherwise, show country code
-                    Text(
-                        text = country.name.take(2), // First 2 letters of country code
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
+                // First two letters of the country name
+                EmText(
+                    text = country.name.take(2),
+                    role = EmTextRole.SectionTitle,
+                    color = EmTheme.colors.scheme.onPrimaryContainer,
+                )
             }
 
             // Country and currency info
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
             ) {
-                Text(
+                EmText(
                     text = country.name,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    role = EmTextRole.ItemTitle,
                 )
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
+                    EmText(
                         text = country.currency.symbol,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.primary,
+                        role = EmTextRole.Label,
+                        color = EmTextColor.Primary,
                     )
-                    Text(
+                    EmText(
                         text = "•",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
                     )
-                    Text(
+                    EmText(
                         text = country.currency.name,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = EmTextColor.Supporting,
                     )
                 }
             }
 
             // Arrow icon
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            EmIcon(
+                icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(24.dp),
+                tint = EmTheme.colors.scheme.onSurfaceVariant,
             )
         }
     }
 }
 
 @Composable
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 private fun CountryDetailsPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         CountryCurrencyListAndSearchView(

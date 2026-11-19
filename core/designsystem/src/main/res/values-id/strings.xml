@@ -50,4 +50,5 @@
     <string name="selection_done">Selesai</string>
     <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
     <string name="recurring_badge">Berulang</string>
+    <string name="a11y_remove">Hapus %1$s</string>
 </resources>

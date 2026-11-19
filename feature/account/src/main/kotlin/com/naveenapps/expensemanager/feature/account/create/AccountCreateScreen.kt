@@ -6,7 +6,9 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -21,45 +23,44 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.rounded.AccountBalanceWallet
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
 import com.naveenapps.expensemanager.core.designsystem.components.IconAndColorComponent
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmDeleteConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
-import com.naveenapps.expensemanager.core.designsystem.ui.components.StringTextField
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -74,7 +75,7 @@ fun AccountCreateScreen(
     viewModel: AccountCreateViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     ObserveAsEvents(viewModel.errorMessage) { messageRes ->
@@ -101,25 +102,22 @@ private fun AccountCreateScaffoldView(
     onAction: (AccountCreateAction) -> Unit,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
 ) {
     if (state.showDeleteDialog) {
         val impact = state.deleteImpact
         if (impact?.isLastAccount == true) {
-            AlertDialog(
-                onDismissRequest = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
-                title = { Text(text = stringResource(R.string.account_delete_last_title)) },
-                text = { Text(text = stringResource(R.string.account_delete_last_message)) },
-                confirmButton = {
-                    TextButton(onClick = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) }) {
-                        Text(text = stringResource(DesignSystemR.string.ok))
-                    }
-                },
+            EmConfirm(
+                title = stringResource(R.string.account_delete_last_title),
+                message = stringResource(R.string.account_delete_last_message),
+                confirmText = stringResource(DesignSystemR.string.ok),
+                onConfirm = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
+                onDismiss = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
             )
         } else {
-            DeleteDialogItem(
-                confirm = { onAction.invoke(AccountCreateAction.Delete) },
-                dismiss = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
+            EmDeleteConfirm(
+                onConfirm = { onAction.invoke(AccountCreateAction.Delete) },
+                onDismiss = { onAction.invoke(AccountCreateAction.DismissDeleteDialog) },
                 message = when {
                     impact == null -> null
 
@@ -135,14 +133,12 @@ private fun AccountCreateScaffoldView(
         }
     }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(AccountCreateAction.ClosePage)
                 },
                 title = if (state.showDeleteButton) {
@@ -152,32 +148,21 @@ private fun AccountCreateScaffoldView(
                 },
                 actions = {
                     if (state.showDeleteButton) {
-                        IconButton(onClick = { onAction.invoke(AccountCreateAction.ShowDeleteDialog) }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.delete),
-                                tint = MaterialTheme.colorScheme.error,
-                            )
-                        }
+                        EmIconButton(
+                            icon = Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.delete),
+                            onClick = { onAction.invoke(AccountCreateAction.ShowDeleteDialog) },
+                            tint = EmTheme.colors.scheme.error,
+                        )
                     }
                 },
             )
         },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-
-                onClick = { onAction.invoke(AccountCreateAction.Save) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Done,
-                        contentDescription = null,
-                    )
-                },
-                text = {
-                    Text(text = stringResource(R.string.save))
-                },
+        bottomBar = {
+            EmBottomActionBar(
+                primaryText = stringResource(R.string.save),
+                onPrimaryClick = { onAction.invoke(AccountCreateAction.Save) },
+                primaryIcon = Icons.Default.Done,
             )
         },
     ) { innerPadding ->
@@ -219,16 +204,16 @@ private fun AccountCreateScreen(
     onRemoveImage: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.padding(horizontal = EmTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
-        SettingsSection(
+        EmSection(
             title = stringResource(R.string.account_type),
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = EmTheme.spacing.sm),
         ) {
-            AppCardView {
+            EmCard {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.lg),
                 ) {
                     AccountTypeSelectionView(
                         modifier = Modifier.fillMaxWidth(),
@@ -240,20 +225,21 @@ private fun AccountCreateScreen(
         }
 
         // Details
-        SettingsSection(title = stringResource(R.string.details)) {
-            AppCardView {
+        EmSection(title = stringResource(R.string.details)) {
+            EmCard {
                 Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
                 ) {
-                    StringTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                    EmTextField(
                         value = name.value,
+                        onValueChange = { name.onValueChange?.invoke(it) },
+                        label = stringResource(id = R.string.account_name),
+                        modifier = Modifier.fillMaxWidth(),
                         isError = name.valueError,
-                        onValueChange = name.onValueChange,
-                        label = R.string.account_name,
-                        errorMessage = stringResource(id = R.string.account_name_error),
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        supportingText = if (name.valueError) stringResource(id = R.string.account_name_error) else null,
+                        selectAllOnFocus = true,
                     )
                     BalanceSectionContent(
                         amount = amount,
@@ -266,10 +252,10 @@ private fun AccountCreateScreen(
             }
         }
 
-        SettingsSection(title = stringResource(R.string.appearance)) {
-            AppCardView {
+        EmSection(title = stringResource(R.string.appearance)) {
+            EmCard {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.lg),
                 ) {
                     IconAndColorComponent(
                         modifier = Modifier.fillMaxWidth(),
@@ -299,18 +285,14 @@ private fun ColumnScope.BalanceSectionContent(
     totalAmount: String,
     totalAmountBackgroundColor: Int,
 ) {
-    DecimalTextField(
-        modifier = Modifier.fillMaxWidth(),
+    EmAmountField(
         value = amount.value,
+        onValueChange = { amount.onValueChange?.invoke(it) },
+        label = stringResource(id = R.string.current_balance),
+        modifier = Modifier.fillMaxWidth(),
         isError = amount.valueError,
         errorMessage = stringResource(id = R.string.current_balance_error),
-        onValueChange = amount.onValueChange,
-        label = R.string.current_balance,
-        keyboardOptions = if (type.value == AccountType.CREDIT) {
-            KeyboardOptions(imeAction = ImeAction.Next)
-        } else {
-            KeyboardOptions(imeAction = ImeAction.Done)
-        },
+        imeAction = ImeAction.Next,
     )
 
     // Credit limit — only for credit accounts
@@ -319,14 +301,14 @@ private fun ColumnScope.BalanceSectionContent(
         enter = fadeIn(tween(200)) + expandVertically(tween(250)),
         exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
     ) {
-        DecimalTextField(
-            modifier = Modifier.fillMaxWidth(),
+        EmAmountField(
             value = creditLimit.value,
+            onValueChange = { creditLimit.onValueChange?.invoke(it) },
+            label = stringResource(id = R.string.credit_limit),
+            modifier = Modifier.fillMaxWidth(),
             isError = creditLimit.valueError,
             errorMessage = stringResource(id = R.string.credit_limit_error),
-            onValueChange = creditLimit.onValueChange,
-            label = R.string.credit_limit,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            imeAction = ImeAction.Done,
         )
     }
 
@@ -336,42 +318,39 @@ private fun ColumnScope.BalanceSectionContent(
         enter = fadeIn(tween(200)) + expandVertically(tween(250)),
         exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
     ) {
-        Surface(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp),
-            shape = MaterialTheme.shapes.medium,
-            color = colorResource(id = totalAmountBackgroundColor).copy(alpha = 0.1f),
+                .padding(top = EmTheme.spacing.md)
+                .clip(EmTheme.shapes.md)
+                .background(emColorOf(totalAmountBackgroundColor).tint()),
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.AccountBalanceWallet,
+                EmIcon(
+                    icon = Icons.Rounded.AccountBalanceWallet,
                     contentDescription = null,
-                    tint = colorResource(id = totalAmountBackgroundColor),
-                    modifier = Modifier.size(20.dp),
+                    size = EmTheme.icons.md,
+                    tint = emColorOf(totalAmountBackgroundColor),
                 )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
+                Spacer(modifier = Modifier.width(EmTheme.spacing.md))
+                EmText(
                     text = stringResource(id = R.string.available_balance),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f),
                 )
-                Text(
+                EmText(
                     text = totalAmount,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = colorResource(id = totalAmountBackgroundColor),
+                    role = EmTextRole.SectionTitle,
+                    color = emColorOf(totalAmountBackgroundColor),
                 )
             }
         }
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun AccountCreateStatePreview() {
     val nameField = TextFieldValue(

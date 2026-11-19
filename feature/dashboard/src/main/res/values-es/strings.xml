@@ -84,6 +84,7 @@
         <item>Los presupuestos ya no se muestran en rojo mientras sigues dentro del límite</item>
         <item>Exportar funciona en todos los teléfonos: si el tuyo no tiene selector de archivos, el archivo se abre para compartir</item>
         <item>Cancelar en el filtro de fechas ya no cambia el periodo seleccionado</item>
+        <item>Un diseño más limpio y coherente</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Registra tu gasto más frecuente desde el recordatorio diario con un toque, y deshazlo si te equivocas</item>

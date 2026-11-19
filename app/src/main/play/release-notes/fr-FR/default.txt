@@ -2,3 +2,4 @@
 • Les budgets ne s'affichent plus en rouge tant que vous restez dans la limite
 • L'export fonctionne sur tous les téléphones : sans sélecteur de fichiers, le fichier s'ouvre dans le menu de partage
 • Annuler dans le filtre de dates ne modifie plus la période choisie
+• Un design plus net et cohérent

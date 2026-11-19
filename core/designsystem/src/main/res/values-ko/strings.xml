@@ -50,4 +50,5 @@
     <string name="selection_done">완료</string>
     <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
     <string name="recurring_badge">반복</string>
+    <string name="a11y_remove">%1$s 삭제</string>
 </resources>

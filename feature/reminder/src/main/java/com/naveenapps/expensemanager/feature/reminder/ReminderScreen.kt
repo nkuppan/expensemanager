@@ -7,11 +7,11 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,10 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.EventRepeat
@@ -30,24 +27,16 @@ import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.NotificationsActive
 import androidx.compose.material.icons.rounded.NotificationsOff
 import androidx.compose.material.icons.rounded.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -55,10 +44,21 @@ import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconTile
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingTrailing
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import org.koin.compose.viewmodel.koinViewModel
@@ -128,11 +128,11 @@ private fun ReminderScreenContent(
     state: ReminderState,
     onAction: (ReminderAction) -> Unit,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(ReminderAction.ClosePage)
                 },
                 title = stringResource(R.string.reminder),
@@ -143,13 +143,13 @@ private fun ReminderScreenContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = EmTheme.spacing.xl),
         ) {
             if (state.showPermissionMessage.not()) {
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.md))
 
                 // Reminder toggle card
-                AppCardView {
+                EmCard {
                     SwitchSettingsItem(
                         icon = Icons.Rounded.NotificationsActive,
                         title = stringResource(id = R.string.reminder_notification),
@@ -161,7 +161,7 @@ private fun ReminderScreenContent(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
 
                 // Time picker card
                 AnimatedVisibility(
@@ -170,59 +170,42 @@ private fun ReminderScreenContent(
                     exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
                 ) {
                     Column {
-                        Text(
-                            text = stringResource(id = R.string.schedule).uppercase(),
-                            style = MaterialTheme.typography.labelMedium,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            letterSpacing = 0.8.sp,
-                            modifier = Modifier.padding(bottom = 8.dp, start = 4.dp),
+                        EmText(
+                            text = stringResource(id = R.string.schedule),
+                            modifier = Modifier.padding(bottom = EmTheme.spacing.sm, start = EmTheme.spacing.xs),
+                            role = EmTextRole.Overline,
+                            color = EmTextColor.Supporting,
                         )
 
-                        AppCardView(modifier = Modifier.padding(bottom = 16.dp)) {
+                        EmCard(modifier = Modifier.padding(bottom = EmTheme.spacing.lg)) {
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
                                         onAction.invoke(ReminderAction.ShowReminderDialog)
                                     }
-                                    .padding(horizontal = 16.dp, vertical = 16.dp),
+                                    .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.lg),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                             ) {
-                                Surface(
-                                    shape = MaterialTheme.shapes.medium,
-                                    color = MaterialTheme.colorScheme.primaryContainer,
-                                    modifier = Modifier.size(44.dp),
-                                ) {
-                                    Box(contentAlignment = Alignment.Center) {
-                                        Icon(
-                                            imageVector = Icons.Rounded.AccessTime,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                                            modifier = Modifier.size(22.dp),
-                                        )
-                                    }
-                                }
+                                EmIconTile(icon = Icons.Rounded.AccessTime)
                                 Column(modifier = Modifier.weight(1f)) {
-                                    Text(
+                                    EmText(
                                         text = stringResource(id = R.string.notification_time),
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        role = EmTextRole.Supporting,
+                                        color = EmTextColor.Supporting,
                                     )
-                                    Spacer(modifier = Modifier.height(2.dp))
-                                    Text(
+                                    Spacer(modifier = Modifier.height(EmTheme.spacing.xxs))
+                                    EmText(
                                         text = state.reminderTime,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = MaterialTheme.colorScheme.onSurface,
+                                        role = EmTextRole.SectionTitle,
                                     )
                                 }
-                                Icon(
-                                    imageVector = Icons.Rounded.Edit,
+                                EmIcon(
+                                    icon = Icons.Rounded.Edit,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                                    modifier = Modifier.size(18.dp),
+                                    size = EmTheme.icons.md,
+                                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                                 )
                             }
                         }
@@ -230,13 +213,13 @@ private fun ReminderScreenContent(
                         ReminderDeliverySection(
                             state = state,
                             onAction = onAction,
-                            modifier = Modifier.padding(bottom = 16.dp),
+                            modifier = Modifier.padding(bottom = EmTheme.spacing.lg),
                         )
                     }
                 }
 
                 // Heads-up before recurring payments: its own switch, independent of the reminder.
-                AppCardView {
+                EmCard {
                     SwitchSettingsItem(
                         icon = Icons.Rounded.EventRepeat,
                         title = stringResource(id = R.string.upcoming_alerts_title),
@@ -249,45 +232,34 @@ private fun ReminderScreenContent(
                 }
             } else {
                 // Permission required state
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xxxl))
 
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    Surface(
-                        shape = CircleShape,
-                        color = MaterialTheme.colorScheme.errorContainer.copy(alpha = 0.3f),
-                        modifier = Modifier.size(80.dp),
+                    Box(
+                        modifier = Modifier
+                            .size(EmTheme.icons.hero)
+                            .clip(EmTheme.shapes.pill)
+                            .background(EmTheme.colors.scheme.errorContainer),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Box(contentAlignment = Alignment.Center) {
-                            Surface(
-                                shape = CircleShape,
-                                color = MaterialTheme.colorScheme.errorContainer,
-                                modifier = Modifier.size(56.dp),
-                            ) {
-                                Box(contentAlignment = Alignment.Center) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.NotificationsOff,
-                                        contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onErrorContainer,
-                                        modifier = Modifier.size(28.dp),
-                                    )
-                                }
-                            }
-                        }
+                        EmIcon(
+                            icon = Icons.Rounded.NotificationsOff,
+                            contentDescription = null,
+                            tint = EmTheme.colors.scheme.onErrorContainer,
+                        )
                     }
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
 
-                    Text(
+                    EmText(
                         text = stringResource(R.string.permission_required_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        role = EmTextRole.SectionTitle,
                     )
 
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
 
                     val textToShow = if (state.shouldShowRationale) {
                         stringResource(R.string.notification_permission_message)
@@ -295,19 +267,24 @@ private fun ReminderScreenContent(
                         stringResource(R.string.permission_disabled)
                     }
 
-                    Text(
+                    EmText(
                         text = textToShow,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = EmTextColor.Supporting,
                         textAlign = TextAlign.Center,
-                        lineHeight = 22.sp,
-                        modifier = Modifier.padding(horizontal = 24.dp),
+                        modifier = Modifier.padding(horizontal = EmTheme.spacing.xl),
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
 
                     val isRationale = state.shouldShowRationale
-                    Button(
+                    EmButton(
+                        text = stringResource(
+                                if (isRationale) {
+                                    R.string.request_permission
+                                } else {
+                                    R.string.open_settings
+                                },
+                            ),
                         onClick = {
                             if (isRationale) {
                                 onAction.invoke(ReminderAction.RequestPermission)
@@ -315,30 +292,12 @@ private fun ReminderScreenContent(
                                 onAction.invoke(ReminderAction.OpenSettings)
                             }
                         },
-                        shape = MaterialTheme.shapes.medium,
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
-                    ) {
-                        Icon(
-                            imageVector = if (isRationale) {
+                        leadingIcon = if (isRationale) {
                                 Icons.Rounded.Notifications
                             } else {
                                 Icons.Rounded.Settings
                             },
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(
-                                if (isRationale) {
-                                    R.string.request_permission
-                                } else {
-                                    R.string.open_settings
-                                },
-                            ),
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
+                    )
                 }
             }
         }
@@ -354,58 +313,16 @@ private fun SwitchSettingsItem(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onCheckedChange(!checked) }
-            .padding(horizontal = 16.dp, vertical = 14.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
-    ) {
-        Surface(
-            shape = MaterialTheme.shapes.medium,
-            color = if (checked) {
-                MaterialTheme.colorScheme.primaryContainer
-            } else {
-                MaterialTheme.colorScheme.surfaceContainerHighest
-            },
-            modifier = Modifier.size(44.dp),
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = if (checked) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
-                    },
-                    modifier = Modifier.size(22.dp),
-                )
-            }
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        Switch(
-            checked = checked,
-            onCheckedChange = onCheckedChange,
-        )
-    }
+    EmSettingItem(
+        icon = icon,
+        title = title,
+        supporting = description,
+        trailing = EmSettingTrailing.Toggle(checked, onCheckedChange),
+        modifier = modifier,
+    )
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun ReminderScreenPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

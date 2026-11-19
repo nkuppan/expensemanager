@@ -16,21 +16,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.AutoAwesome
 import androidx.compose.material.icons.outlined.Insights
 import androidx.compose.material.icons.outlined.Savings
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,13 +37,22 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.model.Insight
 import com.naveenapps.expensemanager.core.model.InsightKind
 import com.naveenapps.expensemanager.feature.dashboard.R
@@ -75,12 +76,12 @@ private fun NotificationCentreScaffold(
     items: List<NotificationItem>,
     onBack: () -> Unit,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(R.string.notification_centre_title),
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = onBack,
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = onBack,
             )
         },
     ) { innerPadding ->
@@ -88,8 +89,13 @@ private fun NotificationCentreScaffold(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.lg,
+                top = EmTheme.spacing.sm,
+                bottom = EmTheme.spacing.xl,
+            ),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
         ) {
             items(
                 items = items,
@@ -113,28 +119,27 @@ private fun NotificationCentreScaffold(
 @Composable
 private fun InsightCard(item: NotificationItem.InsightItem) {
     val insight = item.insight
-    AppCardView(cornerSize = 16.dp) {
+    EmCard {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(EmTheme.spacing.lg),
             verticalAlignment = Alignment.Top,
         ) {
             KindIcon(icon = insight.kind.icon)
-            Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(EmTheme.spacing.md))
             Column(modifier = Modifier.weight(1f)) {
                 TitleRow(title = insight.title, isNew = item.isNew)
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xxs))
+                EmText(
                     text = insight.message,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = EmTextColor.Supporting,
                 )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
+                Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
+                EmText(
                     text = formatDateTime(insight.postedAt),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
@@ -153,7 +158,7 @@ private fun ReleaseCard(item: NotificationItem.Release) {
     var expanded by rememberSaveable(item.release.version) { mutableStateOf(false) }
     val shown = if (expanded || !canExpand) lines.toList() else lines.take(COLLAPSED_ITEMS)
 
-    AppCardView(cornerSize = 16.dp) {
+    EmCard {
         Column(modifier = Modifier.animateContentSize()) {
             // Header band
             Row(
@@ -162,38 +167,37 @@ private fun ReleaseCard(item: NotificationItem.Release) {
                     .background(
                         Brush.horizontalGradient(
                             listOf(
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.14f),
-                                MaterialTheme.colorScheme.tertiary.copy(alpha = 0.06f),
+                                EmTheme.colors.scheme.primary.tint(),
+                                EmTheme.colors.scheme.tertiary.tint(),
                             ),
                         ),
                     )
-                    .padding(horizontal = 16.dp, vertical = 14.dp),
+                    .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MaterialTheme.colorScheme.primary),
+                        .clip(EmTheme.shapes.md)
+                        .background(EmTheme.colors.scheme.primary),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.AutoAwesome,
+                    EmIcon(
+                        icon = Icons.Outlined.AutoAwesome,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(22.dp),
+                        tint = EmTheme.colors.scheme.onPrimary,
                     )
                 }
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(EmTheme.spacing.md))
                 Column(modifier = Modifier.weight(1f)) {
                     TitleRow(
                         title = stringResource(R.string.whats_new_version, item.release.version),
                         isNew = item.isNew,
                     )
-                    Text(
+                    EmText(
                         text = formatDate(item.time),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
                     )
                 }
             }
@@ -202,32 +206,29 @@ private fun ReleaseCard(item: NotificationItem.Release) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = if (canExpand) 4.dp else 16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                    .padding(
+                        start = EmTheme.spacing.lg,
+                        end = EmTheme.spacing.lg,
+                        top = EmTheme.spacing.md,
+                        bottom = if (canExpand) EmTheme.spacing.xs else EmTheme.spacing.lg,
+                    ),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
             ) {
                 shown.forEach { line -> HighlightRow(text = line) }
             }
 
             if (canExpand) {
-                TextButton(
+                EmButton(
+                    text = if (expanded) {
+                        stringResource(R.string.notification_see_less)
+                    } else {
+                        stringResource(R.string.notification_see_more, lines.size - COLLAPSED_ITEMS)
+                    },
                     onClick = { expanded = !expanded },
-                    modifier = Modifier.padding(start = 6.dp, bottom = 4.dp),
-                ) {
-                    Text(
-                        text = if (expanded) {
-                            stringResource(R.string.notification_see_less)
-                        } else {
-                            stringResource(R.string.notification_see_more, lines.size - COLLAPSED_ITEMS)
-                        },
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                    Spacer(modifier = Modifier.width(2.dp))
-                    Icon(
-                        imageVector = if (expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                }
+                    modifier = Modifier.padding(start = EmTheme.spacing.xs, bottom = EmTheme.spacing.xs),
+                    variant = EmButtonVariant.Tertiary,
+                    leadingIcon = if (expanded) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                )
             }
         }
     }
@@ -241,22 +242,20 @@ private fun HighlightRow(text: String) {
             modifier = Modifier
                 .padding(top = 1.dp)
                 .size(20.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                .clip(EmTheme.shapes.pill)
+                .background(EmTheme.colors.scheme.primary.tint()),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(
-                imageVector = Icons.Rounded.Check,
+            EmIcon(
+                icon = Icons.Rounded.Check,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(14.dp),
+                size = EmTheme.icons.sm,
+                tint = EmTheme.colors.scheme.primary,
             )
         }
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
+        Spacer(modifier = Modifier.width(EmTheme.spacing.md))
+        EmText(
             text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f),
         )
     }
@@ -268,24 +267,21 @@ private const val COLLAPSED_ITEMS = 3
 @Composable
 private fun TitleRow(title: String, isNew: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(
+        EmText(
             text = title,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f, fill = false),
+            role = EmTextRole.ItemTitle,
         )
         if (isNew) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
+            Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+            EmText(
                 text = stringResource(R.string.notification_new),
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-                    .padding(horizontal = 8.dp, vertical = 2.dp),
+                    .clip(EmTheme.shapes.pill)
+                    .background(EmTheme.colors.scheme.primaryContainer)
+                    .padding(horizontal = EmTheme.spacing.sm, vertical = EmTheme.spacing.xxs),
+                role = EmTextRole.Supporting,
+                color = EmTheme.colors.scheme.onPrimaryContainer,
             )
         }
     }
@@ -296,15 +292,14 @@ private fun KindIcon(icon: ImageVector) {
     Box(
         modifier = Modifier
             .size(40.dp)
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+            .clip(EmTheme.shapes.md)
+            .background(EmTheme.colors.scheme.primary.tint()),
         contentAlignment = Alignment.Center,
     ) {
-        Icon(
-            imageVector = icon,
+        EmIcon(
+            icon = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(22.dp),
+            tint = EmTheme.colors.scheme.primary,
         )
     }
 }
@@ -337,7 +332,7 @@ private fun formatDate(millis: Long): String {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun NotificationCentrePreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

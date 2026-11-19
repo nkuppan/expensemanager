@@ -80,6 +80,7 @@
         <item>Ngân sách không còn hiển thị màu đỏ khi bạn vẫn trong hạn mức</item>
         <item>Xuất dữ liệu hoạt động trên mọi điện thoại: nếu không có trình chọn tệp, tệp sẽ mở trong menu chia sẻ</item>
         <item>Nút Hủy trong bộ lọc ngày không còn thay đổi khoảng thời gian đã chọn</item>
+        <item>Giao diện gọn gàng và nhất quán hơn</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Ghi khoản chi thường gặp nhất chỉ với một chạm ngay từ lời nhắc hằng ngày, có thể hoàn tác</item>

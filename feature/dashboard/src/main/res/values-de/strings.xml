@@ -82,6 +82,7 @@
         <item>Budgets werden nicht mehr rot angezeigt, solange du noch im Rahmen bist</item>
         <item>Export funktioniert auf jedem Handy: Ohne Dateiauswahl öffnet sich die Datei im Teilen-Menü</item>
         <item>Abbrechen im Datumsfilter ändert den gewählten Zeitraum nicht mehr</item>
+        <item>Ein klareres, einheitlicheres Design</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Trage deine häufigste Ausgabe mit einem Tipp direkt aus der täglichen Erinnerung ein, mit Rückgängig bei Versehen</item>

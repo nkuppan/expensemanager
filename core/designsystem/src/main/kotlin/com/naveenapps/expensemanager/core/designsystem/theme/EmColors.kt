@@ -33,7 +33,10 @@ fun Color.tint(): Color = copy(alpha = EmAlpha().subtle)
 
 private val DebtPurple = Color(0xFF7E57C2)
 private val DebtPurpleDark = Color(0xFFB39DDB)
-private val BudgetWatch = Color(0xFFCDDC39)
+private val BudgetWatchDark = Color(0xFFCDDC39)
+
+// Light theme: #CDDC39 is 1.5:1 on white, too faint for a progress bar; this is 3.1:1.
+private val BudgetWatchLight = Color(0xFF8C9A1B)
 
 internal fun emColors(isDark: Boolean): EmColors {
     val scheme = if (isDark) ExpenseManagerDarkColorScheme else ExpenseManagerLightColorScheme
@@ -47,7 +50,7 @@ internal fun emColors(isDark: Boolean): EmColors {
         warning = extended.warning,
         info = extended.info,
         budgetSafe = extended.income,
-        budgetWatch = BudgetWatch,
+        budgetWatch = if (isDark) BudgetWatchDark else BudgetWatchLight,
         budgetRisk = extended.warning,
         budgetOver = extended.expense,
         brandSurface = scheme.primaryContainer,

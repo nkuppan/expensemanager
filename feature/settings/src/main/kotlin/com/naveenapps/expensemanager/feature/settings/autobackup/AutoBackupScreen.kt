@@ -16,12 +16,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.CloudDone
 import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.CloudQueue
@@ -31,24 +28,6 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.IosShare
 import androidx.compose.material.icons.outlined.Restore
 import androidx.compose.material.icons.outlined.Schedule
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -57,11 +36,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmProgress
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSegmented
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmSwitch
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.AutoBackupFrequency
@@ -77,7 +74,7 @@ fun AutoBackupScreen(
     viewModel: AutoBackupViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -136,7 +133,7 @@ private const val RECENT_BACKUPS = 10
 private fun AutoBackupContent(
     state: AutoBackupState,
     onAction: (AutoBackupAction) -> Unit,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
 ) {
     state.shareCandidate?.let {
         PassphraseDialog(
@@ -149,25 +146,25 @@ private fun AutoBackupContent(
         )
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction(AutoBackupAction.ClosePage) },
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { onAction(AutoBackupAction.ClosePage) },
                 title = stringResource(R.string.backup_and_restore),
             )
         },
     ) { innerPadding ->
-        val settings = state.settings ?: return@Scaffold
+        val settings = state.settings ?: return@EmScaffold
         val formatTime = rememberBackupTimeFormatter()
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(horizontal = EmTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
         ) {
             Spacer(modifier = Modifier.height(0.dp))
 
@@ -189,37 +186,34 @@ private fun AutoBackupContent(
 
             BackupSectionHeader(text = stringResource(R.string.recent_backups))
             BackupCard {
-                if (state.isPreparingShare) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                if (state.isPreparingShare) EmProgress(progress = null)
                 val recent = state.backups.take(RECENT_BACKUPS)
                 if (recent.isEmpty()) EmptyBackupsText()
                 recent.forEachIndexed { index, backup ->
-                    if (index > 0) HorizontalDivider(modifier = Modifier.padding(start = 74.dp))
+                    if (index > 0) EmDivider(modifier = Modifier.padding(start = 74.dp))
                     BackupFileRow(backup = backup, formatTime = formatTime) {
-                        IconButton(
+                        EmIconButton(
+                            icon = Icons.Outlined.IosShare,
+                            contentDescription = stringResource(R.string.share_backup),
                             onClick = { onAction(AutoBackupAction.Share(backup)) },
                             enabled = !state.isPreparingShare,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.IosShare,
-                                contentDescription = stringResource(R.string.share_backup),
-                            )
-                        }
+                        )
                     }
                 }
             }
 
             BackupCard {
-                SettingRow(
-                    title = stringResource(id = R.string.restore),
-                    subtitle = stringResource(id = R.string.restore_setting_message),
+                EmSettingItem(
                     icon = Icons.Outlined.Restore,
+                    title = stringResource(id = R.string.restore),
+                    supporting = stringResource(id = R.string.restore_setting_message),
                     onClick = { onAction(AutoBackupAction.OpenRestore) },
                 )
             }
 
             AboutBackups()
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
         }
     }
 }
@@ -234,28 +228,30 @@ private fun BackupStatusCard(
 ) {
     val error = settings.lastError
     val last = settings.lastBackupAt
-    val container = if (error != null) MaterialTheme.colorScheme.errorContainer else MaterialTheme.colorScheme.primaryContainer
-    val content = if (error != null) MaterialTheme.colorScheme.onErrorContainer else MaterialTheme.colorScheme.onPrimaryContainer
-    Surface(
+    val content = if (error != null) EmTheme.colors.scheme.onErrorContainer else EmTheme.colors.scheme.onPrimaryContainer
+    EmCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(24.dp),
-        color = container,
-        contentColor = content,
+        variant = if (error != null) EmCardVariant.Error else EmCardVariant.Highlight,
     ) {
-        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(20.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+        Column(
+            modifier = Modifier.padding(EmTheme.spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xl),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
+            ) {
                 CircleIcon(
                     icon = when {
                         error != null -> Icons.Outlined.CloudOff
                         last != null -> Icons.Outlined.CloudDone
                         else -> Icons.Outlined.CloudQueue
                     },
-                    background = content.copy(alpha = 0.12f),
+                    background = content.tint(),
                     tint = content,
-                    modifier = Modifier.size(56.dp),
                 )
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
+                    EmText(
                         text = stringResource(
                             when {
                                 error != null -> R.string.backup_status_failed
@@ -263,43 +259,25 @@ private fun BackupStatusCard(
                                 else -> R.string.backup_status_none
                             },
                         ),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.SemiBold,
+                        role = EmTextRole.SectionTitle,
                     )
-                    Text(
+                    EmText(
                         text = when {
                             error != null -> stringResource(error.messageResId())
                             last != null -> stringResource(R.string.backup_last, formatTime(last))
                             else -> stringResource(R.string.backup_status_none_message)
                         },
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = content.copy(alpha = 0.8f),
+                        color = content,
                     )
                 }
             }
-            Button(
+            EmButton(
+                text = stringResource(R.string.auto_backup_now),
                 onClick = onBackupNow,
-                enabled = !isBackingUp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-            ) {
-                if (isBackingUp) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(ButtonDefaults.IconSize),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Outlined.CloudUpload,
-                        contentDescription = null,
-                        modifier = Modifier.size(ButtonDefaults.IconSize),
-                    )
-                }
-                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                Text(text = stringResource(R.string.auto_backup_now))
-            }
+                size = EmButtonSize.Large,
+                leadingIcon = Icons.Outlined.CloudUpload,
+                loading = isBackingUp,
+            )
         }
     }
 }
@@ -308,34 +286,40 @@ private fun BackupStatusCard(
 private fun BackupFolderCard(settings: AutoBackupSettings, onChange: () -> Unit) {
     BackupCard {
         Row(
-            modifier = Modifier.padding(start = 20.dp, end = 8.dp, top = 16.dp, bottom = 16.dp),
+            modifier = Modifier.padding(
+                start = EmTheme.spacing.xl,
+                end = EmTheme.spacing.sm,
+                top = EmTheme.spacing.lg,
+                bottom = EmTheme.spacing.lg,
+            ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
         ) {
-            Icon(imageVector = Icons.Outlined.Folder, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            EmIcon(
+                icon = Icons.Outlined.Folder,
+                contentDescription = null,
+                tint = EmTheme.colors.scheme.primary,
+            )
             Column(modifier = Modifier.weight(1f)) {
-                Text(
+                EmText(
                     text = stringResource(R.string.auto_backup_folder),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
                 )
-                Text(
+                EmText(
                     text = if (settings.folderUri != null) {
                         settings.folderName ?: stringResource(R.string.auto_backup_folder)
                     } else {
                         stringResource(R.string.backup_folder_inside_app)
                     },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = EmTextColor.Supporting,
                 )
             }
-            TextButton(onClick = onChange) {
-                Text(
-                    text = stringResource(
+            EmButton(
+                text = stringResource(
                         if (settings.folderUri != null) R.string.backup_folder_change else R.string.backup_folder_choose,
                     ),
-                )
-            }
+                onClick = onChange,
+                variant = EmButtonVariant.Tertiary,
+            )
         }
     }
 }
@@ -348,45 +332,45 @@ private fun AutoBackupCard(
     onSelectFrequency: (AutoBackupFrequency) -> Unit,
 ) {
     BackupCard {
-        Column(modifier = Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Icon(imageVector = Icons.Outlined.Schedule, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+        Column(
+            modifier = Modifier.padding(EmTheme.spacing.xl),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
+            ) {
+                EmIcon(
+                    icon = Icons.Outlined.Schedule,
+                    contentDescription = null,
+                    tint = EmTheme.colors.scheme.primary,
+                )
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
+                    EmText(
                         text = stringResource(R.string.auto_backup),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
                     )
-                    Text(
+                    EmText(
                         text = stringResource(R.string.auto_backup_subtitle),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = EmTextColor.Supporting,
                     )
                 }
-                Switch(checked = settings.isEnabled, onCheckedChange = { onToggle() })
+                EmSwitch(checked = settings.isEnabled, onCheckedChange = { onToggle() })
             }
             val frequencies = AutoBackupFrequency.entries
-            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                frequencies.forEachIndexed { index, frequency ->
-                    SegmentedButton(
-                        selected = settings.frequency == frequency,
-                        onClick = { onSelectFrequency(frequency) },
-                        shape = SegmentedButtonDefaults.itemShape(index = index, count = frequencies.size),
-                        icon = {},
-                        label = { Text(text = stringResource(frequency.labelResId())) },
-                    )
-                }
-            }
+            EmSegmented(
+                options = frequencies.map { stringResource(it.labelResId()) },
+                selectedIndex = frequencies.indexOf(settings.frequency),
+                onSelect = { onSelectFrequency(frequencies[it]) },
+            )
             if (settings.isEnabled) {
                 val next = settings.nextAutoBackupAt(System.currentTimeMillis())
-                Text(
+                EmText(
                     text = if (next != null) {
                         stringResource(R.string.auto_backup_next, formatTime(next))
                     } else {
                         stringResource(R.string.auto_backup_next_soon)
                     },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
@@ -398,18 +382,18 @@ private fun AutoBackupCard(
 private fun AboutBackups() {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
     ) {
-        Icon(
-            imageVector = Icons.Outlined.Info,
+        EmIcon(
+            icon = Icons.Outlined.Info,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(18.dp),
+            size = EmTheme.icons.md,
+            tint = EmTheme.colors.scheme.onSurfaceVariant,
         )
-        Text(
+        EmText(
             text = stringResource(R.string.auto_backup_info, AutoBackupRepository.KEEP_LAST_BACKUPS),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
     }
 }

@@ -82,6 +82,7 @@
         <item>Bütçe sınırının altındayken bütçeler artık kırmızı görünmüyor</item>
         <item>Dışa aktarma her telefonda çalışır: dosya seçici yoksa dosya paylaşım menüsünde açılır</item>
         <item>Tarih filtresinde İptal artık seçili dönemi değiştirmiyor</item>
+        <item>Daha sade ve tutarlı bir görünüm</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>En sık harcamanızı tek dokunuşla doğrudan günlük hatırlatıcıdan kaydedin, yanlışlıkla olursa geri alın</item>

@@ -17,14 +17,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.AccessTime
@@ -33,17 +31,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -54,25 +41,36 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddTile
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
-import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmDeleteConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmPickerField
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.isOnLaterDay
@@ -112,7 +110,7 @@ fun TransactionCreateScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val resources = LocalContext.current.resources
 
     ObserveAsEvents(viewModel.event) {
@@ -162,25 +160,26 @@ private fun TransactionCreateScreenContent(
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
     onScanReceipt: () -> Unit = {},
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
 ) {
     // System back goes through the same path as the top-bar back arrow, so unsaved edits get a
     // "Discard changes?" prompt and attachments added in this session are cleaned up.
     BackHandler { onAction.invoke(TransactionCreateAction.ClosePage) }
 
     if (state.showDiscardDialog) {
-        AppDialog(
-            onDismissRequest = { onAction.invoke(TransactionCreateAction.DismissDiscardDialog) },
-            onConfirmation = { onAction.invoke(TransactionCreateAction.ConfirmDiscard) },
-            dialogTitle = stringResource(R.string.discard_changes_title),
-            dialogText = stringResource(R.string.discard_changes_message),
-            positiveButtonText = stringResource(R.string.discard),
-            negativeButtonText = stringResource(R.string.keep_editing),
+        EmConfirm(
+            title = stringResource(R.string.discard_changes_title),
+            message = stringResource(R.string.discard_changes_message),
+            confirmText = stringResource(R.string.discard),
+            onConfirm = { onAction.invoke(TransactionCreateAction.ConfirmDiscard) },
+            onDismiss = { onAction.invoke(TransactionCreateAction.DismissDiscardDialog) },
+            dismissText = stringResource(R.string.keep_editing),
+            destructive = true,
         )
     } else if (state.showDeleteDialog) {
-        DeleteDialogItem(
-            confirm = { onAction.invoke(TransactionCreateAction.Delete) },
-            dismiss = { onAction.invoke(TransactionCreateAction.DismissDeleteDialog) },
+        EmDeleteConfirm(
+            onConfirm = { onAction.invoke(TransactionCreateAction.Delete) },
+            onDismiss = { onAction.invoke(TransactionCreateAction.DismissDeleteDialog) },
         )
     } else if (state.showNumberPad) {
         NumberPadDialogView(
@@ -192,10 +191,10 @@ private fun TransactionCreateScreenContent(
                 null
             } else {
                 {
-                    Column(modifier = Modifier.padding(top = 16.dp)) {
+                    Column(modifier = Modifier.padding(top = EmTheme.spacing.lg)) {
                         if (state.canScanReceipt) {
                             ScanReceiptChip(
-                                modifier = Modifier.padding(horizontal = 16.dp),
+                                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
                                 isReading = state.isReadingReceipt,
                                 onClick = onScanReceipt,
                             )
@@ -204,7 +203,7 @@ private fun TransactionCreateScreenContent(
                             QuickPickRow(
                                 picks = state.quickPicks,
                                 onPick = { onAction.invoke(TransactionCreateAction.ApplyQuickPick(it)) },
-                                contentPadding = PaddingValues(horizontal = 16.dp),
+                                contentPadding = PaddingValues(horizontal = EmTheme.spacing.lg),
                             )
                         }
                     }
@@ -219,14 +218,12 @@ private fun TransactionCreateScreenContent(
         AttachmentPickerView(onAction, onCaptureRequested, onGalleryRequested)
     }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(TransactionCreateAction.ClosePage)
                 },
                 title = if (state.showDeleteButton) {
@@ -236,32 +233,21 @@ private fun TransactionCreateScreenContent(
                 },
                 actions = {
                     if (state.showDeleteButton) {
-                        IconButton(onClick = { onAction.invoke(TransactionCreateAction.ShowDeleteDialog) }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.delete),
-                                tint = MaterialTheme.colorScheme.error,
-                            )
-                        }
+                        EmIconButton(
+                            icon = Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.delete),
+                            onClick = { onAction.invoke(TransactionCreateAction.ShowDeleteDialog) },
+                            tint = EmTheme.colors.scheme.error,
+                        )
                     }
                 },
             )
         },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-
-                onClick = { onAction.invoke(TransactionCreateAction.Save) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Done,
-                        contentDescription = null,
-                    )
-                },
-                text = {
-                    Text(text = stringResource(R.string.save))
-                },
+        bottomBar = {
+            EmBottomActionBar(
+                primaryText = stringResource(R.string.save),
+                onPrimaryClick = { onAction.invoke(TransactionCreateAction.Save) },
+                primaryIcon = Icons.Default.Done,
             )
         },
     ) { innerPadding ->
@@ -283,7 +269,7 @@ private fun AttachmentPickerView(
     onCaptureRequested: () -> Unit,
     onGalleryRequested: () -> Unit,
 ) {
-    SafeModalBottomSheet(
+    EmModalSheet(
         onDismissRequest = {
             onAction.invoke(TransactionCreateAction.DismissAttachmentPicker)
         },
@@ -306,7 +292,7 @@ private fun AccountSelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
 ) {
-    SafeModalBottomSheet(
+    EmModalSheet(
         onDismissRequest = {
             onAction.invoke(TransactionCreateAction.DismissAccountSelection)
         },
@@ -332,7 +318,7 @@ private fun CategorySelectionView(
     state: TransactionCreateState,
     onAction: (TransactionCreateAction) -> Unit,
 ) {
-    SafeModalBottomSheet(
+    EmModalSheet(
         onDismissRequest = {
             onAction.invoke(TransactionCreateAction.DismissCategorySelection)
         },
@@ -405,16 +391,16 @@ private fun TransactionCreateContent(
     val focusManager = LocalFocusManager.current
 
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.padding(horizontal = EmTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
-        SettingsSection(
+        EmSection(
             title = stringResource(R.string.transaction_type),
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = EmTheme.spacing.sm),
         ) {
-            AppCardView {
+            EmCard {
                 Column(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.lg),
                 ) {
                     TransactionTypeSelectionView(
                         modifier = Modifier.fillMaxWidth(),
@@ -427,30 +413,27 @@ private fun TransactionCreateContent(
             }
         }
 
-        SettingsSection(title = stringResource(R.string.details)) {
-            AppCardView {
+        EmSection(title = stringResource(R.string.details)) {
+            EmCard {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                        .padding(EmTheme.spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
                 ) {
-                    DecimalTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                    EmAmountField(
                         value = state.amount.value,
+                        onValueChange = { state.amount.onValueChange?.invoke(it) },
+                        label = stringResource(id = R.string.amount),
+                        modifier = Modifier.fillMaxWidth(),
                         isError = state.amount.valueError,
-                        onValueChange = state.amount.onValueChange,
-                        label = R.string.amount,
                         errorMessage = stringResource(id = R.string.amount_error_message),
-                        trailingIcon = {
-                            IconButton(
+                        trailing = {
+                            EmIconButton(
+                                icon = Icons.Outlined.Calculate,
+                                contentDescription = stringResource(DesignSystemR.string.a11y_open_calculator),
                                 onClick = { onAction.invoke(TransactionCreateAction.ShowNumberPad) },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Calculate,
-                                    contentDescription = stringResource(DesignSystemR.string.a11y_open_calculator),
-                                )
-                            }
+                            )
                         },
                     )
 
@@ -466,7 +449,7 @@ private fun TransactionCreateContent(
 
                     if (state.quickPicks.isNotEmpty()) {
                         QuickPickRow(
-                            modifier = Modifier.padding(vertical = 4.dp),
+                            modifier = Modifier.padding(vertical = EmTheme.spacing.xs),
                             picks = state.quickPicks,
                             onPick = {
                                 focusManager.clearFocus(force = true)
@@ -477,46 +460,37 @@ private fun TransactionCreateContent(
 
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                     ) {
-                        ClickableTextField(
-                            modifier = Modifier.weight(1f),
+                        EmPickerField(
+                            label = stringResource(id = R.string.select_date),
                             value = state.dateTime.toCompleteDateWithDate(),
-                            label = R.string.select_date,
-                            leadingIcon = Icons.Outlined.EditCalendar,
                             onClick = {
                                 focusManager.clearFocus(force = true)
                                 onAction.invoke(TransactionCreateAction.ShowDateSelection)
                             },
-                        )
-                        ClickableTextField(
                             modifier = Modifier.weight(1f),
+                            leadingIcon = Icons.Outlined.EditCalendar,
+                        )
+                        EmPickerField(
+                            label = stringResource(id = R.string.select_time),
                             value = state.dateTime.toTimeAndMinutes(),
-                            label = R.string.select_time,
-                            leadingIcon = Icons.Outlined.AccessTime,
                             onClick = {
                                 onAction.invoke(TransactionCreateAction.ShowTimeSelection)
                             },
+                            modifier = Modifier.weight(1f),
+                            leadingIcon = Icons.Outlined.AccessTime,
                         )
                     }
 
-                    OutlinedTextField(
+                    EmTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.notes.value,
                         singleLine = false,
                         maxLines = 3,
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Notes,
-                                contentDescription = null,
-                            )
-                        },
-                        placeholder = {
-                            Text(text = stringResource(id = R.string.optional_details))
-                        },
-                        label = {
-                            Text(text = stringResource(id = R.string.notes))
-                        },
+                        leadingIcon = Icons.AutoMirrored.Filled.Notes,
+                        placeholder = stringResource(id = R.string.optional_details),
+                        label = stringResource(id = R.string.notes),
                         onValueChange = {
                             state.notes.onValueChange?.invoke(it)
                         },
@@ -531,12 +505,12 @@ private fun TransactionCreateContent(
         }
 
         state.recurringRuleId?.let {
-            SettingsSection(title = stringResource(R.string.repeat)) {
-                AppCardView {
-                    SettingRow(
-                        title = stringResource(R.string.recurring_part_of_series),
-                        subtitle = stringResource(R.string.recurring_edit_series),
+            EmSection(title = stringResource(R.string.repeat)) {
+                EmCard {
+                    EmSettingItem(
                         icon = Icons.Outlined.EventRepeat,
+                        title = stringResource(R.string.recurring_part_of_series),
+                        supporting = stringResource(R.string.recurring_edit_series),
                         onClick = { onAction.invoke(TransactionCreateAction.OpenRecurringSeries) },
                     )
                 }
@@ -544,7 +518,7 @@ private fun TransactionCreateContent(
         }
 
         if (state.canRepeat) {
-            SettingsSection(title = stringResource(R.string.repeat)) {
+            EmSection(title = stringResource(R.string.repeat)) {
                 RepeatSelector(
                     selected = state.repeat,
                     startDate = state.dateTime,
@@ -559,8 +533,8 @@ private fun TransactionCreateContent(
             enter = fadeIn(tween(200)) + expandVertically(tween(250)),
             exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
         ) {
-            SettingsSection(title = stringResource(R.string.select_category)) {
-                Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            EmSection(title = stringResource(R.string.select_category)) {
+                Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md)) {
                     CategoryItem(
                         name = state.selectedCategory.titleResId?.let { stringResource(it) }
                             ?: state.selectedCategory.name,
@@ -587,7 +561,7 @@ private fun TransactionCreateContent(
             }
         }
 
-        SettingsSection(
+        EmSection(
             title = stringResource(
                 id = if (state.transactionType == TransactionType.TRANSFER) {
                     R.string.from_account
@@ -622,7 +596,7 @@ private fun TransactionCreateContent(
             enter = fadeIn(tween(200)) + expandVertically(tween(250)),
             exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
         ) {
-            SettingsSection(title = stringResource(R.string.to_account)) {
+            EmSection(title = stringResource(R.string.to_account)) {
                 AccountItem(
                     name = state.selectedToAccount.name,
                     icon = state.selectedToAccount.storedIcon.name,
@@ -644,11 +618,11 @@ private fun TransactionCreateContent(
             }
         }
 
-        SettingsSection(title = stringResource(R.string.attachments)) {
+        EmSection(title = stringResource(R.string.attachments)) {
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(vertical = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                contentPadding = PaddingValues(vertical = EmTheme.spacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 items(state.attachments, key = { it }) { path ->
                     AttachmentThumbnail(
@@ -690,25 +664,15 @@ private fun RepeatSelector(
         RecurringFrequency.MONTHLY to R.string.repeat_monthly,
         RecurringFrequency.YEARLY to R.string.repeat_yearly,
     )
-    AppCardView {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)) {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    EmCard {
+        Column(modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md)) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm)) {
                 options.forEach { (frequency, label) ->
-                    FilterChip(
+                    EmChip(
+                        label = stringResource(id = label),
                         selected = selected == frequency,
                         onClick = { onSelect(frequency) },
-                        label = { Text(text = stringResource(id = label)) },
-                        leadingIcon = if (selected == frequency && frequency != null) {
-                            {
-                                Icon(
-                                    imageVector = Icons.Outlined.Repeat,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-                                )
-                            }
-                        } else {
-                            null
-                        },
+                        leadingIcon = if (selected == frequency && frequency != null) Icons.Outlined.Repeat else null,
                     )
                 }
             }
@@ -716,15 +680,15 @@ private fun RepeatSelector(
                 // Dated on a later day: only the plan is saved, and the first entry is added then.
                 val planned = remember(startDate) { isOnLaterDay(startDate) }
                 val next = remember(selected, startDate) { occurrenceDate(startDate, selected, 1) }
-                Text(
+                EmText(
                     text = if (planned) {
                         stringResource(id = R.string.repeat_planned, startDate.toCompleteDateWithDate())
                     } else {
                         stringResource(id = R.string.repeat_next, next.toCompleteDateWithDate())
                     },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = EmTheme.spacing.xs),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
@@ -751,7 +715,7 @@ fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
     return calendar.time
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun TransactionCreateStateForTransferPreview() {
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})
@@ -763,7 +727,7 @@ private fun TransactionCreateStateForTransferPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun TransactionCreateStateForIncomePreview() {
     val amountField = TextFieldValue(value = "", valueError = false, onValueChange = {})

@@ -1,49 +1,47 @@
 package com.naveenapps.expensemanager.feature.transaction.numberpad
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.Backspace
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SingleLineText
 import com.naveenapps.expensemanager.feature.transaction.R
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -88,11 +86,11 @@ private fun NumberPadDialog(
             usePlatformDefaultWidth = false,
         ),
     ) {
-        Surface(
+        EmCard(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(EmTheme.spacing.lg)
                 .wrapContentSize(),
-            shape = RoundedCornerShape(8.dp),
+            variant = EmCardVariant.Filled,
         ) {
             Column {
                 // Optional content above the keypad, e.g. the add screen's frequent-entry chips.
@@ -133,29 +131,28 @@ private fun NumberPadScreenView(
 ) {
     Column(modifier = modifier) {
         // Display area
-        Surface(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
-            shape = MaterialTheme.shapes.large,
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md)
+                .clip(EmTheme.shapes.lg)
+                .background(EmTheme.colors.scheme.surfaceContainerHigh),
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.lg),
                 horizontalAlignment = Alignment.End,
             ) {
                 // Expression
                 if (amountString.isNotBlank()) {
-                    Text(
+                    EmText(
                         text = amountString,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = EmTextColor.Supporting,
+                        textAlign = TextAlign.End,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.End,
                     )
-                    Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(EmTheme.spacing.xs))
                 }
 
                 // Current value
@@ -164,40 +161,34 @@ private fun NumberPadScreenView(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End,
                 ) {
-                    Text(
+                    EmText(
                         text = value,
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.weight(1f, fill = false),
+                        role = EmTextRole.Display,
+                        textAlign = TextAlign.End,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, fill = false),
-                        textAlign = TextAlign.End,
                     )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    IconButton(
+                    Spacer(modifier = Modifier.width(EmTheme.spacing.md))
+                    EmIconButton(
+                        icon = Icons.AutoMirrored.Rounded.Backspace,
+                        contentDescription = stringResource(R.string.backspace),
                         onClick = { onChange.invoke("") },
                         modifier = Modifier.size(36.dp),
-                    ) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Rounded.Backspace,
-                            contentDescription = stringResource(R.string.backspace),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
+                        tint = EmTheme.colors.scheme.onSurfaceVariant,
+                    )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.xs))
 
         // Number pad grid
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
+                .padding(horizontal = EmTheme.spacing.md),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
         ) {
             val numberButtons = listOf(
                 listOf("1", "2", "3", "/"),
@@ -214,7 +205,7 @@ private fun NumberPadScreenView(
             numberButtons.forEach { row ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
                 ) {
                     row.forEach { label ->
                         val isOperator = label in listOf("/", "×", "−", "+")
@@ -231,68 +222,40 @@ private fun NumberPadScreenView(
             }
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
 
         // Bottom actions
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // Cancel and Done share the width, and their labels stay on one line (shrinking if
             // needed): with a large font size Done used to be squeezed into a narrow column with
             // its label wrapping letter by letter.
-            TextButton(
+            EmButton(
+                text = stringResource(id = R.string.clear),
                 onClick = { clear.invoke() },
-                contentPadding = ButtonDefaults.TextButtonWithIconContentPadding,
-            ) {
-                SingleLineText(
-                    text = stringResource(id = R.string.clear),
-                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium),
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
-
-            OutlinedButton(
+                variant = EmButtonVariant.Tertiary,
+            )
+            EmButton(
+                text = stringResource(id = R.string.cancel),
                 onClick = { cancel.invoke() },
-                shape = MaterialTheme.shapes.medium,
-                contentPadding = CompactButtonPadding,
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = 48.dp),
-            ) {
-                SingleLineText(
-                    text = stringResource(id = R.string.cancel),
-                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium),
-                )
-            }
-
-            Button(
+                variant = EmButtonVariant.Secondary,
+                modifier = Modifier.weight(1f),
+            )
+            EmButton(
+                text = stringResource(id = R.string.done),
                 onClick = { confirm.invoke() },
-                shape = MaterialTheme.shapes.medium,
-                contentPadding = CompactButtonPadding,
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = 48.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Check,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp),
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                SingleLineText(
-                    text = stringResource(id = R.string.done),
-                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                )
-            }
+                leadingIcon = Icons.Rounded.Check,
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }
 
-private val CompactButtonPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
 
 @Composable
 private fun NumberPadButton(
@@ -301,36 +264,23 @@ private fun NumberPadButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        onClick = onClick,
-        modifier = modifier.height(64.dp),
-        shape = MaterialTheme.shapes.medium,
-        color = if (isOperator) {
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-        } else {
-            Color.Transparent
-        },
+    Box(
+        modifier = modifier
+            .height(64.dp)
+            .clip(EmTheme.shapes.md)
+            .background(if (isOperator) EmTheme.colors.scheme.primaryContainer else Color.Transparent)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            Text(
-                text = text,
-                style = if (isOperator) {
-                    MaterialTheme.typography.titleLarge
-                } else {
-                    MaterialTheme.typography.titleMedium
-                },
-                fontWeight = if (isOperator) FontWeight.Bold else FontWeight.Medium,
-                color = if (isOperator) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurface
-                },
-            )
-        }
+        EmText(
+            text = text,
+            role = EmTextRole.ScreenTitle,
+            color = if (isOperator) EmTextColor.Primary else EmTextColor.Default,
+        )
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun NumberPadScreenPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -346,7 +296,7 @@ fun NumberPadScreenPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun NumberPadScreenDialogPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

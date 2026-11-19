@@ -16,30 +16,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Notes
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
 import androidx.compose.material.icons.outlined.EditCalendar
 import androidx.compose.material.icons.outlined.EventBusy
-import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -54,15 +38,27 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmPickerField
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
@@ -86,7 +82,7 @@ fun RecurringTransactionEditScreen(
     viewModel: RecurringTransactionEditViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val resources = LocalContext.current.resources
 
@@ -109,43 +105,40 @@ fun RecurringTransactionEditScreen(
 private fun RecurringTransactionEditContent(
     state: RecurringTransactionEditState,
     onAction: (RecurringTransactionEditAction) -> Unit,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
 ) {
     BackHandler { onAction(RecurringTransactionEditAction.ClosePage) }
 
     RecurringEditDialogs(state = state, onAction = onAction)
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction(RecurringTransactionEditAction.ClosePage) },
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { onAction(RecurringTransactionEditAction.ClosePage) },
                 title = stringResource(R.string.edit_recurring_transaction),
                 actions = {
-                    IconButton(onClick = { onAction(RecurringTransactionEditAction.ShowStopDialog) }) {
-                        Icon(
-                            imageVector = Icons.Outlined.EventBusy,
-                            contentDescription = stringResource(R.string.recurring_stop),
-                            tint = MaterialTheme.colorScheme.error,
-                        )
-                    }
+                    EmIconButton(
+                        icon = Icons.Outlined.EventBusy,
+                        contentDescription = stringResource(R.string.recurring_stop),
+                        onClick = { onAction(RecurringTransactionEditAction.ShowStopDialog) },
+                        tint = EmTheme.colors.scheme.error,
+                    )
                 },
             )
         },
-        floatingActionButton = {
+        bottomBar = {
             if (state.isLoaded) {
-                ExtendedFloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    onClick = { onAction(RecurringTransactionEditAction.Save) },
-                    icon = { Icon(imageVector = Icons.Default.Done, contentDescription = null) },
-                    text = { Text(text = stringResource(R.string.save)) },
+                EmBottomActionBar(
+                    primaryText = stringResource(R.string.save),
+                    onPrimaryClick = { onAction(RecurringTransactionEditAction.Save) },
+                    primaryIcon = Icons.Default.Done,
                 )
             }
         },
     ) { innerPadding ->
-        if (!state.isLoaded) return@Scaffold
+        if (!state.isLoaded) return@EmScaffold
         RecurringEditForm(
             state = state,
             onAction = onAction,
@@ -163,38 +156,30 @@ private fun RecurringEditDialogs(
     onAction: (RecurringTransactionEditAction) -> Unit,
 ) {
     when {
-        state.showDiscardDialog -> AppDialog(
-            onDismissRequest = { onAction(RecurringTransactionEditAction.DismissDiscardDialog) },
-            onConfirmation = { onAction(RecurringTransactionEditAction.ConfirmDiscard) },
-            dialogTitle = stringResource(R.string.discard_changes_title),
-            dialogText = stringResource(R.string.discard_changes_message),
-            positiveButtonText = stringResource(R.string.discard),
-            negativeButtonText = stringResource(R.string.keep_editing),
-        )
+        state.showDiscardDialog -> EmConfirm(
+     title = stringResource(R.string.discard_changes_title),
+     message = stringResource(R.string.discard_changes_message),
+     confirmText = stringResource(R.string.discard),
+     onConfirm = { onAction(RecurringTransactionEditAction.ConfirmDiscard) },
+     onDismiss = { onAction(RecurringTransactionEditAction.DismissDiscardDialog) },
+     dismissText = stringResource(R.string.keep_editing),
+     destructive = true,
+ )
 
-        state.showStopDialog -> AlertDialog(
-            onDismissRequest = { onAction(RecurringTransactionEditAction.DismissStopDialog) },
-            icon = { Icon(Icons.Outlined.EventRepeat, contentDescription = null) },
-            title = { Text(text = stringResource(R.string.recurring_stop_title)) },
-            text = { Text(text = stringResource(R.string.recurring_stop_message)) },
-            confirmButton = {
-                TextButton(onClick = { onAction(RecurringTransactionEditAction.ConfirmStop) }) {
-                    Text(text = stringResource(R.string.recurring_stop))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction(RecurringTransactionEditAction.DismissStopDialog) }) {
-                    Text(text = stringResource(android.R.string.cancel))
-                }
-            },
-        )
+        state.showStopDialog -> EmConfirm(
+     title = stringResource(R.string.recurring_stop_title),
+     message = stringResource(R.string.recurring_stop_message),
+     confirmText = stringResource(R.string.recurring_stop),
+     onConfirm = { onAction(RecurringTransactionEditAction.ConfirmStop) },
+     onDismiss = { onAction(RecurringTransactionEditAction.DismissStopDialog) },
+ )
 
         state.showNumberPad -> NumberPadDialogView(
             initialAmount = state.numberPadInitialAmount,
             onConfirm = { onAction(RecurringTransactionEditAction.SetNumberPadValue(it)) },
         )
 
-        state.showCategorySelection -> SafeModalBottomSheet(
+        state.showCategorySelection -> EmModalSheet(
             onDismissRequest = { onAction(RecurringTransactionEditAction.DismissCategorySelection) },
         ) {
             CategorySelectionScreen(
@@ -206,7 +191,7 @@ private fun RecurringEditDialogs(
             )
         }
 
-        state.showAccountSelection -> SafeModalBottomSheet(
+        state.showAccountSelection -> EmModalSheet(
             onDismissRequest = { onAction(RecurringTransactionEditAction.DismissAccountSelection) },
         ) {
             AccountSelectionScreen(
@@ -246,48 +231,47 @@ private fun RecurringEditForm(
     val focusManager = LocalFocusManager.current
 
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.padding(horizontal = EmTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
-        FutureOnlyNotice(modifier = Modifier.padding(top = 8.dp))
+        FutureOnlyNotice(modifier = Modifier.padding(top = EmTheme.spacing.sm))
 
-        SettingsSection(title = stringResource(R.string.details)) {
-            AppCardView {
+        EmSection(title = stringResource(R.string.details)) {
+            EmCard {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                        .padding(EmTheme.spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
                 ) {
-                    Text(
+                    EmText(
                         text = stringResource(state.transactionType.labelRes()),
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Label,
+                        color = EmTextColor.Supporting,
                     )
-                    DecimalTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                    EmAmountField(
                         value = state.amount.value,
+                        onValueChange = { state.amount.onValueChange?.invoke(it) },
+                        label = stringResource(id = R.string.amount),
+                        modifier = Modifier.fillMaxWidth(),
                         isError = state.amount.valueError,
-                        onValueChange = state.amount.onValueChange,
-                        label = R.string.amount,
                         errorMessage = stringResource(id = R.string.amount_error_message),
-                        trailingIcon = {
-                            IconButton(onClick = { onAction(RecurringTransactionEditAction.ShowNumberPad) }) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Calculate,
-                                    contentDescription = stringResource(DesignSystemR.string.a11y_open_calculator),
-                                )
-                            }
+                        trailing = {
+                            EmIconButton(
+                                icon = Icons.Outlined.Calculate,
+                                contentDescription = stringResource(DesignSystemR.string.a11y_open_calculator),
+                                onClick = { onAction(RecurringTransactionEditAction.ShowNumberPad) },
+                            )
                         },
                     )
-                    OutlinedTextField(
+                    EmTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = state.notes.value,
                         singleLine = false,
                         maxLines = 3,
-                        leadingIcon = { Icon(imageVector = Icons.AutoMirrored.Filled.Notes, contentDescription = null) },
-                        placeholder = { Text(text = stringResource(id = R.string.optional_details)) },
-                        label = { Text(text = stringResource(id = R.string.notes)) },
+                        leadingIcon = Icons.AutoMirrored.Filled.Notes,
+                        placeholder = stringResource(id = R.string.optional_details),
+                        label = stringResource(id = R.string.notes),
                         onValueChange = { state.notes.onValueChange?.invoke(it) },
                         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus(force = true) }),
                     )
@@ -295,11 +279,11 @@ private fun RecurringEditForm(
             }
         }
 
-        SettingsSection(title = stringResource(R.string.repeat)) {
-            AppCardView {
+        EmSection(title = stringResource(R.string.repeat)) {
+            EmCard {
                 Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                 ) {
                     FrequencySelector(
                         selected = state.frequency,
@@ -307,37 +291,37 @@ private fun RecurringEditForm(
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                     ) {
-                        ClickableTextField(
-                            modifier = Modifier.weight(1f),
+                        EmPickerField(
+                            label = stringResource(id = R.string.recurring_next_date),
                             value = state.nextDueDate.toCompleteDateWithDate(),
-                            label = R.string.recurring_next_date,
-                            leadingIcon = Icons.Outlined.EditCalendar,
                             onClick = {
                                 focusManager.clearFocus(force = true)
                                 onAction(RecurringTransactionEditAction.ShowDateSelection)
                             },
-                        )
-                        ClickableTextField(
                             modifier = Modifier.weight(1f),
+                            leadingIcon = Icons.Outlined.EditCalendar,
+                        )
+                        EmPickerField(
+                            label = stringResource(id = R.string.select_time),
                             value = state.nextDueDate.toTimeAndMinutes(),
-                            label = R.string.select_time,
-                            leadingIcon = Icons.Outlined.AccessTime,
                             onClick = {
                                 focusManager.clearFocus(force = true)
                                 onAction(RecurringTransactionEditAction.ShowTimeSelection)
                             },
+                            modifier = Modifier.weight(1f),
+                            leadingIcon = Icons.Outlined.AccessTime,
                         )
                     }
                     if (state.isScheduleChanged) {
-                        Text(
+                        EmText(
                             text = stringResource(
                                 R.string.recurring_schedule_change_hint,
                                 state.nextDueDate.toCompleteDateWithDate(),
                             ),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.primary,
+                            role = EmTextRole.Supporting,
+                            color = EmTextColor.Primary,
                         )
                     }
                 }
@@ -346,7 +330,7 @@ private fun RecurringEditForm(
 
         if (state.transactionType != TransactionType.TRANSFER) {
             state.selectedCategory?.let { category ->
-                SettingsSection(title = stringResource(R.string.select_category)) {
+                EmSection(title = stringResource(R.string.select_category)) {
                     CategoryItem(
                         name = category.titleResId?.let { stringResource(it) } ?: category.name,
                         icon = category.storedIcon.name,
@@ -390,7 +374,7 @@ private fun RecurringEditForm(
 @Composable
 private fun AccountSection(title: Int, account: AccountUiModel?, onClick: () -> Unit) {
     account ?: return
-    SettingsSection(title = stringResource(title)) {
+    EmSection(title = stringResource(title)) {
         AccountItem(
             name = account.name,
             icon = account.storedIcon.name,
@@ -411,18 +395,18 @@ private fun FutureOnlyNotice(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
     ) {
-        Icon(
-            imageVector = Icons.Outlined.Info,
+        EmIcon(
+            icon = Icons.Outlined.Info,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(18.dp),
+            size = EmTheme.icons.md,
+            tint = EmTheme.colors.scheme.onSurfaceVariant,
         )
-        Text(
+        EmText(
             text = stringResource(R.string.recurring_edit_future_only),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
     }
 }
@@ -433,23 +417,13 @@ private fun FrequencySelector(
     selected: RecurringFrequency,
     onSelect: (RecurringFrequency) -> Unit,
 ) {
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm)) {
         RecurringFrequency.entries.forEach { frequency ->
-            FilterChip(
+            EmChip(
+                label = stringResource(id = frequency.labelResId),
                 selected = selected == frequency,
                 onClick = { onSelect(frequency) },
-                label = { Text(text = stringResource(id = frequency.labelResId)) },
-                leadingIcon = if (selected == frequency) {
-                    {
-                        Icon(
-                            imageVector = Icons.Outlined.Repeat,
-                            contentDescription = null,
-                            modifier = Modifier.size(FilterChipDefaults.IconSize),
-                        )
-                    }
-                } else {
-                    null
-                },
+                leadingIcon = if (selected == frequency) Icons.Outlined.Repeat else null,
             )
         }
     }

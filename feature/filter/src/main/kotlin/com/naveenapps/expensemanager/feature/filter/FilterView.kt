@@ -23,28 +23,26 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.CalendarMonth
 import androidx.compose.material.icons.rounded.FilterList
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import com.naveenapps.expensemanager.core.designsystem.em.EmBadge
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
@@ -60,7 +58,7 @@ fun FilterView(
     val filterState by viewModel.filterState.collectAsStateWithLifecycle()
 
     if (filterState.showDateFilter) {
-        SafeModalBottomSheet(
+        EmModalSheet(
             onDismissRequest = {
                 viewModel.processAction(FilterAction.DismissDateFilter)
             },
@@ -74,7 +72,7 @@ fun FilterView(
     }
 
     if (filterState.showTypeFilter) {
-        SafeModalBottomSheet(
+        EmModalSheet(
             onDismissRequest = {
                 viewModel.processAction(FilterAction.DismissTypeFilter)
             },
@@ -107,93 +105,63 @@ private fun FilterContentView(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = EmTheme.spacing.sm)
                 .height(48.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(
+            EmIconButton(
+                icon = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
+                contentDescription = stringResource(DesignSystemR.string.a11y_previous_period),
                 onClick = { onAction.invoke(FilterAction.MoveDateBackward) },
                 enabled = filterState.showBackward,
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
-                    contentDescription = stringResource(DesignSystemR.string.a11y_previous_period),
-                    modifier = Modifier.size(22.dp),
-                )
-            }
+            )
 
             // Date label
             Row(
                 modifier = Modifier
                     .weight(1f)
-                    .clip(MaterialTheme.shapes.small)
+                    .clip(EmTheme.shapes.sm)
                     .clickable { onAction.invoke(FilterAction.ShowDateFilter) }
-                    .padding(vertical = 6.dp),
+                    .padding(vertical = EmTheme.spacing.sm),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.CalendarMonth,
+                EmIcon(
+                    icon = Icons.Rounded.CalendarMonth,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
+                    size = EmTheme.icons.sm,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
+                Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+                EmText(
                     text = filterState.date,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    role = EmTextRole.SectionTitle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
 
-            IconButton(
+            EmIconButton(
+                icon = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                contentDescription = stringResource(DesignSystemR.string.a11y_next_period),
                 onClick = { onAction.invoke(FilterAction.MoveDateForward) },
                 enabled = filterState.showForward,
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
-                    contentDescription = stringResource(DesignSystemR.string.a11y_next_period),
-                    modifier = Modifier.size(22.dp),
-                )
-            }
+            )
 
             // Filter button with subtle badge
             val hasActiveFilters = filterState.selectedTransactionTypes.isNotEmpty() ||
                 filterState.selectedAccounts.isNotEmpty() ||
                 filterState.selectedCategories.isNotEmpty()
 
-            IconButton(
+            val count = filterState.selectedTransactionTypes.size +
+                filterState.selectedAccounts.size +
+                filterState.selectedCategories.size
+            EmIconButton(
+                icon = Icons.Rounded.FilterList,
+                contentDescription = stringResource(R.string.filters),
                 onClick = { onAction.invoke(FilterAction.ShowTypeFilter) },
-                modifier = Modifier.size(36.dp),
-            ) {
-                BadgedBox(
-                    badge = {
-                        if (hasActiveFilters) {
-                            val count = filterState.selectedTransactionTypes.size +
-                                filterState.selectedAccounts.size +
-                                filterState.selectedCategories.size
-                            Badge(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                            ) {
-                                Text(
-                                    text = count.toString(),
-                                    style = MaterialTheme.typography.labelSmall,
-                                )
-                            }
-                        }
-                    },
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.FilterList,
-                        contentDescription = null,
-                        modifier = Modifier.size(22.dp),
-                    )
-                }
-            }
+                badge = if (hasActiveFilters) EmBadge.Count(count) else null,
+            )
         }
 
         // Active filter chips
@@ -223,8 +191,8 @@ fun TypeFilter(
             modifier = modifier
                 .fillMaxWidth()
                 .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.xs),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             filterState.selectedTransactionTypes.forEach { type ->

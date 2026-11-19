@@ -3,23 +3,16 @@ package com.naveenapps.expensemanager.feature.account.create
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccountBalance
 import androidx.compose.material.icons.rounded.CreditCard
-import androidx.compose.material3.Icon
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmSegmented
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.feature.account.R
@@ -30,75 +23,31 @@ fun AccountTypeSelectionView(
     onAccountTypeChange: ((AccountType) -> Unit),
     modifier: Modifier = Modifier,
 ) {
-    val accountTypes = remember {
-        listOf(
-            AccountTypeUi(
-                type = AccountType.REGULAR,
-                labelRes = R.string.bank_account,
-                icon = Icons.Rounded.AccountBalance,
-            ),
-            AccountTypeUi(
-                type = AccountType.CREDIT,
-                labelRes = R.string.credit,
-                icon = Icons.Rounded.CreditCard,
-            ),
-        )
-    }
-
-    SingleChoiceSegmentedButtonRow(
-        modifier = modifier.fillMaxWidth(),
-    ) {
-        accountTypes.forEachIndexed { index, item ->
-            val isSelected = selectedAccountType == item.type
-
-            SegmentedButton(
-                selected = isSelected,
-                onClick = { onAccountTypeChange.invoke(item.type) },
-                shape = SegmentedButtonDefaults.itemShape(
-                    index = index,
-                    count = accountTypes.size,
-                ),
-                icon = {
-                    SegmentedButtonDefaults.Icon(active = isSelected) {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = null,
-                            modifier = Modifier.size(18.dp),
-                        )
-                    }
-                },
-                label = {
-                    Text(
-                        text = stringResource(id = item.labelRes),
-                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
-                    )
-                },
-            )
-        }
-    }
+    val types = listOf(AccountType.REGULAR, AccountType.CREDIT)
+    EmSegmented(
+        options = listOf(stringResource(id = R.string.bank_account), stringResource(id = R.string.credit)),
+        selectedIndex = types.indexOf(selectedAccountType),
+        onSelect = { onAccountTypeChange(types[it]) },
+        modifier = modifier,
+        icons = listOf(Icons.Rounded.AccountBalance, Icons.Rounded.CreditCard),
+    )
 }
 
-private data class AccountTypeUi(
-    val type: AccountType,
-    val labelRes: Int,
-    val icon: ImageVector,
-)
-
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun AccountTypeSelectionViewPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         Column {
             AccountTypeSelectionView(
                 modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .padding(top = EmTheme.spacing.lg, start = EmTheme.spacing.lg, end = EmTheme.spacing.lg)
                     .fillMaxWidth(),
                 selectedAccountType = AccountType.REGULAR,
                 onAccountTypeChange = {},
             )
             AccountTypeSelectionView(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(EmTheme.spacing.lg)
                     .fillMaxWidth(),
                 selectedAccountType = AccountType.CREDIT,
                 onAccountTypeChange = {},

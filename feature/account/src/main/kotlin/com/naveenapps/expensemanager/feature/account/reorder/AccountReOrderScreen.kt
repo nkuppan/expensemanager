@@ -1,12 +1,10 @@
 package com.naveenapps.expensemanager.feature.account.reorder
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,17 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,17 +28,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.components.dragGestureHandler
 import com.naveenapps.expensemanager.core.designsystem.components.rememberDragDropListState
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.feature.account.R
@@ -73,41 +71,29 @@ private fun AccountReOrderScaffoldView(
     state: AccountReOrderState,
     onAction: (AccountReOrderAction) -> Unit,
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(R.string.accounts_re_order),
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(AccountReOrderAction.ClosePage)
                 },
             )
         },
-        floatingActionButton = {
+        bottomBar = {
             AnimatedVisibility(
                 visible = state.showSaveButton,
-                enter = scaleIn(spring(dampingRatio = Spring.DampingRatioMediumBouncy)) + fadeIn(),
-                exit = scaleOut() + fadeOut(),
+                enter = slideInVertically { it } + fadeIn(),
+                exit = slideOutVertically { it } + fadeOut(),
             ) {
-                ExtendedFloatingActionButton(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-
-                    onClick = { onAction.invoke(AccountReOrderAction.Save) },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Done,
-                            contentDescription = null,
-                        )
-                    },
-                    text = {
-                        Text(text = stringResource(R.string.save))
-                    },
+                EmBottomActionBar(
+                    primaryText = stringResource(R.string.save),
+                    onPrimaryClick = { onAction.invoke(AccountReOrderAction.Save) },
+                    primaryIcon = Icons.Default.Done,
                 )
             }
         },
@@ -121,20 +107,20 @@ private fun AccountReOrderScaffoldView(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                    .padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.Info,
+                EmIcon(
+                    icon = Icons.Rounded.Info,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
+                    size = EmTheme.icons.sm,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
-                Text(
+                EmText(
                     text = stringResource(R.string.drag_to_reorder_hint),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
 
@@ -164,12 +150,12 @@ private fun ReOrderContent(
             .dragGestureHandler(coroutineScope, dragDropListState, overscrollJob),
         state = dragDropListState.getLazyListState(),
         contentPadding = PaddingValues(
-            start = 16.dp,
-            end = 16.dp,
-            top = 12.dp,
+            start = EmTheme.spacing.lg,
+            end = EmTheme.spacing.lg,
+            top = EmTheme.spacing.md,
             bottom = 88.dp,
         ),
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs),
     ) {
         itemsIndexed(accounts) { index, account ->
             val isDragging = index == dragDropListState.getCurrentIndexOfDraggedListItem()
@@ -181,8 +167,8 @@ private fun ReOrderContent(
                     null
                 }
 
-            AppCardView(
-                shape = AppCardViewDefaults.cardShape(index, accounts),
+            EmCard(
+                position = EmCardPosition.of(index, accounts),
                 modifier = Modifier
                     .fillMaxWidth()
                     .graphicsLayer {
@@ -198,7 +184,7 @@ private fun ReOrderContent(
                     position = index + 1,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                        .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
                 )
             }
         }
@@ -218,18 +204,18 @@ fun AccountReOrderItem(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
+        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
     ) {
         // Drag handle
-        Icon(
-            imageVector = Icons.Rounded.DragHandle,
+        EmIcon(
+            icon = Icons.Rounded.DragHandle,
             contentDescription = null,
+            size = EmTheme.icons.md,
             tint = if (isDragging) {
-                MaterialTheme.colorScheme.primary
+                EmTheme.colors.scheme.primary
             } else {
-                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                EmTheme.colors.scheme.onSurfaceVariant
             },
-            modifier = Modifier.size(20.dp),
         )
 
         IconAndBackgroundView(
@@ -239,24 +225,23 @@ fun AccountReOrderItem(
             customImagePath = customImagePath,
         )
 
-        Text(
-            modifier = Modifier.weight(1f),
+        EmText(
             text = name,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Medium,
+            modifier = Modifier.weight(1f),
+            role = EmTextRole.ItemTitle,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
 
-        Text(
+        EmText(
             text = "#$position",
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun AccountReOrderScaffoldViewPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

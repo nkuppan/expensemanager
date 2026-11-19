@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.dashboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,17 +11,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Repeat
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -30,16 +21,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.naveenapps.expensemanager.core.common.R as CommonR
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyAction
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.recurring.labelResId
 import java.time.LocalDate
@@ -61,9 +58,8 @@ internal fun HomeUpcomingCard(
     onAction: (DashboardAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AppCardView(
+    EmCard(
         modifier = modifier.fillMaxWidth(),
-        cornerSize = 16.dp,
     ) {
         if (upcoming.items.isEmpty()) {
             UpcomingEmpty(onPlan = { onAction(DashboardAction.PlanRecurring) })
@@ -74,11 +70,7 @@ internal fun HomeUpcomingCard(
                 }
                 upcoming.items.forEachIndexed { index, item ->
                     if (index > 0) {
-                        HorizontalDivider(
-                            // Starts after the date tile, like a list divider.
-                            modifier = Modifier.padding(start = 76.dp, end = 16.dp),
-                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                        )
+                        EmDivider()
                     }
                     UpcomingRow(item = item, onClick = { onAction(DashboardAction.OpenRecurringEdit(item.rule.id)) })
                 }
@@ -89,20 +81,24 @@ internal fun HomeUpcomingCard(
 
 @Composable
 private fun UpcomingTotals(upcoming: UpcomingUi) {
-    Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 4.dp)) {
-        Text(
+    Column(modifier = Modifier.padding(
+        start = EmTheme.spacing.lg,
+        end = EmTheme.spacing.lg,
+        top = EmTheme.spacing.lg,
+        bottom = EmTheme.spacing.xs,
+    )) {
+        EmText(
             text = pluralStringResource(R.plurals.upcoming_window, upcoming.windowDays, upcoming.windowDays),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
+        Row(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md)) {
             upcoming.expenseDue?.let {
                 UpcomingTotalTile(
                     label = stringResource(R.string.upcoming_spend),
                     amount = it,
-                    color = colorResource(CommonR.color.red_500),
+                    color = EmTheme.colors.expense,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -110,7 +106,7 @@ private fun UpcomingTotals(upcoming: UpcomingUi) {
                 UpcomingTotalTile(
                     label = stringResource(R.string.upcoming_income),
                     amount = it,
-                    color = colorResource(CommonR.color.green_500),
+                    color = EmTheme.colors.income,
                     modifier = Modifier.weight(1f),
                 )
             }
@@ -123,22 +119,18 @@ private fun UpcomingTotals(upcoming: UpcomingUi) {
 private fun UpcomingTotalTile(label: String, amount: String, color: Color, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(color.copy(alpha = 0.08f))
-            .padding(horizontal = 12.dp, vertical = 10.dp),
+            .clip(EmTheme.shapes.md)
+            .background(color.tint())
+            .padding(horizontal = EmTheme.spacing.md, vertical = EmTheme.spacing.sm),
     ) {
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
+        EmAmountText(
+            amount = amount,
             color = color,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
         )
-        Text(
+        EmText(
             text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
     }
 }
@@ -157,9 +149,9 @@ private fun UpcomingRow(item: UpcomingItemUi, onClick: () -> Unit) {
         categoryName.takeIf { rule.notes.isNotBlank() && it.isNotBlank() },
     ).joinToString(" · ")
     val (prefix, amountColor) = when (rule.type) {
-        TransactionType.EXPENSE -> "−" to colorResource(CommonR.color.red_500)
-        TransactionType.INCOME -> "+" to colorResource(CommonR.color.green_500)
-        TransactionType.TRANSFER -> "" to MaterialTheme.colorScheme.onSurface
+        TransactionType.EXPENSE -> "−" to EmTheme.colors.expense
+        TransactionType.INCOME -> "+" to EmTheme.colors.income
+        TransactionType.TRANSFER -> "" to EmTheme.colors.scheme.onSurface
     }
     val daysAway = remember(rule.nextDueDate) { daysUntil(rule.nextDueDate) }
     val isSoon = daysAway <= 1
@@ -168,47 +160,43 @@ private fun UpcomingRow(item: UpcomingItemUi, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DateTile(date = rule.nextDueDate, highlighted = isSoon)
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(EmTheme.spacing.lg))
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            EmText(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Spacer(modifier = Modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.xxs))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Outlined.Repeat,
+                EmIcon(
+                    icon = Icons.Outlined.Repeat,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(12.dp),
+                    size = EmTheme.icons.sm,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
+                Spacer(modifier = Modifier.width(EmTheme.spacing.xs))
+                EmText(
                     text = detail,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
         }
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
         Column(horizontalAlignment = Alignment.End) {
-            Text(
-                text = prefix + item.amount,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
+            EmAmountText(
+                amount = prefix + item.amount,
                 color = amountColor,
+                size = EmAmountSize.Small,
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.xs))
             DuePill(daysAway = daysAway, highlighted = isSoon)
         }
     }
@@ -221,36 +209,25 @@ private fun DateTile(date: Date, highlighted: Boolean) {
     val local = remember(date) { date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() }
     val month = remember(local, locale) { local.format(DateTimeFormatter.ofPattern("MMM", locale)) }
     val container = if (highlighted) {
-        MaterialTheme.colorScheme.primaryContainer
+        EmTheme.colors.scheme.primaryContainer
     } else {
-        MaterialTheme.colorScheme.surfaceContainerHigh
+        EmTheme.colors.scheme.surfaceContainerHigh
     }
     val content = if (highlighted) {
-        MaterialTheme.colorScheme.onPrimaryContainer
+        EmTheme.colors.scheme.onPrimaryContainer
     } else {
-        MaterialTheme.colorScheme.onSurface
+        EmTheme.colors.scheme.onSurface
     }
     Column(
         modifier = Modifier
             .size(44.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(EmTheme.shapes.md)
             .background(container),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(
-            text = local.dayOfMonth.toString(),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = content,
-            lineHeight = 18.sp,
-        )
-        Text(
-            text = month.uppercase(locale),
-            style = MaterialTheme.typography.labelSmall,
-            color = content.copy(alpha = 0.75f),
-            lineHeight = 12.sp,
-        )
+        EmText(text = local.dayOfMonth.toString(), role = EmTextRole.SectionTitle, color = content)
+        EmText(text = month.uppercase(locale), role = EmTextRole.Overline, color = content)
     }
 }
 
@@ -265,25 +242,24 @@ private fun DuePill(daysAway: Long, highlighted: Boolean) {
 
         else -> pluralStringResource(R.plurals.upcoming_in_days, daysAway.toInt(), daysAway.toInt())
     }
-    Text(
+    EmText(
         text = text,
-        style = MaterialTheme.typography.labelSmall,
-        fontWeight = FontWeight.Medium,
-        color = if (highlighted) {
-            MaterialTheme.colorScheme.onPrimaryContainer
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        },
         modifier = Modifier
-            .clip(RoundedCornerShape(50))
+            .clip(EmTheme.shapes.pill)
             .background(
                 if (highlighted) {
-                    MaterialTheme.colorScheme.primaryContainer
+                    EmTheme.colors.scheme.primaryContainer
                 } else {
-                    MaterialTheme.colorScheme.surfaceContainerHigh
+                    EmTheme.colors.scheme.surfaceContainerHigh
                 },
             )
-            .padding(horizontal = 8.dp, vertical = 2.dp),
+            .padding(horizontal = EmTheme.spacing.sm, vertical = EmTheme.spacing.xxs),
+        role = EmTextRole.Supporting,
+        color = if (highlighted) {
+            EmTheme.colors.scheme.onPrimaryContainer
+        } else {
+            EmTheme.colors.scheme.onSurfaceVariant
+        },
     )
 }
 
@@ -294,46 +270,11 @@ private fun daysUntil(date: Date): Long {
 
 @Composable
 private fun UpcomingEmpty(onPlan: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Box(
-            modifier = Modifier
-                .size(56.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.EventRepeat,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(28.dp),
-            )
-        }
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = stringResource(R.string.upcoming_empty_title),
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(
-            text = stringResource(R.string.upcoming_empty_description),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        FilledTonalButton(onClick = onPlan) {
-            Icon(imageVector = Icons.Outlined.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(text = stringResource(R.string.upcoming_plan))
-        }
-    }
+    EmEmptyState(
+        icon = Icons.Outlined.EventRepeat,
+        title = stringResource(R.string.upcoming_empty_title),
+        body = stringResource(R.string.upcoming_empty_description),
+        action = EmEmptyAction(stringResource(R.string.upcoming_plan), onPlan),
+        compact = true,
+    )
 }

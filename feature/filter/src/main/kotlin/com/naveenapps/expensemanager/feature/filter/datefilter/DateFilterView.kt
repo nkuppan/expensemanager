@@ -8,6 +8,8 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +24,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AllInclusive
 import androidx.compose.material.icons.rounded.CalendarMonth
@@ -31,30 +33,32 @@ import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.DateRange
 import androidx.compose.material.icons.rounded.EditCalendar
 import androidx.compose.material.icons.rounded.Today
-import androidx.compose.material3.Button
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconTile
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.emGroupedShape
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.DateRangeModel
@@ -112,89 +116,79 @@ private fun FilterTypesAndViewContent(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         // Header
-        Text(
+        EmText(
             text = stringResource(id = R.string.date_filter),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 12.dp),
+            modifier = Modifier.padding(
+                start = EmTheme.spacing.xl,
+                end = EmTheme.spacing.xl,
+                top = EmTheme.spacing.sm,
+                bottom = EmTheme.spacing.md,
+            ),
+            role = EmTextRole.SectionTitle,
         )
 
         // Filter options
         LazyColumn(
             modifier = Modifier.weight(1f, fill = false),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
+            contentPadding = PaddingValues(horizontal = EmTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs),
         ) {
             itemsIndexed(state.dateRangeTypeList) { index, filter ->
                 val isSelected = state.dateRangeType.value == filter.type
 
                 val bgColor by animateColorAsState(
                     targetValue = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer
+                        EmTheme.colors.scheme.primaryContainer
                     } else {
-                        MaterialTheme.colorScheme.surfaceContainerLow
+                        EmTheme.colors.scheme.surfaceContainerLow
                     },
                     animationSpec = tween(200),
                     label = "bg_color",
                 )
 
-                Surface(
-                    onClick = {
-                        state.dateRangeType.onValueChange?.invoke(filter.type)
-                    },
-                    shape = AppCardViewDefaults.cardShape(index, state.dateRangeTypeList),
-                    color = bgColor,
-                    modifier = Modifier.fillMaxWidth(),
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(emGroupedShape(index, state.dateRangeTypeList.size))
+                        .background(bgColor)
+                        .selectable(selected = isSelected, role = Role.RadioButton) {
+                            state.dateRangeType.onValueChange?.invoke(filter.type)
+                        },
                 ) {
                     Row(
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+                        modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(14.dp),
+                        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                     ) {
                         // Leading icon based on filter type
-                        Surface(
-                            shape = MaterialTheme.shapes.medium,
+                        EmIconTile(
+                            icon = filter.type.toIcon(),
                             color = if (isSelected) {
-                                MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                                EmTheme.colors.scheme.primary
                             } else {
-                                MaterialTheme.colorScheme.surfaceContainerHighest
+                                EmTheme.colors.scheme.onSurfaceVariant
                             },
-                            modifier = Modifier.size(40.dp),
-                        ) {
-                            Box(contentAlignment = Alignment.Center) {
-                                Icon(
-                                    imageVector = filter.type.toIcon(),
-                                    contentDescription = null,
-                                    tint = if (isSelected) {
-                                        MaterialTheme.colorScheme.primary
-                                    } else {
-                                        MaterialTheme.colorScheme.onSurfaceVariant
-                                    },
-                                    modifier = Modifier.size(20.dp),
-                                )
-                            }
-                        }
+                        )
 
                         Column(modifier = Modifier.weight(1f)) {
-                            Text(
+                            EmText(
                                 text = filter.name,
-                                style = MaterialTheme.typography.bodyLarge,
-                                fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                                role = EmTextRole.ItemTitle,
                                 color = if (isSelected) {
-                                    MaterialTheme.colorScheme.onPrimaryContainer
+                                    EmTheme.colors.scheme.onPrimaryContainer
                                 } else {
-                                    MaterialTheme.colorScheme.onSurface
+                                    EmTheme.colors.scheme.onSurface
                                 },
                             )
                             if (filter.description.isNotBlank()) {
-                                Spacer(modifier = Modifier.height(2.dp))
-                                Text(
+                                Spacer(modifier = Modifier.height(EmTheme.spacing.xxs))
+                                EmText(
                                     text = filter.description,
-                                    style = MaterialTheme.typography.bodySmall,
+                                    role = EmTextRole.Supporting,
                                     color = if (isSelected) {
-                                        MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                                        EmTheme.colors.scheme.onPrimaryContainer
                                     } else {
-                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                        EmTheme.colors.scheme.onSurfaceVariant
                                     },
                                 )
                             }
@@ -208,19 +202,20 @@ private fun FilterTypesAndViewContent(
                         )
 
                         if (checkAlpha > 0f) {
-                            Surface(
-                                shape = CircleShape,
-                                color = MaterialTheme.colorScheme.primary,
+                            Box(
                                 modifier = Modifier
-                                    .size(24.dp)
-                                    .graphicsLayer { alpha = checkAlpha },
+                                    .size(EmTheme.icons.lg)
+                                    .graphicsLayer { alpha = checkAlpha }
+                                    .clip(EmTheme.shapes.pill)
+                                    .background(EmTheme.colors.scheme.primary),
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
-                                    Icon(
-                                        imageVector = Icons.Rounded.Check,
+                                    EmIcon(
+                                        icon = Icons.Rounded.Check,
                                         contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onPrimary,
-                                        modifier = Modifier.size(14.dp),
+                                        size = EmTheme.icons.sm,
+                                        tint = EmTheme.colors.scheme.onPrimary,
                                     )
                                 }
                             }
@@ -237,25 +232,20 @@ private fun FilterTypesAndViewContent(
             exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
-                HorizontalDivider(
-                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
-                    modifier = Modifier.padding(bottom = 4.dp),
-                )
+                EmDivider(modifier = Modifier.padding(bottom = EmTheme.spacing.xs))
 
-                Text(
-                    text = stringResource(R.string.custom).uppercase(),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    letterSpacing = 0.8.sp,
-                    modifier = Modifier.padding(start = 4.dp),
+                EmText(
+                    text = stringResource(R.string.custom),
+                    modifier = Modifier.padding(start = EmTheme.spacing.xs),
+                    role = EmTextRole.Overline,
+                    color = EmTextColor.Supporting,
                 )
 
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                 ) {
                     DatePickerField(
                         label = stringResource(R.string.from_date),
@@ -274,36 +264,25 @@ private fun FilterTypesAndViewContent(
         }
 
         // Action buttons
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-        )
+        EmDivider()
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            TextButton(
+            EmButton(
+                text = stringResource(id = R.string.cancel),
                 onClick = { onAction.invoke(DateFilterAction.Cancel) },
-            ) {
-                Text(
-                    text = stringResource(id = R.string.cancel),
-                    fontWeight = FontWeight.Medium,
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Button(
+                variant = EmButtonVariant.Tertiary,
+            )
+            Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+            EmButton(
+                text = stringResource(id = R.string.select),
                 onClick = { onAction.invoke(DateFilterAction.Save) },
-                shape = MaterialTheme.shapes.medium,
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.select),
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
+            )
         }
     }
 }
@@ -315,35 +294,32 @@ private fun DatePickerField(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        onClick = onClick,
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
-        modifier = modifier,
+    Box(
+        modifier = modifier
+            .clip(EmTheme.shapes.md)
+            .background(EmTheme.colors.scheme.surfaceContainerLow)
+            .clickable(onClick = onClick),
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.md, vertical = EmTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
-            Icon(
-                imageVector = Icons.Rounded.CalendarMonth,
+            EmIcon(
+                icon = Icons.Rounded.CalendarMonth,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(18.dp),
+                size = EmTheme.icons.md,
+                tint = EmTheme.colors.scheme.onSurfaceVariant,
             )
             Column(modifier = Modifier.weight(1f)) {
-                Text(
+                EmText(
                     text = label,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xxs))
+                EmText(
                     text = value,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )

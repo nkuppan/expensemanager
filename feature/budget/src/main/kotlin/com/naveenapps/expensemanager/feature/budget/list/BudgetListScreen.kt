@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.feature.budget.list
 
 import androidx.annotation.ColorRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -15,42 +14,40 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CornerBasedShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
-import com.naveenapps.expensemanager.core.designsystem.components.LoadingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmLoading
+import com.naveenapps.expensemanager.core.designsystem.em.EmProgress
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -76,35 +73,27 @@ private fun BudgetListScreenContent(
     state: BudgetState,
     onAction: (BudgetListAction) -> Unit,
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(BudgetListAction.ClosePage)
                 },
                 title = stringResource(R.string.budgets),
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-
+            EmFab(
+                icon = Icons.Default.Add,
+                contentDescription = "",
                 onClick = {
                     onAction.invoke(BudgetListAction.OpenBudgetCreate)
                 },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "",
-                )
-            }
+            )
         },
     ) { innerPadding ->
         BudgetListScreenContent(
@@ -128,7 +117,7 @@ private fun BudgetListScreenContent(
     val scrollState = rememberLazyListState()
 
     if (state.isLoading) {
-        LoadingItem(modifier)
+        EmLoading(modifier = modifier)
         return
     }
 
@@ -149,8 +138,8 @@ private fun BudgetListScreenContent(
                     percentage = budget.percent,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 2.dp),
-                    shape = AppCardViewDefaults.cardShape(index, state.budgets),
+                        .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.xxs),
+                    position = EmCardPosition.of(index, state.budgets),
                     onItemClick = { onItemClick.invoke(budget) },
                 )
             }
@@ -163,9 +152,9 @@ private fun BudgetListScreenContent(
             }
         }
     } else {
-        EmptyItem(
-            emptyItemText = stringResource(id = R.string.no_budget_available),
-            icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets,
+        EmEmptyState(
+            illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_budgets),
+            title = stringResource(id = R.string.no_budget_available),
             modifier = modifier,
         )
     }
@@ -179,13 +168,13 @@ fun BudgetItemWithCard(
     transactionAmount: Amount?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
-    shape: CornerBasedShape = MaterialTheme.shapes.large,
-    border: BorderStroke = CardDefaults.outlinedCardBorder(),
+    position: EmCardPosition = EmCardPosition.Single,
+    selected: Boolean = false,
     onItemClick: () -> Unit = {},
 ) {
-    AppCardView(
-        shape = shape,
-        border = border,
+    EmCard(
+        position = position,
+        selected = selected,
         modifier = modifier,
     ) {
         BudgetItem(
@@ -212,7 +201,7 @@ fun BudgetItem(
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
 ) {
-    val barColor = colorResource(id = progressBarColor)
+    val barColor = emColorOf(progressBarColor)
     val isOverBudget = percentage > 100f
     val clampedProgress = (percentage / 100f).coerceIn(0f, 1f)
 
@@ -226,84 +215,68 @@ fun BudgetItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = name,
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.Medium,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.weight(1f),
+                    role = EmTextRole.ItemTitle,
+                    color = EmTextColor.Supporting,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
                 )
                 if (amount != null) {
-                    Text(
-                        text = amount.amountString ?: "",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.SemiBold,
-                            letterSpacing = (-0.3).sp,
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface,
+                    EmAmountText(
+                        amount = amount.amountString ?: "",
                     )
                 }
             }
 
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(EmTheme.spacing.sm))
 
             // ── Row 2: Progress bar ────────────────────────────────
-            LinearProgressIndicator(
-                progress = { clampedProgress },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+            EmProgress(
+                progress = clampedProgress,
                 color = if (isOverBudget) {
-                    MaterialTheme.colorScheme.error
+                    EmTheme.colors.scheme.error
                 } else {
                     barColor
                 },
-                trackColor = barColor.copy(alpha = 0.10f),
-                strokeCap = StrokeCap.Round,
             )
 
-            Spacer(Modifier.height(6.dp))
+            Spacer(Modifier.height(EmTheme.spacing.sm))
 
             // ── Row 3: Spent of Total + Percentage badge ───────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = "${transactionAmount?.amountString ?: "—"} of ${amount?.amountString ?: "—"}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                        .copy(alpha = 0.6f),
+                    role = EmTextRole.Supporting,
+                    color = EmTheme.colors.scheme.onSurfaceVariant,
                 )
 
                 Spacer(Modifier.weight(1f))
 
                 val badgeBg = if (isOverBudget) {
-                    MaterialTheme.colorScheme.errorContainer
+                    EmTheme.colors.scheme.errorContainer
                 } else {
-                    barColor.copy(alpha = 0.12f)
+                    barColor.tint()
                 }
                 val badgeText = if (isOverBudget) {
-                    MaterialTheme.colorScheme.onErrorContainer
+                    EmTheme.colors.scheme.onErrorContainer
                 } else {
                     barColor
                 }
 
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(6.dp))
+                        .clip(EmTheme.shapes.sm)
                         .background(badgeBg)
-                        .padding(horizontal = 7.dp, vertical = 2.dp),
+                        .padding(horizontal = EmTheme.spacing.sm, vertical = EmTheme.spacing.xxs),
                 ) {
-                    Text(
+                    EmText(
                         text = percentage.toPercentString(),
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontWeight = FontWeight.SemiBold,
-                        ),
+                        role = EmTextRole.Supporting,
                         color = badgeText,
                     )
                 }
@@ -322,32 +295,28 @@ fun DashBoardBudgetItem(
     percentage: Float = 0.0f,
     onItemClick: () -> Unit = {},
 ) {
-    val barColor = colorResource(id = progressBarColor)
+    val barColor = emColorOf(progressBarColor)
     val isOverBudget = percentage > 100f
     val clampedProgress = (percentage / 100f).coerceIn(0f, 1f)
 
-    AppCardView(modifier = modifier) {
+    EmCard(modifier = modifier) {
         Column(
             modifier = Modifier
                 .clickable {
                     onItemClick.invoke()
                 }
-                .padding(horizontal = 18.dp, vertical = 16.dp)
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.lg)
                 .fillMaxWidth(),
         ) {
             // ── Budget name ────────────────────────────────────────
-            Text(
+            EmText(
                 text = name,
+                role = EmTextRole.ItemTitle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = (-0.2).sp,
-                ),
-                color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(EmTheme.spacing.md))
 
             // ── Spent vs Budget row ────────────────────────────────
             Row(
@@ -355,76 +324,62 @@ fun DashBoardBudgetItem(
                 verticalAlignment = Alignment.Bottom,
             ) {
                 // Spent amount — large and prominent
-                Text(
-                    text = transactionAmount ?: "—",
-                    style = MaterialTheme.typography.headlineSmall.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = (-0.5).sp,
-                    ),
+                EmAmountText(
+                    amount = transactionAmount ?: "—",
                     color = if (isOverBudget) {
-                        MaterialTheme.colorScheme.error
+                        EmTheme.colors.scheme.error
                     } else {
-                        MaterialTheme.colorScheme.onSurface
+                        EmTheme.colors.scheme.onSurface
                     },
+                    size = EmAmountSize.Large,
                 )
 
                 // "of $amount" — smaller, muted, baseline-aligned
-                Text(
+                EmText(
                     text = " of ${amount ?: "—"}",
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.Normal,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                        .copy(alpha = 0.6f),
-                    modifier = Modifier.padding(bottom = 2.dp),
+                    modifier = Modifier.padding(bottom = EmTheme.spacing.xxs),
+                    role = EmTextRole.Supporting,
+                    color = EmTheme.colors.scheme.onSurfaceVariant,
                 )
 
                 Spacer(Modifier.weight(1f))
 
                 // Percentage badge
                 val badgeBg = if (isOverBudget) {
-                    MaterialTheme.colorScheme.errorContainer
+                    EmTheme.colors.scheme.errorContainer
                 } else {
-                    barColor.copy(alpha = 0.12f)
+                    barColor.tint()
                 }
                 val badgeText = if (isOverBudget) {
-                    MaterialTheme.colorScheme.onErrorContainer
+                    EmTheme.colors.scheme.onErrorContainer
                 } else {
                     barColor
                 }
 
                 Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(EmTheme.shapes.sm)
                         .background(badgeBg)
-                        .padding(horizontal = 8.dp, vertical = 4.dp),
+                        .padding(horizontal = EmTheme.spacing.sm, vertical = EmTheme.spacing.xs),
                 ) {
-                    Text(
+                    EmText(
                         text = percentage.toPercentString(),
-                        style = MaterialTheme.typography.labelMedium.copy(
-                            fontWeight = FontWeight.SemiBold,
-                        ),
+                        role = EmTextRole.Label,
                         color = badgeText,
                     )
                 }
             }
 
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(EmTheme.spacing.md))
 
             // ── Progress bar ───────────────────────────────────────
-            LinearProgressIndicator(
-                progress = { clampedProgress },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(6.dp)
-                    .clip(RoundedCornerShape(3.dp)),
+            EmProgress(
+                progress = clampedProgress,
                 color = if (isOverBudget) {
-                    MaterialTheme.colorScheme.error
+                    EmTheme.colors.scheme.error
                 } else {
                     barColor
                 },
-                trackColor = barColor.copy(alpha = 0.10f),
-                strokeCap = StrokeCap.Round,
             )
         }
     }

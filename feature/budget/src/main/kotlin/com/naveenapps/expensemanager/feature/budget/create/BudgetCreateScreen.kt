@@ -10,25 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -41,7 +30,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDate
 import com.naveenapps.expensemanager.core.common.utils.fromYear
 import com.naveenapps.expensemanager.core.common.utils.toMonth
@@ -49,18 +37,27 @@ import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
-import com.naveenapps.expensemanager.core.designsystem.components.DeleteDialogItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
+import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmDeleteConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmPickerField
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSegmented
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingTrailing
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AutoSelectTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ClickableTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.DecimalTextField
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MonthPicker
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SegmentedSwitch
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.ui.components.YearPicker
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.domain.usecase.budget.budgetTitle
@@ -81,7 +78,7 @@ fun BudgetCreateScreen(
     viewModel: BudgetCreateViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     ObserveAsEvents(viewModel.errorMessage) { messageRes ->
@@ -99,21 +96,21 @@ fun BudgetCreateScreen(
 private fun BudgetCreateScreenContentView(
     state: BudgetCreateState,
     onAction: (BudgetCreateAction) -> Unit,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
 ) {
     if (state.showDeleteDialog) {
-        DeleteDialogItem(
-            confirm = {
+        EmDeleteConfirm(
+            onConfirm = {
                 onAction.invoke(BudgetCreateAction.Delete)
             },
-            dismiss = {
+            onDismiss = {
                 onAction.invoke(BudgetCreateAction.ClosePage)
             },
         )
     }
 
     if (state.showAccountSelectionDialog) {
-        SafeModalBottomSheet(
+        EmModalSheet(
             onDismissRequest = {
                 onAction.invoke(BudgetCreateAction.CloseAccountSelectionDialog)
             },
@@ -129,7 +126,7 @@ private fun BudgetCreateScreenContentView(
     }
 
     if (state.showCategorySelectionDialog) {
-        SafeModalBottomSheet(
+        EmModalSheet(
             onDismissRequest = {
                 onAction.invoke(BudgetCreateAction.CloseCategorySelectionDialog)
             },
@@ -149,10 +146,10 @@ private fun BudgetCreateScreenContentView(
             YearPicker(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(16.dp)
+                    .padding(EmTheme.spacing.lg)
                     .background(
-                        color = MaterialTheme.colorScheme.background,
-                        shape = RoundedCornerShape(8.dp),
+                        color = EmTheme.colors.scheme.background,
+                        shape = EmTheme.shapes.sm,
                     ),
                 currentYear = state.month.value.toYearInt(),
                 confirmButtonCLicked = { year ->
@@ -170,10 +167,10 @@ private fun BudgetCreateScreenContentView(
             MonthPicker(
                 modifier = Modifier
                     .wrapContentSize()
-                    .padding(16.dp)
+                    .padding(EmTheme.spacing.lg)
                     .background(
-                        color = MaterialTheme.colorScheme.background,
-                        shape = RoundedCornerShape(8.dp),
+                        color = EmTheme.colors.scheme.background,
+                        shape = EmTheme.shapes.sm,
                     ),
                 currentMonth = state.month.value.toMonth(),
                 currentYear = state.month.value.toYearInt(),
@@ -191,14 +188,12 @@ private fun BudgetCreateScreenContentView(
         }
     }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(BudgetCreateAction.ClosePage)
                 },
                 title = if (state.showDeleteButton) {
@@ -208,32 +203,21 @@ private fun BudgetCreateScreenContentView(
                 },
                 actions = {
                     if (state.showDeleteButton) {
-                        IconButton(onClick = { onAction.invoke(BudgetCreateAction.ShowDeleteDialog) }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(com.naveenapps.expensemanager.feature.category.R.string.delete),
-                                tint = MaterialTheme.colorScheme.error,
-                            )
-                        }
+                        EmIconButton(
+                            icon = Icons.Outlined.Delete,
+                            contentDescription = stringResource(com.naveenapps.expensemanager.feature.category.R.string.delete),
+                            onClick = { onAction.invoke(BudgetCreateAction.ShowDeleteDialog) },
+                            tint = EmTheme.colors.scheme.error,
+                        )
                     }
                 },
             )
         },
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-
-                onClick = { onAction.invoke(BudgetCreateAction.Save) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Done,
-                        contentDescription = null,
-                    )
-                },
-                text = {
-                    Text(text = stringResource(com.naveenapps.expensemanager.feature.account.R.string.save))
-                },
+        bottomBar = {
+            EmBottomActionBar(
+                primaryText = stringResource(com.naveenapps.expensemanager.feature.account.R.string.save),
+                onPrimaryClick = { onAction.invoke(BudgetCreateAction.Save) },
+                primaryIcon = Icons.Default.Done,
             )
         },
     ) { innerPadding ->
@@ -277,19 +261,19 @@ fun BudgetCreateScreen(
     val focusManager = LocalFocusManager.current
 
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.padding(horizontal = EmTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
-        SettingsSection(
+        EmSection(
             title = stringResource(R.string.budget_for),
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = EmTheme.spacing.sm),
         ) {
-            AppCardView {
+            EmCard {
                 Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                 ) {
-                    SegmentedSwitch(
+                    EmSegmented(
                         options = BudgetPeriod.entries,
                         selected = periodType,
                         onSelect = { onAction.invoke(BudgetCreateAction.SelectPeriodType(it)) },
@@ -302,79 +286,80 @@ fun BudgetCreateScreen(
                     } else {
                         selectedDate.value.toMonthAndYearKey()
                     }
-                    AutoSelectTextField(
+                    EmTextField(
+                        value = nameField.value,
+                        onValueChange = { nameField.onValueChange?.invoke(it) },
+                        label = stringResource(id = R.string.budget_name_optional),
                         modifier = Modifier.fillMaxWidth(),
-                        text = nameField.value,
-                        onTextChange = { nameField.onValueChange?.invoke(it) },
-                        label = { Text(text = stringResource(id = R.string.budget_name_optional)) },
                         placeholder = budgetTitle(name = null, selectedMonth = selectedPeriodKey, periodType = periodType).text(),
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Sentences,
                             imeAction = ImeAction.Next,
                         ),
+                        selectAllOnFocus = true,
                     )
-                    ClickableTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                    EmPickerField(
+                        label = stringResource(id = if (periodType == BudgetPeriod.YEARLY) {
+                            R.string.select_year
+                        } else {
+                            R.string.select_month
+                        }),
                         value = if (periodType == BudgetPeriod.YEARLY) {
                             selectedDate.value.toYear()
                         } else {
                             selectedDate.value.toMonthAndYear()
                         },
-                        label = if (periodType == BudgetPeriod.YEARLY) {
-                            R.string.select_year
-                        } else {
-                            R.string.select_month
-                        },
-                        leadingIcon = Icons.Default.EditCalendar,
                         onClick = {
                             focusManager.clearFocus(force = true)
                             onAction.invoke(BudgetCreateAction.ShowMonthSelection)
                         },
+                        modifier = Modifier.fillMaxWidth(),
+                        leadingIcon = Icons.Default.EditCalendar,
                     )
                 }
             }
         }
 
-        SettingsSection(title = stringResource(R.string.what_is_your_budget_limit)) {
-            AppCardView {
+        EmSection(title = stringResource(R.string.what_is_your_budget_limit)) {
+            EmCard {
                 Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.lg),
+                    verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
                 ) {
-                    DecimalTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                    EmAmountField(
                         value = amountField.value,
+                        onValueChange = { amountField.onValueChange?.invoke(it) },
+                        label = stringResource(id = R.string.budget_amount),
+                        modifier = Modifier.fillMaxWidth(),
                         isError = amountField.valueError,
                         errorMessage = stringResource(id = R.string.budget_amount_error),
-                        onValueChange = amountField.onValueChange,
-                        label = R.string.budget_amount,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        imeAction = ImeAction.Done,
                     )
                 }
             }
         }
 
-        SettingsSection(title = stringResource(R.string.budget_scope)) {
-            AppCardView {
+        EmSection(title = stringResource(R.string.budget_scope)) {
+            EmCard {
                 Column {
-                    SettingRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        title = stringResource(id = R.string.select_account),
+                    EmSettingItem(
                         icon = Icons.Default.AccountBalance,
-                        value = accountCount,
+                        title = stringResource(id = R.string.select_account),
+                        trailing = EmSettingTrailing.valueOrChevron(accountCount),
                         onClick = {
                             onAction.invoke(BudgetCreateAction.OpenAccountSelectionDialog)
                         },
-                        showDivider = true,
-                    )
-                    SettingRow(
                         modifier = Modifier.fillMaxWidth(),
-                        title = stringResource(id = R.string.select_category),
+                    )
+                    EmDivider()
+                    EmSettingItem(
                         icon = Icons.Default.Category,
-                        value = categoriesCount,
+                        title = stringResource(id = R.string.select_category),
+                        trailing = EmSettingTrailing.valueOrChevron(categoriesCount),
                         onClick = {
                             onAction.invoke(BudgetCreateAction.OpenCategorySelectionDialog)
                         },
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             }
@@ -385,7 +370,7 @@ fun BudgetCreateScreen(
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun BudgetCreateStatePreview() {
     val amountField = TextFieldValue(

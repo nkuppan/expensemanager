@@ -10,4 +10,8 @@
     <string name="search_libraries">Search libraries</string>
     <string name="open_license">Open license</string>
     <string name="licenses_unavailable">Licenses aren\'t included in this build.</string>
+    <string name="about_github" translatable="false">GitHub</string>
+    <string name="about_twitter" translatable="false">X (Twitter)</string>
+    <string name="about_instagram" translatable="false">Instagram</string>
+    <string name="about_email">Email</string>
 </resources>

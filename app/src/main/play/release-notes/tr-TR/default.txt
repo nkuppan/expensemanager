@@ -2,3 +2,4 @@
 • Bütçe sınırının altındayken bütçeler artık kırmızı görünmüyor
 • Dışa aktarma her telefonda çalışır: dosya seçici yoksa dosya paylaşım menüsünde açılır
 • Tarih filtresinde İptal artık seçili dönemi değiştirmiyor
+• Daha sade ve tutarlı bir görünüm

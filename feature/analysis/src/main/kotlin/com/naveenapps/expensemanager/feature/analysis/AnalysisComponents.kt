@@ -13,14 +13,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TrendingDown
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,14 +27,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SegmentedSwitch
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmSegmented
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
@@ -66,39 +67,32 @@ internal fun OverviewCard(
     val incomeColor = getIncomeColor()
     val expenseColor = getExpenseColor()
 
-    AppCardView(modifier = modifier.fillMaxWidth(), cornerSize = AnalysisCardCorner) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(DesignSystemR.string.balance).uppercase(),
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 1.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+    EmCard(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(EmTheme.spacing.lg)) {
+            EmText(
+                text = stringResource(DesignSystemR.string.balance),
+                role = EmTextRole.Overline,
+                color = EmTextColor.Supporting,
             )
-            Text(
-                text = flow.balance,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = (-0.5).sp,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            EmAmountText(
+                amount = flow.balance,
+                size = EmAmountSize.Large,
             )
-            Text(
+            EmText(
                 text = comparison?.let { stringResource(it.titleResId) + " · " + it.periodsLabel } ?: period,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.md))
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 FlowTile(
                     label = stringResource(DesignSystemR.string.income),
@@ -122,20 +116,20 @@ internal fun OverviewCard(
             }
 
             if (chart != null) {
-                Spacer(modifier = Modifier.height(18.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
+                Row(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg)) {
                     LegendItem(stringResource(DesignSystemR.string.expense), expenseColor)
                     LegendItem(stringResource(DesignSystemR.string.income), incomeColor)
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
                 ChartScreen(chart = chart, isDarkTheme = isDarkTheme)
             } else {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
+                Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
+                EmText(
                     text = stringResource(R.string.no_chart_available),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.align(Alignment.CenterHorizontally),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
@@ -155,27 +149,22 @@ private fun FlowTile(
 ) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(color.copy(alpha = 0.08f))
-            .padding(12.dp)
+            .clip(EmTheme.shapes.lg)
+            .background(color.tint())
+            .padding(EmTheme.spacing.md)
             .semantics(mergeDescendants = true) {},
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
     ) {
         LegendItem(label, color)
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+        EmAmountText(
+            amount = amount,
         )
         if (change != null) {
             ChangeBadge(change = change.change, upColor = upColor, downColor = downColor)
-            Text(
+            EmText(
                 text = stringResource(R.string.compare_was, change.previous),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
@@ -189,14 +178,14 @@ private fun LegendItem(label: String, color: Color) {
         Box(
             modifier = Modifier
                 .size(8.dp)
-                .clip(CircleShape)
+                .clip(EmTheme.shapes.pill)
                 .background(color),
         )
-        Spacer(modifier = Modifier.width(6.dp))
-        Text(
+        Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+        EmText(
             text = label,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
     }
 }
@@ -206,25 +195,24 @@ private fun LegendItem(label: String, color: Color) {
 internal fun ChangeBadge(change: Double?, upColor: Color, downColor: Color) {
     val percent = change?.let { (abs(it) * 100).roundToInt() }
     val (text, color, icon) = when {
-        change == null -> Triple(stringResource(R.string.compare_new), MaterialTheme.colorScheme.primary, null)
-        percent == 0 -> Triple(stringResource(R.string.compare_same), MaterialTheme.colorScheme.onSurfaceVariant, null)
+        change == null -> Triple(stringResource(R.string.compare_new), EmTheme.colors.scheme.primary, null)
+        percent == 0 -> Triple(stringResource(R.string.compare_same), EmTheme.colors.scheme.onSurfaceVariant, null)
         change > 0 -> Triple("$percent%", upColor, Icons.AutoMirrored.Filled.TrendingUp)
         else -> Triple("$percent%", downColor, Icons.AutoMirrored.Filled.TrendingDown)
     }
     Row(
         modifier = Modifier
-            .background(color.copy(alpha = 0.14f), RoundedCornerShape(8.dp))
-            .padding(horizontal = 8.dp, vertical = 3.dp),
+            .background(color.tint(), EmTheme.shapes.sm)
+            .padding(horizontal = EmTheme.spacing.sm, vertical = EmTheme.spacing.xs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) {
-            Icon(imageVector = icon, contentDescription = null, tint = color, modifier = Modifier.size(14.dp))
-            Spacer(modifier = Modifier.width(4.dp))
+            EmIcon(icon = icon, contentDescription = null, size = EmTheme.icons.sm, tint = color)
+            Spacer(modifier = Modifier.width(EmTheme.spacing.xs))
         }
-        Text(
+        EmText(
             text = text,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.SemiBold,
+            role = EmTextRole.Label,
             color = color,
         )
     }
@@ -250,11 +238,11 @@ internal fun AveragesCard(
     val incomeColor = getIncomeColor()
     val expenseColor = getExpenseColor()
 
-    AppCardView(modifier = modifier.fillMaxWidth(), cornerSize = AnalysisCardCorner) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            DashboardWidgetTitle(title = stringResource(R.string.average_and_projected))
-            Spacer(modifier = Modifier.height(12.dp))
-            SegmentedSwitch(
+    EmCard(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(EmTheme.spacing.lg)) {
+            EmSectionHeader(title = stringResource(R.string.average_and_projected))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.md))
+            EmSegmented(
                 options = AveragePeriod.entries,
                 selected = period,
                 onSelect = { period = it },
@@ -268,8 +256,8 @@ internal fun AveragesCard(
                     )
                 },
             )
-            Spacer(modifier = Modifier.height(14.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            Spacer(modifier = Modifier.height(EmTheme.spacing.md))
+            Row(horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm)) {
                 AverageTile(stringResource(DesignSystemR.string.income), income, incomeColor, Modifier.weight(1f))
                 AverageTile(stringResource(DesignSystemR.string.expense), expense, expenseColor, Modifier.weight(1f))
             }
@@ -281,21 +269,16 @@ internal fun AveragesCard(
 private fun AverageTile(label: String, value: String, color: Color, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.6f))
-            .padding(horizontal = 14.dp, vertical = 12.dp)
+            .clip(EmTheme.shapes.lg)
+            .background(EmTheme.colors.scheme.surfaceContainerHigh)
+            .padding(horizontal = EmTheme.spacing.md, vertical = EmTheme.spacing.md)
             .semantics(mergeDescendants = true) {},
     ) {
         LegendItem(label, color)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = (-0.3).sp,
+        Spacer(modifier = Modifier.height(EmTheme.spacing.xs))
+        EmAmountText(
+            amount = value,
             color = color,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
         )
     }
 }

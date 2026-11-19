@@ -38,6 +38,48 @@ jobs:
       - name: Spotless (ktlint) check
         run: ./gradlew spotlessCheck
 
+  design-system:
+    # Phase 5 of the design system plan: features may only use Em* components and tokens
+    # (lint errors), and component screenshots must match the committed images.
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 40
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Design system lint checks (unit tests)
+        run: ./gradlew :lint-rules:test
+
+      - name: Android lint (design system rules are errors)
+        run: ./gradlew lintDebug
+
+      - name: Verify component screenshots
+        run: ./gradlew :core:designsystem:testDebugUnitTest -Proborazzi.test.verify=true
+
+      - name: Upload lint and screenshot reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: design-system-reports
+          path: |
+            **/build/reports/lint-results-*.html
+            core/designsystem/build/outputs/roborazzi/
+            core/designsystem/src/test/screenshots/*_compare.png
+
   bundle-release:
     runs-on: ubuntu-latest
 

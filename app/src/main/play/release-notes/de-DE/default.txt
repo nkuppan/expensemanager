@@ -2,3 +2,4 @@
 • Budgets werden nicht mehr rot angezeigt, solange du noch im Rahmen bist
 • Export funktioniert auf jedem Handy: Ohne Dateiauswahl öffnet sich die Datei im Teilen-Menü
 • Abbrechen im Datumsfilter ändert den gewählten Zeitraum nicht mehr
+• Ein klareres, einheitlicheres Design

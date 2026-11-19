@@ -50,4 +50,5 @@
     <string name="selection_done">تم</string>
     <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
     <string name="recurring_badge">متكررة</string>
+    <string name="a11y_remove">إزالة %1$s</string>
 </resources>

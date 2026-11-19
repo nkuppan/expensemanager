@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.outlined.TrendingDown
 import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.AccountBalance
@@ -18,8 +17,6 @@ import androidx.compose.material.icons.outlined.DashboardCustomize
 import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Reorder
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -27,18 +24,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingTrailing
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingToggleRow
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.LandingPage
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
-import com.naveenapps.expensemanager.feature.settings.DropdownSettingItem
 import com.naveenapps.expensemanager.feature.settings.R
+import com.naveenapps.expensemanager.feature.settings.SelectionSettingItem
 import com.naveenapps.expensemanager.feature.settings.labelResId
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -61,7 +62,7 @@ private fun AdvancedSettingsScaffoldView(
     onAction: (AdvancedSettingAction) -> Unit,
 ) {
     if (state.showDateFilter) {
-        SafeModalBottomSheet(
+        EmModalSheet(
             onDismissRequest = {
                 onAction.invoke(AdvancedSettingAction.DismissDateFilterDialog)
             },
@@ -74,11 +75,11 @@ private fun AdvancedSettingsScaffoldView(
         }
     }
 
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(AdvancedSettingAction.ClosePage)
                 },
                 title = stringResource(R.string.preferences),
@@ -90,16 +91,16 @@ private fun AdvancedSettingsScaffoldView(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(horizontal = EmTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
         ) {
             Spacer(modifier = Modifier.height(0.dp))
 
             // New entries start from these.
-            SettingsSection(title = stringResource(id = R.string.transaction_entry)) {
-                AppCardView {
+            EmSection(title = stringResource(id = R.string.transaction_entry)) {
+                EmCard {
                     state.selectedAccount?.takeIf { state.accounts.isNotEmpty() }?.let { selected ->
-                        DropdownSettingItem(
+                        SelectionSettingItem(
                             label = stringResource(id = R.string.default_account),
                             selectedValue = selected.name,
                             icon = Icons.Outlined.AccountBalance,
@@ -110,7 +111,7 @@ private fun AdvancedSettingsScaffoldView(
                         )
                     }
                     state.selectedExpenseCategory?.takeIf { state.expenseCategories.isNotEmpty() }?.let { selected ->
-                        DropdownSettingItem(
+                        SelectionSettingItem(
                             label = stringResource(id = R.string.default_expense_category),
                             selectedValue = selected.displayName(),
                             icon = Icons.AutoMirrored.Outlined.TrendingUp,
@@ -123,7 +124,7 @@ private fun AdvancedSettingsScaffoldView(
                         )
                     }
                     state.selectedIncomeCategory?.takeIf { state.incomeCategories.isNotEmpty() }?.let { selected ->
-                        DropdownSettingItem(
+                        SelectionSettingItem(
                             label = stringResource(id = R.string.default_income_category),
                             selectedValue = selected.displayName(),
                             icon = Icons.AutoMirrored.Outlined.TrendingDown,
@@ -135,19 +136,18 @@ private fun AdvancedSettingsScaffoldView(
                             },
                         )
                     }
-                    SettingToggleRow(
-                        title = stringResource(id = R.string.auto_open_calculator),
-                        subtitle = stringResource(id = R.string.auto_open_calculator_message),
+                    EmSettingItem(
                         icon = Icons.Outlined.Calculate,
-                        checked = state.isAutoOpenCalculator,
-                        onCheckedChange = { onAction.invoke(AdvancedSettingAction.ToggleAutoOpenCalculator) },
+                        title = stringResource(id = R.string.auto_open_calculator),
+                        supporting = stringResource(id = R.string.auto_open_calculator_message),
+                        trailing = EmSettingTrailing.Toggle(state.isAutoOpenCalculator, { onAction.invoke(AdvancedSettingAction.ToggleAutoOpenCalculator) }),
                     )
                 }
             }
 
-            SettingsSection(title = stringResource(id = R.string.landing_home)) {
-                AppCardView {
-                    DropdownSettingItem(
+            EmSection(title = stringResource(id = R.string.landing_home)) {
+                EmCard {
+                    SelectionSettingItem(
                         label = stringResource(id = R.string.landing_page),
                         selectedValue = stringResource(id = state.landingPage.labelResId),
                         icon = Icons.Outlined.Home,
@@ -156,35 +156,34 @@ private fun AdvancedSettingsScaffoldView(
                             onAction.invoke(AdvancedSettingAction.SelectLandingPage(LandingPage.entries[index]))
                         },
                     )
-                    SettingToggleRow(
-                        title = stringResource(id = R.string.compact_summary),
-                        subtitle = stringResource(id = R.string.compact_summary_message),
+                    EmSettingItem(
                         icon = Icons.Outlined.DashboardCustomize,
-                        checked = state.isCompactSummary,
-                        onCheckedChange = { onAction.invoke(AdvancedSettingAction.ToggleCompactSummary) },
+                        title = stringResource(id = R.string.compact_summary),
+                        supporting = stringResource(id = R.string.compact_summary_message),
+                        trailing = EmSettingTrailing.Toggle(state.isCompactSummary, { onAction.invoke(AdvancedSettingAction.ToggleCompactSummary) }),
                     )
                 }
             }
 
-            SettingsSection(title = stringResource(id = R.string.others)) {
-                AppCardView {
-                    SettingRow(
-                        title = stringResource(id = R.string.filter),
-                        subtitle = stringResource(id = R.string.filter_message),
+            EmSection(title = stringResource(id = R.string.others)) {
+                EmCard {
+                    EmSettingItem(
                         icon = Icons.Outlined.FilterAlt,
-                        showDivider = true,
+                        title = stringResource(id = R.string.filter),
+                        supporting = stringResource(id = R.string.filter_message),
                         onClick = { onAction.invoke(AdvancedSettingAction.ShowDateFilterDialog) },
                     )
-                    SettingRow(
-                        title = stringResource(id = R.string.accounts_re_order),
-                        subtitle = stringResource(id = R.string.accounts_re_order_message),
+                    EmDivider()
+                    EmSettingItem(
                         icon = Icons.Outlined.Reorder,
+                        title = stringResource(id = R.string.accounts_re_order),
+                        supporting = stringResource(id = R.string.accounts_re_order_message),
                         onClick = { onAction.invoke(AdvancedSettingAction.OpenAccountReOrder) },
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
         }
     }
 }

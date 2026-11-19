@@ -84,6 +84,7 @@
         <item>Les budgets ne s\'affichent plus en rouge tant que vous restez dans la limite</item>
         <item>L\'export fonctionne sur tous les téléphones : sans sélecteur de fichiers, le fichier s\'ouvre dans le menu de partage</item>
         <item>Annuler dans le filtre de dates ne modifie plus la période choisie</item>
+        <item>Un design plus net et cohérent</item>
     </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Enregistrez votre dépense la plus fréquente d\'un geste depuis le rappel quotidien, avec Annuler en cas d\'erreur</item>

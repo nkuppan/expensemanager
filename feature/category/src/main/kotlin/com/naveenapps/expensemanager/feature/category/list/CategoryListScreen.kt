@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,36 +18,31 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Tab
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmTabs
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
@@ -78,84 +72,32 @@ fun CategoryListScreen(viewModel: CategoryListViewModel = koinViewModel()) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CategoryListScreenContentView(
     state: CategoryListState,
     onAction: (CategoryListAction) -> Unit,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
             Column {
-                TopAppBar(
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                    ),
-                    navigationIcon = {
-                        IconButton(
-                            onClick = {
-                                onAction.invoke(CategoryListAction.ClosePage)
-                            },
-                        ) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(DesignSystemR.string.a11y_back),
-                            )
-                        }
-                    },
-                    title = {
-                        Text(stringResource(R.string.category))
-                    },
+                EmTopBar(
+                    title = stringResource(R.string.category),
+                    navigation = EmTopBarNavigation.Back,
+                    onNavigationClick = { onAction.invoke(CategoryListAction.ClosePage) },
                 )
-                // Explicit colours: by default both tabs use the accent colour and differ only in
-                // weight, which makes the unselected one hard to tell apart (and read).
-                PrimaryTabRow(
-                    selectedTabIndex = state.selectedTab.index,
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                ) {
-                    state.tabs.forEach { item ->
-                        Tab(
-                            selected = state.selectedTab.categoryType == item.categoryType,
-                            selectedContentColor = MaterialTheme.colorScheme.primary,
-                            unselectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            onClick = {
-                                onAction.invoke(
-                                    CategoryListAction.ChangeCategory(item),
-                                )
-                            },
-                            text = {
-                                Text(
-                                    text = stringResource(id = item.labelResourceID).uppercase(),
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                    style = MaterialTheme.typography.labelLarge,
-                                    fontWeight = if (state.selectedTab.categoryType == item.categoryType) {
-                                        FontWeight.Bold
-                                    } else {
-                                        FontWeight.Normal
-                                    },
-                                )
-                            },
-                        )
-                    }
-                }
+                EmTabs(
+                    tabs = state.tabs.map { stringResource(id = it.labelResourceID) },
+                    selectedIndex = state.selectedTab.index,
+                    onSelect = { onAction.invoke(CategoryListAction.ChangeCategory(state.tabs[it])) },
+                )
             }
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-
+            EmFab(
+                icon = Icons.Default.Add,
+                contentDescription = stringResource(R.string.add_category),
                 onClick = { onAction.invoke(CategoryListAction.Create) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                    )
-                },
-                text = {
-                    Text(text = stringResource(R.string.add_category))
-                },
+                label = stringResource(R.string.add_category),
             )
         },
     ) { innerPadding ->
@@ -187,42 +129,46 @@ private fun CategoryListScreenContent(
             label = "category_list_transition",
         ) { isEmpty ->
             if (isEmpty) {
-                EmptyItem(
+                EmEmptyState(
+                    illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_category),
+                    title = stringResource(id = R.string.no_category_available),
                     modifier = Modifier
                         .fillMaxSize()
                         .wrapContentSize(Alignment.Center),
-                    emptyItemText = stringResource(id = R.string.no_category_available),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_category,
                 )
             } else {
                 Column {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 16.dp),
+                            .padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.lg),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
                     ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Info,
+                        EmIcon(
+                            icon = Icons.Rounded.Info,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.size(16.dp),
+                            size = EmTheme.icons.sm,
+                            tint = EmTheme.colors.scheme.onSurfaceVariant,
                         )
-                        Text(
+                        EmText(
                             text = pluralStringResource(
                                 id = R.plurals.category_count,
                                 count = state.filteredCategories.size,
                                 state.filteredCategories.size,
                             ),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            role = EmTextRole.Supporting,
+                            color = EmTextColor.Supporting,
                         )
                     }
 
                     LazyColumn(
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 78.dp),
-                        verticalArrangement = Arrangement.spacedBy(2.dp),
+                        contentPadding = PaddingValues(
+                            start = EmTheme.spacing.lg,
+                            end = EmTheme.spacing.lg,
+                            bottom = 78.dp,
+                        ),
+                        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs),
                     ) {
                         val categories = state.filteredCategories
 
@@ -236,7 +182,7 @@ private fun CategoryListScreenContent(
                                 icon = category.storedIcon.name,
                                 iconBackgroundColor = category.storedIcon.backgroundColor,
                                 customImagePath = category.storedIcon.customImagePath,
-                                shape = AppCardViewDefaults.cardShape(index, categories),
+                                position = EmCardPosition.of(index, categories),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .animateItem(),
@@ -284,7 +230,7 @@ fun getRandomCategoryData(totalCount: Int = 10): List<Category> = buildList {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun CategoryItemPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -295,7 +241,6 @@ private fun CategoryItemPreview() {
                 iconBackgroundColor = "#000000",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(color = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.black_100))
                     .then(ItemSpecModifier),
                 trailingContent = {
                     CategoryItemDefaults.ChevronTrailing()
@@ -305,7 +250,7 @@ private fun CategoryItemPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun CategoryListItemEmptyStatePreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -321,7 +266,7 @@ private fun CategoryListItemEmptyStatePreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun CategoryListItemSuccessStatePreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
