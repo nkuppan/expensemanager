@@ -183,24 +183,7 @@ private fun DashboardScreenContent(
                 DashboardSection.BUDGETS -> budgetsSection(state, onAction)
                 DashboardSection.TRANSACTIONS -> transactionsSection(state, onAction)
                 DashboardSection.UPCOMING -> upcomingSection(state, onAction)
-            }
-        }
-
-        state.debtTotals?.let { debts ->
-            item("debts_item") {
-                Column {
-                    EmSectionHeader(
-                        modifier = Modifier.sectionTitle(),
-                        title = stringResource(id = R.string.home_debts_title),
-                        onViewAllClick = { onAction.invoke(DashboardAction.OpenDebts) },
-                    )
-                    DebtTotalsCard(
-                        toGet = debts.toGet,
-                        toGive = debts.toGive,
-                        onClick = { onAction.invoke(DashboardAction.OpenDebts) },
-                        modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
-                    )
-                }
+                DashboardSection.DEBTS -> debtsSection(state, onAction)
             }
         }
 
@@ -322,6 +305,29 @@ private fun LazyListScope.accountsSection(
                     compact = true,
                 )
             }
+        }
+    }
+}
+
+/** What people owe the user and what the user owes; only while there are open debts. */
+private fun LazyListScope.debtsSection(
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
+) {
+    val debts = state.debtTotals ?: return
+    item("debts_item") {
+        Column {
+            EmSectionHeader(
+                modifier = Modifier.sectionTitle(),
+                title = stringResource(id = R.string.home_debts_title),
+                onViewAllClick = { onAction.invoke(DashboardAction.OpenDebts) },
+            )
+            DebtTotalsCard(
+                toGet = debts.toGet,
+                toGive = debts.toGive,
+                onClick = { onAction.invoke(DashboardAction.OpenDebts) },
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
+            )
         }
     }
 }

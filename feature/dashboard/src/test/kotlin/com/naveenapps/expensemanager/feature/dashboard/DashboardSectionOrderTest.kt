@@ -5,6 +5,7 @@ import com.naveenapps.expensemanager.core.model.DashboardSection
 import com.naveenapps.expensemanager.core.model.DashboardSection.ACCOUNTS
 import com.naveenapps.expensemanager.core.model.DashboardSection.BUDGETS
 import com.naveenapps.expensemanager.core.model.DashboardSection.CATEGORIES
+import com.naveenapps.expensemanager.core.model.DashboardSection.DEBTS
 import com.naveenapps.expensemanager.core.model.DashboardSection.SUMMARY
 import com.naveenapps.expensemanager.core.model.DashboardSection.TRANSACTIONS
 import com.naveenapps.expensemanager.core.model.DashboardSection.UPCOMING
@@ -20,7 +21,7 @@ class DashboardSectionOrderTest {
 
     @Test
     fun `a saved order is kept exactly`() {
-        val saved = listOf(UPCOMING, TRANSACTIONS, SUMMARY, BUDGETS, CATEGORIES, ACCOUNTS)
+        val saved = listOf(DEBTS, UPCOMING, TRANSACTIONS, SUMMARY, BUDGETS, CATEGORIES, ACCOUNTS)
 
         assertThat(DashboardSection.fromStored(saved.map { it.name })).isEqualTo(saved)
     }
@@ -31,7 +32,14 @@ class DashboardSectionOrderTest {
         val stored = listOf("BUDGETS", "OLD_SECTION", "SUMMARY", "BUDGETS")
 
         assertThat(DashboardSection.fromStored(stored))
-            .containsExactly(BUDGETS, SUMMARY, ACCOUNTS, CATEGORIES, TRANSACTIONS, UPCOMING)
+            .containsExactly(BUDGETS, SUMMARY, ACCOUNTS, CATEGORIES, TRANSACTIONS, UPCOMING, DEBTS)
             .inOrder()
+    }
+
+    @Test
+    fun `an order saved before debts could be moved puts debts last`() {
+        val saved = listOf(UPCOMING, TRANSACTIONS, SUMMARY, BUDGETS, CATEGORIES, ACCOUNTS)
+
+        assertThat(DashboardSection.fromStored(saved.map { it.name })).isEqualTo(saved + DEBTS)
     }
 }

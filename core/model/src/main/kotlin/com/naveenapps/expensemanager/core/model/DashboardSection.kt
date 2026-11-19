@@ -12,6 +12,9 @@ enum class DashboardSection {
     BUDGETS,
     TRANSACTIONS,
     UPCOMING,
+
+    /** People & debts. Last by default, which is where it sat before it could be moved. */
+    DEBTS,
     ;
 
     companion object {

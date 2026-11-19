@@ -24,6 +24,7 @@ import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.DonutLarge
 import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Insights
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Savings
 import androidx.compose.material.icons.rounded.DragHandle
 import androidx.compose.material.icons.rounded.Info
@@ -251,6 +252,7 @@ private val DashboardSection.titleResId: Int
         DashboardSection.BUDGETS -> R.string.section_budgets
         DashboardSection.TRANSACTIONS -> R.string.section_transactions
         DashboardSection.UPCOMING -> R.string.section_upcoming
+        DashboardSection.DEBTS -> R.string.home_debts_title
     }
 
 private val DashboardSection.icon: ImageVector
@@ -261,6 +263,7 @@ private val DashboardSection.icon: ImageVector
         DashboardSection.BUDGETS -> Icons.Outlined.Savings
         DashboardSection.TRANSACTIONS -> Icons.AutoMirrored.Outlined.ReceiptLong
         DashboardSection.UPCOMING -> Icons.Outlined.EventRepeat
+        DashboardSection.DEBTS -> Icons.Outlined.People
     }
 
 @EmPreviews
