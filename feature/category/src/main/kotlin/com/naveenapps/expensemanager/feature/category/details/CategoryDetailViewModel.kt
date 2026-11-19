@@ -4,8 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.domain.usecase.category.FindCategoryByIdFlowUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
@@ -25,6 +27,8 @@ class CategoryDetailViewModel(
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val appComposeNavigator: AppComposeNavigator,
+    private val convertAmountUseCase: ConvertAmountUseCase,
+    private val formatAmountInCurrencyUseCase: FormatAmountInCurrencyUseCase,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
@@ -52,20 +56,36 @@ class CategoryDetailViewModel(
                 val sameTypeTransactions = transactions.orEmpty().filter { transaction ->
                     transaction.type.ordinal == category.type.ordinal
                 }
-                val total = sameTypeTransactions.sumOf { it.amount.amount }
+                val inCategory = sameTypeTransactions.filter { it.categoryId == category.id }
 
-                val categoryTransactions = sameTypeTransactions
-                    .filter { it.categoryId == category.id }
-                    .map { transaction ->
-                        transaction.toTransactionUIModel(
-                            getFormattedAmountUseCase.invoke(
-                                transaction.amount.amount,
-                                currency,
-                            ),
-                        )
-                    }
+                // Totals are converted into the display currency before summing; with a
+                // rate missing they're shown as unavailable, never as a mixed-currency sum.
+                val total = convertAmountUseCase.total(
+                    sameTypeTransactions.map { it.amount.amount to it.fromCurrencyCode },
+                    currency.code,
+                )
+                val categoryTotal = convertAmountUseCase.total(
+                    inCategory.map { it.amount.amount to it.fromCurrencyCode },
+                    currency.code,
+                )
 
-                val categoryAmount = categoryTransactions.sumOf { it.amount.amount }
+                // Each row shows what was recorded, in its own currency.
+                val categoryTransactions = inCategory.map { transaction ->
+                    transaction.toTransactionUIModel(
+                        formatAmountInCurrencyUseCase(
+                            transaction.amount.amount,
+                            transaction.fromCurrencyCode,
+                        ),
+                    )
+                }
+
+                val categoryValue = categoryTotal.value
+                val totalValue = total.value
+                val percent = if (categoryValue != null && totalValue != null && totalValue > 0.0) {
+                    (categoryValue / totalValue).toFloat() * 100
+                } else {
+                    0f
+                }
 
                 // The category is shown even with nothing in the period, so the screen keeps its
                 // title, summary and edit button (with a zero total) instead of losing them.
@@ -73,11 +93,8 @@ class CategoryDetailViewModel(
                     it.copy(
                         categoryTransaction = CategoryTransaction(
                             category = category,
-                            percent = if (total > 0.0) (categoryAmount / total).toFloat() * 100 else 0f,
-                            amount = getFormattedAmountUseCase.invoke(
-                                amount = categoryAmount,
-                                currency = currency,
-                            ),
+                            percent = percent,
+                            amount = getFormattedAmountUseCase(categoryTotal, currency),
                             transaction = sameTypeTransactions,
                         ),
                         transactions = categoryTransactions,

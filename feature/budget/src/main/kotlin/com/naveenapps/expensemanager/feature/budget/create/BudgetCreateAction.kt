@@ -3,10 +3,17 @@ package com.naveenapps.expensemanager.feature.budget.create
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.model.Country
 
 sealed class BudgetCreateAction {
 
     data object ClosePage : BudgetCreateAction()
+
+    data object OpenCurrencySelection : BudgetCreateAction()
+
+    data object DismissCurrencySelection : BudgetCreateAction()
+
+    data class SelectCurrency(val country: Country) : BudgetCreateAction()
 
     data class SelectPeriodType(val periodType: BudgetPeriod) : BudgetCreateAction()
 

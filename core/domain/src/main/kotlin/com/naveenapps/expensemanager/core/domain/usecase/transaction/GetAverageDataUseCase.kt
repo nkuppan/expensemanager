@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.transaction
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.DateRangeType
@@ -19,6 +20,7 @@ class GetAverageDataUseCase(
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getDateRangeUseCase: GetDateRangeUseCase,
+    private val convertAmountUseCase: ConvertAmountUseCase,
     private val dispatcher: AppCoroutineDispatchers,
 ) {
     fun invoke(): Flow<WholeAverageData> = combine(
@@ -26,10 +28,16 @@ class GetAverageDataUseCase(
         getDateRangeUseCase.invoke(),
         getTransactionWithFilterUseCase.invoke(),
     ) { currency, dateRangeModel, transactions ->
-        val incomeAmount =
-            transactions?.filter { it.type.isIncome() }?.sumOf { it.amount.amount } ?: 0.0
-        val expenseAmount =
-            transactions?.filter { it.type.isExpense() }?.sumOf { it.amount.amount } ?: 0.0
+        val incomeTotal = convertAmountUseCase.total(
+            transactions.orEmpty().filter { it.type.isIncome() }
+                .map { it.amount.amount to it.fromCurrencyCode },
+            currency.code,
+        )
+        val expenseTotal = convertAmountUseCase.total(
+            transactions.orEmpty().filter { it.type.isExpense() }
+                .map { it.amount.amount to it.fromCurrencyCode },
+            currency.code,
+        )
 
         val ranges = dateRangeModel.dateRanges
 
@@ -71,30 +79,30 @@ class GetAverageDataUseCase(
 
         WholeAverageData(
             expenseAverageData = AverageData(
-                perDay = getFormattedAmountUseCase.invoke(
-                    (expenseAmount * daysMultiplier),
+                perDay = getFormattedAmountUseCase(
+                    expenseTotal.times(daysMultiplier),
                     currency,
                 ).amountString.orEmpty(),
-                perWeek = getFormattedAmountUseCase.invoke(
-                    (expenseAmount * weeksMultiplier),
+                perWeek = getFormattedAmountUseCase(
+                    expenseTotal.times(weeksMultiplier),
                     currency,
                 ).amountString.orEmpty(),
-                perMonth = getFormattedAmountUseCase.invoke(
-                    (expenseAmount * monthMultiplier),
+                perMonth = getFormattedAmountUseCase(
+                    expenseTotal.times(monthMultiplier),
                     currency,
                 ).amountString.orEmpty(),
             ),
             incomeAverageData = AverageData(
-                perDay = getFormattedAmountUseCase.invoke(
-                    (incomeAmount * daysMultiplier),
+                perDay = getFormattedAmountUseCase(
+                    incomeTotal.times(daysMultiplier),
                     currency,
                 ).amountString.orEmpty(),
-                perWeek = getFormattedAmountUseCase.invoke(
-                    (incomeAmount * weeksMultiplier),
+                perWeek = getFormattedAmountUseCase(
+                    incomeTotal.times(weeksMultiplier),
                     currency,
                 ).amountString.orEmpty(),
-                perMonth = getFormattedAmountUseCase.invoke(
-                    (incomeAmount * monthMultiplier),
+                perMonth = getFormattedAmountUseCase(
+                    incomeTotal.times(monthMultiplier),
                     currency,
                 ).amountString.orEmpty(),
             ),

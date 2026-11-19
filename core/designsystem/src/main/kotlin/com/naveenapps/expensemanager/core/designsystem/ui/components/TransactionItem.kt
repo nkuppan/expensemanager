@@ -273,7 +273,7 @@ fun TransactionItem(
                 }
 
                 EmAmountText(
-                    amount = "$prefix${amount.amountString ?: ""}",
+                    amount = signedAmountText(prefix, amount.amountString.orEmpty()),
                     color = amountColor,
                 )
 
@@ -491,5 +491,22 @@ fun TransactionUiStatePreview() {
                 notes = "Sample notes given as per transaction",
             )
         }
+    }
+}
+
+/**
+ * Puts the row's +/− [sign] where it reads naturally for the formatted [amountText]:
+ * - a sign-like symbol attached to the number keeps the sign in front of everything (−$100);
+ * - a word symbol separated by a space gets the sign on the number itself (ليرة −208), not
+ *   in front of the word.
+ */
+internal fun signedAmountText(sign: String, amountText: String): String {
+    if (sign.isEmpty()) return amountText
+    val firstDigit = amountText.indexOfFirst { it.isDigit() }
+    val symbolThenSpace = firstDigit > 0 && amountText[firstDigit - 1] == ' '
+    return if (symbolThenSpace) {
+        amountText.substring(0, firstDigit) + sign + amountText.substring(firstDigit)
+    } else {
+        sign + amountText
     }
 }

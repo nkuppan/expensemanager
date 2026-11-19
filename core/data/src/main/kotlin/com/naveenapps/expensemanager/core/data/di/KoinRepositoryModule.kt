@@ -7,15 +7,18 @@ import com.naveenapps.expensemanager.core.data.repository.BackupRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.BudgetRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CategoryRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CountryRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.CurrencyApiRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CurrencyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DateRangeFilterRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DebtRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DevicePropertyRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.ExchangeRateRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ExportRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.FeedbackRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.FirebaseSettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ImageStorageRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.JsonConverterRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.LegacyCurrencyCodeProviderImpl
 import com.naveenapps.expensemanager.core.data.repository.LocaleRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.RecurringTransactionRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepositoryImpl
@@ -27,6 +30,7 @@ import com.naveenapps.expensemanager.core.data.repository.TransactionRepositoryI
 import com.naveenapps.expensemanager.core.data.repository.VersionCheckerRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.export.CsvExportStrategy
 import com.naveenapps.expensemanager.core.data.repository.export.PdfExportStrategy
+import com.naveenapps.expensemanager.core.database.LegacyCurrencyCodeProvider
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
@@ -34,10 +38,12 @@ import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.CountryRepository
+import com.naveenapps.expensemanager.core.repository.CurrencyApiRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import com.naveenapps.expensemanager.core.repository.DebtRepository
 import com.naveenapps.expensemanager.core.repository.DevicePropertyRepository
+import com.naveenapps.expensemanager.core.repository.ExchangeRateRepository
 import com.naveenapps.expensemanager.core.repository.ExportRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.FirebaseSettingsRepository
@@ -114,6 +120,28 @@ val RepositoryModule = module {
             dispatchers = get(),
             dataStore = get(),
             numberFormatRepository = get(),
+        )
+    }
+    single<CurrencyApiRepository> {
+        CurrencyApiRepositoryImpl(
+            dataStore = get(),
+            exchangeRateApi = get(),
+            exchangeRateDao = get(),
+            dispatchers = get(),
+        )
+    }
+    single<ExchangeRateRepository> {
+        ExchangeRateRepositoryImpl(
+            methodDataStore = get(),
+            staticExchangeRateDao = get(),
+            currencyApiRepository = get(),
+            dispatchers = get(),
+        )
+    }
+    single<LegacyCurrencyCodeProvider> {
+        LegacyCurrencyCodeProviderImpl(
+            currencyRepository = get(),
+            countryRepository = get(),
         )
     }
     single<DevicePropertyRepository> { DevicePropertyRepositoryImpl(androidContext()) }

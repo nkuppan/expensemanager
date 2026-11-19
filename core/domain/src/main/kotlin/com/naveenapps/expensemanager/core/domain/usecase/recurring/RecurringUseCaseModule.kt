@@ -8,6 +8,7 @@ val RecurringUseCaseModule = module {
         ProcessRecurringTransactionsUseCase(
             repository = get(),
             transactionRepository = get(),
+            accountRepository = get(),
             addTransactionUseCase = get(),
         )
     }

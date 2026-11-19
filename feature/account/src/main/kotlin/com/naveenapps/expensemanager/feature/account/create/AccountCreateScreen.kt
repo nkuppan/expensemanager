@@ -24,7 +24,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.outlined.Archive
 import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Paid
 import androidx.compose.material.icons.rounded.AccountBalanceWallet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,11 +50,13 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
 import com.naveenapps.expensemanager.core.designsystem.em.EmDeleteConfirm
 import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
 import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmPickerField
 import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
 import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
 import com.naveenapps.expensemanager.core.designsystem.em.EmSection
 import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
 import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextField
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
@@ -66,7 +70,10 @@ import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
+import com.naveenapps.expensemanager.core.model.toDisplayValue
 import com.naveenapps.expensemanager.feature.account.R
+import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionBottomSheet
+import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -90,9 +97,9 @@ fun AccountCreateScreen(
     AccountCreateScaffoldView(
         state = state,
         onAction = viewModel::processAction,
+        snackbarHostState = snackbarHostState,
         onCaptureRequested = imagePicker.onCaptureRequested,
         onGalleryRequested = imagePicker.onGalleryRequested,
-        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -133,6 +140,20 @@ private fun AccountCreateScaffoldView(
         }
     }
 
+    if (state.showCurrencySelection) {
+        CountryCurrencySelectionBottomSheet(
+            onEvent = { event ->
+                when (event) {
+                    CountrySelectionEvent.Dismiss ->
+                        onAction.invoke(AccountCreateAction.DismissCurrencySelection)
+
+                    is CountrySelectionEvent.CountrySelected ->
+                        onAction.invoke(AccountCreateAction.SelectCurrency(event.country))
+                }
+            },
+        )
+    }
+
     EmScaffold(
         snackbarHostState = snackbarHostState,
         topBar = {
@@ -147,7 +168,14 @@ private fun AccountCreateScaffoldView(
                     stringResource(R.string.create_account)
                 },
                 actions = {
-                    if (state.showDeleteButton) {
+                    if (state.showDeleteButton && state.hasTransactions) {
+                        // An account with history can't be deleted, only archived (reversible).
+                        EmIconButton(
+                            icon = Icons.Outlined.Archive,
+                            contentDescription = stringResource(R.string.archive_account),
+                            onClick = { onAction.invoke(AccountCreateAction.Archive) },
+                        )
+                    } else if (state.showDeleteButton) {
                         EmIconButton(
                             icon = Icons.Outlined.Delete,
                             contentDescription = stringResource(R.string.delete),
@@ -180,9 +208,13 @@ private fun AccountCreateScaffoldView(
             totalAmount = state.totalAmount,
             totalAmountBackgroundColor = state.totalAmountBackgroundColor,
             customImagePath = state.customImagePath,
+            accountCurrency = state.accountCurrency,
+            accountCurrencyError = state.accountCurrencyError,
+            isEditMode = state.showDeleteButton,
             onCaptureRequested = onCaptureRequested,
             onGalleryRequested = onGalleryRequested,
             onRemoveImage = { onAction.invoke(AccountCreateAction.RemoveImage) },
+            onCurrencyClick = { onAction.invoke(AccountCreateAction.OpenCurrencySelection) },
         )
     }
 }
@@ -199,55 +231,84 @@ private fun AccountCreateScreen(
     totalAmount: String,
     totalAmountBackgroundColor: Int,
     customImagePath: String? = null,
+    accountCurrency: Currency?,
+    accountCurrencyError: Boolean = false,
+    isEditMode: Boolean = false,
     onCaptureRequested: () -> Unit = {},
     onGalleryRequested: () -> Unit = {},
     onRemoveImage: () -> Unit = {},
+    onCurrencyClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.padding(horizontal = EmTheme.spacing.lg),
         verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
-        EmSection(
-            title = stringResource(R.string.account_type),
-            modifier = Modifier.padding(top = EmTheme.spacing.sm),
-        ) {
-            EmCard {
-                Column(
-                    modifier = Modifier.padding(EmTheme.spacing.lg),
-                ) {
-                    AccountTypeSelectionView(
-                        modifier = Modifier.fillMaxWidth(),
-                        selectedAccountType = type.value,
-                        onAccountTypeChange = type.onValueChange!!,
-                    )
+        if (isEditMode) {
+            LockedAccountDetails(
+                name = name.value,
+                type = type.value,
+                currency = accountCurrency,
+                totalAmount = totalAmount,
+                modifier = Modifier.padding(top = EmTheme.spacing.sm),
+            )
+        } else {
+            EmSection(
+                title = stringResource(R.string.account_type),
+                modifier = Modifier.padding(top = EmTheme.spacing.sm),
+            ) {
+                EmCard {
+                    Column(
+                        modifier = Modifier.padding(EmTheme.spacing.lg),
+                    ) {
+                        AccountTypeSelectionView(
+                            modifier = Modifier.fillMaxWidth(),
+                            selectedAccountType = type.value,
+                            onAccountTypeChange = type.onValueChange!!,
+                        )
+                    }
                 }
             }
-        }
 
-        // Details
-        EmSection(title = stringResource(R.string.details)) {
-            EmCard {
-                Column(
-                    modifier = Modifier.padding(EmTheme.spacing.lg),
-                    verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
-                ) {
-                    EmTextField(
-                        value = name.value,
-                        onValueChange = { name.onValueChange?.invoke(it) },
-                        label = stringResource(id = R.string.account_name),
-                        modifier = Modifier.fillMaxWidth(),
-                        isError = name.valueError,
-                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-                        supportingText = if (name.valueError) stringResource(id = R.string.account_name_error) else null,
-                        selectAllOnFocus = true,
-                    )
-                    BalanceSectionContent(
-                        amount = amount,
-                        type = type,
-                        creditLimit = creditLimit,
-                        totalAmount = totalAmount,
-                        totalAmountBackgroundColor = totalAmountBackgroundColor,
-                    )
+            // Details
+            EmSection(title = stringResource(R.string.details)) {
+                EmCard {
+                    Column(
+                        modifier = Modifier.padding(EmTheme.spacing.lg),
+                        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
+                    ) {
+                        EmTextField(
+                            value = name.value,
+                            onValueChange = { name.onValueChange?.invoke(it) },
+                            label = stringResource(id = R.string.account_name),
+                            modifier = Modifier.fillMaxWidth(),
+                            isError = name.valueError,
+                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                            supportingText = if (name.valueError) stringResource(id = R.string.account_name_error) else null,
+                            selectAllOnFocus = true,
+                        )
+                        EmPickerField(
+                            label = stringResource(id = R.string.currency),
+                            value = accountCurrency?.toDisplayValue()
+                                ?: stringResource(id = R.string.currency_not_set),
+                            onClick = onCurrencyClick,
+                            modifier = Modifier.fillMaxWidth(),
+                            leadingIcon = Icons.Outlined.Paid,
+                        )
+                        if (accountCurrencyError) {
+                            EmText(
+                                text = stringResource(id = R.string.currency_error),
+                                role = EmTextRole.Supporting,
+                                color = EmTextColor.Error,
+                            )
+                        }
+                        BalanceSectionContent(
+                            amount = amount,
+                            type = type,
+                            creditLimit = creditLimit,
+                            totalAmount = totalAmount,
+                            totalAmountBackgroundColor = totalAmountBackgroundColor,
+                        )
+                    }
                 }
             }
         }
@@ -382,6 +443,7 @@ private fun AccountCreateStatePreview() {
                 icon = selectedIconField,
                 creditLimit = nameField,
                 currency = Currency("$", ""),
+                accountCurrency = Currency("$", ""),
                 totalAmount = "$ 0.0",
                 totalAmountBackgroundColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
                 amount = nameField,
@@ -390,5 +452,56 @@ private fun AccountCreateStatePreview() {
             ),
             onAction = {},
         )
+    }
+}
+
+/**
+ * An existing account's identity is immutable: name, type, currency and balance are shown
+ * read-only (the balance only moves through transactions). Only the appearance is editable.
+ */
+@Composable
+private fun LockedAccountDetails(
+    name: String,
+    type: AccountType,
+    currency: Currency?,
+    totalAmount: String,
+    modifier: Modifier = Modifier,
+) {
+    EmSection(title = stringResource(R.string.fixed_details), modifier = modifier) {
+        EmCard {
+            Column(
+                modifier = Modifier.padding(EmTheme.spacing.lg),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
+            ) {
+                LockedDetailRow(stringResource(R.string.account_name), name)
+                LockedDetailRow(
+                    stringResource(R.string.account_type),
+                    stringResource(
+                        if (type == AccountType.CREDIT) R.string.credit else R.string.bank_account,
+                    ),
+                )
+                LockedDetailRow(
+                    stringResource(R.string.currency),
+                    currency?.toDisplayValue() ?: stringResource(R.string.currency_not_set),
+                )
+                LockedDetailRow(stringResource(R.string.current_balance), totalAmount)
+                EmText(
+                    text = stringResource(R.string.fixed_details_hint),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LockedDetailRow(label: String, value: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        EmText(text = label, color = EmTextColor.Supporting)
+        EmText(text = value)
     }
 }

@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
+import com.naveenapps.expensemanager.core.repository.ExchangeRateRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.CoroutineScope
@@ -25,6 +26,7 @@ class GetTransactionWithFilterUseCase(
     private val settingsRepository: SettingsRepository,
     private val getDateRangeUseCase: GetDateRangeUseCase,
     private val transactionRepository: TransactionRepository,
+    private val exchangeRateRepository: ExchangeRateRepository,
     sharingScope: CoroutineScope,
 ) {
     // One query for the selected period, shared by everything that shows it: the dashboard
@@ -104,7 +106,10 @@ class GetTransactionWithFilterUseCase(
         settingsRepository.getCategories(),
         settingsRepository.getAccounts(),
         getDateRangeUseCase.invoke(),
-    ) { selectedTransactionTypes, selectedCategories, selectedAccounts, dateRangeModel ->
+        // Every total derived from these transactions depends on the exchange method and
+        // rates, so a change there re-emits the list and the totals are worked out again.
+        exchangeRateRepository.observeConfiguration(),
+    ) { selectedTransactionTypes, selectedCategories, selectedAccounts, dateRangeModel, _ ->
 
         val transactionTypes: List<Int> = if (selectedTransactionTypes.isNullOrEmpty()) {
             TransactionType.entries.map { it.ordinal }

@@ -4,6 +4,9 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertedTotal
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.sum
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
@@ -22,6 +25,7 @@ class GetTransactionGroupByCategoryUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
+    private val convertAmountUseCase: ConvertAmountUseCase,
     private val appCoroutineDispatchers: AppCoroutineDispatchers,
 ) {
     fun invoke(categoryType: CategoryType): Flow<CategoryTransactionState> = combine(
@@ -29,9 +33,12 @@ class GetTransactionGroupByCategoryUseCase(
         getTransactionWithFilterUseCase.invoke(),
     ) { currency, transactions ->
 
-        val (categoryTransactions, totalAmount) = transactions.orEmpty().groupByCategory(categoryType) {
-            getFormattedAmountUseCase.invoke(amount = it, currency = currency)
-        }
+        val (categoryTransactions, totalAmount) = transactions.orEmpty().groupByCategory(
+            categoryType = categoryType,
+            currencyCode = currency.code,
+            convertAmountUseCase = convertAmountUseCase,
+        ) { getFormattedAmountUseCase(it, currency) }
+        val allAvailable = totalAmount.value != null
 
         val pieChartData: List<PieChartData>
         val newCategoryTransaction: List<CategoryTransaction>
@@ -57,9 +64,9 @@ class GetTransactionGroupByCategoryUseCase(
 
         CategoryTransactionState(
             pieChartData = pieChartData,
-            totalAmount = getFormattedAmountUseCase.invoke(amount = totalAmount, currency = currency),
+            totalAmount = getFormattedAmountUseCase(totalAmount, currency),
             categoryTransactions = newCategoryTransaction,
-            hideValues = categoryTransactions.isEmpty(),
+            hideValues = categoryTransactions.isEmpty() || !allAvailable,
             categoryType = categoryType,
         )
     }.flowOn(appCoroutineDispatchers.computation)
@@ -73,28 +80,41 @@ fun CategoryTransaction.toChartModel(): PieChartData = PieChartData(
 )
 
 /**
- * Spending (or income) of [categoryType] per category, largest share first, with the total.
- * Transfers are left out. Shared by the Categories tab and a budget's details.
+ * Spending (or income) of [categoryType] per category, largest share first, with the total in
+ * [currencyCode]. Transfers are left out. Each transaction is converted from its own currency
+ * before summing, so a mix of currencies is never added together as if it were one unit; with a
+ * rate missing (or conversion disabled) percentages and the total are unavailable rather than a
+ * partial sum. Shared by the Categories tab and a budget's details.
  */
-fun List<Transaction>.groupByCategory(
+suspend fun List<Transaction>.groupByCategory(
     categoryType: CategoryType,
-    formatAmount: (Double) -> Amount,
-): Pair<List<CategoryTransaction>, Double> {
+    currencyCode: String,
+    convertAmountUseCase: ConvertAmountUseCase,
+    formatAmount: (ConvertedTotal) -> Amount,
+): Pair<List<CategoryTransaction>, ConvertedTotal> {
     // Single pass: filter transfers, group by category, filter by type
     val byCategory = filterNot { it.type.isTransfer() }
         .groupBy { it.category }
         .filterKeys { it.type == categoryType }
 
-    // Compute per-category sums once; derive total from those — no double iteration
-    val categoryAmounts = byCategory.mapValues { (_, txns) -> txns.sumOf { it.amount.amount } }
+    // Compute per-category sums once; derive total from those — no double iteration.
+    val categoryAmounts = byCategory.mapValues { (_, txns) ->
+        convertAmountUseCase.total(txns.map { it.amount.amount to it.fromCurrencyCode }, currencyCode)
+    }
     val totalAmount = categoryAmounts.values.sum()
+    val totalValue = totalAmount.value
 
     val categoryTransactions = byCategory.entries
         .map { (category, txns) ->
             val spent = categoryAmounts.getValue(category)
+            val spentValue = spent.value
             CategoryTransaction(
                 category = category,
-                percent = if (totalAmount > 0.0) (spent / totalAmount).toFloat() * 100 else 0f,
+                percent = if (totalValue != null && spentValue != null && totalValue > 0.0) {
+                    (spentValue / totalValue).toFloat() * 100
+                } else {
+                    0f
+                },
                 amount = formatAmount(spent),
                 transaction = txns,
             )

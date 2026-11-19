@@ -9,4 +9,6 @@ data class RestoreState(
     val confirmBackup: BackupFile? = null,
     /** The chosen backup is passphrase-protected and the passphrase dialog is showing. */
     val showPassphrasePrompt: Boolean = false,
+    /** Asking which currency the chosen backup's amounts are in, before restoring it. */
+    val showCurrencySelection: Boolean = false,
 )

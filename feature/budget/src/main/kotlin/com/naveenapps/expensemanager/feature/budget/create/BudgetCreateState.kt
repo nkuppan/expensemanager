@@ -20,7 +20,10 @@ data class BudgetCreateState(
     val selectedAccounts: List<AccountUiModel>,
     val isAllCategorySelected: Boolean,
     val selectedCategories: List<Category>,
+    /** The budget's own currency: the limit is set in it. Locked once the budget exists. */
     val currency: Currency,
+    val isCurrencyLocked: Boolean = false,
+    val showCurrencySelection: Boolean = false,
     val showDeleteButton: Boolean,
     val showDeleteDialog: Boolean,
     val showAccountSelectionDialog: Boolean,

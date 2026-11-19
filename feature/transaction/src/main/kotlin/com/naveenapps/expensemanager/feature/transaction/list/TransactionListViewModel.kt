@@ -8,8 +8,11 @@ import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtActivity
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertedTotal
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
@@ -55,6 +58,8 @@ import kotlinx.coroutines.launch
 class TransactionListViewModel(
     getCurrencyUseCase: GetCurrencyUseCase,
     getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    convertAmountUseCase: ConvertAmountUseCase,
+    formatAmountInCurrencyUseCase: FormatAmountInCurrencyUseCase,
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     appCoroutineDispatchers: AppCoroutineDispatchers,
     private val appComposeNavigator: AppComposeNavigator,
@@ -135,27 +140,35 @@ class TransactionListViewModel(
                     date = transaction.createdOn,
                     transaction = transaction,
                     item = transaction.toTransactionUIModel(
-                        getFormattedAmountUseCase.invoke(transaction.amount.amount, currency),
+                        formatAmountInCurrencyUseCase(transaction.amount.amount, transaction.fromCurrencyCode),
                     ),
                 )
             } + matchingDebts.map { activity ->
                 ListRow(
                     date = activity.entry.date,
                     transaction = null,
+                    // A debt entry is in the currency of the account it moved money in.
                     item = activity.toTransactionUiItem(
-                        getFormattedAmountUseCase.invoke(activity.entry.amountMilli.milliToDouble(), currency),
+                        formatAmountInCurrencyUseCase(
+                            activity.entry.amountMilli.milliToDouble(),
+                            activity.account.currencyCode,
+                        ),
                     ),
                 )
             }
             val groupedItem = rows.sortedByDescending { it.date }.groupBy {
                 it.date.toCompleteDateWithDate()
             }.map {
-                // The day's total counts real transactions only, not debt entries.
-                val totalAmount = it.value.mapNotNull { row -> row.transaction }.toTransactionSum()
+                // The day's net counts real transactions only, not debt entries, converted into
+                // the display currency; rows keep their own.
+                val totalAmount = convertAmountUseCase.total(
+                    it.value.mapNotNull { row -> row.transaction }.toSignedAmounts(),
+                    currency.code,
+                )
                 TransactionGroup(
                     date = it.key,
-                    amountTextColor = totalAmount.getAmountTextColor(),
-                    totalAmount = getFormattedAmountUseCase.invoke(totalAmount, currency),
+                    amountTextColor = totalAmount.colorSign().getAmountTextColor(),
+                    totalAmount = getFormattedAmountUseCase(totalAmount, currency),
                     transactions = it.value.map { row -> row.item },
                 )
             }
@@ -315,19 +328,12 @@ internal fun resultsBucket(count: Int): String = when {
 
 internal fun Transaction.matches(query: String, displayName: (Category) -> String = { it.name }): Boolean = matchesSearch(query, listOf(notes, category.name, displayName(category), fromAccount.name, toAccount?.name))
 
-fun List<Transaction>.toTransactionSum() = this.sumOf {
+/** (signed amount, currency) per income/expense; transfers don't change the net. */
+fun List<Transaction>.toSignedAmounts(): List<Pair<Double, String>> = this.mapNotNull {
     when (it.type) {
-        TransactionType.INCOME -> {
-            it.amount.amount
-        }
-
-        TransactionType.EXPENSE -> {
-            it.amount.amount * -1
-        }
-
-        TransactionType.TRANSFER -> {
-            0.0
-        }
+        TransactionType.INCOME -> it.amount.amount to it.fromCurrencyCode
+        TransactionType.EXPENSE -> -it.amount.amount to it.fromCurrencyCode
+        TransactionType.TRANSFER -> null
     }
 }
 

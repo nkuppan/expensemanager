@@ -20,22 +20,11 @@ class GetAmountStateUseCase(
         getIncomeAmountUseCase.invoke(),
         getExpenseAmountUseCase.invoke(),
     ) { currency, income, expense ->
-
-        val incomeValue = income ?: 0.0
-        val expenseValue = expense ?: 0.0
+        val balance = income - expense
         ExpenseFlowState(
-            income = getFormattedAmountUseCase.invoke(
-                incomeValue,
-                currency,
-            ).amountString.orEmpty(),
-            expense = getFormattedAmountUseCase.invoke(
-                expenseValue,
-                currency,
-            ).amountString.orEmpty(),
-            balance = getFormattedAmountUseCase.invoke(
-                (incomeValue - expenseValue),
-                currency,
-            ).amountString.orEmpty(),
+            income = getFormattedAmountUseCase(income, currency).amountString.orEmpty(),
+            expense = getFormattedAmountUseCase(expense, currency).amountString.orEmpty(),
+            balance = getFormattedAmountUseCase(balance, currency).amountString.orEmpty(),
         )
     }.flowOn(dispatchers.computation)
 }

@@ -44,12 +44,15 @@ import com.naveenapps.expensemanager.core.designsystem.components.SummaryCard
 import com.naveenapps.expensemanager.core.designsystem.components.WidgetHeader
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
 import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
 import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
 import com.naveenapps.expensemanager.core.designsystem.em.EmFab
 import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
 import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
 import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
 import com.naveenapps.expensemanager.core.designsystem.em.EmText
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
@@ -128,6 +131,7 @@ internal fun AccountListContentView(
                 .padding(innerPadding)
                 .fillMaxSize(),
             state = state,
+            onUnarchive = { onAction.invoke(AccountListAction.Unarchive(it)) },
             onItemClick = {
                 onAction.invoke(AccountListAction.EditAccount(it))
             },
@@ -140,9 +144,10 @@ private fun AccountListScreenContent(
     state: AccountListState,
     onItemClick: ((AccountUiModel) -> Unit)?,
     modifier: Modifier = Modifier,
+    onUnarchive: (AccountUiModel) -> Unit = {},
 ) {
     Box(modifier = modifier) {
-        if (state.accounts.isEmpty()) {
+        if (state.accounts.isEmpty() && state.archivedAccounts.isEmpty()) {
             EmEmptyState(
                 illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts),
                 title = stringResource(id = R.string.no_account_available),
@@ -194,6 +199,40 @@ private fun AccountListScreenContent(
                             AccountItemDefaults.ChevronTrailing()
                         },
                     )
+                }
+
+                if (state.archivedAccounts.isNotEmpty()) {
+                    item("archived_header") {
+                        EmSectionHeader(
+                            title = stringResource(id = R.string.archived_accounts),
+                            modifier = Modifier.padding(top = EmTheme.spacing.xl),
+                        )
+                    }
+                    itemsIndexed(
+                        items = state.archivedAccounts,
+                        key = { _, item -> "archived_${item.id}" },
+                    ) { index, account ->
+                        AccountItem(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItem(),
+                            onClick = null,
+                            name = account.name,
+                            icon = account.storedIcon.name,
+                            iconBackgroundColor = account.storedIcon.backgroundColor,
+                            amount = account.amount.amountString,
+                            amountTextColor = account.amountTextColor,
+                            customImagePath = account.storedIcon.customImagePath,
+                            position = EmCardPosition.of(index, state.archivedAccounts),
+                            trailingContent = {
+                                EmButton(
+                                    text = stringResource(id = R.string.unarchive),
+                                    onClick = { onUnarchive(account) },
+                                    variant = EmButtonVariant.Tertiary,
+                                )
+                            },
+                        )
+                    }
                 }
             }
         }
@@ -388,6 +427,7 @@ fun getAccountData(
     creditLimit = creditLimit,
     createdOn = Date(),
     updatedOn = Date(),
+    currencyCode = "USD",
 )
 
 fun getRandomAccountData(totalCount: Int = 10): List<Account> = buildList {

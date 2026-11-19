@@ -7,6 +7,7 @@ import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
+import com.naveenapps.expensemanager.core.repository.ExchangeRateRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
@@ -34,6 +35,7 @@ class GetTransactionWithFilterUseCaseTest {
     private val settingsRepository: SettingsRepository = mock()
     private val getDateRangeUseCase: GetDateRangeUseCase = mock()
     private val transactionRepository: TransactionRepository = mock()
+    private val exchangeRateRepository: ExchangeRateRepository = mock()
 
     private val transactions = MutableStateFlow(listOf(FAKE_EXPENSE_TRANSACTION))
 
@@ -41,6 +43,7 @@ class GetTransactionWithFilterUseCaseTest {
         whenever(settingsRepository.getTransactionTypes()).thenReturn(flowOf(null))
         whenever(settingsRepository.getAccounts()).thenReturn(flowOf(listOf("1")))
         whenever(settingsRepository.getCategories()).thenReturn(flowOf(listOf("1")))
+        whenever(exchangeRateRepository.observeConfiguration()).thenReturn(flowOf(Unit))
         whenever(getDateRangeUseCase.invoke()).thenReturn(
             flowOf(DateRangeModel("This month", "", DateRangeType.THIS_MONTH, listOf(0L, 100L))),
         )
@@ -53,6 +56,7 @@ class GetTransactionWithFilterUseCaseTest {
             settingsRepository = settingsRepository,
             getDateRangeUseCase = getDateRangeUseCase,
             transactionRepository = transactionRepository,
+            exchangeRateRepository = exchangeRateRepository,
             sharingScope = backgroundScope,
         )
     }

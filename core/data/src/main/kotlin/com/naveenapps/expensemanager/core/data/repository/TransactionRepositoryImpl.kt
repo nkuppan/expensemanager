@@ -56,6 +56,7 @@ class TransactionRepositoryImpl(
                 },
                 transaction.type.isTransfer(),
                 transaction.attachments,
+                transaction.rateSnapshot?.toEntityModel(),
             )
             Resource.Success(response != -1L)
         } catch (exception: Exception) {
@@ -76,17 +77,24 @@ class TransactionRepositoryImpl(
                 },
                 transaction.type.isTransfer(),
                 transaction.attachments,
+                transaction.rateSnapshot?.takeIf { it.id != previousSnapshotId(transaction) }
+                    ?.toEntityModel(),
             )
+            transactionDao.deleteUnreferencedRateSnapshots()
             Resource.Success(true)
         } catch (exception: Exception) {
             Resource.Error(exception)
         }
     }
 
+    /** A snapshot already stored (unchanged on edit) must not be inserted again. */
+    private suspend fun previousSnapshotId(transaction: Transaction): String? = transactionDao.findById(transaction.id)?.rateSnapshotId
+
     override suspend fun deleteTransaction(transaction: Transaction): Resource<Boolean> = withContext(dispatchers.io) {
         return@withContext try {
             val transactionEntity = transaction.toEntityModel()
             val response = transactionDao.deleteTransaction(transactionEntity)
+            transactionDao.deleteUnreferencedRateSnapshots()
             Resource.Success(response > 0)
         } catch (exception: Exception) {
             Resource.Error(exception)
@@ -112,6 +120,7 @@ class TransactionRepositoryImpl(
         val category = relation.categoryEntity?.toDomainModel() ?: return null
         val fromAccount = relation.fromAccountEntity?.toDomainModel() ?: return null
         return relation.transactionEntity.toDomainModel().copy(
+            rateSnapshot = relation.rateSnapshotEntity?.toDomainModel(),
             category = category,
             fromAccount = fromAccount,
             toAccount = relation.toAccountEntity?.toDomainModel(),
@@ -122,6 +131,8 @@ class TransactionRepositoryImpl(
     private suspend fun convertTransactionCategoryRelation(relation: TransactionEntity): Transaction {
         val transaction = relation.toDomainModel()
         return transaction.copy(
+            rateSnapshot = relation.rateSnapshotId?.let { transactionDao.findRateSnapshot(it) }
+                ?.toDomainModel(),
             category = categoryDao.findById(transaction.categoryId)?.toDomainModel() ?: transaction.category,
             fromAccount = accountDao.findById(transaction.fromAccountId)?.toDomainModel() ?: transaction.fromAccount,
             toAccount = transaction.toAccountId?.let { accountDao.findById(it)?.toDomainModel() },

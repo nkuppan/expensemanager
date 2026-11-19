@@ -205,4 +205,63 @@ class CurrencyRepositoryImplTest : BaseCoroutineTest() {
         Truth.assertThat(formattedAmount.amount).isEqualTo(passedAmount.amount)
         Truth.assertThat(formattedAmount.amountString).isEqualTo("-1,200,000,000.44€")
     }
+
+    // region word / right-to-left symbols (ليرة): position and minus sign
+
+    private val lira = "ليرة"
+    private val ltrMark = "\u200E"
+
+    private fun formatLira(value: Double, position: CurrencyPosition, symbol: String = lira): String? = repository.getFormattedCurrency(
+        amount.copy(
+            amount = value,
+            currency = defaultCurrency.copy(symbol = symbol, position = position),
+        ),
+    ).amountString
+
+    @Test
+    fun `Given arabic symbol in prefix when formatting then symbol stays before the number`() = runTest {
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
+        Truth.assertThat(formatLira(10585.0, CurrencyPosition.PREFIX))
+            .isEqualTo("$ltrMark$lira$ltrMark 10,585")
+    }
+
+    @Test
+    fun `Given arabic symbol in suffix when formatting then symbol stays after the number`() = runTest {
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
+        Truth.assertThat(formatLira(10585.0, CurrencyPosition.SUFFIX))
+            .isEqualTo("${ltrMark}10,585 $lira$ltrMark")
+    }
+
+    @Test
+    fun `Given arabic symbol in prefix and negative amount then minus sits on the number not the symbol`() = runTest {
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
+        Truth.assertThat(formatLira(-208.0, CurrencyPosition.PREFIX))
+            .isEqualTo("$ltrMark$lira$ltrMark -208")
+    }
+
+    @Test
+    fun `Given arabic symbol in suffix and negative amount then minus leads the number`() = runTest {
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
+        Truth.assertThat(formatLira(-208.0, CurrencyPosition.SUFFIX))
+            .isEqualTo("$ltrMark-208 $lira$ltrMark")
+    }
+
+    @Test
+    fun `Given latin word symbol in prefix and negative amount then minus sits on the number`() = runTest {
+        formatTypeFlow.value = NumberFormatType.WITH_COMMA_SEPARATOR
+        advanceUntilIdle()
+
+        Truth.assertThat(formatLira(-208.0, CurrencyPosition.PREFIX, symbol = "ALL"))
+            .isEqualTo("ALL -208")
+    }
+
+    // endregion
 }

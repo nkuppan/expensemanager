@@ -2,9 +2,13 @@ package com.naveenapps.expensemanager.feature.account.list
 
 import app.cash.turbine.test
 import com.google.common.truth.Truth
+import com.naveenapps.expensemanager.core.domain.usecase.account.ArchiveAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertedTotal
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
@@ -13,12 +17,15 @@ import com.naveenapps.expensemanager.core.model.isCredit
 import com.naveenapps.expensemanager.core.model.isRegular
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.repository.AccountRepository
+import com.naveenapps.expensemanager.core.repository.CountryRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doSuspendableAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
@@ -29,11 +36,22 @@ class AccountListViewModelTest : BaseCoroutineTest() {
     private val accountRepository: AccountRepository = mock()
     private val currencyRepository: CurrencyRepository = mock()
 
+    // Everything here is in one currency, so a conversion is a plain sum.
+    private val convertAmountUseCase: ConvertAmountUseCase = mock {
+        onBlocking { total(any(), any()) } doSuspendableAnswer { invocation ->
+            val amounts = invocation.getArgument<List<Pair<Double, String>>>(0)
+            ConvertedTotal(value = amounts.sumOf { it.first })
+        }
+    }
+
     private val getCurrencyUseCase = GetCurrencyUseCase(currencyRepository)
     private val getFormattedAmountUseCase = GetFormattedAmountUseCase(currencyRepository)
     private val getAllAccountsUseCase = GetAllAccountsUseCase(accountRepository)
 
     private val appComposeNavigator: AppComposeNavigator = mock()
+    private val countryRepository: CountryRepository = mock {
+        onBlocking { readCountries() } doReturn emptyList()
+    }
 
     private lateinit var accountListViewModel: AccountListViewModel
 
@@ -45,11 +63,18 @@ class AccountListViewModelTest : BaseCoroutineTest() {
         whenever(currencyRepository.getFormattedCurrency(any())).thenReturn(Amount(100.0, "100$"))
         whenever(accountRepository.getAccounts()).thenReturn(accountFlow)
 
+        val formatAmountInCurrencyUseCase = FormatAmountInCurrencyUseCase(
+            countryRepository,
+            currencyRepository,
+        )
         accountListViewModel = AccountListViewModel(
-            getAllAccountsUseCase,
-            getCurrencyUseCase,
-            getFormattedAmountUseCase,
-            appComposeNavigator,
+            getAllAccountsUseCase = getAllAccountsUseCase,
+            getCurrencyUseCase = getCurrencyUseCase,
+            getFormattedAmountUseCase = getFormattedAmountUseCase,
+            convertAmountUseCase = convertAmountUseCase,
+            formatAmountInCurrencyUseCase = formatAmountInCurrencyUseCase,
+            archiveAccountUseCase = ArchiveAccountUseCase(accountRepository),
+            appComposeNavigator = appComposeNavigator,
         )
     }
 

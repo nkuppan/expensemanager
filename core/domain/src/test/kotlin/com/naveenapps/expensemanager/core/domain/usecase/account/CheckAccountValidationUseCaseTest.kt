@@ -101,4 +101,13 @@ class CheckAccountValidationUseCaseTest : BaseCoroutineTest() {
         Truth.assertThat(exception).isNotNull()
         Truth.assertThat(exception.message).isNotEmpty()
     }
+
+    @Test
+    fun whenCurrencyCodeIsBlankShouldResultError() {
+        val response = checkAccountValidationUseCase.invoke(
+            FAKE_ACCOUNT.copy(currencyCode = ""),
+        )
+
+        Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
+    }
 }

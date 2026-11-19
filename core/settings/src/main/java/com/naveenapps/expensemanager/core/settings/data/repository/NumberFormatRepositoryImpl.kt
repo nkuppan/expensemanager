@@ -19,7 +19,7 @@ class NumberFormatRepositoryImpl(
     coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main + SupervisorJob()),
 ) : NumberFormatRepository {
 
-    private var numberFormatType: NumberFormatType = NumberFormatType.WITHOUT_ANY_SEPARATOR
+    private var numberFormatType: NumberFormatType = NumberFormatType.WITH_COMMA_SEPARATOR
 
     init {
         numberFormatSettingRepository.getNumberFormatType().onEach {

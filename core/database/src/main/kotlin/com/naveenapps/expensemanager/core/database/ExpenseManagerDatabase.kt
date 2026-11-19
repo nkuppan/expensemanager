@@ -7,7 +7,10 @@ import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.BudgetDao
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
 import com.naveenapps.expensemanager.core.database.dao.DebtDao
+import com.naveenapps.expensemanager.core.database.dao.ExchangeRateDao
+import com.naveenapps.expensemanager.core.database.dao.ExchangeRateSnapshotDao
 import com.naveenapps.expensemanager.core.database.dao.RecurringTransactionDao
+import com.naveenapps.expensemanager.core.database.dao.StaticExchangeRateDao
 import com.naveenapps.expensemanager.core.database.dao.TransactionDao
 import com.naveenapps.expensemanager.core.database.entity.AccountEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetAccountEntity
@@ -16,12 +19,16 @@ import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
 import com.naveenapps.expensemanager.core.database.entity.CategoryEntity
 import com.naveenapps.expensemanager.core.database.entity.DebtEntryEntity
 import com.naveenapps.expensemanager.core.database.entity.DebtPersonEntity
+import com.naveenapps.expensemanager.core.database.entity.ExchangeRateEntity
+import com.naveenapps.expensemanager.core.database.entity.ExchangeRateSnapshotEntity
 import com.naveenapps.expensemanager.core.database.entity.RecurringTransactionEntity
+import com.naveenapps.expensemanager.core.database.entity.StaticExchangeRateEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionAttachmentEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.database.utils.AccountTypeConverter
 import com.naveenapps.expensemanager.core.database.utils.CategoryTypeConverter
 import com.naveenapps.expensemanager.core.database.utils.DateConverter
+import com.naveenapps.expensemanager.core.database.utils.ExchangeRateSourceConverter
 import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverter
 
 /**
@@ -37,10 +44,13 @@ import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverte
         BudgetAccountEntity::class,
         TransactionAttachmentEntity::class,
         RecurringTransactionEntity::class,
+        ExchangeRateEntity::class,
+        ExchangeRateSnapshotEntity::class,
+        StaticExchangeRateEntity::class,
         DebtPersonEntity::class,
         DebtEntryEntity::class,
     ],
-    version = 12,
+    version = 13,
     exportSchema = true,
 )
 @TypeConverters(
@@ -48,6 +58,7 @@ import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverte
     TransactionTypeConverter::class,
     CategoryTypeConverter::class,
     AccountTypeConverter::class,
+    ExchangeRateSourceConverter::class,
 )
 abstract class ExpenseManagerDatabase : RoomDatabase() {
 
@@ -61,5 +72,10 @@ abstract class ExpenseManagerDatabase : RoomDatabase() {
 
     abstract fun recurringTransactionDao(): RecurringTransactionDao
 
+    abstract fun exchangeRateDao(): ExchangeRateDao
+
+    abstract fun exchangeRateSnapshotDao(): ExchangeRateSnapshotDao
+
+    abstract fun staticExchangeRateDao(): StaticExchangeRateDao
     abstract fun debtDao(): DebtDao
 }

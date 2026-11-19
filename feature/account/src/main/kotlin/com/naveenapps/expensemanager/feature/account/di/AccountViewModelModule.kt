@@ -18,17 +18,20 @@ val AccountViewModelModule = module {
             addAccountUseCase = get(),
             updateAccountUseCase = get(),
             deleteAccountUseCase = get(),
-            getAccountDeleteImpactUseCase = get(),
+            archiveAccountUseCase = get(),
+            accountRepository = get(),
+            getCountriesUseCase = get(),
             imageStorageRepository = get(),
             composeNavigator = get(),
             numberFormatRepository = get(),
+            exchangeRateRepository = get(),
+            getAccountDeleteImpactUseCase = get(),
             analyticsRepository = get(),
         )
     }
     viewModel {
         AccountSelectionViewModel(
-            getCurrencyUseCase = get(),
-            getFormattedAmountUseCase = get(),
+            getAccountUiModelUseCase = get(),
             getAllAccountsUseCase = get(),
         )
     }
@@ -37,6 +40,9 @@ val AccountViewModelModule = module {
             getAllAccountsUseCase = get(),
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
+            convertAmountUseCase = get(),
+            formatAmountInCurrencyUseCase = get(),
+            archiveAccountUseCase = get(),
             appComposeNavigator = get(),
         )
     }

@@ -136,6 +136,7 @@ private fun BudgetListScreenContent(
                     amount = budget.amount,
                     transactionAmount = budget.transactionAmount,
                     percentage = budget.percent,
+                    otherCurrenciesExcluded = budget.otherCurrenciesExcluded,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.xxs),
@@ -171,6 +172,7 @@ fun BudgetItemWithCard(
     position: EmCardPosition = EmCardPosition.Single,
     selected: Boolean = false,
     onItemClick: () -> Unit = {},
+    otherCurrenciesExcluded: Boolean = false,
 ) {
     EmCard(
         position = position,
@@ -183,6 +185,7 @@ fun BudgetItemWithCard(
             amount = amount,
             transactionAmount = transactionAmount,
             percentage = percentage,
+            otherCurrenciesExcluded = otherCurrenciesExcluded,
             modifier = Modifier
                 .clickable {
                     onItemClick.invoke()
@@ -200,6 +203,7 @@ fun BudgetItem(
     transactionAmount: Amount?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
+    otherCurrenciesExcluded: Boolean = false,
 ) {
     val barColor = emColorOf(progressBarColor)
     val isOverBudget = percentage > 100f
@@ -280,6 +284,15 @@ fun BudgetItem(
                         color = badgeText,
                     )
                 }
+            }
+
+            if (otherCurrenciesExcluded) {
+                Spacer(Modifier.height(4.dp))
+                EmText(
+                    text = stringResource(R.string.budget_other_currencies_excluded),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
+                )
             }
         }
     }

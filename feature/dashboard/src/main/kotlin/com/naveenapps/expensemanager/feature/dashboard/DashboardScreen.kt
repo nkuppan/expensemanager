@@ -186,6 +186,22 @@ private fun DashboardScreenContent(
                 DashboardSection.DEBTS -> debtsSection(state, onAction)
             }
         }
+        state.conversionNote?.let { note ->
+            item("conversion_note") {
+                EmText(
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 6.dp),
+                    text = stringResource(
+                        id = when (note) {
+                            ConversionNote.CURRENT_RATES -> R.string.converted_at_current_rates
+                            ConversionNote.FIXED_RATES -> R.string.converted_at_fixed_rates
+                            ConversionNote.NOT_CONVERTED -> R.string.currencies_not_converted
+                        },
+                    ),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
+                )
+            }
+        }
 
         if (state.showShareBanner(System.currentTimeMillis())) {
             item("share_banner") {

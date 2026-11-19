@@ -199,6 +199,13 @@ private fun SettingsScreenContent(
                 )
                 EmDivider()
                 EmSettingItem(
+                    icon = Icons.Outlined.Payments,
+                    title = stringResource(id = R.string.exchange_method),
+                    supporting = stringResource(id = R.string.exchange_method_subtitle),
+                    onClick = { onAction.invoke(SettingAction.OpenExchangeMethod) },
+                )
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.EditNotifications,
                     title = stringResource(id = R.string.reminders),
                     onClick = { onAction.invoke(SettingAction.OpenNotification) },

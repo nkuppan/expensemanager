@@ -24,6 +24,10 @@ class ExpenseManagerComposeNavigator : AppComposeNavigator() {
         navigationCommands.tryEmit(NavigationCommand.ResetBackStack(routes))
     }
 
+    override fun replaceCurrent(route: Any) {
+        navigationCommands.tryEmit(NavigationCommand.ReplaceCurrent(route))
+    }
+
     override fun popBackStack() {
         navigationCommands.tryEmit(NavigationCommand.PopBackStack)
     }

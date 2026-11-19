@@ -15,6 +15,7 @@ class SaveCurrencyUseCaseTest : BaseCoroutineTest() {
     private val currency = Currency(
         symbol = "$",
         name = "US Dollars",
+        code = "USD",
     )
 
     private val currencyRepository: CurrencyRepository = mock()
@@ -52,5 +53,12 @@ class SaveCurrencyUseCaseTest : BaseCoroutineTest() {
         val exception = (response as Resource.Error).exception
         Truth.assertThat(exception).isNotNull()
         Truth.assertThat(exception.message).isNotEmpty()
+    }
+
+    @Test
+    fun whenCurrencyCodeIsBlankShouldReturnError() = runTest {
+        val response = saveCurrencyUseCase.invoke(currency.copy(code = ""))
+
+        Truth.assertThat(response).isInstanceOf(Resource.Error::class.java)
     }
 }

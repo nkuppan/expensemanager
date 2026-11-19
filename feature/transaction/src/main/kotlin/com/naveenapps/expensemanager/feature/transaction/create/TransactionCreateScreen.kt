@@ -21,6 +21,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
@@ -39,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
@@ -49,6 +51,8 @@ import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPick
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
 import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
 import com.naveenapps.expensemanager.core.designsystem.em.EmChip
 import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
@@ -81,6 +85,7 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
+import com.naveenapps.expensemanager.core.model.ExchangeRateSource
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
@@ -517,7 +522,8 @@ private fun TransactionCreateContent(
             }
         }
 
-        if (state.canRepeat) {
+        // A cross-currency transfer needs each day's rate entered, so it can't repeat.
+        if (state.canRepeat && state.exchangeRate == null) {
             EmSection(title = stringResource(R.string.repeat)) {
                 RepeatSelector(
                     selected = state.repeat,
@@ -616,6 +622,18 @@ private fun TransactionCreateContent(
                     },
                 )
             }
+        }
+
+        state.exchangeRate?.let { rate ->
+            ExchangeRateSection(rate = rate, onAction = onAction)
+        }
+
+        state.saveError?.let { message ->
+            EmText(
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
+                text = message,
+                color = EmTextColor.Error,
+            )
         }
 
         EmSection(title = stringResource(R.string.attachments)) {
@@ -792,3 +810,73 @@ private fun getTransactionState(
     showTimeSelection = false,
     showDateSelection = false,
 )
+
+/**
+ * The rate of a cross-currency transfer. Pre-filled from the provider (transfers dated today
+ * only) or from the user's fixed rate; they can always overwrite it with the rate they got.
+ */
+@Composable
+private fun ExchangeRateSection(
+    rate: ExchangeRateInputState,
+    onAction: (TransactionCreateAction) -> Unit,
+) {
+    EmSection(title = stringResource(R.string.exchange_rate)) {
+        Column(
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.xs),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
+        ) {
+            EmTextField(
+                value = rate.rateText,
+                onValueChange = { onAction(TransactionCreateAction.ChangeExchangeRate(it)) },
+                modifier = Modifier.fillMaxWidth(),
+                label = "1 ${rate.baseCode} = ? ${rate.quoteCode}",
+                enabled = !rate.isLoading,
+                isError = rate.rateError,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                supportingText = if (rate.rateError) stringResource(R.string.exchange_rate_required) else null,
+            )
+            val sourceText = when {
+                rate.isLoading -> stringResource(R.string.exchange_rate_loading)
+
+                rate.source == ExchangeRateSource.FETCHED && rate.provider != null ->
+                    stringResource(
+                        R.string.exchange_rate_fetched_from,
+                        rate.provider,
+                        rate.fetchedAt?.let { formatRateTime(it) }.orEmpty(),
+                    )
+
+                rate.source == ExchangeRateSource.STATIC ->
+                    stringResource(R.string.exchange_rate_fixed)
+
+                rate.hint != null -> rate.hint
+
+                else -> stringResource(R.string.exchange_rate_entered_by_you)
+            }
+            EmText(
+                text = sourceText,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
+            )
+            rate.receivedAmount?.let {
+                EmText(text = stringResource(R.string.exchange_rate_received, it))
+            }
+            if (rate.source == ExchangeRateSource.USER && rate.fetchedRate != null &&
+                rate.existingSnapshot == null
+            ) {
+                EmButton(
+                    text = stringResource(
+                        if (rate.suggestedSource == ExchangeRateSource.STATIC) {
+                            R.string.exchange_rate_use_fixed
+                        } else {
+                            R.string.exchange_rate_use_fetched
+                        },
+                    ),
+                    onClick = { onAction(TransactionCreateAction.UseFetchedExchangeRate) },
+                    variant = EmButtonVariant.Tertiary,
+                )
+            }
+        }
+    }
+}
+
+private fun formatRateTime(epochMillis: Long): String = java.text.DateFormat.getTimeInstance(java.text.DateFormat.SHORT).format(Date(epochMillis))

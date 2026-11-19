@@ -23,6 +23,9 @@
     <string name="step_expense_title">Log your first expense</string>
     <string name="step_budget_title">Create a monthly budget</string>
     <string name="step_budget_action">Create budget</string>
+    <string name="converted_at_fixed_rates">Amounts in other currencies are converted at your fixed rates.</string>
+    <string name="currencies_not_converted">Currency conversion is off: each currency is totalled on its own.</string>
+    <string name="converted_at_current_rates">Amounts in other currencies are converted at today\'s rates, not the rates on the day they happened.</string>
     <string name="auto_backup_warning_title">Automatic backup isn\'t working</string>
     <string name="auto_backup_warning_folder">The backup folder can\'t be reached. Choose it again to keep your data safe.</string>
     <string name="auto_backup_warning_write">Recent backups failed. Check your backup settings to keep your data safe.</string>

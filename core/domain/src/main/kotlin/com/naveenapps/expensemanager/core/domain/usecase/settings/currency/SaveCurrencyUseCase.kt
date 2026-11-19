@@ -16,6 +16,10 @@ class SaveCurrencyUseCase(
             return Resource.Error(Exception("Please provide valid currency name"))
         }
 
+        if (currency.code.isBlank()) {
+            return Resource.Error(Exception("Please provide valid currency code"))
+        }
+
         return Resource.Success(repository.saveCurrency(currency))
     }
 }

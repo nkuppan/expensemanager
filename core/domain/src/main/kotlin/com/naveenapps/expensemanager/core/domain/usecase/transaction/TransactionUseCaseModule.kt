@@ -17,9 +17,14 @@ val TransactionUseCaseModule = module {
     single {
         GetIncomeAmountUseCase(
             getTransactionWithFilterUseCase = get(),
+            getCurrencyUseCase = get(),
+            convertAmountUseCase = get(),
         )
     }
-    single { AddTransactionUseCase(repository = get()) }
+    single { CheckTransactionValidationUseCase(accountRepository = get()) }
+    single {
+        AddTransactionUseCase(repository = get(), checkTransactionValidationUseCase = get())
+    }
     single {
         GetSpendingInsightsUseCase(
             getTransactionWithFilterUseCase = get(),
@@ -34,7 +39,7 @@ val TransactionUseCaseModule = module {
             dispatchers = get(),
         )
     }
-    single { DeleteTransactionUseCase(repository = get()) }
+    single { DeleteTransactionUseCase(repository = get(), accountRepository = get()) }
     single { FindTransactionByIdUseCase(repository = get()) }
     single { GetFrequentTransactionsUseCase(repository = get()) }
     single { GetPayeeSuggestionsUseCase(repository = get()) }
@@ -53,6 +58,7 @@ val TransactionUseCaseModule = module {
             getFormattedAmountUseCase = get(),
             getTransactionWithFilterUseCase = get(),
             getDateRangeUseCase = get(),
+            convertAmountUseCase = get(),
             dispatcher = get(),
         )
     }
@@ -63,16 +69,25 @@ val TransactionUseCaseModule = module {
             getDateRangeUseCase = get(),
             getTransactionGroupTypeUseCase = get(),
             getTransactionWithFilterUseCase = get(),
+            convertAmountUseCase = get(),
+            formatAmountInCurrencyUseCase = get(),
             dispatcher = get(),
         )
     }
-    single { GetExpenseAmountUseCase(getTransactionWithFilterUseCase = get()) }
+    single {
+        GetExpenseAmountUseCase(
+            getTransactionWithFilterUseCase = get(),
+            getCurrencyUseCase = get(),
+            convertAmountUseCase = get(),
+        )
+    }
     single {
         GetTransactionGroupByCategoryUseCase(
             getAllCategoryUseCase = get(),
             getCurrencyUseCase = get(),
             getFormattedAmountUseCase = get(),
             getTransactionWithFilterUseCase = get(),
+            convertAmountUseCase = get(),
             appCoroutineDispatchers = get(),
         )
     }
@@ -83,9 +98,16 @@ val TransactionUseCaseModule = module {
             settingsRepository = get(),
             getDateRangeUseCase = get(),
             transactionRepository = get(),
+            exchangeRateRepository = get(),
             // Lives as long as the app: the shared period query outlives any one screen.
             sharingScope = CoroutineScope(SupervisorJob() + get<AppCoroutineDispatchers>().io),
         )
     }
-    single { UpdateTransactionUseCase(get()) }
+    single {
+        UpdateTransactionUseCase(
+            repository = get(),
+            accountRepository = get(),
+            checkTransactionValidationUseCase = get(),
+        )
+    }
 }

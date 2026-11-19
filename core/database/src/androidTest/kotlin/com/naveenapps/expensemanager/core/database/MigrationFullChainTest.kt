@@ -10,6 +10,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/** The app's list, with a fixed currency for rows from before multi-currency (v10 and older). */
+private val ALL_MIGRATIONS = allMigrations { "USD" }
+
 private const val TEST_DB = "migration_chain_test"
 
 /**
@@ -21,7 +24,7 @@ private const val TEST_DB = "migration_chain_test"
 @RunWith(AndroidJUnit4::class)
 class MigrationFullChainTest {
 
-    private val latestVersion = 12
+    private val latestVersion = 13
 
     @get:Rule
     val helper = MigrationTestHelper(

@@ -2,22 +2,17 @@ package com.naveenapps.expensemanager.feature.account.selection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAccountUiModelUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
-import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
-import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
-import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
-import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class AccountSelectionViewModel(
-    getCurrencyUseCase: GetCurrencyUseCase,
-    getFormattedAmountUseCase: GetFormattedAmountUseCase,
+    getAccountUiModelUseCase: GetAccountUiModelUseCase,
     getAllAccountsUseCase: GetAllAccountsUseCase,
 ) : ViewModel() {
 
@@ -28,45 +23,11 @@ class AccountSelectionViewModel(
     val selectedAccounts = _selectedAccounts.asStateFlow()
 
     init {
-        combine(
-            getCurrencyUseCase.invoke(),
-            getAllAccountsUseCase.invoke(),
-        ) { currency, accounts ->
-
-            _accounts.value = accounts.map {
-                it.toAccountUiModel(
-                    getFormattedAmountUseCase.invoke(
-                        it.amount,
-                        currency,
-                    ),
-                    if (it.type == AccountType.CREDIT) {
-                        getFormattedAmountUseCase.invoke(
-                            it.getAvailableCreditLimit(),
-                            currency,
-                        )
-                    } else {
-                        null
-                    },
-                )
-            }
-
+        getAllAccountsUseCase.invoke().onEach { accounts ->
+            val uiModels = accounts.map { getAccountUiModelUseCase(it) }
+            _accounts.value = uiModels
             _selectedAccounts.value.ifEmpty {
-                _selectedAccounts.value = accounts.map {
-                    it.toAccountUiModel(
-                        getFormattedAmountUseCase.invoke(
-                            it.amount,
-                            currency,
-                        ),
-                        if (it.type == AccountType.CREDIT) {
-                            getFormattedAmountUseCase.invoke(
-                                it.getAvailableCreditLimit(),
-                                currency,
-                            )
-                        } else {
-                            null
-                        },
-                    )
-                }
+                _selectedAccounts.value = uiModels
             }
         }.launchIn(viewModelScope)
     }

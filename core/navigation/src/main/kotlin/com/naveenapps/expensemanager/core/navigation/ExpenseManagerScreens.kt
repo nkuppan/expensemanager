@@ -54,6 +54,12 @@ sealed class ExpenseManagerScreens {
     data object AdvancedSettingsScreen : ExpenseManagerScreens()
 
     @Serializable
+    data object CurrencyApiProfileScreen : ExpenseManagerScreens()
+
+    @Serializable
+    data object ExchangeMethodScreen : ExpenseManagerScreens()
+
+    @Serializable
     data object AccountReOrderScreen : ExpenseManagerScreens()
 
     /** Notification centre from Home's bell: release notes and pushed insights. */

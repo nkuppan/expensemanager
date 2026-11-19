@@ -21,4 +21,9 @@ data class Budget(
     val isAllCategoriesSelected: Boolean,
     val createdOn: Date,
     val updatedOn: Date,
+    /**
+     * ISO 4217 code the limit ([amount]) is set in, fixed at creation. Spending from linked
+     * accounts in other currencies is converted into it at current rates.
+     */
+    val currencyCode: String,
 )

@@ -111,7 +111,7 @@ class ReminderQuickLog(
     suspend fun log(pick: ReminderQuickPick): String? {
         // The category or account may have been deleted since the reminder was posted.
         if (findCategoryByIdUseCase(pick.categoryId) !is Resource.Success) return null
-        if (findAccountByIdUseCase(pick.accountId) !is Resource.Success) return null
+        val account = (findAccountByIdUseCase(pick.accountId) as? Resource.Success)?.data ?: return null
 
         val now = Date()
         val transaction = Transaction(
@@ -125,6 +125,9 @@ class ReminderQuickLog(
             imagePath = "",
             createdOn = now,
             updatedOn = now,
+            // An expense is in its account's currency.
+            fromCurrencyCode = account.currencyCode,
+            toCurrencyCode = account.currencyCode,
         )
         if (addTransactionUseCase.invoke(transaction) !is Resource.Success) return null
 

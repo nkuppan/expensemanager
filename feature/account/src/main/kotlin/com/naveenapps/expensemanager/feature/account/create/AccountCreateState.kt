@@ -14,6 +14,12 @@ data class AccountCreateState(
     val creditLimit: TextFieldValue<String>,
     val amount: TextFieldValue<String>,
     val currency: Currency,
+    /** Null until determined: never a placeholder that could be saved without the user seeing it. */
+    val accountCurrency: Currency?,
+    val accountCurrencyError: Boolean = false,
+    /** Accounts with transactions can only be archived, never deleted. */
+    val hasTransactions: Boolean = false,
+    val showCurrencySelection: Boolean = false,
     val totalAmount: String,
     @DrawableRes val totalAmountBackgroundColor: Int,
     val showDeleteButton: Boolean,

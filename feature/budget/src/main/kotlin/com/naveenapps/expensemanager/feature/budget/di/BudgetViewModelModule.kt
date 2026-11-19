@@ -21,6 +21,7 @@ val BudgetViewModelModule = module {
             appComposeNavigator = get(),
             numberFormatRepository = get(),
             analyticsRepository = get(),
+            formatAmountInCurrencyUseCase = get(),
         )
     }
     viewModel {

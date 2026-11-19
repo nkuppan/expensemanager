@@ -22,4 +22,9 @@ sealed class RestoreAction {
     data class SubmitPassphrase(val passphrase: String) : RestoreAction()
 
     data object DismissPassphrase : RestoreAction()
+
+    /** The currency the backup's amounts are in (needed for pre-multi-currency backups). */
+    data class ConfirmRestoreCurrency(val currencyCode: String) : RestoreAction()
+
+    data object DismissRestoreCurrency : RestoreAction()
 }

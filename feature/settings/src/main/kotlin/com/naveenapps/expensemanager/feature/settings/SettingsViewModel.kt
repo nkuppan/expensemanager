@@ -96,6 +96,10 @@ class SettingsViewModel(
         appComposeNavigator.navigate(ExpenseManagerScreens.AdvancedSettingsScreen)
     }
 
+    private fun openExchangeMethodScreen() {
+        appComposeNavigator.navigate(ExpenseManagerScreens.ExchangeMethodScreen)
+    }
+
     private fun loadDemoData() {
         val repository = demoDataRepository ?: return
         _state.update { it.copy(showDemoDataConfirmation = false, isDemoDataLoading = true) }
@@ -125,6 +129,8 @@ class SettingsViewModel(
             SettingAction.OpenAdvancedSettings -> openAdvancedSettings()
 
             SettingAction.OpenCurrencyEdit -> openCurrencyCustomiseScreen()
+
+            SettingAction.OpenExchangeMethod -> openExchangeMethodScreen()
 
             SettingAction.OpenExport -> openExportScreen()
 

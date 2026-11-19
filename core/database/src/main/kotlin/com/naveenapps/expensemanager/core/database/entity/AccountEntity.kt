@@ -31,4 +31,10 @@ data class AccountEntity(
     val updatedOn: Date,
     @ColumnInfo(name = "custom_image_path", defaultValue = "NULL")
     val customImagePath: String? = null,
+    /** ISO 4217 code, fixed at creation: an account's currency can never change. */
+    @ColumnInfo(name = "currency_code")
+    val currencyCode: String,
+    /** Archived accounts are hidden from lists/pickers but kept so their history stays intact. */
+    @ColumnInfo(name = "is_archived", defaultValue = "0")
+    val isArchived: Boolean = false,
 )
