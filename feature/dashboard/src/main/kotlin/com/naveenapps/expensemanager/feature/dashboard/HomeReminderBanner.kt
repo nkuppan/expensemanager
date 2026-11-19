@@ -123,12 +123,14 @@ private fun HomeReminderBanner(
     EmCard(
         modifier = modifier.fillMaxWidth(),
     ) {
-        Column(modifier = Modifier.padding(
-            start = EmTheme.spacing.lg,
-            end = EmTheme.spacing.sm,
-            top = EmTheme.spacing.lg,
-            bottom = EmTheme.spacing.sm,
-        )) {
+        Column(
+            modifier = Modifier.padding(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.sm,
+                top = EmTheme.spacing.lg,
+                bottom = EmTheme.spacing.sm,
+            ),
+        ) {
             Row(verticalAlignment = Alignment.Top) {
                 Box(
                     modifier = Modifier
@@ -182,10 +184,10 @@ private fun HomeReminderBanner(
                 )
                 EmButton(
                     text = if (suggestedTime != null) {
-                            stringResource(R.string.reminder_banner_turn_on_at, suggestedTime)
-                        } else {
-                            stringResource(R.string.reminder_banner_turn_on)
-                        },
+                        stringResource(R.string.reminder_banner_turn_on_at, suggestedTime)
+                    } else {
+                        stringResource(R.string.reminder_banner_turn_on)
+                    },
                     onClick = onTurnOn,
                     variant = EmButtonVariant.Secondary,
                 )

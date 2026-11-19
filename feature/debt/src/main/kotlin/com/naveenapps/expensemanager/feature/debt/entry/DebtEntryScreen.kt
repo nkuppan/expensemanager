@@ -353,13 +353,13 @@ private fun EntryDialogs(state: DebtEntryState, onAction: (DebtEntryAction) -> U
         )
 
         state.showDeleteDialog -> EmConfirm(
-     title = stringResource(R.string.debt_delete_entry_title),
-     message = stringResource(R.string.debt_delete_entry_message),
-     confirmText = stringResource(R.string.debt_delete),
-     onConfirm = { onAction(DebtEntryAction.ConfirmDelete) },
-     onDismiss = { onAction(DebtEntryAction.DismissDelete) },
-     destructive = true,
- )
+            title = stringResource(R.string.debt_delete_entry_title),
+            message = stringResource(R.string.debt_delete_entry_message),
+            confirmText = stringResource(R.string.debt_delete),
+            onConfirm = { onAction(DebtEntryAction.ConfirmDelete) },
+            onDismiss = { onAction(DebtEntryAction.DismissDelete) },
+            destructive = true,
+        )
     }
 }
 

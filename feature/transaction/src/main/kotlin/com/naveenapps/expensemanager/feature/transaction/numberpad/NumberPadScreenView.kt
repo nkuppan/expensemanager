@@ -256,7 +256,6 @@ private fun NumberPadScreenView(
     }
 }
 
-
 @Composable
 private fun NumberPadButton(
     text: String,

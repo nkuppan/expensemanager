@@ -77,8 +77,8 @@ fun CategoryTransactionTabScreenContent(
                         icon = Icons.Outlined.Edit,
                         contentDescription = stringResource(id = R.string.edit),
                         onClick = {
-                        onAction.invoke(CategoryTransactionAction.OpenCategoryList)
-                    },
+                            onAction.invoke(CategoryTransactionAction.OpenCategoryList)
+                        },
                     )
                 },
             )

@@ -59,21 +59,21 @@ fun AppTimePickerDialog(
                     EmButton(
                         text = stringResource(id = R.string.cancel),
                         onClick = {
-                        onDismiss.invoke()
-                    },
+                            onDismiss.invoke()
+                        },
                         variant = EmButtonVariant.Tertiary,
                     )
                     EmButton(
                         text = stringResource(id = R.string.select),
                         onClick = {
-                        onTimeSelected.invoke(
-                            Triple(
-                                timePickerState.hour,
-                                timePickerState.minute,
-                                timePickerState.is24hour,
-                            ),
-                        )
-                    },
+                            onTimeSelected.invoke(
+                                Triple(
+                                    timePickerState.hour,
+                                    timePickerState.minute,
+                                    timePickerState.is24hour,
+                                ),
+                            )
+                        },
                         variant = EmButtonVariant.Tertiary,
                     )
                 }

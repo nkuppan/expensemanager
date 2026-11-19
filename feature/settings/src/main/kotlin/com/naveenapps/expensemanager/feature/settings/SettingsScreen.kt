@@ -166,11 +166,13 @@ private fun SettingsScreenContent(
                 EmSettingItem(
                     icon = Icons.Outlined.Palette,
                     title = stringResource(id = R.string.theme),
-                    trailing = EmSettingTrailing.valueOrChevron(if (state.theme != null) {
-                        stringResource(id = state.theme.titleResId)
-                    } else {
-                        stringResource(id = R.string.system_default)
-                    }),
+                    trailing = EmSettingTrailing.valueOrChevron(
+                        if (state.theme != null) {
+                            stringResource(id = state.theme.titleResId)
+                        } else {
+                            stringResource(id = R.string.system_default)
+                        },
+                    ),
                     onClick = { onAction.invoke(SettingAction.ShowThemeSelection) },
                 )
                 EmDivider()
@@ -179,11 +181,13 @@ private fun SettingsScreenContent(
                     title = stringResource(
                         id = com.naveenapps.expensemanager.feature.language.R.string.language,
                     ),
-                    trailing = EmSettingTrailing.valueOrChevron(if (state.locale != null) {
-                        stringResource(id = state.locale.titleResId)
-                    } else {
-                        stringResource(id = R.string.system_default)
-                    }),
+                    trailing = EmSettingTrailing.valueOrChevron(
+                        if (state.locale != null) {
+                            stringResource(id = state.locale.titleResId)
+                        } else {
+                            stringResource(id = R.string.system_default)
+                        },
+                    ),
                     onClick = { onAction.invoke(SettingAction.ShowLanguageSelection) },
                 )
                 EmDivider()

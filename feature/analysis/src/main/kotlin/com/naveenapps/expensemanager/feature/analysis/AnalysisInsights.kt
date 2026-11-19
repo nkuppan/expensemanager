@@ -263,7 +263,8 @@ internal fun CategoryBreakdownSection(
     val shown = categories.take(MAX_CATEGORY_ROWS)
 
     Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs)) {
-        EmSectionHeader(title = stringResource(R.string.where_money_goes),
+        EmSectionHeader(
+            title = stringResource(R.string.where_money_goes),
             modifier = ListTitleModifier,
             onViewAllClick = if (categories.size > MAX_CATEGORY_ROWS) onViewAllCategories else null,
         )
@@ -390,7 +391,8 @@ internal fun BiggestExpensesSection(
     onTransactionClick: (String) -> Unit,
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs)) {
-        EmSectionHeader(title = stringResource(R.string.biggest_expenses),
+        EmSectionHeader(
+            title = stringResource(R.string.biggest_expenses),
             modifier = ListTitleModifier,
         )
         expenses.forEachIndexed { index, transaction ->

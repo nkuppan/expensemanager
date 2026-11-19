@@ -157,22 +157,22 @@ private fun RecurringEditDialogs(
 ) {
     when {
         state.showDiscardDialog -> EmConfirm(
-     title = stringResource(R.string.discard_changes_title),
-     message = stringResource(R.string.discard_changes_message),
-     confirmText = stringResource(R.string.discard),
-     onConfirm = { onAction(RecurringTransactionEditAction.ConfirmDiscard) },
-     onDismiss = { onAction(RecurringTransactionEditAction.DismissDiscardDialog) },
-     dismissText = stringResource(R.string.keep_editing),
-     destructive = true,
- )
+            title = stringResource(R.string.discard_changes_title),
+            message = stringResource(R.string.discard_changes_message),
+            confirmText = stringResource(R.string.discard),
+            onConfirm = { onAction(RecurringTransactionEditAction.ConfirmDiscard) },
+            onDismiss = { onAction(RecurringTransactionEditAction.DismissDiscardDialog) },
+            dismissText = stringResource(R.string.keep_editing),
+            destructive = true,
+        )
 
         state.showStopDialog -> EmConfirm(
-     title = stringResource(R.string.recurring_stop_title),
-     message = stringResource(R.string.recurring_stop_message),
-     confirmText = stringResource(R.string.recurring_stop),
-     onConfirm = { onAction(RecurringTransactionEditAction.ConfirmStop) },
-     onDismiss = { onAction(RecurringTransactionEditAction.DismissStopDialog) },
- )
+            title = stringResource(R.string.recurring_stop_title),
+            message = stringResource(R.string.recurring_stop_message),
+            confirmText = stringResource(R.string.recurring_stop),
+            onConfirm = { onAction(RecurringTransactionEditAction.ConfirmStop) },
+            onDismiss = { onAction(RecurringTransactionEditAction.DismissStopDialog) },
+        )
 
         state.showNumberPad -> NumberPadDialogView(
             initialAmount = state.numberPadInitialAmount,

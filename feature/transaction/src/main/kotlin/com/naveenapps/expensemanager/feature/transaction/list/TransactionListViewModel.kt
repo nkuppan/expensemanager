@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
-import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtActivity
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -31,7 +30,6 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
-import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -49,6 +47,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
+import kotlin.time.Duration.Companion.milliseconds
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class TransactionListViewModel(
@@ -171,7 +172,7 @@ class TransactionListViewModel(
         // One search_used per search the user settled on (not per keystroke): how many results
         // and whether it covered all time or the selected period. The text itself isn't sent.
         searchQuery
-            .debounce(SEARCH_SETTLE_MS)
+            .debounce(SEARCH_SETTLE_MS.milliseconds)
             .map { it.trim() }
             .distinctUntilChanged()
             .filter { it.isNotEmpty() }
@@ -257,6 +258,7 @@ class TransactionListViewModel(
             } else {
                 openCreateScreen(action.transactionId)
             }
+
             is TransactionListAction.Search -> search(action.query)
             is TransactionListAction.SetSearchScope -> setSearchScope(action.scope)
             TransactionListAction.OpenRecurringTransactions -> openRecurringTransactions()
@@ -305,7 +307,8 @@ internal fun resultsBucket(count: Int): String = when {
     else -> "21+"
 }
 
-internal fun Transaction.matches(query: String, displayName: (Category) -> String = { it.name }): Boolean = matchesSearch(query, listOf(notes, category.name, displayName(category), fromAccount.name, toAccount?.name))
+internal fun Transaction.matches(query: String, displayName: (Category) -> String = { it.name }): Boolean =
+    matchesSearch(query, listOf(notes, category.name, displayName(category), fromAccount.name, toAccount?.name))
 
 fun List<Transaction>.toTransactionSum() = this.sumOf {
     when (it.type) {

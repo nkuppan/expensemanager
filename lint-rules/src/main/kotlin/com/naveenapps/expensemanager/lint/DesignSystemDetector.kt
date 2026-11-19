@@ -148,21 +148,31 @@ class DesignSystemDetector :
 
         internal fun importIssue(path: String): Issue? = when {
             path in MATERIAL_ALLOWED -> null
+
             path == "androidx.compose.material3" || path.startsWith("androidx.compose.material3.") -> RAW_MATERIAL_USAGE
+
             path.startsWith("androidx.compose.material.") && !path.startsWith("androidx.compose.material.icons") ->
                 RAW_MATERIAL_USAGE
+
             path.startsWith("com.naveenapps.designsystem.") -> RAW_MATERIAL_USAGE
+
             path in TEXT_STYLE_IMPORTS -> HARDCODED_TEXT_STYLE
+
             path in COLOR_IMPORTS -> HARDCODED_COLOR
+
             path in SHAPE_IMPORTS -> HARDCODED_SHAPE
+
             else -> null
         }
 
         private fun importMessage(issue: Issue, path: String): String = when (issue) {
             RAW_MATERIAL_USAGE -> "`${path.substringAfterLast('.')}` used directly. Use the `Em*` component " +
                 "from `core:designsystem`."
+
             HARDCODED_TEXT_STYLE -> "Text style set by hand. Use a role from `EmTheme.type`."
+
             HARDCODED_COLOR -> "Colour resource in a feature. Use a colour from `EmTheme.colors`."
+
             else -> "Shape created by hand. Use a shape from `EmTheme.shapes`."
         }
     }

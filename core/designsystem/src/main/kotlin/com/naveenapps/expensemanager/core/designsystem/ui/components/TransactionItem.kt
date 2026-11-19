@@ -268,9 +268,7 @@ fun TransactionItem(
             ) {
                 val (prefix, amountColor) = when (transactionType) {
                     TransactionType.EXPENSE -> "−" to EmTheme.colors.expense
-
                     TransactionType.INCOME -> "+" to EmTheme.colors.income
-
                     else -> "" to Color.Unspecified
                 }
 

@@ -81,12 +81,14 @@ internal fun HomeUpcomingCard(
 
 @Composable
 private fun UpcomingTotals(upcoming: UpcomingUi) {
-    Column(modifier = Modifier.padding(
-        start = EmTheme.spacing.lg,
-        end = EmTheme.spacing.lg,
-        top = EmTheme.spacing.lg,
-        bottom = EmTheme.spacing.xs,
-    )) {
+    Column(
+        modifier = Modifier.padding(
+            start = EmTheme.spacing.lg,
+            end = EmTheme.spacing.lg,
+            top = EmTheme.spacing.lg,
+            bottom = EmTheme.spacing.xs,
+        ),
+    ) {
         EmText(
             text = pluralStringResource(R.plurals.upcoming_window, upcoming.windowDays, upcoming.windowDays),
             role = EmTextRole.Supporting,

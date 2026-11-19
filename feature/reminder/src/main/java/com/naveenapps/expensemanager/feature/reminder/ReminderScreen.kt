@@ -279,12 +279,12 @@ private fun ReminderScreenContent(
                     val isRationale = state.shouldShowRationale
                     EmButton(
                         text = stringResource(
-                                if (isRationale) {
-                                    R.string.request_permission
-                                } else {
-                                    R.string.open_settings
-                                },
-                            ),
+                            if (isRationale) {
+                                R.string.request_permission
+                            } else {
+                                R.string.open_settings
+                            },
+                        ),
                         onClick = {
                             if (isRationale) {
                                 onAction.invoke(ReminderAction.RequestPermission)
@@ -293,10 +293,10 @@ private fun ReminderScreenContent(
                             }
                         },
                         leadingIcon = if (isRationale) {
-                                Icons.Rounded.Notifications
-                            } else {
-                                Icons.Rounded.Settings
-                            },
+                            Icons.Rounded.Notifications
+                        } else {
+                            Icons.Rounded.Settings
+                        },
                     )
                 }
             }

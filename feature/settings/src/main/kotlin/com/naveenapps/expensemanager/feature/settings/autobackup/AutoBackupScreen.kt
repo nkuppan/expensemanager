@@ -315,8 +315,8 @@ private fun BackupFolderCard(settings: AutoBackupSettings, onChange: () -> Unit)
             }
             EmButton(
                 text = stringResource(
-                        if (settings.folderUri != null) R.string.backup_folder_change else R.string.backup_folder_choose,
-                    ),
+                    if (settings.folderUri != null) R.string.backup_folder_change else R.string.backup_folder_choose,
+                ),
                 onClick = onChange,
                 variant = EmButtonVariant.Tertiary,
             )

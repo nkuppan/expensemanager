@@ -118,8 +118,7 @@ sealed interface EmSettingTrailing {
 
     companion object {
         /** The value when there is one, otherwise just the chevron. */
-        fun valueOrChevron(value: String?): EmSettingTrailing =
-            if (value.isNullOrBlank()) Chevron else Value(value)
+        fun valueOrChevron(value: String?): EmSettingTrailing = if (value.isNullOrBlank()) Chevron else Value(value)
     }
 }
 

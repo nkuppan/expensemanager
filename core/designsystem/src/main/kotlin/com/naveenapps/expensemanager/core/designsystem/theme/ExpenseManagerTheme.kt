@@ -52,6 +52,7 @@ private val LightInk2 = Color(0xFF565A6E)
 private val LightInk3 = Color(0xFF868AA0)
 private val LightInk4 = Color(0xFFC7CADA)
 private val LightRed = Color(0xFFD93A46)
+
 // Darkened from the website's #B9790A for 4.5:1 text contrast on white (WCAG AA).
 private val LightAmber = Color(0xFF9A6400)
 private val LightBlue = Color(0xFF3E63D6)

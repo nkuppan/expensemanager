@@ -181,6 +181,7 @@ private fun ListBlock() {
                     title = "Theme",
                     trailing = EmSettingTrailing.Value("Dark"),
                 )
+
                 1 -> EmSettingItem(
                     icon = Icons.Default.Notifications,
                     title = "Daily reminder",

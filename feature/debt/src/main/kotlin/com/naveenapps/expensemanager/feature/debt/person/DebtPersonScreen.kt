@@ -82,9 +82,9 @@ private fun DebtPersonContent(state: DebtPersonState, onAction: (DebtPersonActio
                             icon = Icons.Outlined.Share,
                             contentDescription = stringResource(R.string.debt_share_reminder),
                             onClick = {
-                            context.shareReminder(state)
-                            onAction(DebtPersonAction.ReminderShared)
-                        },
+                                context.shareReminder(state)
+                                onAction(DebtPersonAction.ReminderShared)
+                            },
                         )
                     }
                     EmOverflowMenu(

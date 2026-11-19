@@ -299,11 +299,13 @@ fun BudgetCreateScreen(
                         selectAllOnFocus = true,
                     )
                     EmPickerField(
-                        label = stringResource(id = if (periodType == BudgetPeriod.YEARLY) {
-                            R.string.select_year
-                        } else {
-                            R.string.select_month
-                        }),
+                        label = stringResource(
+                            id = if (periodType == BudgetPeriod.YEARLY) {
+                                R.string.select_year
+                            } else {
+                                R.string.select_month
+                            },
+                        ),
                         value = if (periodType == BudgetPeriod.YEARLY) {
                             selectedDate.value.toYear()
                         } else {
