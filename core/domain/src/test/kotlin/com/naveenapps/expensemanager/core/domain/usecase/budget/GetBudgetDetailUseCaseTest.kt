@@ -2,8 +2,9 @@ package com.naveenapps.expensemanager.core.domain.usecase.budget
 
 import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.common.R
-import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.ConvertAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
@@ -11,12 +12,14 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
+import com.naveenapps.expensemanager.core.repository.ExchangeRateRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_BUDGET
 import com.naveenapps.expensemanager.core.testing.FAKE_CATEGORY
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.kotlin.any
@@ -29,6 +32,11 @@ class GetBudgetDetailUseCaseTest : BaseCoroutineTest() {
     private val currencyRepository: CurrencyRepository = mock()
     private val getBudgetTransactionsUseCase: GetBudgetTransactionsUseCase = mock()
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase = mock()
+    private val formatAmountInCurrencyUseCase: FormatAmountInCurrencyUseCase = mock()
+
+    // Every entry is in the budget's currency, so no exchange rate is ever looked up.
+    private val convertAmountUseCase = ConvertAmountUseCase(mock<ExchangeRateRepository>(), formatAmountInCurrencyUseCase)
+    private val getFormattedAmountUseCase = GetFormattedAmountUseCase(currencyRepository)
 
     private val currency = Currency(symbol = "₹", name = "Indian Rupee")
     private val food = FAKE_CATEGORY.copy(id = "food", name = "Food")
@@ -36,10 +44,17 @@ class GetBudgetDetailUseCaseTest : BaseCoroutineTest() {
 
     private val useCase = GetBudgetDetailUseCase(
         budgetRepository = budgetRepository,
-        getCurrencyUseCase = GetCurrencyUseCase(currencyRepository),
-        getFormattedAmountUseCase = GetFormattedAmountUseCase(currencyRepository),
-        getBudgetTransactionsUseCase = getBudgetTransactionsUseCase,
+        calculateBudgetUseCase = CalculateBudgetUseCase(
+            getBudgetTransactionsUseCase = getBudgetTransactionsUseCase,
+            convertAmountUseCase = convertAmountUseCase,
+            formatAmountInCurrencyUseCase = formatAmountInCurrencyUseCase,
+            getFormattedAmountUseCase = getFormattedAmountUseCase,
+        ),
         getTransactionWithFilterUseCase = getTransactionWithFilterUseCase,
+        getBudgetTransactionsUseCase = getBudgetTransactionsUseCase,
+        convertAmountUseCase = convertAmountUseCase,
+        formatAmountInCurrencyUseCase = formatAmountInCurrencyUseCase,
+        getFormattedAmountUseCase = getFormattedAmountUseCase,
     )
 
     override fun onCreate() {
@@ -47,6 +62,15 @@ class GetBudgetDetailUseCaseTest : BaseCoroutineTest() {
         whenever(currencyRepository.getSelectedCurrency()).thenReturn(flowOf(currency))
         whenever(currencyRepository.getFormattedCurrency(any())).thenAnswer { it.getArgument<Amount>(0) }
         whenever(getTransactionWithFilterUseCase.invoke()).thenReturn(flowOf(emptyList()))
+        runBlocking {
+            whenever(formatAmountInCurrencyUseCase.currencyFor(any())).thenAnswer {
+                val code = it.arguments[0] as String
+                currency.copy(code = code)
+            }
+            whenever(formatAmountInCurrencyUseCase.invoke(any(), any())).thenAnswer {
+                Amount(it.arguments[0] as Double)
+            }
+        }
     }
 
     @Test
