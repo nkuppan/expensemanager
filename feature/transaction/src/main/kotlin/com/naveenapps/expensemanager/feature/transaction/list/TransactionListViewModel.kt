@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtActivity
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -30,6 +31,8 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
+import java.util.Date
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -47,9 +50,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
-import kotlin.time.Duration.Companion.milliseconds
-import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 class TransactionListViewModel(
@@ -252,7 +252,9 @@ class TransactionListViewModel(
     fun processAction(action: TransactionListAction) {
         when (action) {
             TransactionListAction.ClosePage -> closePage()
+
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
+
             is TransactionListAction.OpenEdiTransaction -> if (action.transactionId in visibleDebtIds) {
                 appComposeNavigator.navigate(ExpenseManagerScreens.DebtEntry(id = action.transactionId))
             } else {
@@ -260,10 +262,15 @@ class TransactionListViewModel(
             }
 
             is TransactionListAction.Search -> search(action.query)
+
             is TransactionListAction.SetSearchScope -> setSearchScope(action.scope)
+
             TransactionListAction.OpenRecurringTransactions -> openRecurringTransactions()
+
             is TransactionListAction.DeleteTransaction -> deleteTransaction(action.transactionId)
+
             TransactionListAction.UndoDelete -> undoDelete()
+
             TransactionListAction.UndoExpired -> finalizePendingDelete()
         }
     }
@@ -271,10 +278,9 @@ class TransactionListViewModel(
 
 /**
  * Case-insensitive match on the free-text parts of a transaction: notes, category name and
- * account names. A built-in category matches both by the name shown ([displayName], e.g. its
+ * account names. A built-in category matches both by the name shown (displayName, e.g. its
  * Hindi label) and by its stored English name.
- */
-/** One row of the list: a transaction, or a debt entry shown beside them (transaction = null). */
+ * One row of the list: a transaction, or a debt entry shown beside them (transaction = null). */
 private data class ListRow(val date: Date, val transaction: Transaction?, val item: TransactionUiItem)
 
 /**
@@ -307,8 +313,7 @@ internal fun resultsBucket(count: Int): String = when {
     else -> "21+"
 }
 
-internal fun Transaction.matches(query: String, displayName: (Category) -> String = { it.name }): Boolean =
-    matchesSearch(query, listOf(notes, category.name, displayName(category), fromAccount.name, toAccount?.name))
+internal fun Transaction.matches(query: String, displayName: (Category) -> String = { it.name }): Boolean = matchesSearch(query, listOf(notes, category.name, displayName(category), fromAccount.name, toAccount?.name))
 
 fun List<Transaction>.toTransactionSum() = this.sumOf {
     when (it.type) {
