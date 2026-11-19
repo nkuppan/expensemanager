@@ -50,4 +50,5 @@
     <string name="selection_done">OK</string>
     <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
     <string name="recurring_badge">Récurrente</string>
+    <string name="a11y_remove">Retirer %1$s</string>
 </resources>

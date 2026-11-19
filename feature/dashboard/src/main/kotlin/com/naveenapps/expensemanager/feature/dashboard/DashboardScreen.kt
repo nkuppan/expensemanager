@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
-import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,8 +23,6 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Check
@@ -32,42 +31,43 @@ import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.DashboardCustomize
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.AppShareLink
 import com.naveenapps.expensemanager.core.common.utils.shareAppMessage
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidget
 import com.naveenapps.expensemanager.core.designsystem.components.AmountInfoWidgetCompact
-import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmBadge
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AutoBackupError
@@ -80,6 +80,7 @@ import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
+import com.naveenapps.expensemanager.feature.debt.list.DebtTotalsCard
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
 import kotlin.random.Random
@@ -102,36 +103,23 @@ private fun DashboardScaffoldContent(
     state: DashboardState,
     onAction: (DashboardAction) -> Unit,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(id = R.string.home),
                 actions = {
                     // Notification centre (release notes, insights), with a dot while anything is unread.
-                    IconButton(onClick = { onAction.invoke(DashboardAction.OpenNotifications) }) {
-                        BadgedBox(
-                            badge = {
-                                if (state.hasUnreadNotifications) {
-                                    Badge(containerColor = MaterialTheme.colorScheme.error)
-                                }
-                            },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Notifications,
-                                contentDescription = stringResource(id = R.string.notification_centre_title),
-                            )
-                        }
-                    }
-                    IconButton(
-                        onClick = {
-                            onAction.invoke(DashboardAction.OpenSettings)
-                        },
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Settings,
-                            contentDescription = stringResource(id = R.string.settings),
-                        )
-                    }
+                    EmIconButton(
+                        icon = Icons.Outlined.Notifications,
+                        contentDescription = stringResource(id = R.string.notification_centre_title),
+                        onClick = { onAction.invoke(DashboardAction.OpenNotifications) },
+                        badge = if (state.hasUnreadNotifications) EmBadge.Dot else null,
+                    )
+                    EmIconButton(
+                        icon = Icons.Outlined.Settings,
+                        contentDescription = stringResource(id = R.string.settings),
+                        onClick = { onAction.invoke(DashboardAction.OpenSettings) },
+                    )
                 },
             )
         },
@@ -160,7 +148,7 @@ private fun DashboardScreenContent(
             FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 6.dp),
+                    .padding(end = EmTheme.spacing.sm),
             )
         }
         state.backupWarning?.let { warning ->
@@ -171,7 +159,7 @@ private fun DashboardScreenContent(
                     onLater = { onAction(DashboardAction.SnoozeAutoBackupWarning) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
                 )
             }
         }
@@ -180,7 +168,7 @@ private fun DashboardScreenContent(
             ReminderBannerItem(
                 state = state,
                 onAction = onAction,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
             )
         }
         item {
@@ -195,11 +183,12 @@ private fun DashboardScreenContent(
                 DashboardSection.BUDGETS -> budgetsSection(state, onAction)
                 DashboardSection.TRANSACTIONS -> transactionsSection(state, onAction)
                 DashboardSection.UPCOMING -> upcomingSection(state, onAction)
+                DashboardSection.DEBTS -> debtsSection(state, onAction)
             }
         }
         state.conversionNote?.let { note ->
             item("conversion_note") {
-                Text(
+                EmText(
                     modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 6.dp),
                     text = stringResource(
                         id = when (note) {
@@ -208,8 +197,8 @@ private fun DashboardScreenContent(
                             ConversionNote.NOT_CONVERTED -> R.string.currencies_not_converted
                         },
                     ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
@@ -228,7 +217,11 @@ private fun DashboardScreenContent(
                         if (shared) onAction(DashboardAction.ShareAppFromBanner)
                     },
                     onDismiss = { onAction(DashboardAction.DismissShareBanner) },
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = SectionSpacing),
+                    modifier = Modifier.padding(
+                        start = EmTheme.spacing.lg,
+                        end = EmTheme.spacing.lg,
+                        top = SectionSpacing,
+                    ),
                 )
             }
         }
@@ -237,18 +230,15 @@ private fun DashboardScreenContent(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp),
+                    .padding(top = EmTheme.spacing.lg),
                 contentAlignment = Alignment.Center,
             ) {
-                TextButton(onClick = { onAction(DashboardAction.OpenCustomiseDashboard) }) {
-                    Icon(
-                        imageVector = Icons.Outlined.DashboardCustomize,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = stringResource(id = R.string.customise_dashboard))
-                }
+                EmButton(
+                    text = stringResource(id = R.string.customise_dashboard),
+                    onClick = { onAction(DashboardAction.OpenCustomiseDashboard) },
+                    variant = EmButtonVariant.Tertiary,
+                    leadingIcon = Icons.Outlined.DashboardCustomize,
+                )
             }
         }
     }
@@ -258,17 +248,17 @@ private fun DashboardScreenContent(
  * Gap above every reorderable Home section. Each section owns exactly this space above itself
  * and nothing below, so the spacing is the same whatever order the user picks.
  */
-private val SectionSpacing = 24.dp
+private val SectionSpacing = 12.dp
 
 /**
- * A section's title row: [SectionSpacing] above, a fixed height (with or without "View all") and
- * 8dp before the section's content, so titles and content line up in every section.
+ * A section's title row: [SectionSpacing] above and 4dp before the section's content. The header
+ * itself has one fixed height with or without "View all", so every section lines up.
  */
+@Composable
 private fun Modifier.sectionTitle(): Modifier = this
     .fillMaxWidth()
-    .padding(top = SectionSpacing, bottom = 8.dp)
-    .height(40.dp)
-    .padding(start = 16.dp, end = 4.dp)
+    .padding(top = SectionSpacing, bottom = EmTheme.spacing.xs)
+    .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.xs)
 
 /** Income, expense and balance for the selected period. */
 private fun LazyListScope.summarySection(state: DashboardState) {
@@ -279,7 +269,7 @@ private fun LazyListScope.summarySection(state: DashboardState) {
             isCompact = state.isCompactSummary,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = SectionSpacing),
+                .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.lg, top = SectionSpacing),
         )
     }
 }
@@ -291,7 +281,7 @@ private fun LazyListScope.accountsSection(
 ) {
     item("account_item") {
         Column {
-            DashboardWidgetTitle(
+            EmSectionHeader(
                 modifier = Modifier.sectionTitle(),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
                 onViewAllClick = {
@@ -303,8 +293,8 @@ private fun LazyListScope.accountsSection(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    contentPadding = PaddingValues(horizontal = EmTheme.spacing.lg),
+                    horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
                 ) {
                     items(state.accounts, key = { it.id }) {
                         DashBoardAccountItem(
@@ -316,7 +306,7 @@ private fun LazyListScope.accountsSection(
                             amount = it.amount.amountString ?: "",
                             availableCreditLimit = it.availableCreditLimit?.amountString
                                 ?: "",
-                            amountTextColor = colorResource(id = it.amountTextColor),
+                            amountTextColor = emColorOf(it.amountTextColor),
                             onItemClick = {
                                 onAction.invoke(DashboardAction.OpenAccountEdit(it))
                             },
@@ -324,14 +314,36 @@ private fun LazyListScope.accountsSection(
                     }
                 }
             } else {
-                EmptyItem(
-                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .align(Alignment.CenterHorizontally),
+                EmEmptyState(
+                    illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts),
+                    title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.no_account_available_short),
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    compact = true,
                 )
             }
+        }
+    }
+}
+
+/** What people owe the user and what the user owes; only while there are open debts. */
+private fun LazyListScope.debtsSection(
+    state: DashboardState,
+    onAction: (DashboardAction) -> Unit,
+) {
+    val debts = state.debtTotals ?: return
+    item("debts_item") {
+        Column {
+            EmSectionHeader(
+                modifier = Modifier.sectionTitle(),
+                title = stringResource(id = R.string.home_debts_title),
+                onViewAllClick = { onAction.invoke(DashboardAction.OpenDebts) },
+            )
+            DebtTotalsCard(
+                toGet = debts.toGet,
+                toGive = debts.toGive,
+                onClick = { onAction.invoke(DashboardAction.OpenDebts) },
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
+            )
         }
     }
 }
@@ -343,7 +355,7 @@ private fun LazyListScope.categoriesSection(
 ) {
     item("category_item") {
         Column {
-            DashboardWidgetTitle(
+            EmSectionHeader(
                 modifier = Modifier.sectionTitle(),
                 title = stringResource(id = R.string.categories),
             )
@@ -351,7 +363,7 @@ private fun LazyListScope.categoriesSection(
                 expense = state.categoryTransactionState,
                 income = state.incomeCategoryTransactionState,
                 onAddTransaction = { onAction.invoke(DashboardAction.OpenTransactionEdit(null)) },
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
             )
         }
     }
@@ -364,7 +376,7 @@ private fun LazyListScope.budgetsSection(
 ) {
     item("budget_item") {
         Column {
-            DashboardWidgetTitle(
+            EmSectionHeader(
                 modifier = Modifier.sectionTitle(),
                 title = stringResource(id = com.naveenapps.expensemanager.feature.budget.R.string.active_budgets),
                 onViewAllClick = {
@@ -374,7 +386,7 @@ private fun LazyListScope.budgetsSection(
             HomeBudgetCard(
                 budgets = state.homeBudgets,
                 onAction = onAction,
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
             )
         }
     }
@@ -386,7 +398,7 @@ private fun LazyListScope.transactionsSection(
     onAction: (DashboardAction) -> Unit,
 ) {
     item {
-        DashboardWidgetTitle(
+        EmSectionHeader(
             modifier = Modifier.sectionTitle(),
             title = stringResource(id = R.string.transaction),
             onViewAllClick = {
@@ -399,11 +411,11 @@ private fun LazyListScope.transactionsSection(
             items = state.transactions,
             key = { _, item -> item.id },
         ) { index, transaction ->
-            AppCardView(
+            EmCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 2.dp),
-                shape = AppCardViewDefaults.cardShape(index, state.transactions),
+                    .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.xxs),
+                position = EmCardPosition.of(index, state.transactions),
             ) {
                 TransactionItem(
                     modifier = Modifier
@@ -431,13 +443,13 @@ private fun LazyListScope.transactionsSection(
         }
     } else {
         item {
-            EmptyItem(
-                emptyItemText = stringResource(id = R.string.no_transactions_available),
-                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
+            EmEmptyState(
+                illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction),
+                title = stringResource(id = R.string.no_transactions_available),
                 modifier = Modifier
                     .fillMaxSize()
                     .height(320.dp)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = EmTheme.spacing.lg),
             )
         }
     }
@@ -450,7 +462,7 @@ private fun LazyListScope.upcomingSection(
 ) {
     item("upcoming_item") {
         Column {
-            DashboardWidgetTitle(
+            EmSectionHeader(
                 modifier = Modifier.sectionTitle(),
                 title = stringResource(id = R.string.upcoming),
                 onViewAllClick = if (state.upcoming.items.isEmpty()) {
@@ -462,7 +474,7 @@ private fun LazyListScope.upcomingSection(
             HomeUpcomingCard(
                 upcoming = state.upcoming,
                 onAction = onAction,
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
             )
         }
     }
@@ -494,7 +506,7 @@ fun IncomeExpenseBalanceView(
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun DashboardScaffoldContentPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -554,38 +566,38 @@ private fun AutoBackupWarningCard(
     onLater: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier,
-        shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.errorContainer,
-        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-    ) {
-        Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 16.dp, bottom = 8.dp)) {
+    EmCard(modifier = modifier, variant = EmCardVariant.Error) {
+        Column(
+            modifier = Modifier.padding(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.sm,
+                top = EmTheme.spacing.lg,
+                bottom = EmTheme.spacing.sm,
+            ),
+        ) {
             Row(verticalAlignment = Alignment.Top) {
-                Icon(
-                    imageVector = Icons.Outlined.CloudOff,
+                EmIcon(
+                    icon = Icons.Outlined.CloudOff,
                     contentDescription = null,
-                    modifier = Modifier.padding(top = 2.dp),
+                    modifier = Modifier.padding(top = EmTheme.spacing.xxs),
                 )
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(EmTheme.spacing.md))
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(end = 8.dp),
+                        .padding(end = EmTheme.spacing.sm),
                 ) {
-                    Text(
+                    EmText(
                         text = stringResource(id = R.string.auto_backup_warning_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
+                        role = EmTextRole.SectionTitle,
                     )
-                    Text(
+                    EmText(
                         text = stringResource(
                             id = when (error) {
                                 AutoBackupError.FOLDER_UNAVAILABLE -> R.string.auto_backup_warning_folder
                                 AutoBackupError.WRITE_FAILED -> R.string.auto_backup_warning_write
                             },
                         ),
-                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
             }
@@ -593,19 +605,16 @@ private fun AutoBackupWarningCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
             ) {
-                TextButton(onClick = onLater) {
-                    Text(
-                        text = stringResource(id = R.string.auto_backup_warning_later),
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                    )
-                }
-                TextButton(onClick = onFix) {
-                    Text(
-                        text = stringResource(id = R.string.auto_backup_warning_fix),
-                        color = MaterialTheme.colorScheme.onErrorContainer,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
+                EmButton(
+                    text = stringResource(id = R.string.auto_backup_warning_later),
+                    onClick = onLater,
+                    variant = EmButtonVariant.Tertiary,
+                )
+                EmButton(
+                    text = stringResource(id = R.string.auto_backup_warning_fix),
+                    onClick = onFix,
+                    variant = EmButtonVariant.Tertiary,
+                )
             }
         }
     }
@@ -661,40 +670,34 @@ private fun GettingStartedCard(
     val remaining = steps.filter { done[it] != true }
     val nextStep = remaining.firstOrNull()
 
-    AppCardView(
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-        cornerSize = 16.dp,
+    EmCard(
+        modifier = modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 4.dp),
+                .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.xs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            EmText(
                 text = stringResource(id = R.string.getting_started_title),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                role = EmTextRole.SectionTitle,
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
+            Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+            EmText(
                 text = stringResource(id = R.string.getting_started_progress, completed, steps.size),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.weight(1f),
+                role = EmTextRole.Label,
+                color = EmTextColor.Primary,
             )
-            IconButton(onClick = onDismiss) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(id = R.string.getting_started_hide),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(18.dp),
-                )
-            }
+            EmIconButton(
+                icon = Icons.Default.Close,
+                contentDescription = stringResource(id = R.string.getting_started_hide),
+                onClick = onDismiss,
+                tint = EmTheme.colors.scheme.onSurfaceVariant,
+            )
         }
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+        EmDivider()
         remaining.forEach { step ->
             SetupStepRow(
                 number = steps.indexOf(step) + 1,
@@ -724,44 +727,30 @@ private fun SetupStepRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm)
             .heightIn(min = 32.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         StepBadge(number = number, isDone = false, isNext = isNext)
-        Spacer(modifier = Modifier.width(14.dp))
-        Text(
+        Spacer(modifier = Modifier.width(EmTheme.spacing.md))
+        EmText(
             text = stringResource(id = title),
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f),
         )
         if (isNext) {
-            Button(
+            EmButton(
+                text = stringResource(id = action),
                 onClick = onClick,
-                shape = RoundedCornerShape(10.dp),
-                contentPadding = PaddingValues(horizontal = 12.dp),
                 modifier = Modifier.height(30.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-            ) {
-                Text(
-                    text = stringResource(id = action),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
+            )
         } else {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            EmIcon(
+                icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(20.dp),
+                size = EmTheme.icons.md,
+                tint = EmTheme.colors.scheme.onSurfaceVariant,
             )
         }
     }
@@ -770,30 +759,34 @@ private fun SetupStepRow(
 /** Green check when done, a filled number for the next step, an outlined number otherwise. */
 @Composable
 private fun StepBadge(number: Int, isDone: Boolean, isNext: Boolean) {
-    val primary = MaterialTheme.colorScheme.primary
-    Surface(
-        modifier = Modifier.size(22.dp),
-        shape = CircleShape,
-        color = if (isDone || isNext) primary else Color.Transparent,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
-        border = if (isDone || isNext) null else BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline),
+    val primary = EmTheme.colors.scheme.primary
+    val filled = isDone || isNext
+    Box(
+        modifier = Modifier
+            .size(EmTheme.icons.lg)
+            .clip(EmTheme.shapes.pill)
+            .background(if (filled) primary else Color.Transparent)
+            .then(
+                if (filled) Modifier else Modifier.border(1.5.dp, EmTheme.colors.scheme.outline, EmTheme.shapes.pill),
+            ),
+        contentAlignment = Alignment.Center,
     ) {
         Box(contentAlignment = Alignment.Center) {
             if (isDone) {
-                Icon(
-                    imageVector = Icons.Default.Check,
+                EmIcon(
+                    icon = Icons.Default.Check,
                     contentDescription = null,
-                    modifier = Modifier.size(14.dp),
+                    size = EmTheme.icons.sm,
+                    tint = EmTheme.colors.scheme.onPrimary,
                 )
             } else {
-                Text(
+                EmText(
                     text = number.toString(),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold,
+                    role = EmTextRole.Label,
                     color = if (isNext) {
-                        MaterialTheme.colorScheme.onPrimary
+                        EmTheme.colors.scheme.onPrimary
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        EmTheme.colors.scheme.onSurfaceVariant
                     },
                 )
             }
@@ -801,7 +794,7 @@ private fun StepBadge(number: Int, isDone: Boolean, isNext: Boolean) {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun GettingStartedCardPreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {

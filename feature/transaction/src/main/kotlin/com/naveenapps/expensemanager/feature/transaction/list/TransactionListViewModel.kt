@@ -6,6 +6,8 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtActivity
+import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -14,12 +16,15 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currencyapi.Co
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
+import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.milliToDouble
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -29,6 +34,8 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
+import java.util.Date
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -60,6 +67,7 @@ class TransactionListViewModel(
     private val addTransactionUseCase: AddTransactionUseCase,
     private val imageStorageRepository: ImageStorageRepository,
     private val analyticsRepository: AnalyticsRepository,
+    getDebtActivityUseCase: GetDebtActivityUseCase,
     categoryDisplayNames: CategoryDisplayNames = CategoryDisplayNames.Stored,
 ) : ViewModel() {
 
@@ -75,6 +83,9 @@ class TransactionListViewModel(
     // The transactions currently listed, by id, so a swipe-delete can act on the full model.
     private var visibleTransactions: Map<String, Transaction> = emptyMap()
 
+    // Debt entries listed among the transactions; tapping one opens the debt entry instead.
+    private var visibleDebtIds: Set<String> = emptySet()
+
     // Deleted but still undoable. Its attachment files are only removed once the undo window
     // has passed; otherwise "Undo" would bring back a transaction pointing at missing photos.
     private var pendingUndo: Transaction? = null
@@ -82,21 +93,30 @@ class TransactionListViewModel(
     init {
         // While searching all time, read every date; otherwise the selected period. The other
         // filters (accounts, categories, types) apply either way.
-        val source = combine(searchQuery, searchScope) { query, scope ->
+        val allTime = combine(searchQuery, searchScope) { query, scope ->
             query.isNotBlank() && scope == SearchScope.ALL_TIME
-        }.distinctUntilChanged().flatMapLatest { allTime ->
-            if (allTime) getTransactionWithFilterUseCase.allTime() else getTransactionWithFilterUseCase.invoke()
+        }.distinctUntilChanged()
+        val source = allTime.flatMapLatest { all ->
+            if (all) getTransactionWithFilterUseCase.allTime() else getTransactionWithFilterUseCase.invoke()
         }
+        // Lent / borrowed / repaid entries that moved money in an account, so a balance change
+        // always has a row explaining it. Never counted in the day totals or search totals.
+        val debts = allTime.flatMapLatest { all -> getDebtActivityUseCase(allTime = all) }
 
         combine(
             getCurrencyUseCase.invoke(),
             source,
             searchQuery,
             categoryDisplayNames.lookup(),
-        ) { currency, transactions, query, displayName ->
+            debts,
+        ) { currency, transactions, query, displayName, debtActivity ->
 
             val matching = transactions.orEmpty().filter { it.matches(query, displayName) }
             visibleTransactions = matching.associateBy { it.id }
+            val matchingDebts = debtActivity.filter { activity ->
+                matchesSearch(query, listOf(activity.personName, activity.entry.note, activity.account.name))
+            }
+            visibleDebtIds = matchingDebts.map { it.entry.id }.toSet()
 
             val summary = if (query.isBlank()) {
                 null
@@ -115,26 +135,41 @@ class TransactionListViewModel(
             }
 
             // Only what has actually happened: a recurring rule logs each occurrence on its day.
-            val groupedItem = matching.sortedByDescending { it.createdOn }.groupBy {
-                it.createdOn.toCompleteDateWithDate()
+            val rows = matching.map { transaction ->
+                ListRow(
+                    date = transaction.createdOn,
+                    transaction = transaction,
+                    item = transaction.toTransactionUIModel(
+                        formatAmountInCurrencyUseCase(transaction.amount.amount, transaction.fromCurrencyCode),
+                    ),
+                )
+            } + matchingDebts.map { activity ->
+                ListRow(
+                    date = activity.entry.date,
+                    transaction = null,
+                    // A debt entry is in the currency of the account it moved money in.
+                    item = activity.toTransactionUiItem(
+                        formatAmountInCurrencyUseCase(
+                            activity.entry.amountMilli.milliToDouble(),
+                            activity.account.currencyCode,
+                        ),
+                    ),
+                )
+            }
+            val groupedItem = rows.sortedByDescending { it.date }.groupBy {
+                it.date.toCompleteDateWithDate()
             }.map {
-                // The day's net is converted into the display currency; rows keep their own.
+                // The day's net counts real transactions only, not debt entries, converted into
+                // the display currency; rows keep their own.
                 val totalAmount = convertAmountUseCase.total(
-                    it.value.toSignedAmounts(),
+                    it.value.mapNotNull { row -> row.transaction }.toSignedAmounts(),
                     currency.code,
                 )
                 TransactionGroup(
                     date = it.key,
                     amountTextColor = totalAmount.colorSign().getAmountTextColor(),
                     totalAmount = getFormattedAmountUseCase(totalAmount, currency),
-                    transactions = it.value.map { transaction ->
-                        transaction.toTransactionUIModel(
-                            formatAmountInCurrencyUseCase(
-                                transaction.amount.amount,
-                                transaction.fromCurrencyCode,
-                            ),
-                        )
-                    },
+                    transactions = it.value.map { row -> row.item },
                 )
             }
 
@@ -150,7 +185,7 @@ class TransactionListViewModel(
         // One search_used per search the user settled on (not per keystroke): how many results
         // and whether it covered all time or the selected period. The text itself isn't sent.
         searchQuery
-            .debounce(SEARCH_SETTLE_MS)
+            .debounce(SEARCH_SETTLE_MS.milliseconds)
             .map { it.trim() }
             .distinctUntilChanged()
             .filter { it.isNotEmpty() }
@@ -230,13 +265,25 @@ class TransactionListViewModel(
     fun processAction(action: TransactionListAction) {
         when (action) {
             TransactionListAction.ClosePage -> closePage()
+
             TransactionListAction.OpenCreateTransaction -> openCreateScreen()
-            is TransactionListAction.OpenEdiTransaction -> openCreateScreen(action.transactionId)
+
+            is TransactionListAction.OpenEdiTransaction -> if (action.transactionId in visibleDebtIds) {
+                appComposeNavigator.navigate(ExpenseManagerScreens.DebtEntry(id = action.transactionId))
+            } else {
+                openCreateScreen(action.transactionId)
+            }
+
             is TransactionListAction.Search -> search(action.query)
+
             is TransactionListAction.SetSearchScope -> setSearchScope(action.scope)
+
             TransactionListAction.OpenRecurringTransactions -> openRecurringTransactions()
+
             is TransactionListAction.DeleteTransaction -> deleteTransaction(action.transactionId)
+
             TransactionListAction.UndoDelete -> undoDelete()
+
             TransactionListAction.UndoExpired -> finalizePendingDelete()
         }
     }
@@ -244,9 +291,31 @@ class TransactionListViewModel(
 
 /**
  * Case-insensitive match on the free-text parts of a transaction: notes, category name and
- * account names. A built-in category matches both by the name shown ([displayName], e.g. its
+ * account names. A built-in category matches both by the name shown (displayName, e.g. its
  * Hindi label) and by its stored English name.
+ * One row of the list: a transaction, or a debt entry shown beside them (transaction = null). */
+private data class ListRow(val date: Date, val transaction: Transaction?, val item: TransactionUiItem)
+
+/**
+ * A debt entry as a list row. Money leaving the account (lent, paid back) shows like an expense,
+ * money coming in (borrowed, got back) like income; the screen titles it "Lent to Ravi" etc.
  */
+private fun DebtActivity.toTransactionUiItem(amount: Amount): TransactionUiItem = TransactionUiItem(
+    id = entry.id,
+    amount = amount,
+    notes = entry.note.ifBlank { null },
+    categoryName = personName,
+    transactionType = if (entry.kind.accountSign < 0) TransactionType.EXPENSE else TransactionType.INCOME,
+    categoryIcon = StoredIcon(name = DEBT_ROW_ICON, backgroundColor = DEBT_ROW_COLOR),
+    date = entry.date.toCompleteDateWithDate(),
+    fromAccountName = account.name,
+    fromAccountIcon = account.storedIcon,
+    debtKind = entry.kind,
+)
+
+private const val DEBT_ROW_ICON = "diversity"
+private const val DEBT_ROW_COLOR = "#FF7E57C2"
+
 private const val SEARCH_SETTLE_MS = 1_500L
 
 /** Search results for analytics: 0, 1-5, 6-20, 21+. */

@@ -119,4 +119,6 @@
     <string name="more">और</string>
     <string name="preferences">प्राथमिकताएँ</string>
     <string name="preferences_message">नई एंट्री के डिफ़ॉल्ट, होम और अधिक</string>
+    <string name="debts_setting">लोग और उधार</string>
+    <string name="debts_setting_message">आपने जो पैसे उधार दिए या लिए</string>
 </resources>

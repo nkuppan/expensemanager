@@ -21,14 +21,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsOff
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -40,13 +34,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import java.util.Calendar
 
 /**
@@ -119,73 +120,77 @@ private fun HomeReminderBanner(
     modifier: Modifier = Modifier,
     suggestedTime: String? = null,
 ) {
-    AppCardView(
+    EmCard(
         modifier = modifier.fillMaxWidth(),
-        cornerSize = 16.dp,
     ) {
-        Column(modifier = Modifier.padding(start = 16.dp, end = 8.dp, top = 16.dp, bottom = 8.dp)) {
+        Column(
+            modifier = Modifier.padding(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.sm,
+                top = EmTheme.spacing.lg,
+                bottom = EmTheme.spacing.sm,
+            ),
+        ) {
             Row(verticalAlignment = Alignment.Top) {
                 Box(
                     modifier = Modifier
                         .size(40.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)),
+                        .clip(EmTheme.shapes.md)
+                        .background(EmTheme.colors.scheme.primary.tint()),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.NotificationsOff,
+                    EmIcon(
+                        icon = Icons.Outlined.NotificationsOff,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(22.dp),
+                        tint = EmTheme.colors.scheme.primary,
                     )
                 }
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(EmTheme.spacing.md))
                 Column(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(end = 8.dp),
+                        .padding(end = EmTheme.spacing.sm),
                 ) {
-                    Text(
+                    EmText(
                         text = if (suggestedTime != null) {
                             stringResource(R.string.reminder_banner_title_with_time, suggestedTime)
                         } else {
                             stringResource(R.string.reminder_banner_title)
                         },
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        role = EmTextRole.SectionTitle,
                     )
-                    Text(
+                    EmText(
                         text = if (suggestedTime != null) {
                             stringResource(R.string.reminder_banner_body_with_time)
                         } else {
                             stringResource(R.string.reminder_banner_body)
                         },
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
                     )
                 }
             }
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.End),
+                    .padding(top = EmTheme.spacing.sm),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                TextButton(onClick = onNotNow) {
-                    Text(text = stringResource(R.string.reminder_banner_not_now))
-                }
-                FilledTonalButton(onClick = onTurnOn) {
-                    Text(
-                        text = if (suggestedTime != null) {
-                            stringResource(R.string.reminder_banner_turn_on_at, suggestedTime)
-                        } else {
-                            stringResource(R.string.reminder_banner_turn_on)
-                        },
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
+                EmButton(
+                    text = stringResource(R.string.reminder_banner_not_now),
+                    onClick = onNotNow,
+                    variant = EmButtonVariant.Tertiary,
+                )
+                EmButton(
+                    text = if (suggestedTime != null) {
+                        stringResource(R.string.reminder_banner_turn_on_at, suggestedTime)
+                    } else {
+                        stringResource(R.string.reminder_banner_turn_on)
+                    },
+                    onClick = onTurnOn,
+                    variant = EmButtonVariant.Secondary,
+                )
             }
         }
     }
@@ -223,7 +228,7 @@ private fun Context.openAppNotificationSettings() {
     runCatching { startActivity(intent) }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun HomeReminderBannerPreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {
@@ -231,7 +236,7 @@ private fun HomeReminderBannerPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun HomeReminderBannerWithTimePreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {

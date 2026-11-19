@@ -2,27 +2,19 @@ package com.naveenapps.expensemanager.core.designsystem.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -30,6 +22,9 @@ import androidx.compose.ui.window.DialogProperties
 import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
 import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDay
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import java.util.Date
 
@@ -52,9 +47,9 @@ fun AppDatePickerDialog(
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
-            shape = RoundedCornerShape(28.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                .padding(EmTheme.spacing.lg),
+            shape = EmTheme.shapes.xl,
+            color = EmTheme.colors.scheme.surfaceContainerLowest,
             tonalElevation = 6.dp,
         ) {
             Column {
@@ -63,7 +58,7 @@ fun AppDatePickerDialog(
                     state = datePickerState,
                     showModeToggle = true,
                     colors = DatePickerDefaults.colors(
-                        containerColor = MaterialTheme.colorScheme.surface,
+                        containerColor = EmTheme.colors.scheme.surface,
                     ),
                 )
 
@@ -71,36 +66,26 @@ fun AppDatePickerDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 16.dp),
+                        .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.lg),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    TextButton(
+                    EmButton(
+                        text = stringResource(id = R.string.cancel),
                         onClick = onDismiss,
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.cancel),
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    }
+                        variant = EmButtonVariant.Tertiary,
+                    )
 
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
 
-                    Button(
+                    EmButton(
+                        text = stringResource(id = R.string.select),
                         onClick = {
                             val date = datePickerState.selectedDateMillis?.toExactStartOfTheDay()
                                 ?: Date()
                             onDateSelected(date)
                         },
-                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.select),
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = FontWeight.SemiBold,
-                        )
-                    }
+                    )
                 }
             }
         }

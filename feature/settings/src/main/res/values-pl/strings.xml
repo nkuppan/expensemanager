@@ -119,4 +119,6 @@
     <string name="more">Więcej</string>
     <string name="preferences">Preferencje</string>
     <string name="preferences_message">Domyślne dla nowych wpisów, ekran główny i więcej</string>
+    <string name="debts_setting">Osoby i długi</string>
+    <string name="debts_setting_message">Pieniądze pożyczone komuś lub od kogoś</string>
 </resources>

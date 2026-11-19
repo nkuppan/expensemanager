@@ -1,4 +1,5 @@
-• Ghi khoản chi thường gặp nhất chỉ với một chạm ngay từ lời nhắc hằng ngày, có thể hoàn tác
-• Nhắc nhở hằng ngày đến đúng giờ ổn định hơn, và màn hình Nhắc nhở hướng dẫn cách khắc phục nếu điện thoại chặn chúng
-• Khi bật nhắc nhở từ Trang chủ, ứng dụng gợi ý giờ dựa trên thời điểm bạn thường ghi chép
-• Bộ lọc: nút Áp dụng luôn hiển thị dù có nhiều danh mục, và loại giao dịch nay đã được dịch
+• Mới: Người và khoản nợ. Ghi lại tiền cho vay hoặc đi vay, trả một phần và hạn trả, rồi gửi lời nhắc (Cài đặt → Người và khoản nợ)
+• Ngân sách không còn hiển thị màu đỏ khi bạn vẫn trong hạn mức
+• Xuất dữ liệu hoạt động trên mọi điện thoại: nếu không có trình chọn tệp, tệp sẽ mở trong menu chia sẻ
+• Nút Hủy trong bộ lọc ngày không còn thay đổi khoảng thời gian đã chọn
+• Giao diện gọn gàng và nhất quán hơn

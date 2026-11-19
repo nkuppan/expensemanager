@@ -34,4 +34,8 @@
     <plurals name="upcoming_alert_title_many">
         <item quantity="other">明天有 %d 笔周期性记录</item>
     </plurals>
+    <string name="debt_due_title_one">今天到期：%1$s</string>
+    <string name="debt_due_title_many">今天有 %1$d 笔借贷到期</string>
+    <string name="debt_due_owes_you">%1$s 欠你 %2$s</string>
+    <string name="debt_due_you_owe">你欠 %1$s %2$s</string>
 </resources>

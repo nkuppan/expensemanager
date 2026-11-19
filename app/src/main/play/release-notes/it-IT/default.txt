@@ -1,4 +1,5 @@
-• Registra la spesa più frequente direttamente dal promemoria giornaliero con un tocco, con Annulla in caso di errore
-• Promemoria giornalieri più affidabili, con aiuto se il telefono li blocca
-• Attivando i promemoria dalla Home ora viene suggerito un orario in base a quando registri di solito
-• Filtri: il pulsante Applica resta visibile anche con molte categorie e i tipi di transazione ora sono tradotti
+• Novità: Persone e debiti. Registra denaro prestato o preso in prestito, rimborsi parziali e scadenze, e invia un promemoria (Impostazioni → Persone e debiti)
+• I budget non appaiono più in rosso finché sei entro il limite
+• L'esportazione funziona su ogni telefono: senza selettore di file, il file si apre nel menu di condivisione
+• Annulla nel filtro date non cambia più il periodo selezionato
+• Un aspetto più pulito e coerente

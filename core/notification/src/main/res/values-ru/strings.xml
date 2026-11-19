@@ -37,4 +37,8 @@
         <item quantity="many">%d повторяющихся записей завтра</item>
         <item quantity="other">%d повторяющейся записи завтра</item>
     </plurals>
+    <string name="debt_due_title_one">Сегодня срок: %1$s</string>
+    <string name="debt_due_title_many">Долгов со сроком сегодня: %1$d</string>
+    <string name="debt_due_owes_you">%1$s должен вам %2$s</string>
+    <string name="debt_due_you_owe">Вы должны %1$s %2$s</string>
 </resources>

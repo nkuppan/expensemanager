@@ -19,10 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.components.SelectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmNoSearchResults
+import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.NoSearchResults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearchField
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
@@ -43,30 +44,34 @@ fun AccountSelectionScreen(
     }
 
     Column(modifier = modifier) {
-        SelectionHeader(
+        EmSectionHeader(
             title = stringResource(id = R.string.select_account),
-            createNewCallback = createNewCallback,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
+            onAddClick = createNewCallback,
         )
 
-        SheetSearchField(
+        EmSearchField(
             query = query,
             onQueryChange = { query = it },
             placeholder = stringResource(id = R.string.search_accounts),
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
         )
 
         if (visibleAccounts.isEmpty() && query.isNotBlank()) {
-            NoSearchResults(modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp))
+            EmNoSearchResults(modifier = Modifier.padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.xl))
         }
 
         // The header and search stay put while the list scrolls under them.
         LazyColumn(
             modifier = Modifier.weight(1f, fill = false),
-            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.lg,
+                top = EmTheme.spacing.md,
+            ),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             items(visibleAccounts, key = { it.id }) { account ->
                 val isSelected = selectedAccount?.id == account.id
@@ -80,14 +85,14 @@ fun AccountSelectionScreen(
                     amount = account.amount.amountString,
                     amountTextColor = account.amountTextColor,
                     customImagePath = account.storedIcon.customImagePath,
-                    border = AccountItemDefaults.border(isSelected),
+                    selected = isSelected,
                     trailingContent = {
                         AccountItemDefaults.SingleCheckedTrailing(isSelected)
                     },
                 )
             }
             item {
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xxxl))
             }
         }
     }

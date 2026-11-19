@@ -47,11 +47,12 @@ kotlinxDatetime = "0.8.0"
 kotlinxSerializationJson = "1.12.0"
 # KSP is versioned independently of Kotlin since 2.3.0 (2.2.20-x was tied to Kotlin 2.2.20).
 ksp = "2.3.12"
-lint = "32.5.1"  # always AGP + 23.0.0
+lint = "32.3.3"  # always AGP + 23.0.0 (AGP 9.3.3)
 okhttp = "5.5.1"
 retrofit = "3.0.0"
 retrofitKotlinxSerializationJson = "1.0.0"
 robolectric = "4.17"
+roborazzi = "1.46.1"  # screenshot tests (core:designsystem); bump to the latest release
 room = "2.8.5"
 secrets = "2.0.1"
 turbine = "1.2.1"
@@ -148,12 +149,15 @@ kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime",
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
 okhttp-core = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 opencsv = { module = "com.opencsv:opencsv", version.ref = "opencsv" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
 robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
 robolectric-shadows = { group = "org.robolectric", name = "shadows-framework", version.ref = "robolectric" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+roborazzi-compose = { group = "io.github.takahirom.roborazzi", name = "roborazzi-compose", version.ref = "roborazzi" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }

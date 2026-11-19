@@ -1,4 +1,5 @@
-• Enregistrez votre dépense la plus fréquente d'un geste depuis le rappel quotidien, avec Annuler en cas d'erreur
-• Rappels quotidiens plus fiables, avec de l'aide si votre téléphone les bloque
-• Activer les rappels depuis l'accueil propose maintenant une heure selon le moment où vous notez d'habitude
-• Filtres : le bouton Appliquer reste visible même avec beaucoup de catégories, et les types d'opération sont traduits
+• Nouveau : Personnes et dettes. Notez l'argent prêté ou emprunté, les remboursements partiels et les échéances, et envoyez un rappel aimable (Réglages → Personnes et dettes)
+• Les budgets ne s'affichent plus en rouge tant que vous restez dans la limite
+• L'export fonctionne sur tous les téléphones : sans sélecteur de fichiers, le fichier s'ouvre dans le menu de partage
+• Annuler dans le filtre de dates ne modifie plus la période choisie
+• Un design plus net et cohérent

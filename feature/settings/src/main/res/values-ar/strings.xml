@@ -119,4 +119,6 @@
     <string name="more">المزيد</string>
     <string name="preferences">التفضيلات</string>
     <string name="preferences_message">الإعدادات الافتراضية للإدخالات الجديدة والصفحة الرئيسية والمزيد</string>
+    <string name="debts_setting">الأشخاص والديون</string>
+    <string name="debts_setting_message">المال الذي أقرضته أو اقترضته</string>
 </resources>

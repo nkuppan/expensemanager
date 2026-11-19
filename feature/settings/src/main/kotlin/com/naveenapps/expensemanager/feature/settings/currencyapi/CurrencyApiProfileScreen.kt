@@ -24,9 +24,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.model.CurrencyApiPreset
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -50,9 +51,9 @@ private fun CurrencyApiProfileScreenContent(
 ) {
     Scaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction.invoke(CurrencyApiProfileAction.ClosePage) },
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { onAction.invoke(CurrencyApiProfileAction.ClosePage) },
                 title = "Currency API Profile",
             )
         },
@@ -72,7 +73,7 @@ private fun CurrencyApiProfileScreenContent(
                     "generated on the provider's own platform, if the provider requires one.",
             )
 
-            AppCardView {
+            EmCard {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(text = "Provider preset")
                     Spacer(modifier = Modifier.height(8.dp))

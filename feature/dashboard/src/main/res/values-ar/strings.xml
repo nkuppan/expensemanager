@@ -85,6 +85,13 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">عرض المزيد (%1$d)</string>
     <string name="notification_see_less">عرض أقل</string>
+    <string-array name="whats_new_1_4_31">
+        <item>جديد: الأشخاص والديون. سجّل المال الذي أقرضته أو اقترضته والسداد الجزئي وتواريخ الاستحقاق، وأرسل تذكيرًا لطيفًا (الإعدادات ← الأشخاص والديون)</item>
+        <item>لم تعد الميزانيات تظهر باللون الأحمر وأنت ما زلت ضمنها</item>
+        <item>التصدير يعمل على كل الهواتف: إذا لم يتوفر منتقي الملفات يُفتح الملف في قائمة المشاركة</item>
+        <item>زر الإلغاء في عامل تصفية التاريخ لم يعد يغيّر الفترة المحددة</item>
+        <item>مظهر أنظف وأكثر تناسقًا</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>سجّل أكثر مصروف تكرّره مباشرة من التذكير اليومي بنقرة واحدة، مع إمكانية التراجع</item>
         <item>تصل التذكيرات اليومية في وقتها بشكل أكثر موثوقية، وتوضح شاشة التذكير كيفية الإصلاح إذا منعها هاتفك</item>
@@ -119,4 +126,5 @@
     <string name="reminder_banner_title_with_time">عادةً تسجّل حوالي %1$s</string>
     <string name="reminder_banner_body_with_time">احصل على تذكير يومي في هذا الوقت حتى لا يفوتك شيء.</string>
     <string name="reminder_banner_turn_on_at">ذكّرني في %1$s</string>
+    <string name="home_debts_title">الأشخاص والديون</string>
 </resources>

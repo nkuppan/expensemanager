@@ -11,6 +11,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +52,9 @@ private val LightInk2 = Color(0xFF565A6E)
 private val LightInk3 = Color(0xFF868AA0)
 private val LightInk4 = Color(0xFFC7CADA)
 private val LightRed = Color(0xFFD93A46)
-private val LightAmber = Color(0xFFB9790A)
+
+// Darkened from the website's #B9790A for 4.5:1 text contrast on white (WCAG AA).
+private val LightAmber = Color(0xFF9A6400)
 private val LightBlue = Color(0xFF3E63D6)
 
 val ExpenseManagerDarkColorScheme: ColorScheme = darkColorScheme(
@@ -94,7 +97,8 @@ val ExpenseManagerDarkColorScheme: ColorScheme = darkColorScheme(
 )
 
 val ExpenseManagerLightColorScheme: ColorScheme = lightColorScheme(
-    primary = LightAccent,
+    // Text, buttons and income use the darker accent: #0F9D5B is only 3.5:1 on white, #0B7A46 is 5.4:1.
+    primary = LightAccent2,
     onPrimary = Color(0xFFFFFFFF),
     primaryContainer = Color(0xFFDDF2E7),
     onPrimaryContainer = Color(0xFF053D22),
@@ -117,7 +121,7 @@ val ExpenseManagerLightColorScheme: ColorScheme = lightColorScheme(
     onSurface = LightInk,
     surfaceVariant = LightBg3,
     onSurfaceVariant = LightInk2,
-    surfaceTint = LightAccent,
+    surfaceTint = LightAccent2,
     inverseSurface = LightInk,
     inverseOnSurface = DarkInk,
     outline = LightInk3,
@@ -142,7 +146,7 @@ data class ExpenseManagerExtendedColors(
 )
 
 val LightExtendedColors = ExpenseManagerExtendedColors(
-    income = LightAccent,
+    income = LightAccent2,
     expense = LightRed,
     warning = LightAmber,
     info = LightBlue,
@@ -158,8 +162,9 @@ val DarkExtendedColors = ExpenseManagerExtendedColors(
 val LocalExpenseManagerColors = staticCompositionLocalOf { LightExtendedColors }
 
 /**
- * App theme. Keeps the typography and shapes from [NaveenAppsTheme] and swaps in
- * the website colour scheme.
+ * App theme. Takes the font family from [NaveenAppsTheme], and owns the colour scheme, the type
+ * scale ([emMaterialTypography]) and the shapes ([EmMaterialShapes]). Also provides the design
+ * tokens read through [EmTheme].
  */
 @Composable
 fun ExpenseManagerTheme(
@@ -167,13 +172,25 @@ fun ExpenseManagerTheme(
     content: @Composable () -> Unit,
 ) {
     NaveenAppsTheme(isDarkTheme = isDarkTheme) {
+        val baseTypography = MaterialTheme.typography
+        val materialTypography = remember(baseTypography) { emMaterialTypography(baseTypography) }
+        val typeRoles = remember(materialTypography) { emTypography(materialTypography) }
+        val colors = remember(isDarkTheme) { emColors(isDarkTheme) }
         CompositionLocalProvider(
             LocalExpenseManagerColors provides if (isDarkTheme) DarkExtendedColors else LightExtendedColors,
+            LocalEmColors provides colors,
+            LocalEmTypography provides typeRoles,
+            LocalEmSpacing provides EmSpacing(),
+            LocalEmShapes provides EmShapes(),
+            LocalEmIconSize provides EmIconSize(),
+            LocalEmElevation provides EmElevation(),
+            LocalEmMotion provides EmMotion(),
+            LocalEmAlpha provides EmAlpha(),
         ) {
             MaterialTheme(
                 colorScheme = if (isDarkTheme) ExpenseManagerDarkColorScheme else ExpenseManagerLightColorScheme,
-                typography = MaterialTheme.typography,
-                shapes = MaterialTheme.shapes,
+                typography = materialTypography,
+                shapes = EmMaterialShapes,
                 content = content,
             )
         }

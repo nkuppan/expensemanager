@@ -10,24 +10,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -35,19 +24,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmLoading
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
@@ -77,7 +78,6 @@ fun CategoryDetailScreen(
  * with the category's name, a summary card (icon, total, and its share of all spending or income),
  * then its transactions in the app's standard rows.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun CategoryDetailsContent(
     state: CategoryDetailsState,
@@ -88,47 +88,29 @@ private fun CategoryDetailsContent(
         category.titleResId?.let { stringResource(it) } ?: category.name
     }
 
-    Scaffold(
+    EmScaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = { onAction.invoke(CategoryDetailsAction.ClosePage) }) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(DesignSystemR.string.a11y_close),
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = categoryName.orEmpty(),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
+            EmTopBar(
+                title = categoryName.orEmpty(),
+                navigation = EmTopBarNavigation.Close,
+                onNavigationClick = { onAction.invoke(CategoryDetailsAction.ClosePage) },
                 actions = {
                     if (categoryTransaction != null) {
-                        IconButton(onClick = { onAction.invoke(CategoryDetailsAction.OpenCategoryEdit) }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Edit,
-                                contentDescription = stringResource(R.string.edit_category),
-                            )
-                        }
+                        EmIconButton(
+                            icon = Icons.Outlined.Edit,
+                            contentDescription = stringResource(R.string.edit_category),
+                            onClick = { onAction.invoke(CategoryDetailsAction.OpenCategoryEdit) },
+                        )
                     }
                 },
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+            EmFab(
+                icon = Icons.Default.Add,
+                contentDescription = stringResource(R.string.add_transaction),
                 onClick = { onAction.invoke(CategoryDetailsAction.OpenTransactionCreate) },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.add_transaction),
-                )
-            }
+            )
         },
     ) { innerPadding ->
         val modifier = Modifier
@@ -137,20 +119,20 @@ private fun CategoryDetailsContent(
 
         if (categoryTransaction == null || categoryName == null) {
             Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(modifier = Modifier.size(40.dp))
+                EmLoading()
             }
-            return@Scaffold
+            return@EmScaffold
         }
 
         LazyColumn(
             modifier = modifier,
-            contentPadding = PaddingValues(top = 8.dp, bottom = 96.dp),
+            contentPadding = PaddingValues(top = EmTheme.spacing.sm, bottom = 96.dp),
         ) {
             item(key = "summary") {
                 CategorySummaryCard(
                     categoryTransaction = categoryTransaction,
                     name = categoryName,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
                 )
             }
 
@@ -160,12 +142,12 @@ private fun CategoryDetailsContent(
 
             if (state.transactions.isEmpty()) {
                 item(key = "empty") {
-                    EmptyItem(
+                    EmEmptyState(
+                        illustration = painterResource(id = DesignSystemR.drawable.ic_no_transaction),
+                        title = stringResource(id = R.string.no_transactions_available),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 24.dp),
-                        emptyItemText = stringResource(id = R.string.no_transactions_available),
-                        icon = DesignSystemR.drawable.ic_no_transaction,
+                            .padding(top = EmTheme.spacing.xl),
                     )
                 }
             } else {
@@ -173,11 +155,15 @@ private fun CategoryDetailsContent(
                     items = state.transactions,
                     key = { _, item -> "transaction_${item.id}" },
                 ) { index, item ->
-                    AppCardView(
+                    EmCard(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, bottom = 2.dp),
-                        shape = AppCardViewDefaults.cardShape(index, state.transactions),
+                            .padding(
+                                start = EmTheme.spacing.lg,
+                                end = EmTheme.spacing.lg,
+                                bottom = EmTheme.spacing.xxs,
+                            ),
+                        position = EmCardPosition.of(index, state.transactions),
                     ) {
                         TransactionItem(
                             modifier = Modifier.fillMaxWidth(),
@@ -219,11 +205,10 @@ private fun CategorySummaryCard(
     val share = (categoryTransaction.percent / 100f).takeIf { it.isFinite() }?.coerceIn(0f, 1f) ?: 0f
     val shareText = remember(share) { NumberFormat.getPercentInstance().format(share.toDouble()) }
 
-    AppCardView(
+    EmCard(
         modifier = modifier.fillMaxWidth(),
-        cornerSize = 24.dp,
     ) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp)) {
+        Column(modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.xl)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconAndBackgroundView(
                     icon = category.storedIcon.name,
@@ -231,56 +216,50 @@ private fun CategorySummaryCard(
                     name = name,
                     customImagePath = category.storedIcon.customImagePath,
                 )
-                Spacer(modifier = Modifier.width(14.dp))
+                Spacer(modifier = Modifier.width(EmTheme.spacing.md))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
+                    EmText(
                         text = stringResource(
                             id = if (category.type == CategoryType.INCOME) R.string.income else R.string.expense,
                         ),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
                     )
-                    Text(
-                        text = categoryTransaction.amount.amountString.orEmpty(),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = (-0.5).sp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
+                    EmAmountText(
+                        amount = categoryTransaction.amount.amountString.orEmpty(),
+                        size = EmAmountSize.Large,
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
                         .weight(1f)
                         .height(8.dp)
-                        .clip(CircleShape)
-                        .background(color.copy(alpha = 0.15f)),
+                        .clip(EmTheme.shapes.pill)
+                        .background(color.tint()),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(share)
                             .height(8.dp)
-                            .clip(CircleShape)
+                            .clip(EmTheme.shapes.pill)
                             .background(color),
                     )
                 }
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
+                Spacer(modifier = Modifier.width(EmTheme.spacing.md))
+                EmText(
                     text = stringResource(R.string.category_share_of_total, shareText),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier
+                        .clip(EmTheme.shapes.pill)
+                        .background(color.tint())
+                        .padding(horizontal = EmTheme.spacing.sm, vertical = EmTheme.spacing.xs),
+                    role = EmTextRole.Label,
                     color = color,
                     maxLines = 1,
-                    modifier = Modifier
-                        .clip(CircleShape)
-                        .background(color.copy(alpha = 0.12f))
-                        .padding(horizontal = 10.dp, vertical = 3.dp),
                 )
             }
         }
@@ -290,16 +269,14 @@ private fun CategorySummaryCard(
 /** Small caps section title, as on budget details and the Categories tab. */
 @Composable
 private fun SectionHeader(text: String) {
-    Text(
-        text = text.uppercase(),
-        style = MaterialTheme.typography.labelSmall.copy(
-            fontWeight = FontWeight.SemiBold,
-            letterSpacing = 0.8.sp,
+    EmSectionHeader(
+        title = text,
+        modifier = Modifier.padding(
+            start = EmTheme.spacing.lg,
+            end = EmTheme.spacing.lg,
+            top = EmTheme.spacing.xl,
+            bottom = EmTheme.spacing.xs,
         ),
-        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 16.dp, top = 20.dp, bottom = 10.dp),
     )
 }
 
@@ -321,7 +298,7 @@ fun getTransactionItem(id: String) = TransactionUiItem(
     date = Date().toCompleteDateWithDate(),
 )
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun CategoryDetailsPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -344,7 +321,7 @@ fun CategoryDetailsPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun CategoryDetailsEmptyPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

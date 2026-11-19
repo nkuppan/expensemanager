@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,8 +14,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getCompactNumber
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
@@ -88,9 +88,14 @@ private fun ChartScreenContent(
     // was spent and the averages, ending with the biggest single expenses.
     Column(
         modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 24.dp)
+            .padding(
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.lg,
+                top = EmTheme.spacing.sm,
+                bottom = EmTheme.spacing.xl,
+            )
             .fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
         OverviewCard(
             flow = amountUiState,
@@ -179,9 +184,7 @@ fun ChartScreen(
                     ),
                     marker = rememberDefaultCartesianMarker(
                         label = rememberTextComponent(
-                            style = MaterialTheme.typography.labelMedium.copy(
-                                color = MaterialTheme.colorScheme.onSurface,
-                            ),
+                            style = EmTheme.type.supporting.copy(color = EmTheme.colors.scheme.onSurface),
                         ),
                         guideline = rememberAxisGuidelineComponent(),
                     ),
@@ -204,7 +207,7 @@ private fun rememberChartLine(color: Color): LineCartesianLayer.Line = LineCarte
     interpolator = remember { LineCartesianLayer.Interpolator.cubic() },
 )
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun AmountSummaryPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

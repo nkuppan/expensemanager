@@ -9,41 +9,40 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.InputChip
-import androidx.compose.material3.InputChipDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.em.EmChipVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmLoading
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -84,47 +83,29 @@ private fun BudgetDetailsScaffoldView(
     onCategoryClick: (String) -> Unit,
     onClearCategoryFilter: () -> Unit,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    IconButton(onClick = closePage) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = stringResource(DesignSystemR.string.a11y_close),
-                        )
-                    }
-                },
-                title = {
-                    Text(
-                        text = state.budget?.title?.text() ?: stringResource(R.string.budgets),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                },
+            EmTopBar(
+                title = state.budget?.title?.text() ?: stringResource(R.string.budgets),
+                navigation = EmTopBarNavigation.Close,
+                onNavigationClick = closePage,
                 actions = {
                     if (state.budget != null) {
-                        IconButton(onClick = openBudgetEditScreen) {
-                            Icon(
-                                imageVector = Icons.Outlined.Edit,
-                                contentDescription = stringResource(R.string.a11y_edit_budget),
-                            )
-                        }
+                        EmIconButton(
+                            icon = Icons.Outlined.Edit,
+                            contentDescription = stringResource(R.string.a11y_edit_budget),
+                            onClick = openBudgetEditScreen,
+                        )
                     }
                 },
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+            EmFab(
+                icon = Icons.Default.Add,
+                contentDescription = stringResource(com.naveenapps.expensemanager.feature.transaction.R.string.add_transaction),
                 onClick = { openTransactionCreateScreen.invoke(null) },
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(com.naveenapps.expensemanager.feature.transaction.R.string.add_transaction),
-                )
-            }
+            )
         },
     ) { innerPadding ->
         BudgetDetailContent(
@@ -153,7 +134,7 @@ private fun BudgetDetailContent(
     val progress = state.progress
     if (budget == null || progress == null) {
         Box(modifier = modifier, contentAlignment = Alignment.Center) {
-            CircularProgressIndicator(modifier = Modifier.size(40.dp))
+            EmLoading()
         }
         return
     }
@@ -173,31 +154,30 @@ private fun BudgetDetailContent(
 
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(top = 8.dp, bottom = 96.dp),
+        contentPadding = PaddingValues(top = EmTheme.spacing.sm, bottom = 96.dp),
     ) {
         // ── Gauge ──────────────────────────────────────────────
         item(key = "gauge") {
-            AppCardView(
+            EmCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-                cornerSize = 24.dp,
+                    .padding(horizontal = EmTheme.spacing.lg),
             ) {
                 BudgetGauge(
                     budget = progress,
                     showTitle = false,
                     onEdit = onEditBudget,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp),
+                    modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.xl),
                 )
             }
         }
 
         if (budget.otherCurrenciesExcluded) {
             item(key = "other_currencies_excluded") {
-                Text(
+                EmText(
                     text = stringResource(R.string.budget_other_currencies_excluded),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
                 )
             }
@@ -212,7 +192,11 @@ private fun BudgetDetailContent(
                 CategorySpendingChartCard(
                     state = spending,
                     centerLabel = stringResource(R.string.budget_spent),
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp),
+                    modifier = Modifier.padding(
+                        start = EmTheme.spacing.lg,
+                        end = EmTheme.spacing.lg,
+                        bottom = EmTheme.spacing.md,
+                    ),
                 )
             }
             categorySpendingItems(
@@ -226,24 +210,12 @@ private fun BudgetDetailContent(
         item(key = "transactions_header") {
             SectionHeader(text = stringResource(R.string.budget_transactions)) {
                 if (selectedCategory != null) {
-                    InputChip(
-                        selected = true,
+                    EmChip(
+                        label = selectedCategory.category.titleResId?.let { stringResource(it) }
+                            ?: selectedCategory.category.name,
                         onClick = onClearCategoryFilter,
-                        label = {
-                            Text(
-                                text = selectedCategory.category.titleResId?.let { stringResource(it) }
-                                    ?: selectedCategory.category.name,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = stringResource(R.string.budget_show_all_transactions),
-                                modifier = Modifier.size(InputChipDefaults.IconSize),
-                            )
-                        },
+                        variant = EmChipVariant.Input,
+                        onRemove = onClearCategoryFilter,
                     )
                 }
             }
@@ -251,12 +223,12 @@ private fun BudgetDetailContent(
 
         if (transactions.isEmpty()) {
             item(key = "empty") {
-                EmptyItem(
+                EmEmptyState(
+                    illustration = painterResource(id = DesignSystemR.drawable.ic_no_transaction),
+                    title = stringResource(id = com.naveenapps.expensemanager.feature.category.R.string.no_transactions_available),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 24.dp),
-                    emptyItemText = stringResource(id = com.naveenapps.expensemanager.feature.category.R.string.no_transactions_available),
-                    icon = DesignSystemR.drawable.ic_no_transaction,
+                        .padding(top = EmTheme.spacing.xl),
                 )
             }
         } else {
@@ -264,11 +236,11 @@ private fun BudgetDetailContent(
                 items = transactions,
                 key = { _, item -> "transaction_${item.id}" },
             ) { index, item ->
-                AppCardView(
+                EmCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 16.dp, end = 16.dp, bottom = 2.dp),
-                    shape = AppCardViewDefaults.cardShape(index, transactions),
+                        .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.lg, bottom = EmTheme.spacing.xxs),
+                    position = EmCardPosition.of(index, transactions),
                 ) {
                     TransactionItem(
                         modifier = Modifier.fillMaxWidth(),
@@ -303,23 +275,25 @@ private fun SectionHeader(text: String, trailing: (@Composable () -> Unit)? = nu
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 16.dp, top = 20.dp, bottom = 10.dp),
+            .padding(
+                start = EmTheme.spacing.xl,
+                end = EmTheme.spacing.lg,
+                top = EmTheme.spacing.xl,
+                bottom = EmTheme.spacing.sm,
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Text(
-            text = text.uppercase(),
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = 0.8.sp,
-            ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+        EmText(
+            text = text,
+            role = EmTextRole.Overline,
+            color = EmTextColor.Supporting,
         )
         trailing?.invoke()
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun BudgetDetailsScaffoldViewPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

@@ -1,4 +1,5 @@
-• Zapisz najczęstszy wydatek jednym dotknięciem prosto z codziennego przypomnienia, z opcją Cofnij
-• Codzienne przypomnienia przychodzą punktualniej, a ekran Przypomnienie pokazuje, jak to naprawić, gdy telefon je blokuje
-• Włączając przypomnienia na ekranie głównym, otrzymasz propozycję godziny, o której zwykle zapisujesz
-• Filtry: przycisk Zastosuj jest widoczny nawet przy wielu kategoriach, a typy transakcji są przetłumaczone
+• Nowość: Osoby i długi. Zapisuj pożyczki, częściowe spłaty i terminy oraz wysyłaj przypomnienia (Ustawienia → Osoby i długi)
+• Budżety nie są już czerwone, gdy wciąż mieścisz się w limicie
+• Eksport działa na każdym telefonie: bez wyboru plików plik otwiera się w menu udostępniania
+• Anuluj w filtrze dat nie zmienia już wybranego okresu
+• Czystszy, spójniejszy wygląd

@@ -115,4 +115,8 @@
     <string name="suggested_categories">Sugeridas</string>
     <string name="receipt_scanner_unavailable">El escáner de recibos no está disponible en este dispositivo</string>
     <string name="receipt_scanner_preparing">Los servicios de Google Play están descargando el escáner de recibos. Se abrirá cuando esté listo.</string>
+    <string name="debt_row_lent">Prestado a %1$s</string>
+    <string name="debt_row_borrowed">Pedido a %1$s</string>
+    <string name="debt_row_received">Devuelto por %1$s</string>
+    <string name="debt_row_paid">Devuelto a %1$s</string>
 </resources>

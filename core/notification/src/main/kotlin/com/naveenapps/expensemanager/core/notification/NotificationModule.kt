@@ -7,6 +7,18 @@ import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
 val NotificationModule = module {
+    worker {
+        DebtDueWorker(
+            context = androidContext(),
+            workerParams = get(),
+            getDebtBalancesUseCase = get(),
+            getCurrencyUseCase = get(),
+            getFormattedAmountUseCase = get(),
+            reminderTimeRepository = get(),
+            notificationScheduler = get(),
+            analyticsRepository = get(),
+        )
+    }
     single<NotificationScheduler> {
         NotificationScheduler(
             context = androidContext(),

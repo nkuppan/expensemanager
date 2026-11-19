@@ -34,4 +34,8 @@
     <plurals name="upcoming_alert_title_many">
         <item quantity="other">내일 반복 항목 %d개</item>
     </plurals>
+    <string name="debt_due_title_one">오늘 마감: %1$s</string>
+    <string name="debt_due_title_many">오늘 마감인 빚 %1$d건</string>
+    <string name="debt_due_owes_you">%1$s 님에게 받을 돈 %2$s</string>
+    <string name="debt_due_you_owe">%1$s 님에게 갚을 돈 %2$s</string>
 </resources>

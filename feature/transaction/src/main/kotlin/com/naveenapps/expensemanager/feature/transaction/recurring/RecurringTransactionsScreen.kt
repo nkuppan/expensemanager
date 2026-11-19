@@ -11,48 +11,41 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.EventRepeat
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyAction
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmMenuItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmOverflowMenu
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearchField
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.R
 import org.koin.compose.viewmodel.koinViewModel
@@ -75,21 +68,12 @@ private fun RecurringTransactionsContent(
     onAction: (RecurringTransactionsAction) -> Unit,
 ) {
     state.pendingStop?.let {
-        AlertDialog(
-            onDismissRequest = { onAction(RecurringTransactionsAction.DismissStop) },
-            icon = { Icon(Icons.Outlined.EventRepeat, contentDescription = null) },
-            title = { Text(text = stringResource(R.string.recurring_stop_title)) },
-            text = { Text(text = stringResource(R.string.recurring_stop_message)) },
-            confirmButton = {
-                TextButton(onClick = { onAction(RecurringTransactionsAction.ConfirmStop) }) {
-                    Text(text = stringResource(R.string.recurring_stop))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction(RecurringTransactionsAction.DismissStop) }) {
-                    Text(text = stringResource(android.R.string.cancel))
-                }
-            },
+        EmConfirm(
+            title = stringResource(R.string.recurring_stop_title),
+            message = stringResource(R.string.recurring_stop_message),
+            confirmText = stringResource(R.string.recurring_stop),
+            onConfirm = { onAction(RecurringTransactionsAction.ConfirmStop) },
+            onDismiss = { onAction(RecurringTransactionsAction.DismissStop) },
         )
     }
 
@@ -98,43 +82,41 @@ private fun RecurringTransactionsContent(
         onAction(RecurringTransactionsAction.Search(""))
     }
 
-    Scaffold(
+    EmScaffold(
         floatingActionButton = {
             // The empty state has its own add button; avoid showing two.
             if (state.hasAnyRules) {
-                FloatingActionButton(
+                EmFab(
+                    icon = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add_recurring_transaction),
                     onClick = { onAction(RecurringTransactionsAction.OpenCreate) },
-                    shape = RoundedCornerShape(16.dp),
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.add_recurring_transaction),
-                    )
-                }
+                )
             }
         },
         topBar = {
             Column {
-                ExpenseManagerTopAppBar(
-                    navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                    navigationBackClick = { onAction(RecurringTransactionsAction.ClosePage) },
+                EmTopBar(
+                    navigation = EmTopBarNavigation.Back,
+                    onNavigationClick = { onAction(RecurringTransactionsAction.ClosePage) },
                     title = stringResource(R.string.recurring_transactions),
                 )
                 // Nothing to search until there's at least one rule.
                 if (state.hasAnyRules) {
-                    SheetSearchField(
+                    EmSearchField(
                         query = state.searchQuery,
                         onQueryChange = { onAction(RecurringTransactionsAction.Search(it)) },
                         placeholder = stringResource(R.string.search_recurring_hint),
-                        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                        modifier = Modifier.padding(
+                            start = EmTheme.spacing.lg,
+                            end = EmTheme.spacing.lg,
+                            bottom = EmTheme.spacing.sm,
+                        ),
                     )
                 }
             }
         },
     ) { innerPadding ->
-        val items = state.items ?: return@Scaffold
+        val items = state.items ?: return@EmScaffold
         when {
             !state.hasAnyRules -> RecurringEmptyState(
                 modifier = Modifier.padding(innerPadding),
@@ -148,14 +130,19 @@ private fun RecurringTransactionsContent(
                     .fillMaxSize()
                     .padding(innerPadding),
                 // Bottom padding keeps the last row clear of the add button.
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 88.dp),
+                contentPadding = PaddingValues(
+                    start = EmTheme.spacing.lg,
+                    end = EmTheme.spacing.lg,
+                    top = EmTheme.spacing.sm,
+                    bottom = 88.dp,
+                ),
             ) {
                 itemsIndexed(items, key = { _, item -> item.rule.id }) { index, item ->
-                    AppCardView(
+                    EmCard(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 2.dp),
-                        shape = AppCardViewDefaults.cardShape(index, items),
+                            .padding(bottom = EmTheme.spacing.xxs),
+                        position = EmCardPosition.of(index, items),
                     ) {
                         RecurringRow(
                             item = item,
@@ -176,17 +163,20 @@ private fun RecurringRow(item: RecurringItemUi, onClick: () -> Unit, onStop: () 
     val title = rule.notes.ifBlank { categoryName }
     val account = listOfNotNull(rule.fromAccount?.name, rule.toAccount?.name).joinToString(" → ")
     val amountColor = when (rule.type) {
-        TransactionType.EXPENSE -> colorResource(com.naveenapps.expensemanager.core.common.R.color.red_500)
-        TransactionType.INCOME -> colorResource(com.naveenapps.expensemanager.core.common.R.color.green_500)
-        else -> MaterialTheme.colorScheme.onSurface
+        TransactionType.EXPENSE -> EmTheme.colors.expense
+        TransactionType.INCOME -> EmTheme.colors.income
+        else -> EmTheme.colors.scheme.onSurface
     }
-
-    var showMenu by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
             .clickable(onClick = onClick)
-            .padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp),
+            .padding(
+                start = EmTheme.spacing.lg,
+                top = EmTheme.spacing.md,
+                bottom = EmTheme.spacing.md,
+                end = EmTheme.spacing.xs,
+            ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         rule.category?.let {
@@ -196,67 +186,46 @@ private fun RecurringRow(item: RecurringItemUi, onClick: () -> Unit, onStop: () 
                 name = categoryName,
                 customImagePath = it.storedIcon.customImagePath,
             )
-            Spacer(modifier = Modifier.width(14.dp))
+            Spacer(modifier = Modifier.width(EmTheme.spacing.md))
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            EmText(
                 text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
+                role = EmTextRole.ItemTitle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
+            EmText(
                 text = stringResource(
                     R.string.recurring_schedule,
                     stringResource(rule.frequency.labelResId),
                     rule.nextDueDate.toCompleteDateWithDate(),
                 ),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
             )
             if (account.isNotBlank()) {
-                Text(
+                EmText(
                     text = account,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
         }
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = item.amount,
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.SemiBold,
+        Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+        EmAmountText(
+            amount = item.amount,
             color = amountColor,
         )
-        Box {
-            IconButton(onClick = { showMenu = true }) {
-                Icon(
-                    imageVector = Icons.Default.MoreVert,
-                    contentDescription = stringResource(R.string.recurring_more_options),
-                )
-            }
-            DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-                DropdownMenuItem(
-                    text = { Text(text = stringResource(R.string.recurring_edit)) },
-                    onClick = {
-                        showMenu = false
-                        onClick()
-                    },
-                )
-                DropdownMenuItem(
-                    text = { Text(text = stringResource(R.string.recurring_stop)) },
-                    onClick = {
-                        showMenu = false
-                        onStop()
-                    },
-                )
-            }
-        }
+        EmOverflowMenu(
+            contentDescription = stringResource(R.string.recurring_more_options),
+            items = listOf(
+                EmMenuItem(label = stringResource(R.string.recurring_edit), onClick = onClick),
+                EmMenuItem(label = stringResource(R.string.recurring_stop), onClick = onStop, destructive = true),
+            ),
+        )
     }
 }
 
@@ -265,14 +234,13 @@ private fun RecurringNoMatches(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(32.dp),
+            .padding(EmTheme.spacing.xxl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Text(
+        EmText(
             text = stringResource(R.string.recurring_no_matches),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = EmTextColor.Supporting,
             textAlign = TextAlign.Center,
         )
     }
@@ -280,43 +248,12 @@ private fun RecurringNoMatches(modifier: Modifier = Modifier) {
 
 @Composable
 private fun RecurringEmptyState(onAdd: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.EventRepeat,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(bottom = 16.dp),
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        EmEmptyState(
+            icon = Icons.Outlined.EventRepeat,
+            title = stringResource(R.string.recurring_empty_title),
+            body = stringResource(R.string.recurring_empty_message),
+            action = EmEmptyAction(stringResource(R.string.add_recurring_transaction), onAdd),
         )
-        Text(
-            text = stringResource(R.string.recurring_empty_title),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        Text(
-            text = stringResource(R.string.recurring_empty_message),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 8.dp),
-            textAlign = TextAlign.Center,
-        )
-        Button(
-            onClick = onAdd,
-            modifier = Modifier.padding(top = 24.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = null,
-                modifier = Modifier.size(ButtonDefaults.IconSize),
-            )
-            Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-            Text(text = stringResource(R.string.add_recurring_transaction))
-        }
     }
 }

@@ -79,6 +79,13 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Ver mais (%1$d)</string>
     <string name="notification_see_less">Ver menos</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Novo: Pessoas e dívidas. Registre dinheiro emprestado, pagamentos parciais e vencimentos, e envie um lembrete gentil (Configurações → Pessoas e dívidas)</item>
+        <item>Os orçamentos não aparecem mais em vermelho enquanto você está dentro do limite</item>
+        <item>Exportar funciona em todos os celulares: sem seletor de arquivos, o arquivo abre para compartilhar</item>
+        <item>Cancelar no filtro de datas não altera mais o período selecionado</item>
+        <item>Um visual mais limpo e consistente</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Registre sua despesa mais frequente direto do lembrete diário com um toque, com Desfazer se errar</item>
         <item>Os lembretes diários chegam na hora com mais confiabilidade, e a tela Lembrete mostra como resolver se o celular os bloquear</item>
@@ -113,4 +120,5 @@
     <string name="reminder_banner_title_with_time">Você costuma registrar por volta das %1$s</string>
     <string name="reminder_banner_body_with_time">Receba um lembrete diário nesse horário para não esquecer nada.</string>
     <string name="reminder_banner_turn_on_at">Lembrar às %1$s</string>
+    <string name="home_debts_title">Pessoas e dívidas</string>
 </resources>

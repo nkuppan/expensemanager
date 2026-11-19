@@ -7,14 +7,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,6 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import java.io.File
 
@@ -48,7 +46,7 @@ fun AttachmentThumbnail(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(THUMBNAIL_SIZE)
-                .clip(RoundedCornerShape(12.dp)),
+                .clip(EmTheme.shapes.md),
         )
         // A plain clickable circle rather than IconButton — IconButton enforces a 48dp minimum
         // touch target regardless of the size() passed in, which made this badge spill outside
@@ -56,10 +54,10 @@ fun AttachmentThumbnail(
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(3.dp)
+                .padding(EmTheme.spacing.xs)
                 .size(24.dp)
-                .background(MaterialTheme.colorScheme.error, CircleShape)
-                .border(1.dp, MaterialTheme.colorScheme.surface, CircleShape)
+                .background(EmTheme.colors.scheme.error, EmTheme.shapes.pill)
+                .border(1.dp, EmTheme.colors.scheme.surface, EmTheme.shapes.pill)
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
@@ -67,11 +65,11 @@ fun AttachmentThumbnail(
                 ),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(
-                imageVector = Icons.Rounded.Close,
+            EmIcon(
+                icon = Icons.Rounded.Close,
                 contentDescription = stringResource(R.string.remove_photo),
-                tint = MaterialTheme.colorScheme.onError,
-                modifier = Modifier.size(16.dp),
+                size = EmTheme.icons.sm,
+                tint = EmTheme.colors.scheme.onError,
             )
         }
     }
@@ -89,21 +87,20 @@ fun AttachmentAddTile(
     Box(
         modifier = modifier
             .size(THUMBNAIL_SIZE)
-            .clip(RoundedCornerShape(12.dp))
+            .clip(EmTheme.shapes.md)
             .border(
                 width = 1.5.dp,
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.4f),
-                shape = RoundedCornerShape(12.dp),
+                color = EmTheme.colors.scheme.outlineVariant,
+                shape = EmTheme.shapes.md,
             ),
         contentAlignment = Alignment.Center,
     ) {
-        IconButton(onClick = onClick) {
-            Icon(
-                imageVector = Icons.Rounded.Add,
-                contentDescription = stringResource(R.string.add_attachment),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+        EmIconButton(
+            icon = Icons.Rounded.Add,
+            contentDescription = stringResource(R.string.add_attachment),
+            onClick = onClick,
+            tint = EmTheme.colors.scheme.onSurfaceVariant,
+        )
     }
 }
 

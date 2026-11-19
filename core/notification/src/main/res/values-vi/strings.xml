@@ -34,4 +34,8 @@
     <plurals name="upcoming_alert_title_many">
         <item quantity="other">%d khoản định kỳ vào ngày mai</item>
     </plurals>
+    <string name="debt_due_title_one">Đến hạn hôm nay: %1$s</string>
+    <string name="debt_due_title_many">%1$d khoản nợ đến hạn hôm nay</string>
+    <string name="debt_due_owes_you">%1$s nợ bạn %2$s</string>
+    <string name="debt_due_you_owe">Bạn nợ %1$s %2$s</string>
 </resources>

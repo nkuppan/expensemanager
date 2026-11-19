@@ -37,4 +37,8 @@
         <item quantity="many">%d wpisów cyklicznych jutro</item>
         <item quantity="other">%d wpisu cyklicznego jutro</item>
     </plurals>
+    <string name="debt_due_title_one">Termin dziś: %1$s</string>
+    <string name="debt_due_title_many">Długi z terminem dziś: %1$d</string>
+    <string name="debt_due_owes_you">%1$s jest ci winien %2$s</string>
+    <string name="debt_due_you_owe">Jesteś winien %1$s %2$s</string>
 </resources>

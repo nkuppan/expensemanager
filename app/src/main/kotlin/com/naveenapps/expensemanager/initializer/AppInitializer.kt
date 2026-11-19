@@ -52,6 +52,7 @@ class AppInitializer : Initializer<Unit> {
             notificationScheduler.scheduleWeeklySummary()
             notificationScheduler.scheduleRecurringTransactions()
             notificationScheduler.checkAndScheduleUpcomingAlert()
+            notificationScheduler.scheduleDebtDueCheck()
         }
         observeDataForWidget(context, CoroutineScope(SupervisorJob() + Dispatchers.IO))
 

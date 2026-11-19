@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.transaction.list
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.FormatAmountInCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -90,6 +91,9 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
             addTransactionUseCase = addTransactionUseCase,
             imageStorageRepository = imageStorageRepository,
             analyticsRepository = mock(),
+            getDebtActivityUseCase = mock<GetDebtActivityUseCase>().also {
+                whenever(it.invoke(any())).thenReturn(flowOf(emptyList()))
+            },
         )
     }
 

@@ -12,6 +12,7 @@ android {
 dependencies {
     implementation(project(":feature:account"))
     implementation(project(":feature:budget"))
+    implementation(project(":feature:debt"))
     implementation(project(":feature:category"))
     implementation(project(":feature:filter"))
     implementation(project(":feature:transaction"))
@@ -19,4 +20,5 @@ dependencies {
     implementation(project(":core:notification"))
     // Streak card flame icon (R8 strips the unused icons from release builds).
     implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.compose.material3)
 }

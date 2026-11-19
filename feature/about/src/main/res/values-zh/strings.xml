@@ -10,4 +10,5 @@
     <string name="search_libraries">搜索库</string>
     <string name="open_license">打开许可证</string>
     <string name="licenses_unavailable">此版本未包含许可证信息。</string>
+    <string name="about_email">邮件</string>
 </resources>

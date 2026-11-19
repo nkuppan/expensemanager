@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,29 +11,27 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.NotificationsActive
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 
 /**
  * In-app explainer shown once, after the first saved transaction, before the system
@@ -44,7 +43,7 @@ fun ReminderPrimerSheet(
     onTurnOn: () -> Unit,
     onNotNow: () -> Unit,
 ) {
-    SafeModalBottomSheet(onDismissRequest = onNotNow) {
+    EmModalSheet(onDismissRequest = onNotNow) {
         ReminderPrimerContent(onTurnOn = onTurnOn, onNotNow = onNotNow)
     }
 }
@@ -59,88 +58,71 @@ private fun ReminderPrimerContent(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 24.dp)
-            .padding(bottom = 16.dp)
+            .padding(horizontal = EmTheme.spacing.xl)
+            .padding(bottom = EmTheme.spacing.lg)
             .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        Surface(
-            modifier = Modifier.size(64.dp),
-            shape = CircleShape,
-            color = MaterialTheme.colorScheme.primaryContainer,
+        Box(
+            modifier = Modifier
+                .size(EmTheme.icons.hero)
+                .clip(EmTheme.shapes.pill)
+                .background(EmTheme.colors.scheme.primaryContainer),
+            contentAlignment = Alignment.Center,
         ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(
-                    imageVector = Icons.Outlined.NotificationsActive,
-                    contentDescription = null,
-                    modifier = Modifier.size(30.dp),
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
+            EmIcon(
+                icon = Icons.Outlined.NotificationsActive,
+                contentDescription = null,
+                tint = EmTheme.colors.scheme.primary,
+            )
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
 
-        Text(
+        EmText(
             text = stringResource(id = R.string.reminder_primer_title),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
+            role = EmTextRole.ScreenTitle,
             textAlign = TextAlign.Center,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
 
-        Text(
+        EmText(
             text = stringResource(id = R.string.reminder_primer_description),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = EmTextColor.Supporting,
             textAlign = TextAlign.Center,
         )
 
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.xxl))
 
-        Button(
+        EmButton(
+            text = stringResource(id = R.string.reminder_primer_turn_on),
             onClick = onTurnOn,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(54.dp),
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            ),
-        ) {
-            Text(
-                text = stringResource(id = R.string.reminder_primer_turn_on),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-            )
-        }
+        )
 
-        Spacer(modifier = Modifier.height(4.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.xs))
 
-        TextButton(
+        EmButton(
+            text = stringResource(id = R.string.reminder_primer_not_now),
             onClick = onNotNow,
             modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = stringResource(id = R.string.reminder_primer_not_now),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+            variant = EmButtonVariant.Tertiary,
+        )
 
-        Text(
+        EmText(
             text = stringResource(id = R.string.reminder_primer_footnote),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
             textAlign = TextAlign.Center,
         )
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun ReminderPrimerContentPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

@@ -119,4 +119,6 @@
     <string name="more">Altro</string>
     <string name="preferences">Preferenze</string>
     <string name="preferences_message">Predefiniti per nuove voci, Home e altro</string>
+    <string name="debts_setting">Persone e debiti</string>
+    <string name="debts_setting_message">Denaro prestato o preso in prestito</string>
 </resources>

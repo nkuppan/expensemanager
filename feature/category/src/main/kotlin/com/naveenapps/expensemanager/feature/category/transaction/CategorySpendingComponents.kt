@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.category.transaction
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
@@ -8,17 +7,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
@@ -37,7 +34,7 @@ fun CategorySpendingChartCard(
     footer: (@Composable () -> Unit)? = null,
 ) {
     val indicationSource = remember { MutableInteractionSource() }
-    AppCardView(modifier = modifier.fillMaxWidth()) {
+    EmCard(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,7 +50,7 @@ fun CategorySpendingChartCard(
                 },
                 hideValues = state.hideValues,
                 modifier = Modifier
-                    .padding(vertical = 12.dp)
+                    .padding(vertical = EmTheme.spacing.md)
                     .then(
                         if (onChartClick != null) {
                             Modifier.clickable(indicationSource, null, onClick = onChartClick)
@@ -81,16 +78,12 @@ fun LazyListScope.categorySpendingItems(
         key = { _, item -> "category_${item.category.id}" },
     ) { index, categoryTransaction ->
         val isSelected = categoryTransaction.category.id == selectedCategoryId
-        AppCardView(
+        EmCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 2.dp),
-            shape = AppCardViewDefaults.cardShape(index, categoryTransactions),
-            border = if (isSelected) {
-                BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-            } else {
-                CardDefaults.outlinedCardBorder()
-            },
+                .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.lg, bottom = EmTheme.spacing.xxs),
+            position = EmCardPosition.of(index, categoryTransactions),
+            selected = isSelected,
         ) {
             CategoryTransactionItem(
                 modifier = Modifier.clickable { onItemClick(categoryTransaction) },

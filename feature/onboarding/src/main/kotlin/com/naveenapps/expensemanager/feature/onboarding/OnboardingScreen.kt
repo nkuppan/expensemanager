@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.onboarding
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,20 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.AccountBalanceWallet
 import androidx.compose.material.icons.outlined.Payments
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,18 +30,25 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconTile
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -105,7 +104,7 @@ private fun OnboardingContentView(
         )
     }
 
-    Scaffold(
+    EmScaffold(
         bottomBar = {
             OnboardingBottomBar(
                 onGetStarted = { onAction.invoke(OnboardingAction.GetStarted) },
@@ -121,7 +120,7 @@ private fun OnboardingContentView(
         ) {
             WelcomeHeader()
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
 
             StepSection(title = stringResource(id = R.string.select_main_currency)) {
                 CurrencyCard(
@@ -130,7 +129,7 @@ private fun OnboardingContentView(
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
 
             StepSection(
                 title = stringResource(id = com.naveenapps.expensemanager.feature.account.R.string.accounts),
@@ -141,7 +140,7 @@ private fun OnboardingContentView(
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
         }
     }
 }
@@ -155,7 +154,7 @@ private fun WelcomeHeader() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 24.dp),
+            .padding(horizontal = EmTheme.spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
@@ -171,24 +170,20 @@ private fun WelcomeHeader() {
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
 
-        Text(
+        EmText(
             text = stringResource(id = R.string.welcome_message_title),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
+            role = EmTextRole.Display,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface,
-            letterSpacing = (-0.3).sp,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
 
-        Text(
+        EmText(
             text = stringResource(id = R.string.welcome_message_description),
-            style = MaterialTheme.typography.bodyLarge,
+            color = EmTextColor.Supporting,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -231,62 +226,46 @@ private fun SetupRowCard(
     trailing: String,
     onClick: () -> Unit,
 ) {
-    AppCardView(
+    EmCard(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Surface(
-                modifier = Modifier.size(40.dp),
-                shape = RoundedCornerShape(10.dp),
-                color = MaterialTheme.colorScheme.primaryContainer,
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.width(14.dp))
+            EmIconTile(icon = icon)
+            Spacer(modifier = Modifier.width(EmTheme.spacing.md))
             Column(modifier = Modifier.weight(1f)) {
-                Text(
+                EmText(
                     text = title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    role = EmTextRole.ItemTitle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Text(
+                EmText(
                     text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 if (trailing.isNotBlank()) {
-                    Text(
+                    EmText(
                         text = trailing,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.SemiBold,
+                        role = EmTextRole.Label,
+                        color = EmTextColor.Primary,
                         maxLines = 1,
                     )
                 }
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                EmIcon(
+                    icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    size = EmTheme.icons.md,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
             }
         }
@@ -298,34 +277,26 @@ private fun OnboardingBottomBar(
     onGetStarted: () -> Unit,
     shareRepository: ShareRepository?,
 ) {
-    Surface(
-        color = MaterialTheme.colorScheme.surfaceContainerLowest,
-        shadowElevation = 0.dp,
-    ) {
+    Box(modifier = Modifier.background(EmTheme.colors.scheme.surfaceContainerLowest)) {
         Column(modifier = Modifier.navigationBarsPadding()) {
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+            EmDivider()
             Column(
-                modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 16.dp, bottom = 8.dp),
+                modifier = Modifier.padding(
+                    start = EmTheme.spacing.xl,
+                    end = EmTheme.spacing.xl,
+                    top = EmTheme.spacing.lg,
+                    bottom = EmTheme.spacing.sm,
+                ),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Button(
+                EmButton(
+                    text = stringResource(id = R.string.onboarding_get_started),
                     onClick = onGetStarted,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(54.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.onboarding_get_started),
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
-                Spacer(modifier = Modifier.height(4.dp))
+                )
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xs))
                 PrivacyText(shareRepository = shareRepository)
             }
         }
@@ -338,9 +309,9 @@ private fun PrivacyText(shareRepository: ShareRepository?) {
     // <annotation> span: annotations proved unreliable after an in-app locale switch.
     val template = stringResource(id = R.string.privacy_text)
     val linkText = stringResource(id = R.string.privacy_policy_link)
-    val linkColor = MaterialTheme.colorScheme.primary
-    Text(
-        modifier = Modifier.padding(top = 4.dp, bottom = 8.dp),
+    val linkColor = EmTheme.colors.scheme.primary
+    val linkWeight = EmTheme.type.label.fontWeight
+    EmText(
         text = buildAnnotatedString {
             val placeholderIndex = template.indexOf(LINK_PLACEHOLDER)
             if (placeholderIndex >= 0) {
@@ -354,7 +325,7 @@ private fun PrivacyText(shareRepository: ShareRepository?) {
                         url = "",
                         linkInteractionListener = { shareRepository?.openPrivacy() },
                         styles = TextLinkStyles(
-                            style = SpanStyle(color = linkColor, fontWeight = FontWeight.Medium),
+                            style = SpanStyle(color = linkColor, fontWeight = linkWeight),
                         ),
                     ),
                     start = start,
@@ -364,9 +335,10 @@ private fun PrivacyText(shareRepository: ShareRepository?) {
                 append(template)
             }
         },
-        style = MaterialTheme.typography.bodySmall,
+        modifier = Modifier.padding(top = EmTheme.spacing.xs, bottom = EmTheme.spacing.sm),
+        role = EmTextRole.Supporting,
+        color = EmTextColor.Supporting,
         textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
 
@@ -377,20 +349,18 @@ private fun StepSection(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp),
+        modifier = modifier.padding(horizontal = EmTheme.spacing.lg),
     ) {
-        Text(
+        EmText(
             text = title,
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(bottom = 10.dp),
+            modifier = Modifier.padding(bottom = EmTheme.spacing.sm),
+            role = EmTextRole.SectionTitle,
         )
         content()
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun OnboardingScreenPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

@@ -34,4 +34,8 @@
     <plurals name="upcoming_alert_title_many">
         <item quantity="other">明日の定期項目 %d 件</item>
     </plurals>
+    <string name="debt_due_title_one">今日が期限：%1$s</string>
+    <string name="debt_due_title_many">今日が期限の貸し借り %1$d 件</string>
+    <string name="debt_due_owes_you">%1$sさんへの貸し %2$s</string>
+    <string name="debt_due_you_owe">%1$sさんからの借り %2$s</string>
 </resources>

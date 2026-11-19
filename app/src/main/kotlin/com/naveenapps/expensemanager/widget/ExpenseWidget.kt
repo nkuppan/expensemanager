@@ -1,3 +1,6 @@
+// Glance widgets can't read the Compose theme, so the widget keeps its own colours and sizes.
+@file:Suppress("HardcodedColor", "HardcodedTextStyle", "HardcodedShape", "RawMaterialUsage")
+
 package com.naveenapps.expensemanager.widget
 
 import android.content.Context

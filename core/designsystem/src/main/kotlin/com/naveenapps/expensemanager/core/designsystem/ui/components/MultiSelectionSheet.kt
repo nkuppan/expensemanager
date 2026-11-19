@@ -8,18 +8,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.TriStateCheckbox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,9 +20,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.state.ToggleableState
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmNoSearchResults
+import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 
 /**
  * The shared layout of the multi-select bottom sheets (categories, accounts): a title with a
@@ -60,87 +60,78 @@ fun MultiSelectionSheet(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 12.dp, top = 4.dp, bottom = 12.dp),
+                    .padding(start = EmTheme.spacing.xl, end = EmTheme.spacing.md, top = EmTheme.spacing.xs, bottom = EmTheme.spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f),
+                    role = EmTextRole.ScreenTitle,
                 )
                 if (onClose != null) {
-                    IconButton(
+                    EmIconButton(
+                        icon = Icons.Rounded.Close,
+                        contentDescription = stringResource(R.string.a11y_close),
                         onClick = onClose,
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-                        ),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.Close,
-                            contentDescription = stringResource(R.string.a11y_close),
-                            modifier = Modifier.size(20.dp),
-                        )
-                    }
+                        variant = EmIconButtonVariant.Tonal,
+                    )
                 }
             }
 
-            SheetSearchField(
+            EmSearchField(
                 query = query,
                 onQueryChange = onQueryChange,
                 placeholder = searchPlaceholder,
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
             )
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
+                    .padding(start = EmTheme.spacing.xl, end = EmTheme.spacing.sm, top = EmTheme.spacing.xs, bottom = EmTheme.spacing.xs),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = selectedText,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.weight(1f),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
                 Row(
                     modifier = Modifier
-                        .clip(CircleShape)
+                        .clip(EmTheme.shapes.pill)
                         .clickable(role = Role.Checkbox, onClick = onSelectAllClick)
-                        .padding(end = 12.dp),
+                        .padding(end = EmTheme.spacing.md),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // The row handles the click (and is the accessible checkbox).
-                    TriStateCheckbox(state = selectAllState, onClick = null, modifier = Modifier.padding(12.dp))
-                    Text(
+                    TriStateCheckbox(state = selectAllState, onClick = null, modifier = Modifier.padding(EmTheme.spacing.md))
+                    EmText(
                         text = stringResource(R.string.selection_select_all),
-                        style = MaterialTheme.typography.labelLarge,
-                        fontWeight = FontWeight.SemiBold,
+                        role = EmTextRole.Label,
                     )
                 }
             }
 
             if (showNoResults) {
-                NoSearchResults(modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp))
+                EmNoSearchResults(modifier = Modifier.padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.xl))
             }
 
             LazyColumn(
                 modifier = Modifier.weight(1f, fill = false),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 4.dp, bottom = DONE_CLEARANCE),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                contentPadding = PaddingValues(start = EmTheme.spacing.lg, end = EmTheme.spacing.lg, top = EmTheme.spacing.xs, bottom = DONE_CLEARANCE),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
                 content = items,
             )
         }
 
-        Button(
+        EmButton(
+            text = stringResource(R.string.selection_done),
             onClick = onDone,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp),
-        ) {
-            Text(text = stringResource(R.string.selection_done), fontWeight = FontWeight.SemiBold)
-        }
+                .padding(EmTheme.spacing.lg),
+        )
     }
 }
 

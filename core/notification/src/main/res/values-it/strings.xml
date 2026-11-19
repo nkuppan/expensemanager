@@ -36,4 +36,8 @@
         <item quantity="many">%d voci ricorrenti domani</item>
         <item quantity="other">%d voci ricorrenti domani</item>
     </plurals>
+    <string name="debt_due_title_one">Scade oggi: %1$s</string>
+    <string name="debt_due_title_many">%1$d debiti scadono oggi</string>
+    <string name="debt_due_owes_you">%1$s ti deve %2$s</string>
+    <string name="debt_due_you_owe">Devi %2$s a %1$s</string>
 </resources>

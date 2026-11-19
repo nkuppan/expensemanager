@@ -77,6 +77,13 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">और देखें (%1$d)</string>
     <string name="notification_see_less">कम देखें</string>
+    <string-array name="whats_new_1_4_31">
+        <item>नया: लोग और उधार। दिए या लिए गए उधार, आंशिक भुगतान और देय तारीख़ें दर्ज करें, और याद दिलाने का संदेश भेजें (सेटिंग्स → लोग और उधार)</item>
+        <item>बजट की सीमा में रहते हुए अब बजट लाल नहीं दिखता</item>
+        <item>एक्सपोर्ट हर फ़ोन पर काम करता है: फ़ाइल पिकर न हो तो फ़ाइल शेयर मेनू में खुलती है</item>
+        <item>तारीख़ फ़िल्टर में रद्द करने से अब चुनी गई अवधि नहीं बदलती</item>
+        <item>ज़्यादा साफ़ और एक जैसा डिज़ाइन</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>रोज़ के रिमाइंडर से ही एक टैप में अपना सबसे आम खर्च जोड़ें, गलती हो तो पूर्ववत करें</item>
         <item>दैनिक रिमाइंडर अब ज़्यादा भरोसे से समय पर आते हैं, और फ़ोन रोके तो रिमाइंडर स्क्रीन ठीक करने का तरीका बताती है</item>
@@ -111,4 +118,5 @@
     <string name="reminder_banner_title_with_time">आप आमतौर पर लगभग %1$s पर लिखते हैं</string>
     <string name="reminder_banner_body_with_time">उसी समय रोज़ एक रिमाइंडर पाएं ताकि कुछ न छूटे।</string>
     <string name="reminder_banner_turn_on_at">%1$s पर याद दिलाएं</string>
+    <string name="home_debts_title">लोग और उधार</string>
 </resources>

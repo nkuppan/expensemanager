@@ -50,4 +50,5 @@
     <string name="selection_done">Gotowe</string>
     <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
     <string name="recurring_badge">Cykliczna</string>
+    <string name="a11y_remove">Usuń %1$s</string>
 </resources>

@@ -113,4 +113,8 @@
     <string name="suggested_categories">Disarankan</string>
     <string name="receipt_scanner_unavailable">Pemindai struk tidak tersedia di perangkat ini</string>
     <string name="receipt_scanner_preparing">Layanan Google Play sedang mengunduh pemindai struk. Pemindai akan terbuka saat siap.</string>
+    <string name="debt_row_lent">Dipinjamkan ke %1$s</string>
+    <string name="debt_row_borrowed">Dipinjam dari %1$s</string>
+    <string name="debt_row_received">Diterima kembali dari %1$s</string>
+    <string name="debt_row_paid">Dibayar kembali ke %1$s</string>
 </resources>

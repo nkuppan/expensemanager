@@ -75,6 +75,13 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">查看更多（%1$d）</string>
     <string name="notification_see_less">收起</string>
+    <string-array name="whats_new_1_4_31">
+        <item>新功能：借贷记录。记录借出和借入的钱、部分还款和到期日，还能发送提醒（设置 → 借贷记录）</item>
+        <item>预算未超支时不再显示为红色</item>
+        <item>导出在所有手机上都可用：没有文件选择器时，文件会在分享菜单中打开</item>
+        <item>日期筛选中的“取消”不再更改所选时间段</item>
+        <item>更简洁、统一的界面</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>在每日提醒中一键记录你最常用的支出，点错了还能撤销</item>
         <item>每日提醒更可靠地准时送达；如果手机拦截了提醒，提醒页面会告诉你如何解决</item>
@@ -109,4 +116,5 @@
     <string name="reminder_banner_title_with_time">你通常在 %1$s 左右记账</string>
     <string name="reminder_banner_body_with_time">每天在那个时间提醒你，不再漏记。</string>
     <string name="reminder_banner_turn_on_at">在 %1$s 提醒我</string>
+    <string name="home_debts_title">借贷记录</string>
 </resources>

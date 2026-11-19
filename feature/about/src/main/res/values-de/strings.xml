@@ -10,4 +10,5 @@
     <string name="search_libraries">Bibliotheken suchen</string>
     <string name="open_license">Lizenz öffnen</string>
     <string name="licenses_unavailable">Lizenzen sind in diesem Build nicht enthalten.</string>
+    <string name="about_email">E-Mail</string>
 </resources>

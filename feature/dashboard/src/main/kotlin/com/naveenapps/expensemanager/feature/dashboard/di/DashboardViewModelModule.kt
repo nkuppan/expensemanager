@@ -28,6 +28,7 @@ val DashboardViewModelModule = module {
             reminderTimeRepository = get(),
             updateReminderStatusUseCase = get(),
             notificationScheduler = get(),
+            getDebtTotalsUseCase = get(),
         )
     }
     viewModel {

@@ -10,6 +10,7 @@ import com.naveenapps.expensemanager.core.data.repository.CountryRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CurrencyApiRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CurrencyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DateRangeFilterRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.DebtRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.DevicePropertyRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ExchangeRateRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ExportRepositoryImpl
@@ -40,6 +41,7 @@ import com.naveenapps.expensemanager.core.repository.CountryRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyApiRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
+import com.naveenapps.expensemanager.core.repository.DebtRepository
 import com.naveenapps.expensemanager.core.repository.DevicePropertyRepository
 import com.naveenapps.expensemanager.core.repository.ExchangeRateRepository
 import com.naveenapps.expensemanager.core.repository.ExportRepository
@@ -60,6 +62,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val RepositoryModule = module {
+    single<DebtRepository> { DebtRepositoryImpl(dao = get(), dispatchers = get()) }
     single<RecurringTransactionRepository> {
         RecurringTransactionRepositoryImpl(
             dao = get(),

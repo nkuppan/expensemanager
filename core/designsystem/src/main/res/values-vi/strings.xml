@@ -50,4 +50,5 @@
     <string name="selection_done">Xong</string>
     <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
     <string name="recurring_badge">Định kỳ</string>
+    <string name="a11y_remove">Xóa %1$s</string>
 </resources>

@@ -45,6 +45,8 @@ data class DashboardState(
     val backupWarning: AutoBackupError? = null,
     /** The "Upcoming" card: planned recurring entries, below the transactions. */
     val upcoming: UpcomingUi = UpcomingUi(),
+    /** People & debts card: open totals, formatted; null when nothing is owed either way. */
+    val debtTotals: DebtTotalsUi? = null,
     /**
      * Home's share banner is hidden until this time (epoch millis). Defaults to "never" so it
      * can't flash up before the stored value loads.
@@ -108,3 +110,6 @@ enum class ConversionNote {
     /** Conversion is disabled: each currency's total is shown on its own. */
     NOT_CONVERTED,
 }
+
+/** What the user will get back and what they owe, for Home's People & debts card. */
+data class DebtTotalsUi(val toGet: String, val toGive: String)

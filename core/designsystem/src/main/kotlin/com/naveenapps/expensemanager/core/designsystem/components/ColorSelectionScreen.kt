@@ -23,13 +23,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,13 +35,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 
 val colors = listOf(
     // Reds
@@ -144,50 +144,48 @@ fun ColorSelectionScreen(
             .wrapContentHeight(),
     ) {
         // Header
-        Text(
+        EmText(
             text = stringResource(id = R.string.choose_color),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
+            role = EmTextRole.SectionTitle,
         )
 
         // Selected color preview
         selectedColorValue?.let { colorInt ->
             val previewColor = Color(colorInt)
             Surface(
-                shape = MaterialTheme.shapes.medium,
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                shape = EmTheme.shapes.md,
+                color = EmTheme.colors.scheme.surfaceContainerHigh,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                    .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
             ) {
                 Row(
-                    modifier = Modifier.padding(12.dp),
+                    modifier = Modifier.padding(EmTheme.spacing.md),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                 ) {
                     Box(
                         modifier = Modifier
                             .size(36.dp)
-                            .clip(CircleShape)
+                            .clip(EmTheme.shapes.pill)
                             .background(previewColor)
                             .then(
                                 if (previewColor.luminance() > 0.9f) {
                                     Modifier.border(
                                         1.dp,
-                                        Color.Black.copy(alpha = 0.12f),
-                                        CircleShape,
+                                        Color.Black.tint(),
+                                        EmTheme.shapes.pill,
                                     )
                                 } else {
                                     Modifier
                                 },
                             ),
                     )
-                    Text(
+                    EmText(
                         text = String.format("#%06X", 0xFFFFFF and colorInt).uppercase(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontFamily = FontFamily.Monospace,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Code,
+                        color = EmTextColor.Supporting,
                     )
                 }
             }
@@ -198,10 +196,10 @@ fun ColorSelectionScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+            contentPadding = PaddingValues(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
             columns = GridCells.Fixed(5),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             items(colors, key = { it }) { colorString ->
                 val parsedColorInt = colorString.toColorInt()
@@ -225,14 +223,14 @@ fun ColorSelectionScreen(
                             scaleX = scale
                             scaleY = scale
                         }
-                        .clip(CircleShape)
+                        .clip(EmTheme.shapes.pill)
                         .background(itemColor)
                         .then(
                             if (isLight) {
                                 Modifier.border(
                                     1.dp,
-                                    Color.Black.copy(alpha = 0.12f),
-                                    CircleShape,
+                                    Color.Black.tint(),
+                                    EmTheme.shapes.pill,
                                 )
                             } else {
                                 Modifier
@@ -242,8 +240,8 @@ fun ColorSelectionScreen(
                             if (isSelected) {
                                 Modifier.border(
                                     2.5.dp,
-                                    MaterialTheme.colorScheme.outline,
-                                    CircleShape,
+                                    EmTheme.colors.scheme.outline,
+                                    EmTheme.shapes.pill,
                                 )
                             } else {
                                 Modifier
@@ -259,26 +257,26 @@ fun ColorSelectionScreen(
                     )
 
                     if (checkAlpha > 0f) {
-                        Icon(
-                            imageVector = Icons.Rounded.Check,
+                        EmIcon(
+                            icon = Icons.Rounded.Check,
                             contentDescription = null,
-                            tint = if (itemColor.luminance() > 0.5f) Color.Black else Color.White,
                             modifier = Modifier
-                                .size(20.dp)
                                 .graphicsLayer { alpha = checkAlpha },
+                            size = EmTheme.icons.md,
+                            tint = if (itemColor.luminance() > 0.5f) Color.Black else Color.White,
                         )
                     }
                 }
             }
 
             item(span = { GridItemSpan(this.maxLineSpan) }) {
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xxxl))
             }
         }
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun ColorSelectionPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

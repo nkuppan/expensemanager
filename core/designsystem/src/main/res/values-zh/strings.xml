@@ -50,4 +50,5 @@
     <string name="selection_done">完成</string>
     <!-- Spoken for the small repeat mark on a transaction a recurring rule added. -->
     <string name="recurring_badge">周期性</string>
+    <string name="a11y_remove">移除%1$s</string>
 </resources>

@@ -37,4 +37,8 @@
         <item quantity="one">%d recurring entry tomorrow</item>
         <item quantity="other">%d recurring entries tomorrow</item>
     </plurals>
+    <string name="debt_due_title_one">Due today: %1$s</string>
+    <string name="debt_due_title_many">%1$d debts due today</string>
+    <string name="debt_due_owes_you">%1$s owes you %2$s</string>
+    <string name="debt_due_you_owe">You owe %1$s %2$s</string>
 </resources>

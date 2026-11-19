@@ -28,6 +28,11 @@ data class TransactionUiItem(
     val categoryTitleResId: Int? = null,
     /** Added automatically by a recurring rule; lists mark it with a small repeat badge. */
     val isRecurring: Boolean = false,
+    /**
+     * Set for a debt entry shown among transactions ("Lent to Ravi"): [categoryName] then holds
+     * the person's name. It moved money in an account but isn't spending or income.
+     */
+    val debtKind: DebtEntryKind? = null,
 )
 
 fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = TransactionUiItem(

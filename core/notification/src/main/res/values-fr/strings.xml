@@ -36,4 +36,8 @@
         <item quantity="many">%d opérations récurrentes demain</item>
         <item quantity="other">%d opérations récurrentes demain</item>
     </plurals>
+    <string name="debt_due_title_one">Échéance aujourd\'hui : %1$s</string>
+    <string name="debt_due_title_many">%1$d dettes arrivent à échéance aujourd\'hui</string>
+    <string name="debt_due_owes_you">%1$s vous doit %2$s</string>
+    <string name="debt_due_you_owe">Vous devez %2$s à %1$s</string>
 </resources>

@@ -131,7 +131,7 @@ private fun MultipleCategorySelectionViewContent(
                 icon = category.storedIcon.name,
                 iconBackgroundColor = category.storedIcon.backgroundColor,
                 customImagePath = category.storedIcon.customImagePath,
-                border = CategoryItemDefaults.border(isSelected),
+                selected = isSelected,
                 onClick = {
                     onItemSelection?.invoke(category, isSelected.not())
                 },

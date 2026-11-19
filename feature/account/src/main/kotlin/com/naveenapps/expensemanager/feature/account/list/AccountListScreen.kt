@@ -20,23 +20,11 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.rounded.AccountBalance
 import androidx.compose.material.icons.rounded.CreditCard
 import androidx.compose.material.icons.rounded.SwapVert
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -45,22 +33,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
 import com.naveenapps.expensemanager.core.designsystem.components.SummaryCard
 import com.naveenapps.expensemanager.core.designsystem.components.WidgetHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardViewDefaults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconOrCustomImage
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
@@ -92,51 +92,37 @@ internal fun AccountListContentView(
     state: AccountListState,
     onAction: (AccountListAction) -> Unit,
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
 
-    Scaffold(
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(R.string.accounts),
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(AccountListAction.ClosePage)
                 },
                 actions = {
                     if (state.showReOrder) {
-                        IconButton(
+                        EmIconButton(
+                            icon = Icons.Rounded.SwapVert,
+                            contentDescription = stringResource(R.string.accounts_re_order),
                             onClick = {
                                 onAction.invoke(AccountListAction.OpenReOrder)
                             },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.SwapVert,
-                                contentDescription = stringResource(R.string.accounts_re_order),
-                            )
-                        }
+                        )
                     }
                 },
             )
         },
         floatingActionButton = {
-            ExtendedFloatingActionButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-
-                modifier = Modifier.testTag("Create"),
+            EmFab(
+                icon = Icons.Default.Add,
+                contentDescription = stringResource(R.string.add_account),
                 onClick = { onAction.invoke(AccountListAction.CreateAccount) },
-                icon = {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                    )
-                },
-                text = {
-                    Text(text = stringResource(R.string.add_account))
-                },
+                modifier = Modifier.testTag("Create"),
+                label = stringResource(R.string.add_account),
             )
         },
     ) { innerPadding ->
@@ -162,9 +148,9 @@ private fun AccountListScreenContent(
 ) {
     Box(modifier = modifier) {
         if (state.accounts.isEmpty() && state.archivedAccounts.isEmpty()) {
-            EmptyItem(
-                emptyItemText = stringResource(id = R.string.no_account_available),
-                icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts,
+            EmEmptyState(
+                illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_accounts),
+                title = stringResource(id = R.string.no_account_available),
                 modifier = Modifier
                     .fillMaxSize()
                     .wrapContentSize(Alignment.Center),
@@ -172,17 +158,17 @@ private fun AccountListScreenContent(
         } else {
             LazyColumn(
                 contentPadding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp,
+                    start = EmTheme.spacing.lg,
+                    end = EmTheme.spacing.lg,
                     bottom = 88.dp,
                 ),
-                verticalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xxs),
             ) {
                 item(key = "account_summary") {
                     AccountSummaryView(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 8.dp, bottom = 16.dp),
+                            .padding(top = EmTheme.spacing.sm, bottom = EmTheme.spacing.lg),
                         accountCount = state.accounts.size,
                         assetsAmount = state.assetsAmount?.amountString.orEmpty(),
                         liabilitiesAmount = state.liabilitiesAmount?.amountString.orEmpty(),
@@ -208,7 +194,7 @@ private fun AccountListScreenContent(
                         subtitle = account.availableCreditLimit?.amountString,
                         amountTextColor = account.amountTextColor,
                         customImagePath = account.storedIcon.customImagePath,
-                        shape = AppCardViewDefaults.cardShape(index, state.accounts),
+                        position = EmCardPosition.of(index, state.accounts),
                         trailingContent = {
                             AccountItemDefaults.ChevronTrailing()
                         },
@@ -217,11 +203,9 @@ private fun AccountListScreenContent(
 
                 if (state.archivedAccounts.isNotEmpty()) {
                     item("archived_header") {
-                        Text(
-                            modifier = Modifier.padding(start = 4.dp, top = 24.dp, bottom = 8.dp),
-                            text = stringResource(id = R.string.archived_accounts),
-                            style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        EmSectionHeader(
+                            title = stringResource(id = R.string.archived_accounts),
+                            modifier = Modifier.padding(top = EmTheme.spacing.xl),
                         )
                     }
                     itemsIndexed(
@@ -239,11 +223,13 @@ private fun AccountListScreenContent(
                             amount = account.amount.amountString,
                             amountTextColor = account.amountTextColor,
                             customImagePath = account.storedIcon.customImagePath,
-                            shape = AppCardViewDefaults.cardShape(index, state.archivedAccounts),
+                            position = EmCardPosition.of(index, state.archivedAccounts),
                             trailingContent = {
-                                TextButton(onClick = { onUnarchive(account) }) {
-                                    Text(text = stringResource(id = R.string.unarchive))
-                                }
+                                EmButton(
+                                    text = stringResource(id = R.string.unarchive),
+                                    onClick = { onUnarchive(account) },
+                                    variant = EmButtonVariant.Tertiary,
+                                )
                             },
                         )
                     }
@@ -266,14 +252,13 @@ private fun AccountSummaryView(
     totalAmountTextColor: Int?,
     modifier: Modifier = Modifier,
 ) {
-    val incomeColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500)
-    val expenseColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.red_500)
+    val incomeColor = EmTheme.colors.income
+    val expenseColor = EmTheme.colors.expense
 
-    AppCardView(
+    EmCard(
         modifier = modifier.testTag("AccountSummary"),
-        cornerSize = 16.dp,
     ) {
-        Column(modifier = Modifier.padding(18.dp)) {
+        Column(modifier = Modifier.padding(EmTheme.spacing.lg)) {
             WidgetHeader(
                 title = stringResource(R.string.account_summary),
                 subTitle = pluralStringResource(
@@ -283,12 +268,12 @@ private fun AccountSummaryView(
                 ),
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(EmTheme.spacing.lg))
 
             // ── Assets & Liabilities — side by side ────────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
             ) {
                 SummaryCard(
                     label = stringResource(R.string.assets),
@@ -306,39 +291,29 @@ private fun AccountSummaryView(
                 )
             }
 
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(EmTheme.spacing.md))
 
             // ── Total balance row ──────────────────────────────────
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(EmTheme.shapes.sm)
                     .background(
-                        MaterialTheme.colorScheme.surfaceContainerHighest
-                            .copy(alpha = 0.5f),
+                        EmTheme.colors.scheme.surfaceContainerHighest,
                     )
-                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                    .padding(horizontal = EmTheme.spacing.md, vertical = EmTheme.spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = stringResource(R.string.total_balance),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Medium,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                        .copy(alpha = 0.6f),
+                    color = EmTheme.colors.scheme.onSurfaceVariant,
                 )
                 Spacer(Modifier.weight(1f))
-                Text(
-                    text = totalAmount,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = (-0.3).sp,
-                    ),
-                    color = totalAmountTextColor?.let { colorResource(id = it) }
-                        ?: MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                EmAmountText(
+                    amount = totalAmount,
+                    color = totalAmountTextColor?.let { emColorOf(it) }
+                        ?: EmTheme.colors.scheme.onSurface,
+                    size = EmAmountSize.Large,
                 )
             }
         }
@@ -359,9 +334,8 @@ fun DashBoardAccountItem(
 ) {
     val hasCreditLimit = !availableCreditLimit.isNullOrBlank()
 
-    AppCardView(
+    EmCard(
         modifier = modifier.width(170.dp),
-        shape = RoundedCornerShape(14.dp),
     ) {
         Column(
             modifier = Modifier
@@ -369,17 +343,16 @@ fun DashBoardAccountItem(
                 .clickable {
                     onItemClick.invoke()
                 }
-                .padding(14.dp),
+                .padding(EmTheme.spacing.md),
         ) {
             // ── Icon in tinted container + name ────────────────────
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
                     modifier = Modifier
                         .size(30.dp)
-                        .clip(if (customImagePath != null) CircleShape else RoundedCornerShape(8.dp))
+                        .clip(if (customImagePath != null) EmTheme.shapes.pill else EmTheme.shapes.sm)
                         .background(
-                            MaterialTheme.colorScheme.surfaceContainerHighest
-                                .copy(alpha = 0.6f),
+                            EmTheme.colors.scheme.surfaceContainerHighest,
                         ),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -387,7 +360,7 @@ fun DashBoardAccountItem(
                         icon = icon,
                         customImagePath = customImagePath,
                         contentDescription = name,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = EmTheme.colors.scheme.onSurfaceVariant,
                         modifier = if (customImagePath != null) {
                             Modifier.size(30.dp)
                         } else {
@@ -395,38 +368,29 @@ fun DashBoardAccountItem(
                         },
                     )
                 }
-                Spacer(Modifier.width(8.dp))
-                Text(
+                Spacer(Modifier.width(EmTheme.spacing.sm))
+                EmText(
                     text = name,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.SemiBold,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
 
-            Spacer(Modifier.height(12.dp))
+            Spacer(Modifier.height(EmTheme.spacing.md))
 
             // ── Amount ─────────────────────────────────────────────
-            Text(
-                text = amount,
+            EmAmountText(
+                amount = amount,
                 color = amountTextColor,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = (-0.3).sp,
-                ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+                size = EmAmountSize.Small,
             )
 
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(EmTheme.spacing.xs))
 
             // ── Credit limit / placeholder ─────────────────────────
             // Always rendered so all cards keep the same height
             // in a horizontal scroll row.
-            Text(
+            EmText(
                 text = if (hasCreditLimit) {
                     stringResource(
                         id = R.string.available_limit,
@@ -435,11 +399,10 @@ fun DashBoardAccountItem(
                 } else {
                     " "
                 },
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-                    .copy(alpha = 0.55f),
-                maxLines = 1,
                 modifier = Modifier.basicMarquee(),
+                role = EmTextRole.Supporting,
+                color = EmTheme.colors.scheme.onSurfaceVariant,
+                maxLines = 1,
             )
         }
     }
@@ -496,12 +459,12 @@ private fun DashBoardAccountItemPreview() {
         DashBoardAccountItem(
             modifier = Modifier
                 .wrapContentWidth()
-                .padding(16.dp),
+                .padding(EmTheme.spacing.lg),
             name = "Utilities is having a lengthy one",
             icon = "credit_card",
             amount = "100.00$",
             availableCreditLimit = "Available Limit 100.00$",
-            amountTextColor = colorResource(id = com.naveenapps.expensemanager.core.common.R.color.green_500),
+            amountTextColor = EmTheme.colors.income,
         )
     }
 }
@@ -513,7 +476,12 @@ private fun AccountItemPreview() {
         AccountItem(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 12.dp),
+                .padding(
+                    start = EmTheme.spacing.lg,
+                    end = EmTheme.spacing.lg,
+                    top = EmTheme.spacing.md,
+                    bottom = EmTheme.spacing.md,
+                ),
             name = "Utilities",
             icon = "credit_card",
             iconBackgroundColor = "#000000",

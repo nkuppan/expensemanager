@@ -1,5 +1,6 @@
 package com.naveenapps.expensemanager.feature.filter.type
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,34 +14,30 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.InputChip
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastAny
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.em.EmChipVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
@@ -86,14 +83,13 @@ private fun FilterSelectionView(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 8.dp, top = 8.dp),
+                .padding(start = EmTheme.spacing.lg, end = EmTheme.spacing.sm, top = EmTheme.spacing.sm),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
+            EmText(
                 text = stringResource(id = R.string.filters),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(1f),
+                role = EmTextRole.SectionTitle,
             )
 
             val totalSelected = state.selectedTransactionTypes.size +
@@ -101,15 +97,11 @@ private fun FilterSelectionView(
                 state.selectedCategories.size
 
             if (totalSelected > 0) {
-                TextButton(
+                EmButton(
+                    text = stringResource(R.string.clear_all),
                     onClick = { onAction.invoke(FilterTypeAction.ClearAll) },
-                ) {
-                    Text(
-                        text = stringResource(R.string.clear_all),
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.Medium,
-                    )
-                }
+                    variant = EmButtonVariant.Tertiary,
+                )
             }
         }
 
@@ -128,8 +120,8 @@ private fun FilterSelectionView(
                 selectedCount = state.selectedTransactionTypes.size,
             )
             FlowRow(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 state.transactionTypes.forEach { type ->
                     val isSelected = state.selectedTransactionTypes.fastAny { it == type }
@@ -141,7 +133,7 @@ private fun FilterSelectionView(
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
 
             // Accounts
             FilterSectionHeader(
@@ -149,8 +141,8 @@ private fun FilterSelectionView(
                 selectedCount = state.selectedAccounts.size,
             )
             FlowRow(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 state.accounts.forEach { account ->
                     val isSelected = state.selectedAccounts.fastAny { it.id == account.id }
@@ -163,7 +155,7 @@ private fun FilterSelectionView(
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
 
             // Categories
             FilterSectionHeader(
@@ -171,8 +163,8 @@ private fun FilterSelectionView(
                 selectedCount = state.selectedCategories.size,
             )
             FlowRow(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 state.categories.forEach { category ->
                     val isSelected = state.selectedCategories.fastAny { it.id == category.id }
@@ -185,13 +177,11 @@ private fun FilterSelectionView(
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
         }
 
         // Bottom action
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
-        )
+        EmDivider()
 
         val totalSelected = state.selectedTransactionTypes.size +
             state.selectedAccounts.size +
@@ -200,33 +190,30 @@ private fun FilterSelectionView(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 12.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (totalSelected > 0) {
-                Text(
+                EmText(
                     text = pluralStringResource(
                         id = R.plurals.filters_selected,
                         count = totalSelected,
                         totalSelected,
                     ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.weight(1f),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             } else {
                 Spacer(modifier = Modifier.weight(1f))
             }
 
-            TextButton(
+            EmButton(
+                text = stringResource(id = R.string.apply),
                 onClick = { onAction.invoke(FilterTypeAction.SaveChanges) },
-            ) {
-                Text(
-                    text = stringResource(id = R.string.apply),
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
+                variant = EmButtonVariant.Tertiary,
+            )
         }
     }
 }
@@ -247,28 +234,28 @@ private fun FilterSectionHeader(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 10.dp),
+            .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
+        EmText(
             text = title,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            role = EmTextRole.Label,
+            color = EmTextColor.Supporting,
         )
         if (selectedCount > 0) {
-            Spacer(modifier = Modifier.width(8.dp))
-            Surface(
-                shape = CircleShape,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(20.dp),
+            Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+            Box(
+                modifier = Modifier
+                    .size(EmTheme.icons.md)
+                    .clip(EmTheme.shapes.pill)
+                    .background(EmTheme.colors.scheme.primary),
+                contentAlignment = Alignment.Center,
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Text(
+                    EmText(
                         text = selectedCount.toString(),
-                        style = MaterialTheme.typography.labelSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.OnPrimary,
                     )
                 }
             }
@@ -284,42 +271,15 @@ fun FilterChipView(
     onSelection: (() -> Unit) = { },
 ) {
     val context = LocalContext.current
-    FilterChip(
-        onClick = onSelection,
-        label = {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = if (selected) FontWeight.Medium else FontWeight.Normal,
-            )
-        },
+    EmChip(
+        label = label,
         selected = selected,
-        leadingIcon = when {
-            selected && iconName == null -> {
-                {
-                    Icon(
-                        imageVector = Icons.Rounded.Check,
-                        contentDescription = null,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
-                    )
-                }
-            }
-
-            iconName != null -> {
-                {
-                    Icon(
-                        painter = painterResource(id = context.getDrawable(iconName)),
-                        contentDescription = null,
-                        modifier = Modifier.size(FilterChipDefaults.IconSize),
-                    )
-                }
-            }
-
-            else -> null
-        },
+        onClick = onSelection,
+        leadingPainter = iconName?.let { painterResource(id = context.getDrawable(it)) },
     )
 }
 
+/** An applied filter shown above the list; tapping it (or its close icon) removes it. */
 @Composable
 fun InputChipView(
     label: String,
@@ -328,37 +288,17 @@ fun InputChipView(
     onSelection: (() -> Unit) = { },
 ) {
     val context = LocalContext.current
-    InputChip(
+    EmChip(
+        label = label,
         onClick = onSelection,
-        label = {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-            )
-        },
+        variant = EmChipVariant.Input,
         selected = selected,
-        avatar = if (iconName != null) {
-            {
-                Icon(
-                    painter = painterResource(id = context.getDrawable(iconName)),
-                    contentDescription = null,
-                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-                )
-            }
-        } else {
-            null
-        },
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Rounded.Close,
-                contentDescription = null,
-                modifier = Modifier.size(FilterChipDefaults.IconSize),
-            )
-        },
+        leadingPainter = iconName?.let { painterResource(id = context.getDrawable(it)) },
+        onRemove = onSelection,
     )
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun FilterTypeSelectionPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

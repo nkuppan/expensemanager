@@ -18,14 +18,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -37,14 +31,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import java.util.Date
 
@@ -87,9 +85,10 @@ fun MonthPicker(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Icon(
+                    EmIcon(
+                        icon = Icons.Rounded.KeyboardArrowDown,
+                        contentDescription = null,
                         modifier = Modifier
-                            .size(35.dp)
                             .rotate(90f)
                             .clickable(
                                 indication = null,
@@ -98,20 +97,19 @@ fun MonthPicker(
                                     year--
                                 },
                             ),
-                        imageVector = Icons.Rounded.KeyboardArrowDown,
-                        contentDescription = null,
+                        size = EmTheme.icons.tile,
                     )
 
-                    Text(
-                        modifier = Modifier.padding(horizontal = 20.dp),
+                    EmText(
                         text = year.toString(),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = EmTheme.spacing.xl),
+                        role = EmTextRole.Label,
                     )
 
-                    Icon(
+                    EmIcon(
+                        icon = Icons.Rounded.KeyboardArrowDown,
+                        contentDescription = null,
                         modifier = Modifier
-                            .size(35.dp)
                             .rotate(-90f)
                             .clickable(
                                 indication = null,
@@ -120,13 +118,12 @@ fun MonthPicker(
                                     year++
                                 },
                             ),
-                        imageVector = Icons.Rounded.KeyboardArrowDown,
-                        contentDescription = null,
+                        size = EmTheme.icons.tile,
                     )
                 }
                 LazyVerticalGrid(
                     modifier = Modifier
-                        .padding(top = 16.dp)
+                        .padding(top = EmTheme.spacing.lg)
                         .fillMaxWidth(),
                     columns = GridCells.Adaptive(minSize = 96.dp),
                 ) {
@@ -160,14 +157,13 @@ fun MonthPicker(
                                     .size(animatedSize)
                                     .background(
                                         color = if (month == it) Color.Blue else Color.Transparent,
-                                        shape = CircleShape,
+                                        shape = EmTheme.shapes.pill,
                                     ),
                             )
 
-                            Text(
+                            EmText(
                                 text = it,
                                 color = if (month == it) Color.White else Color.Black,
-                                fontWeight = FontWeight.Medium,
                             )
                         }
                     }
@@ -179,28 +175,28 @@ fun MonthPicker(
                         .height(60.dp)
                         .align(Alignment.End),
                 ) {
-                    TextButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .padding(end = 16.dp),
+                    EmButton(
+                        text = stringResource(id = R.string.cancel),
                         onClick = {
                             cancelClicked()
                         },
-                    ) {
-                        Text(text = stringResource(id = R.string.cancel).uppercase())
-                    }
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .padding(end = EmTheme.spacing.lg),
+                        variant = EmButtonVariant.Tertiary,
+                    )
 
-                    TextButton(
-                        modifier = Modifier.align(Alignment.CenterVertically),
+                    EmButton(
+                        text = stringResource(id = R.string.ok),
                         onClick = {
                             confirmButtonCLicked(
                                 months.indexOf(month) + 1,
                                 year,
                             )
                         },
-                    ) {
-                        Text(text = stringResource(id = R.string.ok).uppercase())
-                    }
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                        variant = EmButtonVariant.Tertiary,
+                    )
                 }
             }
         },
@@ -209,16 +205,16 @@ fun MonthPicker(
 }
 
 @Composable
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 fun MonthPickerPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         MonthPicker(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(16.dp)
+                .padding(EmTheme.spacing.lg)
                 .background(
-                    color = MaterialTheme.colorScheme.background,
-                    shape = RoundedCornerShape(8.dp),
+                    color = EmTheme.colors.scheme.background,
+                    shape = EmTheme.shapes.sm,
                 ),
             currentMonth = Date().toMonth(),
             currentYear = Date().toYearInt(),

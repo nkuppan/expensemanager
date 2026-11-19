@@ -113,4 +113,8 @@
     <string name="suggested_categories">推荐</string>
     <string name="receipt_scanner_unavailable">此设备无法使用收据扫描</string>
     <string name="receipt_scanner_preparing">Google Play 服务正在下载收据扫描功能，准备好后会自动打开。</string>
+    <string name="debt_row_lent">借给 %1$s</string>
+    <string name="debt_row_borrowed">向 %1$s 借入</string>
+    <string name="debt_row_received">%1$s 已还款</string>
+    <string name="debt_row_paid">已还给 %1$s</string>
 </resources>

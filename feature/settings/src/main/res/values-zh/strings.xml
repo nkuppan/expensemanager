@@ -119,4 +119,6 @@
     <string name="more">更多</string>
     <string name="preferences">偏好设置</string>
     <string name="preferences_message">新记录默认值、首页等</string>
+    <string name="debts_setting">借贷记录</string>
+    <string name="debts_setting_message">你借出或借入的钱</string>
 </resources>

@@ -35,4 +35,8 @@
         <item quantity="one">%d wiederkehrender Posten morgen</item>
         <item quantity="other">%d wiederkehrende Posten morgen</item>
     </plurals>
+    <string name="debt_due_title_one">Heute fällig: %1$s</string>
+    <string name="debt_due_title_many">%1$d Schulden heute fällig</string>
+    <string name="debt_due_owes_you">%1$s schuldet dir %2$s</string>
+    <string name="debt_due_you_owe">Du schuldest %1$s %2$s</string>
 </resources>

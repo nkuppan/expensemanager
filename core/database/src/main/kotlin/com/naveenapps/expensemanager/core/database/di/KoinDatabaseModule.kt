@@ -51,4 +51,5 @@ val DatabaseModule = module {
     single { get<ExpenseManagerDatabase>().exchangeRateDao() }
     single { get<ExpenseManagerDatabase>().exchangeRateSnapshotDao() }
     single { get<ExpenseManagerDatabase>().staticExchangeRateDao() }
+    single { get<ExpenseManagerDatabase>().debtDao() }
 }

@@ -114,4 +114,8 @@
     <string name="suggested_categories">Önerilen</string>
     <string name="receipt_scanner_unavailable">Fiş tarayıcı bu cihazda kullanılamıyor</string>
     <string name="receipt_scanner_preparing">Google Play Hizmetleri fiş tarayıcıyı indiriyor. Hazır olduğunda açılacak.</string>
+    <string name="debt_row_lent">%1$s kişisine borç verildi</string>
+    <string name="debt_row_borrowed">%1$s kişisinden borç alındı</string>
+    <string name="debt_row_received">%1$s geri ödedi</string>
+    <string name="debt_row_paid">%1$s kişisine geri ödendi</string>
 </resources>

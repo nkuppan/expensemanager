@@ -13,7 +13,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,16 +21,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.SwapHoriz
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,15 +40,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmFitText
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
@@ -82,9 +83,8 @@ internal fun HomeCategoryCard(
     var type by rememberSaveable { mutableStateOf(CategoryType.EXPENSE) }
     val shown = if (type == CategoryType.EXPENSE) expense else income
 
-    AppCardView(
+    EmCard(
         modifier = modifier.fillMaxWidth(),
-        cornerSize = 16.dp,
     ) {
         AnimatedContent(
             targetState = type to shown,
@@ -96,7 +96,7 @@ internal fun HomeCategoryCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(EmTheme.spacing.lg),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 CategoryDonut(
@@ -107,7 +107,7 @@ internal fun HomeCategoryCard(
                     },
                 )
 
-                Spacer(modifier = Modifier.width(16.dp))
+                Spacer(modifier = Modifier.width(EmTheme.spacing.lg))
 
                 if (state.categoryTransactions.isEmpty()) {
                     NoCategorySpending(
@@ -135,7 +135,7 @@ private fun CategoryDonut(
     onToggle: () -> Unit,
 ) {
     val typeColor = type.color()
-    val trackColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.08f)
+    val trackColor = EmTheme.colors.scheme.onSurfaceVariant.tint()
     val slices = slicesOf(state)
     val reveal = remember { Animatable(0f) }
     LaunchedEffect(slices) {
@@ -146,7 +146,7 @@ private fun CategoryDonut(
     Box(
         modifier = Modifier
             .size(124.dp)
-            .clip(CircleShape)
+            .clip(EmTheme.shapes.pill)
             .clickable(
                 role = Role.Button,
                 onClickLabel = stringResource(
@@ -184,39 +184,29 @@ private fun CategoryDonut(
         }
 
         Column(
-            modifier = Modifier.padding(horizontal = 22.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.xl),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                BasicText(
+                EmFitText(
                     text = stringResource(id = if (type == CategoryType.EXPENSE) R.string.expense else R.string.income),
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        color = typeColor,
-                        fontWeight = FontWeight.SemiBold,
-                    ),
-                    maxLines = 1,
-                    autoSize = TextAutoSize.StepBased(minFontSize = 8.sp, maxFontSize = 12.sp),
+                    role = EmTextRole.Label,
+                    color = typeColor,
                     modifier = Modifier.weight(1f, fill = false),
                 )
-                Spacer(modifier = Modifier.width(2.dp))
-                Icon(
-                    imageVector = Icons.Outlined.SwapHoriz,
+                Spacer(modifier = Modifier.width(EmTheme.spacing.xxs))
+                EmIcon(
+                    icon = Icons.Outlined.SwapHoriz,
                     contentDescription = null,
+                    size = EmTheme.icons.sm,
                     tint = typeColor,
-                    modifier = Modifier.size(14.dp),
                 )
             }
             // Large totals shrink to fit the ring instead of being cut off.
-            BasicText(
-                text = state.totalAmount.amountString.orEmpty(),
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = (-0.3).sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
-                ),
-                maxLines = 1,
-                autoSize = TextAutoSize.StepBased(minFontSize = 10.sp, maxFontSize = 18.sp),
+            EmAmountText(
+                amount = state.totalAmount.amountString.orEmpty(),
+                size = EmAmountSize.Large,
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -224,10 +214,10 @@ private fun CategoryDonut(
 
 @Composable
 private fun CategoryLegend(state: CategoryTransactionState, modifier: Modifier = Modifier) {
-    val fallback = MaterialTheme.colorScheme.primary
+    val fallback = EmTheme.colors.scheme.primary
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
     ) {
         state.categoryTransactions.take(TOP_CATEGORIES).forEach { item ->
             LegendRow(item = item, color = item.color(fallback))
@@ -247,50 +237,45 @@ private fun LegendRow(item: CategoryTransaction, color: Color) {
             Box(
                 modifier = Modifier
                     .size(8.dp)
-                    .clip(CircleShape)
+                    .clip(EmTheme.shapes.pill)
                     .background(color),
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
+            Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+            EmText(
                 text = name,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.weight(1f),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f),
             )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-                text = item.amount.amountString.orEmpty(),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
+            Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+            EmAmountText(
+                amount = item.amount.amountString.orEmpty(),
+                size = EmAmountSize.Small,
             )
         }
-        Spacer(modifier = Modifier.height(5.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.xs))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(EmTheme.spacing.lg))
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .height(4.dp)
-                    .clip(CircleShape)
-                    .background(color.copy(alpha = 0.15f)),
+                    .clip(EmTheme.shapes.pill)
+                    .background(color.tint()),
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(share.coerceIn(0f, 1f))
                         .height(4.dp)
-                        .clip(CircleShape)
+                        .clip(EmTheme.shapes.pill)
                         .background(color),
                 )
             }
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
+            Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
+            EmText(
                 text = shareText,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
             )
         }
     }
@@ -305,28 +290,21 @@ private fun NoCategorySpending(type: CategoryType, onAddTransaction: () -> Unit,
         R.string.home_categories_none_income
     }
     Column(modifier = modifier) {
-        Text(
-            text = stringResource(id = message),
-            style = MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        FilledTonalButton(
+        EmText(text = stringResource(id = message))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
+        EmButton(
+            text = stringResource(id = R.string.home_categories_add),
             onClick = onAddTransaction,
-            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp),
-        ) {
-            Icon(imageVector = Icons.Outlined.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(text = stringResource(id = R.string.home_categories_add), maxLines = 1)
-        }
+            variant = EmButtonVariant.Secondary,
+            leadingIcon = Icons.Outlined.Add,
+        )
     }
 }
 
 /** Every category as its own slice, in its own colour; only the list beside it is capped. */
 @Composable
 private fun slicesOf(state: CategoryTransactionState): List<Pair<Color, Float>> {
-    val fallback = MaterialTheme.colorScheme.primary
+    val fallback = EmTheme.colors.scheme.primary
     return remember(state.categoryTransactions, fallback) {
         state.categoryTransactions.map { it.color(fallback) to it.percent / 100f }
     }
@@ -334,12 +312,12 @@ private fun slicesOf(state: CategoryTransactionState): List<Pair<Color, Float>> 
 
 /** Expense in the theme's error red, income in its primary colour. */
 @Composable
-private fun CategoryType.color(): Color = if (this == CategoryType.EXPENSE) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+private fun CategoryType.color(): Color = if (this == CategoryType.EXPENSE) EmTheme.colors.scheme.error else EmTheme.colors.scheme.primary
 
 /** The category's own colour, as used for its icon; [fallback] if it isn't a valid colour. */
 private fun CategoryTransaction.color(fallback: Color): Color = runCatching { Color(category.storedIcon.backgroundColor.toColorInt()) }.getOrDefault(fallback)
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun HomeCategoryCardPreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {
@@ -351,7 +329,7 @@ private fun HomeCategoryCardPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun HomeCategoryCardEmptyPreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {

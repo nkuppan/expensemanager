@@ -9,16 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.FabPosition
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,14 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SingleLineText
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmNavigationBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmNavigationBarItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
 import com.naveenapps.expensemanager.core.designsystem.utils.BackHandler
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.ActivityComponentProvider
@@ -58,6 +52,9 @@ import com.naveenapps.expensemanager.feature.currency.CurrencyCustomiseScreen
 import com.naveenapps.expensemanager.feature.dashboard.DashboardScreen
 import com.naveenapps.expensemanager.feature.dashboard.customise.DashboardReOrderScreen
 import com.naveenapps.expensemanager.feature.dashboard.notifications.NotificationCentreScreen
+import com.naveenapps.expensemanager.feature.debt.entry.DebtEntryScreen
+import com.naveenapps.expensemanager.feature.debt.list.DebtListScreen
+import com.naveenapps.expensemanager.feature.debt.person.DebtPersonScreen
 import com.naveenapps.expensemanager.feature.export.ExportScreen
 import com.naveenapps.expensemanager.feature.onboarding.OnboardingScreen
 import com.naveenapps.expensemanager.feature.reminder.ReminderScreen
@@ -117,6 +114,15 @@ fun NavGraphBuilder.expenseManagerNavigation(
     }
     composable<ExpenseManagerScreens.RecurringTransactionEdit> {
         RecurringTransactionEditScreen()
+    }
+    composable<ExpenseManagerScreens.DebtList> {
+        DebtListScreen()
+    }
+    composable<ExpenseManagerScreens.DebtPerson> {
+        DebtPersonScreen()
+    }
+    composable<ExpenseManagerScreens.DebtEntry> {
+        DebtEntryScreen()
     }
     composable<ExpenseManagerScreens.TransactionList> {
         TransactionListScreen(showBackNavigationIcon = true)
@@ -264,9 +270,9 @@ fun HomeScreen(
     // the splash screen), draw nothing rather than flash Home before switching tabs.
     if (landingTab == null) return
 
-    Scaffold(
+    EmScaffold(
         bottomBar = {
-            NavigationBar {
+            EmNavigationBar {
                 HomeScreenBottomBarItems.entries.forEach { uiSystem ->
                     HomeTabItem(uiSystem, homeScreenBottomBarItems == uiSystem) {
                         viewModel.setUISystem(uiSystem)
@@ -278,20 +284,13 @@ fun HomeScreen(
             // One "add transaction" button above the bar, bottom-right where people expect it.
             // Analysis has nothing to add and its charts run to the bottom, so it's left out.
             if (homeScreenBottomBarItems != HomeScreenBottomBarItems.Analysis) {
-                FloatingActionButton(
+                EmFab(
+                    icon = Icons.Rounded.Add,
+                    contentDescription = stringResource(TransactionR.string.add_transaction),
                     onClick = viewModel::openAddTransaction,
-                    shape = RoundedCornerShape(16.dp),
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Add,
-                        contentDescription = stringResource(TransactionR.string.add_transaction),
-                    )
-                }
+                )
             }
         },
-        floatingActionButtonPosition = FabPosition.End,
     ) { paddingValues ->
         Column(
             modifier = Modifier.padding(
@@ -325,16 +324,10 @@ private fun RowScope.HomeTabItem(
     selected: Boolean,
     onClick: () -> Unit,
 ) {
-    NavigationBarItem(
+    EmNavigationBarItem(
         selected = selected,
         onClick = onClick,
-        icon = {
-            Icon(
-                painterResource(item.iconResourceID),
-                stringResource(item.labelResourceID),
-            )
-        },
-        // One line that shrinks to fit, instead of wrapping "Transac / tion" at large font sizes.
-        label = { SingleLineText(text = stringResource(item.labelResourceID)) },
+        painter = painterResource(item.iconResourceID),
+        label = stringResource(item.labelResourceID),
     )
 }

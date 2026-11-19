@@ -9,16 +9,16 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.History
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.em.EmChipVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.feature.transaction.R
 
 /**
@@ -34,39 +34,29 @@ internal fun QuickPickRow(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
     ) {
-        Text(
+        EmText(
+            text = stringResource(R.string.quick_picks),
             modifier = Modifier.padding(
                 start = contentPadding.calculateStartPadding(LocalLayoutDirection.current),
             ),
-            text = stringResource(R.string.quick_picks),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
         )
         LazyRow(
             contentPadding = contentPadding,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             items(picks, key = { it.key }) { pick ->
                 val name = pick.notes.ifBlank {
                     pick.category.titleResId?.let { stringResource(it) } ?: pick.category.name
                 }
-                AssistChip(
+                EmChip(
+                    label = if (pick.amountText.isBlank()) name else "$name · ${pick.amountText}",
                     onClick = { onPick(pick) },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.History,
-                            contentDescription = null,
-                        )
-                    },
-                    label = {
-                        Text(
-                            text = if (pick.amountText.isBlank()) name else "$name · ${pick.amountText}",
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    },
+                    variant = EmChipVariant.Suggestion,
+                    leadingIcon = Icons.Outlined.History,
                 )
             }
         }

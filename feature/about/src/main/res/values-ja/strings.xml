@@ -10,4 +10,5 @@
     <string name="search_libraries">ライブラリを検索</string>
     <string name="open_license">ライセンスを開く</string>
     <string name="licenses_unavailable">このビルドにはライセンス情報が含まれていません。</string>
+    <string name="about_email">メール</string>
 </resources>

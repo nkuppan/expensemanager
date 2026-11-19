@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.3.3" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.3)" variant="all" version="9.3.3">
+
+    <issue
+        id="EmptySuperCall"
+        message="No need to call `super.onCleared`; the super method is defined to be empty"
+        errorLine1="        super.onCleared()"
+        errorLine2="              ~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateViewModel.kt"
+            line="412"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageRes)) }"
+        errorLine2="                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/account/create/AccountCreateScreen.kt"
+            line="82"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;es&quot; (Spanish) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantity should also be defined: `many` (e.g. &quot;1000000 de jours&quot;)"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;it&quot; (Italian) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pt&quot; (Portuguese) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;items_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt/strings.xml"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;es&quot; (Spanish) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantity should also be defined: `many` (e.g. &quot;1000000 de jours&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;it&quot; (Italian) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pt&quot; (Portuguese) the following quantity should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;account_count&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt/strings.xml"
+            line="35"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;de&quot; (German) the following quantity should also be defined: `one` (e.g. &quot;1 Tag&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-de/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;es&quot; (Spanish) the following quantities should also be defined: `many`, `one` (e.g. &quot;1&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-es/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many` (e.g. &quot;1000000 de jours&quot;), `one` (e.g. &quot;1 jour&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;hi&quot; (Hindi) the following quantity should also be defined: `one` (e.g. &quot;1 घंटा&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-hi/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;it&quot; (Italian) the following quantities should also be defined: `many`, `one` (e.g. &quot;1 giorno&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-it/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pt&quot; (Portuguese) the following quantities should also be defined: `many`, `one` (e.g. &quot;1&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pt/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;tr&quot; (Turkish) the following quantity should also be defined: `one` (e.g. &quot;Sepetinizde 1 X var. Bunu almak istiyor musunuz?&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-tr/strings.xml"
+            line="53"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;pl&quot; (Polish) the following quantities should also be defined: `few` (e.g. &quot;2 miesiące&quot;), `many` (e.g. &quot;5 miesięcy&quot;), `one` (e.g. &quot;1 miesiąc&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-pl/strings.xml"
+            line="57"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;ru&quot; (Russian) the following quantities should also be defined: `few` (e.g. &quot;из 2 книг за 2 дня&quot;), `many` (e.g. &quot;из 5 книг за 5 дней&quot;), `one` (e.g. &quot;из 1 книги за 1 день&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ru/strings.xml"
+            line="57"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;ar&quot; (Arabic) the following quantities should also be defined: `few` (e.g. &quot;3&quot;), `many` (e.g. &quot;11&quot;), `one` (e.g. &quot;1&quot;), `two` (e.g. &quot;2&quot;), `zero` (e.g. &quot;0&quot;)"
+        errorLine1="    &lt;plurals name=&quot;account_delete_message_with_transactions&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-ar/strings.xml"
+            line="61"
+            column="5"/>
+    </issue>
+
+</issues>

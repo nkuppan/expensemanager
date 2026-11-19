@@ -35,4 +35,8 @@
         <item quantity="one">कल %d आवर्ती प्रविष्टि</item>
         <item quantity="other">कल %d आवर्ती प्रविष्टियाँ</item>
     </plurals>
+    <string name="debt_due_title_one">आज देय: %1$s</string>
+    <string name="debt_due_title_many">आज %1$d उधार देय हैं</string>
+    <string name="debt_due_owes_you">%1$s को आपको %2$s देने हैं</string>
+    <string name="debt_due_you_owe">आपको %1$s को %2$s देने हैं</string>
 </resources>

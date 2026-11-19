@@ -36,6 +36,9 @@ sealed class DashboardAction {
     /** "View all" on the Upcoming card. */
     data object OpenRecurringList : DashboardAction()
 
+    /** People & debts card on Home. */
+    data object OpenDebts : DashboardAction()
+
     data class OpenRecurringEdit(val id: String) : DashboardAction()
 
     /** Upcoming card's empty state: the add screen with Repeat set to Monthly. */

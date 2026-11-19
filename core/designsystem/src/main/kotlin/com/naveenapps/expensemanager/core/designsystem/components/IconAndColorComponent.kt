@@ -7,17 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Edit
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,11 +27,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toColorString
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SafeModalBottomSheet
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.toColor
 import java.io.File
@@ -69,7 +66,7 @@ fun IconAndColorComponent(
     var sheetSelection by remember { mutableStateOf(SelectionType.NONE) }
 
     if (sheetSelection != SelectionType.NONE) {
-        SafeModalBottomSheet(
+        EmModalSheet(
             onDismissRequest = {
                 sheetSelection = SelectionType.NONE
             },
@@ -122,10 +119,10 @@ fun IconAndColorComponent(
 
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
     ) {
         Surface(
-            shape = RoundedCornerShape(16.dp),
+            shape = EmTheme.shapes.lg,
             tonalElevation = 2.dp,
             modifier = Modifier.weight(1f),
             onClick = {
@@ -134,50 +131,48 @@ fun IconAndColorComponent(
             },
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.md, vertical = EmTheme.spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 Box(
                     modifier = Modifier
                         .size(28.dp)
-                        .clip(CircleShape)
+                        .clip(EmTheme.shapes.pill)
                         .background(containerColor)
                         .border(
                             width = 1.5.dp,
-                            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                            shape = CircleShape,
+                            color = EmTheme.colors.scheme.outlineVariant,
+                            shape = EmTheme.shapes.pill,
                         ),
                 )
-                Text(
+                EmText(
                     text = stringResource(R.string.color),
-                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f),
                 )
-                Icon(
-                    imageVector = Icons.Rounded.Edit,
+                EmIcon(
+                    icon = Icons.Rounded.Edit,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
+                    size = EmTheme.icons.sm,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
             }
         }
 
         // Photo/icon picker — replaces the old icon-only card. Shows the custom photo when one is
         // set, otherwise falls back to today's icon+color preview.
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            tonalElevation = 2.dp,
+        EmCard(
             modifier = Modifier.weight(1f),
+            variant = EmCardVariant.Filled,
             onClick = {
                 sheetSelection = SelectionType.PHOTO_OPTIONS
                 focusManager.clearFocus(force = true)
             },
         ) {
             Row(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.md, vertical = EmTheme.spacing.sm),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 if (customImagePath != null) {
                     AsyncImage(
@@ -186,34 +181,33 @@ fun IconAndColorComponent(
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(28.dp)
-                            .clip(CircleShape),
+                            .clip(EmTheme.shapes.pill),
                     )
                 } else {
-                    IconButton(
-                        modifier = Modifier.size(28.dp),
-                        onClick = { },
-                        colors = IconButtonDefaults.filledTonalIconButtonColors(
-                            containerColor = containerColor,
-                            contentColor = contentColor,
-                        ),
+                    Box(
+                        modifier = Modifier
+                            .size(28.dp)
+                            .clip(EmTheme.shapes.pill)
+                            .background(containerColor),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Icon(
+                        EmIcon(
                             painter = painterResource(context.getDrawable(iconName = selectedIcon)),
                             contentDescription = null,
-                            modifier = Modifier.size(16.dp),
+                            size = EmTheme.icons.sm,
+                            tint = contentColor,
                         )
                     }
                 }
-                Text(
+                EmText(
                     text = stringResource(R.string.photo),
-                    style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.weight(1f),
                 )
-                Icon(
-                    imageVector = Icons.Rounded.Edit,
+                EmIcon(
+                    icon = Icons.Rounded.Edit,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
+                    size = EmTheme.icons.sm,
+                    tint = EmTheme.colors.scheme.onSurfaceVariant,
                 )
             }
         }
@@ -221,7 +215,7 @@ fun IconAndColorComponent(
 }
 
 @Composable
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 private fun IconAndColorComponentPreview() {
     ExpenseManagerPreviewTheme(padding = 16.dp) {
         IconAndColorComponent(

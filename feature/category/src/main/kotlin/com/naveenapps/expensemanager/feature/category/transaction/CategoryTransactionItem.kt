@@ -5,24 +5,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.toPercentString
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmProgress
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SmallIconAndBackgroundView
@@ -42,7 +39,7 @@ fun CategoryTransactionItem(
 
     Row(
         modifier = modifier
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+            .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconAndBackgroundView(
@@ -53,36 +50,29 @@ fun CategoryTransactionItem(
             customImagePath = customImagePath,
         )
 
-        Spacer(Modifier.width(14.dp))
+        Spacer(Modifier.width(EmTheme.spacing.md))
 
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(6.dp),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             // ── Name + Amount ──────────────────────────────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = name,
                     modifier = Modifier.weight(1f),
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.Medium,
-                    ),
+                    role = EmTextRole.ItemTitle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
 
-                Spacer(Modifier.width(12.dp))
+                Spacer(Modifier.width(EmTheme.spacing.md))
 
-                Text(
-                    text = amount,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = (-0.3).sp,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                EmAmountText(
+                    amount = amount,
                 )
             }
 
@@ -91,26 +81,19 @@ fun CategoryTransactionItem(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                LinearProgressIndicator(
-                    progress = { (percentage / 100f).coerceIn(0f, 1f) },
+                EmProgress(
+                    progress = (percentage / 100f).coerceIn(0f, 1f),
                     modifier = Modifier
-                        .weight(1f)
-                        .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp)),
+                        .weight(1f),
                     color = categoryColor,
-                    trackColor = categoryColor.copy(alpha = 0.12f),
-                    strokeCap = StrokeCap.Round,
                 )
 
-                Spacer(Modifier.width(10.dp))
+                Spacer(Modifier.width(EmTheme.spacing.sm))
 
-                Text(
+                EmText(
                     text = percentage.toPercentString(),
-                    style = MaterialTheme.typography.labelSmall.copy(
-                        fontWeight = FontWeight.Medium,
-                        letterSpacing = 0.sp,
-                    ),
-                    color = categoryColor.copy(alpha = 0.8f),
+                    role = EmTextRole.Supporting,
+                    color = categoryColor,
                 )
             }
         }
@@ -139,33 +122,26 @@ fun CategoryTransactionSmallItem(
             customImagePath = customImagePath,
         )
 
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(EmTheme.spacing.sm))
 
-        Text(
+        EmText(
             text = name,
             modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-            ),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
 
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(EmTheme.spacing.sm))
 
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.labelMedium.copy(
-                fontWeight = FontWeight.Medium,
-                letterSpacing = (-0.2).sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            ),
+        EmAmountText(
+            amount = amount,
+            color = EmTheme.colors.scheme.onSurfaceVariant,
+            size = EmAmountSize.Small,
         )
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun CategoryTransactionSmallItemPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -180,7 +156,7 @@ private fun CategoryTransactionSmallItemPreview() {
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun CategoryTransactionItemPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

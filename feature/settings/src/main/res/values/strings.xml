@@ -155,4 +155,6 @@
     <string name="more">More</string>
     <string name="preferences">Preferences</string>
     <string name="preferences_message">Defaults for new entries, Home and more</string>
+    <string name="debts_setting">People &amp; debts</string>
+    <string name="debts_setting_message">Money you lent or borrowed</string>
 </resources>

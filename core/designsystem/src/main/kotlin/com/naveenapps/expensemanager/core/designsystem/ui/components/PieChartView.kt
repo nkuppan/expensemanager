@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.core.designsystem.ui.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -11,10 +10,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.patrykandpatrick.vico.compose.common.Fill
 import com.patrykandpatrick.vico.compose.common.component.TextComponent
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
@@ -59,11 +60,9 @@ fun PieChartView(
         if (slices.isNotEmpty()) {
             DonutChart(slices, chartAreaHeight, hideValues)
         }
-        Text(
+        EmText(
             text = totalAmountText,
-            style = if (hideValues) MaterialTheme.typography.labelMedium else MaterialTheme.typography.titleSmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onBackground,
+            role = if (hideValues) EmTextRole.Label else EmTextRole.SectionTitle,
             textAlign = TextAlign.Center,
         )
     }
@@ -76,7 +75,7 @@ private fun DonutChart(
     hideValues: Boolean,
 ) {
     val labelText = rememberTextComponent(
-        style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurface),
+        style = MaterialTheme.typography.labelSmall.copy(color = EmTheme.colors.scheme.onSurface),
     )
     val sliceProvider = remember(slices, hideValues, labelText) {
         val styles = slices.map { slice -> sliceStyle(slice, labelText.takeUnless { hideValues }) }

@@ -17,15 +17,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -34,11 +30,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -69,21 +68,20 @@ fun IconSelectionComponentContent(
             .wrapContentHeight(),
     ) {
         // Header
-        Text(
+        EmText(
             text = stringResource(id = R.string.choose_icon),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.md),
+            role = EmTextRole.SectionTitle,
         )
 
         LazyVerticalGrid(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 12.dp),
+            contentPadding = PaddingValues(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.md),
             columns = GridCells.Fixed(5),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             items(icons, key = { it }) { icon ->
                 val isSelected = icon == selectedIcon
@@ -99,9 +97,9 @@ fun IconSelectionComponentContent(
 
                 val bgColor by animateColorAsState(
                     targetValue = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer
+                        EmTheme.colors.scheme.primaryContainer
                     } else {
-                        MaterialTheme.colorScheme.surfaceContainerHigh
+                        EmTheme.colors.scheme.surfaceContainerHigh
                     },
                     animationSpec = tween(200),
                     label = "bg_color",
@@ -109,9 +107,9 @@ fun IconSelectionComponentContent(
 
                 val tintColor by animateColorAsState(
                     targetValue = if (isSelected) {
-                        MaterialTheme.colorScheme.onPrimaryContainer
+                        EmTheme.colors.scheme.onPrimaryContainer
                     } else {
-                        MaterialTheme.colorScheme.onSurfaceVariant
+                        EmTheme.colors.scheme.onSurfaceVariant
                     },
                     animationSpec = tween(200),
                     label = "tint_color",
@@ -124,14 +122,14 @@ fun IconSelectionComponentContent(
                             scaleX = scale
                             scaleY = scale
                         }
-                        .clip(MaterialTheme.shapes.medium)
+                        .clip(EmTheme.shapes.md)
                         .background(bgColor)
                         .then(
                             if (isSelected) {
                                 Modifier.border(
                                     2.dp,
-                                    MaterialTheme.colorScheme.primary,
-                                    MaterialTheme.shapes.medium,
+                                    EmTheme.colors.scheme.primary,
+                                    EmTheme.shapes.md,
                                 )
                             } else {
                                 Modifier
@@ -140,17 +138,16 @@ fun IconSelectionComponentContent(
                         .clickable { onIconPicked.invoke(icon) },
                     contentAlignment = Alignment.Center,
                 ) {
-                    Icon(
+                    EmIcon(
                         painter = painterResource(id = icon),
                         contentDescription = stringResource(R.string.a11y_select_icon),
                         tint = tintColor,
-                        modifier = Modifier.size(24.dp),
                     )
                 }
             }
 
             item(span = { GridItemSpan(this.maxLineSpan) }) {
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(EmTheme.spacing.xxxl))
             }
         }
     }

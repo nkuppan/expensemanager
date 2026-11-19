@@ -38,9 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
 import com.naveenapps.expensemanager.core.model.ExchangeMethod
 import com.naveenapps.expensemanager.core.model.StaticExchangeRate
 import com.naveenapps.expensemanager.feature.settings.R
@@ -73,9 +74,9 @@ private fun ExchangeMethodScreenContent(
 
     Scaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction.invoke(ExchangeMethodAction.ClosePage) },
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { onAction.invoke(ExchangeMethodAction.ClosePage) },
                 title = stringResource(R.string.exchange_method),
             )
         },
@@ -96,7 +97,7 @@ private fun ExchangeMethodScreenContent(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            AppCardView {
+            EmCard {
                 MethodOption(
                     selected = state.method == ExchangeMethod.API,
                     title = stringResource(R.string.exchange_method_api),
@@ -167,7 +168,7 @@ private fun ApiProviderCard(
     apiProvider: String?,
     onAction: (ExchangeMethodAction) -> Unit,
 ) {
-    AppCardView {
+    EmCard {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -192,7 +193,7 @@ private fun StaticRatesCard(
     rates: List<StaticExchangeRate>,
     onAction: (ExchangeMethodAction) -> Unit,
 ) {
-    AppCardView {
+    EmCard {
         Column(modifier = Modifier.padding(vertical = 8.dp)) {
             if (rates.isEmpty()) {
                 Text(

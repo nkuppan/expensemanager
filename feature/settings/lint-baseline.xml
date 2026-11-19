@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.3.3" type="baseline" client="gradle" dependencies="false" name="AGP (9.3.3)" variant="all" version="9.3.3">
+
+    <issue
+        id="LocaleFolder"
+        message="The locale folder &quot;`id`&quot; should be called &quot;`in`&quot; instead; see the `java.util.Locale` documentation">
+        <location
+            file="src/main/res/values-id"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }"
+        errorLine2="                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="89"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        coroutineScope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }"
+        errorLine2="                                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/restore/RestoreScreen.kt"
+            line="78"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="LocalContextGetResourceValueCall"
+        message="Querying resource values using LocalContext.current is not configuration-aware and may return stale values if the Configuration changes"
+        errorLine1="        scope.launch { snackbarHostState.showSnackbar(context.getString(messageResId)) }"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/SettingsScreen.kt"
+            line="72"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;auto&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;auto_backup_info&quot;>The newest %1$d auto backups are kept and older ones are deleted; manual backups are never deleted. Backups inside the app are removed if you uninstall it, so choose a folder to keep them safe. Backups use the app\&apos;s built-in key; share one with a passphrase for extra protection.&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="118"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="            is AutoBackupEvent.ShareFile -> context.shareBackup(Uri.parse(it.uri))"
+        errorLine2="                                                                ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/naveenapps/expensemanager/feature/settings/autobackup/AutoBackupScreen.kt"
+            line="100"
+            column="65"/>
+    </issue>
+
+</issues>

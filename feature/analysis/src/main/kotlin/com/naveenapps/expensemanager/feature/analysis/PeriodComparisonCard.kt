@@ -10,27 +10,29 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.TrendingDown
 import androidx.compose.material.icons.automirrored.filled.TrendingUp
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
-import com.naveenapps.expensemanager.core.designsystem.components.DashboardWidgetTitle
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SmallIconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
@@ -52,21 +54,18 @@ fun PeriodComparisonCard(
     val good = getIncomeColor()
     val bad = getExpenseColor()
 
-    AppCardView(modifier = modifier.fillMaxWidth(), cornerSize = AnalysisCardCorner) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            DashboardWidgetTitle(title = stringResource(R.string.compare_biggest_changes))
-            Text(
+    EmCard(modifier = modifier.fillMaxWidth()) {
+        Column(modifier = Modifier.padding(EmTheme.spacing.lg)) {
+            EmSectionHeader(title = stringResource(R.string.compare_biggest_changes))
+            EmText(
                 text = stringResource(comparison.titleResId) + " · " + comparison.periodsLabel,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.sm))
             comparison.categoryChanges.forEachIndexed { index, change ->
                 if (index > 0) {
-                    HorizontalDivider(
-                        thickness = 0.5.dp,
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f),
-                    )
+                    EmDivider()
                 }
                 CategoryChangeRow(
                     change = change,
@@ -89,7 +88,7 @@ private fun CategoryChangeRow(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(vertical = 10.dp)
+            .padding(vertical = EmTheme.spacing.sm)
             .semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -100,53 +99,49 @@ private fun CategoryChangeRow(
             iconSize = 12.dp,
             customImagePath = change.category.storedIcon.customImagePath,
         )
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(EmTheme.spacing.sm))
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            EmText(
                 text = name,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
+                role = EmTextRole.ItemTitle,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
-            Text(
+            EmText(
                 text = stringResource(R.string.compare_category_detail, change.current, change.previous),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(EmTheme.spacing.md))
         Row(
             modifier = Modifier
-                .background(color.copy(alpha = 0.12f), RoundedCornerShape(8.dp))
-                .padding(horizontal = 8.dp, vertical = 4.dp),
+                .background(color.tint(), EmTheme.shapes.sm)
+                .padding(horizontal = EmTheme.spacing.sm, vertical = EmTheme.spacing.xs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = if (change.isIncrease) {
+            EmIcon(
+                icon = if (change.isIncrease) {
                     Icons.AutoMirrored.Filled.TrendingUp
                 } else {
                     Icons.AutoMirrored.Filled.TrendingDown
                 },
                 contentDescription = null,
+                size = EmTheme.icons.sm,
                 tint = color,
-                modifier = Modifier.size(14.dp),
             )
-            Spacer(modifier = Modifier.width(4.dp))
-            Text(
-                text = change.difference,
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
+            Spacer(modifier = Modifier.width(EmTheme.spacing.xs))
+            EmAmountText(
+                amount = change.difference,
                 color = color,
             )
         }
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun PeriodComparisonCardPreview() {
     val food = Category(

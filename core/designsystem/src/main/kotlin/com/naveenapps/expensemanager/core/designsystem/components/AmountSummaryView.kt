@@ -11,31 +11,31 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmFitText
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SingleLineText
+import com.naveenapps.expensemanager.core.designsystem.theme.tint
 
 @Composable
 fun WidgetHeader(
@@ -47,33 +47,27 @@ fun WidgetHeader(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(
+        EmText(
             text = title,
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.SemiBold,
-                letterSpacing = (-0.2).sp,
-            ),
-            color = MaterialTheme.colorScheme.onSurface,
+            role = EmTextRole.SectionTitle,
         )
-        Spacer(Modifier.width(6.dp))
+        Spacer(Modifier.width(EmTheme.spacing.sm))
         Box(
             modifier = Modifier
                 .size(4.dp)
-                .clip(CircleShape)
+                .clip(EmTheme.shapes.pill)
                 .background(
-                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f),
+                    EmTheme.colors.scheme.onSurfaceVariant,
                 ),
         )
-        Spacer(Modifier.width(6.dp))
-        Text(
+        Spacer(Modifier.width(EmTheme.spacing.sm))
+        EmText(
             text = subTitle,
-            style = MaterialTheme.typography.bodySmall.copy(
-                fontWeight = FontWeight.Medium,
-            ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+            modifier = Modifier.weight(1f),
+            role = EmTextRole.Supporting,
+            color = EmTextColor.Supporting,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f),
         )
     }
 }
@@ -86,28 +80,24 @@ fun AmountInfoWidget(
     transactionPeriod: String,
     modifier: Modifier = Modifier,
 ) {
-    val incomeColor = colorResource(
-        id = com.naveenapps.expensemanager.core.common.R.color.green_500,
-    )
-    val expenseColor = colorResource(
-        id = com.naveenapps.expensemanager.core.common.R.color.red_500,
-    )
+    val incomeColor = EmTheme.colors.income
+    val expenseColor = EmTheme.colors.expense
 
-    AppCardView(modifier = modifier) {
+    EmCard(modifier = modifier) {
         Column(
-            modifier = Modifier.padding(18.dp),
+            modifier = Modifier.padding(EmTheme.spacing.lg),
         ) {
             WidgetHeader(
                 title = stringResource(id = R.string.transaction_summary),
                 subTitle = transactionPeriod,
             )
 
-            Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(EmTheme.spacing.lg))
 
             // ── Income & Expense — side by side ────────────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
             ) {
                 SummaryCard(
                     label = stringResource(id = R.string.income),
@@ -125,36 +115,28 @@ fun AmountInfoWidget(
                 )
             }
 
-            Spacer(Modifier.height(14.dp))
+            Spacer(Modifier.height(EmTheme.spacing.md))
 
             // ── Balance row ────────────────────────────────────────
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(10.dp))
+                    .clip(EmTheme.shapes.sm)
                     .background(
-                        MaterialTheme.colorScheme.surfaceContainerHighest
+                        EmTheme.colors.scheme.surfaceContainerHighest
                             .copy(alpha = 0.5f),
                     )
-                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                    .padding(horizontal = EmTheme.spacing.md, vertical = EmTheme.spacing.md),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = stringResource(id = R.string.total),
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Medium,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                        .copy(alpha = 0.6f),
+                    color = EmTheme.colors.scheme.onSurfaceVariant,
                 )
                 Spacer(Modifier.weight(1f))
-                Text(
-                    text = balanceAmount,
-                    style = MaterialTheme.typography.titleMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        letterSpacing = (-0.3).sp,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface,
+                EmAmountText(
+                    amount = balanceAmount,
+                    size = EmAmountSize.Large,
                 )
             }
         }
@@ -171,48 +153,38 @@ fun SummaryCard(
 ) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
-            .background(tintColor.copy(alpha = 0.08f))
-            .padding(14.dp),
+            .clip(EmTheme.shapes.sm)
+            .background(tintColor.tint())
+            .padding(EmTheme.spacing.md),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Box(
                 modifier = Modifier
                     .size(28.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(tintColor.copy(alpha = 0.12f)),
+                    .clip(EmTheme.shapes.sm)
+                    .background(tintColor.tint()),
                 contentAlignment = Alignment.Center,
             ) {
-                Icon(
-                    imageVector = icon,
+                EmIcon(
+                    icon = icon,
                     contentDescription = null,
+                    size = EmTheme.icons.sm,
                     tint = tintColor,
-                    modifier = Modifier.size(16.dp),
                 )
             }
-            Spacer(Modifier.width(8.dp))
-            SingleLineText(
+            Spacer(Modifier.width(EmTheme.spacing.sm))
+            EmFitText(
                 text = label,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-                    .copy(alpha = 0.6f),
+                role = EmTextRole.Supporting,
+                color = EmTheme.colors.scheme.onSurfaceVariant,
             )
         }
 
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(EmTheme.spacing.sm))
 
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontWeight = FontWeight.Bold,
-                letterSpacing = (-0.3).sp,
-            ),
+        EmAmountText(
+            amount = amount,
             color = tintColor,
-            // Two lines: with conversion off a total lists one amount per currency.
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
         )
     }
 }
@@ -225,56 +197,47 @@ fun AmountInfoWidgetCompact(
     transactionPeriod: String,
     modifier: Modifier = Modifier,
 ) {
-    val incomeColor = colorResource(
-        id = com.naveenapps.expensemanager.core.common.R.color.green_500,
-    )
-    val expenseColor = colorResource(
-        id = com.naveenapps.expensemanager.core.common.R.color.red_500,
-    )
+    val incomeColor = EmTheme.colors.income
+    val expenseColor = EmTheme.colors.expense
 
-    AppCardView(modifier = modifier) {
-        Column(modifier = Modifier.padding(14.dp)) {
+    EmCard(modifier = modifier) {
+        Column(modifier = Modifier.padding(EmTheme.spacing.md)) {
             // ── Header ─────────────────────────────────────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
+                EmText(
                     text = stringResource(id = R.string.transaction_summary),
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.SemiBold,
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                        .copy(alpha = 0.6f),
+                    role = EmTextRole.Label,
+                    color = EmTheme.colors.scheme.onSurfaceVariant,
                 )
-                Spacer(Modifier.width(4.dp))
+                Spacer(Modifier.width(EmTheme.spacing.xs))
                 Box(
                     Modifier
                         .size(3.dp)
-                        .clip(CircleShape)
+                        .clip(EmTheme.shapes.pill)
                         .background(
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                                .copy(alpha = 0.25f),
+                            EmTheme.colors.scheme.onSurfaceVariant,
                         ),
                 )
-                Spacer(Modifier.width(4.dp))
-                Text(
+                Spacer(Modifier.width(EmTheme.spacing.xs))
+                EmText(
                     text = transactionPeriod,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                        .copy(alpha = 0.4f),
+                    modifier = Modifier.weight(1f),
+                    role = EmTextRole.Supporting,
+                    color = EmTheme.colors.scheme.onSurfaceVariant,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f),
                 )
             }
 
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(EmTheme.spacing.sm))
 
             // ── Income / Expense / Balance in one row ──────────────
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
             ) {
                 CompactAmountCell(
                     label = stringResource(id = R.string.income),
@@ -309,37 +272,29 @@ private fun CompactAmountCell(
 ) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
-            .background(tintColor.copy(alpha = 0.07f))
-            .padding(10.dp),
+            .clip(EmTheme.shapes.sm)
+            .background(tintColor.tint())
+            .padding(EmTheme.spacing.sm),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = icon,
+            EmIcon(
+                icon = icon,
                 contentDescription = null,
+                size = EmTheme.icons.sm,
                 tint = tintColor,
-                modifier = Modifier.size(12.dp),
             )
-            Spacer(Modifier.width(4.dp))
-            SingleLineText(
+            Spacer(Modifier.width(EmTheme.spacing.xs))
+            EmFitText(
                 text = label,
-                style = MaterialTheme.typography.labelSmall.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-                    .copy(alpha = 0.55f),
+                role = EmTextRole.Supporting,
+                color = EmTheme.colors.scheme.onSurfaceVariant,
             )
         }
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Bold,
-                letterSpacing = (-0.3).sp,
-            ),
+        Spacer(Modifier.height(EmTheme.spacing.xs))
+        EmAmountText(
+            amount = amount,
             color = tintColor,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
+            size = EmAmountSize.Small,
         )
     }
 }
@@ -351,43 +306,34 @@ private fun CompactBalanceCell(
 ) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(EmTheme.shapes.sm)
             .background(
-                MaterialTheme.colorScheme.surfaceContainerHighest
+                EmTheme.colors.scheme.surfaceContainerHighest
                     .copy(alpha = 0.45f),
             )
-            .padding(10.dp),
+            .padding(EmTheme.spacing.sm),
     ) {
-        Text(
+        EmText(
             text = stringResource(id = R.string.total),
-            style = MaterialTheme.typography.labelSmall.copy(
-                fontWeight = FontWeight.Medium,
-            ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-                .copy(alpha = 0.55f),
+            role = EmTextRole.Supporting,
+            color = EmTheme.colors.scheme.onSurfaceVariant,
         )
-        Spacer(Modifier.height(4.dp))
-        Text(
-            text = amount,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Bold,
-                letterSpacing = (-0.3).sp,
-            ),
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
+        Spacer(Modifier.height(EmTheme.spacing.xs))
+        EmAmountText(
+            amount = amount,
+            size = EmAmountSize.Small,
         )
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 private fun AmountViewPreview() {
     val amount = "100000.0$"
     ExpenseManagerPreviewTheme {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(EmTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
         ) {
             AmountInfoWidget(
                 expenseAmount = amount,

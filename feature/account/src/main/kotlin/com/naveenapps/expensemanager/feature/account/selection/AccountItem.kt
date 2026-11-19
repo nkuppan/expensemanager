@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.account.selection
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,21 +7,21 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CornerBasedShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
@@ -33,8 +32,8 @@ fun AccountItem(
     icon: String,
     iconBackgroundColor: String,
     modifier: Modifier = Modifier,
-    shape: CornerBasedShape = MaterialTheme.shapes.large,
-    border: BorderStroke = CardDefaults.outlinedCardBorder(),
+    position: EmCardPosition = EmCardPosition.Single,
+    selected: Boolean = false,
     subtitle: String? = null,
     amount: String? = null,
     amountTextColor: Int? = null,
@@ -42,9 +41,9 @@ fun AccountItem(
     trailingContent: @Composable (() -> Unit)? = null,
     customImagePath: String? = null,
 ) {
-    AppCardView(
-        shape = shape,
-        border = border,
+    EmCard(
+        position = position,
+        selected = selected,
         modifier = modifier,
     ) {
         Row(
@@ -57,7 +56,7 @@ fun AccountItem(
                         Modifier
                     },
                 )
-                .padding(horizontal = 16.dp, vertical = 14.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.md),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconAndBackgroundView(
@@ -69,20 +68,20 @@ fun AccountItem(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = EmTheme.spacing.lg),
             ) {
-                Text(
+                EmText(
                     text = name,
-                    style = MaterialTheme.typography.bodyLarge,
+                    role = EmTextRole.ItemTitle,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
                 if (subtitle != null) {
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
+                    Spacer(modifier = Modifier.height(EmTheme.spacing.xxs))
+                    EmText(
                         text = subtitle,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -90,12 +89,9 @@ fun AccountItem(
             }
 
             if (amount != null && amountTextColor != null) {
-                Text(
-                    text = amount,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = colorResource(id = amountTextColor),
-                    maxLines = 1,
+                EmAmountText(
+                    amount = amount,
+                    color = emColorOf(amountTextColor),
                 )
             }
             if (trailingContent != null) {
@@ -105,7 +101,7 @@ fun AccountItem(
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun AccountItemPreview() {
     val account = getRandomAccountUiModel(0).first()

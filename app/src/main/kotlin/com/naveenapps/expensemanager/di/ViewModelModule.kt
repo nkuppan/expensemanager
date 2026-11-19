@@ -11,6 +11,7 @@ import com.naveenapps.expensemanager.feature.category.di.CategoryViewModelModule
 import com.naveenapps.expensemanager.feature.country.di.CountryViewModelModule
 import com.naveenapps.expensemanager.feature.currency.di.CurrencyViewModelModule
 import com.naveenapps.expensemanager.feature.dashboard.di.DashboardViewModelModule
+import com.naveenapps.expensemanager.feature.debt.di.DebtViewModelModule
 import com.naveenapps.expensemanager.feature.export.di.ExportViewModelModule
 import com.naveenapps.expensemanager.feature.filter.di.FilterViewModelModule
 import com.naveenapps.expensemanager.feature.language.di.LanguageViewModelModule
@@ -51,6 +52,7 @@ val ViewModelModule = module {
         AccountViewModelModule,
         AnalysisViewModelModule,
         BudgetViewModelModule,
+        DebtViewModelModule,
         CategoryViewModelModule,
         DashboardViewModelModule,
         TransactionViewModelModule,

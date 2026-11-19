@@ -11,8 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppFilterChip
 import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.settings.domain.model.NumberFormatType
 import com.naveenapps.expensemanager.feature.currency.R
@@ -25,27 +26,27 @@ fun TextFormatSelectionView(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
-        AppFilterChip(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f),
-            filterName = stringResource(id = R.string.none),
-            isSelected = textFormat == NumberFormatType.WITHOUT_ANY_SEPARATOR,
+        EmChip(
+            label = stringResource(id = R.string.none),
+            selected = textFormat == NumberFormatType.WITHOUT_ANY_SEPARATOR,
             onClick = {
                 onTextFormatChange.invoke(NumberFormatType.WITHOUT_ANY_SEPARATOR)
             },
-        )
-        AppFilterChip(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .weight(1f),
-            filterName = stringResource(id = R.string.number_format),
-            isSelected = textFormat == NumberFormatType.WITH_COMMA_SEPARATOR,
+        )
+        EmChip(
+            label = stringResource(id = R.string.number_format),
+            selected = textFormat == NumberFormatType.WITH_COMMA_SEPARATOR,
             onClick = {
                 onTextFormatChange.invoke(NumberFormatType.WITH_COMMA_SEPARATOR)
             },
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .weight(1f),
         )
     }
 }
@@ -57,7 +58,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
         Column {
             TextFormatSelectionView(
                 modifier = Modifier
-                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .padding(top = EmTheme.spacing.lg, start = EmTheme.spacing.lg, end = EmTheme.spacing.lg)
                     .fillMaxWidth(),
                 currency = "$",
                 selectedCurrencyPositionType = CurrencyPosition.PREFIX,
@@ -65,7 +66,7 @@ private fun CurrencyPositionTypeSelectionViewPreview() {
             )
             TextFormatSelectionView(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(EmTheme.spacing.lg)
                     .fillMaxWidth(),
                 currency = "$",
                 selectedCurrencyPositionType = CurrencyPosition.SUFFIX,

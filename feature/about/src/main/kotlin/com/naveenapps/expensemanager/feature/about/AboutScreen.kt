@@ -9,15 +9,10 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Policy
 import androidx.compose.material.icons.outlined.PrivacyTip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,12 +20,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.getAppVersionName
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 
 @Composable
@@ -83,12 +84,12 @@ fun AboutScreen(
 private fun AboutUsScreenScaffoldView(
     settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(id = R.string.about_us),
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     settingOptionSelected?.invoke(AboutUsOption.BACK)
                 },
             )
@@ -110,48 +111,48 @@ private fun AboutUsScreenContent(
     settingOptionSelected: ((AboutUsOption) -> Unit)? = null,
 ) {
     Column(modifier = modifier) {
-        AppCardView(
+        EmCard(
             modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
+                horizontal = EmTheme.spacing.lg,
+                vertical = EmTheme.spacing.sm,
             ),
         ) {
-            SettingRow(
+            EmSettingItem(
+                icon = Icons.Outlined.Info,
+                title = stringResource(id = R.string.about_us),
                 onClick = {
                     settingOptionSelected?.invoke(AboutUsOption.ABOUT_US)
                 },
-                title = stringResource(id = R.string.about_us),
-                icon = Icons.Outlined.Info,
-                showDivider = true,
             )
-            SettingRow(
+            EmDivider()
+            EmSettingItem(
+                icon = Icons.Outlined.Policy,
+                title = stringResource(id = R.string.terms_and_conditions),
                 onClick = {
                     settingOptionSelected?.invoke(AboutUsOption.TERMS)
                 },
-                title = stringResource(id = R.string.terms_and_conditions),
-                icon = Icons.Outlined.Policy,
-                showDivider = true,
             )
-            SettingRow(
+            EmDivider()
+            EmSettingItem(
+                icon = Icons.Outlined.PrivacyTip,
+                title = stringResource(id = R.string.privacy_policy),
                 onClick = {
                     settingOptionSelected?.invoke(AboutUsOption.PRIVACY_POLICY)
                 },
-                title = stringResource(id = R.string.privacy_policy),
-                icon = Icons.Outlined.PrivacyTip,
-                showDivider = true,
             )
-            SettingRow(
+            EmDivider()
+            EmSettingItem(
+                icon = Icons.Outlined.FolderOpen,
+                title = stringResource(id = R.string.licenses),
                 onClick = {
                     settingOptionSelected?.invoke(AboutUsOption.LICENSES)
                 },
-                title = stringResource(id = R.string.licenses),
-                icon = Icons.Outlined.FolderOpen,
             )
         }
-        AppCardView(
+        EmCard(
             modifier = Modifier.padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
+                horizontal = EmTheme.spacing.lg,
+                vertical = EmTheme.spacing.sm,
             ),
         ) {
             DeveloperInfoView(settingOptionSelected)
@@ -168,64 +169,52 @@ private fun DeveloperInfoView(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(EmTheme.spacing.lg),
     ) {
-        Text(
+        EmText(
+            text = stringResource(id = R.string.developed_by),
             modifier = Modifier
                 .wrapContentSize()
                 .align(Alignment.CenterHorizontally),
-            text = stringResource(id = R.string.developed_by),
         )
         Row(
             modifier = Modifier
                 .wrapContentSize()
                 .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
+                .padding(top = EmTheme.spacing.lg),
         ) {
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.GITHUB)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_github),
-                    contentDescription = "",
-                )
-            }
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.TWITTER)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_twitter),
-                    contentDescription = "",
-                )
-            }
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.INSTAGRAM)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_instagram),
-                    contentDescription = "",
-                )
-            }
-            IconButton(onClick = {
-                settingOptionSelected?.invoke(AboutUsOption.MAIL)
-            }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_mail),
-                    contentDescription = "",
-                )
-            }
+            EmIconButton(
+                painter = painterResource(id = R.drawable.ic_github),
+                contentDescription = stringResource(id = R.string.about_github),
+                onClick = { settingOptionSelected?.invoke(AboutUsOption.GITHUB) },
+            )
+            EmIconButton(
+                painter = painterResource(id = R.drawable.ic_twitter),
+                contentDescription = stringResource(id = R.string.about_twitter),
+                onClick = { settingOptionSelected?.invoke(AboutUsOption.TWITTER) },
+            )
+            EmIconButton(
+                painter = painterResource(id = R.drawable.ic_instagram),
+                contentDescription = stringResource(id = R.string.about_instagram),
+                onClick = { settingOptionSelected?.invoke(AboutUsOption.INSTAGRAM) },
+            )
+            EmIconButton(
+                painter = painterResource(id = R.drawable.ic_mail),
+                contentDescription = stringResource(id = R.string.about_email),
+                onClick = { settingOptionSelected?.invoke(AboutUsOption.MAIL) },
+            )
         }
-        Text(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
+        EmText(
             text = stringResource(
                 id = R.string.app_version,
                 runCatching {
                     context.getAppVersionName()
                 }.getOrNull() ?: "1.0.0",
             ),
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.CenterHorizontally)
+                .padding(top = EmTheme.spacing.lg),
         )
     }
 }
@@ -243,7 +232,7 @@ private enum class AboutUsOption {
 }
 
 @Composable
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 fun AboutUsScreenScaffoldViewPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         AboutUsScreenScaffoldView { }

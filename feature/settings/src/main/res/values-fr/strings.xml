@@ -119,4 +119,6 @@
     <string name="more">Plus</string>
     <string name="preferences">Préférences</string>
     <string name="preferences_message">Valeurs par défaut, accueil et plus</string>
+    <string name="debts_setting">Personnes et dettes</string>
+    <string name="debts_setting_message">Argent prêté ou emprunté</string>
 </resources>

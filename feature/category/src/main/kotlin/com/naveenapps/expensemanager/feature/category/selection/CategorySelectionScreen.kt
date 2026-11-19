@@ -18,10 +18,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.designsystem.components.SelectionHeader
+import com.naveenapps.expensemanager.core.designsystem.em.EmNoSearchResults
+import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
+import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.NoSearchResults
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearchField
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
@@ -51,35 +52,35 @@ fun CategorySelectionScreen(
     }
 
     Column(modifier = modifier) {
-        SelectionHeader(
+        EmSectionHeader(
             title = stringResource(id = R.string.select_category),
-            createNewCallback = createNewCallback,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.sm),
+            onAddClick = createNewCallback,
         )
 
-        SheetSearchField(
+        EmSearchField(
             query = query,
             onQueryChange = { query = it },
             placeholder = stringResource(id = R.string.search_categories),
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
         )
 
         if (visibleCategories.isEmpty() && query.isNotBlank()) {
-            NoSearchResults(modifier = Modifier.padding(horizontal = 20.dp, vertical = 24.dp))
+            EmNoSearchResults(modifier = Modifier.padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.xl))
         }
 
         // The header and search stay put while the list scrolls under them.
         LazyColumn(
             modifier = Modifier.weight(1f, fill = false),
             contentPadding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
-                top = 12.dp,
-                bottom = 48.dp,
+                start = EmTheme.spacing.lg,
+                end = EmTheme.spacing.lg,
+                top = EmTheme.spacing.md,
+                bottom = EmTheme.spacing.xxxl,
             ),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
         ) {
             items(visibleCategories, key = { it.id }) { category ->
                 val isSelected = selectedCategory?.id == category.id
@@ -89,7 +90,7 @@ fun CategorySelectionScreen(
                     icon = category.storedIcon.name,
                     iconBackgroundColor = category.storedIcon.backgroundColor,
                     customImagePath = category.storedIcon.customImagePath,
-                    border = CategoryItemDefaults.border(isSelected),
+                    selected = isSelected,
                     modifier = Modifier
                         .fillMaxWidth(),
                     trailingContent = { CategoryItemDefaults.SingleCheckedTrailing(isSelected) },

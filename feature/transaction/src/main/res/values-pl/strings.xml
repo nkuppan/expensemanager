@@ -116,4 +116,8 @@
     <string name="suggested_categories">Sugerowane</string>
     <string name="receipt_scanner_unavailable">Skaner paragonów nie jest dostępny na tym urządzeniu</string>
     <string name="receipt_scanner_preparing">Usługi Google Play pobierają skaner paragonów. Otworzy się, gdy będzie gotowy.</string>
+    <string name="debt_row_lent">Pożyczone dla: %1$s</string>
+    <string name="debt_row_borrowed">Pożyczone od: %1$s</string>
+    <string name="debt_row_received">Odzyskane od: %1$s</string>
+    <string name="debt_row_paid">Oddane dla: %1$s</string>
 </resources>

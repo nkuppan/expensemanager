@@ -3,9 +3,9 @@
     <color name="white">@android:color/white</color>
     <color name="red_500">#D93A46</color>
 
-    <color name="green_500">#0F9D5B</color>
-    <color name="light_green_500">#CDDC39</color>
-    <color name="orange_500">#B9790A</color>
+    <color name="green_500">#0B7A46</color>
+    <color name="light_green_500">#8C9A1B</color>
+    <color name="orange_500">#9A6400</color>
 
     <color name="blue_500">#3E63D6</color>
     <color name="black_100">#10000000</color>

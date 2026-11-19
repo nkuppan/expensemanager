@@ -79,6 +79,13 @@
     <!-- Expand / collapse a release's highlights; %1$d = how many more. -->
     <string name="notification_see_more">Voir plus (%1$d)</string>
     <string name="notification_see_less">Voir moins</string>
+    <string-array name="whats_new_1_4_31">
+        <item>Nouveau : Personnes et dettes. Notez l\'argent prêté ou emprunté, les remboursements partiels et les échéances, et envoyez un rappel aimable (Réglages → Personnes et dettes)</item>
+        <item>Les budgets ne s\'affichent plus en rouge tant que vous restez dans la limite</item>
+        <item>L\'export fonctionne sur tous les téléphones : sans sélecteur de fichiers, le fichier s\'ouvre dans le menu de partage</item>
+        <item>Annuler dans le filtre de dates ne modifie plus la période choisie</item>
+        <item>Un design plus net et cohérent</item>
+    </string-array>
     <string-array name="whats_new_1_4_30">
         <item>Enregistrez votre dépense la plus fréquente d\'un geste depuis le rappel quotidien, avec Annuler en cas d\'erreur</item>
         <item>Les rappels quotidiens arrivent plus fiablement à l\'heure, et l\'écran Rappel explique quoi faire si votre téléphone les bloque</item>
@@ -113,4 +120,5 @@
     <string name="reminder_banner_title_with_time">Vous notez souvent vers %1$s</string>
     <string name="reminder_banner_body_with_time">Recevez un rappel quotidien à cette heure-là pour ne rien oublier.</string>
     <string name="reminder_banner_turn_on_at">Me le rappeler à %1$s</string>
+    <string name="home_debts_title">Personnes et dettes</string>
 </resources>

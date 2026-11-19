@@ -9,15 +9,15 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material.icons.rounded.PhotoLibrary
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.naveenapps.expensemanager.core.designsystem.R
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 
 /**
@@ -35,11 +35,10 @@ fun AttachmentPickerScreen(
             .fillMaxWidth()
             .wrapContentHeight(),
     ) {
-        Text(
+        EmText(
             text = stringResource(id = R.string.choose_photo),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp),
+            modifier = Modifier.padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.md),
+            role = EmTextRole.SectionTitle,
         )
 
         PhotoOptionRow(
@@ -53,7 +52,7 @@ fun AttachmentPickerScreen(
             onClick = onChooseFromGallery,
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.xl))
     }
 }
 

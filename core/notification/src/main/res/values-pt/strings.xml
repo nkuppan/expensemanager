@@ -36,4 +36,8 @@
         <item quantity="many">%d lançamentos recorrentes amanhã</item>
         <item quantity="other">%d lançamentos recorrentes amanhã</item>
     </plurals>
+    <string name="debt_due_title_one">Vence hoje: %1$s</string>
+    <string name="debt_due_title_many">%1$d dívidas vencem hoje</string>
+    <string name="debt_due_owes_you">%1$s te deve %2$s</string>
+    <string name="debt_due_you_owe">Você deve %2$s a %1$s</string>
 </resources>

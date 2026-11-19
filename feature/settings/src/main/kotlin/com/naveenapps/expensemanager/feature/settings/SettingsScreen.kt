@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Backup
 import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.EditNotifications
@@ -20,17 +19,12 @@ import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Palette
 import androidx.compose.material.icons.outlined.Payments
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.ScreenshotMonitor
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material.icons.outlined.Upload
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -40,15 +34,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.AppShareLink
 import com.naveenapps.expensemanager.core.common.utils.shareAppMessage
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingTrailing
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingToggleRow
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingsSection
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.repository.ShareRepository
@@ -65,7 +65,7 @@ fun SettingsScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val scope = rememberCoroutineScope()
 
     fun showMessage(messageResId: Int) {
@@ -98,24 +98,16 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreenScaffoldView(
     state: SettingState,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
     onAction: (SettingAction) -> Unit,
 ) {
     if (state.showDemoDataConfirmation) {
-        AlertDialog(
-            onDismissRequest = { onAction.invoke(SettingAction.DismissDemoData) },
-            title = { Text(text = stringResource(id = R.string.demo_data_confirm_title)) },
-            text = { Text(text = stringResource(id = R.string.demo_data_confirm_message)) },
-            confirmButton = {
-                TextButton(onClick = { onAction.invoke(SettingAction.ConfirmDemoData) }) {
-                    Text(text = stringResource(id = R.string.demo_data_confirm_action))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction.invoke(SettingAction.DismissDemoData) }) {
-                    Text(text = stringResource(id = android.R.string.cancel))
-                }
-            },
+        EmConfirm(
+            title = stringResource(id = R.string.demo_data_confirm_title),
+            message = stringResource(id = R.string.demo_data_confirm_message),
+            confirmText = stringResource(id = R.string.demo_data_confirm_action),
+            onConfirm = { onAction.invoke(SettingAction.ConfirmDemoData) },
+            onDismiss = { onAction.invoke(SettingAction.DismissDemoData) },
         )
     }
 
@@ -131,12 +123,12 @@ private fun SettingsScreenScaffoldView(
         }
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(SettingAction.ClosePage)
                 },
                 title = stringResource(R.string.settings),
@@ -148,7 +140,7 @@ private fun SettingsScreenScaffoldView(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = EmTheme.spacing.lg),
             state = state,
             onAction = onAction,
         )
@@ -165,151 +157,160 @@ private fun SettingsScreenContent(
     // explanation; everything set once and forgotten lives in Preferences.
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
     ) {
         Spacer(modifier = Modifier.height(0.dp))
 
-        SettingsSection(title = stringResource(R.string.general)) {
-            AppCardView {
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.ShowThemeSelection) },
-                    title = stringResource(id = R.string.theme),
-                    value = if (state.theme != null) {
-                        stringResource(id = state.theme.titleResId)
-                    } else {
-                        stringResource(id = R.string.system_default)
-                    },
+        EmSection(title = stringResource(R.string.general)) {
+            EmCard {
+                EmSettingItem(
                     icon = Icons.Outlined.Palette,
-                    showDivider = true,
+                    title = stringResource(id = R.string.theme),
+                    trailing = EmSettingTrailing.valueOrChevron(
+                        if (state.theme != null) {
+                            stringResource(id = state.theme.titleResId)
+                        } else {
+                            stringResource(id = R.string.system_default)
+                        },
+                    ),
+                    onClick = { onAction.invoke(SettingAction.ShowThemeSelection) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.ShowLanguageSelection) },
+                EmDivider()
+                EmSettingItem(
+                    icon = Icons.Outlined.Language,
                     title = stringResource(
                         id = com.naveenapps.expensemanager.feature.language.R.string.language,
                     ),
-                    value = if (state.locale != null) {
-                        stringResource(id = state.locale.titleResId)
-                    } else {
-                        stringResource(id = R.string.system_default)
-                    },
-                    icon = Icons.Outlined.Language,
-                    showDivider = true,
+                    trailing = EmSettingTrailing.valueOrChevron(
+                        if (state.locale != null) {
+                            stringResource(id = state.locale.titleResId)
+                        } else {
+                            stringResource(id = R.string.system_default)
+                        },
+                    ),
+                    onClick = { onAction.invoke(SettingAction.ShowLanguageSelection) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenCurrencyEdit) },
+                EmDivider()
+                EmSettingItem(
+                    icon = Icons.Outlined.Payments,
                     title = stringResource(id = R.string.currency),
-                    value = state.currency.symbol,
-                    icon = Icons.Outlined.Payments,
-                    showDivider = true,
+                    trailing = EmSettingTrailing.valueOrChevron(state.currency.symbol),
+                    onClick = { onAction.invoke(SettingAction.OpenCurrencyEdit) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenExchangeMethod) },
+                EmDivider()
+                EmSettingItem(
+                    icon = Icons.Outlined.Payments,
                     title = stringResource(id = R.string.exchange_method),
-                    subtitle = stringResource(id = R.string.exchange_method_subtitle),
-                    icon = Icons.Outlined.Payments,
-                    showDivider = true,
+                    supporting = stringResource(id = R.string.exchange_method_subtitle),
+                    onClick = { onAction.invoke(SettingAction.OpenExchangeMethod) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenNotification) },
-                    title = stringResource(id = R.string.reminders),
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.EditNotifications,
+                    title = stringResource(id = R.string.reminders),
+                    onClick = { onAction.invoke(SettingAction.OpenNotification) },
                 )
             }
         }
 
-        SettingsSection(title = stringResource(R.string.your_data)) {
-            AppCardView {
-                SettingRow(
-                    title = stringResource(id = R.string.backup_and_restore),
+        EmSection(title = stringResource(R.string.your_data)) {
+            EmCard {
+                EmSettingItem(
                     icon = Icons.Outlined.Backup,
+                    title = stringResource(id = R.string.backup_and_restore),
                     onClick = { onAction.invoke(SettingAction.OpenBackup) },
-                    showDivider = true,
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenExport) },
-                    title = stringResource(id = R.string.export),
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.Upload,
-                    showDivider = true,
+                    title = stringResource(id = R.string.export),
+                    onClick = { onAction.invoke(SettingAction.OpenExport) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenRecurringTransactions) },
-                    title = stringResource(id = R.string.recurring_transactions_setting),
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.EventRepeat,
+                    title = stringResource(id = R.string.recurring_transactions_setting),
+                    onClick = { onAction.invoke(SettingAction.OpenRecurringTransactions) },
+                )
+                EmDivider()
+                EmSettingItem(
+                    icon = Icons.Outlined.People,
+                    title = stringResource(id = R.string.debts_setting),
+                    supporting = stringResource(id = R.string.debts_setting_message),
+                    onClick = { onAction.invoke(SettingAction.OpenDebts) },
                 )
             }
         }
 
-        SettingsSection(title = stringResource(R.string.security)) {
-            AppCardView {
-                SettingToggleRow(
-                    title = stringResource(id = R.string.app_lock),
-                    subtitle = stringResource(id = R.string.app_lock_message),
+        EmSection(title = stringResource(R.string.security)) {
+            EmCard {
+                EmSettingItem(
                     icon = Icons.Outlined.Lock,
-                    checked = state.isAppLockEnabled,
-                    onCheckedChange = { onAction.invoke(SettingAction.ToggleAppLock) },
-                    showDivider = true,
+                    title = stringResource(id = R.string.app_lock),
+                    supporting = stringResource(id = R.string.app_lock_message),
+                    trailing = EmSettingTrailing.Toggle(state.isAppLockEnabled, { onAction.invoke(SettingAction.ToggleAppLock) }),
                 )
-                SettingToggleRow(
-                    title = stringResource(id = R.string.block_screenshots),
-                    subtitle = stringResource(id = R.string.block_screenshots_message),
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.ScreenshotMonitor,
-                    checked = state.isScreenshotBlocked,
-                    onCheckedChange = { onAction.invoke(SettingAction.ToggleScreenshotBlock) },
+                    title = stringResource(id = R.string.block_screenshots),
+                    supporting = stringResource(id = R.string.block_screenshots_message),
+                    trailing = EmSettingTrailing.Toggle(state.isScreenshotBlocked, { onAction.invoke(SettingAction.ToggleScreenshotBlock) }),
                 )
             }
         }
 
-        SettingsSection(title = stringResource(R.string.more)) {
-            AppCardView {
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenAdvancedSettings) },
-                    title = stringResource(id = R.string.preferences),
-                    subtitle = stringResource(id = R.string.preferences_message),
+        EmSection(title = stringResource(R.string.more)) {
+            EmCard {
+                EmSettingItem(
                     icon = Icons.Outlined.Tune,
-                    showDivider = true,
+                    title = stringResource(id = R.string.preferences),
+                    supporting = stringResource(id = R.string.preferences_message),
+                    onClick = { onAction.invoke(SettingAction.OpenAdvancedSettings) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenRateUs) },
-                    title = stringResource(id = R.string.rate_us),
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.RateReview,
-                    showDivider = true,
+                    title = stringResource(id = R.string.rate_us),
+                    onClick = { onAction.invoke(SettingAction.OpenRateUs) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.ShareApp) },
-                    title = stringResource(id = R.string.share_app),
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.Share,
-                    showDivider = true,
+                    title = stringResource(id = R.string.share_app),
+                    onClick = { onAction.invoke(SettingAction.ShareApp) },
                 )
-                SettingRow(
-                    onClick = { onAction.invoke(SettingAction.OpenAboutUs) },
-                    title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
+                EmDivider()
+                EmSettingItem(
                     icon = Icons.Outlined.Info,
+                    title = stringResource(id = com.naveenapps.expensemanager.feature.about.R.string.about_us),
+                    onClick = { onAction.invoke(SettingAction.OpenAboutUs) },
                 )
             }
         }
 
         // Developer — debug builds only (no DemoDataRepository is bound in release).
         if (state.isDemoDataAvailable) {
-            SettingsSection(title = stringResource(R.string.developer)) {
-                AppCardView {
-                    SettingRow(
-                        onClick = { onAction.invoke(SettingAction.LoadDemoData) },
+            EmSection(title = stringResource(R.string.developer)) {
+                EmCard {
+                    EmSettingItem(
+                        icon = Icons.Outlined.BugReport,
                         title = stringResource(id = R.string.demo_data),
-                        subtitle = stringResource(
+                        supporting = stringResource(
                             id = if (state.isDemoDataLoading) R.string.demo_data_loading else R.string.demo_data_message,
                         ),
-                        icon = Icons.Outlined.BugReport,
+                        onClick = { onAction.invoke(SettingAction.LoadDemoData) },
                         enabled = !state.isDemoDataLoading,
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
     }
 }
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun SettingsScreenPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {

@@ -15,24 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.WarningAmber
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -41,10 +28,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmProgress
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.feature.country.CountryCurrencySelectionBottomSheet
 import com.naveenapps.expensemanager.feature.country.CountrySelectionEvent
@@ -64,7 +65,7 @@ fun RestoreScreen(
     viewModel: RestoreViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
@@ -112,25 +113,19 @@ private fun Context.restartApp() {
 private fun RestoreContent(
     state: RestoreState,
     onAction: (RestoreAction) -> Unit,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
 ) {
     val formatTime = rememberBackupTimeFormatter()
 
     state.confirmBackup?.let { backup ->
-        AlertDialog(
-            onDismissRequest = { onAction(RestoreAction.DismissConfirmation) },
-            title = { Text(text = stringResource(id = R.string.restore_confirm_title)) },
-            text = { Text(text = stringResource(id = R.string.restore_confirm_backup_message, formatTime(backup.createdAt))) },
-            confirmButton = {
-                TextButton(onClick = { onAction(RestoreAction.ConfirmRestore) }) {
-                    Text(text = stringResource(id = R.string.restore_confirm_action))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { onAction(RestoreAction.DismissConfirmation) }) {
-                    Text(text = stringResource(id = android.R.string.cancel))
-                }
-            },
+        // Restoring replaces everything in the app, so the confirm button is destructive.
+        EmConfirm(
+            title = stringResource(id = R.string.restore_confirm_title),
+            message = stringResource(id = R.string.restore_confirm_backup_message, formatTime(backup.createdAt)),
+            confirmText = stringResource(id = R.string.restore_confirm_action),
+            onConfirm = { onAction(RestoreAction.ConfirmRestore) },
+            onDismiss = { onAction(RestoreAction.DismissConfirmation) },
+            destructive = true,
         )
     }
 
@@ -159,12 +154,12 @@ private fun RestoreContent(
         )
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
-            ExpenseManagerTopAppBar(
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = { onAction(RestoreAction.ClosePage) },
+            EmTopBar(
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = { onAction(RestoreAction.ClosePage) },
                 title = stringResource(R.string.restore),
             )
         },
@@ -174,11 +169,11 @@ private fun RestoreContent(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(horizontal = EmTheme.spacing.lg),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
         ) {
             if (state.isRestoring) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
+                EmProgress(progress = null)
             } else {
                 Spacer(modifier = Modifier.height(0.dp))
             }
@@ -187,27 +182,29 @@ private fun RestoreContent(
 
             BackupCard(onClick = if (state.isRestoring) null else ({ onAction(RestoreAction.ChooseFile) })) {
                 Row(
-                    modifier = Modifier.padding(start = 16.dp, end = 12.dp, top = 16.dp, bottom = 16.dp),
+                    modifier = Modifier.padding(
+                        start = EmTheme.spacing.lg,
+                        end = EmTheme.spacing.md,
+                        top = EmTheme.spacing.lg,
+                        bottom = EmTheme.spacing.lg,
+                    ),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(14.dp),
+                    horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
                 ) {
                     CircleIcon(icon = Icons.Outlined.Folder)
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(
+                        EmText(
                             text = stringResource(R.string.restore_choose_file),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
                         )
-                        Text(
+                        EmText(
                             text = stringResource(R.string.restore_choose_file_message),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            color = EmTextColor.Supporting,
                         )
                     }
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    EmIcon(
+                        icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = EmTheme.colors.scheme.onSurfaceVariant,
                     )
                 }
             }
@@ -216,45 +213,38 @@ private fun RestoreContent(
             BackupCard {
                 if (state.backups.isEmpty()) EmptyBackupsText()
                 state.backups.forEachIndexed { index, backup ->
-                    if (index > 0) HorizontalDivider(modifier = Modifier.padding(start = 74.dp))
+                    if (index > 0) EmDivider(modifier = Modifier.padding(start = 74.dp))
                     BackupFileRow(backup = backup, formatTime = formatTime) {
-                        TextButton(
+                        EmButton(
+                            text = stringResource(R.string.restore_confirm_action),
                             onClick = { onAction(RestoreAction.SelectBackup(backup)) },
+                            variant = EmButtonVariant.Tertiary,
                             enabled = !state.isRestoring,
-                        ) {
-                            Text(text = stringResource(R.string.restore_confirm_action))
-                        }
+                        )
                     }
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
         }
     }
 }
 
 @Composable
 private fun RestoreWarning() {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
-        color = MaterialTheme.colorScheme.errorContainer,
-        contentColor = MaterialTheme.colorScheme.onErrorContainer,
-    ) {
+    EmCard(modifier = Modifier.fillMaxWidth(), variant = EmCardVariant.Error) {
         Row(
-            modifier = Modifier.padding(20.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.padding(EmTheme.spacing.xl),
+            horizontalArrangement = Arrangement.spacedBy(EmTheme.spacing.lg),
         ) {
-            Icon(imageVector = Icons.Outlined.WarningAmber, contentDescription = null)
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
+            EmIcon(icon = Icons.Outlined.WarningAmber, contentDescription = null)
+            Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs)) {
+                EmText(
                     text = stringResource(R.string.restore_warning_title),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
+                    role = EmTextRole.SectionTitle,
                 )
-                Text(
+                EmText(
                     text = stringResource(R.string.restore_warning_message),
-                    style = MaterialTheme.typography.bodyMedium,
                 )
             }
         }

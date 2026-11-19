@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.currency
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,33 +8,34 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.Paid
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
+import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmSettingTrailing
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
+import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.ExpenseManagerTopAppBar
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SettingRow
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencyPosition
 import com.naveenapps.expensemanager.core.model.toDisplayValue
@@ -89,12 +89,12 @@ private fun CurrencyCustomiseScreenContent(
     onAction: (CurrencyAction) -> Unit,
     state: CurrencyState,
 ) {
-    Scaffold(
+    EmScaffold(
         topBar = {
-            ExpenseManagerTopAppBar(
+            EmTopBar(
                 title = stringResource(id = R.string.currency),
-                navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationBackClick = {
+                navigation = EmTopBarNavigation.Back,
+                onNavigationClick = {
                     onAction.invoke(CurrencyAction.ClosePage)
                 },
             )
@@ -105,21 +105,21 @@ private fun CurrencyCustomiseScreenContent(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(24.dp),
+            verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xl),
         ) {
             // Currency Selection Section
             CurrencySection(
                 title = stringResource(id = R.string.selected_currency),
                 subtitle = stringResource(id = R.string.choose_preferred_currency),
             ) {
-                AppCardView(modifier = Modifier.fillMaxWidth()) {
-                    SettingRow(
+                EmCard(modifier = Modifier.fillMaxWidth()) {
+                    EmSettingItem(
+                        icon = Icons.Outlined.Paid,
+                        title = stringResource(id = R.string.select_currency),
+                        trailing = EmSettingTrailing.valueOrChevron(state.currency.toDisplayValue()),
                         onClick = {
                             onAction.invoke(CurrencyAction.OpenCurrencySelection)
                         },
-                        title = stringResource(id = R.string.select_currency),
-                        value = state.currency.toDisplayValue(),
-                        icon = Icons.Outlined.Paid,
                     )
                 }
             }
@@ -151,7 +151,7 @@ private fun CurrencyCustomiseScreenContent(
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(EmTheme.spacing.lg))
         }
     }
 }
@@ -166,20 +166,18 @@ private fun CurrencySection(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+            .padding(horizontal = EmTheme.spacing.lg),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md),
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
+        Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs)) {
+            EmText(
                 text = title,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
+                role = EmTextRole.SectionTitle,
             )
-            Text(
+            EmText(
                 text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
             )
         }
         content()
@@ -195,7 +193,7 @@ private fun CurrencyPositionSelector(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
     ) {
         CurrencyPosition.entries.forEach { position ->
             val isSelected = position == selectedPosition
@@ -204,64 +202,41 @@ private fun CurrencyPositionSelector(
                 CurrencyPosition.SUFFIX -> "1,234.56$currency"
             }
 
-            Card(
+            EmCard(
                 onClick = { onPositionChange(position) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
-                ),
-                border = if (isSelected) {
-                    BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-                } else {
-                    null
-                },
+                variant = if (isSelected) EmCardVariant.Highlight else EmCardVariant.Filled,
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(EmTheme.spacing.lg),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
                         modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
                     ) {
-                        Text(
+                        EmText(
                             text = position.name.replace("_", " ")
                                 .lowercase()
                                 .replaceFirstChar { it.uppercase() },
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                            role = if (isSelected) EmTextRole.ItemTitle else EmTextRole.Body,
                             color = if (isSelected) {
-                                MaterialTheme.colorScheme.onPrimaryContainer
+                                EmTheme.colors.scheme.onPrimaryContainer
                             } else {
-                                MaterialTheme.colorScheme.onSurface
+                                EmTheme.colors.scheme.onSurface
                             },
                         )
-                        Text(
-                            text = preview,
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontFeatureSettings = "tnum",
-                            ),
-                            color = if (isSelected) {
-                                MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                        )
+                        EmAmountText(amount = preview, size = EmAmountSize.Small)
                     }
 
                     if (isSelected) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
+                        EmIcon(
+                            icon = Icons.Default.CheckCircle,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp),
+                            tint = EmTheme.colors.scheme.primary,
                         )
                     }
                 }
@@ -278,7 +253,7 @@ private fun CurrencyFormatSelector(
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
     ) {
         NumberFormatType.entries.forEach { format ->
             val isSelected = format == textFormat
@@ -287,65 +262,41 @@ private fun CurrencyFormatSelector(
                 NumberFormatType.WITH_COMMA_SEPARATOR -> "123,423.13"
             }
 
-            Card(
+            EmCard(
                 onClick = { onFormatChange(format) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.surfaceVariant
-                    },
-                ),
-                border = if (isSelected) {
-                    BorderStroke(2.dp, MaterialTheme.colorScheme.primary)
-                } else {
-                    null
-                },
+                variant = if (isSelected) EmCardVariant.Highlight else EmCardVariant.Filled,
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(EmTheme.spacing.lg),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
                         modifier = Modifier.weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.xs),
                     ) {
-                        Text(
+                        EmText(
                             text = format.name.replace("_", " ")
                                 .lowercase()
                                 .replaceFirstChar { it.uppercase() },
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
+                            role = if (isSelected) EmTextRole.ItemTitle else EmTextRole.Body,
                             color = if (isSelected) {
-                                MaterialTheme.colorScheme.onPrimaryContainer
+                                EmTheme.colors.scheme.onPrimaryContainer
                             } else {
-                                MaterialTheme.colorScheme.onSurface
+                                EmTheme.colors.scheme.onSurface
                             },
                         )
-                        Text(
-                            text = preview,
-                            style = MaterialTheme.typography.bodyMedium.copy(
-                                fontFeatureSettings = "tnum",
-                                fontFamily = FontFamily.Monospace,
-                            ),
-                            color = if (isSelected) {
-                                MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
-                            } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            },
-                        )
+                        EmText(text = preview, role = EmTextRole.Code)
                     }
 
                     if (isSelected) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
+                        EmIcon(
+                            icon = Icons.Default.CheckCircle,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(24.dp),
+                            tint = EmTheme.colors.scheme.primary,
                         )
                     }
                 }

@@ -189,7 +189,44 @@ internal val MIGRATION_10_11 = object : Migration(10, 11) {
 }
 
 /**
- * Supplies the currency every pre-multi-currency (v11) row was implicitly in: the app's single
+ * Adds the debt ledger: `debt_person` and `debt_entry` (lent / borrowed / repaid, optionally
+ * linked to an account). New tables only, so existing rows are untouched. Must match
+ * DebtPersonEntity and DebtEntryEntity exactly, indices included.
+ */
+internal val MIGRATION_11_12 = object : Migration(11, 12) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `debt_person` (" +
+                "`id` TEXT NOT NULL, " +
+                "`name` TEXT NOT NULL, " +
+                "`created_on` INTEGER NOT NULL, " +
+                "`updated_on` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`id`))",
+        )
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `debt_entry` (" +
+                "`id` TEXT NOT NULL, " +
+                "`person_id` TEXT NOT NULL, " +
+                "`kind` TEXT NOT NULL, " +
+                "`amount_milli` INTEGER NOT NULL, " +
+                "`account_id` TEXT, " +
+                "`date` INTEGER NOT NULL, " +
+                "`due_date` INTEGER, " +
+                "`note` TEXT NOT NULL, " +
+                "`created_on` INTEGER NOT NULL, " +
+                "`updated_on` INTEGER NOT NULL, " +
+                "PRIMARY KEY(`id`), " +
+                "FOREIGN KEY(`person_id`) REFERENCES `debt_person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, " +
+                "FOREIGN KEY(`account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL)",
+        )
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_person_id` ON `debt_entry` (`person_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_account_id` ON `debt_entry` (`account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_debt_entry_due_date` ON `debt_entry` (`due_date`)")
+    }
+}
+
+/**
+ * Supplies the currency every pre-multi-currency (v12) row was implicitly in: the app's single
  * selected currency. Implemented outside this module (it lives in DataStore, not Room).
  */
 fun interface LegacyCurrencyCodeProvider {
@@ -200,18 +237,18 @@ fun interface LegacyCurrencyCodeProvider {
 /**
  * Multi-currency support.
  *
- * Every v11 row was in the app's one selected currency, so that code is stamped on all accounts,
+ * Every v12 row was in the app's one selected currency, so that code is stamped on all accounts,
  * transactions (both sides) and budgets here, inside the migration: no row is ever left without
- * a currency. v11 transfers were same-currency by definition, so they need no rate snapshot.
+ * a currency. v12 transfers were same-currency by definition, so they need no rate snapshot.
  *
  * `account`, `transaction` and `budget` are altered in place, not rebuilt: dropping them would
  * fire their ON DELETE CASCADE children (attachments, budget links, recurring transactions). The
  * added NOT NULL columns carry a DEFAULT only because SQLite requires one for ALTER TABLE ADD
  * COLUMN; the entities declare none, and the use-case validation rejects blank codes.
  */
-class Migration11To12(
+class Migration12To13(
     private val legacyCurrencyCodeProvider: LegacyCurrencyCodeProvider,
-) : Migration(11, 12) {
+) : Migration(12, 13) {
     override fun migrate(db: SupportSQLiteDatabase) {
         val code = legacyCurrencyCodeProvider.legacyCurrencyCode()
         require(code.isNotBlank()) { "Legacy currency code must not be blank" }
@@ -280,5 +317,6 @@ internal fun allMigrations(legacyCurrencyCodeProvider: LegacyCurrencyCodeProvide
     MIGRATION_8_9,
     MIGRATION_9_10,
     MIGRATION_10_11,
-    Migration11To12(legacyCurrencyCodeProvider),
+    MIGRATION_11_12,
+    Migration12To13(legacyCurrencyCodeProvider),
 )

@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.feature.transaction.list
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,25 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.EventRepeat
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -39,28 +23,41 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.designsystem.utils.AppPreviewsLightAndDarkMode
 import com.naveenapps.expensemanager.core.common.utils.fromCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDay
 import com.naveenapps.expensemanager.core.common.utils.toMonthYear
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
-import com.naveenapps.expensemanager.core.designsystem.components.EmptyItem
+import com.naveenapps.expensemanager.core.designsystem.em.EmCard
+import com.naveenapps.expensemanager.core.designsystem.em.EmChip
+import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
+import com.naveenapps.expensemanager.core.designsystem.em.EmFab
+import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
+import com.naveenapps.expensemanager.core.designsystem.em.EmLoading
+import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
+import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarDuration
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
+import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarResult
+import com.naveenapps.expensemanager.core.designsystem.em.EmText
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
+import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
+import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
+import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.designsystem.ui.components.AppCardView
-import com.naveenapps.expensemanager.core.designsystem.ui.components.SheetSearchField
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
@@ -79,7 +76,7 @@ fun TransactionListScreen(
     viewModel: TransactionListViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = remember { EmSnackbarHostState() }
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
 
@@ -91,10 +88,10 @@ fun TransactionListScreen(
                 val result = snackbarHostState.showSnackbar(
                     message = context.getString(R.string.transaction_deleted),
                     actionLabel = context.getString(R.string.undo),
-                    duration = SnackbarDuration.Long,
+                    duration = EmSnackbarDuration.Long,
                 )
                 viewModel.processAction(
-                    if (result == SnackbarResult.ActionPerformed) {
+                    if (result == EmSnackbarResult.ActionPerformed) {
                         TransactionListAction.UndoDelete
                     } else {
                         TransactionListAction.UndoExpired
@@ -123,7 +120,7 @@ private fun TransactionListScreenContent(
     showAddButton: Boolean = true,
     state: TransactionListState,
     onAction: (TransactionListAction) -> Unit,
-    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    snackbarHostState: EmSnackbarHostState = remember { EmSnackbarHostState() },
 ) {
     // Search is always visible under the title (no tap to open it, and it doesn't grab focus, so
     // the keyboard only appears when the user taps it). Back clears an active search first.
@@ -131,8 +128,8 @@ private fun TransactionListScreenContent(
         onAction(TransactionListAction.Search(""))
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+    EmScaffold(
+        snackbarHostState = snackbarHostState,
         topBar = {
             // The app draws edge to edge and there's no app bar to take the status-bar inset, so this
             // row keeps clear of the status bar itself.
@@ -140,56 +137,44 @@ private fun TransactionListScreenContent(
                 modifier = Modifier
                     .statusBarsPadding()
                     .padding(
-                        start = if (showBackNavigationIcon) 4.dp else 16.dp,
-                        end = 16.dp,
-                        top = 16.dp,
-                        bottom = 8.dp,
+                        start = if (showBackNavigationIcon) EmTheme.spacing.xs else EmTheme.spacing.lg,
+                        end = EmTheme.spacing.lg,
+                        top = EmTheme.spacing.lg,
+                        bottom = EmTheme.spacing.sm,
                     ),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Opened as its own screen (not the Home tab): a way back, at the start of the row.
                 if (showBackNavigationIcon) {
-                    IconButton(onClick = { onAction(TransactionListAction.ClosePage) }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                            contentDescription = stringResource(DesignSystemR.string.a11y_back),
-                        )
-                    }
+                    EmIconButton(
+                        icon = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = stringResource(DesignSystemR.string.a11y_back),
+                        onClick = { onAction(TransactionListAction.ClosePage) },
+                    )
                 }
-                SheetSearchField(
+                EmSearchField(
                     query = state.searchQuery,
                     onQueryChange = { onAction(TransactionListAction.Search(it)) },
                     placeholder = stringResource(R.string.search_transactions_hint),
                     modifier = Modifier.weight(1f),
                     // Recurring transactions sit at the end of the search box.
                     trailingAction = {
-                        IconButton(onClick = { onAction(TransactionListAction.OpenRecurringTransactions) }) {
-                            Icon(
-                                imageVector = Icons.Outlined.EventRepeat,
-                                contentDescription = stringResource(R.string.recurring_transactions),
-                            )
-                        }
+                        EmIconButton(
+                            icon = Icons.Outlined.EventRepeat,
+                            contentDescription = stringResource(R.string.recurring_transactions),
+                            onClick = { onAction(TransactionListAction.OpenRecurringTransactions) },
+                        )
                     },
                 )
             }
         },
         floatingActionButton = {
             if (showAddButton) {
-                FloatingActionButton(
+                EmFab(
+                    icon = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add_transaction),
                     onClick = { onAction(TransactionListAction.OpenCreateTransaction) },
-                    shape = RoundedCornerShape(16.dp),
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    elevation = FloatingActionButtonDefaults.elevation(
-                        defaultElevation = 6.dp,
-                        pressedElevation = 10.dp,
-                    ),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = stringResource(R.string.add_transaction),
-                    )
-                }
+                )
             }
         },
     ) { innerPadding ->
@@ -226,7 +211,7 @@ private fun TransactionListScreen(
             FilterView(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 6.dp),
+                    .padding(end = EmTheme.spacing.sm),
             )
         }
 
@@ -248,21 +233,21 @@ private fun TransactionListScreen(
                         .padding(top = 80.dp),
                     contentAlignment = Alignment.Center,
                 ) {
-                    CircularProgressIndicator()
+                    EmLoading()
                 }
             }
         } else if (state.transactionListItem.isEmpty()) {
             item {
-                EmptyItem(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 80.dp),
-                    emptyItemText = if (state.searchQuery.isNotBlank()) {
+                EmEmptyState(
+                    illustration = painterResource(id = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction),
+                    title = if (state.searchQuery.isNotBlank()) {
                         stringResource(id = R.string.no_matching_transactions)
                     } else {
                         stringResource(id = R.string.no_transactions_available)
                     },
-                    icon = com.naveenapps.expensemanager.core.designsystem.R.drawable.ic_no_transaction,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 80.dp),
                 )
             }
         } else {
@@ -340,15 +325,20 @@ private fun TransactionGroupCard(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 2.dp),
+            .padding(horizontal = EmTheme.spacing.lg, vertical = EmTheme.spacing.xxs),
     ) {
-        AppCardView {
+        EmCard {
             transactions.forEachIndexed { index, item ->
+                val debtKind = item.debtKind
                 TransactionItem(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    categoryName = item.categoryTitleResId?.let { stringResource(it) }
-                        ?: item.categoryName,
+                    // A debt entry reads "Lent to Ravi"; categoryName holds the person's name.
+                    categoryName = if (debtKind != null) {
+                        stringResource(debtKind.rowTitleRes(), item.categoryName)
+                    } else {
+                        item.categoryTitleResId?.let { stringResource(it) } ?: item.categoryName
+                    },
                     categoryColor = item.categoryIcon.backgroundColor,
                     categoryIcon = item.categoryIcon.name,
                     amount = item.amount,
@@ -365,16 +355,15 @@ private fun TransactionGroupCard(
                     onClick = {
                         onItemClick?.invoke(item)
                     },
-                    // Swipe to reveal edit/delete (also offered to TalkBack as actions).
+                    // Swipe to reveal edit/delete (also offered to TalkBack as actions). Debt entries
+                    // are deleted from their own screen, where the account effect is explained.
                     onEdit = onItemClick?.let { click -> { click(item) } },
-                    onDelete = onDelete?.let { delete -> { delete(item) } },
+                    onDelete = if (debtKind != null) null else onDelete?.let { delete -> { delete(item) } },
                 )
 
                 // Thin inset divider between rows — not after the last one
                 if (index < transactions.lastIndex) {
-                    HorizontalDivider(
-                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
-                    )
+                    EmDivider()
                 }
             }
         }
@@ -395,37 +384,40 @@ private fun SearchSummaryRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 20.dp, end = 16.dp, top = 4.dp, bottom = 8.dp),
+            .padding(
+                start = EmTheme.spacing.xl,
+                end = EmTheme.spacing.lg,
+                top = EmTheme.spacing.xs,
+                bottom = EmTheme.spacing.sm,
+            ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            EmText(
                 text = pluralStringResource(R.plurals.search_result_count, summary.count, summary.count),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
+                role = EmTextRole.SectionTitle,
             )
             val totals = listOfNotNull(
                 summary.spent?.let { stringResource(R.string.search_spent, it) },
                 summary.earned?.let { stringResource(R.string.search_earned, it) },
             )
             if (totals.isNotEmpty()) {
-                Text(
+                EmText(
                     text = totals.joinToString(" · "),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
         }
-        Spacer(modifier = Modifier.width(12.dp))
-        FilterChip(
+        Spacer(modifier = Modifier.width(EmTheme.spacing.md))
+        EmChip(
+            label = stringResource(R.string.search_all_time),
             selected = scope == SearchScope.ALL_TIME,
             onClick = {
                 onScopeChange(
                     if (scope == SearchScope.ALL_TIME) SearchScope.SELECTED_PERIOD else SearchScope.ALL_TIME,
                 )
             },
-            label = { Text(text = stringResource(R.string.search_all_time)) },
         )
     }
 }
@@ -443,50 +435,32 @@ fun TransactionHeaderItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .padding(horizontal = EmTheme.spacing.xl, vertical = EmTheme.spacing.lg),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = date.fromCompleteDate().toDate(),
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = (-0.5).sp,
-                ),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            EmText(text = date.fromCompleteDate().toDate(), role = EmTextRole.Display)
 
-            Spacer(Modifier.width(12.dp))
+            Spacer(Modifier.width(EmTheme.spacing.md))
 
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(1.dp),
             ) {
-                Text(
+                EmText(
                     text = date.fromCompleteDate().toMonthYear(),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
+                    role = EmTextRole.Label,
+                    color = EmTextColor.Supporting,
                 )
-                Text(
+                EmText(
                     text = date.fromCompleteDate().toDay(),
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                    ),
+                    role = EmTextRole.Supporting,
+                    color = EmTextColor.Supporting,
                 )
             }
 
-            Text(
-                text = totalAmount,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.SemiBold,
-                    letterSpacing = (-0.3).sp,
-                ),
-                color = colorResource(id = textColor),
-            )
+            EmText(text = totalAmount, role = EmTextRole.SectionTitle, color = emColorOf(textColor))
         }
     }
 }
@@ -537,7 +511,7 @@ private fun getTransactionUiState(date: String) = TransactionGroup(
     },
 )
 
-@AppPreviewsLightAndDarkMode
+@EmPreviews
 @Composable
 fun TransactionListItemSuccessStatePreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
@@ -547,4 +521,12 @@ fun TransactionListItemSuccessStatePreview() {
             onAction = {},
         )
     }
+}
+
+/** Row title of a debt entry listed among transactions, e.g. "Lent to %1$s". */
+private fun DebtEntryKind.rowTitleRes(): Int = when (this) {
+    DebtEntryKind.LENT -> R.string.debt_row_lent
+    DebtEntryKind.BORROWED -> R.string.debt_row_borrowed
+    DebtEntryKind.RECEIVED -> R.string.debt_row_received
+    DebtEntryKind.PAID -> R.string.debt_row_paid
 }

@@ -10,4 +10,5 @@
     <string name="search_libraries">Pesquisar bibliotecas</string>
     <string name="open_license">Abrir licença</string>
     <string name="licenses_unavailable">As licenças não estão incluídas nesta versão.</string>
+    <string name="about_email">E-mail</string>
 </resources>
