@@ -194,6 +194,7 @@ class TransactionCreateViewModel(
     // Ids seen in the previous accounts/categories emission; null until the first one.
     private var knownAccountIds: Set<String>? = null
     private var knownCategoryIds: Set<String>? = null
+    private var rawAccounts: List<Account> = emptyList()
 
     init {
         observeAccountsAndCurrency(getCurrencyUseCase, getAllAccountsUseCase)
@@ -259,17 +260,19 @@ class TransactionCreateViewModel(
 
             transactionType.value = parsed.type
             _state.update { current ->
-                current.copy(
-                    transactionType = parsed.type,
-                    amount = amount?.let {
-                        current.amount.copy(value = numberFormatRepository.formatForEditing(it), valueError = false)
-                    } ?: current.amount,
-                    notes = parsed.payee?.let { current.notes.copy(value = it) } ?: current.notes,
-                    dateTime = parsed.date ?: current.dateTime,
-                    selectedCategory = suggestedCategories.firstOrNull() ?: current.selectedCategory,
-                    suggestedCategories = suggestedCategories,
-                    selectedFromAccount = account ?: current.selectedFromAccount,
-                    isReadingReceipt = false,
+                updateProjectedBalances(
+                    current.copy(
+                        transactionType = parsed.type,
+                        amount = amount?.let {
+                            current.amount.copy(value = numberFormatRepository.formatForEditing(it), valueError = false)
+                        } ?: current.amount,
+                        notes = parsed.payee?.let { current.notes.copy(value = it) } ?: current.notes,
+                        dateTime = parsed.date ?: current.dateTime,
+                        selectedCategory = suggestedCategories.firstOrNull() ?: current.selectedCategory,
+                        suggestedCategories = suggestedCategories,
+                        selectedFromAccount = account ?: current.selectedFromAccount,
+                        isReadingReceipt = false,
+                    ),
                 )
             }
         }
@@ -322,16 +325,18 @@ class TransactionCreateViewModel(
         journey?.touch(AddFormJourney.FIELD_QUICK_PICK)
         transactionType.update { pick.type }
         _state.update {
-            it.copy(
-                transactionType = pick.type,
-                amount = it.amount.copy(
-                    value = numberFormatRepository.formatForEditing(pick.amount),
-                    valueError = false,
+            updateProjectedBalances(
+                it.copy(
+                    transactionType = pick.type,
+                    amount = it.amount.copy(
+                        value = numberFormatRepository.formatForEditing(pick.amount),
+                        valueError = false,
+                    ),
+                    notes = it.notes.copy(value = pick.notes),
+                    selectedCategory = pick.category,
+                    selectedFromAccount = pick.account,
+                    showNumberPad = false,
                 ),
-                notes = it.notes.copy(value = pick.notes),
-                selectedCategory = pick.category,
-                selectedFromAccount = pick.account,
-                showNumberPad = false,
             )
         }
         analyticsRepository.logEvent(
@@ -364,6 +369,7 @@ class TransactionCreateViewModel(
             getCurrencyUseCase.invoke(),
             getAllAccountsUseCase.invoke(),
         ) { currency, accounts ->
+            rawAccounts = accounts
             val mappedAccounts = mapAccountsToUiModels(accounts, currency)
             val defaultAccountId = settingsRepository.getDefaultAccount().firstOrNull()
             val preferredAccount = mappedAccounts.find { it.id == defaultAccountId }
@@ -403,11 +409,13 @@ class TransactionCreateViewModel(
                         refreshedTo
                     }
                 }
-                current.copy(
-                    currency = currency,
-                    accounts = mappedAccounts,
-                    selectedFromAccount = from,
-                    selectedToAccount = to,
+                updateProjectedBalances(
+                    current.copy(
+                        currency = currency,
+                        accounts = mappedAccounts,
+                        selectedFromAccount = from,
+                        selectedToAccount = to,
+                    ),
                 )
             }
             syncState.update { it.copy(isAccountSyncCompleted = true) }
@@ -490,33 +498,35 @@ class TransactionCreateViewModel(
                     ?.takeIf { findRecurringTransactionByIdUseCase.invoke(it) != null }
                 transactionType.value = transaction.type
                 _state.update { current ->
-                    current.copy(
-                        amount = current.amount.copy(
-                            value = numberFormatRepository.formatForEditing(transaction.amount.amount),
-                        ),
-                        transactionType = transaction.type,
-                        dateTime = transaction.createdOn,
-                        notes = current.notes.copy(value = transaction.notes),
-                        selectedCategory = transaction.category,
-                        selectedFromAccount = transaction.fromAccount.toAccountUiModel(
-                            getFormattedAmountUseCase.invoke(
-                                transaction.fromAccount.amount,
-                                current.currency,
+                    updateProjectedBalances(
+                        current.copy(
+                            amount = current.amount.copy(
+                                value = numberFormatRepository.formatForEditing(transaction.amount.amount),
                             ),
-                        ),
-                        selectedToAccount = transaction.toAccount?.let { toAccount ->
-                            toAccount.toAccountUiModel(
+                            transactionType = transaction.type,
+                            dateTime = transaction.createdOn,
+                            notes = current.notes.copy(value = transaction.notes),
+                            selectedCategory = transaction.category,
+                            selectedFromAccount = transaction.fromAccount.toAccountUiModel(
                                 getFormattedAmountUseCase.invoke(
-                                    toAccount.amount,
+                                    transaction.fromAccount.amount,
                                     current.currency,
                                 ),
-                            )
-                        } ?: defaultAccount,
-                        showDeleteButton = true,
-                        canRepeat = false,
-                        canScanReceipt = false,
-                        recurringRuleId = recurringRuleId,
-                        attachments = transaction.attachments,
+                            ),
+                            selectedToAccount = transaction.toAccount?.let { toAccount ->
+                                toAccount.toAccountUiModel(
+                                    getFormattedAmountUseCase.invoke(
+                                        toAccount.amount,
+                                        current.currency,
+                                    ),
+                                )
+                            } ?: defaultAccount,
+                            showDeleteButton = true,
+                            canRepeat = false,
+                            canScanReceipt = false,
+                            recurringRuleId = recurringRuleId,
+                            attachments = transaction.attachments,
+                        ),
                     )
                 }
             }
@@ -839,15 +849,81 @@ class TransactionCreateViewModel(
         )
     }
 
+    private fun updateProjectedBalances(state: TransactionCreateState): TransactionCreateState {
+        if (state.selectedFromAccount.id.isBlank()) {
+            return state.copy(
+                projectedFromAccountBalance = null,
+                projectedToAccountBalance = null,
+            )
+        }
+
+        val amountValue = numberFormatRepository.parseToDouble(state.amount.value) ?: 0.0
+        val currency = state.currency
+        val fromAccountUi = state.selectedFromAccount
+        val toAccountUi = state.selectedToAccount
+        val type = state.transactionType
+
+        val fromAccountRaw = rawAccounts.find { it.id == fromAccountUi.id }
+        val fromCurrentAmount = fromAccountRaw?.amount ?: 0.0
+
+        val toAccountRaw = rawAccounts.find { it.id == toAccountUi.id }
+        val toCurrentAmount = toAccountRaw?.amount ?: 0.0
+
+        val editing = editingTransaction
+
+        val projectedFrom: Double
+        val projectedTo: Double?
+
+        if (editing != null) {
+            val oldFromEffect = when {
+                editing.type.isIncome() -> editing.amount.amount
+                else -> -editing.amount.amount
+            }
+            val baseFrom = fromCurrentAmount - (if (editing.fromAccountId == fromAccountUi.id) oldFromEffect else 0.0)
+            projectedFrom = when {
+                type.isIncome() -> baseFrom + amountValue
+                else -> baseFrom - amountValue
+            }
+
+            if (type.isTransfer()) {
+                val oldToEffect = if (editing.type.isTransfer()) editing.amount.amount else 0.0
+                val baseTo = toCurrentAmount - (if (editing.toAccountId == toAccountUi.id) oldToEffect else 0.0)
+                projectedTo = baseTo + amountValue
+            } else {
+                projectedTo = null
+            }
+        } else {
+            projectedFrom = when {
+                type.isIncome() -> fromCurrentAmount + amountValue
+                else -> fromCurrentAmount - amountValue
+            }
+            projectedTo = if (type.isTransfer()) {
+                toCurrentAmount + amountValue
+            } else {
+                null
+            }
+        }
+
+        val formattedFrom = getFormattedAmountUseCase.invoke(projectedFrom, currency)
+        val formattedTo = projectedTo?.let { getFormattedAmountUseCase.invoke(it, currency) }
+
+        return state.copy(
+            projectedFromAccountBalance = formattedFrom,
+            projectedToAccountBalance = formattedTo,
+        )
+    }
+
     private fun setAmountOnChange(amount: String) {
         val amountValue = numberFormatRepository.parseToDouble(amount)
         _state.update {
-            it.copy(
-                amount = it.amount.copy(
-                    value = amount,
-                    valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0,
+            updateProjectedBalances(
+                it.copy(
+                    amount = it.amount.copy(
+                        value = amount,
+                        valueError = amount.isBlank() || amountValue == null || amountValue <= 0.0,
+                    ),
+                    showNumberPad = false,
                 ),
-                showNumberPad = false,
             )
         }
     }
@@ -872,7 +948,9 @@ class TransactionCreateViewModel(
                 current.selectedToAccount
             }
             // A receipt's category suggestions belong to the type it was read as.
-            current.copy(transactionType = type, selectedToAccount = toAccount, suggestedCategories = emptyList())
+            updateProjectedBalances(
+                current.copy(transactionType = type, selectedToAccount = toAccount, suggestedCategories = emptyList()),
+            )
         }
     }
 
@@ -973,14 +1051,18 @@ class TransactionCreateViewModel(
             is TransactionCreateAction.SelectAccount -> _state.update {
                 journey?.touch(AddFormJourney.FIELD_ACCOUNT)
                 when (it.accountSelection) {
-                    AccountSelection.FROM_ACCOUNT -> it.copy(
-                        selectedFromAccount = action.account,
-                        showAccountSelection = false,
+                    AccountSelection.FROM_ACCOUNT -> updateProjectedBalances(
+                        it.copy(
+                            selectedFromAccount = action.account,
+                            showAccountSelection = false,
+                        ),
                     )
 
-                    AccountSelection.TO_ACCOUNT -> it.copy(
-                        selectedToAccount = action.account,
-                        showAccountSelection = false,
+                    AccountSelection.TO_ACCOUNT -> updateProjectedBalances(
+                        it.copy(
+                            selectedToAccount = action.account,
+                            showAccountSelection = false,
+                        ),
                     )
                 }
             }
