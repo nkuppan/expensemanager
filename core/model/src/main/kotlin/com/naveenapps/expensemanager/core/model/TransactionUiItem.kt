@@ -33,6 +33,8 @@ data class TransactionUiItem(
      * the person's name. It moved money in an account but isn't spending or income.
      */
     val debtKind: DebtEntryKind? = null,
+    /** Closing / running balance of the account after this transaction occurred. */
+    val closingBalance: Amount? = null,
 )
 
 fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = TransactionUiItem(

@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.transaction.create
 
 import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.model.AccountUiModel
+import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
@@ -49,6 +50,10 @@ data class TransactionCreateState(
     val isReadingReceipt: Boolean = false,
     /** Categories used before for the receipt's payee, most used first; shown as chips. */
     val suggestedCategories: List<Category> = emptyList(),
+    /** Projected closing balance for the from-account based on entered amount and transaction type. */
+    val projectedFromAccountBalance: Amount? = null,
+    /** Projected closing balance for the to-account in a transfer transaction. */
+    val projectedToAccountBalance: Amount? = null,
 )
 
 enum class AccountSelection {

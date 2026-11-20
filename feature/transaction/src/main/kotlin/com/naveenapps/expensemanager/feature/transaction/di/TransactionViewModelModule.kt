@@ -58,6 +58,7 @@ val TransactionViewModelModule = module {
             analyticsRepository = get(),
             getDebtActivityUseCase = get(),
             categoryDisplayNames = get(),
+            getAllAccountsUseCase = get(),
         )
     }
     viewModel { NumberPadViewModel() }

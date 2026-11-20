@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtActivity
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -21,6 +22,7 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
+import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.milliToDouble
 import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -43,6 +45,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -64,6 +67,7 @@ class TransactionListViewModel(
     private val analyticsRepository: AnalyticsRepository,
     getDebtActivityUseCase: GetDebtActivityUseCase,
     categoryDisplayNames: CategoryDisplayNames = CategoryDisplayNames.Stored,
+    getAllAccountsUseCase: GetAllAccountsUseCase? = null,
 ) : ViewModel() {
 
     private val _transactions = MutableStateFlow(TransactionListState(emptyList(), isLoading = true))
@@ -98,13 +102,15 @@ class TransactionListViewModel(
         // always has a row explaining it. Never counted in the day totals or search totals.
         val debts = allTime.flatMapLatest { all -> getDebtActivityUseCase(allTime = all) }
 
+        val accountsFlow = getAllAccountsUseCase?.invoke() ?: flowOf(emptyList())
+
         combine(
-            getCurrencyUseCase.invoke(),
+            combine(getCurrencyUseCase.invoke(), accountsFlow) { currency, accounts -> currency to accounts },
             source,
             searchQuery,
             categoryDisplayNames.lookup(),
             debts,
-        ) { currency, transactions, query, displayName, debtActivity ->
+        ) { (currency, accounts), transactions, query, displayName, debtActivity ->
 
             val matching = transactions.orEmpty().filter { it.matches(query, displayName) }
             visibleTransactions = matching.associateBy { it.id }
@@ -129,22 +135,60 @@ class TransactionListViewModel(
                 )
             }
 
+            val allRawTransactions = transactions.orEmpty()
+            val closingBalances = mutableMapOf<String, Double>()
+
+            // Compute running balance per account backwards from current account balance
+            val accountsMap = accounts.associateBy { it.id }
+            for ((accountId, account) in accountsMap) {
+                data class AccountEvent(val id: String, val date: Date, val delta: Double)
+
+                val events = mutableListOf<AccountEvent>()
+                for (t in allRawTransactions) {
+                    if (t.fromAccountId == accountId) {
+                        val delta = if (t.type.isIncome()) t.amount.amount else -t.amount.amount
+                        events.add(AccountEvent(t.id, t.createdOn, delta))
+                    } else if (t.toAccountId == accountId) {
+                        events.add(AccountEvent(t.id, t.createdOn, t.amount.amount))
+                    }
+                }
+                for (d in debtActivity) {
+                    if (d.account.id == accountId) {
+                        val delta = d.entry.amountMilli.milliToDouble() * d.entry.kind.accountSign
+                        events.add(AccountEvent(d.entry.id, d.entry.date, delta))
+                    }
+                }
+
+                events.sortByDescending { it.date }
+                var balance = account.amount
+                for (event in events) {
+                    closingBalances[event.id] = balance
+                    balance -= event.delta
+                }
+            }
+
             // Only what has actually happened: a recurring rule logs each occurrence on its day.
             val rows = matching.map { transaction ->
+                val closingBal = closingBalances[transaction.id]?.let {
+                    getFormattedAmountUseCase.invoke(it, currency)
+                }
                 ListRow(
                     date = transaction.createdOn,
                     transaction = transaction,
                     item = transaction.toTransactionUIModel(
                         getFormattedAmountUseCase.invoke(transaction.amount.amount, currency),
-                    ),
+                    ).copy(closingBalance = closingBal),
                 )
             } + matchingDebts.map { activity ->
+                val closingBal = closingBalances[activity.entry.id]?.let {
+                    getFormattedAmountUseCase.invoke(it, currency)
+                }
                 ListRow(
                     date = activity.entry.date,
                     transaction = null,
                     item = activity.toTransactionUiItem(
                         getFormattedAmountUseCase.invoke(activity.entry.amountMilli.milliToDouble(), currency),
-                    ),
+                    ).copy(closingBalance = closingBal),
                 )
             }
             val groupedItem = rows.sortedByDescending { it.date }.groupBy {
