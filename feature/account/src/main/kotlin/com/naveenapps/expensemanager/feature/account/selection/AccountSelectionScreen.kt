@@ -83,7 +83,7 @@ fun AccountSelectionScreen(
                     icon = account.storedIcon.name,
                     iconBackgroundColor = account.storedIcon.backgroundColor,
                     amount = account.amount.amountString,
-                    amountTextColor = account.amountTextColor,
+                    amountTone = account.amountTone,
                     customImagePath = account.storedIcon.customImagePath,
                     selected = isSelected,
                     trailingContent = {

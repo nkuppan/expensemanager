@@ -17,6 +17,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.Sugge
 import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.UpdateReminderStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.toTransactionUIModel
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
@@ -30,7 +31,6 @@ import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.milliToDouble
 import com.naveenapps.expensemanager.core.model.needsAttention
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
-import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.notification.NotificationScheduler

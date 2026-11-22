@@ -23,6 +23,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 
@@ -36,7 +37,7 @@ fun AccountItem(
     selected: Boolean = false,
     subtitle: String? = null,
     amount: String? = null,
-    amountTextColor: Int? = null,
+    amountTone: AmountTone? = null,
     onClick: (() -> Unit)? = null,
     trailingContent: @Composable (() -> Unit)? = null,
     customImagePath: String? = null,
@@ -88,10 +89,10 @@ fun AccountItem(
                 }
             }
 
-            if (amount != null && amountTextColor != null) {
+            if (amount != null && amountTone != null) {
                 EmAmountText(
                     amount = amount,
-                    color = emColorOf(amountTextColor),
+                    color = emColorOf(amountTone),
                 )
             }
             if (trailingContent != null) {
@@ -112,7 +113,7 @@ fun AccountItemPreview() {
             icon = account.storedIcon.name,
             iconBackgroundColor = account.storedIcon.backgroundColor,
             amount = account.amount.amountString,
-            amountTextColor = account.amountTextColor,
+            amountTone = account.amountTone,
             onClick = { },
             trailingContent = { AccountItemDefaults.ChevronTrailing() },
         )
@@ -128,7 +129,7 @@ fun AccountItemPreview() {
                 null
             },
             amount = account.amount.amountString,
-            amountTextColor = account.amountTextColor,
+            amountTone = account.amountTone,
             onClick = { },
         )
 

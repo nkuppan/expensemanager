@@ -57,6 +57,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPrevi
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionGroup
@@ -259,7 +260,7 @@ private fun TransactionListScreen(
                         item(key = "header_${section.item.date}") {
                             TransactionHeaderItem(
                                 date = section.item.date,
-                                textColor = section.item.amountTextColor,
+                                tone = section.item.amountTone,
                                 totalAmount = section.item.totalAmount,
                             )
                         }
@@ -429,7 +430,7 @@ private fun SearchSummaryRow(
 @Composable
 fun TransactionHeaderItem(
     date: String,
-    textColor: Int,
+    tone: AmountTone,
     totalAmount: String,
 ) {
     Column(
@@ -460,7 +461,7 @@ fun TransactionHeaderItem(
                 )
             }
 
-            EmText(text = totalAmount, role = EmTextRole.SectionTitle, color = emColorOf(textColor))
+            EmText(text = totalAmount, role = EmTextRole.SectionTitle, color = emColorOf(tone))
         }
     }
 }
@@ -502,7 +503,7 @@ fun getTransactionItem(id: String) = TransactionUiItem(
 
 private fun getTransactionUiState(date: String) = TransactionGroup(
     date = date,
-    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
+    amountTone = AmountTone.NEGATIVE,
     totalAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactions = buildList {
         repeat(3) {

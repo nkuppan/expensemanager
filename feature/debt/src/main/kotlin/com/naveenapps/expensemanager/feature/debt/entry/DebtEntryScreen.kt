@@ -311,7 +311,7 @@ private fun AccountSection(state: DebtEntryState, onAction: (DebtEntryAction) ->
                 icon = account.storedIcon.name,
                 iconBackgroundColor = account.storedIcon.backgroundColor,
                 amount = account.amount.amountString,
-                amountTextColor = account.amountTextColor,
+                amountTone = account.amountTone,
                 customImagePath = account.storedIcon.customImagePath,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { onAction(DebtEntryAction.ShowAccountSelection) },

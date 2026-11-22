@@ -26,6 +26,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
@@ -1091,7 +1092,7 @@ class TransactionCreateViewModel(
                 backgroundColor = "#000000",
             ),
             amount = Amount(0.0, "$ 0.00"),
-            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+            amountTone = AmountTone.POSITIVE,
         )
     }
 }

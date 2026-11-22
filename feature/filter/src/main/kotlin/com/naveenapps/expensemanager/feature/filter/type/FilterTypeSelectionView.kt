@@ -43,6 +43,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
@@ -325,7 +326,7 @@ fun getAccount(index: Int): AccountUiModel = AccountUiModel(
         "#000000",
     ),
     amount = Amount(0.0, "$ 0.0", currency = null),
-    amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+    amountTone = AmountTone.POSITIVE,
 )
 
 fun getCategory(index: Int): Category = Category(

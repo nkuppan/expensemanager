@@ -380,7 +380,7 @@ private fun AccountSection(title: Int, account: AccountUiModel?, onClick: () -> 
             icon = account.storedIcon.name,
             iconBackgroundColor = account.storedIcon.backgroundColor,
             amount = account.amount.amountString,
-            amountTextColor = account.amountTextColor,
+            amountTone = account.amountTone,
             customImagePath = account.storedIcon.customImagePath,
             modifier = Modifier.fillMaxWidth(),
             onClick = onClick,

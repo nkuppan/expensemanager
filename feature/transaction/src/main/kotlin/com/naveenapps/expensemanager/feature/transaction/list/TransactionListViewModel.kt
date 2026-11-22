@@ -3,7 +3,6 @@ package com.naveenapps.expensemanager.feature.transaction.list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.debt.DebtActivity
@@ -13,7 +12,9 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.DeleteTransactionUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.toTransactionUIModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.StoredIcon
@@ -22,7 +23,6 @@ import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.milliToDouble
-import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
@@ -154,7 +154,7 @@ class TransactionListViewModel(
                 val totalAmount = it.value.mapNotNull { row -> row.transaction }.toTransactionSum()
                 TransactionGroup(
                     date = it.key,
-                    amountTextColor = totalAmount.getAmountTextColor(),
+                    amountTone = AmountTone.of(totalAmount),
                     totalAmount = getFormattedAmountUseCase.invoke(totalAmount, currency),
                     transactions = it.value.map { row -> row.item },
                 )
@@ -336,7 +336,7 @@ fun List<TransactionGroup>.convertGroupToTransactionListItems(): List<Transactio
         add(
             TransactionListItem.HeaderItem(
                 date = it.date,
-                amountTextColor = it.amountTextColor,
+                amountTone = it.amountTone,
                 totalAmount = it.totalAmount.amountString ?: "",
             ),
         )
@@ -353,7 +353,7 @@ sealed class TransactionListItem {
 
     data class HeaderItem(
         val date: String,
-        val amountTextColor: Int,
+        val amountTone: AmountTone,
         val totalAmount: String,
     ) : TransactionListItem()
 

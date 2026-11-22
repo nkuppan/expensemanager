@@ -63,6 +63,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
@@ -187,7 +188,7 @@ private fun AccountListScreenContent(
                         iconBackgroundColor = account.storedIcon.backgroundColor,
                         amount = account.amount.amountString,
                         subtitle = account.availableCreditLimit?.amountString,
-                        amountTextColor = account.amountTextColor,
+                        amountTone = account.amountTone,
                         customImagePath = account.storedIcon.customImagePath,
                         position = EmCardPosition.of(index, state.accounts),
                         trailingContent = {
@@ -447,7 +448,7 @@ private fun AccountItemPreview() {
             iconBackgroundColor = "#000000",
             amount = "$100.00",
             subtitle = "Available limit ₹ 5,14,000.00",
-            amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+            amountTone = AmountTone.POSITIVE,
         )
     }
 }

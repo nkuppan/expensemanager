@@ -22,6 +22,7 @@ import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
@@ -101,7 +102,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         name = "Checking",
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
         amount = Amount(1000.0),
-        amountTextColor = 0,
+        amountTone = AmountTone.POSITIVE,
     )
 
     private val fakeToAccount = AccountUiModel(
@@ -109,7 +110,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         name = "Savings",
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
         amount = Amount(500.0),
-        amountTextColor = 0,
+        amountTone = AmountTone.POSITIVE,
     )
 
     private val fakeCategory = Category(

@@ -78,6 +78,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.recurring.occurrenceDat
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.AmountTone
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Currency
@@ -575,7 +576,7 @@ private fun TransactionCreateContent(
                 icon = state.selectedFromAccount.storedIcon.name,
                 iconBackgroundColor = state.selectedFromAccount.storedIcon.backgroundColor,
                 amount = state.selectedFromAccount.amount.amountString,
-                amountTextColor = state.selectedFromAccount.amountTextColor,
+                amountTone = state.selectedFromAccount.amountTone,
                 customImagePath = state.selectedFromAccount.storedIcon.customImagePath,
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
@@ -602,7 +603,7 @@ private fun TransactionCreateContent(
                     icon = state.selectedToAccount.storedIcon.name,
                     iconBackgroundColor = state.selectedToAccount.storedIcon.backgroundColor,
                     amount = state.selectedToAccount.amount.amountString,
-                    amountTextColor = state.selectedToAccount.amountTextColor,
+                    amountTone = state.selectedToAccount.amountTone,
                     customImagePath = state.selectedToAccount.storedIcon.customImagePath,
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -766,7 +767,7 @@ private fun getTransactionState(
             name = "account_balance_wallet",
             backgroundColor = "#000000",
         ),
-        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.red_500,
+        amountTone = AmountTone.NEGATIVE,
         amount = Amount(0.0, "$ 0.00"),
     ),
     selectedToAccount = AccountUiModel(
@@ -777,7 +778,7 @@ private fun getTransactionState(
             name = "account_balance_wallet",
             backgroundColor = "#000000",
         ),
-        amountTextColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+        amountTone = AmountTone.POSITIVE,
         amount = Amount(0.0, "$ 0.00"),
     ),
     accounts = emptyList(),

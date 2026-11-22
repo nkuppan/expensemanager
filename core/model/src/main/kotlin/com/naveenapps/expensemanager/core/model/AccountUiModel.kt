@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
 import androidx.compose.runtime.Stable
-import com.naveenapps.expensemanager.core.common.utils.getAmountTextColor
 
 @Stable
 data class AccountUiModel(
@@ -9,7 +8,7 @@ data class AccountUiModel(
     val name: String,
     val storedIcon: StoredIcon,
     val amount: Amount,
-    val amountTextColor: Int,
+    val amountTone: AmountTone,
     val type: AccountType = AccountType.REGULAR,
     val availableCreditLimit: Amount? = null,
 )
@@ -23,6 +22,6 @@ fun Account.toAccountUiModel(
     storedIcon = this.storedIcon,
     amount = amount,
     type = this.type,
-    amountTextColor = this.amount.getAmountTextColor(),
+    amountTone = AmountTone.of(this.amount),
     availableCreditLimit = availableCreditLimit,
 )

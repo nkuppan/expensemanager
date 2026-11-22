@@ -12,12 +12,12 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetAverageD
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDataUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetPeriodComparisonUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetSpendingInsightsUseCase
+import com.naveenapps.expensemanager.core.domain.usecase.transaction.toTransactionUIModel
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.WholeAverageData
-import com.naveenapps.expensemanager.core.model.toTransactionUIModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents

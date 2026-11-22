@@ -290,7 +290,7 @@ private fun LazyListScope.accountsSection(
                             amount = it.amount.amountString ?: "",
                             availableCreditLimit = it.availableCreditLimit?.amountString
                                 ?: "",
-                            amountTextColor = emColorOf(it.amountTextColor),
+                            amountTextColor = emColorOf(it.amountTone),
                             onItemClick = {
                                 onAction.invoke(DashboardAction.OpenAccountEdit(it))
                             },
