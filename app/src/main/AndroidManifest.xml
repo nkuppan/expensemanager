@@ -109,15 +109,24 @@
                 tools:node="remove" />
         </provider>
 
-        <!-- Glance's trampoline for widget taps runs as its own singleInstance task but, unlike
-             ActionTrampolineActivity, isn't excluded from Recents. Android can relaunch that task
-             from Recents (after a reboot the saved intent has no extras), so it starts without the
-             target intent and crashes: "List adapter activity trampoline invoked without
-             specifying target intent". Keeping it out of Recents removes that path. -->
+        <!-- Glance's two trampoline activities are never used by this widget, but Android still
+             relaunches them on its own (e.g. restoring a task from Recents after a reboot, when the
+             saved intent has lost its extras). They then start without a target intent and crash:
+             "List adapter activity trampoline invoked without specifying target intent".
+             - ActionTrampolineActivity: Glance 1.2 never launches it (no ACTIVITY trampoline is built).
+             - InvisibleActionTrampolineActivity: only used for clicks on items inside a LazyColumn /
+               LazyVerticalGrid, which the widget doesn't have.
+             Disabling both means a stray launch is refused by the system instead of crashing the app.
+             If the widget ever gets a lazy list with clickable items, re-enable the invisible one. -->
+        <activity
+            android:name="androidx.glance.appwidget.action.ActionTrampolineActivity"
+            android:enabled="false"
+            tools:replace="android:enabled" />
         <activity
             android:name="androidx.glance.appwidget.action.InvisibleActionTrampolineActivity"
+            android:enabled="false"
             android:excludeFromRecents="true"
-            tools:node="merge" />
+            tools:replace="android:enabled" />
     </application>
 
 </manifest>

@@ -183,7 +183,9 @@ private fun CategoryCreateScreen(
                     val displayName = nameResId?.let { stringResource(it) } ?: nameField.value
                     EmTextField(
                         value = displayName,
-                        onValueChange = { if (nameResId == null) nameField.onValueChange else null?.invoke(it) },
+                        // Default categories can't be renamed (the field is disabled too). Call the callback;
+                        // `if (..) cb else null?.invoke(it)` only returned it, so typing was dropped.
+                        onValueChange = { if (nameResId == null) nameField.onValueChange?.invoke(it) },
                         label = stringResource(id = R.string.category_name),
                         modifier = Modifier.fillMaxWidth(),
                         isError = nameField.valueError,
