@@ -127,6 +127,17 @@ Components (package `core.designsystem.em`): `EmText`/`EmAmountText`, `EmSection
 5. Enforced by `:lint-rules` (`RawMaterialUsage`, `HardcodedTextStyle`, `HardcodedColor`, `HardcodedShape`), all errors. Never add design-system entries to a `lint-baseline.xml`; fix the code instead.
 6. Screenshot tests (Roborazzi, `core:designsystem`): `./gradlew :core:designsystem:testDebugUnitTest -Proborazzi.test.record=true` to record, `-Proborazzi.test.verify=true` to check. Re-record and commit the images when a token or component changes on purpose.
 
+## Kotlin Multiplatform readiness — keep shared layers platform-neutral
+
+An iOS app is planned with Kotlin Multiplatform + Compose Multiplatform. Plan and progress: the "KMP groundwork checklist" doc (Claude project). Until the modules are converted, new code must not add work to that migration:
+
+- **`core:model`, `core:repository`, `core:domain` use no JVM/Android APIs**: no `java.*`, `javax.*`, `android.*`, `androidx.*` (except the Compose `@Stable`/`@Immutable` annotations, `androidx.annotation`, `androidx.collection`), Gson, `org.json` or Firebase. Allowed: Kotlin stdlib, kotlinx (coroutines, serialization, datetime), Koin. Enforced by the `JvmApiInSharedLayer` lint check (a warning while existing usages are migrated; never baseline it).
+- **Platform types cross layer boundaries as plain values**: a Uri as its `toString()`, a file as its absolute path `String`. Convert back only in Android-only code (`core:data`, composables, `MainActivity`).
+- **New dates and times** use `kotlin.time.Instant` / `kotlinx.datetime`, not `java.util.Date`, `Calendar` or `java.time`. Stored values must stay bit-identical to what `DateConverter` writes today.
+- **New IDs** use `kotlin.uuid.Uuid`; **new JSON** uses kotlinx.serialization.
+- **Anything needing `Context`, Firebase, Play services or ML Kit** sits behind an interface in `core:repository` with the implementation in `core:data` (or an Activity-scoped one, as above).
+- **Room**: DAO functions are `suspend` or return `Flow`; migrations use raw SQL only (`execSQL`), so they can later move to `SQLiteConnection`.
+
 ## Analytics — never send money data
 
 Users' money is private. No analytics event parameter or user property may carry anything about money:

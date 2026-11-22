@@ -11,7 +11,10 @@ class DesignSystemDetectorTest : LintDetectorTest() {
 
     override fun getIssues(): List<Issue> = DesignSystemDetector.ISSUES
 
+    // These checks only read Kotlin imports and calls, so they don't need an Android SDK. Without
+    // this, the tests fail wherever ANDROID_HOME isn't set (some IDE and terminal Gradle runs).
     private fun check(source: String) = lint()
+        .allowMissingSdk()
         .files(kotlin(source).indented())
         .allowCompilationErrors()
         .testModes(TestMode.DEFAULT)

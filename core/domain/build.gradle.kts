@@ -16,6 +16,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
 
+    // JvmApiInSharedLayer: keeps this module free of JVM/Android-only APIs ahead of KMP.
+    lintChecks(project(":lint-rules"))
+
     androidTestImplementation(project(":core:testing"))
     testImplementation(project(":core:testing"))
 }

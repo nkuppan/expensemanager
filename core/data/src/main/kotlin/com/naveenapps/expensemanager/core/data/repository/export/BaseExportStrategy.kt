@@ -39,7 +39,7 @@ abstract class BaseExportStrategy(protected val context: Context) : ExportStrate
         val directory = File(context.cacheDir, EXPORT_DIRECTORY).apply { mkdirs() }
         val file = File(directory, fileName)
         file.outputStream().use { write.invoke(it) }
-        ExportData(null, file)
+        ExportData(null, file.absolutePath)
     }
 
     companion object {

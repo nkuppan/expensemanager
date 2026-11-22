@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.core.model
 
-import java.io.File
-
 data class ExportData(
     val uri: String?,
-    val file: File?,
+    // Absolute path of the file written to the app's cache when there was no picked [uri].
+    // A plain path rather than java.io.File keeps this model platform-neutral.
+    val filePath: String?,
 )

@@ -50,6 +50,7 @@ import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.feature.account.selection.MultipleAccountSelectionScreen
 import com.naveenapps.expensemanager.feature.export.components.ExportFileTypeSelectionView
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
+import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -133,7 +134,7 @@ private fun fileExportedProcess(
 
             EmSnackbarResult.ActionPerformed -> {
                 val uri = event.exportData.uri?.toUri()
-                val file = event.exportData.file
+                val file = event.exportData.filePath?.let(::File)
                 when {
                     uri != null -> shareWithUri(uri)
 
@@ -182,7 +183,7 @@ private fun ExportScreenContent(
             ExportEvent.CreateFile -> startExport()
 
             is ExportEvent.FileExported -> {
-                val file = event.exportData.file
+                val file = event.exportData.filePath?.let(::File)
                 if (shareWhenExported && file != null) {
                     shareWhenExported = false
                     shareWithUri(FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file))

@@ -27,6 +27,9 @@ data class ImagePickerActions(
  * gallery), tracks the pending capture destination between "camera launched" and "camera
  * returned", and requests the CAMERA permission on demand rather than upfront.
  *
+ * Uris cross this boundary as strings (`uri.toString()`) so ViewModels and repositories stay
+ * free of `android.net.Uri`; they're parsed back only for the activity-result launchers here.
+ *
  * @param createCaptureUri destination Uri for a full-resolution camera capture (see
  * `ImageStorageRepository.createImageCaptureUri`).
  * @param onImagePicked called with the resulting Uri once a gallery pick or camera capture
@@ -34,8 +37,8 @@ data class ImagePickerActions(
  */
 @Composable
 fun rememberImagePickerActions(
-    createCaptureUri: () -> Uri,
-    onImagePicked: (Uri) -> Unit,
+    createCaptureUri: () -> String,
+    onImagePicked: (String) -> Unit,
 ): ImagePickerActions {
     val context = LocalContext.current
     var pendingCaptureUri by remember { mutableStateOf<Uri?>(null) }
@@ -44,7 +47,7 @@ fun rememberImagePickerActions(
         contract = ActivityResultContracts.TakePicture(),
     ) { success ->
         if (success) {
-            pendingCaptureUri?.let(onImagePicked)
+            pendingCaptureUri?.let { onImagePicked(it.toString()) }
         }
         pendingCaptureUri = null
     }
@@ -53,7 +56,7 @@ fun rememberImagePickerActions(
         contract = ActivityResultContracts.RequestPermission(),
     ) { granted ->
         if (granted) {
-            val uri = createCaptureUri()
+            val uri = Uri.parse(createCaptureUri())
             pendingCaptureUri = uri
             // No camera app (e.g. camera disabled by a device policy): nothing to open.
             runCatching { cameraLauncher.launch(uri) }
@@ -63,7 +66,7 @@ fun rememberImagePickerActions(
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
     ) { uri ->
-        uri?.let(onImagePicked)
+        uri?.let { onImagePicked(it.toString()) }
     }
 
     return ImagePickerActions(
@@ -73,7 +76,7 @@ fun rememberImagePickerActions(
                 Manifest.permission.CAMERA,
             ) == PackageManager.PERMISSION_GRANTED
             if (hasPermission) {
-                val uri = createCaptureUri()
+                val uri = Uri.parse(createCaptureUri())
                 pendingCaptureUri = uri
                 runCatching { cameraLauncher.launch(uri) }
             } else {

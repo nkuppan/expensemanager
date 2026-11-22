@@ -1,7 +1,5 @@
 package com.naveenapps.expensemanager.feature.category.create
 
-import android.net.Uri
-
 sealed class CategoryCreateAction {
 
     data object ClosePage : CategoryCreateAction()
@@ -19,7 +17,7 @@ sealed class CategoryCreateAction {
     data class SelectIcon(val icon: String) : CategoryCreateAction()
 
     /** A gallery pick or a completed camera capture — [uri] is copied into private storage. */
-    data class ImagePicked(val uri: Uri) : CategoryCreateAction()
+    data class ImagePicked(val uri: String) : CategoryCreateAction()
 
     data object RemoveImage : CategoryCreateAction()
 }

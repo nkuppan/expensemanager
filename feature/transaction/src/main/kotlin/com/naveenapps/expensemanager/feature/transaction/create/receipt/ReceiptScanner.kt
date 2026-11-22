@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -42,7 +41,7 @@ import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
  */
 @Composable
 internal fun rememberReceiptScanner(
-    onScanned: (Uri) -> Unit,
+    onScanned: (String) -> Unit,
     onPreparing: () -> Unit,
     onFailed: () -> Unit,
 ): () -> Unit {
@@ -58,7 +57,7 @@ internal fun rememberReceiptScanner(
             ?.pages
             ?.firstOrNull()
             ?.imageUri
-            ?.let { currentOnScanned(it) }
+            ?.let { currentOnScanned(it.toString()) }
     }
     val scanner = remember { GmsDocumentScanning.getClient(scannerOptions()) }
     return remember(activity, launcher, scanner) {

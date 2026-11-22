@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.category.create
 
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -89,7 +88,7 @@ class CategoryCreateViewModel(
     }
 
     /** Destination Uri for the camera app to write a full-resolution capture into. */
-    fun createImageCaptureUri(): Uri = imageStorageRepository.createImageCaptureUri()
+    fun createImageCaptureUri(): String = imageStorageRepository.createImageCaptureUri()
 
     private fun updateCategoryInfo(category: Category?) {
         category?.let { categoryItem ->
@@ -229,7 +228,7 @@ class CategoryCreateViewModel(
         _state.update { it.copy(icon = it.icon.copy(value = icon), customImagePath = null) }
     }
 
-    private fun onImagePicked(uri: Uri) {
+    private fun onImagePicked(uri: String) {
         viewModelScope.launch {
             val path = imageStorageRepository.saveCategoryImage(uri) ?: return@launch
             sessionCreatedImagePaths.add(path)

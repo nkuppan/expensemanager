@@ -12,4 +12,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
     implementation(libs.androidx.compose.runtime.annotation)
+
+    // JvmApiInSharedLayer: keeps this module free of JVM/Android-only APIs ahead of KMP.
+    lintChecks(project(":lint-rules"))
 }

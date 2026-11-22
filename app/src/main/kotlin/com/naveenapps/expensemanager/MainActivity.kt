@@ -213,7 +213,7 @@ internal class MainActivity :
         if (intent?.action != Intent.ACTION_SEND) return
         val text = intent.getStringExtra(Intent.EXTRA_TEXT)?.takeIf { it.isNotBlank() }
         val imageUri = if (intent.type?.startsWith("image/") == true) {
-            IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)
+            IntentCompat.getParcelableExtra(intent, Intent.EXTRA_STREAM, Uri::class.java)?.toString()
         } else {
             null
         }

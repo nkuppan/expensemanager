@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
@@ -735,7 +734,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `a scanned bill picks the account named on it over the payee's last account`() = runTest {
-        val uri: Uri = mock()
+        val uri = "content://media/receipt/1"
         whenever(getAllAccountsUseCase.invoke()).thenReturn(
             flowOf(listOf(account("cash"), account("ICICI 4821"))),
         )
@@ -769,7 +768,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `a screenshot without a readable amount opens the keypad and says so`() = runTest {
-        val uri: Uri = mock()
+        val uri = "content://media/receipt/1"
         whenever(sharedReceiptRepository.take()).thenReturn(SharedReceipt(text = null, imageUri = uri))
         whenever(receiptTextReader.read(uri)).thenReturn("Thank you for shopping")
 

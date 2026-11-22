@@ -21,23 +21,23 @@ class ShareRepositoryImpl(
     private val firebaseSettingsRepository: FirebaseSettingsRepository,
 ) : ShareRepository {
 
-    override fun sendEmail(file: File?) {
-        file?.let {
-            context.openEmailOption(it)
+    override fun sendEmail(filePath: String?) {
+        filePath?.let {
+            context.openEmailOption(File(it))
         } ?: run {
             openEmailToOption(context, firebaseSettingsRepository.getFeedbackEmail())
         }
     }
 
-    override fun share(file: File?) {
-        file?.let {
-            context.openShareOption(it)
+    override fun share(filePath: String?) {
+        filePath?.let {
+            context.openShareOption(File(it))
         }
     }
 
-    override fun print(file: File?) {
-        file?.let {
-            context.openPrintOption(it)
+    override fun print(filePath: String?) {
+        filePath?.let {
+            context.openPrintOption(File(it))
         }
     }
 

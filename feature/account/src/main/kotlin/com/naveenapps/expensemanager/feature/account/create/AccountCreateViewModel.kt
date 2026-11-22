@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.account.create
 
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -125,7 +124,7 @@ class AccountCreateViewModel(
         readAccountInfo(savedStateHandle.get<String>(ExpenseManagerArgsNames.ID))
     }
 
-    fun createImageCaptureUri(): Uri = imageStorageRepository.createImageCaptureUri()
+    fun createImageCaptureUri(): String = imageStorageRepository.createImageCaptureUri()
 
     private fun getAmountValue(
         amount: Double,
@@ -308,7 +307,7 @@ class AccountCreateViewModel(
         composeNavigator.popBackStack()
     }
 
-    private fun onImagePicked(uri: Uri) {
+    private fun onImagePicked(uri: String) {
         viewModelScope.launch {
             val path = imageStorageRepository.saveAccountImage(uri) ?: return@launch
             sessionCreatedImagePaths.add(path)

@@ -1,11 +1,10 @@
 package com.naveenapps.expensemanager.core.repository
 
-import android.net.Uri
-
 /** What another app shared with us: a UPI / bank message, a receipt screenshot, or both. */
 data class SharedReceipt(
     val text: String?,
-    val imageUri: Uri?,
+    // The shared image's content Uri, as a string (`uri.toString()`).
+    val imageUri: String?,
 )
 
 /**

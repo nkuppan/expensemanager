@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
-import android.net.Uri
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
@@ -59,7 +58,7 @@ sealed class TransactionCreateAction {
 
     data object DismissAttachmentPicker : TransactionCreateAction()
 
-    data class AttachmentPicked(val uri: Uri) : TransactionCreateAction()
+    data class AttachmentPicked(val uri: String) : TransactionCreateAction()
 
     data class RemoveAttachment(val path: String) : TransactionCreateAction()
 
@@ -73,7 +72,7 @@ sealed class TransactionCreateAction {
     /** The receipt scanner is about to open (the keypad closes first). */
     data object ReceiptScanRequested : TransactionCreateAction()
 
-    data class ReceiptScanned(val uri: Uri) : TransactionCreateAction()
+    data class ReceiptScanned(val uri: String) : TransactionCreateAction()
 
     /** The scanner couldn't start, e.g. no Google Play services on the device. */
     data object ReceiptScanFailed : TransactionCreateAction()

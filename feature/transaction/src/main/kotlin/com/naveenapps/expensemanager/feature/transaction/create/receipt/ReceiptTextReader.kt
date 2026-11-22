@@ -11,9 +11,12 @@ import com.naveenapps.expensemanager.core.domain.usecase.receipt.RecognisedLine
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-/** Reads the text in a receipt screenshot. Null when the image can't be read. */
+/**
+ * Reads the text in a receipt screenshot. Null when the image can't be read. [imageUri] is the
+ * image's Uri as a string (`uri.toString()`).
+ */
 fun interface ReceiptTextReader {
-    suspend fun read(imageUri: Uri): String?
+    suspend fun read(imageUri: String): String?
 }
 
 /**
@@ -28,8 +31,8 @@ class MlKitReceiptTextReader(
     private val context: Context,
 ) : ReceiptTextReader {
 
-    override suspend fun read(imageUri: Uri): String? {
-        val image = runCatching { InputImage.fromFilePath(context, imageUri) }.getOrNull() ?: return null
+    override suspend fun read(imageUri: String): String? {
+        val image = runCatching { InputImage.fromFilePath(context, Uri.parse(imageUri)) }.getOrNull() ?: return null
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
         return try {
             suspendCancellableCoroutine { continuation ->

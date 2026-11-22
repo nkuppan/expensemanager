@@ -1,14 +1,13 @@
 package com.naveenapps.expensemanager.core.repository
 
-import java.io.File
-
 interface ShareRepository {
 
-    fun sendEmail(file: File?)
+    // File arguments are absolute paths (not java.io.File) so this interface stays platform-neutral.
+    fun sendEmail(filePath: String?)
 
-    fun share(file: File?)
+    fun share(filePath: String?)
 
-    fun print(file: File?)
+    fun print(filePath: String?)
 
     fun openRateUs()
 

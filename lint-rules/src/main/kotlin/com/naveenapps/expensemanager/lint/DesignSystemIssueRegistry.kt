@@ -6,7 +6,7 @@ import com.android.tools.lint.detector.api.CURRENT_API
 import com.android.tools.lint.detector.api.Issue
 
 class DesignSystemIssueRegistry : IssueRegistry() {
-    override val issues: List<Issue> = DesignSystemDetector.ISSUES
+    override val issues: List<Issue> = DesignSystemDetector.ISSUES + SharedLayerApiDetector.ISSUES
 
     override val api: Int = CURRENT_API
 

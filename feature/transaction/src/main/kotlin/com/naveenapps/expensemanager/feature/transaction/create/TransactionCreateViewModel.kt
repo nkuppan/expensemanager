@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.transaction.create
 
-import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -217,7 +216,7 @@ class TransactionCreateViewModel(
     // digits, bank name), else the one used last for this payee; the payee's past categories
     // become suggestion chips, the most used one selected. Nothing is saved until the user taps
     // Save. The image is also kept as the transaction's attachment.
-    private fun applyReceipt(text: String?, imageUri: Uri?, source: ReceiptSource) {
+    private fun applyReceipt(text: String?, imageUri: String?, source: ReceiptSource) {
         _state.update { it.copy(isReadingReceipt = true, showNumberPad = false) }
         viewModelScope.launch {
             // Apps often send a screenshot with a caption ("Paid via ..."), so the image is read
@@ -473,7 +472,7 @@ class TransactionCreateViewModel(
 
     // endregion
 
-    fun createImageCaptureUri(): Uri = imageStorageRepository.createImageCaptureUri()
+    fun createImageCaptureUri(): String = imageStorageRepository.createImageCaptureUri()
 
     // region Transaction load (edit mode)
 
@@ -758,7 +757,7 @@ class TransactionCreateViewModel(
 
     // region Attachments
 
-    private fun onAttachmentPicked(uri: Uri) {
+    private fun onAttachmentPicked(uri: String) {
         viewModelScope.launch {
             val path = imageStorageRepository.saveTransactionAttachment(uri) ?: return@launch
             sessionCreatedAttachmentPaths.add(path)

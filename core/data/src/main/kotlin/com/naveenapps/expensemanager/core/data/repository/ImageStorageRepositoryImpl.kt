@@ -18,25 +18,25 @@ class ImageStorageRepositoryImpl(
     private val context: Context,
 ) : ImageStorageRepository {
 
-    override fun createImageCaptureUri(): Uri {
+    override fun createImageCaptureUri(): String {
         val dir = File(context.cacheDir, CAPTURE_DIR).apply { mkdirs() }
         val file = File(dir, "capture_${System.currentTimeMillis()}.jpg")
-        return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+        return FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file).toString()
     }
 
-    override suspend fun saveCategoryImage(sourceUri: Uri): String? = saveImage(sourceUri, CATEGORY_IMAGE_DIR)
+    override suspend fun saveCategoryImage(sourceUri: String): String? = saveImage(Uri.parse(sourceUri), CATEGORY_IMAGE_DIR)
 
     override fun deleteCategoryImage(path: String) {
         runCatching { File(path).delete() }
     }
 
-    override suspend fun saveAccountImage(sourceUri: Uri): String? = saveImage(sourceUri, ACCOUNT_IMAGE_DIR)
+    override suspend fun saveAccountImage(sourceUri: String): String? = saveImage(Uri.parse(sourceUri), ACCOUNT_IMAGE_DIR)
 
     override fun deleteAccountImage(path: String) {
         runCatching { File(path).delete() }
     }
 
-    override suspend fun saveTransactionAttachment(sourceUri: Uri): String? = saveImage(sourceUri, TRANSACTION_ATTACHMENT_DIR)
+    override suspend fun saveTransactionAttachment(sourceUri: String): String? = saveImage(Uri.parse(sourceUri), TRANSACTION_ATTACHMENT_DIR)
 
     override fun deleteTransactionAttachment(path: String) {
         runCatching { File(path).delete() }
