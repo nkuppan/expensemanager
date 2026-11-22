@@ -69,6 +69,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.categoryDisplayName
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
@@ -407,8 +408,7 @@ private fun LazyListScope.transactionsSection(
                         .clickable {
                             onAction.invoke(DashboardAction.OpenTransactionEdit(transaction))
                         },
-                    categoryName = transaction.categoryTitleResId?.let { stringResource(it) }
-                        ?: transaction.categoryName,
+                    categoryName = transaction.categoryDisplayName(),
                     categoryColor = transaction.categoryIcon.backgroundColor,
                     categoryIcon = transaction.categoryIcon.name,
                     amount = transaction.amount,

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.transaction.search
 import android.content.Context
 import android.content.res.Configuration
 import android.os.LocaleList
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.repository.LocaleRepository
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.map
 
 /**
  * The name each category is shown with, so search can match what the user actually sees. Built-in
- * categories store an English name and are displayed translated (their `titleResId`).
+ * categories store an English name and are displayed translated (their `defaultKey`).
  */
 fun interface CategoryDisplayNames {
 
@@ -43,7 +44,7 @@ internal class LocalizedCategoryDisplayNames(
             context.createConfigurationContext(configuration)
         }
         val displayName: (Category) -> String = { category ->
-            category.titleResId?.let { localized.getString(it) } ?: category.name
+            localized.localizedCategoryName(category.defaultKey, category.name)
         }
         displayName
     }

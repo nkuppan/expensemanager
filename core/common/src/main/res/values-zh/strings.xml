@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_web_browser">选择浏览器</string>
+
+    <!-- Built-in category names, looked up by Category.defaultKey (see DefaultCategoryNames.kt). -->
+    <string name="category_clothing">服装</string>
+    <string name="category_entertainment">娱乐</string>
+    <string name="category_food">餐饮</string>
+    <string name="category_health">健康</string>
+    <string name="category_leisure">休闲</string>
+    <string name="category_shopping">购物</string>
+    <string name="category_transportation">交通</string>
+    <string name="category_utilities">水电煤气</string>
+    <string name="category_salary">工资</string>
+    <string name="category_gift">礼物</string>
+    <string name="category_coupons">优惠券</string>
 </resources>

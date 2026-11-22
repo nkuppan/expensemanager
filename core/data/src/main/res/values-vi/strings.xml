@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">Đặt theo chế độ tiết kiệm pin</string>
     <string name="system_default">Mặc định hệ thống</string>
 
-    <string name="category_clothing">Quần áo</string>
-    <string name="category_entertainment">Giải trí</string>
-    <string name="category_food">Ăn uống</string>
-    <string name="category_health">Sức khỏe</string>
-    <string name="category_leisure">Thư giãn</string>
-    <string name="category_shopping">Mua sắm</string>
-    <string name="category_transportation">Di chuyển</string>
-    <string name="category_utilities">Tiện ích</string>
-    <string name="category_salary">Lương</string>
-    <string name="category_gift">Quà tặng</string>
-    <string name="category_coupons">Phiếu giảm giá</string>
 </resources>

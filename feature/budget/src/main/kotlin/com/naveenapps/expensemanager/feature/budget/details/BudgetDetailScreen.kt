@@ -44,6 +44,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.BudgetTitle
@@ -200,8 +201,7 @@ private fun BudgetDetailContent(
             SectionHeader(text = stringResource(R.string.budget_transactions)) {
                 if (selectedCategory != null) {
                     EmChip(
-                        label = selectedCategory.category.titleResId?.let { stringResource(it) }
-                            ?: selectedCategory.category.name,
+                        label = selectedCategory.category.displayName(),
                         onClick = onClearCategoryFilter,
                         variant = EmChipVariant.Input,
                         onRemove = onClearCategoryFilter,

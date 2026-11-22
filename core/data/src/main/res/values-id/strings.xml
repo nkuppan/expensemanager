@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">Diatur oleh penghemat baterai</string>
     <string name="system_default">Default sistem</string>
 
-    <string name="category_clothing">Pakaian</string>
-    <string name="category_entertainment">Hiburan</string>
-    <string name="category_food">Makanan</string>
-    <string name="category_health">Kesehatan</string>
-    <string name="category_leisure">Rekreasi</string>
-    <string name="category_shopping">Belanja</string>
-    <string name="category_transportation">Transportasi</string>
-    <string name="category_utilities">Utilitas</string>
-    <string name="category_salary">Gaji</string>
-    <string name="category_gift">Hadiah</string>
-    <string name="category_coupons">Kupon</string>
 </resources>

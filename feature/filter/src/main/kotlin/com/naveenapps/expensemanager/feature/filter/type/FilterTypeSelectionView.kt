@@ -40,6 +40,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.extensions.getDrawable
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Amount
@@ -171,7 +172,7 @@ private fun FilterSelectionView(
                     val isSelected = state.selectedCategories.fastAny { it.id == category.id }
                     FilterChipView(
                         selected = isSelected,
-                        label = category.titleResId?.let { stringResource(it) } ?: category.name,
+                        label = category.displayName(),
                         iconName = category.storedIcon.name,
                         onSelection = { onAction.invoke(FilterTypeAction.SelectCategory(category)) },
                     )

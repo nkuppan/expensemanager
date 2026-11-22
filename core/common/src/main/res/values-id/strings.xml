@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_web_browser">Pilih browser</string>
+
+    <!-- Built-in category names, looked up by Category.defaultKey (see DefaultCategoryNames.kt). -->
+    <string name="category_clothing">Pakaian</string>
+    <string name="category_entertainment">Hiburan</string>
+    <string name="category_food">Makanan</string>
+    <string name="category_health">Kesehatan</string>
+    <string name="category_leisure">Rekreasi</string>
+    <string name="category_shopping">Belanja</string>
+    <string name="category_transportation">Transportasi</string>
+    <string name="category_utilities">Utilitas</string>
+    <string name="category_salary">Gaji</string>
+    <string name="category_gift">Hadiah</string>
+    <string name="category_coupons">Kupon</string>
 </resources>

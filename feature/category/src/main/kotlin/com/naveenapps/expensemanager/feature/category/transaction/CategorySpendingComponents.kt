@@ -11,13 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.core.graphics.toColorInt
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
 import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartUiData
 import com.naveenapps.expensemanager.core.designsystem.ui.components.PieChartView
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 
@@ -43,7 +43,7 @@ fun CategorySpendingChartCard(
                 totalAmountText = centerLabel + "\n" + state.totalAmount.amountString,
                 chartData = state.pieChartData.map {
                     PieChartUiData(
-                        it.titleResId?.let { resId -> stringResource(resId) } ?: it.name,
+                        it.displayName(),
                         it.value,
                         it.color.toColorInt(),
                     )
@@ -87,8 +87,7 @@ fun LazyListScope.categorySpendingItems(
         ) {
             CategoryTransactionItem(
                 modifier = Modifier.clickable { onItemClick(categoryTransaction) },
-                name = categoryTransaction.category.titleResId?.let { stringResource(it) }
-                    ?: categoryTransaction.category.name,
+                name = categoryTransaction.category.displayName(),
                 icon = categoryTransaction.category.storedIcon.name,
                 iconBackgroundColor = categoryTransaction.category.storedIcon.backgroundColor,
                 customImagePath = categoryTransaction.category.storedIcon.customImagePath,

@@ -18,11 +18,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.designsystem.em.EmNoSearchResults
 import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
 import com.naveenapps.expensemanager.core.designsystem.em.EmSectionHeader
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
@@ -45,7 +47,7 @@ fun CategorySelectionScreen(
             categories
         } else {
             categories.filter { category ->
-                val name = category.titleResId?.let { context.getString(it) } ?: category.name
+                val name = context.localizedCategoryName(category.defaultKey, category.name)
                 name.contains(search, ignoreCase = true)
             }
         }
@@ -86,7 +88,7 @@ fun CategorySelectionScreen(
                 val isSelected = selectedCategory?.id == category.id
 
                 CategoryItem(
-                    name = category.titleResId?.let { stringResource(it) } ?: category.name,
+                    name = category.displayName(),
                     icon = category.storedIcon.name,
                     iconBackgroundColor = category.storedIcon.backgroundColor,
                     customImagePath = category.storedIcon.customImagePath,

@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.notification
 
 import android.content.Context
 import android.content.Intent
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.FindCategoryByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -94,7 +95,7 @@ class ReminderQuickLog(
         if (findAccountByIdUseCase(entry.fromAccountId) !is Resource.Success) return null
 
         val name = entry.notes.ifBlank {
-            category.titleResId?.let { context.getString(it) } ?: category.name
+            context.localizedCategoryName(category.defaultKey, category.name)
         }
         val currency = getCurrencyUseCase.invoke().first()
         val amountText = getFormattedAmountUseCase.invoke(entry.amount, currency).amountString.orEmpty()

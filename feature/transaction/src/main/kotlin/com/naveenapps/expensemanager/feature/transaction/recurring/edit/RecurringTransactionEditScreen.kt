@@ -59,6 +59,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
@@ -332,7 +333,7 @@ private fun RecurringEditForm(
             state.selectedCategory?.let { category ->
                 EmSection(title = stringResource(R.string.select_category)) {
                     CategoryItem(
-                        name = category.titleResId?.let { stringResource(it) } ?: category.name,
+                        name = category.displayName(),
                         icon = category.storedIcon.name,
                         iconBackgroundColor = category.storedIcon.backgroundColor,
                         customImagePath = category.storedIcon.customImagePath,

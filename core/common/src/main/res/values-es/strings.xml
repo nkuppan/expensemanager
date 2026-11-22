@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_web_browser">Elegir navegador</string>
+
+    <!-- Built-in category names, looked up by Category.defaultKey (see DefaultCategoryNames.kt). -->
+    <string name="category_clothing">Ropa</string>
+    <string name="category_entertainment">Entretenimiento</string>
+    <string name="category_food">Alimentación</string>
+    <string name="category_health">Salud</string>
+    <string name="category_leisure">Ocio</string>
+    <string name="category_shopping">Compras</string>
+    <string name="category_transportation">Transporte</string>
+    <string name="category_utilities">Servicios públicos</string>
+    <string name="category_salary">Salario</string>
+    <string name="category_gift">Regalo</string>
+    <string name="category_coupons">Cupones</string>
 </resources>

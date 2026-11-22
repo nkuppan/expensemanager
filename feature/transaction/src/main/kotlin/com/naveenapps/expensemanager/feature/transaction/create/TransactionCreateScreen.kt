@@ -71,6 +71,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppDatePickerDialog
 import com.naveenapps.expensemanager.core.designsystem.ui.components.AppTimePickerDialog
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.rememberImagePickerActions
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.isOnLaterDay
@@ -537,8 +538,7 @@ private fun TransactionCreateContent(
             EmSection(title = stringResource(R.string.select_category)) {
                 Column(verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.md)) {
                     CategoryItem(
-                        name = state.selectedCategory.titleResId?.let { stringResource(it) }
-                            ?: state.selectedCategory.name,
+                        name = state.selectedCategory.displayName(),
                         icon = state.selectedCategory.storedIcon.name,
                         iconBackgroundColor = state.selectedCategory.storedIcon.backgroundColor,
                         customImagePath = state.selectedCategory.storedIcon.customImagePath,

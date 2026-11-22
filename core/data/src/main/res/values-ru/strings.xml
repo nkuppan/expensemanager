@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">Определяется режимом энергосбережения</string>
     <string name="system_default">Системная по умолчанию</string>
 
-    <string name="category_clothing">Одежда</string>
-    <string name="category_entertainment">Развлечения</string>
-    <string name="category_food">Еда</string>
-    <string name="category_health">Здоровье</string>
-    <string name="category_leisure">Досуг</string>
-    <string name="category_shopping">Покупки</string>
-    <string name="category_transportation">Транспорт</string>
-    <string name="category_utilities">Коммунальные услуги</string>
-    <string name="category_salary">Зарплата</string>
-    <string name="category_gift">Подарок</string>
-    <string name="category_coupons">Купоны</string>
 </resources>

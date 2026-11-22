@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">बैटरी सेवर द्वारा सेट किया गया</string>
     <string name="system_default">सिस्टम डिफ़ॉल्ट</string>
 
-    <string name="category_clothing">कपड़े</string>
-    <string name="category_entertainment">मनोरंजन</string>
-    <string name="category_food">भोजन</string>
-    <string name="category_health">स्वास्थ्य</string>
-    <string name="category_leisure">अवकाश</string>
-    <string name="category_shopping">खरीदारी</string>
-    <string name="category_transportation">परिवहन</string>
-    <string name="category_utilities">उपयोगिताएं</string>
-    <string name="category_salary">वेतन</string>
-    <string name="category_gift">उपहार</string>
-    <string name="category_coupons">कूपन</string>
 </resources>

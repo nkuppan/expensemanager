@@ -19,6 +19,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmText
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.feature.transaction.R
 
 /**
@@ -50,7 +51,7 @@ internal fun QuickPickRow(
         ) {
             items(picks, key = { it.key }) { pick ->
                 val name = pick.notes.ifBlank {
-                    pick.category.titleResId?.let { stringResource(it) } ?: pick.category.name
+                    pick.category.displayName()
                 }
                 EmChip(
                     label = if (pick.amountText.isBlank()) name else "$name · ${pick.amountText}",

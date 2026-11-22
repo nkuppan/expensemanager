@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">يُحدَّد بواسطة توفير البطارية</string>
     <string name="system_default">افتراضي النظام</string>
 
-    <string name="category_clothing">ملابس</string>
-    <string name="category_entertainment">ترفيه</string>
-    <string name="category_food">طعام</string>
-    <string name="category_health">صحة</string>
-    <string name="category_leisure">أوقات الفراغ</string>
-    <string name="category_shopping">تسوق</string>
-    <string name="category_transportation">المواصلات</string>
-    <string name="category_utilities">المرافق</string>
-    <string name="category_salary">راتب</string>
-    <string name="category_gift">هدية</string>
-    <string name="category_coupons">كوبونات</string>
 </resources>

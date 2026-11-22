@@ -53,6 +53,8 @@ import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.IconSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.categoryDisplayName
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.model.Category
@@ -110,9 +112,6 @@ fun AnalysisInsightsSection(
 }
 
 /** Same title as the other Analysis / Home cards (e.g. "Average and projected"). */
-
-@Composable
-private fun Category.displayName(): String = titleResId?.let { stringResource(it) } ?: name
 
 private fun DayOfWeek.fullName(): String = getDisplayName(DayNameStyle.FULL, Locale.getDefault())
     .replaceFirstChar { it.titlecase(Locale.getDefault()) }
@@ -404,8 +403,7 @@ internal fun BiggestExpensesSection(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onTransactionClick(transaction.id) },
-                    categoryName = transaction.categoryTitleResId?.let { stringResource(it) }
-                        ?: transaction.categoryName,
+                    categoryName = transaction.categoryDisplayName(),
                     categoryColor = transaction.categoryIcon.backgroundColor,
                     categoryIcon = transaction.categoryIcon.name,
                     amount = transaction.amount,

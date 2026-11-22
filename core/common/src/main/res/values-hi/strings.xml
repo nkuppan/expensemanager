@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_web_browser">ब्राउज़र चुनें</string>
+
+    <!-- Built-in category names, looked up by Category.defaultKey (see DefaultCategoryNames.kt). -->
+    <string name="category_clothing">कपड़े</string>
+    <string name="category_entertainment">मनोरंजन</string>
+    <string name="category_food">भोजन</string>
+    <string name="category_health">स्वास्थ्य</string>
+    <string name="category_leisure">अवकाश</string>
+    <string name="category_shopping">खरीदारी</string>
+    <string name="category_transportation">परिवहन</string>
+    <string name="category_utilities">उपयोगिताएं</string>
+    <string name="category_salary">वेतन</string>
+    <string name="category_gift">उपहार</string>
+    <string name="category_coupons">कूपन</string>
 </resources>

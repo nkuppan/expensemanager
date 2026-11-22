@@ -37,6 +37,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.tint
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.recurring.labelResId
 import java.time.LocalDate
@@ -141,7 +142,7 @@ private fun UpcomingTotalTile(label: String, amount: String, color: Color, modif
 private fun UpcomingRow(item: UpcomingItemUi, onClick: () -> Unit) {
     val rule = item.rule
     val categoryName = rule.category?.let { category ->
-        category.titleResId?.let { stringResource(it) } ?: category.name
+        category.displayName()
     }.orEmpty()
     // The notes name the payment when there are any ("Rent"), with the category beside the
     // frequency; otherwise the category is the name.

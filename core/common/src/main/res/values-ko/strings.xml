@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_web_browser">브라우저 선택</string>
+
+    <!-- Built-in category names, looked up by Category.defaultKey (see DefaultCategoryNames.kt). -->
+    <string name="category_clothing">의류</string>
+    <string name="category_entertainment">엔터테인먼트</string>
+    <string name="category_food">식비</string>
+    <string name="category_health">건강</string>
+    <string name="category_leisure">여가</string>
+    <string name="category_shopping">쇼핑</string>
+    <string name="category_transportation">교통</string>
+    <string name="category_utilities">공과금</string>
+    <string name="category_salary">급여</string>
+    <string name="category_gift">선물</string>
+    <string name="category_coupons">쿠폰</string>
 </resources>

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.util.Log
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
@@ -137,8 +138,7 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
                 transaction.createdOn.toCompleteDate(),
                 transaction.createdOn.toTimeAndMinutes(),
                 transaction.type.toCapitalize(),
-                transaction.category.titleResId?.let { context.getString(it) }
-                    ?: transaction.category.name,
+                context.localizedCategoryName(transaction.category.defaultKey, transaction.category.name),
                 transaction.category.type.toCapitalize(),
                 transaction.fromAccount.name,
                 transaction.fromAccount.type.toCapitalize(),

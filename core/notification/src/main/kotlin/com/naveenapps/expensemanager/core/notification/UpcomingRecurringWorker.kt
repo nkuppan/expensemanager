@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.notification
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.rulesAddedOn
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -87,7 +88,7 @@ class UpcomingRecurringWorker(
     /** The notes ("Rent") when there are any, otherwise the category's (translated) name. */
     private fun nameOf(rule: RecurringTransaction): String = rule.notes.ifBlank {
         rule.category?.let { category ->
-            category.titleResId?.let { context.getString(it) } ?: category.name
+            context.localizedCategoryName(category.defaultKey, category.name)
         }.orEmpty()
     }
 }

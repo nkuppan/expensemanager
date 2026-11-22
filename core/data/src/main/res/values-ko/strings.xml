@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">배터리 절약 모드에 따라 설정됨</string>
     <string name="system_default">시스템 기본값</string>
 
-    <string name="category_clothing">의류</string>
-    <string name="category_entertainment">엔터테인먼트</string>
-    <string name="category_food">식비</string>
-    <string name="category_health">건강</string>
-    <string name="category_leisure">여가</string>
-    <string name="category_shopping">쇼핑</string>
-    <string name="category_transportation">교통</string>
-    <string name="category_utilities">공과금</string>
-    <string name="category_salary">급여</string>
-    <string name="category_gift">선물</string>
-    <string name="category_coupons">쿠폰</string>
 </resources>

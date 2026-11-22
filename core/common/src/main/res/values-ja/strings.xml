@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_web_browser">ブラウザを選択</string>
+
+    <!-- Built-in category names, looked up by Category.defaultKey (see DefaultCategoryNames.kt). -->
+    <string name="category_clothing">衣服</string>
+    <string name="category_entertainment">娯楽</string>
+    <string name="category_food">食費</string>
+    <string name="category_health">健康</string>
+    <string name="category_leisure">レジャー</string>
+    <string name="category_shopping">買い物</string>
+    <string name="category_transportation">交通費</string>
+    <string name="category_utilities">光熱費</string>
+    <string name="category_salary">給料</string>
+    <string name="category_gift">贈り物</string>
+    <string name="category_coupons">クーポン</string>
 </resources>

@@ -43,6 +43,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmText
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
@@ -214,7 +215,7 @@ fun TypeFilter(
             }
             filterState.selectedCategories.forEach { category ->
                 InputChipView(
-                    label = category.titleResId?.let { stringResource(it) } ?: category.name,
+                    label = category.displayName(),
                     selected = true,
                     iconName = category.storedIcon.name,
                 ) {

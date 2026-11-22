@@ -44,6 +44,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
@@ -177,8 +178,7 @@ private fun CategoryListScreenContent(
                             key = { _, item -> item.id },
                         ) { index, category ->
                             CategoryItem(
-                                name = category.titleResId?.let { stringResource(it) }
-                                    ?: category.name,
+                                name = category.displayName(),
                                 icon = category.storedIcon.name,
                                 iconBackgroundColor = category.storedIcon.backgroundColor,
                                 customImagePath = category.storedIcon.customImagePath,

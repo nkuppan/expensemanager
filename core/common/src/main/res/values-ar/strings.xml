@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="choose_web_browser">اختيار المتصفح</string>
+
+    <!-- Built-in category names, looked up by Category.defaultKey (see DefaultCategoryNames.kt). -->
+    <string name="category_clothing">ملابس</string>
+    <string name="category_entertainment">ترفيه</string>
+    <string name="category_food">طعام</string>
+    <string name="category_health">صحة</string>
+    <string name="category_leisure">أوقات الفراغ</string>
+    <string name="category_shopping">تسوق</string>
+    <string name="category_transportation">المواصلات</string>
+    <string name="category_utilities">المرافق</string>
+    <string name="category_salary">راتب</string>
+    <string name="category_gift">هدية</string>
+    <string name="category_coupons">كوبونات</string>
 </resources>

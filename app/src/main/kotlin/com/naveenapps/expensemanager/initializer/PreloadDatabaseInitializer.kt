@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.initializer
 
 import android.content.Context
 import androidx.startup.Initializer
-import com.naveenapps.expensemanager.core.data.R as CategoryStringsR
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.GetPreloadStatusUseCase
@@ -31,7 +30,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_clothing,
+        defaultKey = "clothing",
     ),
     Category(
         id = "2",
@@ -43,7 +42,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_entertainment,
+        defaultKey = "entertainment",
     ),
     Category(
         id = "3",
@@ -55,7 +54,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_food,
+        defaultKey = "food",
     ),
     Category(
         id = "4",
@@ -67,7 +66,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_health,
+        defaultKey = "health",
     ),
     Category(
         id = "5",
@@ -79,7 +78,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_leisure,
+        defaultKey = "leisure",
     ),
     Category(
         id = "6",
@@ -91,7 +90,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_shopping,
+        defaultKey = "shopping",
     ),
     Category(
         id = "7",
@@ -103,7 +102,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_transportation,
+        defaultKey = "transportation",
     ),
     Category(
         id = "8",
@@ -115,7 +114,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_utilities,
+        defaultKey = "utilities",
     ),
     Category(
         id = "9",
@@ -127,7 +126,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_salary,
+        defaultKey = "salary",
     ),
     Category(
         id = "10",
@@ -139,7 +138,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_gift,
+        defaultKey = "gift",
     ),
     Category(
         id = "11",
@@ -151,7 +150,7 @@ val BASE_CATEGORY_LIST = listOf(
         ),
         createdOn = Date(),
         updatedOn = Date(),
-        titleResId = CategoryStringsR.string.category_coupons,
+        defaultKey = "coupons",
     ),
 )
 

@@ -28,6 +28,9 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
 
+    // DateConverterTest: plain JVM test pinning the stored date format (KMP groundwork C1).
+    testImplementation(libs.junit4)
+
     androidTestImplementation(libs.room.testing)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.ext)

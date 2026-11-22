@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.category.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.defaultCategoryTitleRes
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.category.AddCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.DeleteCategoryUseCase
@@ -100,7 +101,7 @@ class CategoryCreateViewModel(
                     icon = it.icon.copy(value = categoryItem.storedIcon.name),
                     color = it.color.copy(value = categoryItem.storedIcon.backgroundColor),
                     showDeleteButton = true,
-                    nameResId = categoryItem.titleResId,
+                    nameResId = defaultCategoryTitleRes(categoryItem.defaultKey),
                     customImagePath = categoryItem.storedIcon.customImagePath,
                 )
             }
@@ -171,8 +172,8 @@ class CategoryCreateViewModel(
             updatedOn = Calendar.getInstance().time,
             // Preserve the default-category marker across edits. Without this, saving any
             // change (even just icon/color) to a built-in category would silently strip its
-            // titleResId/defaultCategoryKey and permanently freeze its name in English.
-            titleResId = this.category?.titleResId,
+            // defaultKey and permanently freeze its name in English.
+            defaultKey = this.category?.defaultKey,
         )
 
         viewModelScope.launch {

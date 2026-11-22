@@ -35,7 +35,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
 import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import com.naveenapps.expensemanager.core.model.Category
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.LandingPage
 import com.naveenapps.expensemanager.feature.filter.datefilter.DateFilterSelectionView
 import com.naveenapps.expensemanager.feature.settings.R
@@ -198,6 +198,3 @@ fun AdvancedSettingsPreview() {
         )
     }
 }
-
-@Composable
-private fun Category.displayName(): String = titleResId?.let { stringResource(it) } ?: name

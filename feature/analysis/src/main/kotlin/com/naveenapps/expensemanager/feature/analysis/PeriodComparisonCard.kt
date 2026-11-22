@@ -34,6 +34,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.components.SmallIconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getExpenseColor
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.model.Category
@@ -83,7 +84,7 @@ private fun CategoryChangeRow(
     color: Color,
     onClick: () -> Unit,
 ) {
-    val name = change.category.titleResId?.let { stringResource(it) } ?: change.category.name
+    val name = change.category.displayName()
     Row(
         modifier = Modifier
             .fillMaxWidth()

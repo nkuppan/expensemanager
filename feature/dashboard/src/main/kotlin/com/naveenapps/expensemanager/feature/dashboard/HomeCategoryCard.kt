@@ -58,6 +58,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.tint
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
@@ -228,7 +229,7 @@ private fun CategoryLegend(state: CategoryTransactionState, modifier: Modifier =
 /** Colour dot, name and amount, with the category's share of the total as a thin bar below. */
 @Composable
 private fun LegendRow(item: CategoryTransaction, color: Color) {
-    val name = item.category.titleResId?.let { stringResource(it) } ?: item.category.name
+    val name = item.category.displayName()
     val share = item.percent / 100f
     val shareText = remember(share) { NumberFormat.getPercentInstance().format(share.toDouble()) }
 

@@ -21,6 +21,6 @@ fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = Transa
     fromAccountIcon = this.fromAccount.storedIcon,
     toAccountName = this.toAccount?.name,
     toAccountIcon = this.toAccount?.storedIcon,
-    categoryTitleResId = this.category.titleResId,
+    categoryDefaultKey = this.category.defaultKey,
     isRecurring = this.isRecurringOccurrence,
 )

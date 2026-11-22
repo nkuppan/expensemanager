@@ -57,6 +57,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.naveenapps.expensemanager.QuickAdd
 import com.naveenapps.expensemanager.R
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
@@ -206,8 +207,7 @@ private suspend fun loadWidgetData(context: Context): WidgetRefreshData? {
             .sortedByDescending { it.createdOn }
             .take(3)
             .joinToString("\u0002") { tx ->
-                val categoryName = tx.category.titleResId?.let { context.getString(it) }
-                    ?: tx.category.name
+                val categoryName = context.localizedCategoryName(tx.category.defaultKey, tx.category.name)
                 val displayName = tx.notes.ifBlank { categoryName }
                 val amtStr = formatAmount.invoke(tx.amount.amount, currency).amountString.orEmpty()
                 "$displayName\u0001${tx.category.storedIcon.name}\u0001${tx.category.storedIcon.backgroundColor}\u0001$amtStr\u0001${tx.type == TransactionType.INCOME}"

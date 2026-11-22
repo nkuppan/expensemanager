@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.data.repository.export
 
 import android.content.Context
 import android.util.Log
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.common.utils.toCapitalize
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
@@ -89,8 +90,7 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
                         transaction.createdOn.toTimeAndMinutes(),
                         transaction.type.toCapitalize(),
                         (
-                            transaction.category.titleResId?.let { context.getString(it) }
-                                ?: transaction.category.name
+                            context.localizedCategoryName(transaction.category.defaultKey, transaction.category.name)
                             ).toCsvSafeText(),
                         transaction.category.type.toCapitalize(),
                         transaction.fromAccount.name.toCsvSafeText(),

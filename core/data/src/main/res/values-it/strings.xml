@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">Impostato dal risparmio energetico</string>
     <string name="system_default">Predefinito di sistema</string>
 
-    <string name="category_clothing">Abbigliamento</string>
-    <string name="category_entertainment">Intrattenimento</string>
-    <string name="category_food">Cibo</string>
-    <string name="category_health">Salute</string>
-    <string name="category_leisure">Tempo libero</string>
-    <string name="category_shopping">Shopping</string>
-    <string name="category_transportation">Trasporti</string>
-    <string name="category_utilities">Utenze</string>
-    <string name="category_salary">Stipendio</string>
-    <string name="category_gift">Regalo</string>
-    <string name="category_coupons">Coupon</string>
 </resources>

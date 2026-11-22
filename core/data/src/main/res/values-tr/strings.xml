@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">Pil tasarrufu tarafından ayarlandı</string>
     <string name="system_default">Sistem varsayılanı</string>
 
-    <string name="category_clothing">Giyim</string>
-    <string name="category_entertainment">Eğlence</string>
-    <string name="category_food">Yiyecek</string>
-    <string name="category_health">Sağlık</string>
-    <string name="category_leisure">Boş Zaman</string>
-    <string name="category_shopping">Alışveriş</string>
-    <string name="category_transportation">Ulaşım</string>
-    <string name="category_utilities">Faturalar</string>
-    <string name="category_salary">Maaş</string>
-    <string name="category_gift">Hediye</string>
-    <string name="category_coupons">Kuponlar</string>
 </resources>

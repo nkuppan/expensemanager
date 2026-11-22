@@ -18,8 +18,10 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.MultiSelectionSheet
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.list.getRandomCategoryData
@@ -94,7 +96,7 @@ private fun MultipleCategorySelectionViewContent(
             categories
         } else {
             categories.filter { category ->
-                val name = category.titleResId?.let { context.getString(it) } ?: category.name
+                val name = context.localizedCategoryName(category.defaultKey, category.name)
                 name.contains(search, ignoreCase = true)
             }
         }
@@ -127,7 +129,7 @@ private fun MultipleCategorySelectionViewContent(
         items(visibleCategories, key = { it.id }) { category ->
             val isSelected = category.id in selectedIds
             CategoryItem(
-                name = category.titleResId?.let { stringResource(it) } ?: category.name,
+                name = category.displayName(),
                 icon = category.storedIcon.name,
                 iconBackgroundColor = category.storedIcon.backgroundColor,
                 customImagePath = category.storedIcon.customImagePath,

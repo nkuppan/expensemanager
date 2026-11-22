@@ -24,7 +24,8 @@ data class TransactionUiItem(
     val fromAccountIcon: StoredIcon,
     val toAccountName: String? = null,
     val toAccountIcon: StoredIcon? = null,
-    val categoryTitleResId: Int? = null,
+    /** [Category.defaultKey] of the transaction's category; see `categoryDisplayName()`. */
+    val categoryDefaultKey: String? = null,
     /** Added automatically by a recurring rule; lists mark it with a small repeat badge. */
     val isRecurring: Boolean = false,
     /**

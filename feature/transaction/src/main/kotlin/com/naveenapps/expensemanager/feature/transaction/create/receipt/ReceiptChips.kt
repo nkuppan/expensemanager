@@ -16,6 +16,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmText
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextColor
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.feature.transaction.R
 
@@ -58,7 +59,7 @@ internal fun SuggestedCategoryRow(
             categories.forEach { category ->
                 val isSelected = category.id == selected.id
                 EmChip(
-                    label = category.titleResId?.let { stringResource(it) } ?: category.name,
+                    label = category.displayName(),
                     selected = isSelected,
                     onClick = { onSelect(category) },
                     leadingIcon = if (isSelected) Icons.Outlined.AutoAwesome else null,

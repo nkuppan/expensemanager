@@ -46,6 +46,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTopBar
 import com.naveenapps.expensemanager.core.designsystem.em.EmTopBarNavigation
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.R
 import org.koin.compose.viewmodel.koinViewModel
@@ -159,7 +160,7 @@ private fun RecurringTransactionsContent(
 @Composable
 private fun RecurringRow(item: RecurringItemUi, onClick: () -> Unit, onStop: () -> Unit) {
     val rule = item.rule
-    val categoryName = rule.category?.let { category -> category.titleResId?.let { stringResource(it) } ?: category.name }.orEmpty()
+    val categoryName = rule.category?.let { category -> category.displayName() }.orEmpty()
     val title = rule.notes.ifBlank { categoryName }
     val account = listOfNotNull(rule.fromAccount?.name, rule.toAccount?.name).joinToString(" → ")
     val amountColor = when (rule.type) {

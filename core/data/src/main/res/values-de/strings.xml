@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">Durch Energiesparmodus festgelegt</string>
     <string name="system_default">Systemstandard</string>
 
-    <string name="category_clothing">Kleidung</string>
-    <string name="category_entertainment">Unterhaltung</string>
-    <string name="category_food">Essen</string>
-    <string name="category_health">Gesundheit</string>
-    <string name="category_leisure">Freizeit</string>
-    <string name="category_shopping">Einkaufen</string>
-    <string name="category_transportation">Transport</string>
-    <string name="category_utilities">Nebenkosten</string>
-    <string name="category_salary">Gehalt</string>
-    <string name="category_gift">Geschenk</string>
-    <string name="category_coupons">Gutscheine</string>
 </resources>

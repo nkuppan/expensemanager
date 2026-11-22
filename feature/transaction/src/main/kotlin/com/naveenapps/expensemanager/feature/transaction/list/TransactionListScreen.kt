@@ -55,6 +55,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.emColorOf
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.categoryDisplayName
 import com.naveenapps.expensemanager.core.designsystem.utils.ObserveAsEvents
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.AmountTone
@@ -338,7 +339,7 @@ private fun TransactionGroupCard(
                     categoryName = if (debtKind != null) {
                         stringResource(debtKind.rowTitleRes(), item.categoryName)
                     } else {
-                        item.categoryTitleResId?.let { stringResource(it) } ?: item.categoryName
+                        item.categoryDisplayName()
                     },
                     categoryColor = item.categoryIcon.backgroundColor,
                     categoryIcon = item.categoryIcon.name,

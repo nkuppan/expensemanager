@@ -32,15 +32,4 @@
     <string name="set_by_battery_saver">Definido pela poupança de bateria</string>
     <string name="system_default">Padrão do sistema</string>
 
-    <string name="category_clothing">Vestuário</string>
-    <string name="category_entertainment">Entretenimento</string>
-    <string name="category_food">Alimentação</string>
-    <string name="category_health">Saúde</string>
-    <string name="category_leisure">Lazer</string>
-    <string name="category_shopping">Compras</string>
-    <string name="category_transportation">Transporte</string>
-    <string name="category_utilities">Contas e serviços</string>
-    <string name="category_salary">Salário</string>
-    <string name="category_gift">Presente</string>
-    <string name="category_coupons">Cupões</string>
 </resources>

@@ -51,6 +51,8 @@ import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPrevi
 import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.components.IconAndBackgroundView
 import com.naveenapps.expensemanager.core.designsystem.ui.components.TransactionItem
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.categoryDisplayName
+import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.getColorValue
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
@@ -85,7 +87,7 @@ private fun CategoryDetailsContent(
 ) {
     val categoryTransaction = state.categoryTransaction
     val categoryName = categoryTransaction?.category?.let { category ->
-        category.titleResId?.let { stringResource(it) } ?: category.name
+        category.displayName()
     }
 
     EmScaffold(
@@ -167,7 +169,7 @@ private fun CategoryDetailsContent(
                     ) {
                         TransactionItem(
                             modifier = Modifier.fillMaxWidth(),
-                            categoryName = item.categoryTitleResId?.let { stringResource(it) } ?: item.categoryName,
+                            categoryName = item.categoryDisplayName(),
                             categoryColor = item.categoryIcon.backgroundColor,
                             categoryIcon = item.categoryIcon.name,
                             amount = item.amount,
