@@ -24,7 +24,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.naveenapps.expensemanager.core.common.utils.withTime
+import com.naveenapps.expensemanager.core.common.utils.nextTimeOfDay
+import com.naveenapps.expensemanager.core.common.utils.nextWeekdayAt
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
@@ -33,15 +34,7 @@ import kotlin.time.Clock
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.DayOfWeek
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.isoDayNumber
-import kotlinx.datetime.plus
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
 
 /** Activity opened when a reminder notification is tapped. */
 const val DESTINATION_CLASS = "com.naveenapps.expensemanager.MainActivity"
@@ -74,15 +67,9 @@ class NotificationScheduler(
      * this on every app start never pushes the next run back.
      */
     fun scheduleWeeklySummary() {
-        val zone = TimeZone.currentSystemDefault()
         val now = Clock.System.now()
-        val today = now.toLocalDateTime(zone).date
-        // This Sunday (today if it's Sunday), at WEEKLY_SUMMARY_HOUR; a week later once that's passed.
-        val daysToSunday = (DayOfWeek.SUNDAY.isoDayNumber - today.dayOfWeek.isoDayNumber + 7) % 7
-        val sunday = today.plus(daysToSunday, DateTimeUnit.DAY)
-        val at = LocalTime(WEEKLY_SUMMARY_HOUR, 0)
-        var next = LocalDateTime(sunday, at).toInstant(zone)
-        if (next <= now) next = LocalDateTime(sunday.plus(1, DateTimeUnit.WEEK), at).toInstant(zone)
+        // This Sunday (today if it's Sunday) at WEEKLY_SUMMARY_HOUR; a week later once that's passed.
+        val next = now.nextWeekdayAt(DayOfWeek.SUNDAY, WEEKLY_SUMMARY_HOUR)
 
         val request = PeriodicWorkRequestBuilder<WeeklySummaryWorker>(7, TimeUnit.DAYS)
             .setInitialDelay((next - now).inWholeMilliseconds, TimeUnit.MILLISECONDS)
@@ -118,7 +105,7 @@ class NotificationScheduler(
      * schedules the following run itself, like the daily reminder. REPLACE keeps exactly one.
      */
     fun scheduleUpcomingAlert(now: Instant = Clock.System.now()) {
-        val next = nextTimeOfDay(UPCOMING_ALERT_HOUR, 0, now)
+        val next = now.nextTimeOfDay(UPCOMING_ALERT_HOUR, 0)
         val request = OneTimeWorkRequestBuilder<UpcomingRecurringWorker>()
             .setInitialDelay(next.toEpochMilliseconds() - now.toEpochMilliseconds(), TimeUnit.MILLISECONDS)
             .build()
@@ -129,7 +116,7 @@ class NotificationScheduler(
 
     /** Lines up the next morning check for debts due that day (see DebtDueWorker). */
     fun scheduleDebtDueCheck(now: Instant = Clock.System.now()) {
-        val next = nextTimeOfDay(DEBT_DUE_HOUR, 0, now)
+        val next = now.nextTimeOfDay(DEBT_DUE_HOUR, 0)
         val request = OneTimeWorkRequestBuilder<DebtDueWorker>()
             .setInitialDelay(next.toEpochMilliseconds() - now.toEpochMilliseconds(), TimeUnit.MILLISECONDS)
             .build()
@@ -422,16 +409,7 @@ class NotificationScheduler(
     /** The daily reminder's next time: today at the chosen time, or tomorrow once it has passed. */
     private suspend fun nextReminderTime(): Instant {
         val reminderTimeState = reminderTimeRepository.getReminderTime().first()
-        return nextTimeOfDay(reminderTimeState.hour, reminderTimeState.minute, Clock.System.now())
-    }
-
-    /** The first [hour]:[minute] (local wall-clock time) after [now]: later today, else tomorrow. */
-    private fun nextTimeOfDay(hour: Int, minute: Int, now: Instant): Instant {
-        val zone = TimeZone.currentSystemDefault()
-        val today = now.withTime(hour, minute, zone = zone)
-        if (today > now) return today
-        val tomorrow = now.toLocalDateTime(zone).date.plus(1, DateTimeUnit.DAY)
-        return LocalDateTime(tomorrow, LocalTime(hour, minute)).toInstant(zone)
+        return Clock.System.now().nextTimeOfDay(reminderTimeState.hour, reminderTimeState.minute)
     }
 
     /**

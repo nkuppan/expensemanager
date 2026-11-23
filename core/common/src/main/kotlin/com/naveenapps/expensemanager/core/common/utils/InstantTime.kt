@@ -1,9 +1,13 @@
 package com.naveenapps.expensemanager.core.common.utils
 
 import kotlin.time.Instant
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
@@ -33,4 +37,25 @@ fun Instant.withTime(
         LocalTime(hour, minute, local.time.second, local.time.nanosecond)
     }
     return LocalDateTime(local.date, time).toInstant(zone)
+}
+
+/**
+ * The first [hour]:[minute] local time strictly after this instant: later today, else tomorrow.
+ * On a night the clocks change, a time that doesn't exist becomes the first moment after the gap
+ * (the old Calendar code fired an hour early or late on those nights).
+ */
+fun Instant.nextTimeOfDay(hour: Int, minute: Int, zone: TimeZone = TimeZone.currentSystemDefault()): Instant {
+    val today = toLocalDateTime(zone).date
+    val todayAt = LocalDateTime(today, LocalTime(hour, minute)).toInstant(zone)
+    if (todayAt > this) return todayAt
+    return LocalDateTime(today.plus(1, DateTimeUnit.DAY), LocalTime(hour, minute)).toInstant(zone)
+}
+
+/** The first [day] at [hour]:00 local time strictly after this instant (this week's if still ahead). */
+fun Instant.nextWeekdayAt(day: DayOfWeek, hour: Int, zone: TimeZone = TimeZone.currentSystemDefault()): Instant {
+    val today = toLocalDateTime(zone).date
+    val date = today.plus((day.isoDayNumber - today.dayOfWeek.isoDayNumber + 7) % 7, DateTimeUnit.DAY)
+    val at = LocalTime(hour, 0)
+    val thisWeek = LocalDateTime(date, at).toInstant(zone)
+    return if (thisWeek > this) thisWeek else LocalDateTime(date.plus(1, DateTimeUnit.WEEK), at).toInstant(zone)
 }
