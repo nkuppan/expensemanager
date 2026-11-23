@@ -87,6 +87,7 @@ fun TransactionItem(
     onDelete: (() -> Unit)? = null,
     onClick: (() -> Unit)? = null,
     isRecurring: Boolean = false,
+    closingBalance: Amount? = null,
 ) {
     val isTransfer = toAccountName?.isNotBlank() == true
 
@@ -276,6 +277,15 @@ fun TransactionItem(
                     amount = "$prefix${amount.amountString ?: ""}",
                     color = amountColor,
                 )
+
+                if (closingBalance?.amountString != null) {
+                    Spacer(Modifier.height(EmTheme.spacing.xxs))
+                    EmText(
+                        text = "Bal: ${closingBalance.amountString}",
+                        role = EmTextRole.Supporting,
+                        color = EmTextColor.Supporting,
+                    )
+                }
 
                 Spacer(Modifier.height(EmTheme.spacing.xxs))
 

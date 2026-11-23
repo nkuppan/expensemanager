@@ -35,6 +35,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -50,6 +51,7 @@ import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddT
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentThumbnail
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
+import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
 import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
 import com.naveenapps.expensemanager.core.designsystem.em.EmChip
@@ -618,6 +620,59 @@ private fun TransactionCreateContent(
                         AccountItemDefaults.ChevronTrailing()
                     },
                 )
+            }
+        }
+
+        // Projected Closing Balance
+        AnimatedVisibility(
+            visible = state.projectedFromAccountBalance != null,
+            enter = fadeIn(tween(200)) + expandVertically(tween(250)),
+            exit = fadeOut(tween(150)) + shrinkVertically(tween(200)),
+        ) {
+            EmSection(title = stringResource(R.string.closing_balance)) {
+                EmCard {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(EmTheme.spacing.md),
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            EmText(
+                                text = if (state.transactionType == TransactionType.TRANSFER) {
+                                    stringResource(R.string.from_account) + " (${state.selectedFromAccount.name})"
+                                } else {
+                                    state.selectedFromAccount.name
+                                },
+                                role = EmTextRole.Body,
+                            )
+                            state.projectedFromAccountBalance?.let { balance ->
+                                EmAmountText(
+                                    amount = balance.amountString ?: "",
+                                )
+                            }
+                        }
+                        if (state.transactionType == TransactionType.TRANSFER && state.projectedToAccountBalance != null) {
+                            Spacer(Modifier.height(EmTheme.spacing.xs))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                EmText(
+                                    text = stringResource(R.string.to_account) + " (${state.selectedToAccount.name})",
+                                    role = EmTextRole.Body,
+                                )
+                                EmAmountText(
+                                    amount = state.projectedToAccountBalance.amountString ?: "",
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
 

@@ -354,6 +354,7 @@ private fun TransactionGroupCard(
                     toAccountName = item.toAccountName,
                     toAccountIcon = item.toAccountIcon?.name,
                     toAccountColor = item.toAccountIcon?.backgroundColor,
+                    closingBalance = item.closingBalance,
                     onClick = {
                         onItemClick?.invoke(item)
                     },

@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.transaction.list
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtActivityUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -20,6 +21,7 @@ import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_ACCOUNT
 import com.naveenapps.expensemanager.core.testing.FAKE_CATEGORY
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
+import java.util.Date
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -204,5 +206,57 @@ class TransactionListViewModelTest : BaseCoroutineTest() {
 
         verify(imageStorageRepository).deleteTransactionAttachment("receipt.jpg")
         verify(addTransactionUseCase, never()).invoke(any())
+    }
+
+    @Test
+    fun `calculates closing balance for each transaction chronologically`() = runTest {
+        val account = FAKE_ACCOUNT.copy(amount = 70.0)
+        val allAccountsUseCase: GetAllAccountsUseCase = mock()
+        whenever(allAccountsUseCase.invoke()).thenReturn(flowOf(listOf(account)))
+        whenever(getCurrencyUseCase.invoke()).thenReturn(flowOf(Currency("$", "USD")))
+        whenever(getFormattedAmountUseCase.invoke(any(), any())).thenAnswer { invocation ->
+            val amt = invocation.getArgument<Double>(0)
+            Amount(amt, "$$amt")
+        }
+
+        val date1 = Date(1000)
+        val date2 = Date(2000)
+        val t1 = groceries.copy(id = "t1", amount = Amount(50.0), createdOn = date1)
+        val t2 = rent.copy(id = "t2", amount = Amount(30.0), createdOn = date2)
+
+        whenever(getTransactionWithFilterUseCase.invoke()).thenReturn(flowOf(listOf(t1, t2)))
+        whenever(getTransactionWithFilterUseCase.allTime()).thenReturn(flowOf(listOf(t1, t2)))
+
+        val vm = TransactionListViewModel(
+            getCurrencyUseCase = getCurrencyUseCase,
+            getFormattedAmountUseCase = getFormattedAmountUseCase,
+            getTransactionWithFilterUseCase = getTransactionWithFilterUseCase,
+            appCoroutineDispatchers = AppCoroutineDispatchers(
+                testCoroutineDispatcher.dispatcher,
+                testCoroutineDispatcher.dispatcher,
+                testCoroutineDispatcher.dispatcher,
+            ),
+            appComposeNavigator = navigator,
+            deleteTransactionUseCase = deleteTransactionUseCase,
+            addTransactionUseCase = addTransactionUseCase,
+            imageStorageRepository = imageStorageRepository,
+            analyticsRepository = mock(),
+            getDebtActivityUseCase = mock<GetDebtActivityUseCase>().also {
+                whenever(it.invoke(any())).thenReturn(flowOf(emptyList()))
+            },
+            getAllAccountsUseCase = allAccountsUseCase,
+        )
+        advanceUntilIdle()
+
+        val items = vm.state.value.transactionListItem
+            .filterIsInstance<TransactionListItem.TransactionItem>()
+            .map { it.date }
+        val t2Item = items.find { it.id == "t2" }
+        val t1Item = items.find { it.id == "t1" }
+
+        // Latest transaction t2 should have closing balance 70.0 (current balance)
+        assertThat(t2Item?.closingBalance).isEqualTo(Amount(70.0, "$70.0"))
+        // Earlier transaction t1 should have closing balance 70.0 - (-30.0) = 100.0
+        assertThat(t1Item?.closingBalance).isEqualTo(Amount(100.0, "$100.0"))
     }
 }

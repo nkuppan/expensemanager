@@ -840,5 +840,30 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         verify(sharedReceiptRepository, never()).take()
     }
 
+    @Test
+    fun `projected closing balance updates on amount and account change`() = runTest {
+        whenever(numberFormatRepository.parseToDouble("50.00")).thenReturn(50.0)
+        whenever(numberFormatRepository.formatForEditing(50.0)).thenReturn("50.00")
+        whenever(getFormattedAmountUseCase.invoke(950.0, fakeCurrency)).thenReturn(Amount(950.0, "$950.00"))
+
+        val rawAccount = Account(
+            id = fakeFromAccount.id,
+            name = fakeFromAccount.name,
+            type = AccountType.REGULAR,
+            storedIcon = fakeFromAccount.storedIcon,
+            createdOn = Date(),
+            updatedOn = Date(),
+            amount = 1000.0,
+        )
+        whenever(getAllAccountsUseCase.invoke()).thenReturn(flowOf(listOf(rawAccount)))
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.state.value.amount.onValueChange?.invoke("50.00")
+        advanceUntilIdle()
+
+        assertThat(viewModel.state.value.projectedFromAccountBalance).isEqualTo(Amount(950.0, "$950.00"))
+    }
+
     // endregion
 }
