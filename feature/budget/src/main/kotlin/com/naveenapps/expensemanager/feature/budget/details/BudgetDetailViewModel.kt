@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.budget.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetDetailUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -12,7 +13,7 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.budget.components.BudgetProgress
 import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
-import java.time.LocalDate
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -42,7 +43,7 @@ class BudgetDetailViewModel(
         savedStateHandle.get<String>(ExpenseManagerArgsNames.ID)?.let { id ->
             combine(getBudgetDetailUseCase.invoke(id), getCurrencyUseCase.invoke()) { budget, currency ->
                 val progress = budget?.toBudgetProgress(
-                    today = LocalDate.now(),
+                    today = Clock.System.now().toLocalDateIn(),
                     format = { value -> getFormattedAmountUseCase(value, currency).amountString.orEmpty() },
                 )
                 _state.update { state ->

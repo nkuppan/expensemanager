@@ -6,7 +6,7 @@ import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.RecurringTransactionDao
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
-import java.util.Date
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
@@ -18,7 +18,7 @@ class RecurringTransactionRepositoryImpl(
 
     override fun getAll(): Flow<List<RecurringTransaction>> = dao.getAll().map { entities -> entities.mapNotNull { it.toDomainModel() } }
 
-    override suspend fun getDue(dueBefore: Date): List<RecurringTransaction> = withContext(dispatchers.io) {
+    override suspend fun getDue(dueBefore: Instant): List<RecurringTransaction> = withContext(dispatchers.io) {
         dao.getDue(dueBefore).mapNotNull { it.toDomainModel() }
     }
 
@@ -39,7 +39,7 @@ class RecurringTransactionRepositoryImpl(
         dao.deleteById(id)
     }
 
-    override suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Date, updatedOn: Date) = withContext(dispatchers.io) {
+    override suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Instant, updatedOn: Instant) = withContext(dispatchers.io) {
         dao.advance(id, nextOccurrence, nextDueDate, updatedOn)
     }
 

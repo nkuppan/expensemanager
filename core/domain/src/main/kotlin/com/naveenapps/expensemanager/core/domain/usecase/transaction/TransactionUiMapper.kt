@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.common.utils.toDayKey
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
@@ -16,7 +17,7 @@ fun Transaction.toTransactionUIModel(amount: Amount): TransactionUiItem = Transa
     this.category.name,
     this.type,
     categoryIcon = this.category.storedIcon,
-    date = this.createdOn.toCompleteDateWithDate(),
+    date = this.createdOn.toLocalDateIn().toDayKey(),
     fromAccountName = this.fromAccount.name,
     fromAccountIcon = this.fromAccount.storedIcon,
     toAccountName = this.toAccount?.name,

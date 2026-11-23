@@ -28,8 +28,8 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
-import java.util.Calendar
 import java.util.UUID
+import kotlin.time.Clock
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -263,8 +263,8 @@ class AccountCreateViewModel(
             } else {
                 0.0
             },
-            createdOn = account?.createdOn ?: Calendar.getInstance().time,
-            updatedOn = Calendar.getInstance().time,
+            createdOn = account?.createdOn ?: Clock.System.now(),
+            updatedOn = Clock.System.now(),
             sequence = account?.sequence ?: Int.MAX_VALUE,
         )
 

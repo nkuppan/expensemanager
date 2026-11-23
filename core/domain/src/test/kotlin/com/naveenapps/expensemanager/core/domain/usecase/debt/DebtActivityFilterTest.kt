@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.model.DebtEntry
 import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
+import kotlin.time.Instant
 import org.junit.Test
 
 class DebtActivityFilterTest {
@@ -15,11 +15,11 @@ class DebtActivityFilterTest {
         kind = DebtEntryKind.LENT,
         amountMilli = 1_000,
         accountId = accountId,
-        date = Date(date),
+        date = Instant.fromEpochMilliseconds(date),
         dueDate = null,
         note = "",
-        createdOn = Date(date),
-        updatedOn = Date(date),
+        createdOn = Instant.fromEpochMilliseconds(date),
+        updatedOn = Instant.fromEpochMilliseconds(date),
     )
 
     private val entries = listOf(

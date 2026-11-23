@@ -40,7 +40,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.utils.getIncomeColor
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
-import java.util.Date
+import kotlin.time.Clock
 
 /**
  * The categories whose spending moved most since the previous period (income and expense
@@ -150,8 +150,8 @@ private fun PeriodComparisonCardPreview() {
         name = "Food",
         type = CategoryType.EXPENSE,
         storedIcon = StoredIcon(name = "restaurant", backgroundColor = "#F44336"),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     )
     ExpenseManagerPreviewTheme(padding = 16.dp) {
         PeriodComparisonCard(

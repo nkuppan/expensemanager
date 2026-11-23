@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.naveenapps.expensemanager.core.model.CategoryType
-import java.util.Date
+import kotlin.time.Instant
 
 @Entity(tableName = "category")
 data class CategoryEntity(
@@ -20,9 +20,9 @@ data class CategoryEntity(
     @ColumnInfo(name = "icon_name")
     val iconName: String,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date,
+    val updatedOn: Instant,
     @ColumnInfo(name = "created_on")
-    val createdOn: Date,
+    val createdOn: Instant,
     @ColumnInfo(name = "default_category_key", defaultValue = "NULL")
     val defaultCategoryKey: String? = null,
     @ColumnInfo(name = "custom_image_path", defaultValue = "NULL")

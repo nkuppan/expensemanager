@@ -9,7 +9,7 @@ import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
+import kotlin.time.Clock
 import org.junit.Test
 
 class RecurringSearchTest {
@@ -24,26 +24,26 @@ class RecurringSearchTest {
             type = TransactionType.EXPENSE,
             amount = 1200.0,
             frequency = RecurringFrequency.MONTHLY,
-            startDate = Date(),
+            startDate = Clock.System.now(),
             nextOccurrence = 1,
-            nextDueDate = Date(),
-            createdOn = Date(),
-            updatedOn = Date(),
+            nextDueDate = Clock.System.now(),
+            createdOn = Clock.System.now(),
+            updatedOn = Clock.System.now(),
             category = Category(
                 id = "c",
                 name = "Entertainment",
                 type = CategoryType.EXPENSE,
                 storedIcon = StoredIcon(name = "ic", backgroundColor = "#000000"),
-                createdOn = Date(),
-                updatedOn = Date(),
+                createdOn = Clock.System.now(),
+                updatedOn = Clock.System.now(),
             ),
             fromAccount = Account(
                 id = "a",
                 name = "Credit Card",
                 type = AccountType.CREDIT,
                 storedIcon = StoredIcon(name = "ic", backgroundColor = "#000000"),
-                createdOn = Date(),
-                updatedOn = Date(),
+                createdOn = Clock.System.now(),
+                updatedOn = Clock.System.now(),
             ),
         ),
         amount = "$1,200.00",

@@ -18,7 +18,6 @@ import java.io.File
 import java.io.IOException
 import java.security.GeneralSecurityException
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import kotlin.coroutines.cancellation.CancellationException
 import kotlinx.coroutines.withContext
@@ -41,7 +40,7 @@ class BackupRepositoryImpl(
 ) : BackupRepository {
 
     override fun backupFileName(): String {
-        val stamp = SimpleDateFormat("yyyy-MM-dd-HHmmss", Locale.US).format(Date())
+        val stamp = SimpleDateFormat("yyyy-MM-dd-HHmmss", Locale.US).format(System.currentTimeMillis())
         return "expense-manager-$stamp.$BACKUP_EXTENSION"
     }
 

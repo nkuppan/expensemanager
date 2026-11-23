@@ -51,7 +51,7 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItem
 import com.naveenapps.expensemanager.feature.category.selection.CategoryItemDefaults
-import java.util.Date
+import kotlin.time.Clock
 import org.koin.compose.viewmodel.koinViewModel
 
 enum class CategoryTabItems(
@@ -210,8 +210,8 @@ fun getCategoryData(
         "account_balance",
         "#000000",
     ),
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 fun getRandomCategoryData(totalCount: Int = 10): List<Category> = buildList {

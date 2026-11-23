@@ -10,8 +10,8 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
+import kotlin.time.Clock
 
 val FAKE_CATEGORY = Category(
     id = "1",
@@ -21,8 +21,8 @@ val FAKE_CATEGORY = Category(
         name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_SECOND_CATEGORY = Category(
@@ -33,8 +33,8 @@ val FAKE_SECOND_CATEGORY = Category(
         name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_FAVORITE_CATEGORY = Category(
@@ -45,8 +45,8 @@ val FAKE_FAVORITE_CATEGORY = Category(
         name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_ACCOUNT = Account(
@@ -57,8 +57,8 @@ val FAKE_ACCOUNT = Account(
         name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_SECOND_ACCOUNT = Account(
@@ -69,8 +69,8 @@ val FAKE_SECOND_ACCOUNT = Account(
         name = "account_balance",
         backgroundColor = "#FFFFFF",
     ),
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_EXPENSE_TRANSACTION = Transaction(
@@ -82,8 +82,8 @@ val FAKE_EXPENSE_TRANSACTION = Transaction(
     type = TransactionType.EXPENSE,
     amount = Amount(200.0),
     imagePath = "",
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_INCOME_TRANSACTION = Transaction(
@@ -95,8 +95,8 @@ val FAKE_INCOME_TRANSACTION = Transaction(
     type = TransactionType.INCOME,
     amount = Amount(200.0),
     imagePath = "",
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_TRANSFER_TRANSACTION = Transaction(
@@ -108,8 +108,8 @@ val FAKE_TRANSFER_TRANSACTION = Transaction(
     type = TransactionType.INCOME,
     amount = Amount(200.0),
     imagePath = "",
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 val FAKE_BUDGET = Budget(
@@ -117,11 +117,11 @@ val FAKE_BUDGET = Budget(
     amount = 5000.0,
     // Matches the fixed-locale key format used by Date.toMonthAndYearKey() / String.fromMonthAndYearKey()
     // so this fixture stays parseable regardless of the test JVM's default locale.
-    selectedMonth = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).format(Date()),
+    selectedMonth = SimpleDateFormat("MMMM yyyy", Locale.ENGLISH).format(System.currentTimeMillis()),
     accounts = emptyList(),
     categories = emptyList(),
     isAllAccountsSelected = true,
     isAllCategoriesSelected = true,
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )

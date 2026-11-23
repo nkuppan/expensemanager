@@ -33,7 +33,7 @@ class TransactionRepositoryImpl(
 
     override suspend fun findTransactionById(transactionId: String): Resource<Transaction> = withContext(dispatchers.io) {
         return@withContext try {
-            val transaction = transactionDao.findById(transactionId)
+            val transaction = transactionDao.findEntityById(transactionId)
 
             if (transaction != null) {
                 Resource.Success(convertTransactionCategoryRelation(transaction))

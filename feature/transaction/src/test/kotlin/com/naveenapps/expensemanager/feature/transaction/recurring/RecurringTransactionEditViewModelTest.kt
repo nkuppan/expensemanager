@@ -31,7 +31,8 @@ import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.recurring.edit.RecurringTransactionEditAction
 import com.naveenapps.expensemanager.feature.transaction.recurring.edit.RecurringTransactionEditEvent
 import com.naveenapps.expensemanager.feature.transaction.recurring.edit.RecurringTransactionEditViewModel
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -60,7 +61,7 @@ class RecurringTransactionEditViewModelTest : BaseCoroutineTest() {
     private val analyticsRepository: AnalyticsRepository = mock()
 
     private val currency = Currency(symbol = "$", name = "USD")
-    private val nextDue = Date(1_800_000_000_000)
+    private val nextDue = Instant.fromEpochMilliseconds(1_800_000_000_000)
 
     private val rule = RecurringTransaction(
         id = "rule-1",
@@ -71,11 +72,11 @@ class RecurringTransactionEditViewModelTest : BaseCoroutineTest() {
         type = TransactionType.EXPENSE,
         amount = 1000.0,
         frequency = RecurringFrequency.MONTHLY,
-        startDate = Date(1_790_000_000_000),
+        startDate = Instant.fromEpochMilliseconds(1_790_000_000_000),
         nextOccurrence = 1,
         nextDueDate = nextDue,
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     )
 
     private val rentCategory = Category(
@@ -83,8 +84,8 @@ class RecurringTransactionEditViewModelTest : BaseCoroutineTest() {
         name = "Rent",
         type = CategoryType.EXPENSE,
         storedIcon = StoredIcon(name = "ic_home", backgroundColor = "#000000"),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     )
 
     private val bank = Account(
@@ -92,8 +93,8 @@ class RecurringTransactionEditViewModelTest : BaseCoroutineTest() {
         name = "Bank",
         type = AccountType.REGULAR,
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     )
 
     override fun onCreate() {

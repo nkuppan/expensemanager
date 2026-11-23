@@ -6,7 +6,8 @@ import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.create.AccountSelection
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 data class RecurringTransactionEditState(
     /** False until the rule and the account/category lists have loaded. */
@@ -16,7 +17,7 @@ data class RecurringTransactionEditState(
     /** Fixed once a rule exists: changing it would change which accounts are required. */
     val transactionType: TransactionType = TransactionType.EXPENSE,
     val frequency: RecurringFrequency = RecurringFrequency.MONTHLY,
-    val nextDueDate: Date = Date(),
+    val nextDueDate: Instant = Clock.System.now(),
     /** True when frequency or next date differ from the saved rule (saving starts a new series). */
     val isScheduleChanged: Boolean = false,
     val categories: List<Category> = emptyList(),

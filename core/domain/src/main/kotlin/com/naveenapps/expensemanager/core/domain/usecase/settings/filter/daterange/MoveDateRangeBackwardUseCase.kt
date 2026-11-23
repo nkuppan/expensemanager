@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange
 
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
@@ -19,10 +18,7 @@ class MoveDateRangeBackwardUseCase(
         startTime = startTime.minusRespectiveFrame(type)
         endTime = endTime.minusRespectiveFrame(type)
         dateRangeFilterRepository.setDateRanges(
-            listOf(
-                startTime.toEpochMilliseconds().toCompleteDate(),
-                endTime.toEpochMilliseconds().toCompleteDate(),
-            ),
+            listOf(startTime, endTime),
         )
         return Resource.Success(true)
     }

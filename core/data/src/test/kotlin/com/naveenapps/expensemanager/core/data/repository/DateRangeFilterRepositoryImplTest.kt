@@ -16,7 +16,7 @@ import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
-import java.util.Date
+import kotlin.time.Clock
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -88,16 +88,16 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
             val dateRanges = awaitItem()
             Truth.assertThat(dateRanges).isNull()
 
-            val startDate = Date()
-            val endDate = Date()
+            val startDate = Clock.System.now()
+            val endDate = Clock.System.now()
             val dateRangesValues = listOf(startDate, endDate)
             repository.setDateRanges(dateRangesValues)
 
             val updatedRanges = awaitItem()
             Truth.assertThat(updatedRanges).isNotEmpty()
             Truth.assertThat(updatedRanges).hasSize(2)
-            Truth.assertThat(updatedRanges?.get(0)).isEqualTo(startDate.time)
-            Truth.assertThat(updatedRanges?.get(1)).isEqualTo(endDate.time)
+            Truth.assertThat(updatedRanges?.get(0)).isEqualTo(startDate.toEpochMilliseconds())
+            Truth.assertThat(updatedRanges?.get(1)).isEqualTo(endDate.toEpochMilliseconds())
         }
     }
 

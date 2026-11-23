@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.model
 
 import androidx.compose.runtime.Stable
-import java.util.Date
+import kotlin.time.Instant
 
 @Stable
 data class Category(
@@ -9,8 +9,8 @@ data class Category(
     val name: String,
     val type: CategoryType,
     val storedIcon: StoredIcon,
-    val createdOn: Date,
-    val updatedOn: Date,
+    val createdOn: Instant,
+    val updatedOn: Instant,
     /**
      * Stable key of a built-in category seeded by the app ("food", "salary", ...), as stored in the
      * `default_category_key` column. When set, show the category with `displayName()` (Compose) or

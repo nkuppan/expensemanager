@@ -37,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.naveenapps.expensemanager.core.common.utils.withTime
 import com.naveenapps.expensemanager.core.designsystem.em.EmButton
 import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
@@ -48,7 +49,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.tint
-import java.util.Calendar
+import kotlin.time.Clock
 
 /**
  * "Daily reminders are off" on Home: a second, gentle chance for users who skipped or denied the
@@ -198,11 +199,8 @@ private fun HomeReminderBanner(
 
 /** "9:00 PM" or "21:00", following the phone's 12/24-hour setting. */
 private fun Context.formatReminderTime(hour: Int, minute: Int): String {
-    val calendar = Calendar.getInstance().apply {
-        set(Calendar.HOUR_OF_DAY, hour)
-        set(Calendar.MINUTE, minute)
-    }
-    return DateFormat.getTimeFormat(this).format(calendar.time)
+    val todayAt = Clock.System.now().withTime(hour, minute)
+    return DateFormat.getTimeFormat(this).format(todayAt.toEpochMilliseconds())
 }
 
 /** True when the app may post notifications (always below Android 13). */

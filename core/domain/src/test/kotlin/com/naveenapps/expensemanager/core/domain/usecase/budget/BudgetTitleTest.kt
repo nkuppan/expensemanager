@@ -1,20 +1,23 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
 import com.google.common.truth.Truth.assertThat
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.BudgetTitle
-import java.util.Calendar
-import java.util.Date
+import kotlin.time.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import org.junit.Test
 
 class BudgetTitleTest {
 
-    private val now: Date = Calendar.getInstance().apply { set(2026, Calendar.OCTOBER, 15, 12, 0, 0) }.time
-    private val thisMonth = now.toMonthAndYearKey()
-    private val thisYear = now.toYear()
+    private val now: Instant = LocalDateTime(2026, 10, 15, 12, 0).toInstant(TimeZone.currentSystemDefault())
+    private val thisMonth = now.toLocalDateIn().toMonthAndYearKey()
+    private val thisYear = now.toLocalDateIn().toYearKey()
 
     @Test
     fun `a given name is shown as is, trimmed`() {
@@ -33,7 +36,7 @@ class BudgetTitleTest {
         val march = "March 2026"
 
         assertThat(budgetTitle(null, march, BudgetPeriod.MONTHLY, now))
-            .isEqualTo(BudgetTitle.Month(march.fromMonthAndYearKey()!!))
+            .isEqualTo(BudgetTitle.Month(LocalDate(2026, 3, 1)))
         assertThat(budgetTitle(null, "2025", BudgetPeriod.YEARLY, now)).isEqualTo(BudgetTitle.Period("2025"))
     }
 

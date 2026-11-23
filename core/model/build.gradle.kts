@@ -9,7 +9,8 @@ android {
 
 dependencies {
     implementation(libs.kotlinx.serialization.json)
-    implementation(libs.kotlinx.datetime)
+    // api: model classes expose kotlinx-datetime types (LocalDate, ...) to every consumer.
+    api(libs.kotlinx.datetime)
     implementation(libs.androidx.compose.runtime.annotation)
 
     // JvmApiInSharedLayer: keeps this module free of JVM/Android-only APIs ahead of KMP.

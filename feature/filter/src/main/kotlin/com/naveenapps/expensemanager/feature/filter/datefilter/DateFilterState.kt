@@ -4,13 +4,13 @@ import androidx.compose.runtime.Stable
 import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
-import java.util.Date
+import kotlin.time.Instant
 
 @Stable
 data class DateFilterState(
     val dateRangeType: TextFieldValue<DateRangeType>,
-    val fromDate: TextFieldValue<Date>,
-    val toDate: TextFieldValue<Date>,
+    val fromDate: TextFieldValue<Instant>,
+    val toDate: TextFieldValue<Instant>,
     val dateRangeTypeList: List<DateRangeModel>,
     val showCustomRangeSelection: Boolean,
     val showDateFilter: Boolean,

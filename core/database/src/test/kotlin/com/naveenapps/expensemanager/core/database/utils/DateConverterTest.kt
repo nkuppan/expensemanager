@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.database.utils
 
-import java.util.Date
 import java.util.TimeZone
+import kotlin.time.Instant
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -37,9 +37,9 @@ class DateConverterTest {
 
     private fun inZone(zoneId: String) = TimeZone.setDefault(TimeZone.getTimeZone(zoneId))
 
-    private fun store(epochMillis: Long): Long? = DateConverter.dateToTimestamp(Date(epochMillis))
+    private fun store(epochMillis: Long): Long? = DateConverter.dateToTimestamp(Instant.fromEpochMilliseconds(epochMillis))
 
-    private fun read(stored: Long): Long? = DateConverter.fromTimestamp(stored)?.time
+    private fun read(stored: Long): Long? = DateConverter.fromTimestamp(stored)?.toEpochMilliseconds()
 
     // --- writing: local wall-clock time, labelled UTC -------------------------------------------
 

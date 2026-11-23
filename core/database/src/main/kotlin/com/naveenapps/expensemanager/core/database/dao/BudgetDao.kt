@@ -9,8 +9,8 @@ import androidx.room.Update
 import com.naveenapps.expensemanager.core.database.entity.BudgetAccountEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetCategoryEntity
 import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -64,8 +64,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                             id = UUID.randomUUID().toString(),
                             budgetId = budgetEntity.id,
                             categoryId = categoryId,
-                            createdOn = Date(),
-                            updatedOn = Date(),
+                            createdOn = Clock.System.now(),
+                            updatedOn = Clock.System.now(),
                         ),
                     )
                 }
@@ -77,8 +77,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                             id = UUID.randomUUID().toString(),
                             budgetId = budgetEntity.id,
                             accountId = accountId,
-                            createdOn = Date(),
-                            updatedOn = Date(),
+                            createdOn = Clock.System.now(),
+                            updatedOn = Clock.System.now(),
                         ),
                     )
                 }
@@ -105,8 +105,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                         id = UUID.randomUUID().toString(),
                         budgetId = budgetEntity.id,
                         categoryId = categoryId,
-                        createdOn = Date(),
-                        updatedOn = Date(),
+                        createdOn = Clock.System.now(),
+                        updatedOn = Clock.System.now(),
                     ),
                 )
             }
@@ -118,8 +118,8 @@ interface BudgetDao : BaseDao<BudgetEntity> {
                         id = UUID.randomUUID().toString(),
                         budgetId = budgetEntity.id,
                         accountId = accountId,
-                        createdOn = Date(),
-                        updatedOn = Date(),
+                        createdOn = Clock.System.now(),
+                        updatedOn = Clock.System.now(),
                     ),
                 )
             }

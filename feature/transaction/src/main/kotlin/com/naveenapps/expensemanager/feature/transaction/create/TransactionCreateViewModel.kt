@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.transaction.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.hourAndMinute
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
@@ -56,10 +57,8 @@ import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.ReceiptTextReader
-import java.time.LocalTime
-import java.util.Calendar
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -144,7 +143,7 @@ class TransactionCreateViewModel(
                 valueError = false,
                 onValueChange = this::setNotes,
             ),
-            dateTime = Date(),
+            dateTime = Clock.System.now(),
             transactionType = TransactionType.EXPENSE,
             currency = getDefaultCurrencyUseCase.invoke(),
             selectedCategory = defaultCategory,
@@ -572,7 +571,7 @@ class TransactionCreateViewModel(
         amount = Amount(amountValue),
         imagePath = "",
         createdOn = state.dateTime,
-        updatedOn = Calendar.getInstance().time,
+        updatedOn = Clock.System.now(),
         attachments = state.attachments,
     )
 
@@ -672,7 +671,7 @@ class TransactionCreateViewModel(
         }
         // When the user logs (the save time, not the transaction's date): Home's reminders
         // banner suggests a reminder time from it.
-        feedbackRepository.recordSaveTime(LocalTime.now().let { it.hour * 60 + it.minute })
+        feedbackRepository.recordSaveTime(Clock.System.now().hourAndMinute().let { (hour, minute) -> hour * 60 + minute })
         analyticsRepository.logEvent(
             AnalyticsEvents.TRANSACTION_CREATED,
             mapOf(
@@ -809,7 +808,7 @@ class TransactionCreateViewModel(
         return amount != originalAmount ||
             state.notes.value != original.notes ||
             state.transactionType != original.type ||
-            state.dateTime.time != original.createdOn.time ||
+            state.dateTime.toEpochMilliseconds() != original.createdOn.toEpochMilliseconds() ||
             state.selectedCategory.id != original.category.id ||
             state.selectedFromAccount.id != original.fromAccount.id ||
             toAccountChanged ||
@@ -1080,8 +1079,8 @@ class TransactionCreateViewModel(
                 name = "ic_calendar",
                 backgroundColor = "#000000",
             ),
-            createdOn = Date(),
-            updatedOn = Date(),
+            createdOn = Clock.System.now(),
+            updatedOn = Clock.System.now(),
         )
 
         private val defaultAccount = AccountUiModel(

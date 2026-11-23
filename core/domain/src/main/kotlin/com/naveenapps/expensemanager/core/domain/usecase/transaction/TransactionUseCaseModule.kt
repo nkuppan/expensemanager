@@ -53,6 +53,7 @@ val TransactionUseCaseModule = module {
             getFormattedAmountUseCase = get(),
             getTransactionWithFilterUseCase = get(),
             getDateRangeUseCase = get(),
+            calendarWeeksRepository = get(),
             dispatcher = get(),
         )
     }

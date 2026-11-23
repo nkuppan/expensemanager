@@ -5,6 +5,7 @@ import com.naveenapps.expensemanager.core.data.repository.AnalyticsRepositoryImp
 import com.naveenapps.expensemanager.core.data.repository.AutoBackupRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.BackupRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.BudgetRepositoryImpl
+import com.naveenapps.expensemanager.core.data.repository.CalendarWeeksRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CategoryRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CountryRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.CurrencyRepositoryImpl
@@ -32,6 +33,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
+import com.naveenapps.expensemanager.core.repository.CalendarWeeksRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.CountryRepository
 import com.naveenapps.expensemanager.core.repository.CurrencyRepository
@@ -57,6 +59,7 @@ import org.koin.dsl.module
 
 val RepositoryModule = module {
     single<DebtRepository> { DebtRepositoryImpl(dao = get(), dispatchers = get()) }
+    single<CalendarWeeksRepository> { CalendarWeeksRepositoryImpl() }
     single<RecurringTransactionRepository> {
         RecurringTransactionRepositoryImpl(
             dao = get(),

@@ -81,6 +81,6 @@ fun filterDebtActivity(entries: List<DebtEntry>, filter: DebtActivityFilter): Li
     return entries.filter { entry ->
         val accountId = entry.accountId ?: return@filter false
         (filter.accounts.isEmpty() || accountId in filter.accounts) &&
-            (filter.range == null || entry.date.time in filter.range)
+            (filter.range == null || entry.date.toEpochMilliseconds() in filter.range)
     }
 }

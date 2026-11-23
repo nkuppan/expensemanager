@@ -4,7 +4,7 @@ import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.Resource
-import java.util.Date
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 
 interface DateRangeFilterRepository {
@@ -21,7 +21,8 @@ interface DateRangeFilterRepository {
 
     suspend fun getDateRangeFilterTypeString(dateRangeType: DateRangeType): DateRangeModel
 
-    suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean>
+    /** Stores a custom range: [start, end] as instants (persisted as epoch milliseconds). */
+    suspend fun setDateRanges(dateRanges: List<Instant>): Resource<Boolean>
 
     suspend fun getTransactionGroupType(dateRangeType: DateRangeType): GroupType
 }

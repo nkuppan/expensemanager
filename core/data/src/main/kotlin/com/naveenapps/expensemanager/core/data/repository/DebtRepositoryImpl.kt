@@ -56,9 +56,19 @@ class DebtRepositoryImpl(
     }
 }
 
-internal fun DebtPersonEntity.toDomain() = DebtPerson(id = id, name = name, createdOn = createdOn, updatedOn = updatedOn)
+internal fun DebtPersonEntity.toDomain() = DebtPerson(
+    id = id,
+    name = name,
+    createdOn = createdOn,
+    updatedOn = updatedOn,
+)
 
-internal fun DebtPerson.toEntity() = DebtPersonEntity(id = id, name = name, createdOn = createdOn, updatedOn = updatedOn)
+internal fun DebtPerson.toEntity() = DebtPersonEntity(
+    id = id,
+    name = name,
+    createdOn = createdOn,
+    updatedOn = updatedOn,
+)
 
 /** Null for a kind this version doesn't know (a backup from a newer app); it's skipped. */
 internal fun DebtEntryEntity.toDomain(): DebtEntry? {

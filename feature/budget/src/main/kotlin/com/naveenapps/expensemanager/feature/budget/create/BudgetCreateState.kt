@@ -6,7 +6,7 @@ import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
-import java.util.Date
+import kotlin.time.Instant
 
 @Stable
 data class BudgetCreateState(
@@ -14,7 +14,7 @@ data class BudgetCreateState(
     /** Optional; empty shows the automatic name, which the field offers as its hint. */
     val name: TextFieldValue<String> = TextFieldValue(value = "", onValueChange = null),
     val amount: TextFieldValue<String>,
-    val month: TextFieldValue<Date>,
+    val month: TextFieldValue<Instant>,
     val periodType: BudgetPeriod = BudgetPeriod.MONTHLY,
     val isAllAccountSelected: Boolean,
     val selectedAccounts: List<AccountUiModel>,

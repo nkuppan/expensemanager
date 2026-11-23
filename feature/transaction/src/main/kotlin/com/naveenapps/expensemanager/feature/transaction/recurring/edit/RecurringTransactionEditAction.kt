@@ -4,7 +4,7 @@ import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.feature.transaction.create.AccountSelection
-import java.util.Date
+import kotlin.time.Instant
 
 sealed class RecurringTransactionEditAction {
 
@@ -35,7 +35,7 @@ sealed class RecurringTransactionEditAction {
 
     data object DismissDateSelection : RecurringTransactionEditAction()
 
-    data class SelectDate(val date: Date) : RecurringTransactionEditAction()
+    data class SelectDate(val date: Instant) : RecurringTransactionEditAction()
 
     data class SelectTime(val hour: Int, val minute: Int) : RecurringTransactionEditAction()
 

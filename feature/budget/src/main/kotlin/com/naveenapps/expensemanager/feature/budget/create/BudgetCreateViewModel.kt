@@ -3,10 +3,10 @@ package com.naveenapps.expensemanager.feature.budget.create
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.fromYear
+import com.naveenapps.expensemanager.core.common.utils.monthAndYearKeyToLocalDate
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.common.utils.toYearKey
+import com.naveenapps.expensemanager.core.common.utils.yearKeyToLocalDate
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.FindAccountByIdUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
@@ -31,9 +31,9 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
-import java.util.Calendar
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,6 +42,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 
 class BudgetCreateViewModel(
     savedStateHandle: SavedStateHandle,
@@ -72,7 +74,7 @@ class BudgetCreateViewModel(
                 onValueChange = this::setAmountChange,
             ),
             month = TextFieldValue(
-                value = Date(),
+                value = Clock.System.now(),
                 valueError = false,
                 onValueChange = this::setDateChange,
             ),
@@ -136,10 +138,10 @@ class BudgetCreateViewModel(
         }.filterNotNull()
 
         val loadedDate = if (budget.periodType == BudgetPeriod.YEARLY) {
-            budget.selectedMonth.fromYear()
+            budget.selectedMonth.yearKeyToLocalDate()
         } else {
-            budget.selectedMonth.fromMonthAndYearKey()
-        } ?: Date()
+            budget.selectedMonth.monthAndYearKeyToLocalDate()
+        }?.atStartOfDayIn(TimeZone.currentSystemDefault()) ?: Clock.System.now()
 
         _state.update { state ->
             state.copy(
@@ -196,7 +198,7 @@ class BudgetCreateViewModel(
     }
 
     private fun saveOrUpdateBudget() {
-        val date: Date = _state.value.month.value
+        val date: Instant = _state.value.month.value
         val amount: Double? = numberFormatRepository.parseToDouble(_state.value.amount.value)
 
         var isError = false
@@ -220,7 +222,7 @@ class BudgetCreateViewModel(
             name = _state.value.name.value.trim().ifEmpty { null },
             amount = amount ?: 0.0,
             selectedMonth = if (periodType == BudgetPeriod.YEARLY) {
-                date.toYear()
+                date.toYearKey()
             } else {
                 date.toMonthAndYearKey()
             },
@@ -230,8 +232,8 @@ class BudgetCreateViewModel(
             isAllCategoriesSelected = _state.value.isAllCategorySelected,
             isAllAccountsSelected = _state.value.isAllAccountSelected,
             // Editing keeps the original creation date.
-            createdOn = this.budget?.createdOn ?: Calendar.getInstance().time,
-            updatedOn = Calendar.getInstance().time,
+            createdOn = this.budget?.createdOn ?: Clock.System.now(),
+            updatedOn = Clock.System.now(),
         )
 
         val isNewBudget = this@BudgetCreateViewModel.budget == null
@@ -281,7 +283,7 @@ class BudgetCreateViewModel(
         _state.update { it.copy(name = it.name.copy(value = name.take(MAX_NAME_LENGTH))) }
     }
 
-    private fun setDateChange(date: Date) {
+    private fun setDateChange(date: Instant) {
         _state.update {
             it.copy(
                 month = it.month.copy(value = date),

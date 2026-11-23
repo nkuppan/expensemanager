@@ -43,14 +43,13 @@ import com.naveenapps.expensemanager.core.model.BackupFile
 import com.naveenapps.expensemanager.core.model.BackupKind
 import com.naveenapps.expensemanager.feature.settings.R
 import java.text.DateFormat
-import java.util.Date
 
 /** "Oct 27, 2026, 10:02 AM" in the user's locale. */
 @Composable
 internal fun rememberBackupTimeFormatter(): (Long) -> String {
     val locale = LocalConfiguration.current.locales[0]
     val format = remember(locale) { DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, locale) }
-    return { millis -> format.format(Date(millis)) }
+    return { millis -> format.format(millis) }
 }
 
 /** A borderless rounded card, as used throughout the Backup and Restore pages. */

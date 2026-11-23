@@ -31,8 +31,8 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.feature.transaction.search.CategoryDisplayNames
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
-import java.util.Date
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.Channel
@@ -281,7 +281,7 @@ class TransactionListViewModel(
  * account names. A built-in category matches both by the name shown (displayName, e.g. its
  * Hindi label) and by its stored English name.
  * One row of the list: a transaction, or a debt entry shown beside them (transaction = null). */
-private data class ListRow(val date: Date, val transaction: Transaction?, val item: TransactionUiItem)
+private data class ListRow(val date: Instant, val transaction: Transaction?, val item: TransactionUiItem)
 
 /**
  * A debt entry as a list row. Money leaving the account (lent, paid back) shows like an expense,

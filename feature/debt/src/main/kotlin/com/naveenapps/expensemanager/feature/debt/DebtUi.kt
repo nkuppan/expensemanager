@@ -2,8 +2,11 @@ package com.naveenapps.expensemanager.feature.debt
 
 import androidx.annotation.StringRes
 import com.naveenapps.expensemanager.core.model.DebtEntryKind
-import java.util.Calendar
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
 
 /** Short label for an entry kind: "Lent", "Borrowed", "Got back", "Paid back". */
 @StringRes
@@ -31,14 +34,12 @@ fun debtStatusOf(balanceMilli: Long): DebtStatus = when {
 }
 
 /** True when [dueDate] is before the start of today. */
-fun isOverdue(dueDate: Date?, now: Date = Date()): Boolean {
+fun isOverdue(
+    dueDate: Instant?,
+    now: Instant = Clock.System.now(),
+    zone: TimeZone = TimeZone.currentSystemDefault(),
+): Boolean {
     dueDate ?: return false
-    val startOfToday = Calendar.getInstance().apply {
-        time = now
-        set(Calendar.HOUR_OF_DAY, 0)
-        set(Calendar.MINUTE, 0)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }.time
-    return dueDate.before(startOfToday)
+    val startOfToday = now.toLocalDateTime(zone).date.atStartOfDayIn(zone)
+    return dueDate < startOfToday
 }

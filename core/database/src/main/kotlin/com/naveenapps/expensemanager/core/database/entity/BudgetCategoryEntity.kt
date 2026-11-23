@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import java.util.Date
+import kotlin.time.Instant
 
 @Entity(
     tableName = "budget_category_relation",
@@ -34,7 +34,7 @@ data class BudgetCategoryEntity(
     @ColumnInfo(name = "category_id")
     val categoryId: String,
     @ColumnInfo(name = "created_on")
-    val createdOn: Date,
+    val createdOn: Instant,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date,
+    val updatedOn: Instant,
 )

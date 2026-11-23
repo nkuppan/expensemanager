@@ -1,19 +1,20 @@
 package com.naveenapps.expensemanager.core.domain.usecase.receipt
 
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneId
-import java.util.Date
-import java.util.Locale
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 
 /** What could be read from a shared payment receipt; any part may be missing. */
 data class ParsedReceipt(
     val amount: Double? = null,
     /** Who was paid (or who paid, for income): becomes the transaction's notes. */
     val payee: String? = null,
-    val date: Date? = null,
+    val date: Instant? = null,
     val type: TransactionType = TransactionType.EXPENSE,
     /** Last digits of the card or account it was paid from ("XXXX1234" → "1234"). */
     val accountDigits: List<String> = emptyList(),
@@ -27,9 +28,9 @@ data class ParsedReceipt(
  */
 object ReceiptParser {
 
-    fun parse(text: String, now: Date = Date(), zone: ZoneId = ZoneId.systemDefault()): ParsedReceipt {
+    fun parse(text: String, now: Instant = Clock.System.now(), zone: TimeZone = TimeZone.currentSystemDefault()): ParsedReceipt {
         val lines = text.lines().map { it.trim() }.filter { it.isNotEmpty() }
-        val lower = text.lowercase(Locale.ROOT)
+        val lower = text.lowercase()
         val type = if (INCOME_WORDS.any { it in lower } && OUTGOING_WORDS.none { it in lower }) {
             TransactionType.INCOME
         } else {
@@ -83,18 +84,18 @@ object ReceiptParser {
             CURRENCY_AMOUNT.findAll(line).filterNot { it.isNotTheAmount(line) }.map { line to it }.toList()
         }
         // 1. One on a line that says what it is ("Paid ₹250", "Rs 5,000 credited").
-        found.firstOrNull { (line, _) -> AMOUNT_HINTS.any { it in line.lowercase(Locale.ROOT) } }
+        found.firstOrNull { (line, _) -> AMOUNT_HINTS.any { it in line.lowercase() } }
             ?.second?.toAmount()?.let { return it }
         // 2. The first one anywhere.
         found.firstNotNullOfOrNull { (_, match) -> match.toAmount() }?.let { return it }
         // 3. A line that is just a number (screenshots where ₹ wasn't recognised).
         return lines
-            .filterNot { line -> NOT_THE_AMOUNT.any { it in line.lowercase(Locale.ROOT) } }
+            .filterNot { line -> NOT_THE_AMOUNT.any { it in line.lowercase() } }
             .firstNotNullOfOrNull { line -> BARE_AMOUNT.matchEntire(line)?.toAmount() }
     }
 
     private fun MatchResult.isNotTheAmount(line: String): Boolean {
-        val before = line.substring(maxOf(0, range.first - LOOK_BEHIND), range.first).lowercase(Locale.ROOT)
+        val before = line.substring(maxOf(0, range.first - LOOK_BEHIND), range.first).lowercase()
         return NOT_THE_AMOUNT.any { it in before }
     }
 
@@ -135,7 +136,7 @@ object ReceiptParser {
     private val NOT_A_TOTAL = listOf("sub total", "subtotal", "sub-total", "qty", "items", "tax", "saving", "discount")
 
     internal fun findBillTotal(lines: List<String>): Double? = lines
-        .filterNot { line -> NOT_A_TOTAL.any { it in line.lowercase(Locale.ROOT) } }
+        .filterNot { line -> NOT_A_TOTAL.any { it in line.lowercase() } }
         .mapNotNull { line -> TOTAL_LINE.find(line)?.toAmount() }
         .maxOrNull()
 
@@ -243,34 +244,34 @@ object ReceiptParser {
         RegexOption.IGNORE_CASE,
     )
 
-    internal fun findDate(text: String, now: Date, zone: ZoneId): Date? {
+    internal fun findDate(text: String, now: Instant, zone: TimeZone): Instant? {
         val dateTime = TEXT_DATE.find(text)?.let { match ->
             val (day, month, year) = match.destructured
-            val monthNumber = MONTHS.indexOf(month.lowercase(Locale.ROOT).take(3)) + 1
+            val monthNumber = MONTHS.indexOf(month.lowercase().take(3)) + 1
             build(year.toInt(), monthNumber, day.toInt(), match.groupValues)
         } ?: NUMERIC_DATE.find(text)?.let { match ->
             val (day, month, year) = match.destructured
             val fullYear = year.toInt().let { if (it < 100) 2000 + it else it }
             build(fullYear, month.toInt(), day.toInt(), match.groupValues)
         } ?: return null
-        val date = Date.from(dateTime.atZone(zone).toInstant())
+        val date = dateTime.toInstant(zone)
         // A receipt is never from the future; that's a misread.
-        return date.takeIf { !it.after(now) }
+        return date.takeIf { it <= now }
     }
 
     private fun build(year: Int, month: Int, day: Int, groups: List<String>): LocalDateTime? = runCatching {
         val hourText = groups[4]
         val time = if (hourText.isEmpty()) {
-            LocalTime.NOON
+            LocalTime(12, 0)
         } else {
             var hour = hourText.toInt()
             val minute = groups[5].toInt()
-            val meridiem = groups[6].lowercase(Locale.ROOT).replace(".", "")
+            val meridiem = groups[6].lowercase().replace(".", "")
             if (meridiem == "pm" && hour < 12) hour += 12
             if (meridiem == "am" && hour == 12) hour = 0
-            LocalTime.of(hour, minute)
+            LocalTime(hour, minute)
         }
-        LocalDateTime.of(LocalDate.of(year, month, day), time)
+        LocalDateTime(LocalDate(year, month, day), time)
     }.getOrNull()
 
     // endregion

@@ -8,11 +8,12 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.WeekdaySpend
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
-import java.time.DayOfWeek
-import java.time.ZoneId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * Spending insights for the Analysis screen, over the same filtered transactions as its chart,
@@ -30,7 +31,7 @@ class GetSpendingInsightsUseCase(
         calculateSpendingInsights(
             transactions = transactions.orEmpty(),
             categoriesById = categories.associateBy { it.id },
-            zone = ZoneId.systemDefault(),
+            zone = TimeZone.currentSystemDefault(),
         )
     }.flowOn(dispatchers.computation)
 }
@@ -39,7 +40,7 @@ class GetSpendingInsightsUseCase(
 fun calculateSpendingInsights(
     transactions: List<Transaction>,
     categoriesById: Map<String, Category>,
-    zone: ZoneId,
+    zone: TimeZone,
     maxBiggest: Int = 5,
 ): SpendingInsights {
     val expenses = transactions.filter { it.type == TransactionType.EXPENSE }
@@ -60,7 +61,7 @@ fun calculateSpendingInsights(
         }
         .sortedByDescending { it.total }
 
-    val byWeekday = expenses.groupBy { it.createdOn.toInstant().atZone(zone).dayOfWeek }
+    val byWeekday = expenses.groupBy { it.createdOn.toLocalDateTime(zone).dayOfWeek }
     val weekdays = DayOfWeek.entries.map { day ->
         WeekdaySpend(day, byWeekday[day].orEmpty().sumOf { it.amount.amount })
     }

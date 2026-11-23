@@ -19,8 +19,8 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.AutoBackupRepository
 import com.naveenapps.expensemanager.core.repository.BackupRepository
 import java.io.File
-import java.util.Date
 import kotlin.coroutines.cancellation.CancellationException
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.sync.Mutex
@@ -82,7 +82,7 @@ class AutoBackupRepositoryImpl(
     }
 
     private suspend fun runBackup(kind: BackupKind): AutoBackupResult {
-        val now = Date()
+        val now = Clock.System.now()
         val isAuto = kind == BackupKind.AUTO
         val name = if (isAuto) AutoBackupFiles.fileName(now) else AutoBackupFiles.manualFileName(now)
         val folderUri = dataStore.getSettings().first().folderUri
@@ -92,7 +92,7 @@ class AutoBackupRepositoryImpl(
             writeInsideApp(name, isAuto)
         }
         if (written != null) return fail(written)
-        dataStore.recordSuccess(now.time, isAuto = isAuto)
+        dataStore.recordSuccess(now.toEpochMilliseconds(), isAuto = isAuto)
         return AutoBackupResult.SUCCESS
     }
 

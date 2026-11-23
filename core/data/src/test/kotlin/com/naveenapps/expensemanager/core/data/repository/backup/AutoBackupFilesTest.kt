@@ -3,12 +3,12 @@ package com.naveenapps.expensemanager.core.data.repository.backup
 import com.google.common.truth.Truth.assertThat
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.Date
+import kotlin.time.Instant
 import org.junit.Test
 
 class AutoBackupFilesTest {
 
-    private fun date(y: Int, m: Int, d: Int, h: Int, min: Int, s: Int) = Date.from(LocalDateTime.of(y, m, d, h, min, s).atZone(ZoneId.systemDefault()).toInstant())
+    private fun date(y: Int, m: Int, d: Int, h: Int, min: Int, s: Int) = Instant.fromEpochMilliseconds(LocalDateTime.of(y, m, d, h, min, s).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
 
     private fun auto(stamp: String) = "expense-manager-auto-$stamp.sqlite3.aes"
 

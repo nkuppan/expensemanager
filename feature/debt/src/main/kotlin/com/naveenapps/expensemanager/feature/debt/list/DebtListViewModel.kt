@@ -13,8 +13,8 @@ import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.feature.debt.DebtStatus
 import com.naveenapps.expensemanager.feature.debt.debtStatusOf
 import com.naveenapps.expensemanager.feature.debt.isOverdue
-import java.util.Date
 import kotlin.math.abs
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -28,7 +28,7 @@ data class DebtPersonRow(
     val status: DebtStatus,
     /** The open balance, formatted without a sign (the status says which way). */
     val amount: String,
-    val dueDate: Date?,
+    val dueDate: Instant?,
     val isOverdue: Boolean,
 )
 

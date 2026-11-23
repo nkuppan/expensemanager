@@ -2,14 +2,14 @@ package com.naveenapps.expensemanager.core.model
 
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.util.Date
+import kotlin.time.Instant
 
 /** Someone the user lends money to or borrows from. */
 data class DebtPerson(
     val id: String,
     val name: String,
-    val createdOn: Date,
-    val updatedOn: Date,
+    val createdOn: Instant,
+    val updatedOn: Instant,
 )
 
 /**
@@ -52,12 +52,12 @@ data class DebtEntry(
     val amountMilli: Long,
     /** The account the money came from or went to; null when it didn't touch an account. */
     val accountId: String?,
-    val date: Date,
+    val date: Instant,
     /** When it should be paid back (lent / borrowed only). */
-    val dueDate: Date?,
+    val dueDate: Instant?,
     val note: String,
-    val createdOn: Date,
-    val updatedOn: Date,
+    val createdOn: Instant,
+    val updatedOn: Instant,
 )
 
 /** A person with their open balance, for the People list. */
@@ -66,9 +66,9 @@ data class DebtPersonBalance(
     /** Positive: they owe the user. Negative: the user owes them. Zero: settled. */
     val balanceMilli: Long,
     /** Earliest due date among their debts while something is still open; null otherwise. */
-    val dueDate: Date?,
+    val dueDate: Instant?,
     /** Most recent entry date, for sorting settled people. */
-    val lastActivity: Date?,
+    val lastActivity: Instant?,
 ) {
     val isSettled: Boolean get() = balanceMilli == 0L
     val owesUser: Boolean get() = balanceMilli > 0L
