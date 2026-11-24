@@ -37,7 +37,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LifecycleResumeEffect
-import com.naveenapps.expensemanager.core.common.utils.withTime
 import com.naveenapps.expensemanager.core.designsystem.em.EmButton
 import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
@@ -49,6 +48,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.tint
+import com.naveenapps.expensemanager.core.foundation.withTime
 import kotlin.time.Clock
 
 /**

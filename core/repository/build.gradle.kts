@@ -1,24 +1,17 @@
 plugins {
-    id("naveenapps.plugin.android.library")
-    id("naveenapps.plugin.kotlin.basic")
+    // Kotlin Multiplatform: Android + iOS (OpenSpec change make-core-repository-multiplatform).
+    id("naveenapps.plugin.kmp.library")
 }
 
-android {
-    namespace = "com.naveenapps.expensemanager.core.repository"
-
-    // This module has no JVM/Android-only imports left (KMP groundwork C3), so the shared-layer
-    // check is an error here: anything new must stay multiplatform-ready.
-    lint {
-        error += "JvmApiInSharedLayer"
+// Repository interfaces shared by every platform. No Android, no java.*: the iOS compile enforces
+// it (even calls that need no import, like System.currentTimeMillis()), so no
+// shared-layer lint check is needed.
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(project(":core:model"))
+            // api: the interfaces return Flow.
+            api(libs.kotlinx.coroutines.core)
+        }
     }
-}
-
-dependencies {
-    implementation(project(":core:common"))
-    implementation(project(":core:model"))
-
-    implementation(libs.kotlinx.coroutines.android)
-
-    // JvmApiInSharedLayer: keeps this module free of JVM/Android-only APIs ahead of KMP.
-    lintChecks(project(":lint-rules"))
 }

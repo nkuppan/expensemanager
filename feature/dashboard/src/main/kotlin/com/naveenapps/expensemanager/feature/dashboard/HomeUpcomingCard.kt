@@ -25,7 +25,6 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
@@ -39,6 +38,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
+import com.naveenapps.expensemanager.core.foundation.toLocalDateIn
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.recurring.labelResId
 import java.time.format.DateTimeFormatter

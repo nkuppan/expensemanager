@@ -3,6 +3,8 @@ plugins {
     id("naveenapps.plugin.kotlin.basic")
     id("naveenapps.plugin.di")
     id("naveenapps.plugin.room")
+    // @Serializable DTOs for the bundled countries.json (replaced Gson).
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -23,7 +25,7 @@ dependencies {
     implementation(libs.kotlinx.datetime)
 
     implementation(libs.opencsv)
-    implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config)

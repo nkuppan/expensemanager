@@ -76,7 +76,7 @@ fun BudgetGauge(
     val progressColor = if (budget.isOverBudget) {
         EmTheme.colors.scheme.error
     } else {
-        emColorOf(budget.progressBarColor)
+        emColorOf(budget.status)
     }
     val tickColor = EmTheme.colors.scheme.outlineVariant
     val knobColor = EmTheme.colors.scheme.surfaceContainerLowest

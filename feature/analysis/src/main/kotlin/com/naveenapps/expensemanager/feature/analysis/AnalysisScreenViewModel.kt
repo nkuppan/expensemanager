@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.analysis
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
@@ -13,8 +14,11 @@ import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetChartDat
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetPeriodComparisonUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetSpendingInsightsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.toTransactionUIModel
+import com.naveenapps.expensemanager.core.foundation.toDayKey
+import com.naveenapps.expensemanager.core.foundation.toYearKey
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
+import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.WholeAverageData
@@ -29,6 +33,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.datetime.LocalDate
 
 class AnalysisScreenViewModel(
     getCurrentThemeUseCase: GetCurrentThemeUseCase,
@@ -135,7 +140,7 @@ class AnalysisScreenViewModel(
                     AnalysisUiChartData(
                         expenses = chart.chartData.getOrNull(0).orEmpty().map { it.total },
                         incomes = chart.chartData.getOrNull(1).orEmpty().map { it.total },
-                        dates = chart.dates,
+                        dates = chart.dates.map { chartLabel(chart.groupType, it) },
                     ).takeIf { it.expenses.isNotEmpty() }
                 },
             )
@@ -205,3 +210,10 @@ data class AnalysisUiChartData(
     val dates: List<String>,
     val title: String? = null,
 )
+
+/** The label of a chart bucket starting on [date]: the year, the month in the app's language, or the day. */
+internal fun chartLabel(groupType: GroupType, date: LocalDate): String = when (groupType) {
+    GroupType.YEAR -> date.toYearKey()
+    GroupType.MONTH -> date.toMonthAndYear()
+    GroupType.DATE -> date.toDayKey()
+}

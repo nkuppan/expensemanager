@@ -1,0 +1,43 @@
+# XcodeGen spec for the throwaway iOS smoke app (OpenSpec change add-ios-smoke-app, design D3).
+# Generate the project with `xcodegen` in this folder; the .xcodeproj is git-ignored.
+name: ExpenseManagerSmoke
+options:
+  bundleIdPrefix: com.naveenapps.expensemanager
+  deploymentTarget:
+    iOS: "16.0"
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+targets:
+  ExpenseManagerSmoke:
+    type: application
+    platform: iOS
+    sources:
+      - ExpenseManagerSmoke
+    # A shared scheme, so `xcodebuild -scheme ExpenseManagerSmoke` works without opening Xcode first.
+    scheme: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.naveenapps.expensemanager.smoke
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: EM Smoke
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        # Shared.framework is written here by :shared:embedAndSignAppleFrameworkForXcode.
+        FRAMEWORK_SEARCH_PATHS: "$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)"
+        OTHER_LDFLAGS: ["$(inherited)", "-framework", "Shared"]
+        # Kotlin targets are Apple Silicon only (iosSimulatorArm64): no Intel simulator slice.
+        "EXCLUDED_ARCHS[sdk=iphonesimulator*]": x86_64
+        # The Gradle step writes to shared/build, outside the sandbox.
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        CODE_SIGN_STYLE: Automatic
+    preBuildScripts:
+      - name: Build the Shared Kotlin framework
+        basedOnDependencyAnalysis: false
+        script: |
+          set -e
+          # Xcode runs scripts with a minimal environment: find a JDK if none is set.
+          if [ -z "$JAVA_HOME" ]; then
+            export JAVA_HOME="$(/usr/libexec/java_home -v 17 2>/dev/null || /usr/libexec/java_home)"
+          fi
+          cd "$SRCROOT/.."
+          ./gradlew :shared:embedAndSignAppleFrameworkForXcode

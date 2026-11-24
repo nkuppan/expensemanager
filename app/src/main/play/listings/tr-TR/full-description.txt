@@ -1,49 +1,58 @@
-Expense Manager ile paranızın kontrolünü elinize alın: harcamalarınızı takip etmenin, bütçenize sadık kalmanın ve paranızın tam olarak nereye gittiğini görmenin basit ve reklamsız yolu.
+Expense Manager, ücretsiz ve açık kaynaklı bir gider takibi ve bütçe uygulamasıdır. Reklam yok, uygulama içi satın alma yok, abonelik yok ve kayıt gerekmez: tüm özellikler herkes için ücretsizdir, finansal verileriniz telefonunuzda kalır ve uygulama tamamen çevrimdışı çalışır.
 
-Bir harcamayı saniyeler içinde kaydedin, kategoriye ve hesaba göre düzenleyin, gelir, gider ve birikimlerinizi anında net grafiklerle görün. Karmaşa yok, reklam yok, kayıt yok.
+Bir harcamayı birkaç dokunuşla kaydedin, aylık bütçeler belirleyin, verdiğiniz veya aldığınız borçları takip edin ve paranızın tam olarak nereye gittiğini görün.
 
 <b>💰 Her işlemi takip edin</b>
 • Giderleri, gelirleri ve hesaplar arası transferleri kaydedin
+• Birden fazla hesap: nakit, banka, birikim, kredi kartları ve daha fazlası
 • Her kayda kategori, not, tarih ve fiş fotoğrafı ekleyin
-• Faturalar, kira ve maaş için tekrarlayan işlemler oluşturun
-• Birden fazla hesap yönetin: nakit, banka, birikim, kredi kartı ve daha fazlası
-• İşlemleri hesaba, türe veya tarihe göre arayın ve filtreleyin
+• Bir alışveriş fişini tarayın ya da bir ödeme ekran görüntüsünü uygulamayla paylaşın: telefonunuzda okur ve kontrol etmeniz için bilgileri doldurur
+• Sık kullanılan kayıtlar tek dokunuşla, alıcı önerileri
+• Hesap, kategori, tür veya tarihe göre arayın ve filtreleyin
 
-<b>📊 Net analizler ve istatistikler</b>
-• Gelir, gider ve net bakiyenizi tek bakışta gösteren panel
-• Paranızın nereye gittiğini gösteren kategori grafikleri
-• Günlük, haftalık, aylık veya yıllık harcama eğilimleri
-• Ayrıntılı gelir-gider özetleri
+<b>🔁 Düzenli ödemeler ve yaklaşan faturalar</b>
+• Kira, maaş, fatura ve abonelikler için düzenli işlemler, vade tarihinde eklenir
+• Yaklaşan ödemeler ana ekranda, bir önceki akşam hatırlatma ile
+
+<b>🤝 Kişiler ve borçlar</b>
+• Verdiğiniz veya aldığınız borçları vade tarihi ve kısmi ödemelerle kaydedin
+• Vade gününde bildirim ve gönderebileceğiniz kibar bir hatırlatma mesajı
+• Borçlar ayrı tutulur, asla gider veya gelir olarak sayılmaz
 
 <b>🎯 Sizi rotada tutan bütçeler</b>
-• Tüm harcamalar ya da belirli kategoriler ve hesaplar için aylık bütçe belirleyin
-• Ne kadar harcadığınızı ve ne kaldığını tek bakışta görün
-• Bütçe sınırına yaklaştığınızda veya aştığınızda bildirim alın
+• Tüm harcamalar veya belirli kategoriler için aylık bütçeler
+• Ne kadar harcadığınızı ve ne kadar kaldığını görün
+• Bütçeye yaklaştığınızda veya aştığınızda uyarılar
 
-<b>🔔 Kaydetmeyi unutmayın</b>
-• Seçtiğiniz saatte isteğe bağlı günlük hatırlatıcı
-• Bakiye, son işlemler ve tek dokunuşla ekleme sunan ana ekran widget'ı
+<b>📊 Paranızın nereye gittiğini görün</b>
+• Düzenleyebileceğiniz ana ekran paneli: özet, hesaplar, bütçeler, borçlar ve daha fazlası
+• Kategori grafikleri ve gün, hafta, ay veya yıla göre harcama eğilimleri
+• Bu ay ile geçen ayın karşılaştırması, en büyük değişiklikler vurgulanır
+
+<b>🔔 Alışkanlık edinin</b>
+• Seçtiğiniz saatte isteğe bağlı günlük hatırlatma
+• En sık harcamanızı doğrudan hatırlatmadan kaydedin, Geri Al seçeneğiyle
+• Tek dokunuşla ekleme yapabileceğiniz ana ekran widget'ı
 
 <b>🔒 Gizli ve güvenli</b>
 • Finansal verileriniz yalnızca cihazınızda saklanır
-• Hesap veya kayıt gerekmez
-• Parmak izi / biyometrik uygulama kilidi
-• Parola korumalı yedekleme ve geri yükleme: verilerinizi istediğiniz zaman yeni telefona taşıyın
+• Hesap yok, kayıt yok, bulut senkronizasyonu yok
+• SMS'lerinizi veya banka hesabınızı asla okumaz
+• Parmak izi ile uygulama kilidi
 
-<b>📁 Verilerinizi dışa aktarın</b>
-• Tablolar için CSV olarak dışa aktarın
-• Kolay paylaşım ve arşiv için PDF olarak dışa aktarın
+<b>💾 Yedekleme ve dışa aktarma</b>
+• Parola ile korunan yedekleme ve geri yükleme, örneğin Google Drive'a
+• Seçtiğiniz klasöre otomatik yedekleme (günlük, haftalık veya aylık)
+• CSV veya PDF olarak dışa aktarma
 
-<b>🎨 Sizin için tasarlandı</b>
-• Sade ve modern Material tasarım
+<b>🎨 Size göre</b>
+• Her para birimi, tercih ettiğiniz sayı biçimiyle
 • Açık ve koyu tema
-• Her para birimini destekler
-• Türkçe ve İngilizce dahil 16 dilde kullanılabilir
+• Türkçe, İngilizce, Almanca, Rusça ve Arapça dahil 16 dil
 
-<b>✨ Neden Expense Manager?</b>
-• %100 reklamsız
-• Basit ve hızlı, günlük kullanım için
-• Çevrimdışı çalışır
-• Açık kaynak ve aktif olarak geliştiriliyor
+<b>✨ Ücretsiz, reklamsız ve açık kaynak</b>
+• %100 ücretsiz: reklam yok, uygulama içi satın alma yok, abonelik yok, kilitli özellik yok
+• Apache 2.0 lisansıyla açık kaynak, herkes nasıl çalıştığını inceleyebilir: github.com/nkuppan/expensemanager
+• Aktif olarak geliştiriliyor, her sürümde yeni özellikler
 
 Bugün başlayın ve her harcamayla daha iyi para alışkanlıkları edinin.

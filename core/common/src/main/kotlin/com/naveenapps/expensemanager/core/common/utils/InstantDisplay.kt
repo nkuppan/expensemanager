@@ -2,6 +2,9 @@ package com.naveenapps.expensemanager.core.common.utils
 
 import java.util.Date
 import kotlin.time.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 
 // Instant versions of the DateUtils functions the UI uses (KMP groundwork C5). Each one formats
 // through the same SimpleDateFormat as its Date twin, so the text on screen is unchanged. They
@@ -20,6 +23,9 @@ fun Instant.toCompleteDate(): String = asDate().toCompleteDate()
 fun Instant.toCompleteDateWithDate(): String = asDate().toCompleteDateWithDate()
 
 fun Instant.toMonthAndYear(): String = asDate().toMonthAndYear()
+
+/** [toMonthAndYear] of this date's start in the device zone: the chart's month label (shared code returns the date). */
+fun LocalDate.toMonthAndYear(): String = atStartOfDayIn(TimeZone.currentSystemDefault()).toMonthAndYear()
 
 fun Instant.toMonthYear(): String = asDate().toMonthYear()
 

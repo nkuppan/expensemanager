@@ -1,49 +1,58 @@
-Kendalikan keuangan Anda dengan Expense Manager — cara sederhana dan bebas iklan untuk mencatat pengeluaran, menjaga anggaran, dan tahu persis ke mana uang Anda pergi.
+Expense Manager adalah aplikasi pencatat pengeluaran dan anggaran yang gratis dan open source. Tanpa iklan, tanpa pembelian dalam aplikasi, tanpa langganan, dan tanpa daftar akun: semua fitur gratis untuk semua orang, data keuangan Anda tetap di ponsel, dan aplikasi berjalan sepenuhnya offline.
 
-Catat pengeluaran dalam hitungan detik, kelompokkan berdasarkan kategori dan akun, lalu lihat grafik pemasukan, pengeluaran, dan tabungan yang jelas secara instan. Tanpa ribet, tanpa iklan, tanpa daftar akun.
+Catat pengeluaran dengan beberapa ketukan, atur anggaran bulanan, pantau uang yang Anda pinjamkan atau pinjam, dan lihat dengan jelas ke mana uang Anda pergi.
 
 <b>💰 Catat setiap transaksi</b>
 • Catat pengeluaran, pemasukan, dan transfer antar akun
-• Tambahkan kategori, catatan, tanggal, dan foto struk di setiap entri
-• Atur transaksi berulang untuk tagihan, sewa, dan gaji
-• Kelola banyak akun — tunai, bank, tabungan, kartu kredit, dan lainnya
-• Cari dan filter transaksi berdasarkan akun, jenis, atau tanggal
+• Banyak akun: tunai, bank, tabungan, kartu kredit, dan lainnya
+• Kategori, catatan, tanggal, dan foto struk di setiap transaksi
+• Pindai struk belanja, atau bagikan tangkapan layar pembayaran ke aplikasi: aplikasi membacanya di ponsel dan mengisi detailnya untuk Anda periksa
+• Transaksi yang sering dengan satu ketukan dan saran penerima
+• Cari dan filter berdasarkan akun, kategori, jenis, atau tanggal
 
-<b>📊 Statistik yang jelas</b>
-• Dasbor berisi pemasukan, pengeluaran, dan saldo bersih sekilas
-• Grafik per kategori yang menunjukkan ke mana uang Anda pergi
-• Tren pengeluaran harian, mingguan, bulanan, atau tahunan
-• Ringkasan rinci pemasukan vs. pengeluaran
+<b>🔁 Pembayaran rutin & tagihan mendatang</b>
+• Transaksi berulang untuk sewa, gaji, tagihan, dan langganan, ditambahkan pada tanggal jatuh temponya
+• Pembayaran mendatang di layar Beranda, dengan pengingat pada malam sebelumnya
 
-<b>🎯 Anggaran yang menjaga Anda tetap di jalur</b>
-• Atur anggaran bulanan untuk semua pengeluaran atau kategori dan akun tertentu
-• Lihat sekilas berapa yang sudah terpakai dan sisanya
-• Dapatkan notifikasi saat mendekati atau melewati batas anggaran
+<b>🤝 Orang & utang</b>
+• Catat uang yang Anda pinjamkan atau pinjam, dengan tanggal jatuh tempo dan cicilan sebagian
+• Notifikasi pada tanggal jatuh tempo dan pesan pengingat yang ramah untuk dikirim
+• Utang dicatat terpisah, sehingga tidak pernah dihitung sebagai pengeluaran atau pemasukan
 
-<b>🔔 Jangan lupa mencatat</b>
-• Pengingat harian opsional di jam pilihan Anda
-• Widget layar utama dengan saldo, transaksi terbaru, dan tambah sekali ketuk
+<b>🎯 Anggaran yang menjaga Anda tetap terkendali</b>
+• Anggaran bulanan untuk semua pengeluaran atau kategori tertentu
+• Lihat berapa yang sudah terpakai dan berapa yang tersisa
+• Peringatan saat mendekati atau melewati anggaran
+
+<b>📊 Lihat ke mana uang Anda pergi</b>
+• Dasbor Beranda yang bisa Anda atur ulang: ringkasan, akun, anggaran, utang, dan lainnya
+• Grafik kategori dan tren pengeluaran per hari, minggu, bulan, atau tahun
+• Bulan ini dibanding bulan lalu, dengan perubahan terbesar disorot
+
+<b>🔔 Bangun kebiasaan</b>
+• Pengingat harian opsional pada jam pilihan Anda
+• Catat pengeluaran paling sering langsung dari pengingat, dengan Urungkan
+• Widget layar utama untuk menambah dengan satu ketukan
 
 <b>🔒 Privat & aman</b>
 • Data keuangan Anda hanya disimpan di perangkat Anda
-• Tanpa akun atau pendaftaran
-• Kunci aplikasi dengan sidik jari / biometrik
-• Cadangkan dan pulihkan dengan frasa sandi — pindahkan data ke ponsel baru kapan saja
+• Tanpa akun, tanpa daftar, tanpa sinkronisasi cloud
+• Tidak pernah membaca SMS atau rekening bank Anda
+• Kunci aplikasi dengan sidik jari
 
-<b>📁 Ekspor data Anda</b>
-• Ekspor ke CSV untuk spreadsheet
-• Ekspor ke PDF untuk berbagi dan arsip dengan mudah
+<b>💾 Cadangan & ekspor</b>
+• Cadangan dan pemulihan yang dilindungi frasa sandi, misalnya ke Google Drive
+• Cadangan otomatis (harian, mingguan, atau bulanan) ke folder pilihan Anda
+• Ekspor ke CSV atau PDF
 
 <b>🎨 Dibuat untuk Anda</b>
-• Desain Material yang bersih dan modern
+• Mata uang apa pun, dengan format angka pilihan Anda
 • Tema terang dan gelap
-• Mendukung semua mata uang
-• Tersedia dalam 16 bahasa, termasuk Bahasa Indonesia dan Inggris
+• 16 bahasa, termasuk Bahasa Indonesia, Inggris, Vietnam, Jepang, dan Korea
 
-<b>✨ Kenapa Expense Manager?</b>
-• 100% bebas iklan
-• Sederhana dan cepat — untuk pemakaian sehari-hari
-• Bisa digunakan offline
-• Open source dan terus dikembangkan
+<b>✨ Gratis, tanpa iklan, dan open source</b>
+• 100% gratis: tanpa iklan, tanpa pembelian dalam aplikasi, tanpa langganan, tanpa fitur terkunci
+• Open source dengan lisensi Apache 2.0, siapa pun bisa memeriksa cara kerjanya: github.com/nkuppan/expensemanager
+• Dikembangkan secara aktif, dengan fitur baru di setiap rilis
 
-Mulai hari ini dan bangun kebiasaan keuangan yang lebih baik — satu pengeluaran demi satu.
+Mulai hari ini dan bangun kebiasaan keuangan yang lebih baik, satu pengeluaran setiap kali.

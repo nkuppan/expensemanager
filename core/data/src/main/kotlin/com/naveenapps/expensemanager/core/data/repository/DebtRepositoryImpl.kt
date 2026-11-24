@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.core.data.repository
 
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.dao.DebtDao
 import com.naveenapps.expensemanager.core.database.entity.DebtEntryEntity
 import com.naveenapps.expensemanager.core.database.entity.DebtPersonEntity
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.DebtEntry
 import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.DebtPerson

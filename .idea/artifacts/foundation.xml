@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="foundation">
+    <output-path>$PROJECT_DIR$/core/foundation/build/libs</output-path>
+    <root id="archive" name="foundation.jar">
+      <element id="module-output" name="expensemanager.core.foundation.androidMain" />
+    </root>
+  </artifact>
+</component>

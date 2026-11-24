@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.DashboardCustomize
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,6 +56,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmCard
 import com.naveenapps.expensemanager.core.designsystem.em.EmCardPosition
 import com.naveenapps.expensemanager.core.designsystem.em.EmCardVariant
 import com.naveenapps.expensemanager.core.designsystem.em.EmDivider
+import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyAction
 import com.naveenapps.expensemanager.core.designsystem.em.EmEmptyState
 import com.naveenapps.expensemanager.core.designsystem.em.EmIcon
 import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
@@ -76,11 +78,13 @@ import com.naveenapps.expensemanager.core.model.CategoryTransaction
 import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DashboardSection
+import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.feature.account.list.DashBoardAccountItem
 import com.naveenapps.expensemanager.feature.account.list.getRandomAccountUiModel
 import com.naveenapps.expensemanager.feature.category.list.getCategoryData
+import com.naveenapps.expensemanager.feature.debt.R as DebtR
 import com.naveenapps.expensemanager.feature.debt.list.DebtTotalsCard
 import com.naveenapps.expensemanager.feature.filter.FilterView
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
@@ -310,12 +314,16 @@ private fun LazyListScope.accountsSection(
     }
 }
 
-/** What people owe the user and what the user owes; only while there are open debts. */
+/**
+ * What people owe the user and what the user owes. With no open debts it shows an empty card
+ * that records a first loan in one tap (Lent / Borrowed).
+ */
 private fun LazyListScope.debtsSection(
     state: DashboardState,
     onAction: (DashboardAction) -> Unit,
 ) {
-    val debts = state.debtTotals ?: return
+    if (!state.debtsLoaded) return
+    val debts = state.debtTotals
     item("debts_item") {
         Column {
             EmSectionHeader(
@@ -323,12 +331,29 @@ private fun LazyListScope.debtsSection(
                 title = stringResource(id = R.string.home_debts_title),
                 onViewAllClick = { onAction.invoke(DashboardAction.OpenDebts) },
             )
-            DebtTotalsCard(
-                toGet = debts.toGet,
-                toGive = debts.toGive,
-                onClick = { onAction.invoke(DashboardAction.OpenDebts) },
-                modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
-            )
+            if (debts != null) {
+                DebtTotalsCard(
+                    toGet = debts.toGet,
+                    toGive = debts.toGive,
+                    onClick = { onAction.invoke(DashboardAction.OpenDebts) },
+                    modifier = Modifier.padding(horizontal = EmTheme.spacing.lg),
+                )
+            } else {
+                EmCard(modifier = Modifier.padding(horizontal = EmTheme.spacing.lg)) {
+                    EmEmptyState(
+                        icon = Icons.Outlined.People,
+                        title = stringResource(id = DebtR.string.debt_empty_title),
+                        body = stringResource(id = DebtR.string.debt_empty_message),
+                        action = EmEmptyAction(stringResource(id = DebtR.string.debt_add_lent)) {
+                            onAction.invoke(DashboardAction.AddDebt(DebtEntryKind.LENT))
+                        },
+                        secondaryAction = EmEmptyAction(stringResource(id = DebtR.string.debt_add_borrowed)) {
+                            onAction.invoke(DashboardAction.AddDebt(DebtEntryKind.BORROWED))
+                        },
+                        compact = true,
+                    )
+                }
+            }
         }
     }
 }

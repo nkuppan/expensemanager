@@ -16,7 +16,6 @@ import com.naveenapps.expensemanager.core.data.repository.ExportRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.FeedbackRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.FirebaseSettingsRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ImageStorageRepositoryImpl
-import com.naveenapps.expensemanager.core.data.repository.JsonConverterRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.LocaleRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.RecurringTransactionRepositoryImpl
 import com.naveenapps.expensemanager.core.data.repository.ReminderTimeRepositoryImpl
@@ -44,7 +43,6 @@ import com.naveenapps.expensemanager.core.repository.ExportRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.FirebaseSettingsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
-import com.naveenapps.expensemanager.core.repository.JsonConverterRepository
 import com.naveenapps.expensemanager.core.repository.LocaleRepository
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
@@ -99,16 +97,10 @@ val RepositoryModule = module {
             firebaseAnalytics = get(),
         )
     }
-    single<JsonConverterRepository> {
-        JsonConverterRepositoryImpl(
-            gson = get(),
-            appCoroutineDispatchers = get(),
-        )
-    }
     single<CountryRepository> {
         CountryRepositoryImpl(
             context = androidContext(),
-            jsonConverterRepository = get(),
+            json = get(),
             dispatchers = get(),
         )
     }

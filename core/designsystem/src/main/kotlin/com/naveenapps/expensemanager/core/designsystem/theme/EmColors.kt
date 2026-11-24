@@ -17,7 +17,7 @@ data class EmColors(
     val debt: Color,
     val warning: Color,
     val info: Color,
-    /** Budget progress, by how much of the budget is spent (see budgetProgressColor). */
+    /** Budget progress, by how much of the budget is spent (see BudgetStatus and emColorOf(status)). */
     val budgetSafe: Color,
     val budgetWatch: Color,
     val budgetRisk: Color,

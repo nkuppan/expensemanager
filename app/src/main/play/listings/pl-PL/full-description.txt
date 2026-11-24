@@ -1,49 +1,58 @@
-Przejmij kontrolę nad swoimi pieniędzmi z Expense Manager — prostą aplikacją bez reklam do śledzenia wydatków, trzymania się budżetu i sprawdzania, na co dokładnie idą Twoje pieniądze.
+Expense Manager to darmowy budżet domowy i menedżer wydatków o otwartym kodzie źródłowym. Bez reklam, bez zakupów w aplikacji, bez subskrypcji i bez rejestracji: wszystkie funkcje są darmowe dla wszystkich, Twoje dane finansowe zostają w telefonie, a aplikacja działa w pełni offline.
 
-Dodaj wydatek w kilka sekund, przypisz go do kategorii i konta, a od razu zobaczysz czytelne wykresy przychodów, wydatków i oszczędności. Bez zbędnych dodatków, bez reklam i bez rejestracji.
+Dodaj wydatek kilkoma dotknięciami, ustal miesięczne budżety, pilnuj pieniędzy pożyczonych komuś lub od kogoś i zobacz, na co dokładnie wydajesz pieniądze.
 
-<b>💰 Śledź każdą transakcję</b>
+<b>💰 Każda transakcja pod kontrolą</b>
 • Zapisuj wydatki, przychody i przelewy między kontami
-• Dodawaj kategorie, notatki, daty i zdjęcia paragonów do każdego wpisu
-• Ustawiaj transakcje cykliczne dla rachunków, czynszu i wypłaty
-• Zarządzaj wieloma kontami: gotówka, konto bankowe, oszczędności, karty kredytowe i inne
-• Wyszukuj i filtruj transakcje według konta, typu lub daty
+• Wiele kont: gotówka, bank, oszczędności, karty kredytowe i inne
+• Kategorie, notatki, daty i zdjęcia paragonów przy każdym wpisie
+• Zeskanuj paragon albo udostępnij aplikacji zrzut ekranu płatności: odczyta go na telefonie i uzupełni dane do sprawdzenia
+• Częste wpisy jednym dotknięciem i podpowiedzi odbiorców
+• Wyszukiwanie i filtry według konta, kategorii, typu lub daty
 
-<b>📊 Czytelne statystyki</b>
-• Pulpit z przychodami, wydatkami i saldem w jednym miejscu
-• Wykresy według kategorii pokazują, na co wydajesz
-• Trendy wydatków według dnia, tygodnia, miesiąca lub roku
-• Szczegółowe podsumowania przychodów i wydatków
+<b>🔁 Płatności cykliczne i nadchodzące rachunki</b>
+• Transakcje cykliczne dla czynszu, pensji, rachunków i subskrypcji, dodawane w dniu płatności
+• Nadchodzące płatności na ekranie głównym, z przypomnieniem wieczór wcześniej
 
-<b>🎯 Budżety, które pomagają trzymać kurs</b>
-• Ustal miesięczne budżety na wszystkie wydatki lub wybrane kategorie i konta
-• Od razu widać, ile wydano i ile zostało
-• Powiadomienia, gdy zbliżasz się do limitu lub go przekraczasz
+<b>🤝 Osoby i długi</b>
+• Zapisuj pieniądze pożyczone komuś lub od kogoś, z terminem zwrotu i częściowymi spłatami
+• Powiadomienie w dniu terminu i uprzejma wiadomość z przypomnieniem do wysłania
+• Długi są prowadzone osobno i nigdy nie liczą się jako wydatek ani przychód
 
-<b>🔔 Nie zapomnij zapisać</b>
+<b>🎯 Budżety, które trzymają kurs</b>
+• Miesięczne budżety na wszystkie wydatki lub wybrane kategorie
+• Zobacz, ile wydałeś i ile zostało
+• Alerty, gdy zbliżasz się do limitu lub go przekraczasz
+
+<b>📊 Zobacz, na co idą pieniądze</b>
+• Ekran główny, który możesz dowolnie ułożyć: podsumowanie, konta, budżety, długi i więcej
+• Wykresy kategorii i trendy wydatków według dnia, tygodnia, miesiąca lub roku
+• Ten miesiąc w porównaniu z poprzednim, z wyróżnionymi największymi zmianami
+
+<b>🔔 Zbuduj nawyk</b>
 • Opcjonalne codzienne przypomnienie o wybranej godzinie
-• Widżet na ekranie głównym z saldem, ostatnimi transakcjami i szybkim dodawaniem
+• Dodaj najczęstszy wydatek prosto z przypomnienia, z opcją Cofnij
+• Widżet na ekran główny z dodawaniem jednym dotknięciem
 
 <b>🔒 Prywatnie i bezpiecznie</b>
 • Twoje dane finansowe są przechowywane tylko na Twoim urządzeniu
-• Bez konta i rejestracji
-• Blokada aplikacji odciskiem palca / biometrią
-• Kopia zapasowa i przywracanie chronione hasłem — przenieś dane na nowy telefon w dowolnej chwili
+• Bez konta, bez rejestracji, bez synchronizacji w chmurze
+• Nigdy nie czyta Twoich SMS-ów ani konta bankowego
+• Blokada aplikacji odciskiem palca
 
-<b>📁 Eksport danych</b>
-• Eksport do CSV dla arkuszy kalkulacyjnych
-• Eksport do PDF do łatwego udostępniania i archiwizacji
+<b>💾 Kopia zapasowa i eksport</b>
+• Kopia zapasowa i przywracanie chronione hasłem, np. na Dysku Google
+• Automatyczne kopie (codziennie, co tydzień lub co miesiąc) do wybranego folderu
+• Eksport do CSV lub PDF
 
-<b>🎨 Stworzona dla Ciebie</b>
-• Przejrzysty, nowoczesny Material Design
+<b>🎨 Dla Ciebie</b>
+• Dowolna waluta i preferowany format liczb
 • Jasny i ciemny motyw
-• Obsługa dowolnej waluty
-• Dostępna w 16 językach, w tym po polsku i angielsku
+• 16 języków, w tym polski, angielski, niemiecki, rosyjski, francuski i hiszpański
 
-<b>✨ Dlaczego Expense Manager?</b>
-• 100% bez reklam
-• Prosta i szybka — na co dzień
-• Działa offline
-• Open source i aktywnie rozwijana
+<b>✨ Darmowa, bez reklam i open source</b>
+• W 100% darmowa: bez reklam, bez zakupów w aplikacji, bez subskrypcji, bez zablokowanych funkcji
+• Otwarty kod źródłowy na licencji Apache 2.0, każdy może sprawdzić, jak działa: github.com/nkuppan/expensemanager
+• Aktywnie rozwijana, z nowościami w każdej wersji
 
-Zacznij już dziś i buduj lepsze nawyki finansowe — wydatek po wydatku.
+Zacznij już dziś i buduj lepsze nawyki finansowe, wydatek po wydatku.

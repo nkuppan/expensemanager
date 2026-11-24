@@ -8,10 +8,11 @@ import androidx.compose.ui.res.colorResource
 import com.naveenapps.expensemanager.core.common.R as CommonR
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.model.AmountTone
+import com.naveenapps.expensemanager.core.model.BudgetStatus
 
 /**
- * Bridge for models that still carry a colour resource (budgetProgressColor): maps the legacy core:common colours to theme tokens so they follow
- * light/dark. Goes away when those models carry a meaning (income/expense/status) instead.
+ * Bridge for code that still passes a legacy core:common colour resource: maps it to the theme
+ * token so it follows light/dark. Models carry a meaning instead ([AmountTone], [BudgetStatus]).
  */
 @Composable
 @ReadOnlyComposable
@@ -34,4 +35,14 @@ fun emColorOf(@ColorRes colorRes: Int): Color {
 fun emColorOf(tone: AmountTone): Color = when (tone) {
     AmountTone.POSITIVE -> EmTheme.colors.income
     AmountTone.NEGATIVE -> EmTheme.colors.expense
+}
+
+/** Colour for a budget's [BudgetStatus]: the budget tokens (green, light green, orange, red). */
+@Composable
+@ReadOnlyComposable
+fun emColorOf(status: BudgetStatus): Color = when (status) {
+    BudgetStatus.SAFE -> EmTheme.colors.budgetSafe
+    BudgetStatus.WATCH -> EmTheme.colors.budgetWatch
+    BudgetStatus.RISK -> EmTheme.colors.budgetRisk
+    BudgetStatus.OVER -> EmTheme.colors.budgetOver
 }

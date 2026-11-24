@@ -28,6 +28,7 @@ include(":core:database")
 include(":core:datastore")
 include(":core:designsystem")
 include(":core:domain")
+include(":core:foundation")
 include(":core:model")
 include(":core:navigation")
 include(":core:notification")
@@ -54,3 +55,6 @@ include(":feature:about")
 include(":core:settings")
 
 include(":lint-rules")
+
+// Umbrella module: the one iOS framework ("Shared") the iOS app links (OpenSpec change add-ios-smoke-app).
+include(":shared")

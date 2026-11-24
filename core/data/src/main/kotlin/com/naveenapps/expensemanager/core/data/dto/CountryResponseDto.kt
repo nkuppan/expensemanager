@@ -1,44 +1,48 @@
 package com.naveenapps.expensemanager.core.data.dto
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class CountriesResponseDto(
-    @SerializedName("countries")
+    @SerialName("countries")
     var counties: List<CountryResponseDto>,
 )
 
+@Serializable
 data class CountryResponseDto(
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
-    @SerializedName("code")
+    @SerialName("code")
     var countryCode: String? = null,
-    @SerializedName("dial_code")
+    @SerialName("dial_code")
     var dialCode: String? = null,
-    @SerializedName("continent")
+    @SerialName("continent")
     var continent: String? = null,
-    @SerializedName("group")
+    @SerialName("group")
     var countryGroup: String? = null,
-    @SerializedName("states")
+    @SerialName("states")
     var countryStates: String? = null,
-    @SerializedName("currency_code")
+    @SerialName("currency_code")
     var currencyCode: String? = null,
-    @SerializedName("currency")
+    @SerialName("currency")
     var currencyResponseDto: CurrencyResponseDto? = null,
 )
 
+@Serializable
 data class CurrencyResponseDto(
-    @SerializedName("symbol")
+    @SerialName("symbol")
     var symbol: String? = null,
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
-    @SerializedName("symbol_native")
+    @SerialName("symbol_native")
     var nativeSymbol: String? = null,
-    @SerializedName("decimal_digits")
+    @SerialName("decimal_digits")
     var decimalDigits: Int = 0,
-    @SerializedName("rounding")
+    @SerialName("rounding")
     var rounding: Float = 0f,
-    @SerializedName("name_plural")
+    @SerialName("name_plural")
     var namePlural: String? = null,
-    @SerializedName("code")
+    @SerialName("code")
     var code: String? = null,
 )
