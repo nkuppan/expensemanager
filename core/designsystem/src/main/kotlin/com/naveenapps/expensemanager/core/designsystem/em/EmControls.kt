@@ -87,7 +87,7 @@ fun EmLoading(
     }
 }
 
-/** How full a progress bar is, by meaning; budget bars use budgetProgressColor's buckets. */
+/** How full a progress bar is, by meaning; budget bars use the buckets of the model's BudgetStatus. */
 enum class EmProgressStatus { Default, Safe, Watch, Risk, Over }
 
 /**

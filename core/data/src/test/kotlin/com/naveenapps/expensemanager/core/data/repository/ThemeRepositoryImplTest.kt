@@ -10,8 +10,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.ThemeDataStore
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.repository.ThemeRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest

@@ -1,9 +1,10 @@
 package com.naveenapps.expensemanager.feature.budget.components
 
 import androidx.compose.runtime.Stable
-import com.naveenapps.expensemanager.core.common.utils.monthAndYearKeyToLocalDate
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.foundation.monthAndYearKeyToLocalDate
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
+import com.naveenapps.expensemanager.core.model.BudgetStatus
 import com.naveenapps.expensemanager.core.model.BudgetTitle
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -24,7 +25,7 @@ data class BudgetProgress(
     val isOverBudget: Boolean,
     /** Share of the limit spent, 0..1 (capped at 1 when over). */
     val progress: Float,
-    val progressBarColor: Int,
+    val status: BudgetStatus,
     /** Per day for the rest of the period; null when the period is over or the budget is spent. */
     val safePerDay: String?,
     /** First day of the period, used to name it ("October", "2026"). */
@@ -63,7 +64,7 @@ fun BudgetUiModel.toBudgetProgress(
         remaining = format(if (isOver) -left else left),
         isOverBudget = isOver,
         progress = if (limit > 0) (spent / limit).toFloat().coerceIn(0f, 1f) else 1f,
-        progressBarColor = progressBarColor,
+        status = status,
         safePerDay = if (daysLeft > 0 && left > 0) format(left / daysLeft) else null,
         periodStart = start,
     )

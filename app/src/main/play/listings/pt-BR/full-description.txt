@@ -1,49 +1,58 @@
-Assuma o controle do seu dinheiro com o Expense Manager: um jeito simples e sem anúncios de registrar seus gastos, manter seus orçamentos e entender exatamente para onde vai o seu dinheiro.
+Expense Manager é um controle de gastos e orçamento gratuito e de código aberto. Sem anúncios, sem compras no app, sem assinatura e sem cadastro: todos os recursos são grátis para todos, seus dados financeiros ficam no seu celular e o app funciona totalmente offline.
 
-Registre uma despesa em segundos, organize por categoria e conta e veja na hora gráficos claros de receitas, despesas e economias. Sem complicação, sem anúncios e sem cadastro.
+Registre um gasto em poucos toques, defina orçamentos mensais, acompanhe o dinheiro que você emprestou ou pegou emprestado e veja exatamente para onde vai o seu dinheiro.
 
-<b>💰 Acompanhe cada transação</b>
+<b>💰 Controle cada lançamento</b>
 • Registre despesas, receitas e transferências entre contas
-• Adicione categorias, notas, datas e fotos de recibos a cada lançamento
-• Crie transações recorrentes para contas, aluguel e salário
-• Gerencie várias contas: dinheiro, banco, poupança, cartões de crédito e mais
-• Pesquise e filtre transações por conta, tipo ou data
+• Várias contas: dinheiro, banco, poupança, cartões de crédito e mais
+• Categorias, notas, datas e fotos do comprovante em cada lançamento
+• Escaneie um cupom fiscal ou compartilhe com o app a captura de tela de um pagamento: ele lê no seu celular e preenche os dados para você conferir
+• Lançamentos frequentes com um toque e sugestões de favorecidos
+• Busque e filtre por conta, categoria, tipo ou data
 
-<b>📊 Relatórios e estatísticas claros</b>
-• Painel com receitas, despesas e saldo em um relance
-• Gráficos por categoria mostrando para onde vai seu dinheiro
-• Tendências de gastos por dia, semana, mês ou ano
-• Resumos detalhados de receitas x despesas
+<b>🔁 Pagamentos recorrentes e contas a vencer</b>
+• Lançamentos recorrentes para aluguel, salário, contas e assinaturas, adicionados na data de vencimento
+• Próximos pagamentos na tela inicial, com um aviso na noite anterior
 
-<b>🎯 Orçamentos que mantêm você no caminho</b>
-• Defina orçamentos mensais gerais ou por categoria e conta
-• Veja rapidamente quanto já gastou e quanto ainda resta
-• Receba um aviso quando estiver perto do limite ou passar dele
+<b>🤝 Pessoas e dívidas</b>
+• Anote o dinheiro que você emprestou ou pegou emprestado, com vencimento e pagamentos parciais
+• Uma notificação no dia do vencimento e uma mensagem gentil de lembrete para enviar
+• As dívidas ficam separadas e nunca contam como despesa ou receita
 
-<b>🔔 Nunca esqueça de registrar</b>
+<b>🎯 Orçamentos que mantêm você no rumo</b>
+• Orçamentos mensais para todos os gastos ou para categorias específicas
+• Veja quanto já gastou e quanto ainda resta
+• Alertas quando estiver perto ou acima de um orçamento
+
+<b>📊 Veja para onde vai o seu dinheiro</b>
+• Um painel inicial que você pode reorganizar: resumo, contas, orçamentos, dívidas e mais
+• Gráficos por categoria e tendências de gastos por dia, semana, mês ou ano
+• Este mês comparado ao anterior, com as maiores mudanças em destaque
+
+<b>🔔 Crie o hábito</b>
 • Lembrete diário opcional no horário que você escolher
-• Widget na tela inicial com saldo, transações recentes e adição com um toque
+• Registre seu gasto mais frequente direto do lembrete, com Desfazer
+• Widget na tela inicial para adicionar com um toque
 
 <b>🔒 Privado e seguro</b>
-• Seus dados financeiros ficam salvos apenas no seu aparelho
-• Sem conta e sem cadastro
-• Bloqueio do app com digital / biometria
-• Backup e restauração protegidos por senha: leve seus dados para um celular novo quando quiser
+• Seus dados financeiros ficam armazenados só no seu aparelho
+• Sem conta, sem cadastro, sem sincronização na nuvem
+• Nunca lê seus SMS nem sua conta bancária
+• Bloqueio do app com impressão digital
 
-<b>📁 Exporte seus dados</b>
-• Exporte para CSV e use em planilhas
-• Exporte para PDF para compartilhar e arquivar com facilidade
+<b>💾 Backup e exportação</b>
+• Backup e restauração protegidos por senha, por exemplo no Google Drive
+• Backups automáticos (diários, semanais ou mensais) em uma pasta que você escolher
+• Exportação para CSV ou PDF
 
 <b>🎨 Feito para você</b>
-• Design Material limpo e moderno
+• Qualquer moeda, com o formato de números que preferir
 • Temas claro e escuro
-• Compatível com qualquer moeda
-• Disponível em 16 idiomas, incluindo português e inglês
+• 16 idiomas, entre eles português, inglês, espanhol, francês, alemão e italiano
 
-<b>✨ Por que o Expense Manager?</b>
-• 100% sem anúncios
-• Simples e rápido, feito para o dia a dia
-• Funciona offline
-• Código aberto e em desenvolvimento ativo
+<b>✨ Grátis, sem anúncios e de código aberto</b>
+• 100% grátis: sem anúncios, sem compras no app, sem assinatura, sem recursos bloqueados
+• Código aberto sob a licença Apache 2.0, qualquer pessoa pode verificar como funciona: github.com/nkuppan/expensemanager
+• Mantido ativamente, com novidades a cada versão
 
-Comece hoje e crie hábitos financeiros melhores, uma despesa de cada vez.
+Comece hoje e crie hábitos melhores com o seu dinheiro, um gasto de cada vez.

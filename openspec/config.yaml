@@ -1,0 +1,64 @@
+schema: spec-driven
+
+# Constraints an agent can't infer from the code. General architecture lives in CLAUDE.md.
+context: |
+  Goal: an iOS app from this Android codebase with Kotlin Multiplatform (KMP) and Compose
+  Multiplatform (shared UI). Work happens on the branch feature/kmp-migration, which is merged
+  into main only when it is stable; main keeps shipping the Android app in the meantime.
+
+  Migration phases (one OpenSpec change per module step, each reviewed, built and archived
+  before the next starts):
+    Phase 1  shared logic: build conventions + core:foundation, core:model, core:repository,
+             core:domain, minimal iOS smoke app
+    Phase 2  data: core:datastore, core:database (Room KMP, SQLiteDriver), core:data split into
+             shared + platform code, Koin wiring for iOS
+    Phase 3  UI: core:designsystem, core:navigation, features on Compose Multiplatform,
+             composeResources, the real iOS app
+    Phase 4  iOS platform services and release (notifications, backup, share, review, App Store)
+
+  Decisions already taken (don't reopen without a new proposal):
+    - Targets: android + iosArm64 + iosSimulatorArm64; iPhone only; iOS 16+; Apple Silicon Macs.
+    - KMP modules use AGP 9's com.android.kotlin.multiplatform.library plugin
+      (com.android.library cannot be combined with KMP under AGP 9).
+    - Pure Kotlin utilities move from core:common into a new KMP module, core:foundation;
+      core:common stays Android-only (resources, Context, display formatters).
+    - Shared code returns data (LocalDate, enums), not display text or colour resources;
+      each platform's UI formats it.
+    - Dates are kotlin.time.Instant / kotlinx-datetime everywhere. The database stores local
+      wall-clock time as if it were UTC (DateConverter, pinned by DateConverterTest); that
+      storage format must never change.
+    - Phase 1 iOS app: a throwaway SwiftUI smoke app that links the shared framework.
+
+  Hard rules for every change:
+    - Android behaviour stays identical unless the proposal names a user-visible change, and
+      then it needs "What's new" notes (see CLAUDE.md).
+    - Stored data stays bit-identical; a Room schema change needs a migration and its test.
+    - The agent session cannot run Gradle or Xcode. The developer runs the verify commands and
+      shares build-log.txt; a task is only checked off after that run is green.
+
+rules:
+  proposal:
+    - State the user-visible impact explicitly (normally "none").
+    - Include a rollback plan (normally "revert this change's commits on the feature branch").
+    - List every module touched under Impact.
+  specs:
+    - Requirements describe behaviour and contracts other code relies on, not file edits.
+    - Every scenario must be checkable by a test or a named build command.
+  design:
+    - Each decision lists the alternatives considered and why they lost.
+    - Risks are written as "risk → mitigation".
+    - Include a migration and rollback section.
+  tasks:
+    - End every task group with a verify task that names the exact command to run.
+    - The last group is verification - the full Android build, unit tests, lint, the iOS
+      compile/test tasks, and a manual smoke test - with what "green" looks like.
+
+operations:
+  apply:
+    guidance:
+      - Work one task group at a time and stop after its verify task until the developer
+        confirms the build.
+      - Stop and ask before any architecture decision the design doesn't already settle.
+  archive:
+    guidance:
+      - Archive only after the developer confirms the full verification group is green.

@@ -9,6 +9,8 @@ android {
 }
 
 dependencies {
+    // Pure Kotlin utilities that moved out of this module (KMP: add-kmp-foundation-module).
+    api(project(":core:foundation"))
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
 

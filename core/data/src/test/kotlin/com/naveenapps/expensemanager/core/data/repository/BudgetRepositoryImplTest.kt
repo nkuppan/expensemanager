@@ -5,11 +5,11 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import app.cash.turbine.test
 import com.google.common.truth.Truth
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.database.dao.AccountDao
 import com.naveenapps.expensemanager.core.database.dao.BudgetDao
 import com.naveenapps.expensemanager.core.database.dao.CategoryDao
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.BudgetRepository

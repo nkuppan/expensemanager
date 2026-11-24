@@ -45,6 +45,8 @@ data class DashboardState(
     val upcoming: UpcomingUi = UpcomingUi(),
     /** People & debts card: open totals, formatted; null when nothing is owed either way. */
     val debtTotals: DebtTotalsUi? = null,
+    /** True once the debt totals have loaded, so the empty card can't flash up before them. */
+    val debtsLoaded: Boolean = false,
     /**
      * Home's share banner is hidden until this time (epoch millis). Defaults to "never" so it
      * can't flash up before the stored value loads.

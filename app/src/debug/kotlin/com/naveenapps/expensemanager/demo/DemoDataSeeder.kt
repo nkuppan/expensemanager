@@ -1,7 +1,6 @@
 package com.naveenapps.expensemanager.demo
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.database.ExpenseManagerDatabase
 import com.naveenapps.expensemanager.core.domain.usecase.account.AddAccountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.AddBudgetUseCase
@@ -13,6 +12,7 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.SaveC
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetOnboardingStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.onboarding.SetPreloadStatusUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
+import com.naveenapps.expensemanager.core.foundation.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.model.Account
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Budget

@@ -1,18 +1,17 @@
 plugins {
-    id("naveenapps.plugin.android.library")
-    id("naveenapps.plugin.kotlin.basic")
+    // Kotlin Multiplatform: Android + iOS (OpenSpec change make-core-model-multiplatform).
+    id("naveenapps.plugin.kmp.library")
 }
 
-android {
-    namespace = "com.naveenapps.expensemanager.core.model"
-}
-
-dependencies {
-    implementation(libs.kotlinx.serialization.json)
-    // api: model classes expose kotlinx-datetime types (LocalDate, ...) to every consumer.
-    api(libs.kotlinx.datetime)
-    implementation(libs.androidx.compose.runtime.annotation)
-
-    // JvmApiInSharedLayer: keeps this module free of JVM/Android-only APIs ahead of KMP.
-    lintChecks(project(":lint-rules"))
+// Domain models shared by every platform. No Android, no java.*: the iOS compile enforces it,
+// so no shared-layer lint check is needed.
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            // api: model classes expose kotlinx-datetime types (LocalDate, ...) to every consumer.
+            api(libs.kotlinx.datetime)
+            // @Stable; published for iOS too.
+            implementation(libs.androidx.compose.runtime.annotation)
+        }
+    }
 }

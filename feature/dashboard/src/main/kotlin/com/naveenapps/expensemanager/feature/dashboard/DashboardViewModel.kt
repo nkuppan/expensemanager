@@ -2,11 +2,7 @@ package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.AppShareLink
-import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
-import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtTotalsUseCase
@@ -19,6 +15,10 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.reminder.Updat
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionGroupByCategoryUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.toTransactionUIModel
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.foundation.toLocalDateIn
+import com.naveenapps.expensemanager.core.foundation.toMonthAndYearKey
+import com.naveenapps.expensemanager.core.foundation.toYearKey
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
@@ -172,7 +172,7 @@ class DashboardViewModel(
                     toGive = getFormattedAmountUseCase(it.toGiveMilli.milliToDouble(), currency).amountString.orEmpty(),
                 )
             }
-        }.onEach { debts -> _state.update { it.copy(debtTotals = debts) } }
+        }.onEach { debts -> _state.update { it.copy(debtTotals = debts, debtsLoaded = true) } }
             .launchIn(viewModelScope)
 
         settingsRepository.getDashboardOrder()
@@ -485,6 +485,10 @@ class DashboardViewModel(
                 appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactions)
 
             DashboardAction.OpenDebts -> appComposeNavigator.navigate(ExpenseManagerScreens.DebtList)
+
+            is DashboardAction.AddDebt -> appComposeNavigator.navigate(
+                ExpenseManagerScreens.DebtEntry(kind = action.kind.name),
+            )
 
             is DashboardAction.OpenRecurringEdit ->
                 appComposeNavigator.navigate(ExpenseManagerScreens.RecurringTransactionEdit(action.id))

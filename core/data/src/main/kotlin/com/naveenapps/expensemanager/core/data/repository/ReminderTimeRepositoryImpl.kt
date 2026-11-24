@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.core.data.repository
 
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.DeviceLocalDataStore
 import com.naveenapps.expensemanager.core.datastore.ReminderTimeDataStore
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository

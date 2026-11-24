@@ -66,6 +66,11 @@ gradlePlugin {
             implementationClass =
                 "com.naveenapps.buildsrc.plugins.AndroidRoomPlugin"
         }
+        create("KmpLibraryConfigPlugin") {
+            id = "naveenapps.plugin.kmp.library"
+            implementationClass =
+                "com.naveenapps.buildsrc.plugins.KmpLibraryConfigPlugin"
+        }
         create("ReleaseConfigPlugin") {
             id = "naveenapps.plugin.release"
             implementationClass =

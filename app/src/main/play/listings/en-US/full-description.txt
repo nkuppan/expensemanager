@@ -1,49 +1,58 @@
-Take control of your money with Expense Manager — a simple, ad-free way to track your spending, stick to your budgets and understand exactly where your money goes.
+Expense Manager is a free, open-source expense tracker and budget planner. No ads, no in-app purchases, no subscription and no sign-up: every feature is free for everyone, your financial data stays on your phone, and the app works fully offline.
 
-Log an expense in seconds, organise it by category and account, and instantly see clear charts of your income, expenses and savings. No clutter, no ads, no sign-up required.
+Log a spend in a few taps, set monthly budgets, keep track of money you've lent or borrowed, and see exactly where your money goes.
 
 <b>💰 Track every transaction</b>
 • Record expenses, income and transfers between accounts
-• Add categories, notes, dates and receipt photos to every entry
-• Set up recurring transactions for bills, rent and salary
-• Manage multiple accounts — cash, bank, savings, credit cards and more
-• Search and filter transactions by account, type or date
+• Multiple accounts: cash, bank, savings, credit cards and more
+• Categories, notes, dates and receipt photos on every entry
+• Scan a shop receipt, or share a payment screenshot to the app: it reads it on your phone and fills in the details for you to check
+• One-tap frequent entries and payee suggestions
+• Search and filter by account, category, type or date
 
-<b>📊 Clear insights & statistics</b>
-• Dashboard with your income, expenses and net balance at a glance
-• Category breakdown charts showing where your money goes
-• Spending trends by day, week, month or year
-• Detailed income vs. expense summaries
+<b>🔁 Recurring payments & upcoming bills</b>
+• Recurring transactions for rent, salary, bills and subscriptions, added on their due date
+• Upcoming payments on the Home screen, with a heads-up the evening before
+
+<b>🤝 People & debts</b>
+• Record money you lent or borrowed, with due dates and partial repayments
+• A notification on the due date and a friendly reminder message to send
+• Debts are kept separate, so they never count as spending or income
 
 <b>🎯 Budgets that keep you on track</b>
-• Set monthly budgets for all spending or specific categories and accounts
-• See how much you've spent and what's left at a glance
-• Get notified when you're close to or over a budget
+• Monthly budgets for all spending or for specific categories
+• See what you've spent and what's left
+• Alerts when you're close to or over a budget
 
-<b>🔔 Never forget to log</b>
+<b>📊 See where your money goes</b>
+• A Home dashboard you can rearrange: summary, accounts, budgets, debts and more
+• Category charts and spending trends by day, week, month or year
+• This month vs. last month, with the biggest changes highlighted
+
+<b>🔔 Build the habit</b>
 • Optional daily reminder at a time you choose
-• Home screen widget with your balance, recent transactions and one-tap add
+• Log your most frequent expense straight from the reminder, with Undo
+• Home screen widget with one-tap add
 
 <b>🔒 Private & secure</b>
 • Your financial data is stored only on your device
-• No account or sign-up needed
-• App lock with fingerprint / biometric protection
-• Passphrase-protected backup and restore — move your data to a new phone anytime
+• No account, no sign-up, no cloud sync
+• Never reads your SMS or bank account
+• Fingerprint app lock
 
-<b>📁 Export your data</b>
-• Export transactions to CSV for spreadsheets
-• Export to PDF for easy sharing and record-keeping
+<b>💾 Backup & export</b>
+• Passphrase-protected backup and restore, e.g. to Google Drive
+• Automatic backups (daily, weekly or monthly) to a folder you choose
+• Export to CSV or PDF
 
 <b>🎨 Made for you</b>
-• Clean, modern Material design
+• Any currency, with your preferred number format
 • Light and dark themes
-• Supports any currency
-• Available in 16 languages, including English, Hindi, Spanish, German, French, Portuguese, Japanese, Korean, Chinese, Arabic and more
+• 16 languages, including English, Hindi, Spanish, German, French, Portuguese, Japanese, Korean, Chinese and Arabic
 
-<b>✨ Why Expense Manager?</b>
-• 100% ad-free
-• Simple and fast — built for everyday use
-• Works offline
-• Open source and actively maintained
+<b>✨ Free, ad-free and open source</b>
+• 100% free: no ads, no in-app purchases, no subscription, no locked features
+• Open source under the Apache 2.0 licence, so anyone can check how it works: github.com/nkuppan/expensemanager
+• Actively maintained, with new features in every release
 
-Start tracking today and build better money habits — one expense at a time.
+Start tracking today and build better money habits, one expense at a time.

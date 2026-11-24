@@ -1,4 +1,4 @@
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import kotlinx.coroutines.Dispatchers
 import org.koin.dsl.module
 

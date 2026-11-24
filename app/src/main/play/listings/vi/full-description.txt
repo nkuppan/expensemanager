@@ -1,49 +1,58 @@
-Làm chủ tài chính với Expense Manager — cách đơn giản, không quảng cáo để ghi lại chi tiêu, giữ đúng ngân sách và biết chính xác tiền của bạn đi đâu.
+Expense Manager là ứng dụng ghi chép chi tiêu và quản lý ngân sách miễn phí, mã nguồn mở. Không quảng cáo, không mua trong ứng dụng, không gói đăng ký và không cần tạo tài khoản: mọi tính năng đều miễn phí cho tất cả mọi người, dữ liệu tài chính nằm trên điện thoại của bạn và ứng dụng hoạt động hoàn toàn ngoại tuyến.
 
-Ghi một khoản chi chỉ trong vài giây, sắp xếp theo danh mục và tài khoản, rồi xem ngay biểu đồ rõ ràng về thu nhập, chi tiêu và tiết kiệm. Gọn gàng, không quảng cáo, không cần đăng ký.
+Ghi một khoản chi chỉ với vài lần chạm, đặt ngân sách hằng tháng, theo dõi tiền cho vay hoặc đi vay, và biết chính xác tiền của bạn đi đâu.
 
 <b>💰 Theo dõi mọi giao dịch</b>
-• Ghi lại khoản chi, khoản thu và chuyển tiền giữa các tài khoản
-• Thêm danh mục, ghi chú, ngày và ảnh hóa đơn cho mỗi giao dịch
-• Thiết lập giao dịch định kỳ cho hóa đơn, tiền nhà và lương
-• Quản lý nhiều tài khoản — tiền mặt, ngân hàng, tiết kiệm, thẻ tín dụng và hơn thế
-• Tìm kiếm và lọc giao dịch theo tài khoản, loại hoặc ngày
+• Ghi khoản chi, khoản thu và chuyển tiền giữa các tài khoản
+• Nhiều tài khoản: tiền mặt, ngân hàng, tiết kiệm, thẻ tín dụng và hơn thế
+• Danh mục, ghi chú, ngày và ảnh hóa đơn cho mỗi giao dịch
+• Quét hóa đơn mua hàng hoặc chia sẻ ảnh chụp màn hình thanh toán vào ứng dụng: ứng dụng đọc ngay trên điện thoại và điền sẵn thông tin để bạn kiểm tra
+• Giao dịch thường dùng chỉ một chạm và gợi ý người nhận
+• Tìm kiếm và lọc theo tài khoản, danh mục, loại hoặc ngày
 
-<b>📊 Thống kê rõ ràng</b>
-• Bảng tổng quan thu nhập, chi tiêu và số dư ròng
-• Biểu đồ theo danh mục cho thấy tiền của bạn đi đâu
-• Xu hướng chi tiêu theo ngày, tuần, tháng hoặc năm
-• Tổng kết chi tiết thu và chi
+<b>🔁 Khoản định kỳ & hóa đơn sắp tới</b>
+• Giao dịch định kỳ cho tiền nhà, lương, hóa đơn và gói đăng ký, được thêm đúng ngày đến hạn
+• Khoản thanh toán sắp tới trên màn hình chính, kèm nhắc nhở vào tối hôm trước
+
+<b>🤝 Mọi người & khoản nợ</b>
+• Ghi lại tiền cho vay hoặc đi vay, kèm ngày đến hạn và trả góp một phần
+• Thông báo vào ngày đến hạn và tin nhắn nhắc nhở thân thiện để gửi
+• Khoản nợ được tách riêng, không bao giờ tính là chi tiêu hay thu nhập
 
 <b>🎯 Ngân sách giúp bạn đi đúng hướng</b>
-• Đặt ngân sách hàng tháng cho mọi khoản chi hoặc cho từng danh mục, tài khoản
-• Xem nhanh đã chi bao nhiêu và còn lại bao nhiêu
-• Nhận thông báo khi sắp chạm hoặc vượt ngân sách
+• Ngân sách hằng tháng cho toàn bộ chi tiêu hoặc từng danh mục
+• Xem đã chi bao nhiêu và còn lại bao nhiêu
+• Cảnh báo khi sắp chạm hoặc vượt ngân sách
 
-<b>🔔 Không quên ghi chép</b>
-• Nhắc nhở hằng ngày tùy chọn vào giờ bạn chọn
-• Tiện ích màn hình chính với số dư, giao dịch gần đây và thêm nhanh một chạm
+<b>📊 Biết tiền của bạn đi đâu</b>
+• Bảng điều khiển trang chủ có thể sắp xếp lại: tổng quan, tài khoản, ngân sách, khoản nợ và hơn thế
+• Biểu đồ theo danh mục và xu hướng chi tiêu theo ngày, tuần, tháng hoặc năm
+• So sánh tháng này với tháng trước, làm nổi bật những thay đổi lớn nhất
+
+<b>🔔 Xây dựng thói quen</b>
+• Nhắc nhở hằng ngày tùy chọn vào giờ bạn muốn
+• Ghi khoản chi thường gặp nhất ngay từ thông báo nhắc nhở, có nút Hoàn tác
+• Tiện ích màn hình chính để thêm chỉ với một chạm
 
 <b>🔒 Riêng tư & an toàn</b>
 • Dữ liệu tài chính chỉ được lưu trên thiết bị của bạn
-• Không cần tài khoản hay đăng ký
-• Khóa ứng dụng bằng vân tay / sinh trắc học
-• Sao lưu và khôi phục có mật khẩu — chuyển dữ liệu sang điện thoại mới bất cứ lúc nào
+• Không tài khoản, không đăng ký, không đồng bộ đám mây
+• Không bao giờ đọc SMS hay tài khoản ngân hàng của bạn
+• Khóa ứng dụng bằng vân tay
 
-<b>📁 Xuất dữ liệu</b>
-• Xuất CSV để dùng với bảng tính
-• Xuất PDF để chia sẻ và lưu trữ dễ dàng
+<b>💾 Sao lưu & xuất dữ liệu</b>
+• Sao lưu và khôi phục được bảo vệ bằng cụm mật khẩu, ví dụ lên Google Drive
+• Tự động sao lưu (hằng ngày, hằng tuần hoặc hằng tháng) vào thư mục bạn chọn
+• Xuất ra CSV hoặc PDF
 
 <b>🎨 Dành cho bạn</b>
-• Thiết kế Material gọn gàng, hiện đại
+• Mọi loại tiền tệ, với định dạng số bạn thích
 • Giao diện sáng và tối
-• Hỗ trợ mọi loại tiền tệ
-• Có 16 ngôn ngữ, bao gồm tiếng Việt và tiếng Anh
+• 16 ngôn ngữ, gồm tiếng Việt, tiếng Anh, tiếng Indonesia, tiếng Nhật và tiếng Hàn
 
-<b>✨ Vì sao chọn Expense Manager?</b>
-• 100% không quảng cáo
-• Đơn giản, nhanh — cho mỗi ngày
-• Dùng được ngoại tuyến
-• Mã nguồn mở và được phát triển tích cực
+<b>✨ Miễn phí, không quảng cáo và mã nguồn mở</b>
+• Miễn phí 100%: không quảng cáo, không mua trong ứng dụng, không gói đăng ký, không khóa tính năng
+• Mã nguồn mở theo giấy phép Apache 2.0, ai cũng có thể kiểm tra cách hoạt động: github.com/nkuppan/expensemanager
+• Được phát triển tích cực, có tính năng mới trong mỗi phiên bản
 
-Bắt đầu ngay hôm nay và xây dựng thói quen tài chính tốt hơn — từng khoản chi một.
+Bắt đầu ngay hôm nay và xây dựng thói quen tài chính tốt hơn, từng khoản chi một.

@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertWithMessage
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
+import com.naveenapps.expensemanager.core.model.BudgetStatus
 import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
 import java.time.Year
@@ -28,7 +29,7 @@ class BudgetProgressPeriodTest {
         title = BudgetTitle.ThisMonth,
         selectedMonth = key,
         periodType = period,
-        progressBarColor = 0,
+        status = BudgetStatus.SAFE,
         amount = Amount(left, "$left"),
         transactionAmount = Amount(0.0, "0"),
         percent = 0f,

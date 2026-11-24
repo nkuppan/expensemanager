@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.feature.dashboard
 
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
+import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 
 sealed class DashboardAction {
@@ -38,6 +39,9 @@ sealed class DashboardAction {
 
     /** People & debts card on Home. */
     data object OpenDebts : DashboardAction()
+
+    /** From the empty People & debts card: record a first loan (lent or borrowed). */
+    data class AddDebt(val kind: DebtEntryKind) : DashboardAction()
 
     data class OpenRecurringEdit(val id: String) : DashboardAction()
 

@@ -1,7 +1,7 @@
 package com.naveenapps.expensemanager.core.data.repository
 
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.repository.export.ExportStrategy
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.ExportData
 import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource

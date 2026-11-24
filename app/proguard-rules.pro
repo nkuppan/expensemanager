@@ -11,15 +11,11 @@
 # reflection needs keeping; everything else (Room, Koin, Compose, kotlinx.serialization
 # routes, WorkManager workers, manifest components) is handled by library/AAPT rules.
 
-# Gson: CountryRepositoryImpl parses the bundled countries JSON into these DTOs by reflection.
+# The bundled countries JSON DTOs (core:data). Parsed with kotlinx.serialization, whose generated
+# serializers need no reflection; the keep rule and attributes stay as a cheap safety net.
 -keepattributes Signature
 -keepattributes *Annotation*
 -keep class com.naveenapps.expensemanager.core.data.dto.** { *; }
--keepclassmembers,allowobfuscation class * {
-  @com.google.gson.annotations.SerializedName <fields>;
-}
--keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
--keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
 # Glance stores widget click callbacks by class name and instantiates them reflectively.
 -keep class * implements androidx.glance.appwidget.action.ActionCallback { <init>(); }

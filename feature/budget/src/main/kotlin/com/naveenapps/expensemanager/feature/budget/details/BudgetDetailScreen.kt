@@ -47,6 +47,7 @@ import com.naveenapps.expensemanager.core.designsystem.ui.components.Transaction
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.BudgetStatus
 import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.budget.R
@@ -290,7 +291,7 @@ fun BudgetDetailsScaffoldViewPreview() {
             id = "sample",
             title = BudgetTitle.Custom("Groceries"),
             selectedMonth = "June 2026",
-            progressBarColor = com.naveenapps.expensemanager.core.common.R.color.green_500,
+            status = BudgetStatus.SAFE,
             amount = Amount(100.0, "$100.00"),
             transactionAmount = Amount(50.0, "$50.00"),
             percent = 50.0f,

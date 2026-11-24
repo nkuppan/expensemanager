@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.feature.about.licenses
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext

@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.core.data.repository
 
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.RecurringTransactionDao
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import kotlin.time.Instant

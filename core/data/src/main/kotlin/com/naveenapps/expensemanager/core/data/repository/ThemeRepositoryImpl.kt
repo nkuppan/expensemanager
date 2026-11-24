@@ -1,9 +1,9 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.R
 import com.naveenapps.expensemanager.core.datastore.ThemeDataStore
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.Theme
 import com.naveenapps.expensemanager.core.repository.ThemeRepository
 import com.naveenapps.expensemanager.core.repository.VersionCheckerRepository

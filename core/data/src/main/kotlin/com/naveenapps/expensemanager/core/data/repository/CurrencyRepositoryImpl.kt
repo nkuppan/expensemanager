@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.core.data.repository
 
 import androidx.annotation.VisibleForTesting
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.datastore.CurrencyDataStore
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.CurrencyPosition

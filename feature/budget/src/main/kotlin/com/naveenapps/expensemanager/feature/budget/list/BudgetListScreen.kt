@@ -1,6 +1,5 @@
 package com.naveenapps.expensemanager.feature.budget.list
 
-import androidx.annotation.ColorRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -51,6 +50,7 @@ import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.ItemSpecModifier
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
+import com.naveenapps.expensemanager.core.model.BudgetStatus
 import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.budget.text
@@ -132,7 +132,7 @@ private fun BudgetListScreenContent(
             ) { index, budget ->
                 BudgetItemWithCard(
                     name = budget.title.text(),
-                    progressBarColor = budget.progressBarColor,
+                    status = budget.status,
                     amount = budget.amount,
                     transactionAmount = budget.transactionAmount,
                     percentage = budget.percent,
@@ -163,7 +163,7 @@ private fun BudgetListScreenContent(
 @Composable
 fun BudgetItemWithCard(
     name: String,
-    @ColorRes progressBarColor: Int,
+    status: BudgetStatus,
     amount: Amount?,
     transactionAmount: Amount?,
     modifier: Modifier = Modifier,
@@ -179,7 +179,7 @@ fun BudgetItemWithCard(
     ) {
         BudgetItem(
             name = name,
-            progressBarColor = progressBarColor,
+            status = status,
             amount = amount,
             transactionAmount = transactionAmount,
             percentage = percentage,
@@ -195,13 +195,13 @@ fun BudgetItemWithCard(
 @Composable
 fun BudgetItem(
     name: String,
-    @ColorRes progressBarColor: Int,
+    status: BudgetStatus,
     amount: Amount?,
     transactionAmount: Amount?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
 ) {
-    val barColor = emColorOf(progressBarColor)
+    val barColor = emColorOf(status)
     val isOverBudget = percentage > 100f
     val clampedProgress = (percentage / 100f).coerceIn(0f, 1f)
 
@@ -288,14 +288,14 @@ fun BudgetItem(
 @Composable
 fun DashBoardBudgetItem(
     name: String,
-    @ColorRes progressBarColor: Int,
+    status: BudgetStatus,
     amount: String?,
     transactionAmount: String?,
     modifier: Modifier = Modifier,
     percentage: Float = 0.0f,
     onItemClick: () -> Unit = {},
 ) {
-    val barColor = emColorOf(progressBarColor)
+    val barColor = emColorOf(status)
     val isOverBudget = percentage > 100f
     val clampedProgress = (percentage / 100f).coerceIn(0f, 1f)
 
@@ -397,7 +397,7 @@ private fun getBudgetUiModel(id: String) = BudgetUiModel(
     selectedMonth = "June 2026",
     amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
     transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
-    progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
+    status = BudgetStatus.RISK,
     percent = 0.9f,
 )
 
@@ -410,7 +410,7 @@ private fun BudgetItemPreview() {
             amount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             transactionAmount = Amount(amount = 300.0, amountString = "300.00 ₹"),
             modifier = ItemSpecModifier,
-            progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
+            status = BudgetStatus.RISK,
             percentage = 78.8f,
         )
     }
@@ -422,7 +422,7 @@ private fun DashboardBudgetItemPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         DashBoardBudgetItem(
             name = "This Month Budget",
-            progressBarColor = com.naveenapps.expensemanager.core.common.R.color.orange_500,
+            status = BudgetStatus.RISK,
             amount = "$100.00",
             transactionAmount = "$78.00",
             modifier = ItemSpecModifier,

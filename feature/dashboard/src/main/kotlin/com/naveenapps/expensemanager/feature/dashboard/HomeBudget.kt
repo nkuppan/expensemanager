@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.compose.runtime.Stable
-import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
+import com.naveenapps.expensemanager.core.foundation.toYearKey
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.feature.budget.components.BudgetProgress
 import kotlin.time.Clock

@@ -4,9 +4,9 @@ import android.content.res.Resources
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.ConfigurationCompat
 import androidx.core.os.LocaleListCompat
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.R
 import com.naveenapps.expensemanager.core.datastore.LocaleDataStore
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.AppLocale
 import com.naveenapps.expensemanager.core.repository.LocaleRepository
 import kotlinx.coroutines.flow.Flow

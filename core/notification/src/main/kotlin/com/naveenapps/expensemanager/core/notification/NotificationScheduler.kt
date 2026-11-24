@@ -24,8 +24,8 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.naveenapps.expensemanager.core.common.utils.nextTimeOfDay
-import com.naveenapps.expensemanager.core.common.utils.nextWeekdayAt
+import com.naveenapps.expensemanager.core.foundation.nextTimeOfDay
+import com.naveenapps.expensemanager.core.foundation.nextWeekdayAt
 import com.naveenapps.expensemanager.core.model.AutoBackupError
 import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository

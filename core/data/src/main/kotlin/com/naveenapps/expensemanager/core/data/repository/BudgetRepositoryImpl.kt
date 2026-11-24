@@ -1,10 +1,10 @@
 package com.naveenapps.expensemanager.core.data.repository
 
-import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.data.mappers.toDomainModel
 import com.naveenapps.expensemanager.core.data.mappers.toEntityModel
 import com.naveenapps.expensemanager.core.database.dao.BudgetDao
 import com.naveenapps.expensemanager.core.database.entity.BudgetEntity
+import com.naveenapps.expensemanager.core.foundation.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.BudgetRepository

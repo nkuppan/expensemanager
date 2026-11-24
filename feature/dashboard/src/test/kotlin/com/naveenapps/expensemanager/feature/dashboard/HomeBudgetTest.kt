@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
+import com.naveenapps.expensemanager.core.model.BudgetStatus
 import com.naveenapps.expensemanager.core.model.BudgetTitle
 import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
 import kotlinx.datetime.LocalDate
@@ -24,7 +25,7 @@ class HomeBudgetTest {
         title = BudgetTitle.ThisMonth,
         selectedMonth = key,
         periodType = period,
-        progressBarColor = 0,
+        status = BudgetStatus.SAFE,
         amount = Amount(limit, "₹$limit"),
         transactionAmount = Amount(spent, "₹$spent"),
         percent = (spent / limit * 100).toFloat(),
