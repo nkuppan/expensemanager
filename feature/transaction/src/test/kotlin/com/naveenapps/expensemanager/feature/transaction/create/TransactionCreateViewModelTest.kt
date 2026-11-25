@@ -44,6 +44,7 @@ import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.SharedReceipt
 import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
+import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
@@ -92,6 +93,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
     private val sharedReceiptRepository: SharedReceiptRepository = mock()
     private val receiptTextReader: ReceiptTextReader = mock()
     private val getPayeeSuggestionsUseCase: GetPayeeSuggestionsUseCase = mock()
+    private val transactionRepository: TransactionRepository = mock()
 
     private lateinit var viewModel: TransactionCreateViewModel
 
@@ -138,6 +140,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         whenever(feedbackRepository.shouldShowFeedbackDialog()).thenReturn(flowOf(false))
         whenever(getFormattedAmountUseCase.invoke(any(), any())).thenReturn(Amount(0.0))
         whenever(getFrequentTransactionsUseCase.invoke(any())).thenReturn(flowOf(emptyList()))
+        whenever(transactionRepository.getAllTransaction()).thenReturn(flowOf(emptyList()))
         runBlocking {
             whenever(getPayeeSuggestionsUseCase.invoke(any(), anyOrNull())).thenReturn(PayeeSuggestions())
         }
@@ -170,6 +173,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         sharedReceiptRepository = sharedReceiptRepository,
         receiptTextReader = receiptTextReader,
         getPayeeSuggestionsUseCase = getPayeeSuggestionsUseCase,
+        transactionRepository = transactionRepository,
     )
 
     // region helpers
@@ -181,6 +185,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         selectedCategory: Category = fakeCategory,
         selectedFromAccount: AccountUiModel = fakeFromAccount,
         selectedToAccount: AccountUiModel = fakeToAccount,
+        originalTransactionId: String? = null,
     ) = TransactionCreateState(
         amount = TextFieldValue(value = "100.00", valueError = false, onValueChange = null),
         notes = TextFieldValue(value = notes, valueError = false, onValueChange = null),
@@ -190,6 +195,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         selectedCategory = selectedCategory,
         selectedFromAccount = selectedFromAccount,
         selectedToAccount = selectedToAccount,
+        originalTransactionId = originalTransactionId,
         accounts = emptyList(),
         categories = emptyList(),
         accountSelection = AccountSelection.FROM_ACCOUNT,
@@ -243,6 +249,71 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         )
 
         assertThat(result.toAccountId).isEqualTo(fakeToAccount.id)
+    }
+
+    // endregion
+
+    // region original transaction (refund link)
+
+    @Test
+    fun `refund transaction maps originalTransactionId from state`() {
+        val result = viewModel.buildTransactionFromState(
+            buildState(
+                transactionType = TransactionType.REFUND,
+                originalTransactionId = "original-1",
+            ),
+            amountValue = 100.0,
+        )
+
+        assertThat(result.originalTransactionId).isEqualTo("original-1")
+    }
+
+    @Test
+    fun `non-refund transaction drops the original transaction id`() {
+        val result = viewModel.buildTransactionFromState(
+            buildState(
+                transactionType = TransactionType.EXPENSE,
+                originalTransactionId = "original-1",
+            ),
+            amountValue = 100.0,
+        )
+
+        assertThat(result.originalTransactionId).isNull()
+    }
+
+    @Test
+    fun `selecting an original transaction links it and pre-fills the form`() {
+        whenever(numberFormatRepository.formatForEditing(200.0)).thenReturn("200.00")
+        val original = FAKE_EXPENSE_TRANSACTION.copy(
+            id = "original-1",
+            notes = "Groceries",
+            amount = Amount(200.0),
+            category = fakeCategory,
+        )
+
+        viewModel.processAction(TransactionCreateAction.SelectOriginalTransaction(original))
+
+        val state = viewModel.state.value
+        assertThat(state.transactionType).isEqualTo(TransactionType.REFUND)
+        assertThat(state.originalTransactionId).isEqualTo("original-1")
+        assertThat(state.originalTransaction).isEqualTo(original)
+        assertThat(state.notes.value).isEqualTo("Groceries")
+        assertThat(state.amount.value).isEqualTo("200.00")
+        assertThat(state.selectedCategory).isEqualTo(fakeCategory)
+        assertThat(state.showOriginalTransactionSelection).isFalse()
+    }
+
+    @Test
+    fun `changing away from refund clears the link`() {
+        whenever(numberFormatRepository.formatForEditing(200.0)).thenReturn("200.00")
+        val original = FAKE_EXPENSE_TRANSACTION.copy(id = "original-1", category = fakeCategory)
+        viewModel.processAction(TransactionCreateAction.SelectOriginalTransaction(original))
+
+        viewModel.processAction(TransactionCreateAction.ChangeTransactionType(TransactionType.EXPENSE))
+
+        val state = viewModel.state.value
+        assertThat(state.originalTransactionId).isNull()
+        assertThat(state.originalTransaction).isNull()
     }
 
     // endregion

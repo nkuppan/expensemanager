@@ -209,6 +209,22 @@ class GetChartDataUseCaseTest {
     }
 
     @Test
+    fun `refunds subtract from the expense bucket of their day`() = runTest {
+        val result = useCase(
+            type = DateRangeType.CUSTOM,
+            range = listOf(localMidnight(2026, 11, 1), localMidnight(2026, 11, 22)),
+            transactions = listOf(
+                tx(2026, 11, 5, 10, amount = 200.0),
+                tx(2026, 11, 5, 12, amount = 60.0, type = TransactionType.REFUND),
+            ),
+        ).invoke().first()
+
+        val chart = result.chartData
+        assertThat(chart).isNotNull()
+        assertThat(chart!!.chartData[0].sumOf { it.total }).isEqualTo(140.0)
+    }
+
+    @Test
     fun `empty period yields no chart data`() = runTest {
         val result = useCase(
             type = DateRangeType.CUSTOM,

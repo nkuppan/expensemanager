@@ -28,6 +28,7 @@
     <string name="expense">Gasto</string>
     <string name="income">Ingreso</string>
     <string name="transfer">Transferencia</string>
+    <string name="refund">Devolución</string>
 
     <string name="select_different_account">Selecciona una cuenta diferente. Las cuentas de origen y destino no deben ser la misma.</string>
     <string name="amount_error_message">Por favor, introduce un importe válido</string>
@@ -38,6 +39,10 @@
     <string name="select_category">Seleccionar categoría</string>
     <string name="select_date">Seleccionar fecha</string>
     <string name="select_time">Seleccionar hora</string>
+    <string name="select_original_transaction">Seleccionar transacción original</string>
+    <string name="original_transaction">Transacción original</string>
+    <string name="refund_of">Devolución de %1$s</string>
+    <string name="no_original_transactions_available">Aún no hay gastos ni ingresos en esta cuenta</string>
 
     <string name="transaction">Transacción</string>
     <string name="clear">Borrar</string>

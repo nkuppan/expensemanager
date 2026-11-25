@@ -26,10 +26,11 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.ExpenseFlowState
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
-import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.milliToDouble
 import com.naveenapps.expensemanager.core.model.needsAttention
+import com.naveenapps.expensemanager.core.model.netExpense
+import com.naveenapps.expensemanager.core.model.netIncome
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -221,13 +222,9 @@ class DashboardViewModel(
                 )
             }
 
-            val incomeValue = transactions?.filter { it.type == TransactionType.INCOME }?.sumOf {
-                it.amount.amount
-            } ?: 0.0
+            val incomeValue = transactions?.netIncome() ?: 0.0
 
-            val expenseValue = transactions?.filter { it.type == TransactionType.EXPENSE }?.sumOf {
-                it.amount.amount
-            } ?: 0.0
+            val expenseValue = transactions?.netExpense() ?: 0.0
 
             _state.update {
                 it.copy(

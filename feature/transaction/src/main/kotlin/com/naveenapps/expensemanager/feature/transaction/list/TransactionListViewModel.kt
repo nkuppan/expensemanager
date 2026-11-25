@@ -23,6 +23,8 @@ import com.naveenapps.expensemanager.core.model.TransactionGroup
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.milliToDouble
+import com.naveenapps.expensemanager.core.model.netExpense
+import com.naveenapps.expensemanager.core.model.netIncome
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
@@ -117,9 +119,11 @@ class TransactionListViewModel(
                 null
             } else {
                 // A total that's zero isn't shown (e.g. no income among the results).
-                fun totalOf(type: TransactionType): String? = matching
-                    .filter { it.type == type }
-                    .sumOf { it.amount.amount }
+                fun totalOf(type: TransactionType): String? = when (type) {
+                    TransactionType.EXPENSE -> matching.netExpense()
+                    TransactionType.INCOME -> matching.netIncome()
+                    else -> 0.0
+                }
                     .takeIf { it > 0.0 }
                     ?.let { getFormattedAmountUseCase.invoke(it, currency).amountString }
                 SearchSummary(
@@ -327,6 +331,10 @@ fun List<Transaction>.toTransactionSum() = this.sumOf {
 
         TransactionType.TRANSFER -> {
             0.0
+        }
+
+        TransactionType.REFUND -> {
+            it.amount.amount
         }
     }
 }

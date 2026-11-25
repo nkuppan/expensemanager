@@ -11,7 +11,8 @@ import com.naveenapps.expensemanager.core.database.entity.FrequentTransactionRow
 import com.naveenapps.expensemanager.core.database.entity.TransactionAttachmentEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionEntity
 import com.naveenapps.expensemanager.core.database.entity.TransactionRelation
-import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isRefund
 import com.naveenapps.expensemanager.core.model.isTransfer
 import java.util.Date
 import java.util.UUID
@@ -190,11 +191,14 @@ interface TransactionDao : BaseDao<TransactionEntity> {
         val previousTransaction = findEntityById(transactionEntity.id)
 
         if (previousTransaction != null) {
-            val previousAmountToDetect = if (previousTransaction.type == TransactionType.INCOME) {
-                previousTransaction.amount * -1
-            } else {
-                previousTransaction.amount
-            }
+            // Income and refunds add to the balance when saved, so reversing them always
+            // subtracts; every other type subtracts, so reversing adds back.
+            val previousAmountToDetect =
+                if (previousTransaction.type.isIncome() || previousTransaction.type.isRefund()) {
+                    previousTransaction.amount * -1
+                } else {
+                    previousTransaction.amount
+                }
             val previousSelectedFromAccount = findAccountById(previousTransaction.fromAccountId)
             if (previousSelectedFromAccount != null) {
                 updateAccount(

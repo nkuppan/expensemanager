@@ -225,6 +225,7 @@ private fun TransactionType.labelRes(): Int = when (this) {
     TransactionType.INCOME -> DesignSystemR.string.income
     TransactionType.EXPENSE -> DesignSystemR.string.expense
     TransactionType.TRANSFER -> R.string.filter_type_transfer
+    TransactionType.REFUND -> R.string.filter_type_refund
 }
 
 @Composable

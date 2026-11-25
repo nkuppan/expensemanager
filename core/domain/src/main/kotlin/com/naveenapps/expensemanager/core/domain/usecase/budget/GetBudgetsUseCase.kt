@@ -15,6 +15,8 @@ import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isRefund
+import com.naveenapps.expensemanager.core.model.netExpense
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -34,18 +36,18 @@ class GetBudgetsUseCase(
         budgetRepository.getBudgets(),
     ) { currency, _, budgets ->
         budgets.map { budget ->
-            val transactions = when (val response = getBudgetTransactionsUseCase.invoke(budget)) {
+            val budgetTransactions = when (val response = getBudgetTransactionsUseCase.invoke(budget)) {
                 is Resource.Error -> null
-                is Resource.Success -> response.data.filter { it.type.isExpense() }
+                is Resource.Success -> response.data.filter { it.type.isExpense() || it.type.isRefund() }
             }
-            val transactionAmount = transactions?.sumOf { it.amount.amount } ?: 0.0
+            val transactionAmount = budgetTransactions?.netExpense() ?: 0.0
             val percent = budgetSpentPercent(transactionAmount, budget.amount)
             budget.toBudgetUiModel(
                 title = budget.title(),
                 budgetAmount = getFormattedAmountUseCase(budget.amount, currency),
                 transactionAmount = getFormattedAmountUseCase(transactionAmount, currency),
                 percent,
-                transactions?.map {
+                budgetTransactions?.map {
                     it.toTransactionUIModel(getFormattedAmountUseCase(it.amount.amount, currency))
                 },
             )

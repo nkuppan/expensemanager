@@ -5,8 +5,11 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategorySpend
 import com.naveenapps.expensemanager.core.model.SpendingInsights
 import com.naveenapps.expensemanager.core.model.Transaction
-import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.WeekdaySpend
+import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isRefund
+import com.naveenapps.expensemanager.core.model.netExpense
+import com.naveenapps.expensemanager.core.model.netIncome
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import java.time.DayOfWeek
 import java.time.ZoneId
@@ -42,37 +45,40 @@ fun calculateSpendingInsights(
     zone: ZoneId,
     maxBiggest: Int = 5,
 ): SpendingInsights {
-    val expenses = transactions.filter { it.type == TransactionType.EXPENSE }
-    val income = transactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount.amount }
-    val totalExpense = expenses.sumOf { it.amount.amount }
+    // Expenses and refunds both move the spending figure: a refund subtracts what came back.
+    val expenseItems = transactions.filter { it.type.isExpense() || it.type.isRefund() }
+    val totalExpense = expenseItems.netExpense()
+    val totalIncome = transactions.netIncome()
 
-    val categories = expenses
+    val categories = expenseItems
         .groupBy { it.categoryId }
         .mapNotNull { (categoryId, items) ->
             val category = categoriesById[categoryId] ?: return@mapNotNull null
-            val total = items.sumOf { it.amount.amount }
+            val total = items.netExpense()
             CategorySpend(
                 category = category,
                 total = total,
                 share = if (totalExpense > 0) (total / totalExpense).toFloat() else 0f,
-                count = items.size,
+                count = items.count { it.type.isExpense() },
             )
         }
+        .filter { it.total > 0.0 }
         .sortedByDescending { it.total }
 
-    val byWeekday = expenses.groupBy { it.createdOn.toInstant().atZone(zone).dayOfWeek }
+    val byWeekday = expenseItems.groupBy { it.createdOn.toInstant().atZone(zone).dayOfWeek }
     val weekdays = DayOfWeek.entries.map { day ->
-        WeekdaySpend(day, byWeekday[day].orEmpty().sumOf { it.amount.amount })
+        WeekdaySpend(day, byWeekday[day].orEmpty().netExpense())
     }
 
     return SpendingInsights(
         totalExpense = totalExpense,
-        totalIncome = income,
-        savingsRate = if (income > 0) ((income - totalExpense) / income).toFloat() else null,
+        totalIncome = totalIncome,
+        savingsRate = if (totalIncome > 0) ((totalIncome - totalExpense) / totalIncome).toFloat() else null,
         categories = categories,
         weekdays = weekdays,
         busiestWeekday = weekdays.filter { it.total > 0 }.maxByOrNull { it.total }?.dayOfWeek,
-        biggestExpenses = expenses
+        biggestExpenses = transactions
+            .filter { it.type.isExpense() }
             .sortedByDescending { it.amount.amount }
             .take(maxBiggest),
     )

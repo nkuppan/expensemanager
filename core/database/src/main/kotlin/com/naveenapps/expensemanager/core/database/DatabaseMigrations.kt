@@ -226,6 +226,60 @@ internal val MIGRATION_11_12 = object : Migration(11, 12) {
 }
 
 /**
+ * Adds an optional `original_transaction_id` to `transaction`: the transaction a refund gives
+ * back. Every existing row keeps its data and starts with NULL, which reads as "not a refund".
+ *
+ * SQLite can't add a foreign key with ALTER TABLE, so the table is recreated with the new column
+ * and the self-reference (ON DELETE SET NULL, the refund outlives its original), copying every
+ * row across. Must match TransactionEntity exactly, indices included.
+ */
+internal val MIGRATION_12_13 = object : Migration(12, 13) {
+    override fun migrate(db: SupportSQLiteDatabase) {
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS `transaction_new` (" +
+                "`id` TEXT NOT NULL, " +
+                "`notes` TEXT NOT NULL, " +
+                "`category_id` TEXT NOT NULL, " +
+                "`from_account_id` TEXT NOT NULL, " +
+                "`type` INTEGER NOT NULL, " +
+                "`amount` REAL NOT NULL, " +
+                "`image_path` TEXT NOT NULL, " +
+                "`created_on` INTEGER NOT NULL, " +
+                "`updated_on` INTEGER NOT NULL, " +
+                "`to_account_id` TEXT, " +
+                "`original_transaction_id` TEXT, " +
+                "PRIMARY KEY(`id`), " +
+                "FOREIGN KEY(`from_account_id`) REFERENCES `account`(`id`) " +
+                "ON UPDATE NO ACTION ON DELETE CASCADE, " +
+                "FOREIGN KEY(`to_account_id`) REFERENCES `account`(`id`) " +
+                "ON UPDATE NO ACTION ON DELETE CASCADE, " +
+                "FOREIGN KEY(`original_transaction_id`) REFERENCES `transaction`(`id`) " +
+                "ON UPDATE NO ACTION ON DELETE SET NULL, " +
+                "FOREIGN KEY(`category_id`) REFERENCES `category`(`id`) " +
+                "ON UPDATE NO ACTION ON DELETE CASCADE)",
+        )
+        db.execSQL(
+            "INSERT INTO `transaction_new` " +
+                "(`id`, `notes`, `category_id`, `from_account_id`, `type`, `amount`, `image_path`, " +
+                "`created_on`, `updated_on`, `to_account_id`, `original_transaction_id`) " +
+                "SELECT `id`, `notes`, `category_id`, `from_account_id`, `type`, `amount`, " +
+                "`image_path`, `created_on`, `updated_on`, `to_account_id`, NULL " +
+                "FROM `transaction`",
+        )
+        db.execSQL("DROP TABLE `transaction`")
+        db.execSQL("ALTER TABLE `transaction_new` RENAME TO `transaction`")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_created_on` ON `transaction` (`created_on`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_from_account_id` ON `transaction` (`from_account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_to_account_id` ON `transaction` (`to_account_id`)")
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_transaction_category_id` ON `transaction` (`category_id`)")
+        db.execSQL(
+            "CREATE INDEX IF NOT EXISTS `index_transaction_original_transaction_id` " +
+                "ON `transaction` (`original_transaction_id`)",
+        )
+    }
+}
+
+/**
  * Every migration, oldest first. The database builder and the migration tests both use this list,
  * so a new migration can't be registered in one place and forgotten in the other.
  */
@@ -241,4 +295,5 @@ internal val ALL_MIGRATIONS = arrayOf(
     MIGRATION_9_10,
     MIGRATION_10_11,
     MIGRATION_11_12,
+    MIGRATION_12_13,
 )

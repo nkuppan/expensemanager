@@ -50,6 +50,21 @@ class GroupByCategoryTest {
     }
 
     @Test
+    fun refundsReduceTheirCategorySpending() {
+        val transactions = listOf(
+            entry("1", 200.0, food),
+            entry("2", 300.0, travel),
+            entry("3", 60.0, food, type = TransactionType.REFUND),
+        )
+
+        val (groups, total) = transactions.groupByCategory(CategoryType.EXPENSE, format)
+
+        assertThat(total).isEqualTo(440.0)
+        assertThat(groups.first { it.category.id == food.id }.amount.amount).isEqualTo(140.0)
+        assertThat(groups.first { it.category.id == travel.id }.amount.amount).isEqualTo(300.0)
+    }
+
+    @Test
     fun leavesOutTransfersAndTheOtherCategoryType() {
         val transactions = listOf(
             entry("1", 100.0, food),

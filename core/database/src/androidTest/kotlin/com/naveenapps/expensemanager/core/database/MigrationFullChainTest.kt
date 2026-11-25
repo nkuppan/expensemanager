@@ -21,7 +21,7 @@ private const val TEST_DB = "migration_chain_test"
 @RunWith(AndroidJUnit4::class)
 class MigrationFullChainTest {
 
-    private val latestVersion = 12
+    private val latestVersion = 13
 
     @get:Rule
     val helper = MigrationTestHelper(

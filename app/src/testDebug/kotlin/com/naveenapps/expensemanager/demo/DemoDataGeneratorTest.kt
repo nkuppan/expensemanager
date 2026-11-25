@@ -51,6 +51,8 @@ class DemoDataGeneratorTest {
                         balance[t.fromAccountId] = balance.getValue(t.fromAccountId) - t.amountUsd
                         balance[t.toAccountId!!] = balance.getValue(t.toAccountId!!) + t.amountUsd
                     }
+
+                    TransactionType.REFUND -> balance[t.fromAccountId] = balance.getValue(t.fromAccountId) + t.amountUsd
                 }
                 assertThat(balance.getValue(DemoAccountId.BANK)).isAtLeast(0.0)
                 assertThat(balance.getValue(DemoAccountId.CASH)).isAtLeast(0.0)

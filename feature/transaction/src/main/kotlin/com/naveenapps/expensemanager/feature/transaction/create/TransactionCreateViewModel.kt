@@ -39,6 +39,7 @@ import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.getAvailableCreditLimit
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isRefund
 import com.naveenapps.expensemanager.core.model.isTransfer
 import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
@@ -52,6 +53,7 @@ import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.SharedReceiptRepository
+import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.feature.transaction.R
@@ -99,6 +101,7 @@ class TransactionCreateViewModel(
     private val sharedReceiptRepository: SharedReceiptRepository,
     private val receiptTextReader: ReceiptTextReader,
     private val getPayeeSuggestionsUseCase: GetPayeeSuggestionsUseCase,
+    private val transactionRepository: TransactionRepository,
 ) : ViewModel() {
 
     private val sessionCreatedAttachmentPaths = mutableListOf<String>()
@@ -201,6 +204,7 @@ class TransactionCreateViewModel(
         loadTransactionWhenReady(savedStateHandle)
         openCalculatorIfEnabled(savedStateHandle)
         observeQuickPicks(savedStateHandle, getAllCategoryUseCase)
+        observeRefundCandidates()
         if (fromShare) applySharedReceipt()
         if (journey != null) {
             viewModelScope.launch { savesBeforeVisit = feedbackRepository.getTransactionCreatedCount().first() }
@@ -313,6 +317,53 @@ class TransactionCreateViewModel(
         }.onEach { picks ->
             _state.update { it.copy(quickPicks = picks) }
         }.launchIn(viewModelScope)
+    }
+
+    // Prior expense/income entries on the refund's account (dated today or earlier) fill the
+    // picker. Kept in state so it re-filters when the account or type changes.
+    private fun observeRefundCandidates() {
+        combine(
+            transactionRepository.getAllTransaction(),
+            _state.map { it.selectedFromAccount.id to it.transactionType.isRefund() }
+                .distinctUntilChanged(),
+        ) { transactions, selection ->
+            val (accountId, isRefund) = selection
+            if (!isRefund) {
+                emptyList()
+            } else {
+                val now = System.currentTimeMillis()
+                transactions.orEmpty()
+                    .filter { it.type.isExpense() || it.type.isIncome() }
+                    .filter { it.fromAccountId == accountId }
+                    .filter { it.createdOn.time <= now }
+                    .sortedByDescending { it.createdOn.time }
+            }
+        }.onEach { candidates ->
+            _state.update { it.copy(refundCandidates = candidates) }
+        }.launchIn(viewModelScope)
+    }
+
+    // A refund is logged against an existing entry: pick it, then the amount, category and notes
+    // are copied over so the user only confirms. The link is what the detail view shows.
+    private fun selectOriginalTransaction(transaction: Transaction) {
+        transactionType.update { TransactionType.REFUND }
+        _state.update { current ->
+            val category = current.categories.find { it.id == transaction.categoryId }
+                ?: transaction.category.takeIf { it.id.isNotBlank() }
+                ?: current.selectedCategory
+            current.copy(
+                transactionType = TransactionType.REFUND,
+                originalTransactionId = transaction.id,
+                originalTransaction = transaction,
+                showOriginalTransactionSelection = false,
+                amount = current.amount.copy(
+                    value = numberFormatRepository.formatForEditing(transaction.amount.amount),
+                    valueError = false,
+                ),
+                notes = current.notes.copy(value = transaction.notes),
+                selectedCategory = category,
+            )
+        }
     }
 
     // Fills the whole form from a chip; the date stays "now" and the user still taps Save, so
@@ -428,6 +479,7 @@ class TransactionCreateViewModel(
                 TransactionType.INCOME -> defaultIncomeCategory
                 TransactionType.EXPENSE -> defaultExpenseCategory
                 TransactionType.TRANSFER -> null
+                TransactionType.REFUND -> null
             }
             val matchedCategory = filteredCategories.find { it.id == preferredCategoryId }
 
@@ -516,8 +568,18 @@ class TransactionCreateViewModel(
                         canRepeat = false,
                         canScanReceipt = false,
                         recurringRuleId = recurringRuleId,
+                        originalTransactionId = transaction.originalTransactionId,
                         attachments = transaction.attachments,
                     )
+                }
+                // The linked original is shown by name and date; load it separately so an edit
+                // still renders the link even when it is older than the picker's window.
+                val originalId = transaction.originalTransactionId
+                if (transaction.type.isRefund() && !originalId.isNullOrBlank()) {
+                    val original = findTransactionByIdUseCase.invoke(originalId)
+                    if (original is Resource.Success) {
+                        _state.update { it.copy(originalTransaction = original.data) }
+                    }
                 }
             }
         }
@@ -573,6 +635,7 @@ class TransactionCreateViewModel(
         imagePath = "",
         createdOn = state.dateTime,
         updatedOn = Calendar.getInstance().time,
+        originalTransactionId = if (state.transactionType.isRefund()) state.originalTransactionId else null,
         attachments = state.attachments,
     )
 
@@ -872,7 +935,24 @@ class TransactionCreateViewModel(
                 current.selectedToAccount
             }
             // A receipt's category suggestions belong to the type it was read as.
-            current.copy(transactionType = type, selectedToAccount = toAccount, suggestedCategories = emptyList())
+            val newOriginalTransactionId = if (type.isRefund()) {
+                current.originalTransactionId
+            } else {
+                null
+            }
+            val newOriginalTransaction = if (type.isRefund()) {
+                current.originalTransaction
+            } else {
+                null
+            }
+            current.copy(
+                transactionType = type,
+                selectedToAccount = toAccount,
+                suggestedCategories = emptyList(),
+                originalTransactionId = newOriginalTransactionId,
+                originalTransaction = newOriginalTransaction,
+                showOriginalTransactionSelection = false,
+            )
         }
     }
 
@@ -958,6 +1038,18 @@ class TransactionCreateViewModel(
             is TransactionCreateAction.SelectCategory -> {
                 journey?.touch(AddFormJourney.FIELD_CATEGORY)
                 _state.update { it.copy(selectedCategory = action.category, showCategorySelection = false) }
+            }
+
+            is TransactionCreateAction.SelectOriginalTransaction -> {
+                selectOriginalTransaction(action.transaction)
+            }
+
+            TransactionCreateAction.ShowOriginalTransactionSelection -> _state.update {
+                it.copy(showOriginalTransactionSelection = true)
+            }
+
+            TransactionCreateAction.DismissOriginalTransactionSelection -> _state.update {
+                it.copy(showOriginalTransactionSelection = false)
             }
 
             is TransactionCreateAction.ShowAccountSelection -> _state.update {

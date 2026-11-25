@@ -434,4 +434,5 @@ private fun TransactionType.labelRes(): Int = when (this) {
     TransactionType.INCOME -> R.string.income
     TransactionType.EXPENSE -> R.string.expense
     TransactionType.TRANSFER -> R.string.transfer
+    TransactionType.REFUND -> R.string.refund
 }

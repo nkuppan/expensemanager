@@ -14,6 +14,8 @@ data class EmColors(
     val income: Color,
     val expense: Color,
     val transfer: Color,
+    /** Money coming back to the user: a refund or a return. */
+    val refund: Color,
     val debt: Color,
     val warning: Color,
     val info: Color,
@@ -33,6 +35,10 @@ fun Color.tint(): Color = copy(alpha = EmAlpha().subtle)
 
 private val DebtPurple = Color(0xFF7E57C2)
 private val DebtPurpleDark = Color(0xFFB39DDB)
+
+// Teal keeps a refund distinct from income (green) and transfer (blue); 4.8:1 on white.
+private val RefundTeal = Color(0xFF00796B)
+private val RefundTealDark = Color(0xFF4DB6AC)
 private val BudgetWatchDark = Color(0xFFCDDC39)
 
 // Light theme: #CDDC39 is 1.5:1 on white, too faint for a progress bar; this is 3.1:1.
@@ -46,6 +52,7 @@ internal fun emColors(isDark: Boolean): EmColors {
         income = extended.income,
         expense = extended.expense,
         transfer = extended.info,
+        refund = if (isDark) RefundTealDark else RefundTeal,
         debt = if (isDark) DebtPurpleDark else DebtPurple,
         warning = extended.warning,
         info = extended.info,

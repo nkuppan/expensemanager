@@ -18,6 +18,7 @@ import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isRefund
 import java.util.Date
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.Flow
@@ -76,6 +77,7 @@ class GetChartDataUseCase(
                 val bucket = bucketTotals.getOrPut(key) { DoubleArray(2) }
                 val amount = item.amount.amount
                 when {
+                    item.type.isRefund() -> bucket[0] -= amount
                     item.category.type.isExpense() -> bucket[0] += amount
                     item.category.type.isIncome() -> bucket[1] += amount
                 }

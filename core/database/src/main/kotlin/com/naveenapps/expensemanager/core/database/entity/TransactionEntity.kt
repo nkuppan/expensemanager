@@ -26,6 +26,13 @@ import java.util.Date
             onDelete = ForeignKey.CASCADE,
         ),
         ForeignKey(
+            entity = TransactionEntity::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("original_transaction_id"),
+            onUpdate = ForeignKey.NO_ACTION,
+            onDelete = ForeignKey.SET_NULL,
+        ),
+        ForeignKey(
             entity = CategoryEntity::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("category_id"),
@@ -39,6 +46,7 @@ import java.util.Date
         Index(value = ["from_account_id"]),
         Index(value = ["to_account_id"]),
         Index(value = ["category_id"]),
+        Index(value = ["original_transaction_id"]),
     ],
 )
 data class TransactionEntity(
@@ -63,4 +71,6 @@ data class TransactionEntity(
     var updatedOn: Date,
     @ColumnInfo(name = "to_account_id")
     var toAccountId: String?,
+    @ColumnInfo(name = "original_transaction_id")
+    var originalTransactionId: String?,
 )

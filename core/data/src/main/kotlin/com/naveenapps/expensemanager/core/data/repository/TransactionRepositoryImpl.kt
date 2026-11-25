@@ -14,6 +14,7 @@ import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isRefund
 import com.naveenapps.expensemanager.core.model.isTransfer
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
@@ -49,7 +50,7 @@ class TransactionRepositoryImpl(
         return@withContext try {
             val response = transactionDao.insertTransaction(
                 transaction.toEntityModel(),
-                if (transaction.type == TransactionType.INCOME) {
+                if (transaction.type.isIncome() || transaction.type.isRefund()) {
                     transaction.amount.amount
                 } else {
                     transaction.amount.amount * -1
@@ -69,7 +70,7 @@ class TransactionRepositoryImpl(
             // Reversal of the old amount happens inside this DAO transaction.
             transactionDao.updateTransaction(
                 transactionEntity,
-                if (transaction.type.isIncome()) {
+                if (transaction.type.isIncome() || transaction.type.isRefund()) {
                     transaction.amount.amount
                 } else {
                     transaction.amount.amount * -1

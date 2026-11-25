@@ -112,6 +112,38 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
     }
 
     @Test
+    fun refundTransactionIncreasesAccountBalance() = runTest {
+        setupBasicAppData()
+        val refund = FAKE_EXPENSE_TRANSACTION.copy(id = "refund", type = TransactionType.REFUND)
+
+        insertTransactionAndAssert(refund)
+
+        Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(200.0)
+    }
+
+    @Test
+    fun changingExpenseToRefundFlipsTheBalanceEffect() = runTest {
+        setupBasicAppData()
+        insertTransactionAndAssert(FAKE_EXPENSE_TRANSACTION)
+
+        updateTransactionAndAssert(FAKE_EXPENSE_TRANSACTION.copy(type = TransactionType.REFUND))
+
+        // The expense is reversed (-200 -> 0) and the refund then adds its amount (+200).
+        Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(200.0)
+    }
+
+    @Test
+    fun deletingRefundRestoresAccountBalance() = runTest {
+        setupBasicAppData()
+        val refund = FAKE_EXPENSE_TRANSACTION.copy(id = "refund", type = TransactionType.REFUND)
+        insertTransactionAndAssert(refund)
+
+        deleteTransactionAndAssert(refund)
+
+        Truth.assertThat(accountDao.findById(FAKE_ACCOUNT.id)!!.amount).isEqualTo(0.0)
+    }
+
+    @Test
     fun deleteTransactionSuccessAndCheck() = runTest {
         setupBasicAppData()
         insertTransactionAndAssert(FAKE_INCOME_TRANSACTION)
@@ -214,9 +246,8 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
         Truth.assertThat(transaction.fromAccount).isNotNull()
         Truth.assertThat(transaction.fromAccount.amount).isEqualTo(
             when (addedTransaction.type) {
-                TransactionType.INCOME -> (addedTransaction.amount.amount)
-                TransactionType.EXPENSE -> (addedTransaction.amount.amount * -1)
-                else -> (addedTransaction.amount.amount)
+                TransactionType.INCOME, TransactionType.REFUND -> addedTransaction.amount.amount
+                TransactionType.EXPENSE, TransactionType.TRANSFER -> addedTransaction.amount.amount * -1
             },
         )
         if (addedTransaction.type == TransactionType.TRANSFER) {

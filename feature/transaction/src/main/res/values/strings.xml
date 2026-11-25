@@ -28,6 +28,7 @@
     <string name="expense">Expense</string>
     <string name="income">Income</string>
     <string name="transfer">Transfer</string>
+    <string name="refund">Refund</string>
 
     <string name="select_different_account">Select different account. From and To account shouldn\'t be the same.</string>
     <string name="amount_error_message">Please enter a valid amount</string>
@@ -38,6 +39,10 @@
     <string name="select_category">Select Category</string>
     <string name="select_date">Select Date</string>
     <string name="select_time">Select Time</string>
+    <string name="select_original_transaction">Select Original Transaction</string>
+    <string name="original_transaction">Original Transaction</string>
+    <string name="refund_of">Refund of %1$s</string>
+    <string name="no_original_transactions_available">No expense or income transactions on this account yet</string>
 
     <string name="transaction">Transaction</string>
     <string name="clear">Clear</string>

@@ -78,6 +78,9 @@ class Migration7To8Test {
         db7.close()
 
         val db8 = helper.runMigrationsAndValidate(TEST_DB, 8, true, MIGRATION_7_8)
+        // Room 2.8 no longer enables foreign keys for the test database; the cascade assertion
+        // below only means something with them on (same as Migration11To12Test).
+        db8.execSQL("PRAGMA foreign_keys = ON")
         db8.execSQL(
             """
             INSERT INTO transaction_attachment (id, transaction_id, image_path, created_on)

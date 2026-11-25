@@ -43,6 +43,7 @@ val TransactionViewModelModule = module {
             sharedReceiptRepository = get(),
             receiptTextReader = get(),
             getPayeeSuggestionsUseCase = get(),
+            transactionRepository = get(),
         )
     }
     viewModel {

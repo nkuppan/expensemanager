@@ -18,6 +18,7 @@ data class Transaction(
     val type: TransactionType,
     val createdOn: Date,
     val updatedOn: Date,
+    val originalTransactionId: String? = null,
     val category: Category = Category(
         "",
         "",
