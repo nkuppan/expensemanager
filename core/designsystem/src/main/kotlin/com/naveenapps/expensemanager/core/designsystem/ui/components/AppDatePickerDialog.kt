@@ -20,22 +20,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.naveenapps.expensemanager.core.common.utils.fromLocalToUTCTimeStamp
-import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDay
+import com.naveenapps.expensemanager.core.common.utils.toExactStartOfTheDayInstant
 import com.naveenapps.expensemanager.core.designsystem.R
 import com.naveenapps.expensemanager.core.designsystem.em.EmButton
 import com.naveenapps.expensemanager.core.designsystem.em.EmButtonVariant
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 @Composable
 fun AppDatePickerDialog(
-    selectedDate: Date,
-    onDateSelected: (Date) -> Unit,
+    selectedDate: Instant,
+    onDateSelected: (Instant) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = selectedDate.time.fromLocalToUTCTimeStamp(),
+        initialSelectedDateMillis = selectedDate.toEpochMilliseconds().fromLocalToUTCTimeStamp(),
     )
 
     Dialog(
@@ -81,8 +82,8 @@ fun AppDatePickerDialog(
                     EmButton(
                         text = stringResource(id = R.string.select),
                         onClick = {
-                            val date = datePickerState.selectedDateMillis?.toExactStartOfTheDay()
-                                ?: Date()
+                            val date = datePickerState.selectedDateMillis?.toExactStartOfTheDayInstant()
+                                ?: Clock.System.now()
                             onDateSelected(date)
                         },
                     )
@@ -97,7 +98,7 @@ fun AppDatePickerDialog(
 fun AppDatePickerDialogPreview() {
     ExpenseManagerPreviewTheme {
         AppDatePickerDialog(
-            selectedDate = Date(),
+            selectedDate = Clock.System.now(),
             onDateSelected = {},
         ) {}
     }

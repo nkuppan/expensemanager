@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * A single photo (receipt, proof of payment, etc.) attached to a transaction. Unlike Category's
@@ -35,5 +35,5 @@ data class TransactionAttachmentEntity(
     @ColumnInfo(name = "image_path")
     val imagePath: String,
     @ColumnInfo(name = "created_on")
-    val createdOn: Date,
+    val createdOn: Instant,
 )

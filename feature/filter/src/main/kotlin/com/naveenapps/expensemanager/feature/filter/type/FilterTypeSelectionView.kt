@@ -50,7 +50,7 @@ import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.filter.R
-import java.util.Date
+import kotlin.time.Clock
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -339,6 +339,6 @@ fun getCategory(index: Int): Category = Category(
         "account_balance",
         "#000000",
     ),
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )

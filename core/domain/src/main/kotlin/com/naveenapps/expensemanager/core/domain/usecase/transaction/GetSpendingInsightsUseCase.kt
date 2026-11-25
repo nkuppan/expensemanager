@@ -11,11 +11,12 @@ import com.naveenapps.expensemanager.core.model.isRefund
 import com.naveenapps.expensemanager.core.model.netExpense
 import com.naveenapps.expensemanager.core.model.netIncome
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
-import java.time.DayOfWeek
-import java.time.ZoneId
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * Spending insights for the Analysis screen, over the same filtered transactions as its chart,
@@ -33,7 +34,7 @@ class GetSpendingInsightsUseCase(
         calculateSpendingInsights(
             transactions = transactions.orEmpty(),
             categoriesById = categories.associateBy { it.id },
-            zone = ZoneId.systemDefault(),
+            zone = TimeZone.currentSystemDefault(),
         )
     }.flowOn(dispatchers.computation)
 }
@@ -42,7 +43,7 @@ class GetSpendingInsightsUseCase(
 fun calculateSpendingInsights(
     transactions: List<Transaction>,
     categoriesById: Map<String, Category>,
-    zone: ZoneId,
+    zone: TimeZone,
     maxBiggest: Int = 5,
 ): SpendingInsights {
     // Expenses and refunds both move the spending figure: a refund subtracts what came back.
@@ -65,7 +66,7 @@ fun calculateSpendingInsights(
         .filter { it.total > 0.0 }
         .sortedByDescending { it.total }
 
-    val byWeekday = expenseItems.groupBy { it.createdOn.toInstant().atZone(zone).dayOfWeek }
+    val byWeekday = expenseItems.groupBy { it.createdOn.toLocalDateTime(zone).dayOfWeek }
     val weekdays = DayOfWeek.entries.map { day ->
         WeekdaySpend(day, byWeekday[day].orEmpty().netExpense())
     }

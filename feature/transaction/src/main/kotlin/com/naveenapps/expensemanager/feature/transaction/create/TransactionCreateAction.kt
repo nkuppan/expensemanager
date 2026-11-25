@@ -5,7 +5,7 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
+import kotlin.time.Instant
 
 sealed class TransactionCreateAction {
 
@@ -47,7 +47,7 @@ sealed class TransactionCreateAction {
 
     data class ChangeTransactionType(val type: TransactionType) : TransactionCreateAction()
 
-    data class SelectDate(val date: Date) : TransactionCreateAction()
+    data class SelectDate(val date: Instant) : TransactionCreateAction()
 
     data object ShowDateSelection : TransactionCreateAction()
 

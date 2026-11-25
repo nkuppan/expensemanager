@@ -1,13 +1,14 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.fromYear
-import com.naveenapps.expensemanager.core.common.utils.getEndOfTheMonth
-import com.naveenapps.expensemanager.core.common.utils.getEndOfTheYear
-import com.naveenapps.expensemanager.core.common.utils.getStartOfTheMonth
-import com.naveenapps.expensemanager.core.common.utils.getStartOfTheYear
+import com.naveenapps.expensemanager.core.common.utils.endOfMonthMillis
+import com.naveenapps.expensemanager.core.common.utils.endOfYearMillis
+import com.naveenapps.expensemanager.core.common.utils.monthAndYearKeyToLocalDate
+import com.naveenapps.expensemanager.core.common.utils.startOfMonthMillis
+import com.naveenapps.expensemanager.core.common.utils.startOfYearMillis
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.common.utils.toYearKey
+import com.naveenapps.expensemanager.core.common.utils.yearKeyToLocalDate
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.Resource
@@ -38,15 +39,15 @@ class GetBudgetTransactionsUseCase(
 
         val isYearly = budget.periodType == BudgetPeriod.YEARLY
         val date = if (isYearly) {
-            budget.selectedMonth.fromYear()
+            budget.selectedMonth.yearKeyToLocalDate()
         } else {
-            budget.selectedMonth.fromMonthAndYearKey()
+            budget.selectedMonth.monthAndYearKeyToLocalDate()
         }
 
         date ?: return Resource.Error(IllegalArgumentException("Unknown month value"))
 
-        val startDate = if (isYearly) date.getStartOfTheYear() else date.getStartOfTheMonth()
-        val endDate = if (isYearly) date.getEndOfTheYear() else date.getEndOfTheMonth()
+        val startDate = if (isYearly) date.startOfYearMillis() else date.startOfMonthMillis()
+        val endDate = if (isYearly) date.endOfYearMillis() else date.endOfMonthMillis()
 
         val transaction = transactionRepository.getFilteredTransaction(
             accounts = accounts,
@@ -60,9 +61,9 @@ class GetBudgetTransactionsUseCase(
             endDate = endDate,
         ).firstOrNull()?.filter {
             if (isYearly) {
-                it.createdOn.toYear() == budget.selectedMonth
+                it.createdOn.toLocalDateIn().toYearKey() == budget.selectedMonth
             } else {
-                it.createdOn.toMonthAndYearKey() == budget.selectedMonth
+                it.createdOn.toLocalDateIn().toMonthAndYearKey() == budget.selectedMonth
             }
         }
 

@@ -22,9 +22,9 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.initializer.BASE_CATEGORY_LIST
-import java.util.Date
 import java.util.Locale
 import java.util.UUID
+import kotlin.time.Clock
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -45,7 +45,7 @@ class DemoDataSeeder {
      */
     suspend fun seed(currencyCode: String?, language: String?, months: Int): Result {
         val koin = GlobalContext.get()
-        val now = Date()
+        val now = Clock.System.now()
 
         // 1. Start from an empty database (same tables a fresh install has).
         withContext(Dispatchers.IO) { koin.get<ExpenseManagerDatabase>().clearAllTables() }

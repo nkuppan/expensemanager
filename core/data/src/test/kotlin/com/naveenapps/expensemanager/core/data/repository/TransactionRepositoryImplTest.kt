@@ -24,7 +24,7 @@ import com.naveenapps.expensemanager.core.testing.FAKE_INCOME_TRANSACTION
 import com.naveenapps.expensemanager.core.testing.FAKE_SECOND_ACCOUNT
 import com.naveenapps.expensemanager.core.testing.FAKE_SECOND_CATEGORY
 import com.naveenapps.expensemanager.core.testing.FAKE_TRANSFER_TRANSACTION
-import java.util.Date
+import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -297,7 +297,7 @@ class TransactionRepositoryImplTest : BaseCoroutineTest() {
             // Logged once only, so not frequent.
             FAKE_EXPENSE_TRANSACTION.copy(id = "o1", notes = "Movie", amount = Amount(300.0)),
             // Same details but older than the window.
-            tea.copy(id = "old", createdOn = Date(0), updatedOn = Date(0)),
+            tea.copy(id = "old", createdOn = Instant.fromEpochMilliseconds(0), updatedOn = Instant.fromEpochMilliseconds(0)),
         ).forEach { transactionRepository.addTransaction(it) }
 
         transactionRepository.getFrequentTransactions(

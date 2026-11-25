@@ -21,8 +21,8 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ImageStorageRepository
 import com.naveenapps.expensemanager.core.repository.logFailure
-import java.util.Calendar
 import java.util.UUID
+import kotlin.time.Clock
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -168,8 +168,8 @@ class CategoryCreateViewModel(
                 backgroundColor = color,
                 customImagePath = customImagePath,
             ),
-            createdOn = Calendar.getInstance().time,
-            updatedOn = Calendar.getInstance().time,
+            createdOn = Clock.System.now(),
+            updatedOn = Clock.System.now(),
             // Preserve the default-category marker across edits. Without this, saving any
             // change (even just icon/color) to a built-in category would silently strip its
             // defaultKey and permanently freeze its name in English.

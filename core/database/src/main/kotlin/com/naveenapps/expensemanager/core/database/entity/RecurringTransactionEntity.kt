@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * A repeating transaction rule (see core:model RecurringTransaction). Deleting the account or
@@ -64,13 +64,13 @@ data class RecurringTransactionEntity(
     @ColumnInfo(name = "frequency")
     val frequency: String,
     @ColumnInfo(name = "start_date")
-    val startDate: Date,
+    val startDate: Instant,
     @ColumnInfo(name = "next_occurrence")
     val nextOccurrence: Int,
     @ColumnInfo(name = "next_due_date")
-    val nextDueDate: Date,
+    val nextDueDate: Instant,
     @ColumnInfo(name = "created_on")
-    val createdOn: Date,
+    val createdOn: Instant,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date,
+    val updatedOn: Instant,
 )

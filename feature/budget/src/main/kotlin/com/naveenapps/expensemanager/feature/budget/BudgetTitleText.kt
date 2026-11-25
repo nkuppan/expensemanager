@@ -7,6 +7,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import com.naveenapps.expensemanager.core.model.BudgetTitle
 import java.text.SimpleDateFormat
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 
 /** The budget's name as shown on screen, translated and with the month in the user's locale. */
 @Composable
@@ -22,7 +24,7 @@ fun BudgetTitle.text(): String = when (this) {
         val format = remember(locale) {
             SimpleDateFormat(DateFormat.getBestDateTimePattern(locale, "MMMMyyyy"), locale)
         }
-        stringResource(R.string.budget_title_period, format.format(date))
+        stringResource(R.string.budget_title_period, format.format(firstDay.atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds()))
     }
 
     is BudgetTitle.Period -> stringResource(R.string.budget_title_period, label)

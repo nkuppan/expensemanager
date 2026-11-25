@@ -8,13 +8,13 @@ import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
+import kotlin.time.Instant
 
 @Stable
 data class TransactionCreateState(
     val amount: TextFieldValue<String>,
     val notes: TextFieldValue<String>,
-    val dateTime: Date,
+    val dateTime: Instant,
     val transactionType: TransactionType,
     val currency: Currency,
     val selectedCategory: Category,

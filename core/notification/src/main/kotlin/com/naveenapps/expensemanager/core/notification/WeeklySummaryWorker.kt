@@ -50,8 +50,8 @@ class WeeklySummaryWorker(
 
         val expenseItems = transactionRepository.getAllTransaction().firstOrNull().orEmpty()
             .filter { it.type.isExpense() || it.type.isRefund() }
-        val thisWeek = expenseItems.filter { it.createdOn.time in thisWeekStart..now }
-        val lastWeek = expenseItems.filter { it.createdOn.time in lastWeekStart until thisWeekStart }
+        val thisWeek = expenseItems.filter { it.createdOn.toEpochMilliseconds() in thisWeekStart..now }
+        val lastWeek = expenseItems.filter { it.createdOn.toEpochMilliseconds() in lastWeekStart until thisWeekStart }
 
         val thisTotal = thisWeek.netExpense()
         val lastTotal = lastWeek.netExpense()

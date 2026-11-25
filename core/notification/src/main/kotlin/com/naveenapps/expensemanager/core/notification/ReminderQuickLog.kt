@@ -21,8 +21,8 @@ import com.naveenapps.expensemanager.core.repository.BudgetAlertTrigger
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import java.time.LocalTime
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.first
 
 /**
@@ -114,7 +114,7 @@ class ReminderQuickLog(
         if (findCategoryByIdUseCase(pick.categoryId) !is Resource.Success) return null
         if (findAccountByIdUseCase(pick.accountId) !is Resource.Success) return null
 
-        val now = Date()
+        val now = Clock.System.now()
         val transaction = Transaction(
             id = UUID.randomUUID().toString(),
             notes = pick.notes,

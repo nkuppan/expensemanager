@@ -2,7 +2,6 @@ package com.naveenapps.expensemanager.core.data.repository
 
 import android.content.Context
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.common.utils.getEndOfTheDay
 import com.naveenapps.expensemanager.core.common.utils.getThisMonthRange
 import com.naveenapps.expensemanager.core.common.utils.getThisWeekRange
 import com.naveenapps.expensemanager.core.common.utils.getThisYearRange
@@ -19,7 +18,7 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
-import java.util.Date
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
@@ -92,7 +91,7 @@ class DateRangeFilterRepositoryImpl(
         return@withContext Resource.Success(true)
     }
 
-    override suspend fun setDateRanges(dateRanges: List<Date>): Resource<Boolean> = withContext(dispatcher.io) {
+    override suspend fun setDateRanges(dateRanges: List<Instant>): Resource<Boolean> = withContext(dispatcher.io) {
         // Same ordering fix as setDateRangeFilterType(): flip the flag *before* persisting,
         // so that once the reactive flow observes this write, isNavigated is already true
         // and it reads back the range we just stored instead of recomputing "current period"
@@ -100,35 +99,15 @@ class DateRangeFilterRepositoryImpl(
         // MoveDateRangeBackwardUseCase, which call this after computing the next/previous
         // range).
         isNavigated = true
-        dataStore.setDateRanges(dateRanges[0].time, dateRanges[1].time)
+        dataStore.setDateRanges(dateRanges[0].toEpochMilliseconds(), dateRanges[1].toEpochMilliseconds())
         return@withContext Resource.Success(true)
     }
 
     private suspend fun getOriginalDateRangeValues(dateRangeType: DateRangeType): List<Long> {
-        val values = if (!isNavigated && dateRangeType != DateRangeType.ALL && dateRangeType != DateRangeType.CUSTOM) {
-            getCurrentDateRanges(dateRangeType)
-        } else {
-            getDateRange() ?: getCurrentDateRanges(dateRangeType)
+        if (!isNavigated && dateRangeType != DateRangeType.ALL && dateRangeType != DateRangeType.CUSTOM) {
+            return getCurrentDateRanges(dateRangeType)
         }
-        return if (dateRangeType == DateRangeType.CUSTOM) {
-            values.withInclusiveEndDay()
-        } else {
-            values
-        }
-    }
-
-    /**
-     * The custom range picker stores both bounds as midnight of the picked day, but the user
-     * picked the whole day. Extend the end bound to the last millisecond of that day (same
-     * inclusive-end convention as getEndOfTheMonth) so BETWEEN queries keep the end day
-     * inside the range — otherwise every custom range silently loses its last day and a
-     * single-day range matches nothing. Normalized on read, so previously saved ranges are
-     * repaired too; built-in ranges already end at the start of their next period.
-     */
-    private fun List<Long>.withInclusiveEndDay(): List<Long> = if (size == 2) {
-        listOf(this[0], Date(this[1]).getEndOfTheDay())
-    } else {
-        this
+        return getDateRange() ?: getCurrentDateRanges(dateRangeType)
     }
 
     private fun getCurrentDateRanges(dateRangeType: DateRangeType): List<Long> = when (dateRangeType) {
@@ -137,7 +116,7 @@ class DateRangeFilterRepositoryImpl(
         DateRangeType.THIS_MONTH -> getThisMonthRange()
         DateRangeType.THIS_YEAR -> getThisYearRange()
         DateRangeType.ALL -> listOf(0, Long.MAX_VALUE)
-        DateRangeType.CUSTOM -> listOf(Date().time, Date().time)
+        DateRangeType.CUSTOM -> Clock.System.now().toEpochMilliseconds().let { listOf(it, it) }
     }
 
     private suspend fun getDateRange(): List<Long>? = dataStore.getDateRanges().firstOrNull()
@@ -151,8 +130,8 @@ class DateRangeFilterRepositoryImpl(
         dateRanges: List<Long>,
         dateRangeType: DateRangeType,
     ): String {
-        val fromDate = dateRanges[0].toCompleteDate()
-        val toDate = dateRanges[1].toCompleteDate()
+        val fromDate = Instant.fromEpochMilliseconds(dateRanges[0])
+        val toDate = Instant.fromEpochMilliseconds(dateRanges[1])
 
         return when (dateRangeType) {
             DateRangeType.TODAY -> fromDate.toCompleteDate()
@@ -170,10 +149,9 @@ class DateRangeFilterRepositoryImpl(
     }
 
     @OptIn(ExperimentalTime::class)
-    private fun getFormattedDateRangeString(fromDate: Date, toDate: Date): String {
-        val fromDateTime =
-            Instant.fromEpochMilliseconds(fromDate.time).toLocalDateTime(TimeZone.UTC)
-        val toDateTime = Instant.fromEpochMilliseconds(toDate.time).toLocalDateTime(TimeZone.UTC)
+    private fun getFormattedDateRangeString(fromDate: Instant, toDate: Instant): String {
+        val fromDateTime = fromDate.toLocalDateTime(TimeZone.UTC)
+        val toDateTime = toDate.toLocalDateTime(TimeZone.UTC)
 
         return if (fromDateTime.year == toDateTime.year) {
             if (fromDateTime.month.number == toDateTime.month.number) {

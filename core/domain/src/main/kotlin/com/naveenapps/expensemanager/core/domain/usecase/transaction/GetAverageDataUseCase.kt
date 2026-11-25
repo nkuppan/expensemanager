@@ -9,16 +9,24 @@ import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.WholeAverageData
 import com.naveenapps.expensemanager.core.model.netExpense
 import com.naveenapps.expensemanager.core.model.netIncome
-import java.util.Calendar
+import com.naveenapps.expensemanager.core.repository.CalendarWeeksRepository
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 
 class GetAverageDataUseCase(
     private val getCurrencyUseCase: GetCurrencyUseCase,
     private val getFormattedAmountUseCase: GetFormattedAmountUseCase,
     private val getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
     private val getDateRangeUseCase: GetDateRangeUseCase,
+    private val calendarWeeksRepository: CalendarWeeksRepository,
     private val dispatcher: AppCoroutineDispatchers,
 ) {
     fun invoke(): Flow<WholeAverageData> = combine(
@@ -31,41 +39,11 @@ class GetAverageDataUseCase(
 
         val ranges = dateRangeModel.dateRanges
 
-        val calendar: Calendar = Calendar.getInstance()
-        calendar.timeInMillis = ranges[0]
-
-        val weeksMultiplier: Double
-        val daysMultiplier: Double
-        val monthMultiplier: Double
-
-        when (dateRangeModel.type) {
-            DateRangeType.TODAY -> {
-                daysMultiplier = 1.0
-                weeksMultiplier = calendar.getActualMaximum(Calendar.DAY_OF_WEEK).toDouble()
-                monthMultiplier = calendar.getActualMaximum(Calendar.DAY_OF_MONTH).toDouble()
-            }
-
-            DateRangeType.THIS_WEEK -> {
-                daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_WEEK)
-                weeksMultiplier = 1.0
-                monthMultiplier = calendar.getActualMaximum(Calendar.WEEK_OF_MONTH).toDouble()
-            }
-
-            DateRangeType.THIS_MONTH -> {
-                daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
-                weeksMultiplier = 1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_MONTH)
-                monthMultiplier = 1.0
-            }
-
-            DateRangeType.THIS_YEAR,
-            DateRangeType.CUSTOM,
-            DateRangeType.ALL,
-            -> {
-                daysMultiplier = 1.0 / calendar.getActualMaximum(Calendar.DAY_OF_YEAR)
-                weeksMultiplier = 1.0 / calendar.getActualMaximum(Calendar.WEEK_OF_YEAR)
-                monthMultiplier = 1.0 / 12
-            }
-        }
+        val (daysMultiplier, weeksMultiplier, monthMultiplier) = averageMultipliers(
+            type = dateRangeModel.type,
+            rangeStart = Instant.fromEpochMilliseconds(ranges[0]),
+            weeks = calendarWeeksRepository,
+        )
 
         WholeAverageData(
             expenseAverageData = AverageData(
@@ -99,3 +77,32 @@ class GetAverageDataUseCase(
         )
     }.flowOn(dispatcher.computation)
 }
+
+/** Per-day, per-week and per-month multipliers for a range of [type] starting at [rangeStart]. */
+internal data class AverageMultipliers(val perDay: Double, val perWeek: Double, val perMonth: Double)
+
+internal fun averageMultipliers(
+    type: DateRangeType,
+    rangeStart: Instant,
+    weeks: CalendarWeeksRepository,
+    zone: TimeZone = TimeZone.currentSystemDefault(),
+): AverageMultipliers {
+    val date = rangeStart.toLocalDateTime(zone).date
+    val firstOfMonth = LocalDate(date.year, date.month, 1)
+    val daysInMonth = firstOfMonth.daysUntil(firstOfMonth.plus(1, DateTimeUnit.MONTH))
+    val daysInYear = LocalDate(date.year, 1, 1).daysUntil(LocalDate(date.year + 1, 1, 1))
+    return when (type) {
+        DateRangeType.TODAY -> AverageMultipliers(1.0, DAYS_PER_WEEK.toDouble(), daysInMonth.toDouble())
+
+        DateRangeType.THIS_WEEK -> AverageMultipliers(1.0 / DAYS_PER_WEEK, 1.0, weeks.weeksInMonthOf(rangeStart).toDouble())
+
+        DateRangeType.THIS_MONTH -> AverageMultipliers(1.0 / daysInMonth, 1.0 / weeks.weeksInMonthOf(rangeStart), 1.0)
+
+        DateRangeType.THIS_YEAR,
+        DateRangeType.CUSTOM,
+        DateRangeType.ALL,
+        -> AverageMultipliers(1.0 / daysInYear, 1.0 / weeks.weeksInYearOf(rangeStart), 1.0 / 12)
+    }
+}
+
+private const val DAYS_PER_WEEK = 7

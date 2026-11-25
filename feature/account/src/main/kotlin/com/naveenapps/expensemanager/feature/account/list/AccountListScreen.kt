@@ -69,8 +69,8 @@ import com.naveenapps.expensemanager.core.model.toAccountUiModel
 import com.naveenapps.expensemanager.feature.account.R
 import com.naveenapps.expensemanager.feature.account.selection.AccountItem
 import com.naveenapps.expensemanager.feature.account.selection.AccountItemDefaults
-import java.util.Date
 import java.util.Random
+import kotlin.time.Clock
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -387,8 +387,8 @@ fun getAccountData(
     ),
     amount = amount,
     creditLimit = creditLimit,
-    createdOn = Date(),
-    updatedOn = Date(),
+    createdOn = Clock.System.now(),
+    updatedOn = Clock.System.now(),
 )
 
 fun getRandomAccountData(totalCount: Int = 10): List<Account> = buildList {

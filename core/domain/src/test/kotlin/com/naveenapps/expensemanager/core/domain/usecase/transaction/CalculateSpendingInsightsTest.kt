@@ -5,10 +5,10 @@ import com.naveenapps.expensemanager.core.model.Amount
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.testing.FAKE_CATEGORY
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
-import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.ZoneOffset
-import java.util.Date
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.TimeZone
 import org.junit.Test
 
 class CalculateSpendingInsightsTest {
@@ -33,7 +33,7 @@ class CalculateSpendingInsightsTest {
         categoryId = categoryId,
         type = type,
         amount = Amount(amount),
-        createdOn = Date.from(day.atTime(12, 0).toInstant(zone)),
+        createdOn = kotlin.time.Instant.fromEpochMilliseconds(day.atTime(12, 0).toInstant(zone).toEpochMilli()),
     )
 
     @Test
@@ -41,7 +41,7 @@ class CalculateSpendingInsightsTest {
         val insights = calculateSpendingInsights(
             listOf(tx("1", 30.0), tx("2", 70.0, travel.id), tx("3", 20.0)),
             categories,
-            zone,
+            TimeZone.UTC,
         )
 
         assertThat(insights.totalExpense).isEqualTo(120.0)
@@ -58,7 +58,7 @@ class CalculateSpendingInsightsTest {
                 tx("2", 60.0, type = TransactionType.REFUND),
             ),
             categories,
-            zone,
+            TimeZone.UTC,
         )
 
         assertThat(insights.totalExpense).isEqualTo(140.0)
@@ -75,7 +75,7 @@ class CalculateSpendingInsightsTest {
                 tx("3", 500.0, type = TransactionType.TRANSFER),
             ),
             categories,
-            zone,
+            TimeZone.UTC,
         )
 
         assertThat(insights.totalExpense).isEqualTo(40.0)
@@ -88,9 +88,9 @@ class CalculateSpendingInsightsTest {
         val withIncome = calculateSpendingInsights(
             listOf(tx("1", 250.0), tx("2", 1000.0, type = TransactionType.INCOME)),
             categories,
-            zone,
+            TimeZone.UTC,
         )
-        val withoutIncome = calculateSpendingInsights(listOf(tx("1", 250.0)), categories, zone)
+        val withoutIncome = calculateSpendingInsights(listOf(tx("1", 250.0)), categories, TimeZone.UTC)
 
         assertThat(withIncome.savingsRate).isWithin(0.001f).of(0.75f)
         assertThat(withoutIncome.savingsRate).isNull()
@@ -101,7 +101,7 @@ class CalculateSpendingInsightsTest {
         val insights = calculateSpendingInsights(
             listOf(tx("1", 10.0, day = monday), tx("2", 90.0, day = saturday)),
             categories,
-            zone,
+            TimeZone.UTC,
         )
 
         assertThat(insights.weekdays.map { it.dayOfWeek }).containsExactlyElementsIn(DayOfWeek.entries).inOrder()
@@ -112,14 +112,14 @@ class CalculateSpendingInsightsTest {
     fun `biggest expenses are the largest first, capped`() {
         val transactions = (1..8).map { tx(it.toString(), it * 10.0) }
 
-        val insights = calculateSpendingInsights(transactions, categories, zone, maxBiggest = 3)
+        val insights = calculateSpendingInsights(transactions, categories, TimeZone.UTC, maxBiggest = 3)
 
         assertThat(insights.biggestExpenses.map { it.amount.amount }).containsExactly(80.0, 70.0, 60.0).inOrder()
     }
 
     @Test
     fun `no transactions gives empty insights`() {
-        val insights = calculateSpendingInsights(emptyList(), categories, zone)
+        val insights = calculateSpendingInsights(emptyList(), categories, TimeZone.UTC)
 
         assertThat(insights.totalExpense).isEqualTo(0.0)
         assertThat(insights.categories).isEmpty()

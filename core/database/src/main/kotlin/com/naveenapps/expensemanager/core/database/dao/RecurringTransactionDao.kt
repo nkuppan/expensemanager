@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.naveenapps.expensemanager.core.database.entity.RecurringTransactionEntity
-import java.util.Date
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -15,7 +15,7 @@ interface RecurringTransactionDao : BaseDao<RecurringTransactionEntity> {
 
     /** A Date (not a raw Long) so Room applies DateConverter, matching how the column is stored. */
     @Query("SELECT * FROM recurring_transaction WHERE next_due_date <= :dueBefore ORDER BY next_due_date ASC")
-    suspend fun getDue(dueBefore: Date): List<RecurringTransactionEntity>
+    suspend fun getDue(dueBefore: Instant): List<RecurringTransactionEntity>
 
     @Query("SELECT * FROM recurring_transaction WHERE id = :id")
     suspend fun findById(id: String): RecurringTransactionEntity?
@@ -31,7 +31,7 @@ interface RecurringTransactionDao : BaseDao<RecurringTransactionEntity> {
         "UPDATE recurring_transaction SET next_occurrence = :nextOccurrence, " +
             "next_due_date = :nextDueDate, updated_on = :updatedOn WHERE id = :id",
     )
-    suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Date, updatedOn: Date)
+    suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Instant, updatedOn: Instant)
 
     /** Ends [oldId] and starts [replacement] in one step (used when the schedule changes). */
     @Transaction

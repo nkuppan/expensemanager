@@ -1,15 +1,15 @@
 package com.naveenapps.expensemanager.feature.budget.components
 
 import androidx.compose.runtime.Stable
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.monthAndYearKeyToLocalDate
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.BudgetTitle
-import java.time.LocalDate
-import java.time.Year
-import java.time.YearMonth
-import java.time.ZoneId
-import java.time.temporal.ChronoUnit
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
 
 /** A budget's progress through its period, as the gauge ([BudgetGauge]) shows it. */
 @Stable
@@ -35,19 +35,16 @@ data class BudgetProgress(
 fun BudgetUiModel.toBudgetProgress(
     today: LocalDate,
     format: (Double) -> String,
-    zone: ZoneId = ZoneId.systemDefault(),
 ): BudgetProgress? {
     val (start, end) = when (periodType) {
         BudgetPeriod.MONTHLY -> {
-            val month = selectedMonth.fromMonthAndYearKey()
-                ?.let { YearMonth.from(it.toInstant().atZone(zone)) }
-                ?: return null
-            month.atDay(1) to month.atEndOfMonth()
+            val first = selectedMonth.monthAndYearKeyToLocalDate() ?: return null
+            first to first.plus(1, DateTimeUnit.MONTH).minus(1, DateTimeUnit.DAY)
         }
 
         BudgetPeriod.YEARLY -> {
-            val year = selectedMonth.toIntOrNull()?.let { Year.of(it) } ?: return null
-            year.atDay(1) to year.atMonth(12).atEndOfMonth()
+            val year = selectedMonth.toIntOrNull() ?: return null
+            LocalDate(year, 1, 1) to LocalDate(year, 12, 31)
         }
     }
     val limit = amount.amount
@@ -56,7 +53,7 @@ fun BudgetUiModel.toBudgetProgress(
     val isOver = left < 0
     // Days still to come in the period, today included; none once it has ended.
     val from = maxOf(today, start)
-    val daysLeft = if (from.isAfter(end)) 0L else ChronoUnit.DAYS.between(from, end) + 1
+    val daysLeft = if (from > end) 0L else from.daysUntil(end) + 1L
     return BudgetProgress(
         id = id,
         title = title,

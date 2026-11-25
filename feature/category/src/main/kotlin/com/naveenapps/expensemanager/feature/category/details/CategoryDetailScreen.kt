@@ -63,7 +63,7 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.category.R
 import com.naveenapps.expensemanager.feature.filter.type.getCategory
 import java.text.NumberFormat
-import java.util.Date
+import kotlin.time.Clock
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -297,7 +297,7 @@ fun getTransactionItem(id: String) = TransactionUiItem(
         name = "account_balance",
         backgroundColor = "#000000",
     ),
-    date = Date().toCompleteDateWithDate(),
+    date = Clock.System.now().toCompleteDateWithDate(),
 )
 
 @EmPreviews

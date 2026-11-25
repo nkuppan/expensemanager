@@ -63,12 +63,13 @@ import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.feature.category.transaction.CategoryTransactionItem
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
-import java.time.DayOfWeek
 import java.time.format.TextStyle as DayNameStyle
-import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.time.Clock
+import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.isoDayNumber
 
 /**
  * Titles above the grouped-card lists. The fixed height is the height "View all" gives the title
@@ -111,9 +112,11 @@ fun AnalysisInsightsSection(
     }
 }
 
-/** Same title as the other Analysis / Home cards (e.g. "Average and projected"). */
+/** Same title as the other Analysis / Home cards (e.g. "Average and projected").
+ * For the platform's localized day names (Android-only display text). */
+private fun DayOfWeek.javaDay(): java.time.DayOfWeek = java.time.DayOfWeek.of(isoDayNumber)
 
-private fun DayOfWeek.fullName(): String = getDisplayName(DayNameStyle.FULL, Locale.getDefault())
+private fun DayOfWeek.fullName(): String = javaDay().getDisplayName(DayNameStyle.FULL, Locale.getDefault())
     .replaceFirstChar { it.titlecase(Locale.getDefault()) }
 
 // region Highlights
@@ -329,7 +332,7 @@ internal fun WeekdayCard(weekdays: List<WeekdayBarUi>, busiest: DayOfWeek?) {
                 weekdays.forEach { bar ->
                     val isBusiest = bar.dayOfWeek == busiest
                     val isSelected = bar.dayOfWeek == selected
-                    val dayName = bar.dayOfWeek.getDisplayName(DayNameStyle.SHORT, LocalLocale.current.platformLocale)
+                    val dayName = bar.dayOfWeek.javaDay().getDisplayName(DayNameStyle.SHORT, LocalLocale.current.platformLocale)
                     Column(
                         modifier = Modifier
                             .weight(1f)
@@ -433,8 +436,8 @@ private fun AnalysisInsightsSectionPreview() {
         name = name,
         type = CategoryType.EXPENSE,
         storedIcon = StoredIcon(name = "restaurant", backgroundColor = color),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     )
     val food = category("1", "Food", "#F44336")
     val travel = category("2", "Travel", "#3F51B5")

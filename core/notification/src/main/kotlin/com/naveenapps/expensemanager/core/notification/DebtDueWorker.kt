@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.core.notification
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtBalancesUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
@@ -12,10 +13,10 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
-import java.time.LocalDate
-import java.time.ZoneId
 import kotlin.math.abs
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.first
+import kotlinx.datetime.TimeZone
 
 /**
  * Runs each morning at [DEBT_DUE_HOUR]: when a debt with an open balance is due today, shows
@@ -37,11 +38,11 @@ class DebtDueWorker(
     override suspend fun doWork(): Result {
         try {
             if (reminderTimeRepository.isUpcomingAlertOn().first()) {
-                val zone = ZoneId.systemDefault()
-                val today = LocalDate.now(zone)
+                val zone = TimeZone.currentSystemDefault()
+                val today = Clock.System.now().toLocalDateIn(zone)
                 val due = getDebtBalancesUseCase().first().filter { balance ->
                     !balance.isSettled &&
-                        balance.dueDate?.toInstant()?.atZone(zone)?.toLocalDate() == today
+                        balance.dueDate?.toLocalDateIn(zone) == today
                 }
                 if (due.isNotEmpty()) {
                     notifyAbout(due)

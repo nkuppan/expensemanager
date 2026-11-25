@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * One lent / borrowed / repaid entry (see core:model DebtEntry). Deleting the person deletes
@@ -52,13 +52,13 @@ data class DebtEntryEntity(
     @ColumnInfo(name = "account_id")
     val accountId: String?,
     @ColumnInfo(name = "date")
-    val date: Date,
+    val date: Instant,
     @ColumnInfo(name = "due_date")
-    val dueDate: Date?,
+    val dueDate: Instant?,
     @ColumnInfo(name = "note")
     val note: String,
     @ColumnInfo(name = "created_on")
-    val createdOn: Date,
+    val createdOn: Instant,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date,
+    val updatedOn: Instant,
 )

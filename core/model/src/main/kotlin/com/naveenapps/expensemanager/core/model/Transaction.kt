@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.model
 
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * A logged expense, income or transfer. Immutable: the data layer attaches [category], the
@@ -16,24 +17,24 @@ data class Transaction(
     val amount: Amount,
     val imagePath: String,
     val type: TransactionType,
-    val createdOn: Date,
-    val updatedOn: Date,
+    val createdOn: Instant,
+    val updatedOn: Instant,
     val originalTransactionId: String? = null,
     val category: Category = Category(
         "",
         "",
         CategoryType.INCOME,
         StoredIcon("", ""),
-        Date(),
-        Date(),
+        Clock.System.now(),
+        Clock.System.now(),
     ),
     val fromAccount: Account = Account(
         "",
         "",
         AccountType.REGULAR,
         StoredIcon("", ""),
-        Date(),
-        Date(),
+        Clock.System.now(),
+        Clock.System.now(),
     ),
     val toAccount: Account? = null,
     val attachments: List<String> = emptyList(),

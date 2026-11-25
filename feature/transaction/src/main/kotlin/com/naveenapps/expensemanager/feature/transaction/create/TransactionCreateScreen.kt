@@ -46,9 +46,11 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.naveenapps.expensemanager.core.common.utils.hourAndMinute
 import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
+import com.naveenapps.expensemanager.core.common.utils.withTime
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentAddTile
 import com.naveenapps.expensemanager.core.designsystem.components.AttachmentPickerScreen
@@ -111,8 +113,8 @@ import com.naveenapps.expensemanager.feature.transaction.create.receipt.Suggeste
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.rememberReceiptScanner
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
 import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
-import java.util.Calendar
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -688,7 +690,7 @@ private fun TransactionCreateContent(
 @Composable
 private fun RepeatSelector(
     selected: RecurringFrequency?,
-    startDate: Date,
+    startDate: Instant,
     onSelect: (RecurringFrequency?) -> Unit,
 ) {
     val options = listOf<Pair<RecurringFrequency?, Int>>(
@@ -838,11 +840,8 @@ private fun TransactionType.labelRes(): Int = when (this) {
     TransactionType.REFUND -> R.string.refund
 }
 
-fun Date.toTime(): ReminderTimeState {
-    val cal = Calendar.getInstance()
-    cal.time = this
-    val hours = cal.get(Calendar.HOUR_OF_DAY)
-    val minutes = cal.get(Calendar.MINUTE)
+fun Instant.toTime(): ReminderTimeState {
+    val (hours, minutes) = hourAndMinute()
     return ReminderTimeState(
         hour = hours,
         minute = minutes,
@@ -850,13 +849,8 @@ fun Date.toTime(): ReminderTimeState {
     )
 }
 
-fun Date.toTime(reminderTimeState: ReminderTimeState): Date {
-    val calendar = Calendar.getInstance()
-    calendar.time = this
-    calendar.set(Calendar.HOUR_OF_DAY, reminderTimeState.hour)
-    calendar.set(Calendar.MINUTE, reminderTimeState.minute)
-    return calendar.time
-}
+/** Same day at the picked hour and minute; seconds are kept, as before. */
+fun Instant.toTime(reminderTimeState: ReminderTimeState): Instant = withTime(reminderTimeState.hour, reminderTimeState.minute, resetSeconds = false)
 
 @EmPreviews
 @Composable
@@ -888,7 +882,7 @@ private fun getTransactionState(
 ): TransactionCreateState = TransactionCreateState(
     amount = amountField,
     currency = Currency(symbol = "$", name = ""),
-    dateTime = Date(),
+    dateTime = Clock.System.now(),
     notes = amountField,
     selectedCategory = Category(
         id = "1",
@@ -898,8 +892,8 @@ private fun getTransactionState(
             name = "account_balance_wallet",
             backgroundColor = "#000000",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     ),
     selectedFromAccount = AccountUiModel(
         id = "1",

@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
+import kotlin.time.Instant
 
 @Entity(
     tableName = "transaction",
@@ -66,9 +66,9 @@ data class TransactionEntity(
     @ColumnInfo(name = "image_path")
     var imagePath: String,
     @ColumnInfo(name = "created_on")
-    var createdOn: Date,
+    var createdOn: Instant,
     @ColumnInfo(name = "updated_on")
-    var updatedOn: Date,
+    var updatedOn: Instant,
     @ColumnInfo(name = "to_account_id")
     var toAccountId: String?,
     @ColumnInfo(name = "original_transaction_id")

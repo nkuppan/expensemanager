@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
-import java.util.Date
+import kotlin.time.Instant
 
 enum class RecurringFrequency {
     DAILY,
@@ -26,12 +26,12 @@ data class RecurringTransaction(
     val type: TransactionType,
     val amount: Double,
     val frequency: RecurringFrequency,
-    val startDate: Date,
+    val startDate: Instant,
     /** Number of the next occurrence to create (1 after the first save). */
     val nextOccurrence: Int,
-    val nextDueDate: Date,
-    val createdOn: Date,
-    val updatedOn: Date,
+    val nextDueDate: Instant,
+    val createdOn: Instant,
+    val updatedOn: Instant,
     // Filled in for display only.
     val category: Category? = null,
     val fromAccount: Account? = null,

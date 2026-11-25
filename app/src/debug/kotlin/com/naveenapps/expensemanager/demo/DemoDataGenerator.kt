@@ -3,9 +3,20 @@ package com.naveenapps.expensemanager.demo
 import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Calendar
-import java.util.Date
 import kotlin.random.Random
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * DEBUG BUILDS ONLY — realistic, repeatable sample data for Play Store screenshots.
@@ -52,13 +63,13 @@ data class DemoTransaction(
     val fromAccountId: String,
     val toAccountId: String?,
     val amountUsd: Double,
-    val date: Date,
+    val date: Instant,
     /** Set on the latest occurrence of a repeating bill/income, which becomes a recurring rule. */
     val repeat: RecurringFrequency? = null,
 )
 
 data class DemoBudget(
-    val month: Date,
+    val month: Instant,
     val amountUsd: Double,
     /** Empty = all categories. */
     val categoryIds: List<String>,
@@ -83,29 +94,29 @@ object DemoDataGenerator {
      * @param today the last day that may get transactions (nothing is dated in the future).
      * @param months how many calendar months to fill, ending with the current one.
      */
-    fun generate(today: Date = Date(), months: Int = 3, seed: Int = 42): DemoPlan {
-        val todayCal = Calendar.getInstance().apply { time = today }
+    fun generate(
+        today: Instant = Clock.System.now(),
+        months: Int = 3,
+        seed: Int = 42,
+        zone: TimeZone = TimeZone.currentSystemDefault(),
+    ): DemoPlan {
+        val todayDate = today.toLocalDateTime(zone).date
         val transactions = mutableListOf<DemoTransaction>()
         val budgets = mutableListOf<DemoBudget>()
 
         for (offset in (months - 1) downTo 0) {
-            val monthStart = (todayCal.clone() as Calendar).apply {
-                set(Calendar.DAY_OF_MONTH, 1)
-                add(Calendar.MONTH, -offset)
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-            }
+            val monthStart = LocalDate(todayDate.year, todayDate.month, 1).minus(offset, DateTimeUnit.MONTH)
+            val daysInMonth = monthStart.daysUntil(monthStart.plus(1, DateTimeUnit.MONTH))
             val isCurrentMonth = offset == 0
-            val lastDay = if (isCurrentMonth) todayCal.get(Calendar.DAY_OF_MONTH) else monthStart.getActualMaximum(Calendar.DAY_OF_MONTH)
+            val lastDay = if (isCurrentMonth) todayDate.dayOfMonth else daysInMonth
             val random = Random(seed * 31 + offset)
-            transactions += month(monthStart, lastDay, isCurrentMonth, offset, random, todayCal)
+            transactions += month(monthStart, daysInMonth, lastDay, isCurrentMonth, offset, random, today, zone)
+            val monthStartAt = monthStart.atStartOfDayIn(zone)
 
-            budgets += DemoBudget(monthStart.time, amountUsd = 1_800.0, categoryIds = emptyList())
-            budgets += DemoBudget(monthStart.time, amountUsd = 650.0, categoryIds = listOf(DemoCategory.FOOD))
+            budgets += DemoBudget(monthStartAt, amountUsd = 1_800.0, categoryIds = emptyList())
+            budgets += DemoBudget(monthStartAt, amountUsd = 650.0, categoryIds = listOf(DemoCategory.FOOD))
             budgets += DemoBudget(
-                monthStart.time,
+                monthStartAt,
                 amountUsd = 200.0,
                 categoryIds = listOf(DemoCategory.ENTERTAINMENT, DemoCategory.LEISURE),
             )
@@ -116,27 +127,26 @@ object DemoDataGenerator {
     }
 
     private fun month(
-        monthStart: Calendar,
+        monthStart: LocalDate,
+        daysInMonth: Int,
         lastDay: Int,
         isCurrentMonth: Boolean,
         monthsAgo: Int,
         random: Random,
-        today: Calendar,
+        today: Instant,
+        zone: TimeZone,
     ): List<DemoTransaction> {
         val out = mutableListOf<DemoTransaction>()
 
-        fun at(day: Int, hour: Int = random.nextInt(8, 21)): Date? {
+        fun at(day: Int, hour: Int = random.nextInt(8, 21)): Instant? {
             if (day > lastDay) return null
-            val c = (monthStart.clone() as Calendar).apply {
-                set(Calendar.DAY_OF_MONTH, day)
-                set(Calendar.HOUR_OF_DAY, hour)
-                set(Calendar.MINUTE, random.nextInt(0, 60))
-            }
+            val minute = random.nextInt(0, 60)
+            val at = LocalDateTime(LocalDate(monthStart.year, monthStart.month, day), LocalTime(hour, minute)).toInstant(zone)
             // Same-day entries must not be later than "now".
-            if (isCurrentMonth && day == lastDay && c.after(today)) {
-                c.timeInMillis = today.timeInMillis - random.nextLong(5, 120) * 60_000
+            if (isCurrentMonth && day == lastDay && at > today) {
+                return Instant.fromEpochMilliseconds(today.toEpochMilliseconds() - random.nextLong(5, 120) * 60_000)
             }
-            return c.time
+            return at
         }
 
         fun add(type: TransactionType, category: String, from: String, usd: Double, day: Int, to: String? = null, repeat: RecurringFrequency? = null, hour: Int? = null) {
@@ -146,7 +156,7 @@ object DemoDataGenerator {
 
         fun range(min: Double, max: Double) = min + random.nextDouble() * (max - min)
         fun days(count: Int): List<Int> {
-            val max = monthStart.getActualMaximum(Calendar.DAY_OF_MONTH)
+            val max = daysInMonth
             return (1..max).shuffled(random).take(count).sorted()
         }
 

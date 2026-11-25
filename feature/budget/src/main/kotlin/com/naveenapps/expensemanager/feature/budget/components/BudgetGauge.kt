@@ -59,6 +59,7 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sin
+import kotlinx.datetime.toJavaLocalDate
 
 /**
  * The budget gauge: its name, a half-circle that fills as it's spent with what's left in the
@@ -300,7 +301,7 @@ private fun periodName(budget: BudgetProgress): String {
     val locale = LocalConfiguration.current.locales[0]
     return remember(budget.periodStart, budget.periodType, locale) {
         when (budget.periodType) {
-            BudgetPeriod.MONTHLY -> budget.periodStart.format(DateTimeFormatter.ofPattern("LLLL", locale))
+            BudgetPeriod.MONTHLY -> budget.periodStart.toJavaLocalDate().format(DateTimeFormatter.ofPattern("LLLL", locale))
             BudgetPeriod.YEARLY -> budget.periodStart.year.toString()
         }
     }

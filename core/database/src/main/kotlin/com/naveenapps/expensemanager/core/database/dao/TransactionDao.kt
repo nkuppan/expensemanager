@@ -14,18 +14,16 @@ import com.naveenapps.expensemanager.core.database.entity.TransactionRelation
 import com.naveenapps.expensemanager.core.model.isIncome
 import com.naveenapps.expensemanager.core.model.isRefund
 import com.naveenapps.expensemanager.core.model.isTransfer
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TransactionDao : BaseDao<TransactionEntity> {
 
-    @Query("SELECT * from `transaction` WHERE id=:id")
-    fun findById(id: String): TransactionEntity?
-
-    // Suspend variant used inside the suspending @Transaction write methods below, so the
-    // balance bookkeeping never mixes blocking queries into a coroutine transaction.
+    // The only lookup by id. Suspending, so it's safe inside the suspending @Transaction write
+    // methods below, and allowed in common code once Room runs on Kotlin Multiplatform (DAO
+    // functions there must be suspend or return Flow). The blocking findById() was removed.
     @Query("SELECT * from `transaction` WHERE id=:id")
     suspend fun findEntityById(id: String): TransactionEntity?
 
@@ -153,7 +151,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
                         id = UUID.randomUUID().toString(),
                         transactionId = transactionEntity.id,
                         imagePath = path,
-                        createdOn = Date(),
+                        createdOn = Clock.System.now(),
                     ),
                 )
             }
@@ -254,7 +252,7 @@ interface TransactionDao : BaseDao<TransactionEntity> {
                     id = UUID.randomUUID().toString(),
                     transactionId = transactionEntity.id,
                     imagePath = path,
-                    createdOn = Date(),
+                    createdOn = Clock.System.now(),
                 ),
             )
         }

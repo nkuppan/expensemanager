@@ -44,7 +44,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmText
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import java.util.Date
+import kotlin.time.Clock
 
 @Composable
 fun MonthPicker(
@@ -216,8 +216,8 @@ fun MonthPickerPreview() {
                     color = EmTheme.colors.scheme.background,
                     shape = EmTheme.shapes.sm,
                 ),
-            currentMonth = Date().toMonth(),
-            currentYear = Date().toYearInt(),
+            currentMonth = Clock.System.now().toMonth(),
+            currentYear = Clock.System.now().toYearInt(),
             confirmButtonCLicked = { _, _ -> },
             cancelClicked = {},
         )

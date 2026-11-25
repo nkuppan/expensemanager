@@ -25,6 +25,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountSize
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountText
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
@@ -40,11 +41,11 @@ import com.naveenapps.expensemanager.core.designsystem.theme.tint
 import com.naveenapps.expensemanager.core.designsystem.ui.utils.displayName
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.feature.transaction.recurring.labelResId
-import java.time.LocalDate
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
+import kotlinx.datetime.daysUntil
+import kotlinx.datetime.toJavaLocalDate
 
 /**
  * Home's "Upcoming" card, styled like the budget card. On top, two tinted tiles with what the
@@ -208,10 +209,10 @@ private fun UpcomingRow(item: UpcomingItemUi, onClick: () -> Unit) {
 
 /** Day of the month over a short month name, like a calendar page. */
 @Composable
-private fun DateTile(date: Date, highlighted: Boolean) {
+private fun DateTile(date: Instant, highlighted: Boolean) {
     val locale = LocalConfiguration.current.locales[0]
-    val local = remember(date) { date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() }
-    val month = remember(local, locale) { local.format(DateTimeFormatter.ofPattern("MMM", locale)) }
+    val local = remember(date) { date.toLocalDateIn() }
+    val month = remember(local, locale) { local.toJavaLocalDate().format(DateTimeFormatter.ofPattern("MMM", locale)) }
     val container = if (highlighted) {
         EmTheme.colors.scheme.primaryContainer
     } else {
@@ -267,10 +268,7 @@ private fun DuePill(daysAway: Long, highlighted: Boolean) {
     )
 }
 
-private fun daysUntil(date: Date): Long {
-    val zone = ZoneId.systemDefault()
-    return ChronoUnit.DAYS.between(LocalDate.now(zone), date.toInstant().atZone(zone).toLocalDate())
-}
+private fun daysUntil(date: Instant): Long = Clock.System.now().toLocalDateIn().daysUntil(date.toLocalDateIn()).toLong()
 
 @Composable
 private fun UpcomingEmpty(onPlan: () -> Unit) {

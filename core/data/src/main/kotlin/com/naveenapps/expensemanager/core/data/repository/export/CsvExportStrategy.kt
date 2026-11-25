@@ -14,7 +14,7 @@ import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.model.netExpense
 import com.opencsv.CSVWriter
-import java.util.Date
+import kotlin.time.Clock
 
 class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
 
@@ -29,7 +29,7 @@ class CsvExportStrategy(context: Context) : BaseExportStrategy(context) {
                 .filter { it.type == TransactionType.INCOME }
                 .sumOf { it.amount.amount }
             val totalExpense = transactions.netExpense()
-            val now = Date()
+            val now = Clock.System.now()
 
             data.add(
                 arrayOf(

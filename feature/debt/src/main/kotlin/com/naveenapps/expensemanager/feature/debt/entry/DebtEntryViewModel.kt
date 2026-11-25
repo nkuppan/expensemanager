@@ -28,8 +28,9 @@ import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.core.repository.logFailure
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.feature.debt.R
-import java.util.Date
 import kotlin.math.abs
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -54,8 +55,8 @@ data class DebtEntryState(
     val linkAccount: Boolean = true,
     val accounts: List<AccountUiModel> = emptyList(),
     val selectedAccount: AccountUiModel? = null,
-    val date: Date = Date(),
-    val dueDate: Date? = null,
+    val date: Instant = Clock.System.now(),
+    val dueDate: Instant? = null,
     val showNumberPad: Boolean = false,
     val numberPadInitialAmount: Double? = null,
     val showAccountSelection: Boolean = false,
@@ -77,8 +78,8 @@ sealed class DebtEntryAction {
     data object ShowDateSelection : DebtEntryAction()
     data object ShowDueDateSelection : DebtEntryAction()
     data object DismissDateSelection : DebtEntryAction()
-    data class SelectDate(val date: Date) : DebtEntryAction()
-    data class SelectDueDate(val date: Date) : DebtEntryAction()
+    data class SelectDate(val date: Instant) : DebtEntryAction()
+    data class SelectDueDate(val date: Instant) : DebtEntryAction()
     data object ClearDueDate : DebtEntryAction()
     data object Save : DebtEntryAction()
     data object ShowDelete : DebtEntryAction()

@@ -3,12 +3,12 @@ package com.naveenapps.expensemanager.core.data.repository.backup
 import com.google.common.truth.Truth.assertThat
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.Date
+import kotlin.time.Instant
 import org.junit.Test
 
 class AutoBackupFilesTest {
 
-    private fun date(y: Int, m: Int, d: Int, h: Int, min: Int, s: Int) = Date.from(LocalDateTime.of(y, m, d, h, min, s).atZone(ZoneId.systemDefault()).toInstant())
+    private fun date(y: Int, m: Int, d: Int, h: Int, min: Int, s: Int): Instant = Instant.fromEpochMilliseconds(LocalDateTime.of(y, m, d, h, min, s).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
 
     private fun auto(stamp: String) = "expense-manager-auto-$stamp.sqlite3.aes"
 
@@ -63,7 +63,7 @@ class AutoBackupFilesTest {
 
     @Test
     fun `parses kind and time from both names`() {
-        val time = date(2026, 10, 3, 7, 5, 9).time
+        val time = date(2026, 10, 3, 7, 5, 9).toEpochMilliseconds()
 
         assertThat(AutoBackupFiles.parse(auto("2026-10-03-070509")))
             .isEqualTo(AutoBackupFiles.Parsed(isAuto = true, createdAt = time))

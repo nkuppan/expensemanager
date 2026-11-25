@@ -4,17 +4,18 @@ import com.google.common.truth.Truth.assertThat
 import com.naveenapps.expensemanager.core.model.TransactionType
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.util.Date
+import kotlin.time.Instant
+import kotlinx.datetime.TimeZone
 import org.junit.Test
 
 class ReceiptParserTest {
 
     private val zone = ZoneOffset.UTC
-    private val now = Date.from(LocalDateTime.of(2026, 11, 8, 10, 0).toInstant(zone))
+    private val now = Instant.fromEpochMilliseconds(LocalDateTime.of(2026, 11, 8, 10, 0).toInstant(zone).toEpochMilli())
 
-    private fun parse(text: String) = ReceiptParser.parse(text.trimIndent(), now, zone)
+    private fun parse(text: String) = ReceiptParser.parse(text.trimIndent(), now, TimeZone.UTC)
 
-    private fun Date.local() = toInstant().atZone(zone).toLocalDateTime()
+    private fun Instant.local() = java.time.Instant.ofEpochMilli(toEpochMilliseconds()).atZone(zone).toLocalDateTime()
 
     @Test
     fun `GPay screenshot text`() {

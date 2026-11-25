@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
 import com.naveenapps.expensemanager.core.common.utils.AppShareLink
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.budget.GetBudgetsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.debt.GetDebtTotalsUseCase
@@ -44,10 +45,9 @@ import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
 import com.naveenapps.expensemanager.core.repository.SettingsRepository
 import com.naveenapps.expensemanager.feature.budget.components.toBudgetProgress
 import com.naveenapps.expensemanager.feature.dashboard.notifications.LATEST_WHATS_NEW_VERSION
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.Date
 import java.util.concurrent.TimeUnit
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -57,6 +57,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 
 class DashboardViewModel(
     getTransactionWithFilterUseCase: GetTransactionWithFilterUseCase,
@@ -141,7 +143,7 @@ class DashboardViewModel(
             feedbackRepository.getNotificationPermissionAsks(),
         ) { reminderOn, hiddenUntil, dismissCount, firstSavePending, asks ->
             val now = System.currentTimeMillis()
-            val startOfToday = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            val startOfToday = Clock.System.now().toLocalDateIn().atStartOfDayIn(TimeZone.currentSystemDefault()).toEpochMilliseconds()
             val installedBeforeToday = feedbackRepository.getFirstInstallTime().let { it in 1 until startOfToday }
             _state.update {
                 it.copy(
@@ -270,16 +272,16 @@ class DashboardViewModel(
         ) { allBudgets, dateRange, currency ->
             val activeMonthDate = when (dateRange.type) {
                 DateRangeType.TODAY, DateRangeType.THIS_WEEK, DateRangeType.THIS_MONTH ->
-                    Date(dateRange.dateRanges[0])
+                    Instant.fromEpochMilliseconds(dateRange.dateRanges[0])
 
-                else -> Date()
+                else -> Clock.System.now()
             }
             val activeMonth = activeMonthDate.toMonthAndYearKey()
-            val currentYear = Date().toYear()
+            val currentYear = Clock.System.now().toYearKey()
             // Home shows every monthly budget for the month being viewed and every yearly budget
             // for this year, one card each.
             val (monthly, yearly) = pickHomeBudgets(allBudgets, activeMonth, currentYear)
-            val today = LocalDate.now()
+            val today = Clock.System.now().toLocalDateIn()
             val format = { value: Double -> getFormattedAmountUseCase.invoke(value, currency).amountString.orEmpty() }
             _state.update {
                 it.copy(
@@ -293,7 +295,7 @@ class DashboardViewModel(
                     // calendar month — what Home shows — not by any old or restored budget.
                     hasCurrentMonthBudget = allBudgets.any {
                         it.periodType == BudgetPeriod.MONTHLY &&
-                            it.selectedMonth == Date().toMonthAndYearKey()
+                            it.selectedMonth == Clock.System.now().toMonthAndYearKey()
                     },
                 )
             }

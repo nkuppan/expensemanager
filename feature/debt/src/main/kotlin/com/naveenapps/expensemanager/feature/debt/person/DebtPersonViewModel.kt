@@ -18,8 +18,9 @@ import com.naveenapps.expensemanager.core.repository.DebtRepository
 import com.naveenapps.expensemanager.feature.debt.DebtStatus
 import com.naveenapps.expensemanager.feature.debt.debtStatusOf
 import com.naveenapps.expensemanager.feature.debt.isOverdue
-import java.util.Date
 import kotlin.math.abs
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -33,10 +34,10 @@ data class DebtEntryRow(
     val id: String,
     val kind: DebtEntryKind,
     val amount: String,
-    val date: Date,
+    val date: Instant,
     val accountName: String?,
     val note: String,
-    val dueDate: Date?,
+    val dueDate: Instant?,
 )
 
 data class DebtPersonState(
@@ -45,10 +46,10 @@ data class DebtPersonState(
     val status: DebtStatus = DebtStatus.SETTLED,
     /** Open balance, without a sign. */
     val balance: String = "",
-    val dueDate: Date? = null,
+    val dueDate: Instant? = null,
     val isOverdue: Boolean = false,
     /** When the oldest debt still open started, for the reminder message. */
-    val openSince: Date? = null,
+    val openSince: Instant? = null,
     val entries: List<DebtEntryRow> = emptyList(),
     val showRenameDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
@@ -176,7 +177,7 @@ class DebtPersonViewModel(
         if (trimmed.isEmpty()) return
         viewModelScope.launch {
             val person = debtRepository.findPerson(personId) ?: return@launch
-            debtRepository.savePerson(person.copy(name = trimmed, updatedOn = Date()))
+            debtRepository.savePerson(person.copy(name = trimmed, updatedOn = Clock.System.now()))
         }
     }
 }

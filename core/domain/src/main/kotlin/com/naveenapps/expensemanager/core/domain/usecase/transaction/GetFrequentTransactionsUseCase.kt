@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.domain.usecase.transaction
 import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
-import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.days
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -16,7 +16,7 @@ class GetFrequentTransactionsUseCase(
 ) {
     fun invoke(now: Long = System.currentTimeMillis()): Flow<List<FrequentTransaction>> = repository.getFrequentTransactions(
         transactionTypes = listOf(TransactionType.EXPENSE, TransactionType.INCOME),
-        since = now - TimeUnit.DAYS.toMillis(LOOKBACK_DAYS),
+        since = now - LOOKBACK_DAYS.days.inWholeMilliseconds,
         minCount = MIN_USES,
         limit = MAX_PICKS,
     )
