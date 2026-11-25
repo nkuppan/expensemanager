@@ -64,6 +64,12 @@ fun LocalDate.toDayKey(): String = "${dayOfMonth.pad(2)}/${month.number.pad(2)}/
 // inclusive: start is the first millisecond of the period, end is the last one. Same results as
 // Date.getStartOfTheMonth() & co. in DateUtils.kt.
 
+/** First millisecond of this date's day in [timeZone]. */
+fun LocalDate.startOfDayMillis(timeZone: TimeZone = TimeZone.currentSystemDefault()): Long = atStartOfDayIn(timeZone).toEpochMilliseconds()
+
+/** Last millisecond of this date's day in [timeZone]. */
+fun LocalDate.endOfDayMillis(timeZone: TimeZone = TimeZone.currentSystemDefault()): Long = plus(1, DateTimeUnit.DAY).atStartOfDayIn(timeZone).toEpochMilliseconds() - 1
+
 /** First millisecond of this date's month in [timeZone]. */
 fun LocalDate.startOfMonthMillis(timeZone: TimeZone = TimeZone.currentSystemDefault()): Long = LocalDate(year, month, 1).atStartOfDayIn(timeZone).toEpochMilliseconds()
 

@@ -2,6 +2,7 @@ package com.naveenapps.expensemanager.core.data.repository
 
 import android.content.Context
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.endOfDayMillis
 import com.naveenapps.expensemanager.core.common.utils.getThisMonthRange
 import com.naveenapps.expensemanager.core.common.utils.getThisWeekRange
 import com.naveenapps.expensemanager.core.common.utils.getThisYearRange
@@ -9,6 +10,7 @@ import com.naveenapps.expensemanager.core.common.utils.getTodayRange
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
 import com.naveenapps.expensemanager.core.common.utils.toDate
 import com.naveenapps.expensemanager.core.common.utils.toDateAndMonth
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.data.R
@@ -104,10 +106,30 @@ class DateRangeFilterRepositoryImpl(
     }
 
     private suspend fun getOriginalDateRangeValues(dateRangeType: DateRangeType): List<Long> {
-        if (!isNavigated && dateRangeType != DateRangeType.ALL && dateRangeType != DateRangeType.CUSTOM) {
-            return getCurrentDateRanges(dateRangeType)
+        val values = if (!isNavigated && dateRangeType != DateRangeType.ALL && dateRangeType != DateRangeType.CUSTOM) {
+            getCurrentDateRanges(dateRangeType)
+        } else {
+            getDateRange() ?: getCurrentDateRanges(dateRangeType)
         }
-        return getDateRange() ?: getCurrentDateRanges(dateRangeType)
+        return if (dateRangeType == DateRangeType.CUSTOM) {
+            values.withInclusiveEndDay()
+        } else {
+            values
+        }
+    }
+
+    /**
+     * The custom range picker stores both bounds as midnight of the picked day, but the user
+     * picked the whole day. Extend the end bound to the last millisecond of that day (same
+     * inclusive-end convention as getEndOfTheMonth) so BETWEEN queries keep the end day
+     * inside the range — otherwise every custom range silently loses its last day and a
+     * single-day range matches nothing. Normalized on read, so previously saved ranges are
+     * repaired too; built-in ranges already end at the start of their next period.
+     */
+    private fun List<Long>.withInclusiveEndDay(): List<Long> = if (size == 2) {
+        listOf(this[0], Instant.fromEpochMilliseconds(this[1]).toLocalDateIn().endOfDayMillis())
+    } else {
+        this
     }
 
     private fun getCurrentDateRanges(dateRangeType: DateRangeType): List<Long> = when (dateRangeType) {

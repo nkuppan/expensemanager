@@ -19,6 +19,11 @@ import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import kotlin.time.Clock
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.toLocalDateTime
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -121,4 +126,37 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
         val allType = repository.getTransactionGroupType(DateRangeType.CUSTOM)
         Truth.assertThat(allType).isEqualTo(GroupType.DATE)
     }
+
+    @Test
+    fun customRangeShouldEndAtTheLastMillisecondOfThePickedDay() = runTest {
+        // The picker saves both bounds as midnight of the picked day; reading the range back
+        // must return the whole end day, so BETWEEN queries keep it inside the filter.
+        val start = localMidnight(2026, 11, 15)
+        val end = localMidnight(2026, 11, 22)
+        repository.setDateRanges(listOf(Instant.fromEpochMilliseconds(start), Instant.fromEpochMilliseconds(end)))
+
+        val model = repository.getDateRangeFilterTypeString(DateRangeType.CUSTOM)
+
+        Truth.assertThat(model.type).isEqualTo(DateRangeType.CUSTOM)
+        Truth.assertThat(model.dateRanges[0]).isEqualTo(start)
+        val savedEnd = Instant.fromEpochMilliseconds(model.dateRanges[1]).toLocalDateTime(tz)
+        Truth.assertThat(savedEnd.date).isEqualTo(LocalDate(2026, 11, 22))
+        Truth.assertThat(savedEnd.hour).isEqualTo(23)
+    }
+
+    @Test
+    fun nonCustomRangeShouldKeepItsEndBoundUntouched() = runTest {
+        val start = localMidnight(2026, 11, 1)
+        val end = localMidnight(2026, 12, 1)
+        repository.setDateRanges(listOf(Instant.fromEpochMilliseconds(start), Instant.fromEpochMilliseconds(end)))
+
+        val model = repository.getDateRangeFilterTypeString(DateRangeType.THIS_MONTH)
+        // A navigated non-custom range reuses the stored window as-is (no end-day extension).
+        Truth.assertThat(model.dateRanges[0]).isEqualTo(start)
+        Truth.assertThat(model.dateRanges[1]).isEqualTo(end)
+    }
+
+    private fun localMidnight(year: Int, month: Int, day: Int): Long = LocalDate(year, month, day).atStartOfDayIn(tz).toEpochMilliseconds()
+
+    private val tz = TimeZone.currentSystemDefault()
 }

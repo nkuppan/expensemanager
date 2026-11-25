@@ -1,6 +1,9 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
+import com.naveenapps.expensemanager.core.common.utils.startOfDayMillis
+import com.naveenapps.expensemanager.core.common.utils.startOfMonthMillis
+import com.naveenapps.expensemanager.core.common.utils.startOfYearMillis
 import com.naveenapps.expensemanager.core.common.utils.toDayKey
 import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
@@ -16,6 +19,7 @@ import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -87,13 +91,16 @@ class GetChartDataUseCase(
             // For ALL: extend one year before the earliest transaction and one year after
             // the latest, so the chart shows an empty bucket on each side for visual context.
             // For other ranges: clamp only the start (keeps empty trailing buckets visible
-            // for ranges the user explicitly selected).
+            // for ranges the user explicitly selected), and to the beginning of the earliest
+            // transaction's group bucket, not to its raw timestamp — a raw timestamp after
+            // the range end (e.g. a midday transaction on a day whose bound is midnight)
+            // would make the loop below run zero times and emit an empty chart.
             val effectiveFromMs = if (isAllTime) {
                 kotlin.time.Instant.fromEpochMilliseconds(earliestTransactionMs)
                     .minus(1, DateTimeUnit.YEAR, TimeZone.UTC)
                     .toEpochMilliseconds()
             } else {
-                maxOf(ranges[0], earliestTransactionMs)
+                maxOf(ranges[0], earliestTransactionMs.toBucketStart(groupType))
             }
             val effectiveToMs = if (isAllTime) {
                 kotlin.time.Instant.fromEpochMilliseconds(latestTransactionMs)
@@ -167,6 +174,16 @@ class GetChartDataUseCase(
         GroupType.YEAR -> fromDate.plus(1, DateTimeUnit.YEAR, TimeZone.UTC)
         GroupType.MONTH -> fromDate.plus(1, DateTimeUnit.MONTH, TimeZone.UTC)
         GroupType.DATE -> fromDate.plus(1, DateTimeUnit.DAY, TimeZone.UTC)
+    }
+
+    /** First instant of the group bucket a timestamp falls into, in the device time zone. */
+    private fun Long.toBucketStart(groupType: GroupType): Long {
+        val day = Instant.fromEpochMilliseconds(this).toLocalDateIn()
+        return when (groupType) {
+            GroupType.DATE -> day.startOfDayMillis()
+            GroupType.MONTH -> day.startOfMonthMillis()
+            GroupType.YEAR -> day.startOfYearMillis()
+        }
     }
 
     private fun groupValue(groupType: GroupType, at: kotlin.time.Instant) = when (groupType) {
