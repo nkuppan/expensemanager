@@ -40,7 +40,7 @@ import com.naveenapps.expensemanager.core.database.utils.TransactionTypeConverte
         DebtPersonEntity::class,
         DebtEntryEntity::class,
     ],
-    version = 12,
+    version = 13,
     exportSchema = true,
 )
 @TypeConverters(

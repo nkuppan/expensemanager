@@ -6,6 +6,7 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.Currency
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
 import com.naveenapps.expensemanager.core.model.TextFieldValue
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlin.time.Instant
 
@@ -33,12 +34,20 @@ data class TransactionCreateState(
     val showTimeSelection: Boolean,
     val attachments: List<String> = emptyList(),
     val showAttachmentPicker: Boolean = false,
-    /** Repeat rule for a new transaction; null = doesn't repeat. */
-    val repeat: RecurringFrequency? = null,
     /** Only new transactions can be made recurring; editing one never changes a rule. */
     val canRepeat: Boolean = true,
     /** Set when editing a transaction a recurring rule logged and that rule still exists. */
     val recurringRuleId: String? = null,
+    /** When transactionType is REFUND, the id of the original transaction being refunded. */
+    val originalTransactionId: String? = null,
+    /** Whether the original transaction selection bottom sheet is shown. */
+    val showOriginalTransactionSelection: Boolean = false,
+    /** Prior expense/income entries on the refund's account to link as the original. */
+    val refundCandidates: List<Transaction> = emptyList(),
+    /** The original transaction a refund is linked to, for display. */
+    val originalTransaction: Transaction? = null,
+    /** Repeat rule for a new transaction; null = doesn't repeat. */
+    val repeat: RecurringFrequency? = null,
     /** "Discard changes?" confirmation, shown when leaving a form with unsaved edits. */
     val showDiscardDialog: Boolean = false,
     /** Frequent entries offered as one-tap chips; only for a new transaction. */

@@ -12,6 +12,7 @@ import com.naveenapps.expensemanager.core.model.PieChartData
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.getDummyPieChartData
 import com.naveenapps.expensemanager.core.model.isTransfer
+import com.naveenapps.expensemanager.core.model.netExpense
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.firstOrNull
@@ -74,29 +75,34 @@ fun CategoryTransaction.toChartModel(): PieChartData = PieChartData(
 
 /**
  * Spending (or income) of [categoryType] per category, largest share first, with the total.
- * Transfers are left out. Shared by the Categories tab and a budget's details.
+ * Transfers are left out. For expenses, refunds subtract from their category so the share is
+ * the net amount; a category whose spending is fully refunded disappears. Shared by the
+ * Categories tab and a budget's details.
  */
 fun List<Transaction>.groupByCategory(
     categoryType: CategoryType,
     formatAmount: (Double) -> Amount,
 ): Pair<List<CategoryTransaction>, Double> {
-    // Single pass: filter transfers, group by category, filter by type
+    // Single pass: group by category, keep the requested category type.
     val byCategory = filterNot { it.type.isTransfer() }
         .groupBy { it.category }
         .filterKeys { it.type == categoryType }
 
-    // Compute per-category sums once; derive total from those — no double iteration
-    val categoryAmounts = byCategory.mapValues { (_, txns) -> txns.sumOf { it.amount.amount } }
-    val totalAmount = categoryAmounts.values.sum()
+    // Expenses are net of refunds (money that came back); income is counted as received.
+    val categoryAmounts = byCategory.mapValues { (category, txns) ->
+        if (category.type == CategoryType.EXPENSE) txns.netExpense() else txns.sumOf { it.amount.amount }
+    }
+    // A category whose spending was fully (or more than fully) refunded has nothing to show.
+    val visibleAmounts = categoryAmounts.filterValues { it > 0.0 }
+    val totalAmount = visibleAmounts.values.sum()
 
-    val categoryTransactions = byCategory.entries
-        .map { (category, txns) ->
-            val spent = categoryAmounts.getValue(category)
+    val categoryTransactions = visibleAmounts.entries
+        .map { (category, spent) ->
             CategoryTransaction(
                 category = category,
                 percent = if (totalAmount > 0.0) (spent / totalAmount).toFloat() * 100 else 0f,
                 amount = formatAmount(spent),
-                transaction = txns,
+                transaction = byCategory.getValue(category),
             )
         }
         .sortedByDescending { it.percent }

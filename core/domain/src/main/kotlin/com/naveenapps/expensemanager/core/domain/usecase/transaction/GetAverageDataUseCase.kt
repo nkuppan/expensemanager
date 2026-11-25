@@ -7,8 +7,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.dateran
 import com.naveenapps.expensemanager.core.model.AverageData
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.WholeAverageData
-import com.naveenapps.expensemanager.core.model.isExpense
-import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.netExpense
+import com.naveenapps.expensemanager.core.model.netIncome
 import com.naveenapps.expensemanager.core.repository.CalendarWeeksRepository
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
@@ -34,10 +34,8 @@ class GetAverageDataUseCase(
         getDateRangeUseCase.invoke(),
         getTransactionWithFilterUseCase.invoke(),
     ) { currency, dateRangeModel, transactions ->
-        val incomeAmount =
-            transactions?.filter { it.type.isIncome() }?.sumOf { it.amount.amount } ?: 0.0
-        val expenseAmount =
-            transactions?.filter { it.type.isExpense() }?.sumOf { it.amount.amount } ?: 0.0
+        val incomeAmount = transactions?.netIncome() ?: 0.0
+        val expenseAmount = transactions?.netExpense() ?: 0.0
 
         val ranges = dateRangeModel.dateRanges
 

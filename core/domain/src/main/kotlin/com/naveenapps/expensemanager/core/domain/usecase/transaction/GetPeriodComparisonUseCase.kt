@@ -5,7 +5,10 @@ import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryChange
 import com.naveenapps.expensemanager.core.model.PeriodComparison
 import com.naveenapps.expensemanager.core.model.Transaction
-import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isRefund
+import com.naveenapps.expensemanager.core.model.netExpense
+import com.naveenapps.expensemanager.core.model.netIncome
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import kotlin.math.abs
 import kotlinx.coroutines.flow.Flow
@@ -39,11 +42,10 @@ fun calculatePeriodComparison(
     categoriesById: Map<String, Category>,
     maxCategoryChanges: Int = 3,
 ): PeriodComparison {
-    fun List<Transaction>.total(type: TransactionType) = filter { it.type == type }.sumOf { it.amount.amount }
-
-    fun List<Transaction>.expenseByCategory() = filter { it.type == TransactionType.EXPENSE }
+    fun List<Transaction>.expenseByCategory() = filter { it.type.isExpense() || it.type.isRefund() }
         .groupBy { it.categoryId }
-        .mapValues { (_, items) -> items.sumOf { it.amount.amount } }
+        .mapValues { (_, items) -> items.netExpense() }
+        .filterValues { it != 0.0 }
 
     val current = periods.current.expenseByCategory()
     val previous = periods.previous.expenseByCategory()
@@ -63,10 +65,10 @@ fun calculatePeriodComparison(
         currentEnd = periods.windows.currentEnd,
         previousStart = periods.windows.previousStart,
         previousEnd = periods.windows.previousEnd,
-        currentExpense = periods.current.total(TransactionType.EXPENSE),
-        previousExpense = periods.previous.total(TransactionType.EXPENSE),
-        currentIncome = periods.current.total(TransactionType.INCOME),
-        previousIncome = periods.previous.total(TransactionType.INCOME),
+        currentExpense = periods.current.netExpense(),
+        previousExpense = periods.previous.netExpense(),
+        currentIncome = periods.current.netIncome(),
+        previousIncome = periods.previous.netIncome(),
         categoryChanges = categoryChanges,
     )
 }

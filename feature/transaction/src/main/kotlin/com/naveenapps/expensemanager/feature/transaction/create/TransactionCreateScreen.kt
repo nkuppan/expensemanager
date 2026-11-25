@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -24,6 +25,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Notes
+import androidx.compose.material.icons.automirrored.outlined.Undo
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.Calculate
@@ -33,8 +35,11 @@ import androidx.compose.material.icons.outlined.EventRepeat
 import androidx.compose.material.icons.outlined.Repeat
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -42,6 +47,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.naveenapps.expensemanager.core.common.utils.hourAndMinute
+import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
 import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
 import com.naveenapps.expensemanager.core.common.utils.toTimeAndMinutes
 import com.naveenapps.expensemanager.core.common.utils.withTime
@@ -57,10 +63,13 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmConfirm
 import com.naveenapps.expensemanager.core.designsystem.em.EmDeleteConfirm
 import com.naveenapps.expensemanager.core.designsystem.em.EmIconButton
 import com.naveenapps.expensemanager.core.designsystem.em.EmModalSheet
+import com.naveenapps.expensemanager.core.designsystem.em.EmNoSearchResults
 import com.naveenapps.expensemanager.core.designsystem.em.EmPickerField
 import com.naveenapps.expensemanager.core.designsystem.em.EmPreviews
 import com.naveenapps.expensemanager.core.designsystem.em.EmScaffold
+import com.naveenapps.expensemanager.core.designsystem.em.EmSearchField
 import com.naveenapps.expensemanager.core.designsystem.em.EmSection
+import com.naveenapps.expensemanager.core.designsystem.em.EmSelectableItem
 import com.naveenapps.expensemanager.core.designsystem.em.EmSettingItem
 import com.naveenapps.expensemanager.core.designsystem.em.EmSnackbarHostState
 import com.naveenapps.expensemanager.core.designsystem.em.EmText
@@ -90,6 +99,7 @@ import com.naveenapps.expensemanager.core.model.ReminderTimeState
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.isRefund
 import com.naveenapps.expensemanager.core.repository.ShareRepository
 import com.naveenapps.expensemanager.feature.account.selection.AccountItem
 import com.naveenapps.expensemanager.feature.account.selection.AccountItemDefaults
@@ -102,6 +112,7 @@ import com.naveenapps.expensemanager.feature.transaction.create.receipt.ScanRece
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.SuggestedCategoryRow
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.rememberReceiptScanner
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
+import com.naveenapps.expensemanager.feature.transaction.search.matchesSearch
 import kotlin.time.Clock
 import kotlin.time.Instant
 import kotlinx.coroutines.launch
@@ -220,6 +231,8 @@ private fun TransactionCreateScreenContent(
         AccountSelectionView(state, onAction)
     } else if (state.showAttachmentPicker) {
         AttachmentPickerView(onAction, onCaptureRequested, onGalleryRequested)
+    } else if (state.showOriginalTransactionSelection) {
+        OriginalTransactionSelectionView(state, onAction)
     }
 
     EmScaffold(
@@ -411,6 +424,26 @@ private fun TransactionCreateContent(
                         selectedTransactionType = state.transactionType,
                         onTransactionTypeChange = {
                             onAction.invoke(TransactionCreateAction.ChangeTransactionType(it))
+                        },
+                    )
+                }
+            }
+        }
+
+        if (state.transactionType.isRefund()) {
+            EmSection(title = stringResource(R.string.original_transaction)) {
+                EmCard {
+                    EmSettingItem(
+                        icon = Icons.AutoMirrored.Outlined.Undo,
+                        title = state.originalTransaction?.let { original ->
+                            stringResource(
+                                R.string.refund_of,
+                                original.notes.ifBlank { original.category.name },
+                            )
+                        } ?: stringResource(R.string.select_original_transaction),
+                        supporting = state.originalTransaction?.createdOn?.toCompleteDateWithDate(),
+                        onClick = {
+                            onAction.invoke(TransactionCreateAction.ShowOriginalTransactionSelection)
                         },
                     )
                 }
@@ -696,6 +729,115 @@ private fun RepeatSelector(
             }
         }
     }
+}
+
+@Composable
+private fun OriginalTransactionSelectionView(
+    state: TransactionCreateState,
+    onAction: (TransactionCreateAction) -> Unit,
+) {
+    // Search by the same things the rows show: notes, the category (translated name for built-in
+    // categories) and the account, so the entry to link is one short query away.
+    var query by rememberSaveable { mutableStateOf("") }
+    val context = LocalContext.current
+    val visibleTransactions = remember(state.refundCandidates, query) {
+        state.refundCandidates.filter { transaction ->
+            val localizedCategory = context.localizedCategoryName(
+                transaction.category.defaultKey,
+                transaction.category.name,
+            )
+            matchesSearch(
+                query,
+                listOf(
+                    transaction.notes,
+                    transaction.category.name,
+                    localizedCategory,
+                    transaction.fromAccount.name,
+                ),
+            )
+        }
+    }
+
+    EmModalSheet(
+        onDismissRequest = {
+            onAction.invoke(TransactionCreateAction.DismissOriginalTransactionSelection)
+        },
+    ) {
+        EmText(
+            text = stringResource(R.string.select_original_transaction),
+            role = EmTextRole.ScreenTitle,
+            modifier = Modifier.padding(
+                horizontal = EmTheme.spacing.xl,
+                vertical = EmTheme.spacing.sm,
+            ),
+        )
+        if (state.refundCandidates.isEmpty()) {
+            EmText(
+                text = stringResource(R.string.no_original_transactions_available),
+                role = EmTextRole.Supporting,
+                color = EmTextColor.Supporting,
+                modifier = Modifier.padding(
+                    horizontal = EmTheme.spacing.xl,
+                    vertical = EmTheme.spacing.sm,
+                ),
+            )
+        } else {
+            EmSearchField(
+                query = query,
+                onQueryChange = { query = it },
+                placeholder = stringResource(R.string.search_transactions_hint),
+                modifier = Modifier.padding(horizontal = EmTheme.spacing.xl),
+            )
+            if (visibleTransactions.isEmpty()) {
+                EmNoSearchResults(
+                    modifier = Modifier.padding(
+                        horizontal = EmTheme.spacing.xl,
+                        vertical = EmTheme.spacing.xl,
+                    ),
+                )
+            }
+            // The title and search stay put while the results scroll under them.
+            LazyColumn(
+                modifier = Modifier.weight(1f, fill = false),
+                contentPadding = PaddingValues(
+                    start = EmTheme.spacing.xl,
+                    end = EmTheme.spacing.xl,
+                    top = EmTheme.spacing.md,
+                    bottom = EmTheme.spacing.xxxl,
+                ),
+                verticalArrangement = Arrangement.spacedBy(EmTheme.spacing.sm),
+            ) {
+                items(visibleTransactions, key = { it.id }) { transaction ->
+                    val fallbackTitle = stringResource(transaction.type.labelRes())
+                    val categoryName = context.localizedCategoryName(
+                        transaction.category.defaultKey,
+                        transaction.category.name,
+                    )
+                    val title = transaction.notes
+                        .ifBlank { categoryName }
+                        .ifBlank { fallbackTitle }
+                    EmSelectableItem(
+                        title = title,
+                        supporting = transaction.createdOn.toCompleteDateWithDate(),
+                        selected = transaction.id == state.originalTransactionId,
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            onAction.invoke(
+                                TransactionCreateAction.SelectOriginalTransaction(transaction),
+                            )
+                        },
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun TransactionType.labelRes(): Int = when (this) {
+    TransactionType.EXPENSE -> R.string.expense
+    TransactionType.INCOME -> R.string.income
+    TransactionType.TRANSFER -> R.string.transfer
+    TransactionType.REFUND -> R.string.refund
 }
 
 fun Instant.toTime(): ReminderTimeState {

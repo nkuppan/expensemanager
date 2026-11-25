@@ -51,6 +51,22 @@ class CalculateSpendingInsightsTest {
     }
 
     @Test
+    fun `refunds reduce total expense and their category spend`() {
+        val insights = calculateSpendingInsights(
+            listOf(
+                tx("1", 200.0),
+                tx("2", 60.0, type = TransactionType.REFUND),
+            ),
+            categories,
+            TimeZone.UTC,
+        )
+
+        assertThat(insights.totalExpense).isEqualTo(140.0)
+        assertThat(insights.categories.single().category.id).isEqualTo("food")
+        assertThat(insights.categories.single().total).isEqualTo(140.0)
+    }
+
+    @Test
     fun `income and transfers never count as spending`() {
         val insights = calculateSpendingInsights(
             listOf(

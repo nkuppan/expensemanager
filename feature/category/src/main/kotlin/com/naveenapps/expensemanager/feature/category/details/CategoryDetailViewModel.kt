@@ -9,6 +9,10 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.toTransactionUIModel
 import com.naveenapps.expensemanager.core.model.CategoryTransaction
+import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isRefund
+import com.naveenapps.expensemanager.core.model.netExpense
 import com.naveenapps.expensemanager.core.navigation.AppComposeNavigator
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerArgsNames
 import com.naveenapps.expensemanager.core.navigation.ExpenseManagerScreens
@@ -48,24 +52,29 @@ class CategoryDetailViewModel(
                 }
 
                 // Only the same type counts towards the share: an expense category's share of all
-                // spending, an income category's share of all income, in the selected period.
+                // net spending, an income category's share of all income, in the selected period.
+                // Refunds of an expense reduce that category, so they are included for expenses.
+                val isExpenseCategory = category.type.isExpense()
                 val sameTypeTransactions = transactions.orEmpty().filter { transaction ->
-                    transaction.type.ordinal == category.type.ordinal
+                    if (isExpenseCategory) {
+                        transaction.type.isExpense() || transaction.type.isRefund()
+                    } else {
+                        transaction.type.isIncome()
+                    }
                 }
-                val total = sameTypeTransactions.sumOf { it.amount.amount }
+                val total = if (isExpenseCategory) {
+                    sameTypeTransactions.netExpense()
+                } else {
+                    sameTypeTransactions.sumOf { it.amount.amount }
+                }
 
                 val categoryTransactions = sameTypeTransactions
                     .filter { it.categoryId == category.id }
-                    .map { transaction ->
-                        transaction.toTransactionUIModel(
-                            getFormattedAmountUseCase.invoke(
-                                transaction.amount.amount,
-                                currency,
-                            ),
-                        )
-                    }
-
-                val categoryAmount = categoryTransactions.sumOf { it.amount.amount }
+                val categoryAmount = if (isExpenseCategory) {
+                    categoryTransactions.netExpense()
+                } else {
+                    categoryTransactions.sumOf { it.amount.amount }
+                }
 
                 // The category is shown even with nothing in the period, so the screen keeps its
                 // title, summary and edit button (with a zero total) instead of losing them.
@@ -80,7 +89,14 @@ class CategoryDetailViewModel(
                             ),
                             transaction = sameTypeTransactions,
                         ),
-                        transactions = categoryTransactions,
+                        transactions = categoryTransactions.map { transaction ->
+                            transaction.toTransactionUIModel(
+                                getFormattedAmountUseCase.invoke(
+                                    transaction.amount.amount,
+                                    currency,
+                                ),
+                            )
+                        },
                     )
                 }
             }.launchIn(viewModelScope)

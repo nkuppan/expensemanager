@@ -3,6 +3,7 @@ package com.naveenapps.expensemanager.feature.transaction.create
 import com.naveenapps.expensemanager.core.model.AccountUiModel
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
+import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import kotlin.time.Instant
 
@@ -66,6 +67,15 @@ sealed class TransactionCreateAction {
 
     /** Opens the rule ("series") this transaction was logged by. */
     data object OpenRecurringSeries : TransactionCreateAction()
+
+    /** Opens a bottom sheet to select the original transaction being refunded. */
+    data object ShowOriginalTransactionSelection : TransactionCreateAction()
+
+    /** Closes the original transaction picker without choosing. */
+    data object DismissOriginalTransactionSelection : TransactionCreateAction()
+
+    /** Links the refund to an existing transaction and pre-fills the form from it. */
+    data class SelectOriginalTransaction(val transaction: Transaction) : TransactionCreateAction()
 
     data class ApplyQuickPick(val pick: QuickPick) : TransactionCreateAction()
 

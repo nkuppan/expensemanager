@@ -15,6 +15,7 @@ import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
+import com.naveenapps.expensemanager.core.model.isRefund
 import kotlin.time.ExperimentalTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -72,7 +73,11 @@ class GetChartDataUseCase(
                 val bucket = bucketTotals.getOrPut(key) { DoubleArray(2) }
                 val amount = item.amount.amount
                 when {
+                    // A refund subtracts from the spending it offsets (money that came back).
+                    item.type.isRefund() -> bucket[0] -= amount
+
                     item.category.type.isExpense() -> bucket[0] += amount
+
                     item.category.type.isIncome() -> bucket[1] += amount
                 }
                 transactionItems.add(

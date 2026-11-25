@@ -6,7 +6,9 @@ import androidx.work.WorkerParameters
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.model.InsightKind
-import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isRefund
+import com.naveenapps.expensemanager.core.model.netExpense
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
@@ -46,13 +48,13 @@ class WeeklySummaryWorker(
         val lastWeekStart = thisWeekStart - WEEK_MILLIS
         val now = System.currentTimeMillis()
 
-        val expenses = transactionRepository.getAllTransaction().firstOrNull().orEmpty()
-            .filter { it.type == TransactionType.EXPENSE }
-        val thisWeek = expenses.filter { it.createdOn.toEpochMilliseconds() in thisWeekStart..now }
-        val lastWeek = expenses.filter { it.createdOn.toEpochMilliseconds() in lastWeekStart until thisWeekStart }
+        val expenseItems = transactionRepository.getAllTransaction().firstOrNull().orEmpty()
+            .filter { it.type.isExpense() || it.type.isRefund() }
+        val thisWeek = expenseItems.filter { it.createdOn.toEpochMilliseconds() in thisWeekStart..now }
+        val lastWeek = expenseItems.filter { it.createdOn.toEpochMilliseconds() in lastWeekStart until thisWeekStart }
 
-        val thisTotal = thisWeek.sumOf { it.amount.amount }
-        val lastTotal = lastWeek.sumOf { it.amount.amount }
+        val thisTotal = thisWeek.netExpense()
+        val lastTotal = lastWeek.netExpense()
         if (thisTotal <= 0.0 && lastTotal <= 0.0) return Result.success()
 
         val currency = getCurrencyUseCase.invoke().first()

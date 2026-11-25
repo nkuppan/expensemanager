@@ -10,6 +10,8 @@ import com.naveenapps.expensemanager.core.model.CategoryTransactionState
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.isExpense
+import com.naveenapps.expensemanager.core.model.isRefund
+import com.naveenapps.expensemanager.core.model.netExpense
 import com.naveenapps.expensemanager.core.repository.BudgetRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -36,11 +38,11 @@ class GetBudgetDetailUseCase(
 
                     is Resource.Success -> {
                         transaction.data.filter {
-                            it.type.isExpense()
+                            it.type.isExpense() || it.type.isRefund()
                         }
                     }
                 }
-            val transactionAmount = budgetTransactions?.sumOf { it.amount.amount } ?: 0.0
+            val transactionAmount = budgetTransactions?.netExpense() ?: 0.0
             val percent = budgetSpentPercent(transactionAmount, budget.amount)
             val (byCategory, total) = budgetTransactions.orEmpty()
                 .groupByCategory(CategoryType.EXPENSE) { getFormattedAmountUseCase(it, currency) }

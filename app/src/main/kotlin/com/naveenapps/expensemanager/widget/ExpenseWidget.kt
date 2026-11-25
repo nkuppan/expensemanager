@@ -63,6 +63,8 @@ import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFo
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.GetTransactionWithFilterUseCase
 import com.naveenapps.expensemanager.core.model.TransactionType
+import com.naveenapps.expensemanager.core.model.netExpense
+import com.naveenapps.expensemanager.core.model.netIncome
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.catch
@@ -191,12 +193,8 @@ private suspend fun loadWidgetData(context: Context): WidgetRefreshData? {
         getTransactions.invoke(),
         getDateRange.invoke(),
     ) { currency, transactions, _ ->
-        val incomeValue = transactions
-            ?.filter { it.type == TransactionType.INCOME }
-            ?.sumOf { it.amount.amount } ?: 0.0
-        val expenseValue = transactions
-            ?.filter { it.type == TransactionType.EXPENSE }
-            ?.sumOf { it.amount.amount } ?: 0.0
+        val incomeValue = transactions?.netIncome() ?: 0.0
+        val expenseValue = transactions?.netExpense() ?: 0.0
 
         val incomeStr = formatAmount.invoke(incomeValue, currency).amountString.orEmpty()
         val expenseStr = formatAmount.invoke(expenseValue, currency).amountString.orEmpty()
@@ -210,7 +208,7 @@ private suspend fun loadWidgetData(context: Context): WidgetRefreshData? {
                 val categoryName = context.localizedCategoryName(tx.category.defaultKey, tx.category.name)
                 val displayName = tx.notes.ifBlank { categoryName }
                 val amtStr = formatAmount.invoke(tx.amount.amount, currency).amountString.orEmpty()
-                "$displayName\u0001${tx.category.storedIcon.name}\u0001${tx.category.storedIcon.backgroundColor}\u0001$amtStr\u0001${tx.type == TransactionType.INCOME}"
+                "$displayName\u0001${tx.category.storedIcon.name}\u0001${tx.category.storedIcon.backgroundColor}\u0001$amtStr\u0001${tx.type == TransactionType.INCOME || tx.type == TransactionType.REFUND}"
             }
 
         WidgetRefreshData(incomeValue, expenseValue, incomeStr, expenseStr, balanceStr, recentStr)

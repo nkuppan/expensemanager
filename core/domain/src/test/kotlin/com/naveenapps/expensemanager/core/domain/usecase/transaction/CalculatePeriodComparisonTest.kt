@@ -54,6 +54,23 @@ class CalculatePeriodComparisonTest {
     }
 
     @Test
+    fun `refunds reduce the period expense and its category`() {
+        val result = calculatePeriodComparison(
+            PeriodTransactions(
+                windows,
+                current = listOf(tx(200.0, food.id), tx(60.0, food.id, type = TransactionType.REFUND)),
+                previous = listOf(tx(200.0, food.id)),
+            ),
+            categories,
+        )
+
+        assertThat(result.currentExpense).isEqualTo(140.0)
+        assertThat(result.previousExpense).isEqualTo(200.0)
+        assertThat(result.categoryChanges.single().category.id).isEqualTo("food")
+        assertThat(result.categoryChanges.single().difference).isEqualTo(-60.0)
+    }
+
+    @Test
     fun `change ratio needs a previous value`() {
         assertThat(changeRatio(120.0, 100.0)).isWithin(1e-9).of(0.2)
         assertThat(changeRatio(50.0, 0.0)).isNull()

@@ -11,9 +11,9 @@ import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.common.utils.yearKeyToLocalDate
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
-import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
+import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
@@ -52,7 +52,11 @@ class GetBudgetTransactionsUseCase(
         val transaction = transactionRepository.getFilteredTransaction(
             accounts = accounts,
             categories = categories,
-            transactionType = CategoryType.entries.map { it.ordinal }.toList(),
+            transactionType = listOf(
+                TransactionType.INCOME.ordinal,
+                TransactionType.EXPENSE.ordinal,
+                TransactionType.REFUND.ordinal,
+            ),
             startDate = startDate,
             endDate = endDate,
         ).firstOrNull()?.filter {

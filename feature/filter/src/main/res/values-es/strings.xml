@@ -19,4 +19,5 @@
         <item quantity="other">%d filtros seleccionados</item>
     </plurals>
     <string name="filter_type_transfer">Transferencia</string>
+    <string name="filter_type_refund">Devolución</string>
 </resources>

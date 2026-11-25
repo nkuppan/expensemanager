@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.TrendingDown
 import androidx.compose.material.icons.automirrored.rounded.TrendingUp
+import androidx.compose.material.icons.automirrored.rounded.Undo
 import androidx.compose.material.icons.rounded.SwapHoriz
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,13 +25,19 @@ fun TransactionTypeSelectionView(
     onTransactionTypeChange: ((TransactionType) -> Unit),
     modifier: Modifier = Modifier,
 ) {
-    val types = listOf(TransactionType.INCOME, TransactionType.EXPENSE, TransactionType.TRANSFER)
+    val types = listOf(
+        TransactionType.INCOME,
+        TransactionType.EXPENSE,
+        TransactionType.TRANSFER,
+        TransactionType.REFUND,
+    )
     val colors = EmTheme.colors
     EmSegmented(
         options = listOf(
             stringResource(id = R.string.income),
             stringResource(id = R.string.expense),
             stringResource(id = R.string.transfer),
+            stringResource(id = R.string.refund),
         ),
         selectedIndex = types.indexOf(selectedTransactionType),
         onSelect = { onTransactionTypeChange(types[it]) },
@@ -39,8 +46,9 @@ fun TransactionTypeSelectionView(
             Icons.AutoMirrored.Rounded.TrendingUp,
             Icons.AutoMirrored.Rounded.TrendingDown,
             Icons.Rounded.SwapHoriz,
+            Icons.AutoMirrored.Rounded.Undo, // money coming back to the user
         ),
-        accents = listOf(colors.income, colors.expense, colors.transfer),
+        accents = listOf(colors.income, colors.expense, colors.transfer, colors.refund),
     )
 }
 

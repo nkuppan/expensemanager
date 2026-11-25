@@ -156,6 +156,7 @@ private fun UpcomingRow(item: UpcomingItemUi, onClick: () -> Unit) {
         TransactionType.EXPENSE -> "−" to EmTheme.colors.expense
         TransactionType.INCOME -> "+" to EmTheme.colors.income
         TransactionType.TRANSFER -> "" to EmTheme.colors.scheme.onSurface
+        TransactionType.REFUND -> "+" to EmTheme.colors.refund
     }
     val daysAway = remember(rule.nextDueDate) { daysUntil(rule.nextDueDate) }
     val isSoon = daysAway <= 1
