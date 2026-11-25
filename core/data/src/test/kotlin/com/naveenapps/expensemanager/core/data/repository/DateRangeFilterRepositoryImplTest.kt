@@ -16,7 +16,7 @@ import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DateRangeFilterRepository
 import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
-import java.util.Date
+import kotlin.time.Clock
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.Instant
@@ -93,16 +93,16 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
             val dateRanges = awaitItem()
             Truth.assertThat(dateRanges).isNull()
 
-            val startDate = Date()
-            val endDate = Date()
+            val startDate = Clock.System.now()
+            val endDate = Clock.System.now()
             val dateRangesValues = listOf(startDate, endDate)
             repository.setDateRanges(dateRangesValues)
 
             val updatedRanges = awaitItem()
             Truth.assertThat(updatedRanges).isNotEmpty()
             Truth.assertThat(updatedRanges).hasSize(2)
-            Truth.assertThat(updatedRanges?.get(0)).isEqualTo(startDate.time)
-            Truth.assertThat(updatedRanges?.get(1)).isEqualTo(endDate.time)
+            Truth.assertThat(updatedRanges?.get(0)).isEqualTo(startDate.toEpochMilliseconds())
+            Truth.assertThat(updatedRanges?.get(1)).isEqualTo(endDate.toEpochMilliseconds())
         }
     }
 
@@ -133,7 +133,7 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
         // must return the whole end day, so BETWEEN queries keep it inside the filter.
         val start = localMidnight(2026, 11, 15)
         val end = localMidnight(2026, 11, 22)
-        repository.setDateRanges(listOf(Date(start), Date(end)))
+        repository.setDateRanges(listOf(Instant.fromEpochMilliseconds(start), Instant.fromEpochMilliseconds(end)))
 
         val model = repository.getDateRangeFilterTypeString(DateRangeType.CUSTOM)
 
@@ -148,7 +148,7 @@ class DateRangeFilterRepositoryImplTest : BaseCoroutineTest() {
     fun nonCustomRangeShouldKeepItsEndBoundUntouched() = runTest {
         val start = localMidnight(2026, 11, 1)
         val end = localMidnight(2026, 12, 1)
-        repository.setDateRanges(listOf(Date(start), Date(end)))
+        repository.setDateRanges(listOf(Instant.fromEpochMilliseconds(start), Instant.fromEpochMilliseconds(end)))
 
         val model = repository.getDateRangeFilterTypeString(DateRangeType.THIS_MONTH)
         // A navigated non-custom range reuses the stored window as-is (no end-day extension).

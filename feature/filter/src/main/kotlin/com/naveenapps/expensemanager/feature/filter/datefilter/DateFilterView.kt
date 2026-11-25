@@ -65,7 +65,7 @@ import com.naveenapps.expensemanager.core.model.DateRangeModel
 import com.naveenapps.expensemanager.core.model.DateRangeType
 import com.naveenapps.expensemanager.core.model.TextFieldValue
 import com.naveenapps.expensemanager.feature.filter.R
-import java.util.Date
+import kotlin.time.Clock
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -346,7 +346,7 @@ private fun DateRangeType.toIcon(): ImageVector = when (this) {
 private fun FilterNormalViewPreview() {
     ExpenseManagerPreviewTheme(padding = 0.dp) {
         val dateRange = TextFieldValue(DateRangeType.THIS_MONTH, false, {})
-        val dateFilter = TextFieldValue(Date(), false, {})
+        val dateFilter = TextFieldValue(Clock.System.now(), false, {})
         FilterTypesAndViewContent(
             state = DateFilterState(
                 dateFilterType = DateFilterType.FROM_DATE,
@@ -357,7 +357,7 @@ private fun FilterNormalViewPreview() {
                         name = it.toCapitalize(),
                         description = "Sample",
                         type = it,
-                        listOf(Date().time, Date().time),
+                        listOf(Clock.System.now().toEpochMilliseconds(), Clock.System.now().toEpochMilliseconds()),
                     )
                 },
                 dateRangeType = dateRange,

@@ -185,6 +185,6 @@ private fun monthAndYear(budgets: HomeBudgets): String {
     val locale = LocalConfiguration.current.locales[0]
     val month = budgets.month ?: return budgets.year
     return remember(month, locale) {
-        SimpleDateFormat(DateFormat.getBestDateTimePattern(locale, "MMMMyyyy"), locale).format(month)
+        SimpleDateFormat(DateFormat.getBestDateTimePattern(locale, "MMMMyyyy"), locale).format(month.toEpochMilliseconds())
     }
 }

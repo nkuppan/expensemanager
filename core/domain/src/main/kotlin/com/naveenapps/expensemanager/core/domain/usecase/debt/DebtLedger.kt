@@ -4,7 +4,7 @@ import com.naveenapps.expensemanager.core.model.DebtEntry
 import com.naveenapps.expensemanager.core.model.DebtPerson
 import com.naveenapps.expensemanager.core.model.DebtPersonBalance
 import com.naveenapps.expensemanager.core.model.DebtTotals
-import java.util.Date
+import kotlin.time.Instant
 
 /** The ledger's arithmetic, kept pure so it's easy to test. All amounts are exact milli-units. */
 object DebtLedger {
@@ -18,7 +18,7 @@ object DebtLedger {
      * The earliest due date of a debt in the direction still open: while they owe the user, the
      * money lent; while the user owes them, the money borrowed. Null once settled.
      */
-    fun dueDateOf(entries: List<DebtEntry>, balanceMilli: Long): Date? {
+    fun dueDateOf(entries: List<DebtEntry>, balanceMilli: Long): Instant? {
         if (balanceMilli == 0L) return null
         val openSign = if (balanceMilli > 0) 1 else -1
         return entries
@@ -45,9 +45,9 @@ object DebtLedger {
         }
         val (open, settled) = all.partition { !it.isSettled }
         return open.sortedWith(
-            compareBy<DebtPersonBalance, Long?>(nullsLast()) { it.dueDate?.time }
+            compareBy<DebtPersonBalance, Long?>(nullsLast()) { it.dueDate?.toEpochMilliseconds() }
                 .thenByDescending { kotlin.math.abs(it.balanceMilli) },
-        ) + settled.sortedByDescending { it.lastActivity?.time ?: it.person.updatedOn.time }
+        ) + settled.sortedByDescending { it.lastActivity?.toEpochMilliseconds() ?: it.person.updatedOn.toEpochMilliseconds() }
     }
 
     fun totals(balances: List<DebtPersonBalance>): DebtTotals = DebtTotals(

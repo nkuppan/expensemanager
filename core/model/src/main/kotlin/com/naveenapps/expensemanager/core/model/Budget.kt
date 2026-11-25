@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
-import java.util.Date
+import kotlin.time.Instant
 
 data class Budget(
     val id: String,
@@ -19,6 +19,6 @@ data class Budget(
     val accounts: List<String>,
     val isAllAccountsSelected: Boolean,
     val isAllCategoriesSelected: Boolean,
-    val createdOn: Date,
-    val updatedOn: Date,
+    val createdOn: Instant,
+    val updatedOn: Instant,
 )

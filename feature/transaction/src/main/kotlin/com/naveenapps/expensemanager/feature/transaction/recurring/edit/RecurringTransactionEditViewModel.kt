@@ -3,6 +3,9 @@ package com.naveenapps.expensemanager.feature.transaction.recurring.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.naveenapps.expensemanager.core.common.utils.hourAndMinute
+import com.naveenapps.expensemanager.core.common.utils.withDateOf
+import com.naveenapps.expensemanager.core.common.utils.withTime
 import com.naveenapps.expensemanager.core.designsystem.R as DesignSystemR
 import com.naveenapps.expensemanager.core.domain.usecase.account.GetAllAccountsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.category.GetAllCategoryUseCase
@@ -29,8 +32,7 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.settings.domain.repository.NumberFormatRepository
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.create.AccountSelection
-import java.util.Calendar
-import java.util.Date
+import kotlin.time.Instant
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -181,7 +183,7 @@ class RecurringTransactionEditViewModel(
 
             is RecurringTransactionEditAction.SelectTime -> updateSchedule {
                 it.copy(
-                    nextDueDate = it.nextDueDate.withTime(action.hour, action.minute),
+                    nextDueDate = it.nextDueDate.withTimeIfChanged(action.hour, action.minute),
                     showTimeSelection = false,
                 )
             }
@@ -232,7 +234,7 @@ class RecurringTransactionEditViewModel(
             val rule = original
             updated.copy(
                 isScheduleChanged = rule != null &&
-                    (updated.frequency != rule.frequency || updated.nextDueDate.time != rule.nextDueDate.time),
+                    (updated.frequency != rule.frequency || updated.nextDueDate.toEpochMilliseconds() != rule.nextDueDate.toEpochMilliseconds()),
             )
         }
     }
@@ -346,22 +348,7 @@ class RecurringTransactionEditViewModel(
  * This date's exact time of day (down to the millisecond) on [day]'s calendar date, so picking
  * the same day again doesn't register as a schedule change.
  */
-internal fun Date.withDayOf(day: Date): Date {
-    val source = Calendar.getInstance().apply { time = this@withDayOf }
-    val target = Calendar.getInstance().apply { time = day }
-    return (source.clone() as Calendar).apply {
-        set(target.get(Calendar.YEAR), target.get(Calendar.MONTH), target.get(Calendar.DAY_OF_MONTH))
-    }.time
-}
+internal fun Instant.withDayOf(day: Instant): Instant = withDateOf(day)
 
 /** Same day at [hour]:[minute]; unchanged (seconds included) when the time wasn't changed. */
-internal fun Date.withTime(hour: Int, minute: Int): Date {
-    val calendar = Calendar.getInstance().apply { time = this@withTime }
-    if (calendar.get(Calendar.HOUR_OF_DAY) == hour && calendar.get(Calendar.MINUTE) == minute) return this
-    return calendar.apply {
-        set(Calendar.HOUR_OF_DAY, hour)
-        set(Calendar.MINUTE, minute)
-        set(Calendar.SECOND, 0)
-        set(Calendar.MILLISECOND, 0)
-    }.time
-}
+internal fun Instant.withTimeIfChanged(hour: Int, minute: Int): Instant = if (hourAndMinute() == (hour to minute)) this else withTime(hour, minute)

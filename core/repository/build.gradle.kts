@@ -5,6 +5,12 @@ plugins {
 
 android {
     namespace = "com.naveenapps.expensemanager.core.repository"
+
+    // This module has no JVM/Android-only imports left (KMP groundwork C3), so the shared-layer
+    // check is an error here: anything new must stay multiplatform-ready.
+    lint {
+        error += "JvmApiInSharedLayer"
+    }
 }
 
 dependencies {

@@ -1,11 +1,12 @@
 package com.naveenapps.expensemanager.feature.dashboard
 
 import androidx.compose.runtime.Stable
+import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.budget.BudgetUiModel
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.feature.budget.components.BudgetProgress
-import java.time.Year
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * Every monthly budget for the month being viewed and every yearly budget for this year, largest
@@ -16,8 +17,8 @@ data class HomeBudgets(
     val monthly: List<BudgetProgress> = emptyList(),
     val yearly: List<BudgetProgress> = emptyList(),
     /** The month being viewed (for "No budget for October 2026 yet"); null outside a month view. */
-    val month: Date? = null,
-    val year: String = Year.now().toString(),
+    val month: Instant? = null,
+    val year: String = Clock.System.now().toYearKey(),
 )
 
 /**

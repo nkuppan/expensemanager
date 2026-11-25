@@ -56,7 +56,7 @@ import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.transaction.CategorySpendingChartCard
 import com.naveenapps.expensemanager.feature.category.transaction.categorySpendingItems
 import com.naveenapps.expensemanager.feature.transaction.list.getTransactionItem
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -299,7 +299,7 @@ fun BudgetDetailsScaffoldViewPreview() {
         BudgetDetailsScaffoldView(
             state = BudgetDetailState(
                 budget = budget,
-                progress = budget.toBudgetProgress(today = LocalDate.of(2026, 6, 20), format = { "$$it" }),
+                progress = budget.toBudgetProgress(today = LocalDate(2026, 6, 20), format = { "$$it" }),
             ),
             openBudgetEditScreen = {},
             closePage = {},

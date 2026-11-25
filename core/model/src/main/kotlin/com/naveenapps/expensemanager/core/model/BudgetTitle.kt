@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
-import java.util.Date
+import kotlinx.datetime.LocalDate
 
 /**
  * What a budget is called on screen: the user's own name, or an automatic one built from its
@@ -17,8 +17,8 @@ sealed interface BudgetTitle {
     /** A yearly budget for the current year: "This year's budget". */
     data object ThisYear : BudgetTitle
 
-    /** A monthly budget for another month: "October 2026 budget". */
-    data class Month(val date: Date) : BudgetTitle
+    /** A monthly budget for another month: "October 2026 budget". [firstDay] is the 1st of that month. */
+    data class Month(val firstDay: LocalDate) : BudgetTitle
 
     /** A yearly budget for another year ("2025 budget"), or a period key that couldn't be read. */
     data class Period(val label: String) : BudgetTitle

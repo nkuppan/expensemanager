@@ -34,7 +34,7 @@ import com.naveenapps.expensemanager.core.designsystem.em.EmText
 import com.naveenapps.expensemanager.core.designsystem.em.EmTextRole
 import com.naveenapps.expensemanager.core.designsystem.theme.EmTheme
 import com.naveenapps.expensemanager.core.designsystem.theme.ExpenseManagerPreviewTheme
-import java.util.Date
+import kotlin.time.Clock
 
 /**
  * Same year-stepper affordance used inside [MonthPicker], pulled out on its own for
@@ -143,7 +143,7 @@ fun YearPickerPreview() {
                     color = EmTheme.colors.scheme.background,
                     shape = EmTheme.shapes.sm,
                 ),
-            currentYear = Date().toYearInt(),
+            currentYear = Clock.System.now().toYearInt(),
             confirmButtonCLicked = { _ -> },
             cancelClicked = {},
         )

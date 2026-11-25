@@ -30,13 +30,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.naveenapps.expensemanager.core.common.utils.fromShortMonthAndYearToDate
-import com.naveenapps.expensemanager.core.common.utils.fromYear
 import com.naveenapps.expensemanager.core.common.utils.toMonth
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
 import com.naveenapps.expensemanager.core.common.utils.toYear
 import com.naveenapps.expensemanager.core.common.utils.toYearInt
+import com.naveenapps.expensemanager.core.common.utils.yearKeyToLocalDate
 import com.naveenapps.expensemanager.core.designsystem.em.EmAmountField
 import com.naveenapps.expensemanager.core.designsystem.em.EmBottomActionBar
 import com.naveenapps.expensemanager.core.designsystem.em.EmCard
@@ -69,8 +68,12 @@ import com.naveenapps.expensemanager.feature.budget.R
 import com.naveenapps.expensemanager.feature.budget.label
 import com.naveenapps.expensemanager.feature.budget.text
 import com.naveenapps.expensemanager.feature.category.selection.MultipleCategoriesSelectionScreen
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -153,7 +156,7 @@ private fun BudgetCreateScreenContentView(
                     ),
                 currentYear = state.month.value.toYearInt(),
                 confirmButtonCLicked = { year ->
-                    year.toString().fromYear()?.let {
+                    year.toString().yearKeyToLocalDate()?.atStartOfDayIn(TimeZone.currentSystemDefault())?.let {
                         state.month.onValueChange?.invoke(it)
                     } ?: run {
                         onAction.invoke(BudgetCreateAction.CloseMonthSelection)
@@ -175,7 +178,7 @@ private fun BudgetCreateScreenContentView(
                 currentMonth = state.month.value.toMonth(),
                 currentYear = state.month.value.toYearInt(),
                 confirmButtonCLicked = { month, year ->
-                    ("$month-$year").fromShortMonthAndYearToDate()?.let {
+                    runCatching { LocalDate(year, month, 1) }.getOrNull()?.atStartOfDayIn(TimeZone.currentSystemDefault())?.let {
                         state.month.onValueChange?.invoke(it)
                     } ?: run {
                         onAction.invoke(BudgetCreateAction.CloseMonthSelection)
@@ -251,7 +254,7 @@ fun BudgetCreateScreen(
     amountField: TextFieldValue<String>,
     nameField: TextFieldValue<String>,
     currencyIconField: String,
-    selectedDate: TextFieldValue<Date>,
+    selectedDate: TextFieldValue<Instant>,
     accountCount: String,
     categoriesCount: String,
     onAction: (BudgetCreateAction) -> Unit,
@@ -381,7 +384,7 @@ private fun BudgetCreateStatePreview() {
         onValueChange = { },
     )
     val dateField = TextFieldValue(
-        value = Date(),
+        value = Clock.System.now(),
         valueError = false,
         onValueChange = { },
     )

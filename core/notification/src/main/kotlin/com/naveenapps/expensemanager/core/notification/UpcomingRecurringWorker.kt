@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.naveenapps.expensemanager.core.common.utils.localizedCategoryName
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.GetRecurringTransactionsUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.recurring.rulesAddedOn
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
@@ -14,9 +15,10 @@ import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.ReminderTimeRepository
-import java.time.LocalDate
-import java.time.ZoneId
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.first
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.plus
 
 /**
  * Runs at [UPCOMING_ALERT_HOUR] each evening: if any weekly, monthly or yearly recurring entry is added
@@ -38,13 +40,13 @@ class UpcomingRecurringWorker(
     override suspend fun doWork(): Result {
         if (!reminderTimeRepository.isUpcomingAlertOn().first()) return Result.success()
         try {
-            val zone = ZoneId.systemDefault()
-            val today = LocalDate.now(zone)
-            if (reminderTimeRepository.getLastUpcomingAlertDay().first() != today.toEpochDay()) {
-                val tomorrow = rulesAddedOn(getRecurringTransactionsUseCase().first(), today.plusDays(1), zone)
+            val today = Clock.System.now().toLocalDateIn()
+            val todayEpochDay = today.toEpochDays().toLong()
+            if (reminderTimeRepository.getLastUpcomingAlertDay().first() != todayEpochDay) {
+                val tomorrow = rulesAddedOn(getRecurringTransactionsUseCase().first(), today.plus(1, DateTimeUnit.DAY))
                 if (tomorrow.isNotEmpty()) {
                     notifyAbout(tomorrow)
-                    reminderTimeRepository.setLastUpcomingAlertDay(today.toEpochDay())
+                    reminderTimeRepository.setLastUpcomingAlertDay(todayEpochDay)
                     analyticsRepository.logEvent(
                         AnalyticsEvents.UPCOMING_ALERT_SHOWN,
                         mapOf(AnalyticsParams.COUNT to tomorrow.size.toString()),

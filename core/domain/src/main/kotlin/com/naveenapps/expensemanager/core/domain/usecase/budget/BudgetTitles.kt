@@ -1,12 +1,14 @@
 package com.naveenapps.expensemanager.core.domain.usecase.budget
 
-import com.naveenapps.expensemanager.core.common.utils.fromMonthAndYearKey
+import com.naveenapps.expensemanager.core.common.utils.monthAndYearKeyToLocalDate
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYearKey
-import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.model.Budget
 import com.naveenapps.expensemanager.core.model.BudgetPeriod
 import com.naveenapps.expensemanager.core.model.BudgetTitle
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * The budget's own name when it has one, otherwise an automatic one from its period: "This
@@ -16,22 +18,23 @@ fun budgetTitle(
     name: String?,
     selectedMonth: String,
     periodType: BudgetPeriod = BudgetPeriod.MONTHLY,
-    now: Date = Date(),
+    now: Instant = Clock.System.now(),
 ): BudgetTitle {
     name?.trim()?.takeIf { it.isNotEmpty() }?.let { return BudgetTitle.Custom(it) }
+    val today = now.toLocalDateIn()
     return when (periodType) {
-        BudgetPeriod.YEARLY -> if (selectedMonth == now.toYear()) {
+        BudgetPeriod.YEARLY -> if (selectedMonth == today.toYearKey()) {
             BudgetTitle.ThisYear
         } else {
             BudgetTitle.Period(selectedMonth)
         }
 
-        BudgetPeriod.MONTHLY -> if (selectedMonth == now.toMonthAndYearKey()) {
+        BudgetPeriod.MONTHLY -> if (selectedMonth == today.toMonthAndYearKey()) {
             BudgetTitle.ThisMonth
         } else {
-            selectedMonth.fromMonthAndYearKey()?.let { BudgetTitle.Month(it) } ?: BudgetTitle.Period(selectedMonth)
+            selectedMonth.monthAndYearKeyToLocalDate()?.let { BudgetTitle.Month(it) } ?: BudgetTitle.Period(selectedMonth)
         }
     }
 }
 
-fun Budget.title(now: Date = Date()): BudgetTitle = budgetTitle(name, selectedMonth, periodType, now)
+fun Budget.title(now: Instant = Clock.System.now()): BudgetTitle = budgetTitle(name, selectedMonth, periodType, now)

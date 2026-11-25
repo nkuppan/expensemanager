@@ -12,7 +12,8 @@ import com.naveenapps.expensemanager.core.model.isCustom
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsParams
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,12 +41,12 @@ class DateFilterViewModel(
                 onValueChange = this::setFilterType,
             ),
             fromDate = TextFieldValue(
-                value = Date(),
+                value = Clock.System.now(),
                 valueError = false,
                 onValueChange = this::setFromDate,
             ),
             toDate = TextFieldValue(
-                value = Date(),
+                value = Clock.System.now(),
                 valueError = false,
                 onValueChange = this::setToDate,
             ),
@@ -111,7 +112,7 @@ class DateFilterViewModel(
                         it.type == selectedFilter
                     }.let { it ->
                         it.firstOrNull()?.dateRanges?.map {
-                            Date(it)
+                            Instant.fromEpochMilliseconds(it)
                         }
                     }
                 }
@@ -131,7 +132,7 @@ class DateFilterViewModel(
         }
     }
 
-    private fun setFromDate(date: Date) {
+    private fun setFromDate(date: Instant) {
         _state.update {
             it.copy(
                 showDateFilter = false,
@@ -140,7 +141,7 @@ class DateFilterViewModel(
         }
     }
 
-    private fun setToDate(date: Date) {
+    private fun setToDate(date: Instant) {
         _state.update {
             it.copy(
                 showDateFilter = false,

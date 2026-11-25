@@ -16,7 +16,7 @@ import com.naveenapps.expensemanager.core.model.ExportFileType
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
+import kotlin.time.Clock
 
 class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
 
@@ -174,7 +174,7 @@ class PdfExportStrategy(context: Context) : BaseExportStrategy(context) {
             transactions.filter { it.type == TransactionType.INCOME }.sumOf { it.amount.amount }
         val totalExpense =
             transactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount.amount }
-        val now = Date()
+        val now = Clock.System.now()
 
         val document = PdfDocument()
         var pageNum = 1

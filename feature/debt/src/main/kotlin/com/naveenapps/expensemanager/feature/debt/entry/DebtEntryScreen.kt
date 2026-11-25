@@ -64,7 +64,7 @@ import com.naveenapps.expensemanager.feature.debt.R
 import com.naveenapps.expensemanager.feature.debt.accountLabelRes
 import com.naveenapps.expensemanager.feature.debt.labelRes
 import com.naveenapps.expensemanager.feature.transaction.numberpad.NumberPadDialogView
-import java.util.Date
+import kotlin.time.Clock
 import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -347,7 +347,7 @@ private fun EntryDialogs(state: DebtEntryState, onAction: (DebtEntryAction) -> U
         )
 
         state.showDueDateSelection -> AppDatePickerDialog(
-            selectedDate = state.dueDate ?: Date(),
+            selectedDate = state.dueDate ?: Clock.System.now(),
             onDateSelected = { onAction(DebtEntryAction.SelectDueDate(it)) },
             onDismiss = { onAction(DebtEntryAction.DismissDateSelection) },
         )

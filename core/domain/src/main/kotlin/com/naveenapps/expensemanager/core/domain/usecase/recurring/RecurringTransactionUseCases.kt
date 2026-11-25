@@ -11,13 +11,18 @@ import com.naveenapps.expensemanager.core.repository.AccountRepository
 import com.naveenapps.expensemanager.core.repository.CategoryRepository
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
-import java.time.ZoneId
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * Serialises everything that reads-then-writes a rule (the background processor and user edits)
@@ -35,7 +40,7 @@ class CreateRecurringTransactionUseCase(
     private val repository: RecurringTransactionRepository,
     private val processRecurringTransactions: ProcessRecurringTransactionsUseCase,
 ) {
-    suspend operator fun invoke(transaction: Transaction, frequency: RecurringFrequency, now: Date = Date()) {
+    suspend operator fun invoke(transaction: Transaction, frequency: RecurringFrequency, now: Instant = Clock.System.now()) {
         repository.add(
             RecurringTransaction(
                 id = UUID.randomUUID().toString(),
@@ -83,13 +88,13 @@ class ProcessRecurringTransactionsUseCase(
     private val addTransactionUseCase: AddTransactionUseCase,
 ) {
     /** Returns how many transactions were created. */
-    suspend operator fun invoke(now: Date = Date(), zone: ZoneId = ZoneId.systemDefault()): Int = recurringRulesLock.withLock {
+    suspend operator fun invoke(now: Instant = Clock.System.now(), zone: TimeZone = TimeZone.currentSystemDefault()): Int = recurringRulesLock.withLock {
         val dueBy = endOfDay(now, zone)
         var created = 0
         repository.getDue(dueBy).forEach { rule ->
             var current = rule
             var processedForRule = 0
-            while (!current.nextDueDate.after(dueBy) && processedForRule < MAX_CATCH_UP_PER_RUN) {
+            while (current.nextDueDate <= dueBy && processedForRule < MAX_CATCH_UP_PER_RUN) {
                 val transaction = current.toTransaction(current.nextOccurrence, current.nextDueDate, now)
                 val alreadyCreated =
                     transactionRepository.findTransactionById(transaction.id) is Resource.Success
@@ -111,7 +116,7 @@ class ProcessRecurringTransactionsUseCase(
         created
     }
 
-    private fun RecurringTransaction.toTransaction(index: Int, due: Date, now: Date) = Transaction(
+    private fun RecurringTransaction.toTransaction(index: Int, due: Instant, now: Instant) = Transaction(
         id = occurrenceTransactionId(id, index),
         notes = notes,
         categoryId = categoryId,
@@ -125,9 +130,9 @@ class ProcessRecurringTransactionsUseCase(
     )
 
     /** The last millisecond of [now]'s calendar day in [zone]. */
-    private fun endOfDay(now: Date, zone: ZoneId): Date {
-        val nextDay = now.toInstant().atZone(zone).toLocalDate().plusDays(1).atStartOfDay(zone)
-        return Date(nextDay.toInstant().toEpochMilli() - 1)
+    private fun endOfDay(now: Instant, zone: TimeZone): Instant {
+        val nextDay = now.toLocalDateTime(zone).date.plus(1, DateTimeUnit.DAY).atStartOfDayIn(zone)
+        return Instant.fromEpochMilliseconds(nextDay.toEpochMilliseconds() - 1)
     }
 
     companion object {
@@ -198,7 +203,7 @@ data class RecurringTransactionChanges(
     val fromAccountId: String,
     val toAccountId: String?,
     val frequency: RecurringFrequency,
-    val nextDueDate: Date,
+    val nextDueDate: Instant,
 )
 
 /**
@@ -218,7 +223,7 @@ class UpdateRecurringTransactionUseCase(
     suspend operator fun invoke(
         id: String,
         changes: RecurringTransactionChanges,
-        now: Date = Date(),
+        now: Instant = Clock.System.now(),
     ): Resource<RecurringTransaction> = recurringRulesLock.withLock {
         val current = repository.findById(id)
             ?: return@withLock Resource.Error(NoSuchElementException("Recurring transaction $id not found"))
@@ -233,14 +238,14 @@ class UpdateRecurringTransactionUseCase(
         )
 
         val scheduleChanged = changes.frequency != current.frequency ||
-            changes.nextDueDate.time != current.nextDueDate.time
+            changes.nextDueDate.toEpochMilliseconds() != current.nextDueDate.toEpochMilliseconds()
 
         if (!scheduleChanged) {
             repository.update(withTemplate)
             return@withLock Resource.Success(withTemplate)
         }
 
-        if (changes.nextDueDate.before(startOfDay(now))) {
+        if (changes.nextDueDate < startOfDay(now)) {
             return@withLock Resource.Error(IllegalArgumentException("Next date can't be in the past"))
         }
 
@@ -261,9 +266,8 @@ class UpdateRecurringTransactionUseCase(
         if (result is Resource.Success) processRecurringTransactions(now)
     }
 
-    private fun startOfDay(date: Date): Date {
-        val zone = java.time.ZoneId.systemDefault()
-        val start = date.toInstant().atZone(zone).toLocalDate().atStartOfDay(zone)
-        return Date.from(start.toInstant())
+    private fun startOfDay(at: Instant): Instant {
+        val zone = TimeZone.currentSystemDefault()
+        return at.toLocalDateTime(zone).date.atStartOfDayIn(zone)
     }
 }

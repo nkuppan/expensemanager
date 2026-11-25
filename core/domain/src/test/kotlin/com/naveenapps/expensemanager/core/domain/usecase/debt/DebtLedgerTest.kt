@@ -6,14 +6,14 @@ import com.naveenapps.expensemanager.core.model.DebtEntryKind
 import com.naveenapps.expensemanager.core.model.DebtPerson
 import com.naveenapps.expensemanager.core.model.milliToDouble
 import com.naveenapps.expensemanager.core.model.toMilli
-import java.util.Date
+import kotlin.time.Instant
 import org.junit.Test
 
 class DebtLedgerTest {
 
-    private val ravi = DebtPerson("ravi", "Ravi", Date(0), Date(0))
-    private val priya = DebtPerson("priya", "Priya", Date(0), Date(0))
-    private val mom = DebtPerson("mom", "Mom", Date(0), Date(0))
+    private val ravi = DebtPerson("ravi", "Ravi", Instant.fromEpochMilliseconds(0), Instant.fromEpochMilliseconds(0))
+    private val priya = DebtPerson("priya", "Priya", Instant.fromEpochMilliseconds(0), Instant.fromEpochMilliseconds(0))
+    private val mom = DebtPerson("mom", "Mom", Instant.fromEpochMilliseconds(0), Instant.fromEpochMilliseconds(0))
 
     private fun entry(
         person: DebtPerson,
@@ -27,11 +27,11 @@ class DebtLedgerTest {
         kind = kind,
         amountMilli = amount.toMilli(),
         accountId = null,
-        date = Date(date),
-        dueDate = due?.let { Date(it) },
+        date = Instant.fromEpochMilliseconds(date),
+        dueDate = due?.let { Instant.fromEpochMilliseconds(it) },
         note = "",
-        createdOn = Date(date),
-        updatedOn = Date(date),
+        createdOn = Instant.fromEpochMilliseconds(date),
+        updatedOn = Instant.fromEpochMilliseconds(date),
     )
 
     @Test
@@ -75,7 +75,7 @@ class DebtLedgerTest {
             entry(ravi, DebtEntryKind.BORROWED, 50.0, due = 1_000),
         )
 
-        assertThat(DebtLedger.dueDateOf(entries, DebtLedger.balanceOf(entries))).isEqualTo(Date(3_000))
+        assertThat(DebtLedger.dueDateOf(entries, DebtLedger.balanceOf(entries))).isEqualTo(Instant.fromEpochMilliseconds(3_000))
         assertThat(DebtLedger.dueDateOf(entries, 0L)).isNull()
     }
 

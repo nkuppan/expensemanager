@@ -3,7 +3,7 @@ package com.naveenapps.expensemanager.core.database.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
+import kotlin.time.Instant
 
 /** A person in the debt ledger (see core:model DebtPerson). */
 @Entity(tableName = "debt_person")
@@ -14,7 +14,7 @@ data class DebtPersonEntity(
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "created_on")
-    val createdOn: Date,
+    val createdOn: Instant,
     @ColumnInfo(name = "updated_on")
-    val updatedOn: Date,
+    val updatedOn: Instant,
 )

@@ -20,6 +20,7 @@ import java.time.ZoneId
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -182,7 +183,7 @@ class GetBudgetTransactionsUseCaseTimeZoneLocaleTest(
         ).thenAnswer { invocation ->
             val start = invocation.getArgument<Long>(3)
             val end = invocation.getArgument<Long>(4)
-            flowOf(transactions.filter { it.createdOn.time in start..end })
+            flowOf(transactions.filter { it.createdOn.toEpochMilliseconds() in start..end })
         }
     }
 
@@ -191,7 +192,7 @@ class GetBudgetTransactionsUseCaseTimeZoneLocaleTest(
         return (response as Resource.Success).data.map { it.id }
     }
 
-    private fun transactionAt(id: String, millis: Long): Transaction = FAKE_EXPENSE_TRANSACTION.copy(id = id, createdOn = Date(millis), updatedOn = Date(millis))
+    private fun transactionAt(id: String, millis: Long): Transaction = FAKE_EXPENSE_TRANSACTION.copy(id = id, createdOn = Instant.fromEpochMilliseconds(millis), updatedOn = Instant.fromEpochMilliseconds(millis))
 
     private fun localMillis(year: Int, month: Int, day: Int, hour: Int, minute: Int, second: Int = 0): Long = LocalDateTime.of(year, month, day, hour, minute, second).atZone(zone).toInstant().toEpochMilli()
 

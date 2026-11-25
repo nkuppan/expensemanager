@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.feature.filter.datefilter
 
-import java.util.Date
+import kotlin.time.Instant
 
 sealed class DateFilterAction {
 
@@ -12,9 +12,9 @@ sealed class DateFilterAction {
 
     data object ShowToDateSelection : DateFilterAction()
 
-    data class SaveFromDate(val date: Date) : DateFilterAction()
+    data class SaveFromDate(val date: Instant) : DateFilterAction()
 
-    data class SaveToDate(val date: Date) : DateFilterAction()
+    data class SaveToDate(val date: Instant) : DateFilterAction()
 
     data object DismissDateSelection : DateFilterAction()
 }

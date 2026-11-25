@@ -1,6 +1,7 @@
 package com.naveenapps.expensemanager.core.domain.usecase.recurring
 
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import com.naveenapps.expensemanager.core.domain.usecase.transaction.AddTransactionUseCase
 import com.naveenapps.expensemanager.core.model.FrequentTransaction
 import com.naveenapps.expensemanager.core.model.RecurringFrequency
@@ -12,20 +13,26 @@ import com.naveenapps.expensemanager.core.repository.RecurringTransactionReposit
 import com.naveenapps.expensemanager.core.repository.TransactionRepository
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.Date
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.TimeZone
 import org.junit.Test
 
 class RecurringTransactionsTest {
 
     private val zone = ZoneId.systemDefault()
 
-    private fun date(y: Int, m: Int, d: Int, h: Int = 9) = Date.from(LocalDateTime.of(y, m, d, h, 0).atZone(zone).toInstant())
+    private val tz = TimeZone.of(zone.id)
 
-    private fun Date.local() = toInstant().atZone(zone).toLocalDateTime()
+    /** That wall-clock time in [zone], as the Instant every recurring API takes (KMP groundwork C3). */
+    private fun date(y: Int, m: Int, d: Int, h: Int = 9): Instant = Instant.fromEpochMilliseconds(LocalDateTime.of(y, m, d, h, 0).atZone(zone).toInstant().toEpochMilli())
+
+    private fun instant(y: Int, m: Int, d: Int, h: Int = 9) = date(y, m, d, h)
+
+    private fun Instant.local() = java.time.Instant.ofEpochMilli(toEpochMilliseconds()).atZone(zone).toLocalDateTime()
 
     // region occurrenceDate
 
@@ -48,7 +55,7 @@ class RecurringTransactionsTest {
 
     // region processing
 
-    private fun rule(start: Date, frequency: RecurringFrequency = RecurringFrequency.MONTHLY) = RecurringTransaction(
+    private fun rule(start: Instant, frequency: RecurringFrequency = RecurringFrequency.MONTHLY) = RecurringTransaction(
         id = "rule",
         notes = "Rent",
         categoryId = "rent",
@@ -204,8 +211,8 @@ class RecurringTransactionsTest {
             type = TransactionType.EXPENSE,
             amount = com.naveenapps.expensemanager.core.model.Amount(1000.0),
             imagePath = "",
-            createdOn = date(2026, 7, 1),
-            updatedOn = date(2026, 7, 1),
+            createdOn = instant(2026, 7, 1),
+            updatedOn = instant(2026, 7, 1),
         )
 
         create(first, RecurringFrequency.MONTHLY, now = date(2026, 10, 3))
@@ -217,7 +224,7 @@ class RecurringTransactionsTest {
 
     // region planned (future start) and upcoming
 
-    private fun rentDated(date: Date) = Transaction(
+    private fun rentDated(date: Instant) = Transaction(
         id = "plan",
         notes = "Rent",
         categoryId = "rent",
@@ -253,42 +260,42 @@ class RecurringTransactionsTest {
     @Test
     fun `only a later calendar day counts as planned`() {
         val now = date(2026, 11, 3, h = 9)
-        assertThat(isOnLaterDay(date(2026, 11, 3, h = 23), now, zone)).isFalse()
-        assertThat(isOnLaterDay(date(2026, 11, 2), now, zone)).isFalse()
-        assertThat(isOnLaterDay(date(2026, 11, 4, h = 0), now, zone)).isTrue()
+        assertThat(isOnLaterDay(date(2026, 11, 3, h = 23), now, tz)).isFalse()
+        assertThat(isOnLaterDay(date(2026, 11, 2), now, tz)).isFalse()
+        assertThat(isOnLaterDay(date(2026, 11, 4, h = 0), now, tz)).isTrue()
     }
 
     @Test
     fun `upcoming totals count every occurrence in the next 30 days, soonest rule first`() {
         val now = date(2026, 11, 3)
-        val rent = rule(date(2026, 10, 5)).copy(id = "rent", nextOccurrence = 1, nextDueDate = date(2026, 11, 5))
+        val rent = rule(date(2026, 10, 5)).copy(id = "rent", nextOccurrence = 1, nextDueDate = instant(2026, 11, 5))
         val tea = rule(date(2026, 11, 4), RecurringFrequency.WEEKLY).copy(
             id = "tea",
             amount = 20.0,
             nextOccurrence = 0,
-            nextDueDate = date(2026, 11, 4),
+            nextDueDate = instant(2026, 11, 4),
         )
         val salary = rule(date(2026, 11, 30)).copy(
             id = "salary",
             type = TransactionType.INCOME,
             amount = 50_000.0,
             nextOccurrence = 0,
-            nextDueDate = date(2026, 11, 30),
+            nextDueDate = instant(2026, 11, 30),
         )
         val transfer = rule(date(2026, 11, 10)).copy(
             id = "savings",
             type = TransactionType.TRANSFER,
             toAccountId = "savings",
             nextOccurrence = 0,
-            nextDueDate = date(2026, 11, 10),
+            nextDueDate = instant(2026, 11, 10),
         )
         val yearly = rule(date(2026, 1, 15), RecurringFrequency.YEARLY).copy(
             id = "insurance",
             nextOccurrence = 1,
-            nextDueDate = date(2027, 1, 15),
+            nextDueDate = instant(2027, 1, 15),
         )
 
-        val upcoming = summarizeUpcoming(listOf(yearly, salary, transfer, tea, rent), now, zone)
+        val upcoming = summarizeUpcoming(listOf(yearly, salary, transfer, tea, rent), now, tz)
 
         assertThat(upcoming.rules.map { it.id })
             .containsExactly("tea", "rent", "savings", "salary", "insurance").inOrder()
@@ -299,20 +306,20 @@ class RecurringTransactionsTest {
 
     @Test
     fun `the evening heads-up covers weekly, monthly and yearly entries added tomorrow only`() {
-        val tomorrow = java.time.LocalDate.of(2026, 11, 5)
-        val rent = rule(date(2026, 10, 5)).copy(id = "rent", nextDueDate = date(2026, 11, 5, h = 9))
+        val tomorrow = kotlinx.datetime.LocalDate(2026, 11, 5)
+        val rent = rule(date(2026, 10, 5)).copy(id = "rent", nextDueDate = instant(2026, 11, 5, h = 9))
         val insurance = rule(date(2025, 11, 5), RecurringFrequency.YEARLY).copy(
             id = "insurance",
-            nextDueDate = date(2026, 11, 5, h = 8),
+            nextDueDate = instant(2026, 11, 5, h = 8),
         )
         val tea = rule(date(2026, 11, 5), RecurringFrequency.DAILY)
-            .copy(id = "tea", nextDueDate = date(2026, 11, 5))
+            .copy(id = "tea", nextDueDate = instant(2026, 11, 5))
         val gym = rule(date(2026, 10, 29, h = 18), RecurringFrequency.WEEKLY)
-            .copy(id = "gym", nextDueDate = date(2026, 11, 5, h = 18))
-        val later = rule(date(2026, 10, 6)).copy(id = "later", nextDueDate = date(2026, 11, 6))
-        val overdue = rule(date(2026, 10, 1)).copy(id = "overdue", nextDueDate = date(2026, 11, 1))
+            .copy(id = "gym", nextDueDate = instant(2026, 11, 5, h = 18))
+        val later = rule(date(2026, 10, 6)).copy(id = "later", nextDueDate = instant(2026, 11, 6))
+        val overdue = rule(date(2026, 10, 1)).copy(id = "overdue", nextDueDate = instant(2026, 11, 1))
 
-        val due = rulesAddedOn(listOf(rent, insurance, tea, gym, later, overdue), tomorrow, zone)
+        val due = rulesAddedOn(listOf(rent, insurance, tea, gym, later, overdue), tomorrow, tz)
 
         // Soonest first; daily, the day after and overdue ones are left out.
         assertThat(due.map { it.id }).containsExactly("insurance", "rent", "gym").inOrder()
@@ -321,17 +328,17 @@ class RecurringTransactionsTest {
     @Test
     fun `an overdue rule not yet logged still counts as due`() {
         val now = date(2026, 11, 3)
-        val overdue = rule(date(2026, 10, 1)).copy(nextOccurrence = 1, nextDueDate = date(2026, 11, 1))
+        val overdue = rule(date(2026, 10, 1)).copy(nextOccurrence = 1, nextDueDate = instant(2026, 11, 1))
 
         // Nov 1 (logged on the next app start) and Dec 1, both inside the window.
-        assertThat(summarizeUpcoming(listOf(overdue), now, zone).expenseDue).isEqualTo(2000.0)
+        assertThat(summarizeUpcoming(listOf(overdue), now, tz).expenseDue).isEqualTo(2000.0)
     }
 
     // endregion
 
     @Test
     fun `moving the next date to today logs it straight away`() = runTest {
-        val original = rule(date(2026, 9, 1)).copy(nextOccurrence = 1, nextDueDate = date(2026, 10, 1))
+        val original = rule(date(2026, 9, 1)).copy(nextOccurrence = 1, nextDueDate = instant(2026, 10, 1))
         val rules = FakeRecurringRepository(original)
         val transactions = FakeTransactionRepository()
 
@@ -345,7 +352,7 @@ class RecurringTransactionsTest {
         amount: Double = base.amount,
         notes: String = base.notes,
         frequency: RecurringFrequency = base.frequency,
-        nextDueDate: Date = base.nextDueDate,
+        nextDueDate: Instant = base.nextDueDate,
     ) = RecurringTransactionChanges(
         amount = amount,
         notes = notes,
@@ -358,7 +365,7 @@ class RecurringTransactionsTest {
 
     @Test
     fun `template edit updates the rule in place and keeps its schedule`() = runTest {
-        val original = rule(date(2026, 9, 1)).copy(nextOccurrence = 2, nextDueDate = date(2026, 11, 1))
+        val original = rule(date(2026, 9, 1)).copy(nextOccurrence = 2, nextDueDate = instant(2026, 11, 1))
         val rules = FakeRecurringRepository(original)
 
         val result = updateUseCase(rules)(
@@ -452,6 +459,54 @@ class RecurringTransactionsTest {
 
     // endregion
 
+    // region equivalence with the java.time version this replaced (KMP groundwork C3)
+
+    /** The java.time implementation of [occurrenceDate] before the move to kotlinx-datetime. */
+    private fun legacyOccurrenceDate(start: java.util.Date, frequency: RecurringFrequency, index: Int, zone: ZoneId): java.util.Date {
+        val base = start.toInstant().atZone(zone).toLocalDateTime()
+        val n = index.toLong()
+        val shifted = when (frequency) {
+            RecurringFrequency.DAILY -> base.plusDays(n)
+            RecurringFrequency.WEEKLY -> base.plusWeeks(n)
+            RecurringFrequency.MONTHLY -> base.plusMonths(n)
+            RecurringFrequency.YEARLY -> base.plusYears(n)
+        }
+        return java.util.Date.from(shifted.atZone(zone).toInstant())
+    }
+
+    @Test
+    fun `kotlinx occurrence dates match the java time version in every zone`() {
+        val zoneIds = listOf(
+            "UTC",
+            "Asia/Kolkata",
+            "Asia/Kathmandu",
+            "America/New_York",
+            "America/Sao_Paulo",
+            "Pacific/Auckland",
+            "Australia/Lord_Howe",
+            "Europe/London",
+        )
+        for (zoneId in zoneIds) {
+            val javaZone = ZoneId.of(zoneId)
+            val kotlinZone = TimeZone.of(zoneId)
+            var at = LocalDateTime.of(2018, 1, 28, 0, 30).atZone(javaZone).toInstant().toEpochMilli()
+            val end = LocalDateTime.of(2028, 1, 1, 0, 0).atZone(javaZone).toInstant().toEpochMilli()
+            while (at < end) {
+                for (frequency in RecurringFrequency.entries) {
+                    for (index in listOf(0, 1, 2, 5, 13, 40)) {
+                        val expected = legacyOccurrenceDate(java.util.Date(at), frequency, index, javaZone).time
+                        val actual = occurrenceDate(Instant.fromEpochMilliseconds(at), frequency, index, kotlinZone).toEpochMilliseconds()
+                        assertWithMessage("$zoneId start=$at $frequency #$index").that(actual).isEqualTo(expected)
+                    }
+                }
+                // ~53 hours and an odd number of minutes: walks across month ends, DST changes and times of day.
+                at += 53L * 60 * 60 * 1000 + 17L * 60 * 1000
+            }
+        }
+    }
+
+    // endregion
+
     private class FakeRecurringRepository(vararg initial: RecurringTransaction) : RecurringTransactionRepository {
         val rules = MutableStateFlow(initial.toList())
 
@@ -459,10 +514,10 @@ class RecurringTransactionsTest {
         var afterGetDue: (() -> Unit)? = null
 
         override fun getAll(): Flow<List<RecurringTransaction>> = rules
-        override suspend fun getDue(dueBefore: Date) = rules.value.filter { !it.nextDueDate.after(dueBefore) }
+        override suspend fun getDue(dueBefore: Instant) = rules.value.filter { it.nextDueDate <= dueBefore }
             .also { afterGetDue?.invoke() }
         override suspend fun findById(id: String) = rules.value.firstOrNull { it.id == id }
-        override suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Date, updatedOn: Date) {
+        override suspend fun advance(id: String, nextOccurrence: Int, nextDueDate: Instant, updatedOn: Instant) {
             rules.value = rules.value.map {
                 if (it.id == id) it.copy(nextOccurrence = nextOccurrence, nextDueDate = nextDueDate, updatedOn = updatedOn) else it
             }

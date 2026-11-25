@@ -1,8 +1,8 @@
 package com.naveenapps.expensemanager.core.data.repository.backup
 
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
+import kotlin.time.Instant
 
 /**
  * Naming, recognition and retention for backups the app writes itself. Names carry a sortable timestamp (pinned to
@@ -20,11 +20,11 @@ internal object AutoBackupFiles {
     private const val TIMESTAMP_PATTERN = "yyyy-MM-dd-HHmmss"
     private val TIMESTAMP = Regex("""\d{4}-\d{2}-\d{2}-\d{6}""")
 
-    fun fileName(date: Date): String = "$PREFIX${stamp(date)}.$EXTENSION"
+    fun fileName(date: Instant): String = "$PREFIX${stamp(date)}.$EXTENSION"
 
-    fun manualFileName(date: Date): String = "$MANUAL_PREFIX${stamp(date)}.$EXTENSION"
+    fun manualFileName(date: Instant): String = "$MANUAL_PREFIX${stamp(date)}.$EXTENSION"
 
-    private fun stamp(date: Date): String = SimpleDateFormat(TIMESTAMP_PATTERN, Locale.US).format(date)
+    private fun stamp(date: Instant): String = SimpleDateFormat(TIMESTAMP_PATTERN, Locale.US).format(date.toEpochMilliseconds())
 
     /** What a backup's name says about it, or null for files the app didn't write. */
     fun parse(name: String): Parsed? {

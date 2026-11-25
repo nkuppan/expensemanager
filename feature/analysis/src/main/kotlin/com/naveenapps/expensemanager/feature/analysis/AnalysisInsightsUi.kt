@@ -2,7 +2,7 @@ package com.naveenapps.expensemanager.feature.analysis
 
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
-import java.time.DayOfWeek
+import kotlinx.datetime.DayOfWeek
 
 /** [com.naveenapps.expensemanager.core.model.SpendingInsights] with amounts formatted for display. */
 data class AnalysisInsightsUi(

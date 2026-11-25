@@ -5,12 +5,17 @@ import com.naveenapps.expensemanager.core.model.RecurringTransaction
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
 import com.naveenapps.expensemanager.core.repository.RecurringTransactionRepository
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
 
 /**
  * Plans a transaction (not saved) to repeat every frequency from its own date, which is on a later day
@@ -24,7 +29,7 @@ class PlanRecurringTransactionUseCase(
     suspend operator fun invoke(
         transaction: Transaction,
         frequency: RecurringFrequency,
-        now: Date = Date(),
+        now: Instant = Clock.System.now(),
     ) {
         repository.add(
             RecurringTransaction(
@@ -62,8 +67,8 @@ class GetUpcomingRecurringUseCase(
     private val getRecurringTransactionsUseCase: GetRecurringTransactionsUseCase,
 ) {
     operator fun invoke(
-        now: () -> Date = { Date() },
-        zone: ZoneId = ZoneId.systemDefault(),
+        now: () -> Instant = { Clock.System.now() },
+        zone: TimeZone = TimeZone.currentSystemDefault(),
     ): Flow<UpcomingRecurring> = getRecurringTransactionsUseCase().map { rules ->
         summarizeUpcoming(rules, now(), zone)
     }
@@ -77,15 +82,14 @@ class GetUpcomingRecurringUseCase(
  */
 internal fun summarizeUpcoming(
     rules: List<RecurringTransaction>,
-    now: Date,
-    zone: ZoneId,
+    now: Instant,
+    zone: TimeZone,
     windowDays: Int = UPCOMING_WINDOW_DAYS,
 ): UpcomingRecurring {
-    val windowEnd = now.toInstant().atZone(zone).toLocalDate()
-        .plusDays(windowDays.toLong() + 1)
-        .atStartOfDay(zone)
-        .toInstant()
-        .let { Date(it.toEpochMilli() - 1) }
+    val windowEnd = now.toLocalDateTime(zone).date
+        .plus(windowDays + 1, DateTimeUnit.DAY)
+        .atStartOfDayIn(zone)
+        .let { Instant.fromEpochMilliseconds(it.toEpochMilliseconds() - 1) }
     var expense = 0.0
     var income = 0.0
     rules.forEach { rule ->
@@ -93,7 +97,7 @@ internal fun summarizeUpcoming(
         var index = rule.nextOccurrence
         var due = rule.nextDueDate
         var counted = 0
-        while (!due.after(windowEnd) && counted < MAX_OCCURRENCES_IN_WINDOW) {
+        while (due <= windowEnd && counted < MAX_OCCURRENCES_IN_WINDOW) {
             if (rule.type == TransactionType.EXPENSE) expense += rule.amount else income += rule.amount
             counted++
             index++
@@ -122,8 +126,8 @@ val HEADS_UP_FREQUENCIES = setOf(RecurringFrequency.WEEKLY, RecurringFrequency.M
 fun rulesAddedOn(
     rules: List<RecurringTransaction>,
     day: LocalDate,
-    zone: ZoneId = ZoneId.systemDefault(),
+    zone: TimeZone = TimeZone.currentSystemDefault(),
 ): List<RecurringTransaction> = rules
     .filter { it.frequency in HEADS_UP_FREQUENCIES }
-    .filter { it.nextDueDate.toInstant().atZone(zone).toLocalDate() == day }
+    .filter { it.nextDueDate.toLocalDateTime(zone).date == day }
     .sortedBy { it.nextDueDate }

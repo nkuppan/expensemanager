@@ -49,7 +49,8 @@ import com.naveenapps.expensemanager.core.testing.BaseCoroutineTest
 import com.naveenapps.expensemanager.core.testing.FAKE_EXPENSE_TRANSACTION
 import com.naveenapps.expensemanager.feature.transaction.R
 import com.naveenapps.expensemanager.feature.transaction.create.receipt.ReceiptTextReader
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -118,8 +119,8 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         name = "Food",
         type = CategoryType.EXPENSE,
         storedIcon = StoredIcon(name = "ic_food", backgroundColor = "#FF0000"),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     )
 
     override fun onCreate() {
@@ -176,7 +177,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
     private fun buildState(
         notes: String = "Test notes",
-        dateTime: Date = Date(),
+        dateTime: Instant = Clock.System.now(),
         transactionType: TransactionType = TransactionType.EXPENSE,
         selectedCategory: Category = fakeCategory,
         selectedFromAccount: AccountUiModel = fakeFromAccount,
@@ -328,7 +329,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `maps state dateTime as createdOn`() {
-        val fixedDate = Date(1_000_000_000L)
+        val fixedDate = Instant.fromEpochMilliseconds(1_000_000_000L)
 
         val result = viewModel.buildTransactionFromState(
             buildState(dateTime = fixedDate),
@@ -340,12 +341,12 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
     @Test
     fun `sets updatedOn to the current time`() {
-        val before = Date()
+        val before = System.currentTimeMillis()
         val result = viewModel.buildTransactionFromState(buildState(), amountValue = 100.0)
-        val after = Date()
+        val after = System.currentTimeMillis()
 
-        assertThat(result.updatedOn.time).isAtLeast(before.time)
-        assertThat(result.updatedOn.time).isAtMost(after.time)
+        assertThat(result.updatedOn.toEpochMilliseconds()).isAtLeast(before)
+        assertThat(result.updatedOn.toEpochMilliseconds()).isAtMost(after)
     }
 
     @Test
@@ -432,8 +433,8 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
         name = id,
         type = AccountType.REGULAR,
         storedIcon = StoredIcon(name = "ic_wallet", backgroundColor = "#000000"),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
     )
 
     private fun category(id: String) = fakeCategory.copy(id = id, name = id)
@@ -657,7 +658,7 @@ class TransactionCreateViewModelTest : BaseCoroutineTest() {
 
     // region planned recurring
 
-    private fun daysFromNow(days: Int) = Date(System.currentTimeMillis() + days * 86_400_000L)
+    private fun daysFromNow(days: Int) = Instant.fromEpochMilliseconds(System.currentTimeMillis() + days * 86_400_000L)
 
     @Test
     fun `a repeating entry dated on a later day is planned, not logged`() = runTest {

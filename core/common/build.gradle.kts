@@ -11,4 +11,7 @@ android {
 dependencies {
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.datetime)
+
+    // DateBridgesTest (KMP groundwork C2).
+    testImplementation(libs.junit4)
 }

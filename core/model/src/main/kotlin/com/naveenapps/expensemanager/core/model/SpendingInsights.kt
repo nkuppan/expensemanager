@@ -1,6 +1,6 @@
 package com.naveenapps.expensemanager.core.model
 
-import java.time.DayOfWeek
+import kotlinx.datetime.DayOfWeek
 
 /** Insights for the transactions matching the Analysis filter (period, accounts, categories). */
 data class SpendingInsights(

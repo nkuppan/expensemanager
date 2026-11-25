@@ -7,8 +7,9 @@ import com.naveenapps.expensemanager.core.model.DebtPersonBalance
 import com.naveenapps.expensemanager.core.model.DebtTotals
 import com.naveenapps.expensemanager.core.model.Resource
 import com.naveenapps.expensemanager.core.repository.DebtRepository
-import java.util.Date
 import java.util.UUID
+import kotlin.time.Clock
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -40,10 +41,10 @@ class SaveDebtEntryUseCase(private val repository: DebtRepository) {
         kind: DebtEntryKind,
         amountMilli: Long,
         accountId: String?,
-        date: Date,
-        dueDate: Date?,
+        date: Instant,
+        dueDate: Instant?,
         note: String,
-        now: Date = Date(),
+        now: Instant = Clock.System.now(),
     ): Resource<DebtEntry> {
         if (amountMilli <= 0L) return Resource.Error(IllegalArgumentException("Amount must be above zero"))
         val name = personName.trim()
@@ -89,7 +90,7 @@ class SaveDebtEntryUseCase(private val repository: DebtRepository) {
  */
 class SettleUpDebtUseCase(private val repository: DebtRepository) {
 
-    suspend operator fun invoke(personId: String, accountId: String?, date: Date = Date()): Resource<DebtEntry?> {
+    suspend operator fun invoke(personId: String, accountId: String?, date: Instant = Clock.System.now()): Resource<DebtEntry?> {
         val entries = repository.getAllEntries().filter { it.personId == personId }
         val balance = DebtLedger.balanceOf(entries)
         if (balance == 0L) return Resource.Success(null)

@@ -11,8 +11,7 @@ import com.naveenapps.expensemanager.core.model.AccountType
 import com.naveenapps.expensemanager.core.model.Category
 import com.naveenapps.expensemanager.core.model.CategoryType
 import com.naveenapps.expensemanager.core.model.StoredIcon
-import java.util.Calendar
-import java.util.Date
+import kotlin.time.Clock
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -28,8 +27,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "apparel",
             backgroundColor = "#F44336",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "clothing",
     ),
     Category(
@@ -40,8 +39,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "sports_esports",
             backgroundColor = "#E91E63",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "entertainment",
     ),
     Category(
@@ -52,8 +51,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "restaurant",
             backgroundColor = "#9C27B0",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "food",
     ),
     Category(
@@ -64,8 +63,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "home_health",
             backgroundColor = "#673AB7",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "health",
     ),
     Category(
@@ -76,8 +75,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "flights_and_hotels",
             backgroundColor = "#3F51B5",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "leisure",
     ),
     Category(
@@ -88,8 +87,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "shopping_cart",
             backgroundColor = "#2196F3",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "shopping",
     ),
     Category(
@@ -100,8 +99,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "travel",
             backgroundColor = "#03A9F4",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "transportation",
     ),
     Category(
@@ -112,8 +111,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "other_admission",
             backgroundColor = "#00BCD4",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "utilities",
     ),
     Category(
@@ -124,8 +123,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "savings",
             backgroundColor = "#4CAF50",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "salary",
     ),
     Category(
@@ -136,8 +135,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "featured_seasonal_and_gifts",
             backgroundColor = "#E65100",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "gift",
     ),
     Category(
@@ -148,8 +147,8 @@ val BASE_CATEGORY_LIST = listOf(
             name = "redeem",
             backgroundColor = "#3E2723",
         ),
-        createdOn = Date(),
-        updatedOn = Date(),
+        createdOn = Clock.System.now(),
+        updatedOn = Clock.System.now(),
         defaultKey = "coupons",
     ),
 )
@@ -163,8 +162,8 @@ val BASE_ACCOUNT_LIST = listOf(
             name = "savings",
             backgroundColor = "#4CAF50",
         ),
-        Calendar.getInstance().time,
-        Calendar.getInstance().time,
+        Clock.System.now(),
+        Clock.System.now(),
     ),
     Account(
         "2",
@@ -174,8 +173,8 @@ val BASE_ACCOUNT_LIST = listOf(
             name = "credit_card",
             backgroundColor = "#4CAF50",
         ),
-        Calendar.getInstance().time,
-        Calendar.getInstance().time,
+        Clock.System.now(),
+        Clock.System.now(),
     ),
     Account(
         "3",
@@ -185,8 +184,8 @@ val BASE_ACCOUNT_LIST = listOf(
             name = "account_balance",
             backgroundColor = "#4CAF50",
         ),
-        Calendar.getInstance().time,
-        Calendar.getInstance().time,
+        Clock.System.now(),
+        Clock.System.now(),
     ),
 )
 

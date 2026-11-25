@@ -16,11 +16,11 @@ import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.StoredIcon
 import com.naveenapps.expensemanager.core.model.Transaction
 import com.naveenapps.expensemanager.core.model.TransactionType
-import java.util.Date
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
@@ -52,6 +52,7 @@ class GetChartDataUseCaseTest {
         type: TransactionType = TransactionType.EXPENSE,
     ): Transaction {
         val epoch = LocalDateTime(year, month, day, hour, 0).toInstant(tz).toEpochMilliseconds()
+        val at = Instant.fromEpochMilliseconds(epoch)
         return Transaction(
             id = "$year-$month-$day-$hour-$type",
             notes = "",
@@ -61,15 +62,15 @@ class GetChartDataUseCaseTest {
             type = type,
             amount = Amount(amount),
             imagePath = "",
-            createdOn = Date(epoch),
-            updatedOn = Date(epoch),
+            createdOn = at,
+            updatedOn = at,
             category = Category(
                 id = "1",
                 name = "Test",
                 type = if (type == TransactionType.EXPENSE) CategoryType.EXPENSE else CategoryType.INCOME,
                 storedIcon = StoredIcon("test", "#FFFFFF"),
-                createdOn = Date(epoch),
-                updatedOn = Date(epoch),
+                createdOn = at,
+                updatedOn = at,
             ),
         )
     }

@@ -191,24 +191,6 @@ fun Date.getEndOfTheYear(): Long {
     return LocalDate(date.year + 1, 1, 1).atStartOfDayIn(timeZone).toEpochMilliseconds() - 1
 }
 
-/** First millisecond of this date's day, in the device time zone. */
-
-fun Date.getStartOfTheDay(): Long {
-    val timeZone = TimeZone.currentSystemDefault()
-    val date = Instant.fromEpochMilliseconds(this.time).toLocalDateTime(timeZone).date
-    return date.atStartOfDayIn(timeZone).toEpochMilliseconds()
-}
-
-/** Last millisecond of this date's day, in the device time zone (inclusive, see above). */
-
-fun Date.getEndOfTheDay(): Long = getStartOfTheNextDay() - 1
-
-private fun Date.getStartOfTheNextDay(): Long {
-    val timeZone = TimeZone.currentSystemDefault()
-    val date = Instant.fromEpochMilliseconds(this.time).toLocalDateTime(timeZone).date
-    return date.plus(1, DateTimeUnit.DAY).atStartOfDayIn(timeZone).toEpochMilliseconds()
-}
-
 fun Long.toCompleteDate(): Date = Date(this)
 
 fun Date.toDate(): String = DateFormat.get().format(this)

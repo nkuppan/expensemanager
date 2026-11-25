@@ -1,13 +1,13 @@
 package com.naveenapps.expensemanager.core.domain.usecase.transaction
 
 import com.naveenapps.expensemanager.core.common.utils.AppCoroutineDispatchers
-import com.naveenapps.expensemanager.core.common.utils.getStartOfTheDay
-import com.naveenapps.expensemanager.core.common.utils.getStartOfTheMonth
-import com.naveenapps.expensemanager.core.common.utils.getStartOfTheYear
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDate
-import com.naveenapps.expensemanager.core.common.utils.toCompleteDateWithDate
+import com.naveenapps.expensemanager.core.common.utils.startOfDayMillis
+import com.naveenapps.expensemanager.core.common.utils.startOfMonthMillis
+import com.naveenapps.expensemanager.core.common.utils.startOfYearMillis
+import com.naveenapps.expensemanager.core.common.utils.toDayKey
+import com.naveenapps.expensemanager.core.common.utils.toLocalDateIn
 import com.naveenapps.expensemanager.core.common.utils.toMonthAndYear
-import com.naveenapps.expensemanager.core.common.utils.toYear
+import com.naveenapps.expensemanager.core.common.utils.toYearKey
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetCurrencyUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.currency.GetFormattedAmountUseCase
 import com.naveenapps.expensemanager.core.domain.usecase.settings.filter.daterange.GetDateRangeUseCase
@@ -18,8 +18,8 @@ import com.naveenapps.expensemanager.core.model.GroupType
 import com.naveenapps.expensemanager.core.model.TransactionUiItem
 import com.naveenapps.expensemanager.core.model.isExpense
 import com.naveenapps.expensemanager.core.model.isIncome
-import java.util.Date
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
@@ -85,8 +85,8 @@ class GetChartDataUseCase(
             }
 
             val ranges = dateRangeModel.dateRanges
-            val earliestTransactionMs = transactions.minOf { it.createdOn.time }
-            val latestTransactionMs = transactions.maxOf { it.createdOn.time }
+            val earliestTransactionMs = transactions.minOf { it.createdOn.toEpochMilliseconds() }
+            val latestTransactionMs = transactions.maxOf { it.createdOn.toEpochMilliseconds() }
 
             // For ALL: extend one year before the earliest transaction and one year after
             // the latest, so the chart shows an empty bucket on each side for visual context.
@@ -122,7 +122,7 @@ class GetChartDataUseCase(
             // range spanning several years). For DateRangeType.ALL this cap is never hit
             // because the loop is bounded by actual transaction years above.
             while (fromDate <= toDate && index < MAX_CHART_POINTS) {
-                val key = groupValue(groupType, fromDate.toEpochMilliseconds().toCompleteDate())
+                val key = groupValue(groupType, fromDate)
                 val totals = bucketTotals[key]
                 val totalExpense = totals?.get(0) ?: 0.0
                 val totalIncome = totals?.get(1) ?: 0.0
@@ -177,16 +177,22 @@ class GetChartDataUseCase(
     }
 
     /** First instant of the group bucket a timestamp falls into, in the device time zone. */
-    private fun Long.toBucketStart(groupType: GroupType): Long = when (groupType) {
-        GroupType.DATE -> Date(this).getStartOfTheDay()
-        GroupType.MONTH -> Date(this).getStartOfTheMonth()
-        GroupType.YEAR -> Date(this).getStartOfTheYear()
+    private fun Long.toBucketStart(groupType: GroupType): Long {
+        val day = Instant.fromEpochMilliseconds(this).toLocalDateIn()
+        return when (groupType) {
+            GroupType.DATE -> day.startOfDayMillis()
+            GroupType.MONTH -> day.startOfMonthMillis()
+            GroupType.YEAR -> day.startOfYearMillis()
+        }
     }
 
-    private fun groupValue(groupType: GroupType, transactionDate: Date) = when (groupType) {
-        GroupType.YEAR -> transactionDate.toYear()
-        GroupType.MONTH -> transactionDate.toMonthAndYear()
-        GroupType.DATE -> transactionDate.toCompleteDateWithDate()
+    private fun groupValue(groupType: GroupType, at: kotlin.time.Instant) = when (groupType) {
+        GroupType.YEAR -> at.toLocalDateIn().toYearKey()
+
+        // Shown on the chart in the app's language: stays on the display formatter (C6, display half).
+        GroupType.MONTH -> at.toMonthAndYear()
+
+        GroupType.DATE -> at.toLocalDateIn().toDayKey()
     }
 
     companion object {

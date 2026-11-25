@@ -11,8 +11,8 @@ import com.naveenapps.expensemanager.core.model.InsightKind
 import com.naveenapps.expensemanager.core.repository.AnalyticsEvents
 import com.naveenapps.expensemanager.core.repository.AnalyticsRepository
 import com.naveenapps.expensemanager.core.repository.FeedbackRepository
-import java.util.Date
 import kotlin.math.abs
+import kotlin.time.Clock
 import kotlinx.coroutines.flow.first
 
 /**
@@ -32,7 +32,7 @@ class BudgetAlertWorker(
     override suspend fun doWork(): Result {
         if (!notificationScheduler.hasNotificationPermission()) return Result.success()
 
-        val today = Date()
+        val today = Clock.System.now()
         val currentMonth = today.toMonthAndYearKey()
         val currentYear = today.toYear()
         val alreadySent = feedbackRepository.getSentBudgetAlerts().first()
