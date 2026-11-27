@@ -36,3 +36,10 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.truth)
 }
+
+// MigrationSqlTest (OpenSpec change move-database-to-sqlite-driver): the golden file it compares
+// with, and -PrecordMigrationSql=true to re-record it after a deliberate migration change.
+tasks.withType<Test>().configureEach {
+    systemProperty("migrationSqlGolden", file("src/test/resources/migration-sql.golden.txt").absolutePath)
+    systemProperty("recordMigrationSql", providers.gradleProperty("recordMigrationSql").getOrElse("false"))
+}

@@ -1,0 +1,172 @@
+=== 1 -> 2
+PRAGMA defer_foreign_keys = ON
+;;
+QUERY: PRAGMA table_info(`category`)
+;;
+ALTER TABLE `category` RENAME TO `category_v1_old`
+;;
+QUERY: PRAGMA table_info(`account`)
+;;
+ALTER TABLE `account` RENAME TO `account_v1_old`
+;;
+QUERY: PRAGMA table_info(`transaction`)
+;;
+ALTER TABLE `transaction` RENAME TO `transaction_v1_old`
+;;
+QUERY: PRAGMA table_info(`budget`)
+;;
+ALTER TABLE `budget` RENAME TO `budget_v1_old`
+;;
+QUERY: PRAGMA table_info(`budget_category_relation`)
+;;
+ALTER TABLE `budget_category_relation` RENAME TO `budget_category_relation_v1_old`
+;;
+QUERY: PRAGMA table_info(`budget_account_relation`)
+;;
+ALTER TABLE `budget_account_relation` RENAME TO `budget_account_relation_v1_old`
+;;
+CREATE TABLE IF NOT EXISTS `category` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `type` INTEGER NOT NULL, `icon_background_color` TEXT NOT NULL, `icon_name` TEXT NOT NULL, `updated_on` INTEGER NOT NULL, `created_on` INTEGER NOT NULL, PRIMARY KEY(`id`))
+;;
+INSERT OR IGNORE INTO `category` (`id`, `name`, `type`, `icon_background_color`, `icon_name`, `updated_on`, `created_on`) SELECT COALESCE(`id`, lower(hex(randomblob(16)))), COALESCE(`name`, ''), COALESCE(`type`, 1), COALESCE(`background_color`, '#43A546'), COALESCE(`icon_name`, 'wallet'), COALESCE(`updated_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)), COALESCE(`created_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)) FROM `category_v1_old`
+;;
+CREATE TABLE IF NOT EXISTS `account` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `type` INTEGER NOT NULL, `icon_background_color` TEXT NOT NULL, `icon_name` TEXT NOT NULL, `amount` REAL NOT NULL, `credit_limit` REAL NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`))
+;;
+INSERT OR IGNORE INTO `account` (`id`, `name`, `type`, `icon_background_color`, `icon_name`, `amount`, `credit_limit`, `created_on`, `updated_on`) SELECT COALESCE(`id`, lower(hex(randomblob(16)))), COALESCE(`name`, ''), COALESCE(`type`, 0), COALESCE(`background_color`, '#43A546'), COALESCE(`icon_name`, 'account_balance'), COALESCE(`amount`, 0), 0, COALESCE(`created_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)), COALESCE(`updated_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)) FROM `account_v1_old`
+;;
+CREATE TABLE IF NOT EXISTS `transaction` (`id` TEXT NOT NULL, `notes` TEXT NOT NULL, `category_id` TEXT NOT NULL, `from_account_id` TEXT NOT NULL, `type` INTEGER NOT NULL, `amount` REAL NOT NULL, `image_path` TEXT NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, `to_account_id` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`from_account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`to_account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`category_id`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )
+;;
+INSERT OR IGNORE INTO `transaction` (`id`, `notes`, `category_id`, `from_account_id`, `type`, `amount`, `image_path`, `created_on`, `updated_on`, `to_account_id`) SELECT COALESCE(`id`, lower(hex(randomblob(16)))), COALESCE(`notes`, ''), COALESCE(`category_type`, ''), COALESCE(`account_id`, 'migrated-cash-account'), COALESCE(`type`, 1), COALESCE(`amount`, 0), '', COALESCE(`created_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)), COALESCE(`updated_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)), NULL FROM `transaction_v1_old`
+;;
+CREATE TABLE IF NOT EXISTS `budget` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `icon_background_color` TEXT NOT NULL, `icon_name` TEXT NOT NULL, `selected_month` TEXT NOT NULL, `amount` REAL NOT NULL, `all_accounts_selected` INTEGER NOT NULL, `all_categories_selected` INTEGER NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`))
+;;
+INSERT OR IGNORE INTO `budget` (`id`, `name`, `icon_background_color`, `icon_name`, `selected_month`, `amount`, `all_accounts_selected`, `all_categories_selected`, `created_on`, `updated_on`) SELECT COALESCE(`id`, lower(hex(randomblob(16)))), COALESCE(`name`, ''), COALESCE(`background_color`, '#43A546'), COALESCE(`icon_name`, 'wallet'), '', COALESCE(`amount`, 0), 1, 1, COALESCE(`created_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)), COALESCE(`updated_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)) FROM `budget_v1_old`
+;;
+CREATE TABLE IF NOT EXISTS `budget_category_relation` (`id` TEXT NOT NULL, `budget_id` TEXT NOT NULL, `category_id` TEXT NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`budget_id`) REFERENCES `budget`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`category_id`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )
+;;
+INSERT OR IGNORE INTO `budget_category_relation` (`id`, `budget_id`, `category_id`, `created_on`, `updated_on`) SELECT COALESCE(`id`, lower(hex(randomblob(16)))), '', '', COALESCE(`created_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)), COALESCE(`updated_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)) FROM `budget_category_relation_v1_old`
+;;
+CREATE TABLE IF NOT EXISTS `budget_account_relation` (`id` TEXT NOT NULL, `budget_id` TEXT NOT NULL, `account_id` TEXT NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`budget_id`) REFERENCES `budget`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )
+;;
+INSERT OR IGNORE INTO `budget_account_relation` (`id`, `budget_id`, `account_id`, `created_on`, `updated_on`) SELECT COALESCE(`id`, lower(hex(randomblob(16)))), '', COALESCE(`account_id`, ''), COALESCE(`created_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)), COALESCE(`updated_on`, (CAST(strftime('%s', 'now') AS INTEGER) * 1000)) FROM `budget_account_relation_v1_old`
+;;
+QUERY: SELECT COUNT(*) FROM `transaction` WHERE from_account_id NOT IN (SELECT id FROM account)
+;;
+INSERT OR IGNORE INTO account (id, name, type, icon_background_color, icon_name, amount, credit_limit, created_on, updated_on) VALUES ('migrated-cash-account', 'Cash', 0, '#43A546', 'account_balance', 0, 0, (CAST(strftime('%s', 'now') AS INTEGER) * 1000), (CAST(strftime('%s', 'now') AS INTEGER) * 1000))
+;;
+UPDATE `transaction` SET from_account_id = 'migrated-cash-account' WHERE from_account_id NOT IN (SELECT id FROM account)
+;;
+UPDATE `transaction` SET to_account_id = NULL WHERE to_account_id IS NOT NULL AND to_account_id NOT IN (SELECT id FROM account)
+;;
+DELETE FROM `transaction` WHERE category_id NOT IN (SELECT id FROM category)
+;;
+DELETE FROM budget_category_relation WHERE budget_id NOT IN (SELECT id FROM budget) OR category_id NOT IN (SELECT id FROM category)
+;;
+DELETE FROM budget_account_relation WHERE budget_id NOT IN (SELECT id FROM budget) OR account_id NOT IN (SELECT id FROM account)
+;;
+DROP TABLE IF EXISTS `category_v1_old`
+;;
+DROP TABLE IF EXISTS `account_v1_old`
+;;
+DROP TABLE IF EXISTS `transaction_v1_old`
+;;
+DROP TABLE IF EXISTS `budget_v1_old`
+;;
+DROP TABLE IF EXISTS `budget_category_relation_v1_old`
+;;
+DROP TABLE IF EXISTS `budget_account_relation_v1_old`
+;;
+=== 2 -> 3
+ALTER TABLE `account` ADD COLUMN `sequence` INTEGER NOT NULL DEFAULT 0
+;;
+=== 3 -> 4
+CREATE TABLE IF NOT EXISTS `budget_new` (`id` TEXT NOT NULL, `selected_month` TEXT NOT NULL, `amount` REAL NOT NULL, `all_accounts_selected` INTEGER NOT NULL, `all_categories_selected` INTEGER NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`))
+;;
+INSERT INTO `budget_new` (`id`, `selected_month`, `amount`, `all_accounts_selected`, `all_categories_selected`, `created_on`, `updated_on`) SELECT `id`, `selected_month`, `amount`, `all_accounts_selected`, `all_categories_selected`, `created_on`, `updated_on` FROM `budget`
+;;
+DROP TABLE `budget`
+;;
+ALTER TABLE `budget_new` RENAME TO `budget`
+;;
+=== 4 -> 5
+ALTER TABLE `category` ADD COLUMN `default_category_key` TEXT DEFAULT NULL
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: clothing, 1, Clothing
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: entertainment, 2, Entertainment
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: food, 3, Food
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: health, 4, Health
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: leisure, 5, Leisure
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: shopping, 6, Shopping
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: transportation, 7, Transportation
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: utilities, 8, Utilities
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: salary, 9, Salary
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: gift, 10, Gift
+;;
+UPDATE `category` SET `default_category_key` = ? WHERE `id` = ? AND `name` = ?
+BIND: coupons, 11, Coupons
+;;
+=== 5 -> 6
+ALTER TABLE `budget` ADD COLUMN `period_type` INTEGER NOT NULL DEFAULT 0
+;;
+=== 6 -> 7
+ALTER TABLE `category` ADD COLUMN `custom_image_path` TEXT DEFAULT NULL
+;;
+ALTER TABLE `account` ADD COLUMN `custom_image_path` TEXT DEFAULT NULL
+;;
+=== 7 -> 8
+CREATE TABLE IF NOT EXISTS `transaction_attachment` (`id` TEXT NOT NULL, `transaction_id` TEXT NOT NULL, `image_path` TEXT NOT NULL, `created_on` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`transaction_id`) REFERENCES `transaction`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE)
+;;
+=== 8 -> 9
+CREATE TABLE IF NOT EXISTS `recurring_transaction` (`id` TEXT NOT NULL, `notes` TEXT NOT NULL, `category_id` TEXT NOT NULL, `from_account_id` TEXT NOT NULL, `to_account_id` TEXT, `type` INTEGER NOT NULL, `amount` REAL NOT NULL, `frequency` TEXT NOT NULL, `start_date` INTEGER NOT NULL, `next_occurrence` INTEGER NOT NULL, `next_due_date` INTEGER NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`from_account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY(`to_account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY(`category_id`) REFERENCES `category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE)
+;;
+CREATE INDEX IF NOT EXISTS `index_recurring_transaction_from_account_id` ON `recurring_transaction` (`from_account_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_recurring_transaction_to_account_id` ON `recurring_transaction` (`to_account_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_recurring_transaction_category_id` ON `recurring_transaction` (`category_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_recurring_transaction_next_due_date` ON `recurring_transaction` (`next_due_date`)
+;;
+=== 9 -> 10
+CREATE INDEX IF NOT EXISTS `index_transaction_created_on` ON `transaction` (`created_on`)
+;;
+CREATE INDEX IF NOT EXISTS `index_transaction_from_account_id` ON `transaction` (`from_account_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_transaction_to_account_id` ON `transaction` (`to_account_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_transaction_category_id` ON `transaction` (`category_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_transaction_attachment_transaction_id` ON `transaction_attachment` (`transaction_id`)
+;;
+=== 10 -> 11
+ALTER TABLE `budget` ADD COLUMN `name` TEXT DEFAULT NULL
+;;
+=== 11 -> 12
+CREATE TABLE IF NOT EXISTS `debt_person` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`))
+;;
+CREATE TABLE IF NOT EXISTS `debt_entry` (`id` TEXT NOT NULL, `person_id` TEXT NOT NULL, `kind` TEXT NOT NULL, `amount_milli` INTEGER NOT NULL, `account_id` TEXT, `date` INTEGER NOT NULL, `due_date` INTEGER, `note` TEXT NOT NULL, `created_on` INTEGER NOT NULL, `updated_on` INTEGER NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`person_id`) REFERENCES `debt_person`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE, FOREIGN KEY(`account_id`) REFERENCES `account`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL)
+;;
+CREATE INDEX IF NOT EXISTS `index_debt_entry_person_id` ON `debt_entry` (`person_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_debt_entry_account_id` ON `debt_entry` (`account_id`)
+;;
+CREATE INDEX IF NOT EXISTS `index_debt_entry_due_date` ON `debt_entry` (`due_date`)
+;;
