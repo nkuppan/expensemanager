@@ -26,12 +26,12 @@ the files; the developer runs every command on the Mac.
 ## 4. Docs
 
 - [x] 4.1 CLAUDE.md: the `:shared` module (Swift entry points only, plain values), `iosApp/` (XcodeGen; how to build and run), the iOS commands in "Commands", and the `shared-ios` CI job
-- [ ] 4.2 Update `claude/kmp-migration-roadmap.md` (Phase 1 complete, progress log)
+- [x] 4.2 Update `claude/kmp-migration-roadmap.md` (Phase 1 complete, progress log)
 - [x] 4.3 Verify: `./gradlew spotlessCheck > build-log.txt 2>&1` is green
 
 ## 5. Final verification
 
 - [x] 5.1 Full Android build on the Mac: `./gradlew assembleDebug test lintDebug spotlessCheck > build-log.txt 2>&1` ends with BUILD SUCCESSFUL
 - [x] 5.2 iOS: the 3.2 command passes, and the smoke app builds and parses both samples on the simulator
-- [ ] 5.3 CI: open a pull request (a draft is fine) from `feature/kmp-migration` to `main`; `shared-ios`, `unit-test` and `bundle-release` pass (the last one also covers the release builds left open in changes 3 and 4)
-- [ ] 5.4 `openspec validate add-ios-smoke-app --strict` passes; then archive the change
+- [ ] 5.3 CI: open a pull request (a draft is fine) from `feature/kmp-migration` to `main`; `shared-ios`, `unit-test` and `bundle-release` pass (the last one also covers the release builds left open in changes 3 and 4) — 27 Nov: not run yet (no pull request open, 0 workflow runs on the branch); archived with this as an open follow-up in the roadmap
+- [x] 5.4 `openspec validate add-ios-smoke-app --strict` passes; then archive the change
